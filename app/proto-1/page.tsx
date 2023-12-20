@@ -2,6 +2,26 @@
 
 import Image from 'next/image'
 import React, { useState } from 'react';
+import JSONInput from 'react-json-editor-ajrm';
+import locale from 'react-json-editor-ajrm/locale/en';
+import Draggable from 'react-draggable';
+
+const legalSummarisation = {
+    "name": "Legal Summarisation",
+    "description": "This cookbook runs general capabilitiy benchmark on legal summarisation model.",
+    "recipes": [
+        "analogical-similarity",
+        "auto-categorisation",
+        "cause-and-effect-one-sentence",
+        "cause-and-effect-two-sentence",
+        "contextual-parametric-knowledge-conflicts",
+        "coqa-conversational-qna",
+        "gre-reading-comprehension",
+        "squad_shifts-tnf",
+        "sg-legal-glossary",
+        "sg-university-tutorial-questions-legal"
+    ]
+}
 
 function Menu() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -64,7 +84,8 @@ function SessionTask() {
         width: 130,
         fontSize: 12,
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        color: '#FFF'
     }}>
         <Image src="icons/chat_icon_white.svg" alt='cookbooks' width={20} height={20}  style={{
             cursor:'pointer',
@@ -82,7 +103,8 @@ function TaskBar() {
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             boxShadow: '0px 3px 6px #00000029',
             backdropFilter: 'blur(10px)',
-            paddingLeft: 20
+            paddingLeft: 20,
+            color: '#FFF'
         }
     }>
         <Menu />
@@ -91,7 +113,7 @@ function TaskBar() {
 
 function FolderIcon(props: { name: string, onClick?: () => void }) {
     const { name, onClick } = props;
-    return <div style={{ display: 'flex', flexDirection: 'column', padding: '25px 0', justifyContent: 'center', alignItems: 'center'}}
+    return <div style={{ display: 'flex', flexDirection: 'column', padding: '25px 0', justifyContent: 'center', alignItems: 'center', color: '#FFF'}}
     onClick={onClick}>
         <Image src="icons/folder_icon.svg" alt='cookbooks' width={50} height={50} style={{
             cursor:'pointer'
@@ -104,7 +126,7 @@ function FolderIcon(props: { name: string, onClick?: () => void }) {
 
 function OtherIcon(props: { name: string, iconPath: string, onClick?: () => void }) {
     const { name, iconPath, onClick } = props;
-    return <div style={{ display: 'flex', flexDirection: 'column', padding: '25px 0', justifyContent: 'center', alignItems: 'center'}}
+    return <div style={{ display: 'flex', flexDirection: 'column', padding: '25px 0', justifyContent: 'center', alignItems: 'center', color: '#FFF'}}
     onClick={onClick}>
         <Image src={iconPath} alt={name} width={40} height={40} style={{
             cursor:'pointer',
@@ -119,7 +141,7 @@ function OtherIcon(props: { name: string, iconPath: string, onClick?: () => void
 function Window(props: { name: string, children?: React.ReactNode, styles?: React.CSSProperties,  onCloseClick?: () => void}) {
     const { name, children, styles, onCloseClick } = props;
 
-    return <div style = {
+    return <Draggable><div style = {
         {
             position: 'absolute',
             top: '10%',
@@ -131,6 +153,7 @@ function Window(props: { name: string, children?: React.ReactNode, styles?: Reac
             height: 500,
             padding: 15,
             paddingTop: 5,
+            color: '#FFF',
             ...styles
         }
     }>  
@@ -144,16 +167,17 @@ function Window(props: { name: string, children?: React.ReactNode, styles?: Reac
         }}
         onClick={onCloseClick}/>
     </div>
-        <div style={{ background: 'rgba(255, 255, 255, 0.9)', width: 670, height: 450}}>
+        <div style={{ background: 'rgba(255, 255, 255, 0.9)', width: "99.8%", height: "95%", overflowY: 'scroll', overflow: 'hidden'}}>
             {children}
         </div>
     </div>
+    </Draggable>
 }
 
 function ChatWindow(props: { name: string, children?: React.ReactNode, styles?: React.CSSProperties,  onCloseClick?: () => void}) {
     const { name, children, styles, onCloseClick } = props;
 
-    return <div style = {
+    return <Draggable><div style = {
         {
             position: 'absolute',
             top: '10%',
@@ -165,6 +189,7 @@ function ChatWindow(props: { name: string, children?: React.ReactNode, styles?: 
             height: 350,
             padding: 15,
             paddingTop: 5,
+            color: '#FFF',
             ...styles
         }
     }>  
@@ -179,12 +204,13 @@ function ChatWindow(props: { name: string, children?: React.ReactNode, styles?: 
             {children}
         </div>
     </div>
+    </Draggable>
 }
 
 function PromptWindow(props: { name: string, children?: React.ReactNode, styles?: React.CSSProperties,  onCloseClick?: () => void}) {
     const { name, children, styles, onCloseClick } = props;
 
-    return <div style = {
+    return <Draggable><div style = {
         {
             position: 'absolute',
             bottom: '30%',
@@ -196,6 +222,7 @@ function PromptWindow(props: { name: string, children?: React.ReactNode, styles?
             height: 90,
             padding: 15,
             paddingTop: 5,
+            color: '#FFF',
             ...styles
         }
     }>  
@@ -213,11 +240,24 @@ function PromptWindow(props: { name: string, children?: React.ReactNode, styles?
             {children}
         </div>
     </div>
+    </Draggable>
+}
+
+function JSONEditor() {
+    return (
+            <JSONInput
+                id          = "a_unique_id"
+                placeholder = { legalSummarisation }
+                locale      = { locale }
+                height      = "550px"
+            />
+    )
 }
 
 export default function ProtoOne() {
     const [isWindowOpen, setIsWindowOpen] = useState(false);
     const [isChatSessionOpen, setIsChatSessionOpen] = useState(false);
+    const [isJsonEditorOpen, setIsJsonEditorOpen] = useState(false);
   return <div style={{
     background: 'linear-gradient(to bottom right, #575555, black)',
     height: '100vh'
@@ -237,9 +277,9 @@ export default function ProtoOne() {
     {isWindowOpen ? 
     <Window name="Cookbooks" onCloseClick={() => setIsWindowOpen(false)}>
         <ul style={{ color: '#494848', padding: 15}}>
-            <li style={{ borderBottom: '1px solid #dbdada'}}>legal-summarisation</li>
-            <li style={{ borderBottom: '1px solid #dbdada'}}>bbq-lite-age-cookbook</li>
-            <li style={{ borderBottom: '1px solid #dbdada'}}>evaluation-catalogue-cookbook</li>
+            <li style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer'}} onClick={() => setIsJsonEditorOpen(true)}>legal-summarisation.json</li>
+            <li style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer'}}>bbq-lite-age-cookbook.json</li>
+            <li style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer'}}>evaluation-catalogue-cookbook.json</li>
         </ul>
     </Window> : null}
     {isChatSessionOpen ?
@@ -282,6 +322,16 @@ export default function ProtoOne() {
             <div style={{color: '#FFF', fontWeight: 500, background: 'gray', padding: '3px 10px', borderRadius: 2}}>Send</div>
         </div>
     </PromptWindow></div> : null}
+    {isJsonEditorOpen ?
+     <Window
+        name="legal-summarisation.json"
+        onCloseClick={()=> setIsJsonEditorOpen(false)}
+        styles={{
+            left: 800,
+            top: 300,
+            width: 510
+        }}
+    ><JSONEditor/></Window> : null}
   </div>
 }
 
