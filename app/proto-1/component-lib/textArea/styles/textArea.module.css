@@ -1,0 +1,55 @@
+.textInput {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  font-size: 13px;
+}
+
+.textInput input,
+.textInput textarea {
+  border-radius: 4px;
+  border: 1px solid #cfcfcf;
+  font-size: 14px;
+  padding: 5px 10px;
+  width: 100%;
+  color: 676767;
+  resize: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.textInput textarea {
+  resize: none;
+  height: 100px;
+  font-family: inherit;
+}
+
+.textInput input::placeholder,
+.textInput textarea::placeholder {
+  color: #cfcfcf;
+}
+
+.textInput input:focus,
+.textInput textarea:focus {
+  outline: none;
+}
+
+.textInput.inputError input,
+.textInput.inputError textarea {
+  border-color: #f73939;
+}
+
+.label {
+  display: flex;
+  justify-content: space-between;
+  color: #676767;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.inputError {
+  border-color: #f73939;
+}
+
+.errorText {
+  color: #f73939;
+}
