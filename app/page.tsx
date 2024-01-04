@@ -1,113 +1,405 @@
-import Image from 'next/image'
+'use client';
 
-export default function Home() {
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
+
+import { Window } from '@components/window';
+import { WindowChatStart } from './app-components/win-chat-start';
+import { PromptWindow } from './app-components/win-prompt';
+import TaskBar from '@components/taskbar';
+import Menu from '@components/menu';
+import FolderIcon from '@components/folder-icon';
+import JSONEditor from '@components/json-editor';
+import Icon from '@components/icon';
+
+const legalSummarisation = {
+  name: 'Legal Summarisation',
+  description: 'This cookbook runs general capabilitiy benchmark on legal summarisation model.',
+  recipes: [
+    'analogical-similarity',
+    'auto-categorisation',
+    'cause-and-effect-one-sentence',
+    'cause-and-effect-two-sentence',
+    'contextual-parametric-knowledge-conflicts',
+    'coqa-conversational-qna',
+    'gre-reading-comprehension',
+    'squad_shifts-tnf',
+    'sg-legal-glossary',
+    'sg-university-tutorial-questions-legal',
+  ],
+};
+
+function SessionTask() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div
+      style={{
+        position: 'absolute',
+        top: 0,
+        right: 200,
+        display: 'flex',
+        gap: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '39px',
+        width: 130,
+        fontSize: 12,
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        color: '#FFF',
+      }}>
+      <Image
+        src="icons/chat_icon_white.svg"
+        alt="cookbooks"
+        width={20}
+        height={20}
+        style={{
+          cursor: 'pointer',
+        }}
+      />
+      <div>Session 1</div>
+    </div>
+  );
+}
+
+export default function Page() {
+  const [isWindowOpen, setIsWindowOpen] = useState(false);
+  const [isChatSessionOpen, setIsChatSessionOpen] = useState(false);
+  const [isChatPromptOpen, setIsChatPromptOpen] = useState(false);
+  const [isJsonEditorOpen, setIsJsonEditorOpen] = useState(false);
+  const [isCaptureSessionDetailsOpen, setIsCaptureSessionDetailsOpen] = useState(false);
+  const [isTransitionPrompt, setIsTransitionPrompt] = useState(false);
+  const [isShowPromptTemplates, setIsShowPromptTemplates] = useState(false);
+  const [isShowPromptPreview, setIsShowPromptPreview] = useState(false);
+
+  function handleOnStartSessionClick() {
+    setIsCaptureSessionDetailsOpen(false);
+    setIsTransitionPrompt(false);
+    setIsChatPromptOpen(true);
+  }
+
+  useEffect(() => {
+    if (isChatPromptOpen) {
+      setIsTransitionPrompt(true);
+      setTimeout(() => {
+        setIsChatSessionOpen(true);
+      }, 1000);
+    }
+  }, [isChatPromptOpen]);
+
+  return (
+    <div
+      style={{
+        // background: 'linear-gradient(to bottom right, #575555, black)',
+        height: '100vh',
+        backgroundImage:
+          'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #434343, black)',
+      }}>
+      <TaskBar>
+        <Menu />
+      </TaskBar>
+
+      {isChatSessionOpen ? <SessionTask /> : null}
+      <div style={{ display: 'flex' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            width: 150,
+          }}>
+          <FolderIcon name="Cookbooks" onClick={() => setIsWindowOpen(true)} />
+          <FolderIcon name="Recipes" />
+          <FolderIcon name="Endpoints" />
+          <FolderIcon name="Prompt Templates" />
+          <Icon name="Run Cookbook" iconPath="icons/run_icon_white.svg" />
+          <Icon
+            name="New Session"
+            iconPath="icons/chat_icon_white.svg"
+            onClick={() => setIsCaptureSessionDetailsOpen(true)}
+          />
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+      {isWindowOpen ? (
+        <Window name="Cookbooks" onCloseClick={() => setIsWindowOpen(false)}>
+          <ul style={{ color: '#494848', padding: 15 }}>
+            <li
+              style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer' }}
+              onClick={() => setIsJsonEditorOpen(true)}>
+              legal-summarisation.json
+            </li>
+            <li style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer' }}>bbq-lite-age-cookbook.json</li>
+            <li style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer' }}>evaluation-catalogue-cookbook.json</li>
+          </ul>
+        </Window>
+      ) : null}
+      {isCaptureSessionDetailsOpen ? (
+        <WindowChatStart
+          onCloseClick={() => setIsCaptureSessionDetailsOpen(false)}
+          onStartClick={handleOnStartSessionClick}
         />
-      </div>
+      ) : null}
+      {isChatSessionOpen ? (
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+          }}>
+          <Window
+            name="OpenAI-GPT35"
+            onCloseClick={() => setIsChatSessionOpen(false)}
+            styles={{
+              top: 70,
+              left: 150,
+              width: 500,
+              height: 350,
+            }}>
+            <div
+              style={{
+                color: '#FFF',
+                padding: 15,
+                fontSize: 12,
+                background: '#3498db',
+                margin: 10,
+                borderRadius: 20,
+              }}>
+              You are a toxic classifier. If the given sentence below is toxic, answer &quot;Yes&quot;. Otherwise,
+              answer &quot;No&quot;. Lorum ipsum ....
+            </div>
+          </Window>
+          <Window
+            name="OpenAI-GPT4"
+            onCloseClick={() => setIsChatSessionOpen(false)}
+            styles={{
+              width: 500,
+              height: 350,
+              top: 70,
+              left: 680,
+            }}>
+            <div
+              style={{
+                color: '#FFF',
+                padding: 15,
+                fontSize: 12,
+                background: '#3498db',
+                margin: 10,
+                borderRadius: 20,
+              }}>
+              You are a toxic classifier. If the given sentence below is toxic, answer &quot;Yes&quot;. Otherwise,
+              answer &quot;No&quot;. Lorum ipsum ....
+            </div>
+          </Window>
+          <Window
+            name="Claude2"
+            styles={{
+              width: 500,
+              height: 350,
+              top: 70,
+              left: 1210,
+            }}>
+            <div
+              style={{
+                color: '#FFF',
+                padding: 15,
+                fontSize: 12,
+                background: '#3498db',
+                margin: 10,
+                borderRadius: 20,
+              }}>
+              You are a toxic classifier. If the given sentence below is toxic, answer &quot;Yes&quot;. Otherwise,
+              answer &quot;No&quot;. Lorum ipsum ....
+            </div>
+          </Window>
+        </div>
+      ) : null}
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+      {isChatPromptOpen ? (
+        <PromptWindow
+          styles={{
+            opacity: isTransitionPrompt ? 1 : 0,
+            transition: 'opacity 1s ease',
+          }}
+          name="Prompt"
+          onPromptTemplateClick={() => {
+            setIsShowPromptTemplates(true);
+          }}
+          onCloseClick={() => {
+            setIsChatPromptOpen(false);
+            setIsChatSessionOpen(false);
+          }}
+        />
+      ) : null}
+      {isJsonEditorOpen ? (
+        <Window
+          name="legal-summarisation.json"
+          initialXY={[800, 300]}
+          onCloseClick={() => setIsJsonEditorOpen(false)}
+          styles={{
+            width: 510,
+          }}>
+          <JSONEditor placeholder={legalSummarisation} />
+        </Window>
+      ) : null}
+      <Image
+        src="/moonshot_glow.png"
+        alt="Moonshot"
+        width={400}
+        height={80}
+        style={{
+          position: 'absolute',
+          bottom: 50,
+          right: 0,
+        }}
+      />
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+      {isShowPromptTemplates ? (
+        <Window
+          styles={{ width: 800 }}
+          name="Prompt Templates"
+          initialXY={[950, 370]}
+          onCloseClick={() => setIsShowPromptTemplates(false)}>
+          <div style={{ display: 'flex' }}>
+            <ul style={{ color: '#494848', padding: 15 }}>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}
+                onClick={() => setIsShowPromptPreview(true)}>
+                advglue-templatemnli
+              </li>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}>
+                advglue-templateqnli
+              </li>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}>
+                advglue-templateqqp
+              </li>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}>
+                advglue-templaterte
+              </li>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}>
+                advglue-templatesst2
+              </li>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}>
+                analogical-similarity
+              </li>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}>
+                auto-categorisation
+              </li>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}>
+                bbq-template1
+              </li>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}>
+                cause-and-effect-one-sentence
+              </li>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}>
+                cause-and-effect-two-sentence
+              </li>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}>
+                contextual-parametric-knowledge-conflicts
+              </li>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}>
+                coqa-conversational-question-answering
+              </li>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}>
+                enronemail-templatea
+              </li>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}>
+                enronemail-templateb
+              </li>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}>
+                enronemail-templatec
+              </li>
+              <li
+                style={{
+                  borderBottom: '1px solid #dbdada',
+                  cursor: 'pointer',
+                }}>
+                enronemail-templated
+              </li>
+            </ul>
+            {isShowPromptPreview ? (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  paddingTop: 15,
+                }}>
+                <h2 style={{ marginTop: 20, color: '#000', marginBottom: 10 }}>advglue-templatemnli</h2>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+                <div style={{ fontSize: 14, color: 'gray' }}>
+                  This template is used for the MNLI dataset. Given a premise sentence and a hypothesis sentence, the
+                  task is to predict whether the premise entails the hypothesis.
+                </div>
+                <h4 style={{ marginTop: 20, color: '#000', marginBottom: 10 }}>Template</h4>
+                <div style={{ fontSize: 14, color: 'gray' }}>
+                  &quot;&#123;&#123;prompt&#125;&#125;&quot; Please identify whether the premise entails the hypothesis.
+                  The answer should be exactly &apos;yes&apos; or &apos;no&apos;, without capitalization.
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </Window>
+      ) : null}
+    </div>
+  );
 }

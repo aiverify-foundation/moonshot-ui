@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { TextInput } from '../component-lib/textInput';
-import { Window } from '../component-lib/window';
+import { TextInput } from '../components/textInput';
+import { Window } from '../components/window';
 
 function PromptWindow(props: {
   name: string;
@@ -26,11 +26,7 @@ function PromptWindow(props: {
           position: 'relative',
         }}>
         <div style={{ display: 'flex', gap: 5 }}>
-          <TextInput
-            name="sessionName"
-            placeholder="Message"
-            style={{ width: 400 }}
-          />
+          <TextInput name="sessionName" placeholder="Message" style={{ width: 400 }} />
           <button
             style={{
               minWidth: 80,
