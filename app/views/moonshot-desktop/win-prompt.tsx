@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { TextInput } from '../components/textInput';
-import { Window } from '../components/window';
+import { TextInput } from '../../components/textInput';
+import { Window } from '../../components/window';
 
 function PromptWindow(props: {
   name: string;

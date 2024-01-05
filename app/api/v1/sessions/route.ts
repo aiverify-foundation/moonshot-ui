@@ -1,7 +1,3 @@
-import { handleResponseBody } from '@/app/lib/http-requests';
-import { Session } from '@/app/types/session';
-import { NextResponse } from 'next/server';
-
 const hostURL = process.env.MOONSHOT_API_URL || 'http://localhost:5000';
 const basePath = '/v1/sessions';
 

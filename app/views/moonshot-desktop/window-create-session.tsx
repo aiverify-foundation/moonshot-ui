@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
-import { TextInput } from '../components/textInput';
-import { Window } from '../components/window';
-import { CheckBox } from '../components/checkbox';
-import { TextArea } from '../components/textArea';
+import React from 'react';
+import { TextInput } from '@components/textInput';
+import { Window } from '@components/window';
+import { CheckBox } from '@components/checkbox';
+import { TextArea } from '@components/textArea';
 import { Formik, Form, FieldArray, FormikHelpers } from 'formik';
-import { createSession } from './api/session';
-import { toErrorWithMessage } from '../lib/error-utils';
 
 type WindowChatStartProps = {
   onCloseClick: () => void;
-  onStartClick: () => void;
+  onStartClick: (sessionName: string, description: string, llmEndpoints: string[]) => void;
 };
 
 type FormValues = {
@@ -26,12 +24,12 @@ const initialFormValues: FormValues = {
 
 const llmEndpoints = [
   {
-    id: 'openAI-GPT35',
+    id: 'openai-gpt35-amin',
     name: 'OpenAI-GPT35',
     description: 'OpenAI GPT-3.5',
   },
   {
-    id: 'openAI-GPT4',
+    id: 'openai-gpt4-amin',
     name: 'OpenAI-GPT4',
     description: 'OpenAI GPT-4',
   },
@@ -47,18 +45,12 @@ const llmEndpoints = [
   },
 ];
 
-function WindowChatStart(props: WindowChatStartProps) {
+function WindowCreateSession(props: WindowChatStartProps) {
   const { onCloseClick, onStartClick } = props;
 
-  async function handleFormSubmit(values: FormValues, actions: FormikHelpers<FormValues>) {
+  async function handleFormSubmit(values: FormValues) {
     console.log(values);
-    const response = await createSession(values.sessionName, values.description, values.llmEndpoints);
-    if ('status' in response) {
-      console.log(response);
-      // onStartClick();
-    } else {
-      console.error(response);
-    }
+    onStartClick(values.sessionName, values.description, values.llmEndpoints);
   }
 
   return (
@@ -183,4 +175,4 @@ function WindowChatStart(props: WindowChatStartProps) {
   );
 }
 
-export { WindowChatStart };
+export { WindowCreateSession };
