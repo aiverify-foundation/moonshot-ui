@@ -9,14 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.0.1",
     "@types/react-json-editor-ajrm": "^2.5.6",
     "clsx": "^2.0.0",
     "formik": "^2.4.5",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
-    "react-draggable": "^4.4.6",
-    "react-json-editor-ajrm": "^2.5.14"
+    "react-json-editor-ajrm": "^2.5.14",
+    "react-redux": "^9.0.4"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -24,11 +25,13 @@
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
+    "@types/redux-logger": "^3.0.12",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "eslint-config-prettier": "^8.8.0",
     "postcss": "^8",
+    "redux-logger": "^3.0.6",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }

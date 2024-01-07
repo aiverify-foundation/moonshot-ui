@@ -18,10 +18,7 @@ function WindowChat() {
           background: '#3498db',
           margin: 10,
           borderRadius: 20,
-        }}>
-        You are a toxic classifier. If the given sentence below is toxic, answer &quot;Yes&quot;. Otherwise, answer
-        &quot;No&quot;. Lorum ipsum ....
-      </div>
+        }}></div>
     </Window>
   );
 }
