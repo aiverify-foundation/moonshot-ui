@@ -1,0 +1,27 @@
+type Session = {
+  session_id: string;
+  name: string;
+  description: string;
+  created_epoch: number;
+  created_datetime: string;
+  chats: string[];
+  endpoints: string[];
+  metadata_file: string;
+  prompt_template: string;
+  context_strategy: number;
+  filename: string;
+  chat_history: Record<string, DialoguePairInfo[]>;
+};
+
+type DialoguePairInfo = {
+  chat_id: number;
+  connection_id: string;
+  context_strategy: number;
+  prompt_template: string;
+  prompt: string;
+  prepared_prompt: string;
+  predicted_result: string;
+  duration: string;
+};
+
+type ChatHistory = Record<string, DialoguePairInfo[]>;
