@@ -12,6 +12,7 @@ import FolderIcon from '@components/folder-icon';
 import JSONEditor from '@components/json-editor';
 import Icon from '@components/icon';
 import { createSession } from './api/session';
+import { WindowSavedSessions } from './window-saved-sessions';
 
 const legalSummarisation = {
   name: 'Legal Summarisation',
@@ -68,6 +69,7 @@ export default function MoonshotDesktop() {
   const [isChatPromptOpen, setIsChatPromptOpen] = useState(false);
   const [isJsonEditorOpen, setIsJsonEditorOpen] = useState(false);
   const [isShowWindowCreateSession, setIsShowWindowCreateSession] = useState(false);
+  const [isShowWindowSavedSession, setIsShowWindowSavedSession] = useState(false);
   const [isTransitionPrompt, setIsTransitionPrompt] = useState(false);
   const [isShowPromptTemplates, setIsShowPromptTemplates] = useState(false);
   const [isShowPromptPreview, setIsShowPromptPreview] = useState(false);
@@ -115,20 +117,37 @@ export default function MoonshotDesktop() {
             flexDirection: 'column',
             width: 150,
           }}>
-          <FolderIcon name="Cookbooks" onClick={() => setIsWindowOpen(true)} />
+          <FolderIcon name="Cookbooks"
+            onClick={() => setIsWindowOpen(true)} />
           <FolderIcon name="Recipes" />
           <FolderIcon name="Endpoints" />
           <FolderIcon name="Prompt Templates" />
-          <Icon name="Run Cookbook" iconPath="icons/run_icon_white.svg" />
+          <Icon name="Run Cookbook"
+            iconPath="icons/run_icon_white.svg" />
           <Icon
             name="New Session"
             iconPath="icons/chat_icon_white.svg"
             onClick={() => setIsShowWindowCreateSession(true)}
           />
         </div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            flexDirection: 'column',
+            width: 150,
+          }}>
+          <Icon
+            name="Saved Sessions"
+            iconPath="icons/chat_icon_white.svg"
+            onClick={() => setIsShowWindowSavedSession(true)}
+          />
+        </div>
       </div>
       {isWindowOpen ? (
-        <Window name="Cookbooks" onCloseClick={() => setIsWindowOpen(false)}>
+        <Window name="Cookbooks"
+          onCloseClick={() => setIsWindowOpen(false)}>
           <ul style={{ color: '#494848', padding: 15 }}>
             <li
               style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer' }}
@@ -141,7 +160,8 @@ export default function MoonshotDesktop() {
         </Window>
       ) : null}
       {isShowWindowCreateSession ? (
-        <WindowCreateSession onCloseClick={() => setIsShowWindowCreateSession(false)} onStartClick={startNewSession} />
+        <WindowCreateSession onCloseClick={() => setIsShowWindowCreateSession(false)}
+          onStartClick={startNewSession} />
       ) : null}
       {isChatSessionOpen ? (
         <div
@@ -246,6 +266,9 @@ export default function MoonshotDesktop() {
           }}>
           <JSONEditor placeholder={legalSummarisation} />
         </Window>
+      ) : null}
+      {isShowWindowSavedSession ? (
+        <WindowSavedSessions onCloseClick={() => setIsShowWindowSavedSession(false)} />
       ) : null}
       <Image
         src="/moonshot_glow.png"
