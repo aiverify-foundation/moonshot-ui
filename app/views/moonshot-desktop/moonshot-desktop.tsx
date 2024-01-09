@@ -11,7 +11,7 @@ import Menu from '@components/menu';
 import FolderIcon from '@components/folder-icon';
 import JSONEditor from '@components/json-editor';
 import Icon from '@components/icon';
-import { createSession } from './api/session';
+import { createSession } from './services/session-api-service';
 import { WindowSavedSessions } from './window-saved-sessions';
 
 const legalSummarisation = {
@@ -117,13 +117,11 @@ export default function MoonshotDesktop() {
             flexDirection: 'column',
             width: 150,
           }}>
-          <FolderIcon name="Cookbooks"
-            onClick={() => setIsWindowOpen(true)} />
+          <FolderIcon name="Cookbooks" onClick={() => setIsWindowOpen(true)} />
           <FolderIcon name="Recipes" />
           <FolderIcon name="Endpoints" />
           <FolderIcon name="Prompt Templates" />
-          <Icon name="Run Cookbook"
-            iconPath="icons/run_icon_white.svg" />
+          <Icon name="Run Cookbook" iconPath="icons/run_icon_white.svg" />
           <Icon
             name="New Session"
             iconPath="icons/chat_icon_white.svg"
@@ -146,22 +144,27 @@ export default function MoonshotDesktop() {
         </div>
       </div>
       {isWindowOpen ? (
-        <Window name="Cookbooks"
-          onCloseClick={() => setIsWindowOpen(false)}>
+        <Window name="Cookbooks" onCloseClick={() => setIsWindowOpen(false)}>
           <ul style={{ color: '#494848', padding: 15 }}>
             <li
               style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer' }}
               onClick={() => setIsJsonEditorOpen(true)}>
               legal-summarisation.json
             </li>
-            <li style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer' }}>bbq-lite-age-cookbook.json</li>
-            <li style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer' }}>evaluation-catalogue-cookbook.json</li>
+            <li style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer' }}>
+              bbq-lite-age-cookbook.json
+            </li>
+            <li style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer' }}>
+              evaluation-catalogue-cookbook.json
+            </li>
           </ul>
         </Window>
       ) : null}
       {isShowWindowCreateSession ? (
-        <WindowCreateSession onCloseClick={() => setIsShowWindowCreateSession(false)}
-          onStartClick={startNewSession} />
+        <WindowCreateSession
+          onCloseClick={() => setIsShowWindowCreateSession(false)}
+          onStartClick={startNewSession}
+        />
       ) : null}
       {isChatSessionOpen ? (
         <div
@@ -190,8 +193,8 @@ export default function MoonshotDesktop() {
                 margin: 10,
                 borderRadius: 20,
               }}>
-              You are a toxic classifier. If the given sentence below is toxic, answer &quot;Yes&quot;. Otherwise,
-              answer &quot;No&quot;. Lorum ipsum ....
+              You are a toxic classifier. If the given sentence below is toxic, answer
+              &quot;Yes&quot;. Otherwise, answer &quot;No&quot;. Lorum ipsum ....
             </div>
           </Window>
           <Window
@@ -212,8 +215,8 @@ export default function MoonshotDesktop() {
                 margin: 10,
                 borderRadius: 20,
               }}>
-              You are a toxic classifier. If the given sentence below is toxic, answer &quot;Yes&quot;. Otherwise,
-              answer &quot;No&quot;. Lorum ipsum ....
+              You are a toxic classifier. If the given sentence below is toxic, answer
+              &quot;Yes&quot;. Otherwise, answer &quot;No&quot;. Lorum ipsum ....
             </div>
           </Window>
           <Window
@@ -233,8 +236,8 @@ export default function MoonshotDesktop() {
                 margin: 10,
                 borderRadius: 20,
               }}>
-              You are a toxic classifier. If the given sentence below is toxic, answer &quot;Yes&quot;. Otherwise,
-              answer &quot;No&quot;. Lorum ipsum ....
+              You are a toxic classifier. If the given sentence below is toxic, answer
+              &quot;Yes&quot;. Otherwise, answer &quot;No&quot;. Lorum ipsum ....
             </div>
           </Window>
         </div>
@@ -411,16 +414,20 @@ export default function MoonshotDesktop() {
                   flexDirection: 'column',
                   paddingTop: 15,
                 }}>
-                <h2 style={{ marginTop: 20, color: '#000', marginBottom: 10 }}>advglue-templatemnli</h2>
+                <h2 style={{ marginTop: 20, color: '#000', marginBottom: 10 }}>
+                  advglue-templatemnli
+                </h2>
 
                 <div style={{ fontSize: 14, color: 'gray' }}>
-                  This template is used for the MNLI dataset. Given a premise sentence and a hypothesis sentence, the
-                  task is to predict whether the premise entails the hypothesis.
+                  This template is used for the MNLI dataset. Given a premise sentence and a
+                  hypothesis sentence, the task is to predict whether the premise entails the
+                  hypothesis.
                 </div>
                 <h4 style={{ marginTop: 20, color: '#000', marginBottom: 10 }}>Template</h4>
                 <div style={{ fontSize: 14, color: 'gray' }}>
-                  &quot;&#123;&#123;prompt&#125;&#125;&quot; Please identify whether the premise entails the hypothesis.
-                  The answer should be exactly &apos;yes&apos; or &apos;no&apos;, without capitalization.
+                  &quot;&#123;&#123;prompt&#125;&#125;&quot; Please identify whether the premise
+                  entails the hypothesis. The answer should be exactly &apos;yes&apos; or
+                  &apos;no&apos;, without capitalization.
                 </div>
               </div>
             ) : null}

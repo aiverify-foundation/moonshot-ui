@@ -1,6 +1,8 @@
 /* Instruments */
-import { counterSlice } from './slices'
+import { sessionApi } from '@/app/views/moonshot-desktop/services/session-api-service';
+import { sessionsSlice } from './slices/sessionsSlice/sessions-slice';
 
 export const reducer = {
-  counter: counterSlice.reducer,
-}
+  sessions: sessionsSlice.reducer,
+  [sessionApi.reducerPath]: sessionApi.reducer,
+};

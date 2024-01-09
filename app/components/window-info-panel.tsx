@@ -1,10 +1,16 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren } from 'react';
 
-function WindowInfoPanel(props: PropsWithChildren) {
-  const { children } = props;
+type WindowInfoPanelProps = {
+  styles?: React.CSSProperties;
+};
+
+function WindowInfoPanel(props: PropsWithChildren<WindowInfoPanelProps>) {
+  const { styles, children } = props;
   return (
-    <div style={{ borderLeft: '1px solid #dbdada', color: '#494848', padding: 15 }}>{children}</div>
-  )
+    <div style={{ borderLeft: '1px solid #dbdada', color: '#494848', padding: 15, ...styles }}>
+      {children}
+    </div>
+  );
 }
 
-export { WindowInfoPanel }
+export { WindowInfoPanel };

@@ -1,6 +1,5 @@
-import { Session } from '@types/session';
-import { ErrorWithMessage } from '@lib/error-utils';
-import { ApiResult, handleResponseBody } from '@lib/http-requests';
+import { ErrorWithMessage } from '../../../lib/error-utils';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const host = process.env.MOONSHOT_API_URL || 'http://localhost';
 const port = parseInt(process.env.PORT || '3000', 10);
@@ -26,4 +25,17 @@ async function createSession(
   return sessionData;
 }
 
-export { createSession };
+const sessionApi = createApi({
+  reducerPath: 'sessionApi',
+  baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
+  endpoints: (builder) => ({
+    getSessions: builder.query<Session[], void>({
+      query: () => ({ url: 'api/v1/sessions' }),
+      transformResponse: (response: Response) => response,
+    }),
+  }),
+});
+
+const { useGetSessionsQuery } = sessionApi;
+
+export { createSession, sessionApi, useGetSessionsQuery };

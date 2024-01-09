@@ -12,3 +12,9 @@ export async function POST(request: Request) {
   });
   return response;
 }
+
+export async function GET() {
+  const response = await fetch(`${hostURL}${basePath}`);
+  console.log(response);
+  return response;
+}

@@ -1,17 +1,29 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-type SessionSliceState = {
+type SessionsState = {
   entities: Session[];
 };
 
-const initialState: SessionSliceState = {
+const initialState: SessionsState = {
   entities: [],
 };
 
-export const sessionSlice = createSlice({
+export const sessionsSlice = createSlice({
   name: 'sessions',
   initialState,
   reducers: {
-    // Define reducers here
+    all: (state, action: PayloadAction<Session[]>) => {
+      state.entities = action.payload;
+    },
+    addSession: (state, action: PayloadAction<Session>) => {
+      state.entities.unshift(action.payload);
+    },
+    removeSession: (state, action: PayloadAction<Session>) => {
+      state.entities = state.entities.filter(
+        (session) => session.session_id !== action.payload.session_id
+      );
+    },
   },
 });
+
+export const { addSession, removeSession, all } = sessionsSlice.actions;
