@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { TextInput } from '../../components/textInput';
 import { Window } from '../../components/window';
+import { useState } from 'react';
 
 function PromptWindow(props: {
   name: string;
@@ -8,8 +9,18 @@ function PromptWindow(props: {
   styles?: React.CSSProperties;
   onCloseClick?: () => void;
   onPromptTemplateClick?: () => void;
+  onSendClick: (message: string) => void;
 }) {
-  const { onCloseClick, onPromptTemplateClick, styles } = props;
+  const { onCloseClick, onPromptTemplateClick, onSendClick, styles } = props;
+  const [promptMessage, setPromptMessage] = useState('');
+
+  function handleTextChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setPromptMessage(e.target.value);
+  }
+
+  function handleOnSendMessageClick() {
+    onSendClick(promptMessage);
+  }
 
   return (
     <Window
@@ -26,7 +37,13 @@ function PromptWindow(props: {
           position: 'relative',
         }}>
         <div style={{ display: 'flex', gap: 5 }}>
-          <TextInput name="sessionName" placeholder="Message" style={{ width: 400 }} />
+          <TextInput
+            name="sessionName"
+            placeholder="Message"
+            style={{ width: 400 }}
+            onChange={handleTextChange}
+            value={promptMessage}
+          />
           <button
             style={{
               minWidth: 80,
@@ -39,7 +56,7 @@ function PromptWindow(props: {
               height: 33,
             }}
             type="button"
-            onClick={() => null}>
+            onClick={handleOnSendMessageClick}>
             Send
           </button>
         </div>

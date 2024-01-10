@@ -11,9 +11,12 @@ import Menu from '@components/menu';
 import FolderIcon from '@components/folder-icon';
 import JSONEditor from '@components/json-editor';
 import Icon from '@components/icon';
-import { createSession } from './services/session-api-service';
+import { createSession, useSendPromptMutation } from './services/session-api-service';
 import { WindowSavedSessions } from './window-saved-sessions';
-import { useAppSelector } from '@/lib/redux';
+import { useAppDispatch, useAppSelector } from '@/lib/redux';
+import { ChatBox } from './window-chatbox';
+import { lerp } from '@/app/lib/math-helpers';
+import { removeActiveSession, updateChatHistory } from '@/lib/redux/slices/activeSessionSlice';
 
 const legalSummarisation = {
   name: 'Legal Summarisation',
@@ -74,9 +77,10 @@ export default function MoonshotDesktop() {
   const [isTransitionPrompt, setIsTransitionPrompt] = useState(false);
   const [isShowPromptTemplates, setIsShowPromptTemplates] = useState(false);
   const [isShowPromptPreview, setIsShowPromptPreview] = useState(false);
-  const activeSessionChatHistory = useAppSelector((state) =>
-    state.activeSession.entity ? state.activeSession.entity.chat_history : null
-  );
+  const activeSessionChatHistory = useAppSelector((state) => state.activeSession.entity);
+  const dispatch = useAppDispatch();
+  const [sendPrompt, { data: updatedSessionChatHistory, isLoading, error }] =
+    useSendPromptMutation();
 
   async function startNewSession(sessionName: string, description: string, llmEndpoints: string[]) {
     const response = await createSession(sessionName, description, llmEndpoints);
@@ -93,7 +97,28 @@ export default function MoonshotDesktop() {
 
   function handleContinueSessionClick() {
     setIsShowWindowSavedSession(false);
+    setIsTransitionPrompt(true);
+    setIsChatPromptOpen(true);
   }
+
+  function handlePromptWindowCloseClick() {
+    setIsChatPromptOpen(false);
+    setIsChatSessionOpen(false);
+    dispatch(removeActiveSession());
+  }
+
+  function handleSendPromptClick(message: string) {
+    if (!activeSessionChatHistory) return;
+    sendPrompt({
+      prompt: message,
+      session_id: activeSessionChatHistory.session_id,
+    });
+  }
+
+  useEffect(() => {
+    if (!updatedSessionChatHistory) return;
+    dispatch(updateChatHistory(updatedSessionChatHistory));
+  }, [updatedSessionChatHistory, dispatch]);
 
   useEffect(() => {
     if (isChatPromptOpen) {
@@ -108,6 +133,42 @@ export default function MoonshotDesktop() {
     console.log(activeSessionChatHistory);
   }, [activeSessionChatHistory]);
 
+  function ChatBoxes() {
+    if (activeSessionChatHistory === undefined) return null;
+    return activeSessionChatHistory.chats.map((id, index) => {
+      const viewportWidth = window.innerWidth;
+      const leftPos = lerp(0, viewportWidth, index / activeSessionChatHistory.chats.length) + 250;
+      return (
+        <ChatBox key={id} name={id} initialXY={[leftPos, 70]} onCloseClick={() => null}>
+          {!activeSessionChatHistory.chat_history
+            ? null
+            : activeSessionChatHistory.chat_history[id].map((dialogue, index) => {
+                return (
+                  <div
+                    key={index}
+                    style={{ display: 'flex', flexDirection: 'column', paddingRight: 10 }}>
+                    <ChatBox.TalkBubble backgroundColor="gray" fontColor="#FFF">
+                      {dialogue.prepared_prompt}
+                    </ChatBox.TalkBubble>
+                    <ChatBox.TalkBubble
+                      backgroundColor="#3498db"
+                      fontColor="#FFF"
+                      styles={{ textAlign: 'right', alignSelf: 'flex-end' }}>
+                      {dialogue.predicted_result}
+                    </ChatBox.TalkBubble>
+                  </div>
+                );
+              })}
+          {isLoading ? (
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: 15 }}>
+              <ChatBox.LoadingAnimation />
+            </div>
+          ) : null}
+        </ChatBox>
+      );
+    });
+  }
+
   return (
     <div
       style={{
@@ -120,6 +181,7 @@ export default function MoonshotDesktop() {
       </TaskBar>
 
       {isChatSessionOpen ? <SessionTask /> : null}
+
       <div style={{ display: 'flex' }}>
         <div
           style={{
@@ -155,6 +217,7 @@ export default function MoonshotDesktop() {
           />
         </div>
       </div>
+
       {isWindowOpen ? (
         <Window name="Cookbooks" onCloseClick={() => setIsWindowOpen(false)}>
           <ul style={{ color: '#494848', padding: 15 }}>
@@ -172,88 +235,14 @@ export default function MoonshotDesktop() {
           </ul>
         </Window>
       ) : null}
+
       {isShowWindowCreateSession ? (
         <WindowCreateSession
           onCloseClick={() => setIsShowWindowCreateSession(false)}
           onStartClick={startNewSession}
         />
       ) : null}
-      {isChatSessionOpen ? (
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-          }}>
-          <Window
-            name="OpenAI-GPT35"
-            onCloseClick={() => setIsChatSessionOpen(false)}
-            styles={{
-              top: 70,
-              left: 150,
-              width: 500,
-              height: 350,
-            }}>
-            <div
-              style={{
-                color: '#FFF',
-                padding: 15,
-                fontSize: 12,
-                background: '#3498db',
-                margin: 10,
-                borderRadius: 20,
-              }}>
-              You are a toxic classifier. If the given sentence below is toxic, answer
-              &quot;Yes&quot;. Otherwise, answer &quot;No&quot;. Lorum ipsum ....
-            </div>
-          </Window>
-          <Window
-            name="OpenAI-GPT4"
-            onCloseClick={() => setIsChatSessionOpen(false)}
-            styles={{
-              width: 500,
-              height: 350,
-              top: 70,
-              left: 680,
-            }}>
-            <div
-              style={{
-                color: '#FFF',
-                padding: 15,
-                fontSize: 12,
-                background: '#3498db',
-                margin: 10,
-                borderRadius: 20,
-              }}>
-              You are a toxic classifier. If the given sentence below is toxic, answer
-              &quot;Yes&quot;. Otherwise, answer &quot;No&quot;. Lorum ipsum ....
-            </div>
-          </Window>
-          <Window
-            name="Claude2"
-            styles={{
-              width: 500,
-              height: 350,
-              top: 70,
-              left: 1210,
-            }}>
-            <div
-              style={{
-                color: '#FFF',
-                padding: 15,
-                fontSize: 12,
-                background: '#3498db',
-                margin: 10,
-                borderRadius: 20,
-              }}>
-              You are a toxic classifier. If the given sentence below is toxic, answer
-              &quot;Yes&quot;. Otherwise, answer &quot;No&quot;. Lorum ipsum ....
-            </div>
-          </Window>
-        </div>
-      ) : null}
+      {isChatSessionOpen ? <ChatBoxes /> : null}
 
       {isChatPromptOpen ? (
         <PromptWindow
@@ -265,12 +254,11 @@ export default function MoonshotDesktop() {
           onPromptTemplateClick={() => {
             setIsShowPromptTemplates(true);
           }}
-          onCloseClick={() => {
-            setIsChatPromptOpen(false);
-            setIsChatSessionOpen(false);
-          }}
+          onCloseClick={handlePromptWindowCloseClick}
+          onSendClick={handleSendPromptClick}
         />
       ) : null}
+
       {isJsonEditorOpen ? (
         <Window
           name="legal-summarisation.json"
@@ -282,12 +270,14 @@ export default function MoonshotDesktop() {
           <JSONEditor placeholder={legalSummarisation} />
         </Window>
       ) : null}
+
       {isShowWindowSavedSession ? (
         <WindowSavedSessions
           onCloseClick={() => setIsShowWindowSavedSession(false)}
           onContinueSessionClick={handleContinueSessionClick}
         />
       ) : null}
+
       <Image
         src="/moonshot_glow.png"
         alt="Moonshot"

@@ -36,6 +36,7 @@ function WindowSavedSessions(props: WindowSavedSessionsProps) {
     if (sessionWithChatHistory) {
       console.log(sessionWithChatHistory);
       dispatch(setActiveSession(sessionWithChatHistory));
+      onContinueSessionClick();
     }
   }, [sessionWithChatHistory, dispatch, onCloseClick]);
 
