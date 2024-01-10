@@ -13,6 +13,7 @@ import JSONEditor from '@components/json-editor';
 import Icon from '@components/icon';
 import { createSession } from './services/session-api-service';
 import { WindowSavedSessions } from './window-saved-sessions';
+import { useAppSelector } from '@/lib/redux';
 
 const legalSummarisation = {
   name: 'Legal Summarisation',
@@ -73,6 +74,9 @@ export default function MoonshotDesktop() {
   const [isTransitionPrompt, setIsTransitionPrompt] = useState(false);
   const [isShowPromptTemplates, setIsShowPromptTemplates] = useState(false);
   const [isShowPromptPreview, setIsShowPromptPreview] = useState(false);
+  const activeSessionChatHistory = useAppSelector((state) =>
+    state.activeSession.entity ? state.activeSession.entity.chat_history : null
+  );
 
   async function startNewSession(sessionName: string, description: string, llmEndpoints: string[]) {
     const response = await createSession(sessionName, description, llmEndpoints);
@@ -87,6 +91,10 @@ export default function MoonshotDesktop() {
     }
   }
 
+  function handleContinueSessionClick() {
+    setIsShowWindowSavedSession(false);
+  }
+
   useEffect(() => {
     if (isChatPromptOpen) {
       setIsTransitionPrompt(true);
@@ -95,6 +103,10 @@ export default function MoonshotDesktop() {
       }, 1000);
     }
   }, [isChatPromptOpen]);
+
+  useEffect(() => {
+    console.log(activeSessionChatHistory);
+  }, [activeSessionChatHistory]);
 
   return (
     <div
@@ -271,7 +283,10 @@ export default function MoonshotDesktop() {
         </Window>
       ) : null}
       {isShowWindowSavedSession ? (
-        <WindowSavedSessions onCloseClick={() => setIsShowWindowSavedSession(false)} />
+        <WindowSavedSessions
+          onCloseClick={() => setIsShowWindowSavedSession(false)}
+          onContinueSessionClick={handleContinueSessionClick}
+        />
       ) : null}
       <Image
         src="/moonshot_glow.png"

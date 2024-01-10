@@ -1,3 +1,4 @@
+import { handleResponseBody } from '@/app/lib/http-requests';
 import { ErrorWithMessage } from '../../../lib/error-utils';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -29,13 +30,21 @@ const sessionApi = createApi({
   reducerPath: 'sessionApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
-    getSessions: builder.query<Session[], void>({
+    getAllSessions: builder.query<Session[], void>({
       query: () => ({ url: 'api/v1/sessions' }),
-      transformResponse: (response: Response) => response,
+    }),
+    getSession: builder.query<Session, Session>({
+      query: ({ session_id }) => ({ url: `api/v1/sessions/${session_id}` }),
     }),
   }),
 });
 
-const { useGetSessionsQuery } = sessionApi;
+const { useGetAllSessionsQuery, useGetSessionQuery, useLazyGetSessionQuery } = sessionApi;
 
-export { createSession, sessionApi, useGetSessionsQuery };
+export {
+  createSession,
+  sessionApi,
+  useGetAllSessionsQuery,
+  useGetSessionQuery,
+  useLazyGetSessionQuery,
+};

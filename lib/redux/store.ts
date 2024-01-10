@@ -17,7 +17,7 @@ export const applicationStore = configureStore({
   },
 });
 export const useAppDispatch = () => useReduxDispatch<ReduxDispatch>();
-export const useSelector: TypedUseSelectorHook<ApplicationState> = useReduxSelector;
+export const useAppSelector: TypedUseSelectorHook<ApplicationState> = useReduxSelector;
 
 /* Types */
 export type ApplicationStore = typeof applicationStore;

@@ -1,3 +1,5 @@
+import { NextRequest } from 'next/server';
+
 const hostURL = process.env.MOONSHOT_API_URL || 'http://localhost:5000';
 const basePath = '/v1/sessions';
 

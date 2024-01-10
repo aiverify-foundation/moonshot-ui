@@ -2,16 +2,22 @@ import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
 import useSessionList from './hooks/useSessionList';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLazyGetSessionQuery } from './services/session-api-service';
+import { useAppDispatch } from '@/lib/redux';
+import { setActiveSession } from '@/lib/redux/slices/activeSessionSlice';
 
 type WindowSavedSessionsProps = {
   onCloseClick: () => void;
+  onContinueSessionClick: () => void;
 };
 
 function WindowSavedSessions(props: WindowSavedSessionsProps) {
-  const { onCloseClick } = props;
+  const { onCloseClick, onContinueSessionClick } = props;
   const [selectedSession, setSelectedSession] = useState<Session>();
   const { isLoading, error, sessions } = useSessionList();
+  const [trigger, { data: sessionWithChatHistory }] = useLazyGetSessionQuery();
+  const dispatch = useAppDispatch();
 
   function handleListItemClick(id: string) {
     const session = sessions.find((session) => session.session_id === id);
@@ -19,6 +25,19 @@ function WindowSavedSessions(props: WindowSavedSessionsProps) {
       setSelectedSession(session);
     }
   }
+
+  function handleContinueSessionClick() {
+    if (selectedSession) {
+      trigger(selectedSession);
+    }
+  }
+
+  useEffect(() => {
+    if (sessionWithChatHistory) {
+      console.log(sessionWithChatHistory);
+      dispatch(setActiveSession(sessionWithChatHistory));
+    }
+  }, [sessionWithChatHistory, dispatch, onCloseClick]);
 
   return (
     <Window
@@ -62,8 +81,8 @@ function WindowSavedSessions(props: WindowSavedSessionsProps) {
                     height: 33,
                   }}
                   type="button"
-                  onClick={() => null}>
-                  Open
+                  onClick={handleContinueSessionClick}>
+                  Continue Session
                 </button>
               </div>
             ) : null}
