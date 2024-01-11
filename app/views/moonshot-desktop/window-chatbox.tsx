@@ -2,14 +2,16 @@ import { Window } from '@/app/components/window';
 import { PropsWithChildren, useEffect, useRef } from 'react';
 
 type ChatboxProps = {
+  windowId: string;
   name: string;
   initialXY: [number, number];
   styles?: React.CSSProperties;
   onCloseClick: () => void;
+  onDrop: (x: number, y: number, windowId: string) => void;
 };
 
 function ChatBox(props: PropsWithChildren<ChatboxProps>) {
-  const { name, initialXY, onCloseClick, children, styles } = props;
+  const { windowId, name, initialXY, onCloseClick, children, styles, onDrop } = props;
   const scrollDivRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -20,9 +22,12 @@ function ChatBox(props: PropsWithChildren<ChatboxProps>) {
 
   return (
     <Window
+      id={windowId}
       name={name}
       initialXY={initialXY}
       onCloseClick={onCloseClick}
+      onDrop={onDrop}
+      disableCloseIcon
       styles={{
         width: 500,
         height: 450,

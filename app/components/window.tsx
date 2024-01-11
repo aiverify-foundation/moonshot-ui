@@ -8,6 +8,7 @@ enum WindowState {
 }
 
 function Window(props: {
+  id?: string;
   name: string;
   initialXY?: [number, number];
   backgroundColor?: string;
@@ -17,9 +18,12 @@ function Window(props: {
   styles?: React.CSSProperties;
   contentAreaStyles?: React.CSSProperties;
   resizeable?: boolean;
+  disableCloseIcon?: boolean;
   onCloseClick?: () => void;
+  onDrop?: (x: number, y: number, id: string) => void;
 }) {
   const {
+    id,
     name,
     initialXY = [180, 140],
     styles,
@@ -29,7 +33,9 @@ function Window(props: {
     boxShadowStyle = '0px 10px 10px #00000047',
     children,
     resizeHandleSize = 10,
+    disableCloseIcon = false,
     onCloseClick,
+    onDrop,
   } = props;
   const [windowState, setWindowState] = useState<WindowState>(WindowState.default);
   const [initialPosition, setInitialPosition] = useState(initialXY);
@@ -52,7 +58,7 @@ function Window(props: {
     e.preventDefault();
   }
 
-  function handleMouseUp(e: MouseEvent) {
+  function handleMouseUp() {
     if (!windowRef.current || windowState !== WindowState.drag) return;
     setWindowState(WindowState.default);
     document.body.removeEventListener('mousemove', handleMouseMove);
@@ -60,6 +66,9 @@ function Window(props: {
     const windowDomRect = windowRef.current.getBoundingClientRect();
     setInitialPosition([windowDomRect.x, windowDomRect.y]);
     windowRef.current.style.removeProperty('transform');
+    if (onDrop) {
+      onDrop(windowDomRect.x, windowDomRect.y, id || name);
+    }
   }
 
   function handleMouseMove(e: MouseEvent) {
@@ -107,17 +116,19 @@ function Window(props: {
           }}>
           {name}
         </div>
-        <Image
-          src="icons/close_icon.svg"
-          alt="close"
-          width={16}
-          height={16}
-          style={{
-            cursor: 'pointer',
-          }}
-          onClick={onCloseClick}
-          onMouseDown={handleCloseIconMouseDown}
-        />
+        {!disableCloseIcon ? (
+          <Image
+            src="icons/close_icon.svg"
+            alt="close"
+            width={16}
+            height={16}
+            style={{
+              cursor: 'pointer',
+            }}
+            onClick={onCloseClick}
+            onMouseDown={handleCloseIconMouseDown}
+          />
+        ) : null}
       </div>
       <div
         style={{

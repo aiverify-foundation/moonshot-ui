@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Window } from '@components/window';
 import { WindowCreateSession } from './window-create-session';
-import { PromptWindow } from './win-prompt';
+import { BoxPrompt } from './box-prompt';
 import TaskBar from '@components/taskbar';
 import Menu from '@components/menu';
 import FolderIcon from '@components/folder-icon';
@@ -81,6 +81,7 @@ export default function MoonshotDesktop() {
   const [isTransitionPrompt, setIsTransitionPrompt] = useState(false);
   const [isShowPromptTemplates, setIsShowPromptTemplates] = useState(false);
   const [isShowPromptPreview, setIsShowPromptPreview] = useState(false);
+  const [windowPositions, setWindowPositions] = useState<Record<string, [number, number]>>({});
   const activeSessionChatHistory = useAppSelector((state) => state.activeSession.entity);
   const dispatch = useAppDispatch();
   const [
@@ -124,6 +125,17 @@ export default function MoonshotDesktop() {
     });
   }
 
+  function handleOnWindowDragDrop(x: number, y: number, windowId: string) {
+    setWindowPositions((prev) => ({
+      ...prev,
+      [windowId]: [x, y],
+    }));
+  }
+
+  useEffect(() => {
+    console.log(windowPositions);
+  }, [windowPositions]);
+
   useEffect(() => {
     if (!updatedSessionChatHistory) return;
     dispatch(updateChatHistory(updatedSessionChatHistory));
@@ -143,8 +155,15 @@ export default function MoonshotDesktop() {
     return activeSessionChatHistory.chats.map((id, index) => {
       const viewportWidth = window.innerWidth;
       const leftPos = lerp(0, viewportWidth, index / activeSessionChatHistory.chats.length) + 250;
+      const initialXY = windowPositions[`win_${id}`] || [leftPos, 70];
       return (
-        <ChatBox key={id} name={id} initialXY={[leftPos, 70]} onCloseClick={() => null}>
+        <ChatBox
+          windowId={`win_${id}`}
+          key={id}
+          name={id}
+          initialXY={initialXY}
+          onCloseClick={() => null}
+          onDrop={handleOnWindowDragDrop}>
           {!activeSessionChatHistory.chat_history
             ? null
             : activeSessionChatHistory.chat_history[id].map((dialogue, index) => {
@@ -253,7 +272,7 @@ export default function MoonshotDesktop() {
       {isChatSessionOpen ? <ChatBoxes /> : null}
 
       {isChatPromptOpen ? (
-        <PromptWindow
+        <BoxPrompt
           styles={{
             opacity: isTransitionPrompt ? 1 : 0,
             transition: 'opacity 1s ease',

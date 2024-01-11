@@ -49,7 +49,6 @@ function WindowCreateSession(props: WindowChatStartProps) {
   const { onCloseClick, onStartClick } = props;
 
   async function handleFormSubmit(values: FormValues) {
-    console.log(values);
     onStartClick(values.sessionName, values.description, values.llmEndpoints);
   }
 
@@ -135,7 +134,9 @@ function WindowCreateSession(props: WindowChatStartProps) {
                           checked={formProps.values.llmEndpoints.includes(endpoint.id)}
                           onChange={() => {
                             if (formProps.values.llmEndpoints.includes(endpoint.id)) {
-                              arrayHelpers.remove(formProps.values.llmEndpoints.indexOf(endpoint.id));
+                              arrayHelpers.remove(
+                                formProps.values.llmEndpoints.indexOf(endpoint.id)
+                              );
                             } else {
                               arrayHelpers.push(endpoint.id);
                             }

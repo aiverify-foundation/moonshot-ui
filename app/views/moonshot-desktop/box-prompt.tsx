@@ -3,7 +3,7 @@ import { TextInput } from '../../components/textInput';
 import { Window } from '../../components/window';
 import { useState } from 'react';
 
-function PromptWindow(props: {
+function BoxPrompt(props: {
   name: string;
   children?: React.ReactNode;
   styles?: React.CSSProperties;
@@ -20,6 +20,7 @@ function PromptWindow(props: {
 
   function handleOnSendMessageClick() {
     onSendClick(promptMessage);
+    setPromptMessage('');
   }
 
   return (
@@ -94,4 +95,4 @@ function PromptWindow(props: {
   );
 }
 
-export { PromptWindow };
+export { BoxPrompt };
