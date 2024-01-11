@@ -171,7 +171,7 @@ export default function MoonshotDesktop() {
                   <div
                     key={index}
                     style={{ display: 'flex', flexDirection: 'column', paddingRight: 10 }}>
-                    <ChatBox.TalkBubble backgroundColor="gray" fontColor="#FFF">
+                    <ChatBox.TalkBubble backgroundColor="#a3a3a3" fontColor="#FFF">
                       {dialogue.prepared_prompt}
                     </ChatBox.TalkBubble>
                     <ChatBox.TalkBubble
