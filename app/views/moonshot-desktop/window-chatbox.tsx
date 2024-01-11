@@ -31,6 +31,7 @@ function ChatBox(props: PropsWithChildren<ChatboxProps>) {
       styles={{
         width: 500,
         height: 450,
+        zIndex: 100,
         ...styles,
       }}>
       <div

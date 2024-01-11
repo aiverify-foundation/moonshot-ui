@@ -45,7 +45,7 @@ function WindowSavedSessions(props: WindowSavedSessionsProps) {
       initialXY={[600, 200]}
       onCloseClick={onCloseClick}
       name="Saved Sessions"
-      styles={{ width: 700, height: 470 }}>
+      styles={{ width: 700, height: 470, zIndex: 100 }}>
       <div
         style={{
           display: 'flex',
@@ -57,13 +57,13 @@ function WindowSavedSessions(props: WindowSavedSessionsProps) {
         <WindowList styles={{ flexBasis: '35%' }}>
           {sessions
             ? sessions.map((session) => (
-                <WindowList.Item
-                  key={session.session_id}
-                  displayName={session.name}
-                  id={session.session_id}
-                  onClick={handleListItemClick}
-                />
-              ))
+              <WindowList.Item
+                key={session.session_id}
+                displayName={session.name}
+                id={session.session_id}
+                onClick={handleListItemClick}
+              />
+            ))
             : null}
         </WindowList>
         <WindowInfoPanel styles={{ flexBasis: '65%', height: '100%' }}>

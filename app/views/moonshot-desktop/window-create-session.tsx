@@ -24,12 +24,12 @@ const initialFormValues: FormValues = {
 
 const llmEndpoints = [
   {
-    id: 'openai-gpt35-amin',
+    id: 'my-openai-gpt35-amin',
     name: 'OpenAI-GPT35',
     description: 'OpenAI GPT-3.5',
   },
   {
-    id: 'openai-gpt4-amin',
+    id: 'my-openai-gpt4-amin',
     name: 'OpenAI-GPT4',
     description: 'OpenAI GPT-4',
   },
@@ -56,7 +56,7 @@ function WindowCreateSession(props: WindowChatStartProps) {
     <Window
       initialXY={[600, 200]}
       name="Start New Session"
-      styles={{ width: 600, height: 470 }}
+      styles={{ width: 600, height: 470, zIndex: 100 }}
       onCloseClick={onCloseClick}>
       <div
         style={{

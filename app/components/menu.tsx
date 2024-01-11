@@ -41,7 +41,7 @@ function Menu() {
         <div
           style={{
             display: 'flex',
-            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
             position: 'absolute',
             top: '100%',
             left: 20,
@@ -61,7 +61,6 @@ function Menu() {
             <div
               style={{
                 display: 'flex',
-                backgroundColor: 'rgba(0, 0, 0, 0.85)',
                 flexDirection: 'column',
                 width: 200,
                 top: '100%',

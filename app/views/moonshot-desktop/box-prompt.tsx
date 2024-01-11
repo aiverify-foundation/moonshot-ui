@@ -23,13 +23,20 @@ function BoxPrompt(props: {
     setPromptMessage('');
   }
 
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      handleOnSendMessageClick();
+      e.preventDefault();
+    }
+  }
+
   return (
     <Window
       initialXY={[600, 600]}
       resizeable={false}
       name="Prompt"
       onCloseClick={onCloseClick}
-      styles={{ height: 115, width: 500, ...styles }}
+      styles={{ height: 115, width: 500, zIndex: 100, ...styles }}
       contentAreaStyles={{ background: 'none' }}>
       <div
         style={{
@@ -44,6 +51,7 @@ function BoxPrompt(props: {
             style={{ width: 400 }}
             onChange={handleTextChange}
             value={promptMessage}
+            onKeyDown={handleKeyDown}
           />
           <button
             style={{

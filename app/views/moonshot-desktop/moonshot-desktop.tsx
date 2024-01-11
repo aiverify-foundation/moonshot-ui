@@ -39,7 +39,11 @@ const legalSummarisation = {
   ],
 };
 
-function SessionTask() {
+type SessionTaskProps = {
+  name: string
+}
+
+function SessionTask(props: SessionTaskProps) {
   return (
     <div
       style={{
@@ -133,10 +137,6 @@ export default function MoonshotDesktop() {
   }
 
   useEffect(() => {
-    console.log(windowPositions);
-  }, [windowPositions]);
-
-  useEffect(() => {
     if (!updatedSessionChatHistory) return;
     dispatch(updateChatHistory(updatedSessionChatHistory));
   }, [updatedSessionChatHistory, dispatch]);
@@ -167,22 +167,22 @@ export default function MoonshotDesktop() {
           {!activeSessionChatHistory.chat_history
             ? null
             : activeSessionChatHistory.chat_history[id].map((dialogue, index) => {
-                return (
-                  <div
-                    key={index}
-                    style={{ display: 'flex', flexDirection: 'column', paddingRight: 10 }}>
-                    <ChatBox.TalkBubble backgroundColor="#a3a3a3" fontColor="#FFF">
-                      {dialogue.prepared_prompt}
-                    </ChatBox.TalkBubble>
-                    <ChatBox.TalkBubble
-                      backgroundColor="#3498db"
-                      fontColor="#FFF"
-                      styles={{ textAlign: 'right', alignSelf: 'flex-end' }}>
-                      {dialogue.predicted_result}
-                    </ChatBox.TalkBubble>
-                  </div>
-                );
-              })}
+              return (
+                <div
+                  key={index}
+                  style={{ display: 'flex', flexDirection: 'column', paddingRight: 10 }}>
+                  <ChatBox.TalkBubble backgroundColor="#a3a3a3" fontColor="#FFF">
+                    {dialogue.prepared_prompt}
+                  </ChatBox.TalkBubble>
+                  <ChatBox.TalkBubble
+                    backgroundColor="#3498db"
+                    fontColor="#FFF"
+                    styles={{ textAlign: 'right', alignSelf: 'flex-end' }}>
+                    {dialogue.predicted_result}
+                  </ChatBox.TalkBubble>
+                </div>
+              );
+            })}
           {sendPromptIsLoading ? (
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: 15 }}>
               <ChatBox.LoadingAnimation />
@@ -293,6 +293,7 @@ export default function MoonshotDesktop() {
           onCloseClick={() => setIsJsonEditorOpen(false)}
           styles={{
             width: 510,
+            zIndex: 100,
           }}>
           <JSONEditor placeholder={legalSummarisation} />
         </Window>

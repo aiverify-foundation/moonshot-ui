@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler } from 'react';
+import React, { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import styles from './styles/textInput.module.css';
 import clsx from 'clsx';
 
@@ -15,6 +15,7 @@ type TextInputProps = {
   inputStyle?: React.CSSProperties;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onBlur?: ChangeEventHandler<HTMLInputElement>;
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
 };
 
 function TextInput(props: TextInputProps) {
@@ -31,6 +32,7 @@ function TextInput(props: TextInputProps) {
     inputStyle,
     onChange,
     onBlur,
+    onKeyDown
   } = props;
 
   return (
@@ -56,6 +58,7 @@ function TextInput(props: TextInputProps) {
           maxLength={maxLength}
           onChange={onChange}
           onBlur={onBlur}
+          onKeyDown={onKeyDown}
           style={inputStyle}
         />
         {Boolean(error) ? (
