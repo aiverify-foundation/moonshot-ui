@@ -26,17 +26,31 @@ async function createSession(
   return sessionData;
 }
 
-interface SendPromptQueryParams {
+type CreateSessionParams = {
+  name: string;
+  description: string;
+  endpoints: string[];
+};
+
+type SendPromptQueryParams = {
   session_id: string;
   prompt: string;
   include_history?: boolean;
   history_length?: number;
-}
+};
 
 const sessionApi = createApi({
   reducerPath: 'sessionApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
+    createSession: builder.mutation<Session, CreateSessionParams>({
+      query: ({ name, description, endpoints }) => ({
+        url: 'api/v1/sessions',
+        method: 'POST',
+        body: { name, description, endpoints },
+      }),
+      transformResponse: (response: { session: Session }) => response.session,
+    }),
     getAllSessions: builder.query<Session[], void>({
       query: () => ({ url: 'api/v1/sessions' }),
     }),
@@ -60,6 +74,7 @@ const {
   useGetSessionQuery,
   useLazyGetSessionQuery,
   useSendPromptMutation,
+  useCreateSessionMutation,
 } = sessionApi;
 
 export {
@@ -69,4 +84,5 @@ export {
   useGetSessionQuery,
   useLazyGetSessionQuery,
   useSendPromptMutation,
+  useCreateSessionMutation,
 };

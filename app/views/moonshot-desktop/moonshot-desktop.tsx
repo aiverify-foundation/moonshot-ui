@@ -11,12 +11,16 @@ import Menu from '@components/menu';
 import FolderIcon from '@components/folder-icon';
 import JSONEditor from '@components/json-editor';
 import Icon from '@components/icon';
-import { createSession, useSendPromptMutation } from './services/session-api-service';
+import { useCreateSessionMutation, useSendPromptMutation } from './services/session-api-service';
 import { WindowSavedSessions } from './window-saved-sessions';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { ChatBox } from './window-chatbox';
 import { lerp } from '@/app/lib/math-helpers';
-import { removeActiveSession, updateChatHistory } from '@/lib/redux/slices/activeSessionSlice';
+import {
+  removeActiveSession,
+  setActiveSession,
+  updateChatHistory,
+} from '@/lib/redux/slices/activeSessionSlice';
 
 const legalSummarisation = {
   name: 'Legal Summarisation',
@@ -79,20 +83,25 @@ export default function MoonshotDesktop() {
   const [isShowPromptPreview, setIsShowPromptPreview] = useState(false);
   const activeSessionChatHistory = useAppSelector((state) => state.activeSession.entity);
   const dispatch = useAppDispatch();
-  const [sendPrompt, { data: updatedSessionChatHistory, isLoading, error }] =
-    useSendPromptMutation();
+  const [
+    sendPrompt,
+    { data: updatedSessionChatHistory, isLoading: sendPromptIsLoading, error: sendPromptError },
+  ] = useSendPromptMutation();
+  const [
+    createSession,
+    { data: newSession, isLoading: createSessionIsLoding, error: createSessionError },
+  ] = useCreateSessionMutation();
 
-  async function startNewSession(sessionName: string, description: string, llmEndpoints: string[]) {
-    const response = await createSession(sessionName, description, llmEndpoints);
-    if ('status' in response) {
-      console.log(response);
-      setIsShowWindowCreateSession(false);
-      setIsTransitionPrompt(false);
-      setIsChatPromptOpen(true);
-    } else {
-      console.error(response);
-      //TODO - display error
-    }
+  async function startNewSession(name: string, description: string, endpoints: string[]) {
+    const response = await createSession({
+      name,
+      description,
+      endpoints,
+    });
+    dispatch(setActiveSession(response.data));
+    setIsShowWindowCreateSession(false);
+    setIsTransitionPrompt(true);
+    setIsChatPromptOpen(true);
   }
 
   function handleContinueSessionClick() {
@@ -129,10 +138,6 @@ export default function MoonshotDesktop() {
     }
   }, [isChatPromptOpen]);
 
-  useEffect(() => {
-    console.log(activeSessionChatHistory);
-  }, [activeSessionChatHistory]);
-
   function ChatBoxes() {
     if (activeSessionChatHistory === undefined) return null;
     return activeSessionChatHistory.chats.map((id, index) => {
@@ -159,7 +164,7 @@ export default function MoonshotDesktop() {
                   </div>
                 );
               })}
-          {isLoading ? (
+          {sendPromptIsLoading ? (
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: 15 }}>
               <ChatBox.LoadingAnimation />
             </div>
@@ -211,8 +216,11 @@ export default function MoonshotDesktop() {
             width: 150,
           }}>
           <Icon
+            width={50}
+            height={50}
+            gapSize={0}
             name="Saved Sessions"
-            iconPath="icons/chat_icon_white.svg"
+            iconPath="icons/folder_saved.svg"
             onClick={() => setIsShowWindowSavedSession(true)}
           />
         </div>

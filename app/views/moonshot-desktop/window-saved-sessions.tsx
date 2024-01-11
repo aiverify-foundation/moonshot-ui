@@ -45,9 +45,16 @@ function WindowSavedSessions(props: WindowSavedSessionsProps) {
       initialXY={[600, 200]}
       onCloseClick={onCloseClick}
       name="Saved Sessions"
-      styles={{ width: 600, height: 470 }}>
-      <div style={{ display: 'flex', height: '100%' }}>
-        <WindowList styles={{ flexBasis: '50%' }}>
+      styles={{ width: 700, height: 470 }}>
+      <div
+        style={{
+          display: 'flex',
+          height: '100%',
+          color: 'gray',
+          padding: 15,
+          position: 'relative',
+        }}>
+        <WindowList styles={{ flexBasis: '35%' }}>
           {sessions
             ? sessions.map((session) => (
                 <WindowList.Item
@@ -59,32 +66,60 @@ function WindowSavedSessions(props: WindowSavedSessionsProps) {
               ))
             : null}
         </WindowList>
-        <WindowInfoPanel styles={{ flexBasis: '50%', height: '100%' }}>
-          <div>
+        <WindowInfoPanel styles={{ flexBasis: '65%', height: '100%' }}>
+          <div style={{ height: '100%' }}>
             {selectedSession ? (
-              <div>
-                <h3>Session Info</h3>
-                <p>{selectedSession.description}</p>
-                <p>Session Name: {selectedSession.name}</p>
-                <p>Session ID: {selectedSession.session_id}</p>
-                <p>Endpoints: {selectedSession.endpoints.map((endpoint) => endpoint).join(', ')}</p>
-                <p>Metadata File: {selectedSession.metadata_file}</p>
-                <p>Created At: {new Date(selectedSession.created_epoch * 1000).toLocaleString()}</p>
-                <button
+              <div style={{ position: 'relative', height: '100%' }}>
+                <h3 style={{ fontWeight: 800 }}>Session Info</h3>
+                <p style={{ marginBottom: 10 }}>{selectedSession.description}</p>
+                <p style={{ fontSize: 14 }}>
+                  <span style={{ fontWeight: 500, marginRight: 5 }}>Session Name:</span>{' '}
+                  <span style={{ color: '#1189b9' }}>{selectedSession.name}</span>
+                </p>
+                <p style={{ fontSize: 14, marginRight: 5 }}>
+                  <span style={{ fontWeight: 500 }}>Session ID:</span>{' '}
+                  <span style={{ color: '#1189b9' }}>{selectedSession.session_id}</span>
+                </p>
+                <p style={{ fontSize: 14, marginRight: 5 }}>
+                  <span style={{ fontWeight: 500 }}>Endpoints:</span>{' '}
+                  <span style={{ color: '#1189b9' }}>
+                    {selectedSession.endpoints.map((endpoint) => endpoint).join(', ')}
+                  </span>
+                </p>
+                <p style={{ fontSize: 14, marginRight: 5 }}>
+                  <span style={{ fontWeight: 500 }}>Metadata File:</span>{' '}
+                  <span style={{ color: '#1189b9' }}>{selectedSession.metadata_file}</span>
+                </p>
+                <p style={{ fontSize: 14, marginRight: 5 }}>
+                  <span style={{ fontWeight: 500 }}>Created At:</span>{' '}
+                  <span style={{ color: '#1189b9' }}>
+                    {new Date(selectedSession.created_epoch * 1000).toLocaleString()}
+                  </span>
+                </p>
+                <div
                   style={{
-                    minWidth: 80,
-                    border: '1px solid #cfcfcf',
-                    padding: '5px 15px',
-                    background: '#1189b9',
-                    color: '#FFF',
-                    fontSize: 13,
-                    borderRadius: 4,
-                    height: 33,
-                  }}
-                  type="button"
-                  onClick={handleContinueSessionClick}>
-                  Continue Session
-                </button>
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    bottom: 0,
+                    position: 'absolute',
+                    width: '100%',
+                  }}>
+                  <button
+                    style={{
+                      minWidth: 80,
+                      border: '1px solid #cfcfcf',
+                      padding: '5px 15px',
+                      background: '#1189b9',
+                      color: '#FFF',
+                      fontSize: 13,
+                      borderRadius: 4,
+                      height: 33,
+                    }}
+                    type="button"
+                    onClick={handleContinueSessionClick}>
+                    Continue Session
+                  </button>
+                </div>
               </div>
             ) : null}
           </div>

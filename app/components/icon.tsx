@@ -1,7 +1,16 @@
 import Image from 'next/image';
 
-function Icon(props: { name: string; iconPath: string; onClick?: () => void }) {
-  const { name, iconPath, onClick } = props;
+type IconProps = {
+  name: string;
+  iconPath: string;
+  width?: number;
+  height?: number;
+  gapSize?: number;
+  onClick?: () => void;
+};
+
+function Icon(props: IconProps) {
+  const { name, iconPath, onClick, width = 40, height = 40, gapSize = 10 } = props;
   return (
     <div
       style={{
@@ -16,11 +25,11 @@ function Icon(props: { name: string; iconPath: string; onClick?: () => void }) {
       <Image
         src={iconPath}
         alt={name}
-        width={40}
-        height={40}
+        width={width}
+        height={height}
         style={{
           cursor: 'pointer',
-          marginBottom: 10,
+          marginBottom: gapSize,
         }}
       />
       <div

@@ -31,9 +31,7 @@ function Window(props: {
     resizeHandleSize = 10,
     onCloseClick,
   } = props;
-  const [windowState, setWindowState] = useState<WindowState>(
-    WindowState.default
-  );
+  const [windowState, setWindowState] = useState<WindowState>(WindowState.default);
   const [initialPosition, setInitialPosition] = useState(initialXY);
   const windowRef = useRef<HTMLDivElement>(null);
   const prevMouseXY = useRef([0, 0]);
@@ -67,9 +65,9 @@ function Window(props: {
   function handleMouseMove(e: MouseEvent) {
     if (!windowRef.current || windowState !== WindowState.drag) return;
 
-    windowRef.current.style.transform = `translate(${
-      e.clientX - prevMouseXY.current[0]
-    }px, ${e.clientY - prevMouseXY.current[1]}px)`;
+    windowRef.current.style.transform = `translate(${e.clientX - prevMouseXY.current[0]}px, ${
+      e.clientY - prevMouseXY.current[1]
+    }px)`;
   }
 
   useEffect(() => {
@@ -123,7 +121,7 @@ function Window(props: {
       </div>
       <div
         style={{
-          background: 'rgba(255, 255, 255, 0.9)',
+          background: '#ebeaea',
           width: '99.8%',
           height: '94.5%',
           overflowY: 'scroll',
