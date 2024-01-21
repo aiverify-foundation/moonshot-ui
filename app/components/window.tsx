@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
+import { throttle } from '../lib/throttle';
 
 enum WindowState {
   drag,
@@ -11,6 +12,7 @@ function Window(props: {
   id?: string;
   name: string;
   initialXY?: [number, number];
+  initialWindowSize?: [number, number];
   backgroundColor?: string;
   boxShadowStyle?: string;
   resizeHandleSize?: number;
@@ -26,6 +28,7 @@ function Window(props: {
     id,
     name,
     initialXY = [180, 140],
+    initialWindowSize = [640, 470],
     styles,
     contentAreaStyles,
     resizeable = true,
@@ -39,6 +42,7 @@ function Window(props: {
   } = props;
   const [windowState, setWindowState] = useState<WindowState>(WindowState.default);
   const [initialPosition, setInitialPosition] = useState(initialXY);
+  const [windowSize, setWindowSize] = useState(initialWindowSize);
   const windowRef = useRef<HTMLDivElement>(null);
   const prevMouseXY = useRef([0, 0]);
 
@@ -58,6 +62,25 @@ function Window(props: {
     e.preventDefault();
   }
 
+  function handleResizeMouseDown(e: React.MouseEvent) {
+    e.stopPropagation();
+    if (!windowRef.current) return;
+    prevMouseXY.current = [e.clientX, e.clientY];
+    setWindowState(WindowState.resize);
+  }
+
+  const handleResizeMouseMove = throttle((e: MouseEvent) => {
+    if (!windowRef.current || windowState !== WindowState.resize) return;
+    const dx = e.clientX - prevMouseXY.current[0];
+    const dy = e.clientY - prevMouseXY.current[1];
+    prevMouseXY.current = [e.clientX, e.clientY];
+    console.log(prevMouseXY.current);
+    setWindowSize((prev) => [
+      prev[0] + dx,
+      prev[1] + dy,
+    ]);
+  }, 100)
+
   function handleMouseUp() {
     if (!windowRef.current || windowState !== WindowState.drag) return;
     setWindowState(WindowState.default);
@@ -69,6 +92,13 @@ function Window(props: {
     if (onDrop) {
       onDrop(windowDomRect.x, windowDomRect.y, id || name);
     }
+  }
+
+  function handleResizeMouseUp() {
+    if (!windowRef.current || windowState !== WindowState.resize) return;
+    setWindowState(WindowState.default);
+    document.body.removeEventListener('mousemove', handleResizeMouseMove);
+    document.body.removeEventListener('mouseup', handleResizeMouseUp);
   }
 
   function handleMouseMove(e: MouseEvent) {
@@ -83,8 +113,15 @@ function Window(props: {
     if (windowState === WindowState.drag) {
       document.body.addEventListener('mousemove', handleMouseMove);
       document.body.addEventListener('mouseup', handleMouseUp);
+    } else if (windowState === WindowState.resize) {
+      document.body.addEventListener('mousemove', handleResizeMouseMove);
+      document.body.addEventListener('mouseup', handleResizeMouseUp);
     }
   }, [windowState]);
+
+  useEffect(() => {
+    console.log(windowSize);
+  }, [windowSize]);
 
   useEffect(() => {
     setInitialPosition(initialXY);
@@ -94,14 +131,15 @@ function Window(props: {
     <div
       ref={windowRef}
       style={{
+        userSelect: 'none',
         position: 'absolute',
         left: initialPosition[0],
         top: initialPosition[1],
         backgroundColor,
         boxShadow: boxShadowStyle,
         backdropFilter: 'blur(10px)',
-        width: 700,
-        height: 500,
+        width: windowSize[0],
+        height: windowSize[1],
         padding: 15,
         paddingTop: 5,
         color: '#FFF',
@@ -154,6 +192,7 @@ function Window(props: {
             right: 0,
             position: 'absolute',
           }}
+          onMouseDown={handleResizeMouseDown}
         />
       ) : null}
     </div>

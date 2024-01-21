@@ -55,8 +55,9 @@ function WindowCreateSession(props: WindowChatStartProps) {
   return (
     <Window
       initialXY={[600, 200]}
+      initialWindowSize={[600, 470]}
       name="Start New Session"
-      styles={{ width: 600, height: 470, zIndex: 100 }}
+      styles={{ zIndex: 100 }}
       onCloseClick={onCloseClick}>
       <div
         style={{
