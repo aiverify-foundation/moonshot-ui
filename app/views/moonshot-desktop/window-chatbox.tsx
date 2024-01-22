@@ -5,17 +5,26 @@ type ChatboxProps = {
   windowId: string;
   name: string;
   initialXY: [number, number];
+  initialSize: [number, number];
   styles?: React.CSSProperties;
   onCloseClick: () => void;
   onWheel: (e: React.WheelEvent<HTMLDivElement>) => void;
-  onDrop: (x: number, y: number, windowId: string) => void;
-  onResize: (width: number, height: number, windowId: string) => void;
+  onWindowChange?: (x: number, y: number, width: number, height: number, windowId: string) => void;
 };
 
 const ChatBox = forwardRef(
   (props: PropsWithChildren<ChatboxProps>, ref: React.Ref<HTMLDivElement>) => {
-    const { windowId, name, initialXY, onCloseClick, children, styles, onWheel, onDrop, onResize } =
-      props;
+    const {
+      windowId,
+      name,
+      initialXY,
+      initialSize,
+      onCloseClick,
+      children,
+      styles,
+      onWheel,
+      onWindowChange,
+    } = props;
     const scrollDivRef = useRef<HTMLDivElement>(null);
 
     useImperativeHandle(ref, () => scrollDivRef.current);
@@ -32,7 +41,7 @@ const ChatBox = forwardRef(
         id={windowId}
         name={name}
         initialXY={initialXY}
-        initialWindowSize={[500, 450]}
+        initialWindowSize={initialSize}
         onCloseClick={onCloseClick}
         onDrop={onDrop}
         onResize={onResize}

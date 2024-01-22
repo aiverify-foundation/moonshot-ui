@@ -16,6 +16,7 @@ import { WindowSavedSessions } from './window-saved-sessions';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { ChatWindow } from './window-chatbox';
 import { lerp } from '@/app/lib/math-helpers';
+import { produce } from 'immer';
 import {
   removeActiveSession,
   setActiveSession,
@@ -85,8 +86,8 @@ export default function MoonshotDesktop() {
   const [isTransitionPrompt, setIsTransitionPrompt] = useState(false);
   const [isShowPromptTemplates, setIsShowPromptTemplates] = useState(false);
   const [isShowPromptPreview, setIsShowPromptPreview] = useState(false);
-  const [windowPositions, setWindowPositions] = useState<
-    Record<string, [[number, number] | undefined, [number, number] | undefined]>
+  const [windowsData, setWindowsData] = useState<
+    Record<string, [number | undefined, number | undefined, number | undefined, number | undefined]>
   >({});
   const activeSessionChatHistory = useAppSelector((state) => state.activeSession.entity);
   const dispatch = useAppDispatch();
@@ -132,10 +133,16 @@ export default function MoonshotDesktop() {
   }
 
   function handleOnWindowDragDrop(x: number, y: number, windowId: string) {
-    setWindowPositions((prev) => ({
-      ...prev,
-      [windowId]: [[x, y], prev[windowId][1]],
-    }));
+    setWindowsData((prev) => {
+      if (!prev[windowId]) {
+        return { [windowId]: [x, y, undefined, undefined] }
+      } else {
+        return {
+          ...prev,
+          [windowId]: [x, y, prev[windowId][2], prev[windowId][3]]
+        }
+      }
+    });
   }
 
   useEffect(() => {
@@ -152,103 +159,6 @@ export default function MoonshotDesktop() {
     }
   }, [isChatPromptOpen]);
 
-  function ChatBoxes() {
-    const chatBoxRefs = useRef<HTMLDivElement[]>([]);
-    const isZKeyPressed = useRef(false);
-    // Function to synchronize scrolling
-    const syncScroll = (deltaY: number) => {
-      chatBoxRefs.current.forEach((ref) => {
-        if (ref) {
-          ref.scrollTop += deltaY * 0.2;
-        }
-      });
-    };
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      e.preventDefault();
-      if (e.key.toLowerCase() === 'z') {
-        isZKeyPressed.current = true;
-      }
-    };
-    const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === 'z') {
-        isZKeyPressed.current = false;
-      }
-    };
-
-    const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-      if (isZKeyPressed.current !== undefined && isZKeyPressed.current === true) {
-        syncScroll(e.deltaY);
-      }
-    };
-
-    function handleOnWindowResize(width: number, height: number, windowId: string) {
-      setWindowPositions((prev) => ({
-        ...prev,
-        [windowId]: [prev[windowId][0], [width, height]],
-      }));
-    }
-
-    useEffect(() => {
-      window.addEventListener('keydown', handleKeyDown);
-      window.addEventListener('keyup', handleKeyUp);
-      return () => {
-        window.removeEventListener('keydown', handleKeyDown);
-        window.removeEventListener('keyup', handleKeyUp);
-      };
-    }, []);
-
-    if (activeSessionChatHistory === undefined) return null;
-    return activeSessionChatHistory.chats.map((id, index) => {
-      const viewportWidth = window.innerWidth;
-      const leftPos = lerp(0, viewportWidth, index / activeSessionChatHistory.chats.length) + 250;
-      const initialXY = windowPositions[`win_${id}`]
-        ? windowPositions[`win_${id}`][0]
-        : [leftPos, 70];
-      const initialWindowSize = windowPositions[`win_${id}`]
-        ? windowPositions[`win_${id}`][1]
-        : [500, 450];
-
-      return (
-        <ChatWindow.ChatBox
-          ref={(el) => (chatBoxRefs.current[index] = el as HTMLDivElement)}
-          windowId={`win_${id}`}
-          key={id}
-          name={id}
-          initialXY={initialXY}
-          initialWindowSize={initialWindowSize}
-          onCloseClick={() => null}
-          onDrop={handleOnWindowDragDrop}
-          onResize={handleOnWindowResize}
-          onWheel={handleWheel}>
-          {!activeSessionChatHistory.chat_history
-            ? null
-            : activeSessionChatHistory.chat_history[id].map((dialogue, index) => {
-                return (
-                  <div
-                    key={index}
-                    style={{ display: 'flex', flexDirection: 'column', paddingRight: 10 }}>
-                    <ChatWindow.TalkBubble backgroundColor="#a3a3a3" fontColor="#FFF">
-                      {dialogue.prepared_prompt}
-                    </ChatWindow.TalkBubble>
-                    <ChatWindow.TalkBubble
-                      backgroundColor="#3498db"
-                      fontColor="#FFF"
-                      styles={{ textAlign: 'right', alignSelf: 'flex-end' }}>
-                      {dialogue.predicted_result}
-                    </ChatWindow.TalkBubble>
-                  </div>
-                );
-              })}
-          {sendPromptIsLoading ? (
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: 15 }}>
-              <ChatWindow.LoadingAnimation />
-            </div>
-          ) : null}
-        </ChatWindow.ChatBox>
-      );
-    });
-  }
 
   return (
     <div
