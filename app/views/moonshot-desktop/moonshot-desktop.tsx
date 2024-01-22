@@ -22,6 +22,7 @@ import {
   setActiveSession,
   updateChatHistory,
 } from '@/lib/redux/slices/activeSessionSlice';
+import { ActiveChatSession } from '../active-chat-session/active-chat-session';
 
 const legalSummarisation = {
   name: 'Legal Summarisation',
@@ -135,12 +136,12 @@ export default function MoonshotDesktop() {
   function handleOnWindowDragDrop(x: number, y: number, windowId: string) {
     setWindowsData((prev) => {
       if (!prev[windowId]) {
-        return { [windowId]: [x, y, undefined, undefined] }
+        return { [windowId]: [x, y, undefined, undefined] };
       } else {
         return {
           ...prev,
-          [windowId]: [x, y, prev[windowId][2], prev[windowId][3]]
-        }
+          [windowId]: [x, y, prev[windowId][2], prev[windowId][3]],
+        };
       }
     });
   }
@@ -158,7 +159,6 @@ export default function MoonshotDesktop() {
       }, 1000);
     }
   }, [isChatPromptOpen]);
-
 
   return (
     <div
@@ -236,7 +236,7 @@ export default function MoonshotDesktop() {
           onStartClick={startNewSession}
         />
       ) : null}
-      {isChatSessionOpen ? <ChatBoxes /> : null}
+      {isChatSessionOpen ? <ActiveChatSession /> : null}
 
       {isChatPromptOpen ? (
         <BoxPrompt

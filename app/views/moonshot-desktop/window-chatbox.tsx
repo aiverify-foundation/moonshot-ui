@@ -43,8 +43,7 @@ const ChatBox = forwardRef(
         initialXY={initialXY}
         initialWindowSize={initialSize}
         onCloseClick={onCloseClick}
-        onDrop={onDrop}
-        onResize={onResize}
+        onWindowChange={onWindowChange}
         disableCloseIcon
         styles={{
           zIndex: 100,

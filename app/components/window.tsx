@@ -22,8 +22,7 @@ function Window(props: {
   resizeable?: boolean;
   disableCloseIcon?: boolean;
   onCloseClick?: () => void;
-  onDrop?: (x: number, y: number, id: string) => void;
-  onResize?: (width: number, height: number, id: string) => void;
+  onWindowChange?: (x: number, y: number, width: number, height: number, id: string) => void;
 }) {
   const {
     id,
@@ -39,8 +38,7 @@ function Window(props: {
     resizeHandleSize = 10,
     disableCloseIcon = false,
     onCloseClick,
-    onDrop,
-    onResize,
+    onWindowChange,
   } = props;
   const [windowState, setWindowState] = useState<WindowState>(WindowState.default);
   const [initialPosition, setInitialPosition] = useState(initialXY);
@@ -76,7 +74,6 @@ function Window(props: {
     const dx = e.clientX - prevMouseXY.current[0];
     const dy = e.clientY - prevMouseXY.current[1];
     prevMouseXY.current = [e.clientX, e.clientY];
-    console.log(prevMouseXY.current);
     setWindowSize((prev) => [prev[0] + dx, prev[1] + dy]);
   };
 
@@ -88,8 +85,8 @@ function Window(props: {
     const windowDomRect = windowRef.current.getBoundingClientRect();
     setInitialPosition([windowDomRect.x, windowDomRect.y]);
     windowRef.current.style.removeProperty('transform');
-    if (onDrop) {
-      onDrop(windowDomRect.x, windowDomRect.y, id || name);
+    if (onWindowChange) {
+      onWindowChange(windowDomRect.x, windowDomRect.y, windowSize[0], windowSize[1], id || name);
     }
   }
 
@@ -98,8 +95,14 @@ function Window(props: {
     setWindowState(WindowState.default);
     document.body.removeEventListener('mousemove', handleResizeMouseMove);
     document.body.removeEventListener('mouseup', handleResizeMouseUp);
-    if (onResize) {
-      onResize(windowSize[0], windowSize[1], id || name);
+    if (onWindowChange) {
+      onWindowChange(
+        initialPosition[0],
+        initialPosition[1],
+        windowSize[0],
+        windowSize[1],
+        id || name
+      );
     }
   }
 
@@ -120,10 +123,6 @@ function Window(props: {
       document.body.addEventListener('mouseup', handleResizeMouseUp);
     }
   }, [windowState]);
-
-  useEffect(() => {
-    console.log(windowSize);
-  }, [windowSize]);
 
   useEffect(() => {
     setInitialPosition(initialXY);
