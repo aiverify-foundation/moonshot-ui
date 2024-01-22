@@ -54,6 +54,7 @@ function WindowCreateSession(props: WindowChatStartProps) {
 
   return (
     <Window
+      resizeable
       initialXY={[600, 200]}
       initialWindowSize={[600, 470]}
       name="Start New Session"

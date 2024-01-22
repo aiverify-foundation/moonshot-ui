@@ -85,7 +85,9 @@ export default function MoonshotDesktop() {
   const [isTransitionPrompt, setIsTransitionPrompt] = useState(false);
   const [isShowPromptTemplates, setIsShowPromptTemplates] = useState(false);
   const [isShowPromptPreview, setIsShowPromptPreview] = useState(false);
-  const [windowPositions, setWindowPositions] = useState<Record<string, [number, number]>>({});
+  const [windowPositions, setWindowPositions] = useState<
+    Record<string, [[number, number] | undefined, [number, number] | undefined]>
+  >({});
   const activeSessionChatHistory = useAppSelector((state) => state.activeSession.entity);
   const dispatch = useAppDispatch();
   const [
@@ -132,7 +134,7 @@ export default function MoonshotDesktop() {
   function handleOnWindowDragDrop(x: number, y: number, windowId: string) {
     setWindowPositions((prev) => ({
       ...prev,
-      [windowId]: [x, y],
+      [windowId]: [[x, y], prev[windowId][1]],
     }));
   }
 
@@ -163,7 +165,7 @@ export default function MoonshotDesktop() {
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      e.preventDefault()
+      e.preventDefault();
       if (e.key.toLowerCase() === 'z') {
         isZKeyPressed.current = true;
       }
@@ -180,6 +182,13 @@ export default function MoonshotDesktop() {
       }
     };
 
+    function handleOnWindowResize(width: number, height: number, windowId: string) {
+      setWindowPositions((prev) => ({
+        ...prev,
+        [windowId]: [prev[windowId][0], [width, height]],
+      }));
+    }
+
     useEffect(() => {
       window.addEventListener('keydown', handleKeyDown);
       window.addEventListener('keyup', handleKeyUp);
@@ -189,12 +198,16 @@ export default function MoonshotDesktop() {
       };
     }, []);
 
-    
     if (activeSessionChatHistory === undefined) return null;
     return activeSessionChatHistory.chats.map((id, index) => {
       const viewportWidth = window.innerWidth;
       const leftPos = lerp(0, viewportWidth, index / activeSessionChatHistory.chats.length) + 250;
-      const initialXY = windowPositions[`win_${id}`] || [leftPos, 70];
+      const initialXY = windowPositions[`win_${id}`]
+        ? windowPositions[`win_${id}`][0]
+        : [leftPos, 70];
+      const initialWindowSize = windowPositions[`win_${id}`]
+        ? windowPositions[`win_${id}`][1]
+        : [500, 450];
 
       return (
         <ChatWindow.ChatBox
@@ -203,8 +216,10 @@ export default function MoonshotDesktop() {
           key={id}
           name={id}
           initialXY={initialXY}
+          initialWindowSize={initialWindowSize}
           onCloseClick={() => null}
           onDrop={handleOnWindowDragDrop}
+          onResize={handleOnWindowResize}
           onWheel={handleWheel}>
           {!activeSessionChatHistory.chat_history
             ? null

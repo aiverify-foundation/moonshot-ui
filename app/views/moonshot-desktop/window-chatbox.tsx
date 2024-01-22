@@ -9,53 +9,58 @@ type ChatboxProps = {
   onCloseClick: () => void;
   onWheel: (e: React.WheelEvent<HTMLDivElement>) => void;
   onDrop: (x: number, y: number, windowId: string) => void;
+  onResize: (width: number, height: number, windowId: string) => void;
 };
 
-const ChatBox = forwardRef((props: PropsWithChildren<ChatboxProps>, ref: React.Ref<HTMLDivElement>) => {
-  const { windowId, name, initialXY, onCloseClick, children, styles, onWheel, onDrop } = props;
-  const scrollDivRef = useRef<HTMLDivElement>(null);
+const ChatBox = forwardRef(
+  (props: PropsWithChildren<ChatboxProps>, ref: React.Ref<HTMLDivElement>) => {
+    const { windowId, name, initialXY, onCloseClick, children, styles, onWheel, onDrop, onResize } =
+      props;
+    const scrollDivRef = useRef<HTMLDivElement>(null);
 
-  useImperativeHandle(ref, () => scrollDivRef.current);
+    useImperativeHandle(ref, () => scrollDivRef.current);
 
-  useEffect(() => {
-    if (scrollDivRef.current) {
-      scrollDivRef.current.scrollTop = scrollDivRef.current.scrollHeight;
-    }
-  }, [children]);
+    useEffect(() => {
+      if (scrollDivRef.current) {
+        scrollDivRef.current.scrollTop = scrollDivRef.current.scrollHeight;
+      }
+    }, [children]);
 
-  return (
-    <Window
-      id={windowId}
-      name={name}
-      initialXY={initialXY}
-      onCloseClick={onCloseClick}
-      onDrop={onDrop}
-      disableCloseIcon
-      styles={{
-        width: 500,
-        height: 450,
-        zIndex: 100,
-        ...styles,
-      }}>
-      <div
-        ref={scrollDivRef}
-        onWheel={onWheel}
-        className="custom-scrollbar"
-        style={{
-          // scrollBehavior: 'smooth',
-          padding: '15px 0 15px 15px',
-          fontSize: 12,
-          borderRadius: 20,
-          overflowY: 'auto',
-          scrollbarWidth: 'thin',
-          scrollbarColor: '#888 #444',
-          height: '100%',
+    return (
+      <Window
+        resizeable
+        id={windowId}
+        name={name}
+        initialXY={initialXY}
+        initialWindowSize={[500, 450]}
+        onCloseClick={onCloseClick}
+        onDrop={onDrop}
+        onResize={onResize}
+        disableCloseIcon
+        styles={{
+          zIndex: 100,
+          ...styles,
         }}>
-        {children}
-      </div>
-    </Window>
-  );
-})
+        <div
+          ref={scrollDivRef}
+          onWheel={onWheel}
+          className="custom-scrollbar"
+          style={{
+            // scrollBehavior: 'smooth',
+            padding: '15px 0 15px 15px',
+            fontSize: 12,
+            borderRadius: 20,
+            overflowY: 'auto',
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#888 #444',
+            height: '100%',
+          }}>
+          {children}
+        </div>
+      </Window>
+    );
+  }
+);
 
 type TalkBubbleProps = {
   backgroundColor: string;
@@ -153,7 +158,7 @@ const ChatWindow = {
   TalkBubble,
   LoadingAnimation,
   ChatBox,
-}
+};
 ChatBox.displayName = 'Chatbox';
 
 export { ChatWindow };

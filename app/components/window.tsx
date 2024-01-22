@@ -23,6 +23,7 @@ function Window(props: {
   disableCloseIcon?: boolean;
   onCloseClick?: () => void;
   onDrop?: (x: number, y: number, id: string) => void;
+  onResize?: (width: number, height: number, id: string) => void;
 }) {
   const {
     id,
@@ -39,6 +40,7 @@ function Window(props: {
     disableCloseIcon = false,
     onCloseClick,
     onDrop,
+    onResize,
   } = props;
   const [windowState, setWindowState] = useState<WindowState>(WindowState.default);
   const [initialPosition, setInitialPosition] = useState(initialXY);
@@ -69,17 +71,14 @@ function Window(props: {
     setWindowState(WindowState.resize);
   }
 
-  const handleResizeMouseMove = throttle((e: MouseEvent) => {
+  const handleResizeMouseMove = (e: MouseEvent) => {
     if (!windowRef.current || windowState !== WindowState.resize) return;
     const dx = e.clientX - prevMouseXY.current[0];
     const dy = e.clientY - prevMouseXY.current[1];
     prevMouseXY.current = [e.clientX, e.clientY];
     console.log(prevMouseXY.current);
-    setWindowSize((prev) => [
-      prev[0] + dx,
-      prev[1] + dy,
-    ]);
-  }, 100)
+    setWindowSize((prev) => [prev[0] + dx, prev[1] + dy]);
+  };
 
   function handleMouseUp() {
     if (!windowRef.current || windowState !== WindowState.drag) return;
@@ -99,6 +98,9 @@ function Window(props: {
     setWindowState(WindowState.default);
     document.body.removeEventListener('mousemove', handleResizeMouseMove);
     document.body.removeEventListener('mouseup', handleResizeMouseUp);
+    if (onResize) {
+      onResize(windowSize[0], windowSize[1], id || name);
+    }
   }
 
   function handleMouseMove(e: MouseEvent) {
