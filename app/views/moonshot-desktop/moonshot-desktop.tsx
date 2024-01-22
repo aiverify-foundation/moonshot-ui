@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Window } from '@components/window';
 import { WindowCreateSession } from './window-create-session';
@@ -14,7 +14,7 @@ import Icon from '@components/icon';
 import { useCreateSessionMutation, useSendPromptMutation } from './services/session-api-service';
 import { WindowSavedSessions } from './window-saved-sessions';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
-import { ChatBox } from './window-chatbox';
+import { ChatWindow } from './window-chatbox';
 import { lerp } from '@/app/lib/math-helpers';
 import {
   removeActiveSession,
@@ -40,8 +40,8 @@ const legalSummarisation = {
 };
 
 type SessionTaskProps = {
-  name: string
-}
+  name: string;
+};
 
 function SessionTask(props: SessionTaskProps) {
   return (
@@ -151,44 +151,86 @@ export default function MoonshotDesktop() {
   }, [isChatPromptOpen]);
 
   function ChatBoxes() {
+    const chatBoxRefs = useRef<HTMLDivElement[]>([]);
+    const isZKeyPressed = useRef(false);
+    // Function to synchronize scrolling
+    const syncScroll = (deltaY: number) => {
+      chatBoxRefs.current.forEach((ref) => {
+        if (ref) {
+          ref.scrollTop += deltaY * 0.2;
+        }
+      });
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      e.preventDefault()
+      if (e.key.toLowerCase() === 'z') {
+        isZKeyPressed.current = true;
+      }
+    };
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === 'z') {
+        isZKeyPressed.current = false;
+      }
+    };
+
+    const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+      if (isZKeyPressed.current !== undefined && isZKeyPressed.current === true) {
+        syncScroll(e.deltaY);
+      }
+    };
+
+    useEffect(() => {
+      window.addEventListener('keydown', handleKeyDown);
+      window.addEventListener('keyup', handleKeyUp);
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('keyup', handleKeyUp);
+      };
+    }, []);
+
+    
     if (activeSessionChatHistory === undefined) return null;
     return activeSessionChatHistory.chats.map((id, index) => {
       const viewportWidth = window.innerWidth;
       const leftPos = lerp(0, viewportWidth, index / activeSessionChatHistory.chats.length) + 250;
       const initialXY = windowPositions[`win_${id}`] || [leftPos, 70];
+
       return (
-        <ChatBox
+        <ChatWindow.ChatBox
+          ref={(el) => (chatBoxRefs.current[index] = el as HTMLDivElement)}
           windowId={`win_${id}`}
           key={id}
           name={id}
           initialXY={initialXY}
           onCloseClick={() => null}
-          onDrop={handleOnWindowDragDrop}>
+          onDrop={handleOnWindowDragDrop}
+          onWheel={handleWheel}>
           {!activeSessionChatHistory.chat_history
             ? null
             : activeSessionChatHistory.chat_history[id].map((dialogue, index) => {
-              return (
-                <div
-                  key={index}
-                  style={{ display: 'flex', flexDirection: 'column', paddingRight: 10 }}>
-                  <ChatBox.TalkBubble backgroundColor="#a3a3a3" fontColor="#FFF">
-                    {dialogue.prepared_prompt}
-                  </ChatBox.TalkBubble>
-                  <ChatBox.TalkBubble
-                    backgroundColor="#3498db"
-                    fontColor="#FFF"
-                    styles={{ textAlign: 'right', alignSelf: 'flex-end' }}>
-                    {dialogue.predicted_result}
-                  </ChatBox.TalkBubble>
-                </div>
-              );
-            })}
+                return (
+                  <div
+                    key={index}
+                    style={{ display: 'flex', flexDirection: 'column', paddingRight: 10 }}>
+                    <ChatWindow.TalkBubble backgroundColor="#a3a3a3" fontColor="#FFF">
+                      {dialogue.prepared_prompt}
+                    </ChatWindow.TalkBubble>
+                    <ChatWindow.TalkBubble
+                      backgroundColor="#3498db"
+                      fontColor="#FFF"
+                      styles={{ textAlign: 'right', alignSelf: 'flex-end' }}>
+                      {dialogue.predicted_result}
+                    </ChatWindow.TalkBubble>
+                  </div>
+                );
+              })}
           {sendPromptIsLoading ? (
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: 15 }}>
-              <ChatBox.LoadingAnimation />
+              <ChatWindow.LoadingAnimation />
             </div>
           ) : null}
-        </ChatBox>
+        </ChatWindow.ChatBox>
       );
     });
   }

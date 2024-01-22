@@ -1,5 +1,5 @@
 import { Window } from '@/app/components/window';
-import { PropsWithChildren, useEffect, useRef } from 'react';
+import { PropsWithChildren, forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 type ChatboxProps = {
   windowId: string;
@@ -7,12 +7,15 @@ type ChatboxProps = {
   initialXY: [number, number];
   styles?: React.CSSProperties;
   onCloseClick: () => void;
+  onWheel: (e: React.WheelEvent<HTMLDivElement>) => void;
   onDrop: (x: number, y: number, windowId: string) => void;
 };
 
-function ChatBox(props: PropsWithChildren<ChatboxProps>) {
-  const { windowId, name, initialXY, onCloseClick, children, styles, onDrop } = props;
-  const scrollDivRef = useRef<HTMLDivElement | null>(null);
+const ChatBox = forwardRef((props: PropsWithChildren<ChatboxProps>, ref: React.Ref<HTMLDivElement>) => {
+  const { windowId, name, initialXY, onCloseClick, children, styles, onWheel, onDrop } = props;
+  const scrollDivRef = useRef<HTMLDivElement>(null);
+
+  useImperativeHandle(ref, () => scrollDivRef.current);
 
   useEffect(() => {
     if (scrollDivRef.current) {
@@ -36,8 +39,10 @@ function ChatBox(props: PropsWithChildren<ChatboxProps>) {
       }}>
       <div
         ref={scrollDivRef}
+        onWheel={onWheel}
         className="custom-scrollbar"
         style={{
+          // scrollBehavior: 'smooth',
           padding: '15px 0 15px 15px',
           fontSize: 12,
           borderRadius: 20,
@@ -50,7 +55,7 @@ function ChatBox(props: PropsWithChildren<ChatboxProps>) {
       </div>
     </Window>
   );
-}
+})
 
 type TalkBubbleProps = {
   backgroundColor: string;
@@ -144,7 +149,11 @@ function LoadingAnimation(props: LoadingAnimationProps) {
   );
 }
 
-ChatBox.TalkBubble = TalkBubble;
-ChatBox.LoadingAnimation = LoadingAnimation;
+const ChatWindow = {
+  TalkBubble,
+  LoadingAnimation,
+  ChatBox,
+}
+ChatBox.displayName = 'Chatbox';
 
-export { ChatBox };
+export { ChatWindow };
