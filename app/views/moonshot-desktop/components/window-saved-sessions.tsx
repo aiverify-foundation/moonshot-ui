@@ -34,9 +34,8 @@ function WindowSavedSessions(props: WindowSavedSessionsProps) {
   async function handleContinueSessionClick() {
     if (selectedSession) {
       const result = await triggerGetSession(selectedSession);
-      console.log(result);
       if (result.data) {
-        const setActiveSessionResult = await triggerSetActiveSession(result.data.session_id);
+        await triggerSetActiveSession(result.data.session_id);
         dispatch(setActiveSession(result.data));
         onContinueSessionClick();
       }

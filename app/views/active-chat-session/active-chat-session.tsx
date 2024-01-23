@@ -2,11 +2,15 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { useEffect, useRef, useState } from 'react';
 import { ChatWindow } from '../moonshot-desktop/components/window-chatbox';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
-import { lerp } from '@/app/lib/math-helpers';
 import { getWindowId, getWindowScrollTop, getWindowSize, getWindowXY } from '@/app/lib/window';
 import { useSendPromptMutation } from '../moonshot-desktop/services/session-api-service';
 import { BoxPrompt } from './box-prompt';
 import { useUsePromptTemplateMutation } from '../moonshot-desktop/services/prompt-template-api-service';
+import { setActiveSession, updateChatHistory } from '@/lib/redux/slices/activeSessionSlice';
+import usePromptTemplateList from '../moonshot-desktop/hooks/usePromptTemplateList';
+import { ScreenOverlay } from '@/app/components/screen-overlay';
+import TaskBar from '@/app/components/taskbar';
+import Image from 'next/image';
 
 type ActiveSessionProps = {
   onCloseBtnClick: () => void;
@@ -14,12 +18,14 @@ type ActiveSessionProps = {
 
 function ActiveChatSession(props: ActiveSessionProps) {
   const { onCloseBtnClick } = props;
-  const activeSessionChatHistory = useAppSelector((state) => state.activeSession.entity);
+  const activeSession = useAppSelector((state) => state.activeSession.entity);
+  const { promptTemplates, error, isLoading } = usePromptTemplateList();
   const [promptText, setPromptText] = useState('');
+  const [selectedPromptTemplate, setSelectedPromptTemplate] = useState<PromptTemplate | null>(null);
   const windowsMap = useAppSelector((state) => state.windows.map);
   const [
     sendPrompt,
-    { data: updatedSessionChatHistory, isLoading: sendPromptIsLoading, error: sendPromptError },
+    { data: updatedChatHistory, isLoading: sendPromptIsLoading, error: sendPromptError },
   ] = useSendPromptMutation();
   const [
     triggerSetPromptTemplate,
@@ -76,27 +82,44 @@ function ActiveChatSession(props: ActiveSessionProps) {
     dispatch(updateWindows({ [windowId]: [x, y, width, height, scrollTop] }));
   }
 
-  function handleSendPromptClick(message: string) {
-    if (!activeSessionChatHistory) return;
+  async function handleSendPromptClick(message: string) {
+    if (!activeSession) return;
     setPromptText(message);
-    sendPrompt({
+    const result = await sendPrompt({
       prompt: message,
-      session_id: activeSessionChatHistory.session_id,
+      session_id: activeSession.session_id,
     });
+    if ('data' in result && result.data) {
+      dispatch(updateChatHistory(result.data));
+    } else if ('error' in result) {
+      console.error('Error fetching data:', result.error);
+    }
   }
 
   async function handleSelectPromptTemplate(template: PromptTemplate) {
+    setSelectedPromptTemplate(template);
     const result = await triggerSetPromptTemplate(template.name);
     console.log(result);
   }
 
   useEffect(() => {
-    if (activeSessionChatHistory && activeSessionChatHistory.chats.length) {
+    if (activeSession) {
+      const template = promptTemplates.find(
+        (template) => template.name === activeSession.prompt_template
+      );
+      if (template) {
+        setSelectedPromptTemplate(template);
+      }
+    }
+  }, [promptTemplates, activeSession]);
+
+  useEffect(() => {
+    if (activeSession && activeSession.chats.length) {
       const chatWindows: Record<string, WindowData> = {};
       const chatboxWidth = 400;
       const margin = 250;
       const spacing = 50;
-      activeSessionChatHistory.chats.forEach((id, index) => {
+      activeSession.chats.forEach((id, index) => {
         const leftPos = index === 0 ? margin : margin + chatboxWidth * index + spacing;
         chatWindows[getWindowId(id)] = [leftPos, 100, chatboxWidth, 450, 0];
       });
@@ -125,110 +148,133 @@ function ActiveChatSession(props: ActiveSessionProps) {
     };
   }, []);
 
-  if (activeSessionChatHistory === undefined) return null;
+  if (activeSession === undefined) return null;
 
   return (
-    <div>
-      {activeSessionChatHistory.chats.map((id: string, index: number) => {
-        if (windowsMap[getWindowId(id)]) {
-          return (
-            <ChatWindow.ChatBox
-              ref={(el) => (chatBoxRefs.current[index] = el as HTMLDivElement)}
-              windowId={getWindowId(id)}
-              key={id}
-              name={id}
-              initialXY={getWindowXY(windowsMap, id)}
-              initialSize={getWindowSize(windowsMap, id)}
-              initialScrollTop={getWindowScrollTop(windowsMap, id)}
-              onCloseClick={() => null}
-              onWindowChange={handleOnWindowChange}
-              onWheel={handleWheel}>
-              {!activeSessionChatHistory.chat_history
-                ? null
-                : activeSessionChatHistory.chat_history[id].map((dialogue, index) => {
-                    // const length = activeSessionChatHistory.chat_history[id].length;
-                    // const isLast = index === length - 1;
-                    return (
-                      <div
-                        key={index}
-                        style={{ display: 'flex', flexDirection: 'column', paddingRight: 10 }}>
+    <>
+      <ScreenOverlay>
+        <TaskBar>
+          <Image
+            src="icons/close_icon.svg"
+            alt="close"
+            width={24}
+            height={24}
+            style={{
+              cursor: 'pointer',
+              right: 10,
+              top: 7,
+              position: 'absolute',
+            }}
+            onClick={onCloseBtnClick}
+          />
+          <div className="flex justify-start items-center h-full w-full">
+            <h2 className="capitalize text-xl text-blue-500">
+              Session: <span className="font-bold text-white">{activeSession.name}</span>
+            </h2>
+          </div>
+        </TaskBar>
+        {activeSession.chats.map((id: string, index: number) => {
+          if (windowsMap[getWindowId(id)]) {
+            return (
+              <ChatWindow.ChatBox
+                ref={(el) => (chatBoxRefs.current[index] = el as HTMLDivElement)}
+                windowId={getWindowId(id)}
+                key={id}
+                name={id}
+                initialXY={getWindowXY(windowsMap, id)}
+                initialSize={getWindowSize(windowsMap, id)}
+                initialScrollTop={getWindowScrollTop(windowsMap, id)}
+                onCloseClick={() => null}
+                onWindowChange={handleOnWindowChange}
+                onWheel={handleWheel}>
+                {!activeSession.chat_history
+                  ? null
+                  : activeSession.chat_history[id].map((dialogue, index) => {
+                      return (
                         <div
-                          style={{
-                            color: 'black',
-                            textAlign: 'right',
-                            paddingRight: 10,
-                            fontSize: 12,
-                          }}>
-                          You
+                          key={index}
+                          style={{ display: 'flex', flexDirection: 'column', paddingRight: 10 }}>
+                          <div
+                            style={{
+                              color: 'black',
+                              textAlign: 'right',
+                              paddingRight: 10,
+                              fontSize: 12,
+                            }}>
+                            You
+                          </div>
+                          <ChatWindow.TalkBubble
+                            backgroundColor="#a3a3a3"
+                            fontColor="#FFF"
+                            styles={{ alignSelf: 'flex-end', maxWidth: '90%' }}>
+                            {dialogue.prepared_prompt}
+                          </ChatWindow.TalkBubble>
+                          <div
+                            style={{
+                              color: 'black',
+                              textAlign: 'left',
+                              maxWidth: '90%',
+                              paddingLeft: 10,
+                              fontSize: 12,
+                            }}>
+                            AI
+                          </div>
+                          <ChatWindow.TalkBubble
+                            backgroundColor="#3498db"
+                            fontColor="#FFF"
+                            styles={{ textAlign: 'left' }}>
+                            {dialogue.predicted_result}
+                          </ChatWindow.TalkBubble>
                         </div>
-                        <ChatWindow.TalkBubble
-                          backgroundColor="#a3a3a3"
-                          fontColor="#FFF"
-                          styles={{ alignSelf: 'flex-end', maxWidth: '90%' }}>
-                          {dialogue.prepared_prompt}
-                        </ChatWindow.TalkBubble>
-                        <div
-                          style={{
-                            color: 'black',
-                            textAlign: 'left',
-                            maxWidth: '90%',
-                            paddingLeft: 10,
-                            fontSize: 12,
-                          }}>
-                          AI
-                        </div>
-                        <ChatWindow.TalkBubble
-                          backgroundColor="#3498db"
-                          fontColor="#FFF"
-                          styles={{ textAlign: 'left' }}>
-                          {dialogue.predicted_result}
-                        </ChatWindow.TalkBubble>
-                      </div>
-                    );
-                  })}
-              {sendPromptIsLoading ? (
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <div
-                    style={{
-                      color: 'black',
-                      textAlign: 'right',
-                      paddingRight: 10,
-                      fontSize: 12,
-                    }}>
-                    You
+                      );
+                    })}
+                {sendPromptIsLoading ? (
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div
+                      style={{
+                        color: 'black',
+                        textAlign: 'right',
+                        paddingRight: 10,
+                        fontSize: 12,
+                      }}>
+                      You
+                    </div>
+                    <ChatWindow.TalkBubble
+                      backgroundColor="#a3a3a3"
+                      fontColor="#FFF"
+                      styles={{ alignSelf: 'flex-end' }}>
+                      {selectedPromptTemplate
+                        ? selectedPromptTemplate.template.replace('{{ prompt }}', promptText)
+                        : promptText}
+                    </ChatWindow.TalkBubble>
+                    <div
+                      style={{
+                        color: 'black',
+                        textAlign: 'left',
+                        paddingLeft: 10,
+                        fontSize: 12,
+                      }}>
+                      AI
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'flex-start', marginRight: 15 }}>
+                      <ChatWindow.LoadingAnimation />
+                    </div>
                   </div>
-                  <ChatWindow.TalkBubble
-                    backgroundColor="#a3a3a3"
-                    fontColor="#FFF"
-                    styles={{ alignSelf: 'flex-end' }}>
-                    {promptText}
-                  </ChatWindow.TalkBubble>
-                  <div
-                    style={{
-                      color: 'black',
-                      textAlign: 'left',
-                      paddingLeft: 10,
-                      fontSize: 12,
-                    }}>
-                    AI
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'flex-start', marginRight: 15 }}>
-                    <ChatWindow.LoadingAnimation />
-                  </div>
-                </div>
-              ) : null}
-            </ChatWindow.ChatBox>
-          );
-        }
-      })}
+                ) : null}
+              </ChatWindow.ChatBox>
+            );
+          }
+        })}
 
-      <BoxPrompt
-        name="Prompt"
-        onCloseClick={onCloseBtnClick}
-        onSendClick={handleSendPromptClick}
-        onSelectPromptTemplate={handleSelectPromptTemplate}
-      />
-    </div>
+        <BoxPrompt
+          name="Prompt"
+          promptTemplates={promptTemplates}
+          onCloseClick={onCloseBtnClick}
+          onSendClick={handleSendPromptClick}
+          onSelectPromptTemplate={handleSelectPromptTemplate}
+        />
+      </ScreenOverlay>
+    </>
   );
 }
 

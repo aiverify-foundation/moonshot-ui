@@ -1,25 +1,21 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Window } from '@components/window';
 import { WindowCreateSession } from './components/window-create-session';
-import { BoxPrompt } from '../active-chat-session/box-prompt';
 import TaskBar from '@components/taskbar';
 import Menu from '@components/menu';
 import FolderIcon from '@components/folder-icon';
 import JSONEditor from '@components/json-editor';
 import Icon from '@components/icon';
-import { useCreateSessionMutation, useSendPromptMutation } from './services/session-api-service';
+import { useCreateSessionMutation } from './services/session-api-service';
 import { WindowSavedSessions } from './components/window-saved-sessions';
-import { useAppDispatch, useAppSelector } from '@/lib/redux';
-import {
-  removeActiveSession,
-  setActiveSession,
-  updateChatHistory,
-} from '@/lib/redux/slices/activeSessionSlice';
+import { useAppDispatch } from '@/lib/redux';
+import { removeActiveSession, setActiveSession } from '@/lib/redux/slices/activeSessionSlice';
 import { ActiveChatSession } from '../active-chat-session/active-chat-session';
+import { ScreenOverlay } from '@/app/components/screen-overlay';
 
 const legalSummarisation = {
   name: 'Legal Summarisation',
@@ -119,7 +115,7 @@ export default function MoonshotDesktop() {
         <Menu />
       </TaskBar>
 
-      {isChatSessionOpen ? <SessionTask /> : null}
+      {/* {isChatSessionOpen ? <SessionTask /> : null} */}
 
       <div style={{ display: 'flex' }}>
         <div
@@ -185,7 +181,23 @@ export default function MoonshotDesktop() {
         />
       ) : null}
       {isChatSessionOpen ? (
-        <ActiveChatSession onCloseBtnClick={handlePromptWindowCloseClick} />
+        <>
+          <ScreenOverlay>
+            <TaskBar>
+              <Image
+                src="icons/close_icon.svg"
+                alt="close"
+                width={24}
+                height={24}
+                style={{
+                  cursor: 'pointer',
+                }}
+                onClick={() => setIsChatSessionOpen(false)}
+              />
+            </TaskBar>
+          </ScreenOverlay>
+          <ActiveChatSession onCloseBtnClick={handlePromptWindowCloseClick} />
+        </>
       ) : null}
 
       {isJsonEditorOpen ? (

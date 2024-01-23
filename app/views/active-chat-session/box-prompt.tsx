@@ -2,7 +2,6 @@ import Image from 'next/image';
 import { TextInput } from '../../components/textInput';
 import { Window } from '../../components/window';
 import { useEffect, useState } from 'react';
-import usePromptTemplateList from '../moonshot-desktop/hooks/usePromptTemplateList';
 import { ListItem, SelectList } from '@/app/components/selectList';
 import useOutsideClick from '@/app/hooks/use-outside-click';
 import { getWindowId } from '@/app/lib/window';
@@ -17,13 +16,13 @@ function BoxPrompt(props: {
   name: string;
   children?: React.ReactNode;
   styles?: React.CSSProperties;
+  promptTemplates: PromptTemplate[];
   onCloseClick?: () => void;
   onSelectPromptTemplate: (item: PromptTemplate) => void;
   onSendClick: (message: string) => void;
 }) {
-  const { onCloseClick, onSelectPromptTemplate, onSendClick, styles } = props;
+  const { promptTemplates, onCloseClick, onSelectPromptTemplate, onSendClick, styles } = props;
   const [promptMessage, setPromptMessage] = useState('');
-  const { promptTemplates, error, isLoading } = usePromptTemplateList();
   const [showPromptTemplateList, setShowPromptTemplateList] = useState(false);
   const [textInputMode, setTextInputMode] = useState<TextInputMode>(TextInputMode.PROMPT_LLM);
   const [selectedPromptTemplate, setSelectedPromptTemplate] = useState<PromptTemplate>();
@@ -49,7 +48,7 @@ function BoxPrompt(props: {
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Enter') {
+    if (textInputMode === TextInputMode.PROMPT_LLM && e.key === 'Enter') {
       handleOnSendMessageClick();
       e.preventDefault();
     }
