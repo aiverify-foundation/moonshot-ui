@@ -1,7 +1,11 @@
 import Image from 'next/image';
 import { TextInput } from '../../../components/textInput';
 import { Window } from '../../../components/window';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import usePromptTemplateList from '../hooks/usePromptTemplateList';
+import { ListItem, SelectList } from '@/app/components/selectList';
+import useOutsideClick from '@/app/hooks/use-outside-click';
+import { getWindowId } from '@/app/lib/window';
 
 function BoxPrompt(props: {
   name: string;
@@ -13,6 +17,12 @@ function BoxPrompt(props: {
 }) {
   const { onCloseClick, onPromptTemplateClick, onSendClick, styles } = props;
   const [promptMessage, setPromptMessage] = useState('');
+  const { promptTemplates, error, isLoading } = usePromptTemplateList();
+  const [showPromptTemplateList, setShowPromptTemplateList] = useState(false);
+  const [listItems, setListItems] = useState<ListItem[]>([]);
+  useOutsideClick(['prompt-template-list', getWindowId('box-prompt')], () =>
+    setShowPromptTemplateList(false)
+  );
 
   function handleTextChange(e: React.ChangeEvent<HTMLInputElement>) {
     setPromptMessage(e.target.value);
@@ -30,22 +40,37 @@ function BoxPrompt(props: {
     }
   }
 
+  function handlePromptTemplateClick() {
+    setShowPromptTemplateList(true);
+  }
+
+  useEffect(() => {
+    console.log(promptTemplates);
+    const list: ListItem[] = promptTemplates.map((pt) => ({ id: pt.name, displayName: pt.name }));
+    setListItems(list);
+  }, [promptTemplates]);
+
   return (
     <Window
+      id={getWindowId('box-prompt')}
       initialXY={[600, 600]}
+      initialWindowSize={[500, 115]}
       resizeable={false}
       name="Prompt"
       onCloseClick={onCloseClick}
-      styles={{ height: 115, width: 500, zIndex: 100, ...styles }}
-      contentAreaStyles={{ background: 'none', overflow: 'hidden', padding: 0 }}
-    >
+      styles={{ overflow: 'show', ...styles }}
+      contentAreaStyles={{
+        background: 'none',
+        padding: 0,
+        overflowY: 'visible',
+        overflowX: 'visible',
+      }}>
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
-        }}
-      >
+        }}>
         <div style={{ display: 'flex', gap: 5 }}>
           <TextInput
             name="sessionName"
@@ -67,8 +92,7 @@ function BoxPrompt(props: {
               height: 33,
             }}
             type="button"
-            onClick={handleOnSendMessageClick}
-          >
+            onClick={handleOnSendMessageClick}>
             Send
           </button>
         </div>
@@ -83,7 +107,7 @@ function BoxPrompt(props: {
                 cursor: 'pointer',
                 marginRight: 3,
               }}
-              onClick={onPromptTemplateClick}
+              onClick={handlePromptTemplateClick}
             />
             <div style={{ fontSize: 11 }}> Prompt Template </div>
           </div>
@@ -101,6 +125,14 @@ function BoxPrompt(props: {
             <div style={{ fontSize: 11 }}> Context Strategy </div>
           </div>
         </div>
+        {showPromptTemplateList && (
+          <SelectList
+            id="prompt-template-list"
+            data={listItems}
+            styles={{ position: 'absolute', top: -90, left: 350, width: 300 }}
+            onItemClick={onPromptTemplateClick}
+          />
+        )}
       </div>
     </Window>
   );

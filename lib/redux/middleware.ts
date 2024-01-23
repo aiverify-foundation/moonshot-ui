@@ -1,9 +1,11 @@
 /* Core */
+import { promptTemplateApi } from '@/app/views/moonshot-desktop/services/prompt-template-api-service';
 import { sessionApi } from '@/app/views/moonshot-desktop/services/session-api-service';
 import { createLogger } from 'redux-logger';
 
 const middleware = [
   sessionApi.middleware,
+  promptTemplateApi.middleware,
   createLogger({
     duration: true,
     timestamp: false,

@@ -3,7 +3,7 @@ import { TextInput } from '@components/textInput';
 import { Window } from '@components/window';
 import { CheckBox } from '@components/checkbox';
 import { TextArea } from '@components/textArea';
-import { Formik, Form, FieldArray, FormikHelpers } from 'formik';
+import { Formik, Form, FieldArray } from 'formik';
 
 type WindowChatStartProps = {
   onCloseClick: () => void;
@@ -54,12 +54,14 @@ function WindowCreateSession(props: WindowChatStartProps) {
 
   return (
     <Window
+      id="create-session"
       resizeable
       initialXY={[600, 200]}
       initialWindowSize={[600, 470]}
       name="Start New Session"
       styles={{ zIndex: 100 }}
-      onCloseClick={onCloseClick}>
+      onCloseClick={onCloseClick}
+    >
       <div
         style={{
           color: 'gray',
@@ -67,7 +69,8 @@ function WindowCreateSession(props: WindowChatStartProps) {
           position: 'relative',
           height: '100%',
           width: '100%',
-        }}>
+        }}
+      >
         <Formik<FormValues> initialValues={initialFormValues} onSubmit={handleFormSubmit}>
           {(formProps) => (
             <Form>
@@ -102,7 +105,8 @@ function WindowCreateSession(props: WindowChatStartProps) {
                   fontWeight: 600,
                   marginBottom: 4,
                   fontSize: 13,
-                }}>
+                }}
+              >
                 LLM Endpoints
               </div>
               <div
@@ -116,14 +120,16 @@ function WindowCreateSession(props: WindowChatStartProps) {
                   alignItems: 'flex-start',
                   justifyContent: 'flex-start',
                   gap: 15,
-                }}>
+                }}
+              >
                 <div
                   style={{
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'flex-start',
                     gap: 20,
-                  }}>
+                  }}
+                >
                   <FieldArray
                     name="llmEndpoints"
                     render={(arrayHelpers) =>
@@ -156,7 +162,8 @@ function WindowCreateSession(props: WindowChatStartProps) {
                   position: 'absolute',
                   bottom: 10,
                   textAlign: 'right',
-                }}>
+                }}
+              >
                 <button
                   style={{
                     minWidth: 100,
@@ -166,7 +173,8 @@ function WindowCreateSession(props: WindowChatStartProps) {
                     color: '#FFF',
                     fontSize: 13,
                   }}
-                  type="submit">
+                  type="submit"
+                >
                   Start
                 </button>
               </div>

@@ -154,7 +154,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props: WindowProps, ref)
         windowSize[0],
         windowSize[1],
         target.scrollTop,
-        id || name
+        id
       );
     }
   };
@@ -179,6 +179,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props: WindowProps, ref)
 
   return (
     <div
+      id={id}
       ref={windowRef}
       style={{
         userSelect: 'none',
@@ -196,15 +197,13 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props: WindowProps, ref)
         ...styles,
         zIndex: selectedWindowId === id ? 9999 : 'auto',
       }}
-      onMouseDown={handleMouseDown}
-    >
+      onMouseDown={handleMouseDown}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div
           style={{
             fontSize: 14,
             paddingBottom: 5,
-          }}
-        >
+          }}>
           {name}
         </div>
         {!disableCloseIcon ? (
@@ -230,15 +229,12 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props: WindowProps, ref)
           height: '94.5%',
           overflowY: 'auto',
           overflowX: 'hidden',
-          scrollbarWidth: 'thin',
-          scrollbarColor: '#888 #444',
           padding: 10,
           ...contentAreaStyles,
         }}
         onMouseDown={handleContentAreaMouseDown}
         onScroll={debouncedOnScroll}
-        onWheel={onWheel}
-      >
+        onWheel={onWheel}>
         {children}
       </div>
       {resizeable ? (

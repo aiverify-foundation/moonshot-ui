@@ -28,3 +28,9 @@ type DialoguePairInfo = {
 type WindowData = [number, number, number, number, number];
 
 type ChatHistory = Record<string, DialoguePairInfo[]>;
+
+type PromptTemplate = {
+  name: string;
+  description: string;
+  template: string;
+};

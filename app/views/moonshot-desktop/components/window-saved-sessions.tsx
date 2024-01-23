@@ -42,6 +42,7 @@ function WindowSavedSessions(props: WindowSavedSessionsProps) {
 
   return (
     <Window
+      id="window-saved-sessions"
       resizeable
       initialXY={[600, 200]}
       initialWindowSize={[600, 470]}

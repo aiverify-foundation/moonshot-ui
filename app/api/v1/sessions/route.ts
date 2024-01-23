@@ -1,5 +1,3 @@
-import { NextRequest } from 'next/server';
-
 const hostURL = process.env.MOONSHOT_API_URL || 'http://localhost:5000';
 const basePath = '/v1/sessions';
 
@@ -17,6 +15,5 @@ export async function POST(request: Request) {
 
 export async function GET() {
   const response = await fetch(`${hostURL}${basePath}`);
-  console.log(response);
   return response;
 }
