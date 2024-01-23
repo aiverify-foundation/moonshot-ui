@@ -1,15 +1,23 @@
 import { Window } from '@/app/components/window';
-import { PropsWithChildren, forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import { PropsWithChildren, forwardRef, useImperativeHandle, useRef } from 'react';
 
 type ChatboxProps = {
   windowId: string;
   name: string;
   initialXY: [number, number];
   initialSize: [number, number];
+  initialScrollTop: number;
   styles?: React.CSSProperties;
   onCloseClick: () => void;
   onWheel: (e: React.WheelEvent<HTMLDivElement>) => void;
-  onWindowChange?: (x: number, y: number, width: number, height: number, windowId: string) => void;
+  onWindowChange?: (
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    scrollTop: number,
+    windowId: string
+  ) => void;
 };
 
 const ChatBox = forwardRef(
@@ -19,6 +27,7 @@ const ChatBox = forwardRef(
       name,
       initialXY,
       initialSize,
+      initialScrollTop,
       onCloseClick,
       children,
       styles,
@@ -29,42 +38,24 @@ const ChatBox = forwardRef(
 
     useImperativeHandle(ref, () => scrollDivRef.current);
 
-    useEffect(() => {
-      if (scrollDivRef.current) {
-        scrollDivRef.current.scrollTop = scrollDivRef.current.scrollHeight;
-      }
-    }, [children]);
-
     return (
       <Window
+        ref={scrollDivRef}
         resizeable
         id={windowId}
         name={name}
         initialXY={initialXY}
         initialWindowSize={initialSize}
+        initialScrollTop={initialScrollTop}
         onCloseClick={onCloseClick}
+        onWheel={onWheel}
         onWindowChange={onWindowChange}
         disableCloseIcon
         styles={{
           zIndex: 100,
           ...styles,
         }}>
-        <div
-          ref={scrollDivRef}
-          onWheel={onWheel}
-          className="custom-scrollbar"
-          style={{
-            // scrollBehavior: 'smooth',
-            padding: '15px 0 15px 15px',
-            fontSize: 12,
-            borderRadius: 20,
-            overflowY: 'auto',
-            scrollbarWidth: 'thin',
-            scrollbarColor: '#888 #444',
-            height: '100%',
-          }}>
-          {children}
-        </div>
+        {children}
       </Window>
     );
   }

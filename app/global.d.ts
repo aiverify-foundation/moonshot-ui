@@ -24,7 +24,7 @@ type DialoguePairInfo = {
   duration: string;
 };
 
-//[x, y, w, h]
-type WindowData = [number, number, number, number];
+//[x, y, w, h, scrollTop]
+type WindowData = [number, number, number, number, number];
 
 type ChatHistory = Record<string, DialoguePairInfo[]>;

@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { ChatWindow } from '../moonshot-desktop/window-chatbox';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 import { lerp } from '@/app/lib/math-helpers';
-import { getWindowId } from '@/app/lib/window-id';
+import { getWindowId, getWindowScrollTop, getWindowSize, getWindowXY } from '@/app/lib/window';
 import { useSendPromptMutation } from '../moonshot-desktop/services/session-api-service';
 
 function ActiveChatSession() {
@@ -31,6 +31,7 @@ function ActiveChatSession() {
       isZKeyPressed.current = true;
     }
   };
+
   const handleKeyUp = (e: KeyboardEvent) => {
     if (e.key.toLowerCase() === 'z') {
       isZKeyPressed.current = false;
@@ -48,9 +49,10 @@ function ActiveChatSession() {
     y: number,
     width: number,
     height: number,
+    scrollTop: number,
     windowId: string
   ) {
-    dispatch(updateWindows({ [windowId]: [x, y, width, height] }));
+    dispatch(updateWindows({ [windowId]: [x, y, width, height, scrollTop] }));
   }
 
   useEffect(() => {
@@ -59,7 +61,7 @@ function ActiveChatSession() {
       activeSessionChatHistory.chats.forEach((id, index) => {
         const leftPos =
           lerp(0, window.innerWidth, index / activeSessionChatHistory.chats.length) + 250;
-        wins[getWindowId(id)] = [leftPos, 100, 600, 450];
+        wins[getWindowId(id)] = [leftPos, 100, 600, 450, 0];
       });
       dispatch(updateWindows(wins));
     }
@@ -83,8 +85,9 @@ function ActiveChatSession() {
           windowId={getWindowId(id)}
           key={id}
           name={id}
-          initialXY={[windowsMap[getWindowId(id)][0], windowsMap[getWindowId(id)][1]]}
-          initialSize={[windowsMap[getWindowId(id)][2], windowsMap[getWindowId(id)][3]]}
+          initialXY={getWindowXY(windowsMap, id)}
+          initialSize={getWindowSize(windowsMap, id)}
+          initialScrollTop={getWindowScrollTop(windowsMap, id)}
           onCloseClick={() => null}
           onWindowChange={handleOnWindowChange}
           onWheel={handleWheel}>
@@ -95,13 +98,18 @@ function ActiveChatSession() {
                   <div
                     key={index}
                     style={{ display: 'flex', flexDirection: 'column', paddingRight: 10 }}>
-                    <ChatWindow.TalkBubble backgroundColor="#a3a3a3" fontColor="#FFF">
+                    <div style={{ color: 'black', textAlign: 'right', paddingRight: 10 }}>You</div>
+                    <ChatWindow.TalkBubble
+                      backgroundColor="#a3a3a3"
+                      fontColor="#FFF"
+                      styles={{ alignSelf: 'flex-end' }}>
                       {dialogue.prepared_prompt}
                     </ChatWindow.TalkBubble>
+                    <div style={{ color: 'black', textAlign: 'left', paddingLeft: 10 }}>LLM</div>
                     <ChatWindow.TalkBubble
                       backgroundColor="#3498db"
                       fontColor="#FFF"
-                      styles={{ textAlign: 'right', alignSelf: 'flex-end' }}>
+                      styles={{ textAlign: 'right' }}>
                       {dialogue.predicted_result}
                     </ChatWindow.TalkBubble>
                   </div>

@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
-import { throttle } from '../lib/throttle';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { debounce } from '../lib/throttle';
 
 enum WindowState {
   drag,
@@ -8,11 +8,12 @@ enum WindowState {
   default,
 }
 
-function Window(props: {
+type WindowProps = {
   id?: string;
   name: string;
   initialXY?: [number, number];
   initialWindowSize?: [number, number];
+  initialScrollTop?: number;
   backgroundColor?: string;
   boxShadowStyle?: string;
   resizeHandleSize?: number;
@@ -22,13 +23,24 @@ function Window(props: {
   resizeable?: boolean;
   disableCloseIcon?: boolean;
   onCloseClick?: () => void;
-  onWindowChange?: (x: number, y: number, width: number, height: number, id: string) => void;
-}) {
+  onWheel: (e: React.WheelEvent<HTMLDivElement>) => void;
+  onWindowChange?: (
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    scrollTop: number,
+    id: string
+  ) => void;
+};
+
+const Window = forwardRef<HTMLDivElement, WindowProps>((props: WindowProps, ref) => {
   const {
     id,
     name,
     initialXY = [180, 140],
     initialWindowSize = [640, 470],
+    initialScrollTop = 0,
     styles,
     contentAreaStyles,
     resizeable = true,
@@ -38,13 +50,17 @@ function Window(props: {
     resizeHandleSize = 10,
     disableCloseIcon = false,
     onCloseClick,
+    onWheel,
     onWindowChange,
   } = props;
   const [windowState, setWindowState] = useState<WindowState>(WindowState.default);
   const [initialPosition, setInitialPosition] = useState(initialXY);
   const [windowSize, setWindowSize] = useState(initialWindowSize);
   const windowRef = useRef<HTMLDivElement>(null);
+  const scrollDivRef = useRef<HTMLDivElement>(null);
   const prevMouseXY = useRef([0, 0]);
+
+  useImperativeHandle(ref, () => scrollDivRef.current);
 
   function handleMouseDown(e: React.MouseEvent) {
     e.stopPropagation();
@@ -86,7 +102,14 @@ function Window(props: {
     setInitialPosition([windowDomRect.x, windowDomRect.y]);
     windowRef.current.style.removeProperty('transform');
     if (onWindowChange) {
-      onWindowChange(windowDomRect.x, windowDomRect.y, windowSize[0], windowSize[1], id || name);
+      onWindowChange(
+        windowDomRect.x,
+        windowDomRect.y,
+        windowSize[0],
+        windowSize[1],
+        scrollDivRef.current?.scrollTop || 0,
+        id || name
+      );
     }
   }
 
@@ -101,6 +124,7 @@ function Window(props: {
         initialPosition[1],
         windowSize[0],
         windowSize[1],
+        scrollDivRef.current?.scrollTop || 0,
         id || name
       );
     }
@@ -114,6 +138,22 @@ function Window(props: {
     }px)`;
   }
 
+  const handleScrollStop = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    if (onWindowChange) {
+      onWindowChange(
+        initialPosition[0],
+        initialPosition[1],
+        windowSize[0],
+        windowSize[1],
+        target.scrollTop,
+        id || name
+      );
+    }
+  };
+
+  const debouncedOnScroll = debounce(handleScrollStop, 200);
+
   useEffect(() => {
     if (windowState === WindowState.drag) {
       document.body.addEventListener('mousemove', handleMouseMove);
@@ -125,7 +165,9 @@ function Window(props: {
   }, [windowState]);
 
   useEffect(() => {
-    setInitialPosition(initialXY);
+    if (scrollDivRef.current) {
+      scrollDivRef.current.scrollTop = initialScrollTop;
+    }
   }, []);
 
   return (
@@ -170,15 +212,21 @@ function Window(props: {
         ) : null}
       </div>
       <div
+        ref={scrollDivRef}
+        className="custom-scrollbar"
         style={{
           background: '#ebeaea',
           width: '99.8%',
           height: '94.5%',
-          overflowY: 'scroll',
-          overflow: 'hidden',
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#888 #444',
           ...contentAreaStyles,
         }}
-        onMouseDown={handleContentAreaMouseDown}>
+        onMouseDown={handleContentAreaMouseDown}
+        onScroll={debouncedOnScroll}
+        onWheel={onWheel}>
         {children}
       </div>
       {resizeable ? (
@@ -198,6 +246,7 @@ function Window(props: {
       ) : null}
     </div>
   );
-}
+});
 
+Window.displayName = 'Window';
 export { Window };
