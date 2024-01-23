@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { TextInput } from '../../components/textInput';
-import { Window } from '../../components/window';
+import { TextInput } from '../../../components/textInput';
+import { Window } from '../../../components/window';
 import { useState } from 'react';
 
 function BoxPrompt(props: {
@@ -37,13 +37,15 @@ function BoxPrompt(props: {
       name="Prompt"
       onCloseClick={onCloseClick}
       styles={{ height: 115, width: 500, zIndex: 100, ...styles }}
-      contentAreaStyles={{ background: 'none' }}>
+      contentAreaStyles={{ background: 'none', overflow: 'hidden', padding: 0 }}
+    >
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
-        }}>
+        }}
+      >
         <div style={{ display: 'flex', gap: 5 }}>
           <TextInput
             name="sessionName"
@@ -65,7 +67,8 @@ function BoxPrompt(props: {
               height: 33,
             }}
             type="button"
-            onClick={handleOnSendMessageClick}>
+            onClick={handleOnSendMessageClick}
+          >
             Send
           </button>
         </div>

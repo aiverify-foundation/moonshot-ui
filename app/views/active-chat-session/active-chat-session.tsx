@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { useEffect, useRef } from 'react';
-import { ChatWindow } from '../moonshot-desktop/window-chatbox';
+import { ChatWindow } from '../moonshot-desktop/components/window-chatbox';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 import { lerp } from '@/app/lib/math-helpers';
 import { getWindowId, getWindowScrollTop, getWindowSize, getWindowXY } from '@/app/lib/window';
@@ -90,26 +90,30 @@ function ActiveChatSession() {
           initialScrollTop={getWindowScrollTop(windowsMap, id)}
           onCloseClick={() => null}
           onWindowChange={handleOnWindowChange}
-          onWheel={handleWheel}>
+          onWheel={handleWheel}
+        >
           {!activeSessionChatHistory.chat_history
             ? null
             : activeSessionChatHistory.chat_history[id].map((dialogue, index) => {
                 return (
                   <div
                     key={index}
-                    style={{ display: 'flex', flexDirection: 'column', paddingRight: 10 }}>
+                    style={{ display: 'flex', flexDirection: 'column', paddingRight: 10 }}
+                  >
                     <div style={{ color: 'black', textAlign: 'right', paddingRight: 10 }}>You</div>
                     <ChatWindow.TalkBubble
                       backgroundColor="#a3a3a3"
                       fontColor="#FFF"
-                      styles={{ alignSelf: 'flex-end' }}>
+                      styles={{ alignSelf: 'flex-end' }}
+                    >
                       {dialogue.prepared_prompt}
                     </ChatWindow.TalkBubble>
                     <div style={{ color: 'black', textAlign: 'left', paddingLeft: 10 }}>LLM</div>
                     <ChatWindow.TalkBubble
                       backgroundColor="#3498db"
                       fontColor="#FFF"
-                      styles={{ textAlign: 'right' }}>
+                      styles={{ textAlign: 'left' }}
+                    >
                       {dialogue.predicted_result}
                     </ChatWindow.TalkBubble>
                   </div>

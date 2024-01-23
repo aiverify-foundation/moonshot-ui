@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { debounce } from '../lib/throttle';
+import { useAppDispatch, useAppSelector } from '@/lib/redux';
+import { updateFocusedWindowId } from '@/lib/redux/slices/windowsSlice';
 
 enum WindowState {
   drag,
@@ -9,7 +11,7 @@ enum WindowState {
 }
 
 type WindowProps = {
-  id?: string;
+  id: string;
   name: string;
   initialXY?: [number, number];
   initialWindowSize?: [number, number];
@@ -23,7 +25,7 @@ type WindowProps = {
   resizeable?: boolean;
   disableCloseIcon?: boolean;
   onCloseClick?: () => void;
-  onWheel: (e: React.WheelEvent<HTMLDivElement>) => void;
+  onWheel?: (e: React.WheelEvent<HTMLDivElement>) => void;
   onWindowChange?: (
     x: number,
     y: number,
@@ -59,18 +61,23 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props: WindowProps, ref)
   const windowRef = useRef<HTMLDivElement>(null);
   const scrollDivRef = useRef<HTMLDivElement>(null);
   const prevMouseXY = useRef([0, 0]);
+  const selectedWindowId = useAppSelector((state) => state.windows.focusedWindowId);
+  const dispatch = useAppDispatch();
 
-  useImperativeHandle(ref, () => scrollDivRef.current);
+  useImperativeHandle(ref, () => scrollDivRef.current as HTMLDivElement);
 
   function handleMouseDown(e: React.MouseEvent) {
     e.stopPropagation();
     if (!windowRef.current) return;
     prevMouseXY.current = [e.clientX, e.clientY];
+    windowRef.current.style.zIndex = '9999';
     setWindowState(WindowState.drag);
+    dispatch(updateFocusedWindowId(id));
   }
 
   function handleContentAreaMouseDown(e: React.MouseEvent) {
     e.stopPropagation();
+    dispatch(updateFocusedWindowId(id));
   }
 
   function handleCloseIconMouseDown(e: React.MouseEvent) {
@@ -108,7 +115,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props: WindowProps, ref)
         windowSize[0],
         windowSize[1],
         scrollDivRef.current?.scrollTop || 0,
-        id || name
+        id
       );
     }
   }
@@ -125,7 +132,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props: WindowProps, ref)
         windowSize[0],
         windowSize[1],
         scrollDivRef.current?.scrollTop || 0,
-        id || name
+        id
       );
     }
   }
@@ -187,14 +194,17 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props: WindowProps, ref)
         paddingTop: 5,
         color: '#FFF',
         ...styles,
+        zIndex: selectedWindowId === id ? 9999 : 'auto',
       }}
-      onMouseDown={handleMouseDown}>
+      onMouseDown={handleMouseDown}
+    >
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div
           style={{
             fontSize: 14,
             paddingBottom: 5,
-          }}>
+          }}
+        >
           {name}
         </div>
         {!disableCloseIcon ? (
@@ -222,11 +232,13 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props: WindowProps, ref)
           overflowX: 'hidden',
           scrollbarWidth: 'thin',
           scrollbarColor: '#888 #444',
+          padding: 10,
           ...contentAreaStyles,
         }}
         onMouseDown={handleContentAreaMouseDown}
         onScroll={debouncedOnScroll}
-        onWheel={onWheel}>
+        onWheel={onWheel}
+      >
         {children}
       </div>
       {resizeable ? (

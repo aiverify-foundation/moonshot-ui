@@ -4,19 +4,16 @@ import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Window } from '@components/window';
-import { WindowCreateSession } from './window-create-session';
-import { BoxPrompt } from './box-prompt';
+import { WindowCreateSession } from './components/window-create-session';
+import { BoxPrompt } from './components/box-prompt';
 import TaskBar from '@components/taskbar';
 import Menu from '@components/menu';
 import FolderIcon from '@components/folder-icon';
 import JSONEditor from '@components/json-editor';
 import Icon from '@components/icon';
 import { useCreateSessionMutation, useSendPromptMutation } from './services/session-api-service';
-import { WindowSavedSessions } from './window-saved-sessions';
+import { WindowSavedSessions } from './components/window-saved-sessions';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
-import { ChatWindow } from './window-chatbox';
-import { lerp } from '@/app/lib/math-helpers';
-import { produce } from 'immer';
 import {
   removeActiveSession,
   setActiveSession,
@@ -62,7 +59,8 @@ function SessionTask(props: SessionTaskProps) {
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
         cursor: 'pointer',
         color: '#FFF',
-      }}>
+      }}
+    >
       <Image
         src="icons/chat_icon_white.svg"
         alt="cookbooks"
@@ -166,7 +164,8 @@ export default function MoonshotDesktop() {
         height: '100vh',
         backgroundImage:
           'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #434343, black)',
-      }}>
+      }}
+    >
       <TaskBar>
         <Menu />
       </TaskBar>
@@ -181,7 +180,8 @@ export default function MoonshotDesktop() {
             alignItems: 'center',
             flexDirection: 'column',
             width: 150,
-          }}>
+          }}
+        >
           <FolderIcon name="Cookbooks" onClick={() => setIsWindowOpen(true)} />
           <FolderIcon name="Recipes" />
           <FolderIcon name="Endpoints" />
@@ -200,7 +200,8 @@ export default function MoonshotDesktop() {
             alignItems: 'center',
             flexDirection: 'column',
             width: 150,
-          }}>
+          }}
+        >
           <Icon
             width={50}
             height={50}
@@ -217,7 +218,8 @@ export default function MoonshotDesktop() {
           <ul style={{ color: '#494848', padding: 15 }}>
             <li
               style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer' }}
-              onClick={() => setIsJsonEditorOpen(true)}>
+              onClick={() => setIsJsonEditorOpen(true)}
+            >
               legal-summarisation.json
             </li>
             <li style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer' }}>
@@ -255,13 +257,15 @@ export default function MoonshotDesktop() {
 
       {isJsonEditorOpen ? (
         <Window
+          id="json-editor"
           name="legal-summarisation.json"
           initialXY={[800, 300]}
           onCloseClick={() => setIsJsonEditorOpen(false)}
           styles={{
             width: 510,
             zIndex: 100,
-          }}>
+          }}
+        >
           <JSONEditor placeholder={legalSummarisation} />
         </Window>
       ) : null}
@@ -290,7 +294,8 @@ export default function MoonshotDesktop() {
           styles={{ width: 800 }}
           name="Prompt Templates"
           initialXY={[950, 370]}
-          onCloseClick={() => setIsShowPromptTemplates(false)}>
+          onCloseClick={() => setIsShowPromptTemplates(false)}
+        >
           <div style={{ display: 'flex' }}>
             <ul style={{ color: '#494848', padding: 15 }}>
               <li
@@ -298,112 +303,128 @@ export default function MoonshotDesktop() {
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
                 }}
-                onClick={() => setIsShowPromptPreview(true)}>
+                onClick={() => setIsShowPromptPreview(true)}
+              >
                 advglue-templatemnli
               </li>
               <li
                 style={{
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
-                }}>
+                }}
+              >
                 advglue-templateqnli
               </li>
               <li
                 style={{
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
-                }}>
+                }}
+              >
                 advglue-templateqqp
               </li>
               <li
                 style={{
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
-                }}>
+                }}
+              >
                 advglue-templaterte
               </li>
               <li
                 style={{
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
-                }}>
+                }}
+              >
                 advglue-templatesst2
               </li>
               <li
                 style={{
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
-                }}>
+                }}
+              >
                 analogical-similarity
               </li>
               <li
                 style={{
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
-                }}>
+                }}
+              >
                 auto-categorisation
               </li>
               <li
                 style={{
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
-                }}>
+                }}
+              >
                 bbq-template1
               </li>
               <li
                 style={{
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
-                }}>
+                }}
+              >
                 cause-and-effect-one-sentence
               </li>
               <li
                 style={{
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
-                }}>
+                }}
+              >
                 cause-and-effect-two-sentence
               </li>
               <li
                 style={{
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
-                }}>
+                }}
+              >
                 contextual-parametric-knowledge-conflicts
               </li>
               <li
                 style={{
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
-                }}>
+                }}
+              >
                 coqa-conversational-question-answering
               </li>
               <li
                 style={{
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
-                }}>
+                }}
+              >
                 enronemail-templatea
               </li>
               <li
                 style={{
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
-                }}>
+                }}
+              >
                 enronemail-templateb
               </li>
               <li
                 style={{
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
-                }}>
+                }}
+              >
                 enronemail-templatec
               </li>
               <li
                 style={{
                   borderBottom: '1px solid #dbdada',
                   cursor: 'pointer',
-                }}>
+                }}
+              >
                 enronemail-templated
               </li>
             </ul>
@@ -413,7 +434,8 @@ export default function MoonshotDesktop() {
                   display: 'flex',
                   flexDirection: 'column',
                   paddingTop: 15,
-                }}>
+                }}
+              >
                 <h2 style={{ marginTop: 20, color: '#000', marginBottom: 10 }}>
                   advglue-templatemnli
                 </h2>

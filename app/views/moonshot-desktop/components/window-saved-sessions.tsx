@@ -1,9 +1,9 @@
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
-import useSessionList from './hooks/useSessionList';
+import useSessionList from '../hooks/useSessionList';
 import { useEffect, useState } from 'react';
-import { useLazyGetSessionQuery } from './services/session-api-service';
+import { useLazyGetSessionQuery } from '../services/session-api-service';
 import { useAppDispatch } from '@/lib/redux';
 import { setActiveSession } from '@/lib/redux/slices/activeSessionSlice';
 
