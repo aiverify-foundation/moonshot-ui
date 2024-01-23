@@ -92,13 +92,15 @@ function ActiveChatSession(props: ActiveSessionProps) {
 
   useEffect(() => {
     if (activeSessionChatHistory && activeSessionChatHistory.chats.length) {
-      const wins: Record<string, WindowData> = {};
+      const chatWindows: Record<string, WindowData> = {};
+      const chatboxWidth = 400;
+      const margin = 250;
+      const spacing = 50;
       activeSessionChatHistory.chats.forEach((id, index) => {
-        const leftPos =
-          lerp(0, window.innerWidth, index / activeSessionChatHistory.chats.length) + 250;
-        wins[getWindowId(id)] = [leftPos, 100, 600, 450, 0];
+        const leftPos = index === 0 ? margin : margin + chatboxWidth * index + spacing;
+        chatWindows[getWindowId(id)] = [leftPos, 100, chatboxWidth, 450, 0];
       });
-      dispatch(updateWindows(wins));
+      dispatch(updateWindows(chatWindows));
     }
   }, []);
 
@@ -144,8 +146,8 @@ function ActiveChatSession(props: ActiveSessionProps) {
               {!activeSessionChatHistory.chat_history
                 ? null
                 : activeSessionChatHistory.chat_history[id].map((dialogue, index) => {
-                    const length = activeSessionChatHistory.chat_history[id].length;
-                    const isLast = index === length - 1;
+                    // const length = activeSessionChatHistory.chat_history[id].length;
+                    // const isLast = index === length - 1;
                     return (
                       <div
                         key={index}
@@ -162,13 +164,14 @@ function ActiveChatSession(props: ActiveSessionProps) {
                         <ChatWindow.TalkBubble
                           backgroundColor="#a3a3a3"
                           fontColor="#FFF"
-                          styles={{ alignSelf: 'flex-end' }}>
+                          styles={{ alignSelf: 'flex-end', maxWidth: '90%' }}>
                           {dialogue.prepared_prompt}
                         </ChatWindow.TalkBubble>
                         <div
                           style={{
                             color: 'black',
                             textAlign: 'left',
+                            maxWidth: '90%',
                             paddingLeft: 10,
                             fontSize: 12,
                           }}>

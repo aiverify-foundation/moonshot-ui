@@ -3,7 +3,10 @@ import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
 import useSessionList from '../hooks/useSessionList';
 import { useEffect, useState } from 'react';
-import { useLazyGetSessionQuery } from '../services/session-api-service';
+import {
+  useLazyGetSessionQuery,
+  useLazySetActiveSessionQuery,
+} from '../services/session-api-service';
 import { useAppDispatch } from '@/lib/redux';
 import { setActiveSession } from '@/lib/redux/slices/activeSessionSlice';
 
@@ -16,7 +19,9 @@ function WindowSavedSessions(props: WindowSavedSessionsProps) {
   const { onCloseClick, onContinueSessionClick } = props;
   const [selectedSession, setSelectedSession] = useState<Session>();
   const { isLoading, error, sessions } = useSessionList();
-  const [trigger, { data: sessionWithChatHistory }] = useLazyGetSessionQuery();
+  const [triggerGetSession] = useLazyGetSessionQuery();
+  const [triggerSetActiveSession] = useLazySetActiveSessionQuery();
+
   const dispatch = useAppDispatch();
 
   function handleListItemClick(id: string) {
@@ -26,19 +31,17 @@ function WindowSavedSessions(props: WindowSavedSessionsProps) {
     }
   }
 
-  function handleContinueSessionClick() {
+  async function handleContinueSessionClick() {
     if (selectedSession) {
-      trigger(selectedSession);
+      const result = await triggerGetSession(selectedSession);
+      console.log(result);
+      if (result.data) {
+        const setActiveSessionResult = await triggerSetActiveSession(result.data.session_id);
+        dispatch(setActiveSession(result.data));
+        onContinueSessionClick();
+      }
     }
   }
-
-  useEffect(() => {
-    if (sessionWithChatHistory) {
-      console.log(sessionWithChatHistory);
-      dispatch(setActiveSession(sessionWithChatHistory));
-      onContinueSessionClick();
-    }
-  }, [sessionWithChatHistory, dispatch, onCloseClick]);
 
   return (
     <Window

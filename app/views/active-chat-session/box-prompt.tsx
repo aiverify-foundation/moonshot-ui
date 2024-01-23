@@ -32,7 +32,10 @@ function BoxPrompt(props: {
     ['prompt-template-list', 'box-prompt-text-input', 'prompt-template-trigger'],
     () => {
       setShowPromptTemplateList(false);
-      setTextInputMode(TextInputMode.PROMPT_LLM);
+      if (textInputMode === TextInputMode.FILTER_LIST) {
+        setPromptMessage('');
+        setTextInputMode(TextInputMode.PROMPT_LLM);
+      }
     }
   );
 
