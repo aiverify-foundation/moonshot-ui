@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { Window } from '@components/window';
 import { WindowCreateSession } from './components/window-create-session';
-import { BoxPrompt } from './components/box-prompt';
+import { BoxPrompt } from '../active-chat-session/box-prompt';
 import TaskBar from '@components/taskbar';
 import Menu from '@components/menu';
 import FolderIcon from '@components/folder-icon';

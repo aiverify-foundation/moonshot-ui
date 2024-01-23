@@ -10,8 +10,8 @@ const promptTemplateApi = createApi({
     getPromptTemplates: builder.query<PromptTemplate[], void>({
       query: () => 'api/v1/prompt_templates',
     }),
-    usePromptTemplate: builder.mutation<PromptTemplate, { templateName: string }>({
-      query: ({ templateName }) => ({
+    usePromptTemplate: builder.mutation<PromptTemplate, string>({
+      query: (templateName) => ({
         url: `api/v1/prompt_templates/${templateName}`,
         method: 'PUT',
       }),

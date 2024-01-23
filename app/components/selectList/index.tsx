@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 type ListItem = {
   id: string;
   displayName: string;
@@ -7,11 +9,13 @@ type SelectListProps = {
   id: string;
   data: ListItem[];
   styles?: React.CSSProperties;
+  highlight?: string;
   onItemClick?: (item: ListItem) => void;
 };
 
 function SelectList(props: SelectListProps) {
-  const { id, data, styles, onItemClick } = props;
+  const { id, data, styles, highlight, onItemClick } = props;
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   function handleItemClick(item: ListItem) {
     if (onItemClick) {
@@ -19,13 +23,35 @@ function SelectList(props: SelectListProps) {
     }
   }
 
+  function handleKeyPress(event: KeyboardEvent) {
+    if (event.key === 'Enter' && highlight) {
+      const index = data.findIndex((item) => item.displayName.startsWith(highlight));
+      if (index !== -1) {
+        handleItemClick(data[index]);
+      }
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress);
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [highlight, data, handleItemClick]);
+
+  useEffect(() => {
+    const index = data.findIndex((item) => item.displayName.startsWith(highlight || ''));
+    if (index !== -1 && itemRefs.current[index]) {
+      itemRefs.current[index]?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [highlight, data]);
+
   return (
     <div
       id={id}
       className="custom-scrollbar"
       style={{
-        border: '1px solid lightGray',
-        borderRadius: 2,
+        borderRadius: 4,
         background: 'white',
         color: 'black',
         maxHeight: 200,
@@ -34,18 +60,34 @@ function SelectList(props: SelectListProps) {
         fontSize: 13,
         ...styles,
       }}>
-      {data.map((item) => (
-        <div
-          key={item.id}
-          style={{
-            padding: '10px',
-            cursor: 'pointer',
-            borderBottom: '1px solid lightGray',
-          }}
-          onClick={() => handleItemClick(item)}>
-          {item.displayName}
-        </div>
-      ))}
+      {data.map((item, index) => {
+        const firstMatchIndex = data.findIndex(
+          (item) => highlight && item.displayName.toLowerCase().startsWith(highlight.toLowerCase())
+        );
+        const isHighlighted = index === firstMatchIndex;
+        return (
+          <div
+            ref={(el) => (itemRefs.current[index] = el)}
+            key={item.id}
+            className={`p-2 cursor-pointer border-b border-lightGray ${
+              isHighlighted ? 'bg-e7e7e7' : 'bg-white'
+            } hover:bg-e7e7e7`}
+            onClick={() => handleItemClick(item)}>
+            {isHighlighted ? (
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: item.displayName.replace(
+                    new RegExp(`^(${highlight})`, 'gi'),
+                    '<mark><b>$1</b></mark>'
+                  ),
+                }}
+              />
+            ) : (
+              item.displayName
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

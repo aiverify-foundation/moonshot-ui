@@ -1,27 +1,39 @@
 import Image from 'next/image';
-import { TextInput } from '../../../components/textInput';
-import { Window } from '../../../components/window';
+import { TextInput } from '../../components/textInput';
+import { Window } from '../../components/window';
 import { useEffect, useState } from 'react';
-import usePromptTemplateList from '../hooks/usePromptTemplateList';
+import usePromptTemplateList from '../moonshot-desktop/hooks/usePromptTemplateList';
 import { ListItem, SelectList } from '@/app/components/selectList';
 import useOutsideClick from '@/app/hooks/use-outside-click';
 import { getWindowId } from '@/app/lib/window';
+
+enum TextInputMode {
+  PROMPT_LLM,
+  SLASH_COMMAND,
+  FILTER_LIST,
+}
 
 function BoxPrompt(props: {
   name: string;
   children?: React.ReactNode;
   styles?: React.CSSProperties;
   onCloseClick?: () => void;
-  onPromptTemplateClick?: () => void;
+  onSelectPromptTemplate: (item: PromptTemplate) => void;
   onSendClick: (message: string) => void;
 }) {
-  const { onCloseClick, onPromptTemplateClick, onSendClick, styles } = props;
+  const { onCloseClick, onSelectPromptTemplate, onSendClick, styles } = props;
   const [promptMessage, setPromptMessage] = useState('');
   const { promptTemplates, error, isLoading } = usePromptTemplateList();
   const [showPromptTemplateList, setShowPromptTemplateList] = useState(false);
+  const [textInputMode, setTextInputMode] = useState<TextInputMode>(TextInputMode.PROMPT_LLM);
+  const [selectedPromptTemplate, setSelectedPromptTemplate] = useState<PromptTemplate>();
   const [listItems, setListItems] = useState<ListItem[]>([]);
-  useOutsideClick(['prompt-template-list', 'box-prompt-text-input'], () =>
-    setShowPromptTemplateList(false)
+  useOutsideClick(
+    ['prompt-template-list', 'box-prompt-text-input', 'prompt-template-trigger'],
+    () => {
+      setShowPromptTemplateList(false);
+      setTextInputMode(TextInputMode.PROMPT_LLM);
+    }
   );
 
   function handleTextChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -40,8 +52,18 @@ function BoxPrompt(props: {
     }
   }
 
-  function handlePromptTemplateClick() {
-    setShowPromptTemplateList(true);
+  function handleTogglePromptTemplateList() {
+    setShowPromptTemplateList((prev) => !prev);
+    setTextInputMode(TextInputMode.FILTER_LIST);
+  }
+
+  function handlePromptTemplateClick(item: ListItem) {
+    const selected = promptTemplates.find((pt) => pt.name === item.id);
+    setSelectedPromptTemplate(selected);
+    if (selected) {
+      onSelectPromptTemplate(selected);
+    }
+    setShowPromptTemplateList(false);
   }
 
   useEffect(() => {
@@ -74,7 +96,9 @@ function BoxPrompt(props: {
           <TextInput
             id="box-prompt-text-input"
             name="sessionName"
-            placeholder="Message"
+            placeholder={
+              textInputMode === TextInputMode.FILTER_LIST ? 'Search Prompt Templates' : 'Message'
+            }
             style={{ width: 400 }}
             onChange={handleTextChange}
             value={promptMessage}
@@ -97,7 +121,10 @@ function BoxPrompt(props: {
           </button>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
-          <div style={{ display: 'flex ', alignItems: 'center' }}>
+          <div
+            id="prompt-template-trigger"
+            style={{ display: 'flex ', alignItems: 'center', cursor: 'pointer' }}
+            onClick={handleTogglePromptTemplateList}>
             <Image
               src="icons/prompt_template.svg"
               alt="close"
@@ -107,7 +134,6 @@ function BoxPrompt(props: {
                 cursor: 'pointer',
                 marginRight: 3,
               }}
-              onClick={handlePromptTemplateClick}
             />
             <div style={{ fontSize: 11 }}> Prompt Template </div>
           </div>
@@ -130,7 +156,8 @@ function BoxPrompt(props: {
             id="prompt-template-list"
             data={listItems}
             styles={{ position: 'absolute', top: -90, left: 350, width: 300 }}
-            onItemClick={onPromptTemplateClick}
+            highlight={textInputMode === TextInputMode.FILTER_LIST ? promptMessage : undefined}
+            onItemClick={handlePromptTemplateClick}
           />
         )}
       </div>

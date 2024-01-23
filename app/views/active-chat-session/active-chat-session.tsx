@@ -5,7 +5,8 @@ import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 import { lerp } from '@/app/lib/math-helpers';
 import { getWindowId, getWindowScrollTop, getWindowSize, getWindowXY } from '@/app/lib/window';
 import { useSendPromptMutation } from '../moonshot-desktop/services/session-api-service';
-import { BoxPrompt } from '../moonshot-desktop/components/box-prompt';
+import { BoxPrompt } from './box-prompt';
+import { useUsePromptTemplateMutation } from '../moonshot-desktop/services/prompt-template-api-service';
 
 type ActiveSessionProps = {
   onCloseBtnClick: () => void;
@@ -20,6 +21,14 @@ function ActiveChatSession(props: ActiveSessionProps) {
     sendPrompt,
     { data: updatedSessionChatHistory, isLoading: sendPromptIsLoading, error: sendPromptError },
   ] = useSendPromptMutation();
+  const [
+    triggerSetPromptTemplate,
+    {
+      data: promptTemplateResult,
+      isLoading: promptTemplateResultIsLoding,
+      error: promptTemplateResultError,
+    },
+  ] = useUsePromptTemplateMutation();
   const dispatch = useAppDispatch();
   const chatBoxRefs = useRef<HTMLDivElement[]>([]);
   const isZKeyPressed = useRef(false);
@@ -74,6 +83,11 @@ function ActiveChatSession(props: ActiveSessionProps) {
       prompt: message,
       session_id: activeSessionChatHistory.session_id,
     });
+  }
+
+  async function handleSelectPromptTemplate(template: PromptTemplate) {
+    const result = await triggerSetPromptTemplate(template.name);
+    console.log(result);
   }
 
   useEffect(() => {
@@ -205,7 +219,12 @@ function ActiveChatSession(props: ActiveSessionProps) {
         }
       })}
 
-      <BoxPrompt name="Prompt" onCloseClick={onCloseBtnClick} onSendClick={handleSendPromptClick} />
+      <BoxPrompt
+        name="Prompt"
+        onCloseClick={onCloseBtnClick}
+        onSendClick={handleSendPromptClick}
+        onSelectPromptTemplate={handleSelectPromptTemplate}
+      />
     </div>
   );
 }
