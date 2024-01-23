@@ -77,22 +77,12 @@ function SessionTask(props: SessionTaskProps) {
 export default function MoonshotDesktop() {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [isChatSessionOpen, setIsChatSessionOpen] = useState(false);
-  const [isChatPromptOpen, setIsChatPromptOpen] = useState(false);
   const [isJsonEditorOpen, setIsJsonEditorOpen] = useState(false);
   const [isShowWindowCreateSession, setIsShowWindowCreateSession] = useState(false);
   const [isShowWindowSavedSession, setIsShowWindowSavedSession] = useState(false);
-  const [isTransitionPrompt, setIsTransitionPrompt] = useState(false);
   const [isShowPromptTemplates, setIsShowPromptTemplates] = useState(false);
   const [isShowPromptPreview, setIsShowPromptPreview] = useState(false);
-  const [windowsData, setWindowsData] = useState<
-    Record<string, [number | undefined, number | undefined, number | undefined, number | undefined]>
-  >({});
-  const activeSessionChatHistory = useAppSelector((state) => state.activeSession.entity);
   const dispatch = useAppDispatch();
-  const [
-    sendPrompt,
-    { data: updatedSessionChatHistory, isLoading: sendPromptIsLoading, error: sendPromptError },
-  ] = useSendPromptMutation();
   const [
     createSession,
     { data: newSession, isLoading: createSessionIsLoding, error: createSessionError },
@@ -106,56 +96,17 @@ export default function MoonshotDesktop() {
     });
     dispatch(setActiveSession(response.data));
     setIsShowWindowCreateSession(false);
-    setIsTransitionPrompt(true);
-    setIsChatPromptOpen(true);
   }
 
   function handleContinueSessionClick() {
     setIsShowWindowSavedSession(false);
-    setIsTransitionPrompt(true);
-    setIsChatPromptOpen(true);
+    setIsChatSessionOpen(true);
   }
 
   function handlePromptWindowCloseClick() {
-    setIsChatPromptOpen(false);
     setIsChatSessionOpen(false);
     dispatch(removeActiveSession());
   }
-
-  function handleSendPromptClick(message: string) {
-    if (!activeSessionChatHistory) return;
-    sendPrompt({
-      prompt: message,
-      session_id: activeSessionChatHistory.session_id,
-    });
-  }
-
-  function handleOnWindowDragDrop(x: number, y: number, windowId: string) {
-    setWindowsData((prev) => {
-      if (!prev[windowId]) {
-        return { [windowId]: [x, y, undefined, undefined] };
-      } else {
-        return {
-          ...prev,
-          [windowId]: [x, y, prev[windowId][2], prev[windowId][3]],
-        };
-      }
-    });
-  }
-
-  useEffect(() => {
-    if (!updatedSessionChatHistory) return;
-    dispatch(updateChatHistory(updatedSessionChatHistory));
-  }, [updatedSessionChatHistory, dispatch]);
-
-  useEffect(() => {
-    if (isChatPromptOpen) {
-      setIsTransitionPrompt(true);
-      setTimeout(() => {
-        setIsChatSessionOpen(true);
-      }, 1000);
-    }
-  }, [isChatPromptOpen]);
 
   return (
     <div
@@ -233,21 +184,8 @@ export default function MoonshotDesktop() {
           onStartClick={startNewSession}
         />
       ) : null}
-      {isChatSessionOpen ? <ActiveChatSession /> : null}
-
-      {isChatPromptOpen ? (
-        <BoxPrompt
-          styles={{
-            opacity: isTransitionPrompt ? 1 : 0,
-            transition: 'opacity 1s ease',
-          }}
-          name="Prompt"
-          onPromptTemplateClick={() => {
-            setIsShowPromptTemplates(true);
-          }}
-          onCloseClick={handlePromptWindowCloseClick}
-          onSendClick={handleSendPromptClick}
-        />
+      {isChatSessionOpen ? (
+        <ActiveChatSession onCloseBtnClick={handlePromptWindowCloseClick} />
       ) : null}
 
       {isJsonEditorOpen ? (

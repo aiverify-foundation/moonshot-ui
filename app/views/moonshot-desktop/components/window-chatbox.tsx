@@ -102,7 +102,6 @@ function LoadingAnimation(props: LoadingAnimationProps) {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 100,
         ...styles,
       }}>
       <div

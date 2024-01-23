@@ -20,7 +20,7 @@ function BoxPrompt(props: {
   const { promptTemplates, error, isLoading } = usePromptTemplateList();
   const [showPromptTemplateList, setShowPromptTemplateList] = useState(false);
   const [listItems, setListItems] = useState<ListItem[]>([]);
-  useOutsideClick(['prompt-template-list', getWindowId('box-prompt')], () =>
+  useOutsideClick(['prompt-template-list', 'box-prompt-text-input'], () =>
     setShowPromptTemplateList(false)
   );
 
@@ -45,7 +45,6 @@ function BoxPrompt(props: {
   }
 
   useEffect(() => {
-    console.log(promptTemplates);
     const list: ListItem[] = promptTemplates.map((pt) => ({ id: pt.name, displayName: pt.name }));
     setListItems(list);
   }, [promptTemplates]);
@@ -73,6 +72,7 @@ function BoxPrompt(props: {
         }}>
         <div style={{ display: 'flex', gap: 5 }}>
           <TextInput
+            id="box-prompt-text-input"
             name="sessionName"
             placeholder="Message"
             style={{ width: 400 }}
@@ -111,7 +111,7 @@ function BoxPrompt(props: {
             />
             <div style={{ fontSize: 11 }}> Prompt Template </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          {/* <div style={{ display: 'flex', alignItems: 'center' }}>
             <Image
               src="icons/context_strategy_icon.svg"
               alt="close"
@@ -123,7 +123,7 @@ function BoxPrompt(props: {
               }}
             />
             <div style={{ fontSize: 11 }}> Context Strategy </div>
-          </div>
+          </div> */}
         </div>
         {showPromptTemplateList && (
           <SelectList

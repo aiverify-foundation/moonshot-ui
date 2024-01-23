@@ -3,6 +3,7 @@ import styles from './styles/textInput.module.css';
 import clsx from 'clsx';
 
 type TextInputProps = {
+  id?: string;
   name: string;
   label?: string;
   placeholder?: string;
@@ -20,6 +21,7 @@ type TextInputProps = {
 
 function TextInput(props: TextInputProps) {
   const {
+    id,
     name,
     label,
     placeholder,
@@ -32,15 +34,13 @@ function TextInput(props: TextInputProps) {
     inputStyle,
     onChange,
     onBlur,
-    onKeyDown
+    onKeyDown,
   } = props;
 
   return (
     <div
-      className={clsx(
-        styles.textInput,
-        error !== undefined ? styles.inputError : null
-      )}
+      id={id}
+      className={clsx(styles.textInput, error !== undefined ? styles.inputError : null)}
       style={style}>
       <label>
         {label !== '' && label !== undefined ? (
@@ -61,9 +61,7 @@ function TextInput(props: TextInputProps) {
           onKeyDown={onKeyDown}
           style={inputStyle}
         />
-        {Boolean(error) ? (
-          <div className={styles.errorText}>{error}</div>
-        ) : null}
+        {Boolean(error) ? <div className={styles.errorText}>{error}</div> : null}
       </label>
     </div>
   );
