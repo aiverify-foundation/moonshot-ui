@@ -58,6 +58,10 @@ const sessionApi = createApi({
       query: ({ session_id }) => ({ url: `api/v1/sessions/${session_id}` }),
       transformResponse: (response: { session: Session }) => response.session,
     }),
+    setActiveSession: builder.query<Session, string>({
+      query: (session_id) => ({ url: `api/v1/sessions/${session_id}`, method: 'PUT' }),
+      transformResponse: (response: { session: Session }) => response.session,
+    }),
     sendPrompt: builder.mutation<ChatHistory, SendPromptQueryParams>({
       query: ({ session_id, prompt, include_history = false, history_length = 50 }) => ({
         url: `api/v1/sessions/${session_id}/prompt?include_history=${include_history}&length=${history_length}`,
@@ -75,6 +79,7 @@ const {
   useLazyGetSessionQuery,
   useSendPromptMutation,
   useCreateSessionMutation,
+  useLazySetActiveSessionQuery,
 } = sessionApi;
 
 export {
@@ -85,4 +90,5 @@ export {
   useLazyGetSessionQuery,
   useSendPromptMutation,
   useCreateSessionMutation,
+  useLazySetActiveSessionQuery,
 };
