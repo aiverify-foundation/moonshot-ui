@@ -96,7 +96,7 @@ function BoxPrompt(props: {
       resizeable={false}
       name="Prompt"
       onCloseClick={onCloseClick}
-      styles={{ overflow: 'show', position: 'relative', ...styles }}
+      styles={{ overflow: 'show', position: 'absolute', ...styles }}
       contentAreaStyles={{
         background: 'none',
         padding: 0,
