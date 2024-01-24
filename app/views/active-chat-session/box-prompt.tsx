@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import { TextInput } from '../../components/textInput';
 import { Window } from '../../components/window';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ListItem, SelectList } from '@/app/components/selectList';
 import useOutsideClick from '@/app/hooks/use-outside-click';
 import { getWindowId } from '@/app/lib/window';
+import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 
 enum TextInputMode {
   PROMPT_LLM,
@@ -17,15 +18,22 @@ function BoxPrompt(props: {
   children?: React.ReactNode;
   styles?: React.CSSProperties;
   promptTemplates: PromptTemplate[];
+  activePromptTemplate?: PromptTemplate;
   onCloseClick?: () => void;
-  onSelectPromptTemplate: (item: PromptTemplate) => void;
+  onSelectPromptTemplate: (item: PromptTemplate | undefined) => void;
   onSendClick: (message: string) => void;
 }) {
-  const { promptTemplates, onCloseClick, onSelectPromptTemplate, onSendClick, styles } = props;
+  const {
+    promptTemplates,
+    onCloseClick,
+    activePromptTemplate,
+    onSelectPromptTemplate,
+    onSendClick,
+    styles,
+  } = props;
   const [promptMessage, setPromptMessage] = useState('');
   const [showPromptTemplateList, setShowPromptTemplateList] = useState(false);
   const [textInputMode, setTextInputMode] = useState<TextInputMode>(TextInputMode.PROMPT_LLM);
-  const [selectedPromptTemplate, setSelectedPromptTemplate] = useState<PromptTemplate>();
   const [listItems, setListItems] = useState<ListItem[]>([]);
   useOutsideClick(
     ['prompt-template-list', 'box-prompt-text-input', 'prompt-template-trigger'],
@@ -61,11 +69,18 @@ function BoxPrompt(props: {
 
   function handlePromptTemplateClick(item: ListItem) {
     const selected = promptTemplates.find((pt) => pt.name === item.id);
-    setSelectedPromptTemplate(selected);
     if (selected) {
       onSelectPromptTemplate(selected);
     }
     setShowPromptTemplateList(false);
+    setPromptMessage('');
+    setTextInputMode(TextInputMode.PROMPT_LLM);
+  }
+
+  function handleRemoveActivePromptTemplate(e: React.MouseEvent<HTMLImageElement>) {
+    e.stopPropagation();
+    onSelectPromptTemplate(undefined);
+    setTextInputMode(TextInputMode.PROMPT_LLM);
   }
 
   useEffect(() => {
@@ -81,7 +96,7 @@ function BoxPrompt(props: {
       resizeable={false}
       name="Prompt"
       onCloseClick={onCloseClick}
-      styles={{ overflow: 'show', ...styles }}
+      styles={{ overflow: 'show', position: 'relative', ...styles }}
       contentAreaStyles={{
         background: 'none',
         padding: 0,
@@ -137,7 +152,27 @@ function BoxPrompt(props: {
                 marginRight: 3,
               }}
             />
-            <div style={{ fontSize: 11 }}> Prompt Template </div>
+            <div className="flex items-center text-xs">
+              Prompt Template
+              {activePromptTemplate && (
+                <div className="flex items-center">
+                  <div className="text-white ml-1">--</div>
+                  <div className="text-white ml-1">
+                    <div className="text-blue-500 text-sm flex">
+                      {activePromptTemplate.name}
+                      <Image
+                        src="icons/close_icon.svg"
+                        alt="close"
+                        width={14}
+                        height={14}
+                        className="ml-1 cursor-pointer"
+                        onClick={handleRemoveActivePromptTemplate}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
           {/* <div style={{ display: 'flex', alignItems: 'center' }}>
             <Image

@@ -181,23 +181,7 @@ export default function MoonshotDesktop() {
         />
       ) : null}
       {isChatSessionOpen ? (
-        <>
-          <ScreenOverlay>
-            <TaskBar>
-              <Image
-                src="icons/close_icon.svg"
-                alt="close"
-                width={24}
-                height={24}
-                style={{
-                  cursor: 'pointer',
-                }}
-                onClick={() => setIsChatSessionOpen(false)}
-              />
-            </TaskBar>
-          </ScreenOverlay>
-          <ActiveChatSession onCloseBtnClick={handlePromptWindowCloseClick} />
-        </>
+        <ActiveChatSession onCloseBtnClick={handlePromptWindowCloseClick} />
       ) : null}
 
       {isJsonEditorOpen ? (

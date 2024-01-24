@@ -5,7 +5,10 @@ import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 import { getWindowId, getWindowScrollTop, getWindowSize, getWindowXY } from '@/app/lib/window';
 import { useSendPromptMutation } from '../moonshot-desktop/services/session-api-service';
 import { BoxPrompt } from './box-prompt';
-import { useUsePromptTemplateMutation } from '../moonshot-desktop/services/prompt-template-api-service';
+import {
+  useUnusePromptTemplateMutation,
+  useUsePromptTemplateMutation,
+} from '../moonshot-desktop/services/prompt-template-api-service';
 import { setActiveSession, updateChatHistory } from '@/lib/redux/slices/activeSessionSlice';
 import usePromptTemplateList from '../moonshot-desktop/hooks/usePromptTemplateList';
 import { ScreenOverlay } from '@/app/components/screen-overlay';
@@ -21,7 +24,9 @@ function ActiveChatSession(props: ActiveSessionProps) {
   const activeSession = useAppSelector((state) => state.activeSession.entity);
   const { promptTemplates, error, isLoading } = usePromptTemplateList();
   const [promptText, setPromptText] = useState('');
-  const [selectedPromptTemplate, setSelectedPromptTemplate] = useState<PromptTemplate | null>(null);
+  const [selectedPromptTemplate, setSelectedPromptTemplate] = useState<PromptTemplate | undefined>(
+    undefined
+  );
   const windowsMap = useAppSelector((state) => state.windows.map);
   const [
     sendPrompt,
@@ -35,6 +40,14 @@ function ActiveChatSession(props: ActiveSessionProps) {
       error: promptTemplateResultError,
     },
   ] = useUsePromptTemplateMutation();
+  const [
+    triggerUnSetPromptTemplate,
+    {
+      data: unusePromptTemplateResult,
+      isLoading: unusePromptTemplateResultIsLoding,
+      error: unusePromptTemplateResultError,
+    },
+  ] = useUnusePromptTemplateMutation();
   const dispatch = useAppDispatch();
   const chatBoxRefs = useRef<HTMLDivElement[]>([]);
   const isZKeyPressed = useRef(false);
@@ -96,10 +109,14 @@ function ActiveChatSession(props: ActiveSessionProps) {
     }
   }
 
-  async function handleSelectPromptTemplate(template: PromptTemplate) {
+  async function handleSelectPromptTemplate(template: PromptTemplate | undefined) {
+    if (!template && activeSession && selectedPromptTemplate) {
+      const result = triggerUnSetPromptTemplate(selectedPromptTemplate.name);
+      setSelectedPromptTemplate(undefined);
+      return;
+    }
     setSelectedPromptTemplate(template);
-    const result = await triggerSetPromptTemplate(template.name);
-    console.log(result);
+    const result = await triggerSetPromptTemplate(template ? template.name : '');
   }
 
   useEffect(() => {
@@ -112,6 +129,10 @@ function ActiveChatSession(props: ActiveSessionProps) {
       }
     }
   }, [promptTemplates, activeSession]);
+
+  useEffect(() => {
+    console.log('selectedPromptTemplate', selectedPromptTemplate);
+  }, [selectedPromptTemplate]);
 
   useEffect(() => {
     if (activeSession && activeSession.chats.length) {
@@ -169,7 +190,8 @@ function ActiveChatSession(props: ActiveSessionProps) {
           />
           <div className="flex justify-start items-center h-full w-full">
             <h2 className="capitalize text-xl text-blue-500">
-              Session: <span className="font-bold text-white">{activeSession.name}</span>
+              Red Teaming Session:
+              <span className="font-bold text-white"> {activeSession.name}</span>
             </h2>
           </div>
         </TaskBar>
@@ -269,6 +291,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
         <BoxPrompt
           name="Prompt"
           promptTemplates={promptTemplates}
+          activePromptTemplate={selectedPromptTemplate}
           onCloseClick={onCloseBtnClick}
           onSendClick={handleSendPromptClick}
           onSelectPromptTemplate={handleSelectPromptTemplate}

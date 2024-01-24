@@ -47,7 +47,7 @@ function WindowSavedSessions(props: WindowSavedSessionsProps) {
       id="window-saved-sessions"
       resizeable
       initialXY={[600, 200]}
-      initialWindowSize={[600, 470]}
+      initialWindowSize={[720, 470]}
       onCloseClick={onCloseClick}
       name="Saved Sessions">
       <div
