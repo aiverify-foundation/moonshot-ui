@@ -23,5 +23,6 @@ const config: Config = {
       backgroundColor: ['hover'],
     },
   },
+  darkMode: 'class',
 };
 export default config;

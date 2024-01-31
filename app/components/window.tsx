@@ -46,7 +46,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props: WindowProps, ref)
     styles,
     contentAreaStyles,
     resizeable = true,
-    backgroundColor = '#00000080',
+    backgroundColor,
     boxShadowStyle = '0px 10px 10px #00000047',
     children,
     resizeHandleSize = 10,
@@ -181,77 +181,54 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props: WindowProps, ref)
     <div
       id={id}
       ref={windowRef}
+      className="absolute p-4 pt-1 rounded shadow-sm select-none dark:shadow-neutral-900 dark:bg-neutral-600/80 backdrop-blur-sm dark:text-white"
       style={{
-        userSelect: 'none',
-        position: 'absolute',
         left: initialPosition[0],
         top: initialPosition[1],
         backgroundColor,
-        boxShadow: boxShadowStyle,
-        backdropFilter: 'blur(10px)',
         width: windowSize[0],
         height: windowSize[1],
-        padding: 15,
-        paddingTop: 5,
-        color: '#FFF',
         ...styles,
         zIndex: selectedWindowId === id ? 9999 : 'auto',
       }}
       onMouseDown={handleMouseDown}>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div
-          style={{
-            fontSize: 14,
-            paddingBottom: 5,
-          }}>
-          {name}
+      <div className="flex flex-col w-full h-full">
+        <div className="flex justify-between w-full">
+          <div className="pb-1 text-sm">{name}</div>
+          {!disableCloseIcon ? (
+            <Image
+              src="icons/close_icon.svg"
+              alt="close"
+              width={16}
+              height={16}
+              className="cursor-pointer"
+              onClick={onCloseClick}
+              onMouseDown={handleCloseIconMouseDown}
+            />
+          ) : null}
         </div>
-        {!disableCloseIcon ? (
-          <Image
-            src="icons/close_icon.svg"
-            alt="close"
-            width={16}
-            height={16}
+        <div
+          ref={scrollDivRef}
+          className="size-full h-full bg-white p-2.5 custom-scrollbar overflow-y-auto overflow-x-hidden"
+          style={{
+            ...contentAreaStyles,
+          }}
+          onMouseDown={handleContentAreaMouseDown}
+          onScroll={debouncedOnScroll}
+          onWheel={onWheel}>
+          {children}
+        </div>
+        {resizeable ? (
+          <div
+            className="absolute border-b-2 border-r-2 border-solid bottom-1 right-1 cursor-se-resize dark:border-neutral-400/30"
             style={{
-              cursor: 'pointer',
+              width: resizeHandleSize,
+              height: resizeHandleSize,
             }}
-            onClick={onCloseClick}
-            onMouseDown={handleCloseIconMouseDown}
+            onMouseDown={handleResizeMouseDown}
           />
         ) : null}
       </div>
-      <div
-        ref={scrollDivRef}
-        className="custom-scrollbar"
-        style={{
-          background: '#ebeaea',
-          width: '99.8%',
-          height: '94.5%',
-          overflowY: 'auto',
-          overflowX: 'hidden',
-          padding: 10,
-          ...contentAreaStyles,
-        }}
-        onMouseDown={handleContentAreaMouseDown}
-        onScroll={debouncedOnScroll}
-        onWheel={onWheel}>
-        {children}
-      </div>
-      {resizeable ? (
-        <div
-          style={{
-            width: resizeHandleSize,
-            height: resizeHandleSize,
-            cursor: 'se-resize',
-            borderRight: '2px solid white',
-            borderBottom: '2px solid white',
-            bottom: 0,
-            right: 0,
-            position: 'absolute',
-          }}
-          onMouseDown={handleResizeMouseDown}
-        />
-      ) : null}
     </div>
   );
 });
