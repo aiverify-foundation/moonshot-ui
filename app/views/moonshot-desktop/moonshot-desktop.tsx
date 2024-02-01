@@ -7,7 +7,7 @@ import { Window } from '@components/window';
 import { WindowCreateSession } from './components/window-create-session';
 import TaskBar from '@components/taskbar';
 import Menu from '@components/menu';
-import FolderIcon from '@components/folder-icon';
+import { DesktopIcon } from '@components/desktop-icon';
 import JSONEditor from '@components/json-editor';
 import Icon from '@components/icon';
 import { useCreateSessionMutation } from './services/session-api-service';
@@ -15,7 +15,7 @@ import { WindowSavedSessions } from './components/window-saved-sessions';
 import { useAppDispatch } from '@/lib/redux';
 import { removeActiveSession, setActiveSession } from '@/lib/redux/slices/activeSessionSlice';
 import { ActiveChatSession } from '../active-chat-session/active-chat-session';
-import { ScreenOverlay } from '@/app/components/screen-overlay';
+import { IconName } from '@/app/components/IconSVG';
 
 const legalSummarisation = {
   name: 'Legal Summarisation',
@@ -33,42 +33,6 @@ const legalSummarisation = {
     'sg-university-tutorial-questions-legal',
   ],
 };
-
-type SessionTaskProps = {
-  name: string;
-};
-
-function SessionTask(props: SessionTaskProps) {
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        top: 0,
-        right: 200,
-        display: 'flex',
-        gap: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '39px',
-        width: 130,
-        fontSize: 12,
-        backgroundColor: 'rgba(0, 0, 0, 0.2)',
-        cursor: 'pointer',
-        color: '#FFF',
-      }}>
-      <Image
-        src="icons/chat_icon_white.svg"
-        alt="cookbooks"
-        width={20}
-        height={20}
-        style={{
-          cursor: 'pointer',
-        }}
-      />
-      <div>Session 1</div>
-    </div>
-  );
-}
 
 export default function MoonshotDesktop() {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
@@ -106,51 +70,33 @@ export default function MoonshotDesktop() {
 
   return (
     <div
+      className="h-screen overflow-y-hidden flex flex-col"
       style={{
-        height: '100vh',
         backgroundImage:
           'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #434343, black)',
       }}>
       <TaskBar>
         <Menu />
       </TaskBar>
-
-      {/* {isChatSessionOpen ? <SessionTask /> : null} */}
-
-      <div style={{ display: 'flex' }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
-            width: 150,
-          }}>
-          <FolderIcon name="Cookbooks" onClick={() => setIsWindowOpen(true)} />
-          <FolderIcon name="Recipes" />
-          <FolderIcon name="Endpoints" />
-          <FolderIcon name="Prompt Templates" />
+      <div className="flex pt-10">
+        <div className="grid grid-rows-6 grid-cols-10 grid-flow-col p-10 gap-4">
+          <DesktopIcon
+            name={IconName.Folder}
+            label="Cookbooks"
+            onClick={() => setIsWindowOpen(true)}
+          />
+          <DesktopIcon name={IconName.Folder} label="Recipes" />
+          <DesktopIcon name={IconName.Folder} label="Endpoints" />
+          <DesktopIcon name={IconName.Folder} label="Prompt Templates" />
           <Icon name="Run Cookbook" iconPath="icons/run_icon_white.svg" />
           <Icon
             name="New Session"
             iconPath="icons/chat_icon_white.svg"
             onClick={() => setIsShowWindowCreateSession(true)}
           />
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            flexDirection: 'column',
-            width: 150,
-          }}>
-          <Icon
-            width={50}
-            height={50}
-            gapSize={0}
-            name="Saved Sessions"
-            iconPath="icons/folder_saved.svg"
+          <DesktopIcon
+            name={IconName.FolderForChatSessions}
+            label="Saved Sessions"
             onClick={() => setIsShowWindowSavedSession(true)}
           />
         </div>

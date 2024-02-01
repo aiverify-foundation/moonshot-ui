@@ -3,17 +3,7 @@ import { PropsWithChildren } from 'react';
 function TaskBar(props: PropsWithChildren) {
   const { children } = props;
   return (
-    <div
-      style={{
-        position: 'sticky',
-        top: 0,
-        height: '39px',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        boxShadow: '0px 3px 6px #00000029',
-        backdropFilter: 'blur(10px)',
-        paddingLeft: 20,
-        color: '#FFF',
-      }}>
+    <div className="fixed h-10 pl-2 w-full dark:bg-neutral-900/70 dark:shadow-neutral-900 dark:text-white">
       {children}
     </div>
   );

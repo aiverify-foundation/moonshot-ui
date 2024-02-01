@@ -16,6 +16,8 @@ type WindowProps = {
   initialXY?: [number, number];
   initialWindowSize?: [number, number];
   initialScrollTop?: number;
+  minWidth?: number;
+  minHeight?: number;
   backgroundColor?: string;
   boxShadowStyle?: string;
   resizeHandleSize?: number;
@@ -43,6 +45,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props: WindowProps, ref)
     initialXY = [180, 140],
     initialWindowSize = [640, 470],
     initialScrollTop = 0,
+    minWidth = 200,
+    minHeight = 200,
     styles,
     contentAreaStyles,
     resizeable = true,
@@ -181,7 +185,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props: WindowProps, ref)
     <div
       id={id}
       ref={windowRef}
-      className="absolute p-4 pt-1 rounded shadow-sm select-none dark:shadow-neutral-900 dark:bg-neutral-600/80 backdrop-blur-sm dark:text-white"
+      className="absolute p-4 pt-1 shadow-sm select-none min-w-96 dark:shadow-neutral-900 dark:bg-neutral-900/70 backdrop-blur-sm dark:text-white"
       style={{
         left: initialPosition[0],
         top: initialPosition[1],
