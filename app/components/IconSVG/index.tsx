@@ -3,8 +3,10 @@ import { ReactElement } from 'react';
 import { useAppSelector } from '@/lib/redux';
 import { BurgerMenuIcon } from './icons/burger-menu-icon';
 import { ChatBubblesIcon } from './icons/chat-bubbles-icon';
+import { DarkMoonIcon } from './icons/dark-moon-icon';
 import { FolderForChatSessionsIcon } from './icons/folder-chat-icon';
 import { FolderIcon } from './icons/folder-icon';
+import { LightSunIcon } from './icons/light-sun-icon';
 import { RunCookbookIcon } from './icons/run-cookbook-icon';
 
 enum IconName {
@@ -13,6 +15,8 @@ enum IconName {
   ChatBubbles,
   RunCookbook,
   BurgerMenu,
+  DarkMoon,
+  LightSun,
 }
 
 type IconProps = {
@@ -78,13 +82,35 @@ function Icon(props: IconProps) {
         />
       );
       break;
+    case IconName.DarkMoon:
+      iconToRender = (
+        <DarkMoonIcon
+          outlineColor={isDarkMode ? '#FFFFFF' : '#a21caf'}
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.LightSun:
+      iconToRender = (
+        <LightSunIcon
+          outlineColor={isDarkMode ? '#FFFFFF' : '#a21caf'}
+          width={size}
+          height={size}
+        />
+      );
+      break;
     default:
       iconToRender = null;
   }
 
   return (
     <div
-      className="flex items-center justify-center"
+      className={`
+        flex items-center justify-center 
+        cursor-pointer
+        ${onClick ? 'hover:opacity-50' : ''}
+      `}
       onClick={onClick}>
       {iconToRender}
     </div>

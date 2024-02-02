@@ -9,19 +9,14 @@ function Menu() {
       items-center h-10 cursor-pointer w-40 
       bg-fuschia-900 dark:bg-none"
       onClick={() => setIsMenuOpen(!isMenuOpen)}>
-      <div
-        style={{
-          height: 25,
-          justifyContent: 'center',
-          alignItems: 'center',
-          display: 'flex',
-          gap: 10,
-        }}>
+      <div className="h-6 flex justify-center items-center gap-2.5">
         <Icon
           name={IconName.BurgerMenu}
           size={15}
         />
-        <div>Moonshot</div>
+        <div className="dark:text-white font-medium text-fuchsia-950">
+          Moonshot
+        </div>
       </div>
 
       {isMenuOpen ? (

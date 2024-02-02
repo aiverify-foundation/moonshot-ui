@@ -3,9 +3,12 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
-import { IconName } from '@/app/components/IconSVG';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
-import { removeActiveSession, setActiveSession } from '@/lib/redux/slices/activeSessionSlice';
+import {
+  removeActiveSession,
+  setActiveSession,
+} from '@/lib/redux/slices/activeSessionSlice';
 import { toggleDarkMode } from '@/lib/redux/slices/darkModeSlice';
 import { WindowCreateSession } from './components/window-create-session';
 import { WindowSavedSessions } from './components/window-saved-sessions';
@@ -19,7 +22,8 @@ import { ActiveChatSession } from '@views/active-chat-session/active-chat-sessio
 
 const legalSummarisation = {
   name: 'Legal Summarisation',
-  description: 'This cookbook runs general capabilitiy benchmark on legal summarisation model.',
+  description:
+    'This cookbook runs general capabilitiy benchmark on legal summarisation model.',
   recipes: [
     'analogical-similarity',
     'auto-categorisation',
@@ -38,10 +42,14 @@ export default function MoonshotDesktop() {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [isChatSessionOpen, setIsChatSessionOpen] = useState(false);
   const [isJsonEditorOpen, setIsJsonEditorOpen] = useState(false);
-  const [isShowWindowCreateSession, setIsShowWindowCreateSession] = useState(false);
-  const [isShowWindowSavedSession, setIsShowWindowSavedSession] = useState(false);
-  const [isShowPromptTemplates, setIsShowPromptTemplates] = useState(false);
-  const [isShowPromptPreview, setIsShowPromptPreview] = useState(false);
+  const [isShowWindowCreateSession, setIsShowWindowCreateSession] =
+    useState(false);
+  const [isShowWindowSavedSession, setIsShowWindowSavedSession] =
+    useState(false);
+  const [isShowPromptTemplates, setIsShowPromptTemplates] =
+    useState(false);
+  const [isShowPromptPreview, setIsShowPromptPreview] =
+    useState(false);
   const dispatch = useAppDispatch();
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
   const backgroundImageStyle = {
@@ -51,10 +59,18 @@ export default function MoonshotDesktop() {
   };
   const [
     createSession,
-    { data: newSession, isLoading: createSessionIsLoding, error: createSessionError },
+    {
+      data: newSession,
+      isLoading: createSessionIsLoding,
+      error: createSessionError,
+    },
   ] = useCreateSessionMutation();
 
-  async function startNewSession(name: string, description: string, endpoints: string[]) {
+  async function startNewSession(
+    name: string,
+    description: string,
+    endpoints: string[]
+  ) {
     const response = await createSession({
       name,
       description,
@@ -94,7 +110,20 @@ export default function MoonshotDesktop() {
         ...backgroundImageStyle,
       }}>
       <TaskBar>
-        <Menu />
+        <div className="flex w-full">
+          <div className="flex-1">
+            <Menu />
+          </div>
+          <div className="flex flex-1 justify-end items-center pr-4">
+            <Icon
+              name={
+                isDarkMode ? IconName.LightSun : IconName.DarkMoon
+              }
+              size={isDarkMode ? 20 : 22}
+              onClick={handleToggleDarkMode}
+            />
+          </div>
+        </div>
       </TaskBar>
       <div className="flex pt-10">
         <div className="grid grid-rows-6 grid-cols-10 grid-flow-col p-10 gap-y-12 gap-x-4">
@@ -103,41 +132,68 @@ export default function MoonshotDesktop() {
             label="Cookbooks"
             onClick={() => setIsWindowOpen(true)}
           />
-          <DesktopIcon name={IconName.Folder} label="Recipes" />
-          <DesktopIcon name={IconName.Folder} label="Endpoints" />
-          <DesktopIcon name={IconName.Folder} label="Prompt Templates" />
+          <DesktopIcon
+            name={IconName.Folder}
+            label="Recipes"
+          />
+          <DesktopIcon
+            name={IconName.Folder}
+            label="Endpoints"
+          />
+          <DesktopIcon
+            name={IconName.Folder}
+            label="Prompt Templates"
+          />
           <DesktopIcon
             name={IconName.ChatBubbles}
             label="RedTeaming"
             size={40}
             onClick={() => setIsShowWindowCreateSession(true)}
           />
-          <DesktopIcon name={IconName.RunCookbook} label="Run Cookbook" onClick={() => null} />
+          <DesktopIcon
+            name={IconName.RunCookbook}
+            label="Run Cookbook"
+            onClick={() => null}
+          />
           <DesktopIcon
             name={IconName.FolderForChatSessions}
             label="Saved Sessions"
             onClick={() => setIsShowWindowSavedSession(true)}
           />
-          <DesktopIcon
+          {/* <DesktopIcon
             name={IconName.RunCookbook}
             label="Toggle Darkmode"
             onClick={handleToggleDarkMode}
-          />
+          /> */}
         </div>
       </div>
 
       {isWindowOpen ? (
-        <Window id="cookbooks" name="Cookbooks" onCloseClick={() => setIsWindowOpen(false)}>
+        <Window
+          id="cookbooks"
+          name="Cookbooks"
+          onCloseClick={() => setIsWindowOpen(false)}>
           <ul style={{ color: '#494848', padding: 15 }}>
             <li
-              style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer' }}
+              style={{
+                borderBottom: '1px solid #dbdada',
+                cursor: 'pointer',
+              }}
               onClick={() => setIsJsonEditorOpen(true)}>
               legal-summarisation.json
             </li>
-            <li style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer' }}>
+            <li
+              style={{
+                borderBottom: '1px solid #dbdada',
+                cursor: 'pointer',
+              }}>
               bbq-lite-age-cookbook.json
             </li>
-            <li style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer' }}>
+            <li
+              style={{
+                borderBottom: '1px solid #dbdada',
+                cursor: 'pointer',
+              }}>
               evaluation-catalogue-cookbook.json
             </li>
           </ul>
@@ -151,7 +207,9 @@ export default function MoonshotDesktop() {
         />
       ) : null}
       {isChatSessionOpen ? (
-        <ActiveChatSession onCloseBtnClick={handlePromptWindowCloseClick} />
+        <ActiveChatSession
+          onCloseBtnClick={handlePromptWindowCloseClick}
+        />
       ) : null}
 
       {isJsonEditorOpen ? (
@@ -316,19 +374,33 @@ export default function MoonshotDesktop() {
                   flexDirection: 'column',
                   paddingTop: 15,
                 }}>
-                <h2 style={{ marginTop: 20, color: '#000', marginBottom: 10 }}>
+                <h2
+                  style={{
+                    marginTop: 20,
+                    color: '#000',
+                    marginBottom: 10,
+                  }}>
                   advglue-templatemnli
                 </h2>
 
                 <div style={{ fontSize: 14, color: 'gray' }}>
-                  This template is used for the MNLI dataset. Given a premise sentence and a
-                  hypothesis sentence, the task is to predict whether the premise entails the
+                  This template is used for the MNLI dataset. Given a
+                  premise sentence and a hypothesis sentence, the task
+                  is to predict whether the premise entails the
                   hypothesis.
                 </div>
-                <h4 style={{ marginTop: 20, color: '#000', marginBottom: 10 }}>Template</h4>
+                <h4
+                  style={{
+                    marginTop: 20,
+                    color: '#000',
+                    marginBottom: 10,
+                  }}>
+                  Template
+                </h4>
                 <div style={{ fontSize: 14, color: 'gray' }}>
-                  &quot;&#123;&#123;prompt&#125;&#125;&quot; Please identify whether the premise
-                  entails the hypothesis. The answer should be exactly &apos;yes&apos; or
+                  &quot;&#123;&#123;prompt&#125;&#125;&quot; Please
+                  identify whether the premise entails the hypothesis.
+                  The answer should be exactly &apos;yes&apos; or
                   &apos;no&apos;, without capitalization.
                 </div>
               </div>
