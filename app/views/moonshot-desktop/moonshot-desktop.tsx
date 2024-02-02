@@ -1,11 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { IconName } from '@/app/components/IconSVG';
-import { useAppDispatch } from '@/lib/redux';
+import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { removeActiveSession, setActiveSession } from '@/lib/redux/slices/activeSessionSlice';
+import { toggleDarkMode } from '@/lib/redux/slices/darkModeSlice';
 import { WindowCreateSession } from './components/window-create-session';
 import { WindowSavedSessions } from './components/window-saved-sessions';
 import { useCreateSessionMutation } from './services/session-api-service';
@@ -42,6 +43,12 @@ export default function MoonshotDesktop() {
   const [isShowPromptTemplates, setIsShowPromptTemplates] = useState(false);
   const [isShowPromptPreview, setIsShowPromptPreview] = useState(false);
   const dispatch = useAppDispatch();
+  const isDarkMode = useAppSelector((state) => state.darkMode.value);
+  const backgroundImageStyle = {
+    backgroundImage: isDarkMode
+      ? 'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #434343, black)'
+      : '',
+  };
   const [
     createSession,
     { data: newSession, isLoading: createSessionIsLoding, error: createSessionError },
@@ -67,12 +74,24 @@ export default function MoonshotDesktop() {
     dispatch(removeActiveSession());
   }
 
+  function handleToggleDarkMode() {
+    dispatch(toggleDarkMode());
+    document.documentElement.classList.toggle('dark');
+  }
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
   return (
     <div
-      className="h-screen overflow-y-hidden flex flex-col"
+      className="h-screen overflow-y-hidden flex flex-col bg-fuchsia-100"
       style={{
-        backgroundImage:
-          'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #434343, black)',
+        ...backgroundImageStyle,
       }}>
       <TaskBar>
         <Menu />
@@ -98,6 +117,11 @@ export default function MoonshotDesktop() {
             name={IconName.FolderForChatSessions}
             label="Saved Sessions"
             onClick={() => setIsShowWindowSavedSession(true)}
+          />
+          <DesktopIcon
+            name={IconName.RunCookbook}
+            label="Toggle Darkmode"
+            onClick={handleToggleDarkMode}
           />
         </div>
       </div>

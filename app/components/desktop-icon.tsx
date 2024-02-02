@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { useAppSelector } from '@/lib/redux';
 import {
   FolderIcon,
   FolderForChatSessionsIcon,
@@ -17,13 +18,14 @@ type DesktopIconProps = {
 
 function DesktopIcon(props: DesktopIconProps) {
   const { name, label, size = 50, gap = 5, onClick } = props;
+  const isDarkMode = useAppSelector((state) => state.darkMode.value);
   let iconToRender: ReactElement | null = null;
   switch (name) {
     case IconName.Folder:
       iconToRender = (
         <FolderIcon
-          backColor="#2980b9"
-          frontColor="#3498db"
+          backColor={isDarkMode ? '#2980b9' : '#701a75'}
+          frontColor={isDarkMode ? '#3498db' : '#86198f'}
           midColor="#bdc3c7"
           width={size}
           height={size}
@@ -33,30 +35,48 @@ function DesktopIcon(props: DesktopIconProps) {
     case IconName.FolderForChatSessions:
       iconToRender = (
         <FolderForChatSessionsIcon
-          backColor="#2980b9"
-          frontColor="#3498db"
+          backColor={isDarkMode ? '#2980b9' : '#701a75'}
+          frontColor={isDarkMode ? '#3498db' : '#86198f'}
           midColor="#bdc3c7"
-          chatIconColor="#2980b9"
+          chatIconColor={isDarkMode ? '#2980b9' : '#f5d0fe'}
           width={size}
           height={size}
         />
       );
       break;
     case IconName.ChatBubbles:
-      iconToRender = <ChatBubblesIcon outlineColor="#FFFFFF" width={size} height={size} />;
+      iconToRender = (
+        <ChatBubblesIcon
+          outlineColor={isDarkMode ? '#FFFFFF' : '#a21caf'}
+          width={size}
+          height={size}
+        />
+      );
       break;
     case IconName.RunCookbook:
-      iconToRender = <RunCookbookIcon outlineColor="#FFFFFF" width={40} height={40} />;
+      iconToRender = (
+        <RunCookbookIcon
+          outlineColor={isDarkMode ? '#FFFFFF' : '#a21caf'}
+          width={40}
+          height={40}
+        />
+      );
       break;
     default:
       iconToRender = null;
   }
   return (
-    <div className="flex flex-col justify-center items-center dark:text-white" onClick={onClick}>
-      <div className="cursor-pointer hover:opacity-60" style={{ paddingBottom: gap }}>
+    <div
+      className="flex flex-col justify-center items-center dark:text-white"
+      onClick={onClick}>
+      <div
+        className="cursor-pointer hover:opacity-60"
+        style={{ paddingBottom: gap }}>
         {iconToRender}
       </div>
-      <div className="text-xs dark:text-white">{label}</div>
+      <div className="text-xs dark:text-white text-purple-950 font-medium">
+        {label}
+      </div>
     </div>
   );
 }

@@ -1,21 +1,13 @@
-import Image from 'next/image';
 import { useState } from 'react';
+import { Icon, IconName } from './IconSVG';
 
 function Menu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <div
-      style={{
-        display: 'flex',
-        gap: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '39px',
-        width: 130,
-        fontSize: 12,
-        backgroundColor: 'rgba(0, 0, 0, 0.2)',
-        cursor: 'pointer',
-      }}
+      className="flex gap-3 justify-center
+      items-center h-10 cursor-pointer w-40 
+      bg-fuschia-900 dark:bg-none"
       onClick={() => setIsMenuOpen(!isMenuOpen)}>
       <div
         style={{
@@ -25,14 +17,9 @@ function Menu() {
           display: 'flex',
           gap: 10,
         }}>
-        <Image
-          src="icons/hamburger_icon.svg"
-          alt="cookbooks"
-          width={10}
-          height={10}
-          style={{
-            cursor: 'pointer',
-          }}
+        <Icon
+          name={IconName.BurgerMenu}
+          size={15}
         />
         <div>Moonshot</div>
       </div>
@@ -47,7 +34,11 @@ function Menu() {
             left: 20,
             boxShadow: '0px 3px 6px #00000029',
           }}>
-          <div style={{ borderRight: '1px solid rgba(255, 255, 255, 0.06)', padding: 20 }}>
+          <div
+            style={{
+              borderRight: '1px solid rgba(255, 255, 255, 0.06)',
+              padding: 20,
+            }}>
             <h3
               style={{
                 fontWeight: 800,

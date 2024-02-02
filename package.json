@@ -32,6 +32,7 @@
     "eslint-config-next": "14.0.4",
     "eslint-config-prettier": "^8.8.0",
     "postcss": "^8",
+    "prettier": "^3.2.4",
     "redux-logger": "^3.0.6",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
