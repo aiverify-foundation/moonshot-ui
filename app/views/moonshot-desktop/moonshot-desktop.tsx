@@ -3,19 +3,18 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 
-import { Window } from '@components/window';
-import { WindowCreateSession } from './components/window-create-session';
-import TaskBar from '@components/taskbar';
-import Menu from '@components/menu';
-import { DesktopIcon } from '@components/desktop-icon';
-import JSONEditor from '@components/json-editor';
-import Icon from '@components/icon';
-import { useCreateSessionMutation } from './services/session-api-service';
-import { WindowSavedSessions } from './components/window-saved-sessions';
+import { IconName } from '@/app/components/IconSVG';
 import { useAppDispatch } from '@/lib/redux';
 import { removeActiveSession, setActiveSession } from '@/lib/redux/slices/activeSessionSlice';
-import { ActiveChatSession } from '../active-chat-session/active-chat-session';
-import { IconName } from '@/app/components/IconSVG';
+import { WindowCreateSession } from './components/window-create-session';
+import { WindowSavedSessions } from './components/window-saved-sessions';
+import { useCreateSessionMutation } from './services/session-api-service';
+import { DesktopIcon } from '@components/desktop-icon';
+import JSONEditor from '@components/json-editor';
+import Menu from '@components/menu';
+import TaskBar from '@components/taskbar';
+import { Window } from '@components/window';
+import { ActiveChatSession } from '@views/active-chat-session/active-chat-session';
 
 const legalSummarisation = {
   name: 'Legal Summarisation',
@@ -79,7 +78,7 @@ export default function MoonshotDesktop() {
         <Menu />
       </TaskBar>
       <div className="flex pt-10">
-        <div className="grid grid-rows-6 grid-cols-10 grid-flow-col p-10 gap-4">
+        <div className="grid grid-rows-6 grid-cols-10 grid-flow-col p-10 gap-y-12 gap-x-4">
           <DesktopIcon
             name={IconName.Folder}
             label="Cookbooks"
@@ -88,12 +87,13 @@ export default function MoonshotDesktop() {
           <DesktopIcon name={IconName.Folder} label="Recipes" />
           <DesktopIcon name={IconName.Folder} label="Endpoints" />
           <DesktopIcon name={IconName.Folder} label="Prompt Templates" />
-          <Icon name="Run Cookbook" iconPath="icons/run_icon_white.svg" />
-          <Icon
-            name="New Session"
-            iconPath="icons/chat_icon_white.svg"
+          <DesktopIcon
+            name={IconName.ChatBubbles}
+            label="RedTeaming"
+            size={40}
             onClick={() => setIsShowWindowCreateSession(true)}
           />
+          <DesktopIcon name={IconName.RunCookbook} label="Run Cookbook" onClick={() => null} />
           <DesktopIcon
             name={IconName.FolderForChatSessions}
             label="Saved Sessions"

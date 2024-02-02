@@ -19,7 +19,6 @@ type WindowProps = {
   minWidth?: number;
   minHeight?: number;
   backgroundColor?: string;
-  boxShadowStyle?: string;
   resizeHandleSize?: number;
   children?: React.ReactNode;
   styles?: React.CSSProperties;
@@ -51,7 +50,6 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props: WindowProps, ref)
     contentAreaStyles,
     resizeable = true,
     backgroundColor,
-    boxShadowStyle = '0px 10px 10px #00000047',
     children,
     resizeHandleSize = 10,
     disableCloseIcon = false,
