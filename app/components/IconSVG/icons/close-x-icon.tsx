@@ -14,9 +14,9 @@ function CloseIcon(props: CloseIconProps) {
       <g id="cross">
         <line
           stroke={outlineColor}
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
           x1="7"
           x2="25"
           y1="7"
@@ -24,9 +24,9 @@ function CloseIcon(props: CloseIconProps) {
         />
         <line
           stroke={outlineColor}
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
           x1="7"
           x2="25"
           y1="25"

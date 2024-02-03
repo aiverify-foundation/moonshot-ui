@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import TwoPanel from '@/app/components/two-panel';
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
@@ -9,7 +10,6 @@ import {
   useLazyGetSessionQuery,
   useLazySetActiveSessionQuery,
 } from '../services/session-api-service';
-import TwoPanel from '@/app/components/two-panel';
 
 type FileExplorerSavedSessionsProps = {
   onCloseClick: () => void;

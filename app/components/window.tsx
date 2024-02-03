@@ -207,6 +207,16 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       }
     }, []);
 
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        if (windowRef.current) {
+          windowRef.current.classList.remove('fadeScaleInAnimation');
+        }
+      }, 200); // Ensure the animation duration matches the fadeScaleInAnimation duration defined in global.css
+
+      return () => clearTimeout(timer);
+    }, []);
+
     return (
       <div
         id={id}
@@ -219,7 +229,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
           dark:shadow-neutral-900 
           dark:bg-neutral-900/70 
           backdrop-blur-sm 
-          text-white"
+          text-white
+          fadeScaleInAnimation"
         style={{
           left: initialPosition[0],
           top: initialPosition[1],
