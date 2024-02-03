@@ -70,7 +70,7 @@ function DesktopIcon(props: DesktopIconProps) {
       className="flex flex-col justify-center items-center dark:text-white"
       onClick={onClick}>
       <div
-        className="cursor-pointer hover:opacity-60"
+        className="cursor-pointer hover:opacity-60 active:opacity-25"
         style={{ paddingBottom: gap }}>
         {iconToRender}
       </div>

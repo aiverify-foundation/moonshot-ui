@@ -1,5 +1,3 @@
-import { debounce } from '@app/lib/throttle';
-import Image from 'next/image';
 import React, {
   forwardRef,
   useEffect,
@@ -9,6 +7,8 @@ import React, {
 } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { updateFocusedWindowId } from '@/lib/redux/slices/windowsSlice';
+import { Icon, IconName } from './IconSVG';
+import { debounce } from '@app/lib/throttle';
 
 enum WindowState {
   drag,
@@ -25,7 +25,6 @@ type WindowProps = {
   minWidth?: number;
   minHeight?: number;
   backgroundColor?: string;
-  resizeHandleSize?: number;
   children?: React.ReactNode;
   styles?: React.CSSProperties;
   contentAreaStyles?: React.CSSProperties;
@@ -58,7 +57,6 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       resizeable = true,
       backgroundColor,
       children,
-      resizeHandleSize = 10,
       disableCloseIcon = false,
       onCloseClick,
       onWheel,
@@ -214,14 +212,14 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         id={id}
         ref={windowRef}
         className="
-          absolute p-4 pt-1
+          absolute p-4 pt-0
           shadow-lg select-none min-w-96 
           shadow-neutral-800/40
           bg-fuchsia-900/70
           dark:shadow-neutral-900 
           dark:bg-neutral-900/70 
           backdrop-blur-sm 
-          dark:text-white"
+          text-white"
         style={{
           left: initialPosition[0],
           top: initialPosition[1],
@@ -234,14 +232,13 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         onMouseDown={handleMouseDown}>
         <div className="flex flex-col w-full h-full">
           <div className="flex justify-between w-full">
-            <div className="pb-1 text-sm">{name}</div>
+            <div className="text-sm h-8 flex items-center">
+              {name}
+            </div>
             {!disableCloseIcon ? (
-              <Image
-                src="icons/close_icon.svg"
-                alt="close"
-                width={16}
-                height={16}
-                className="cursor-pointer"
+              <Icon
+                name={IconName.Close}
+                size={18}
                 onClick={onCloseClick}
                 onMouseDown={handleCloseIconMouseDown}
               />
@@ -249,7 +246,9 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
           </div>
           <div
             ref={scrollDivRef}
-            className="size-full h-full bg-white p-2.5 custom-scrollbar overflow-y-auto overflow-x-hidden"
+            className="
+              size-full h-full bg-white p-2.5 
+              custom-scrollbar overflow-y-auto overflow-x-hidden"
             style={{
               ...contentAreaStyles,
             }}
@@ -261,14 +260,11 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
           {resizeable ? (
             <div
               className="
+                w-3.5 h-3.5
                 absolute border-b-2 border-r-2
                 border-solid bottom-1 right-1 cursor-se-resize 
                 dark:border-neutral-400/30
                 border-fuchsia-800"
-              style={{
-                width: resizeHandleSize,
-                height: resizeHandleSize,
-              }}
               onMouseDown={handleResizeMouseDown}
             />
           ) : null}

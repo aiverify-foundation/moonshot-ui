@@ -14,7 +14,6 @@ function BurgerMenuIcon(props: BurgerMenuIconProps) {
     <svg
       width={width}
       height={height}
-      enable-background="new 0 0 12 12"
       viewBox="0 0 12 12">
       <g>
         <rect

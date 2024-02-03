@@ -11,7 +11,7 @@ import {
 } from '@/lib/redux/slices/activeSessionSlice';
 import { toggleDarkMode } from '@/lib/redux/slices/darkModeSlice';
 import { WindowCreateSession } from './components/window-create-session';
-import { WindowSavedSessions } from './components/window-saved-sessions';
+import { FileExplorerSavedSessions } from './components/file-explorer-saved-sessions';
 import { useCreateSessionMutation } from './services/session-api-service';
 import { DesktopIcon } from '@components/desktop-icon';
 import JSONEditor from '@components/json-editor';
@@ -52,11 +52,15 @@ export default function MoonshotDesktop() {
     useState(false);
   const dispatch = useAppDispatch();
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
-  const backgroundImageStyle = {
-    backgroundImage: isDarkMode
-      ? 'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #434343, black)'
-      : '',
-  };
+  const backgroundImageStyle = !isDarkMode
+    ? {
+        backgroundImage: 'url("/pink-bg-fade3.png")',
+        backgroundBlendMode: 'multiply',
+      }
+    : {
+        backgroundImage:
+          'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #434343, black)',
+      };
   const [
     createSession,
     {
@@ -105,7 +109,17 @@ export default function MoonshotDesktop() {
 
   return (
     <div
-      className="h-screen overflow-y-hidden flex flex-col bg-fuchsia-100"
+      className={`
+        h-screen overflow-y-hidden
+        flex flex-col bg-fuchsia-100
+        ${
+          !isDarkMode
+            ? `
+          bg-gradient-to-br bg-no-repeat bg-right
+          from-fuchsia-100 to-fuchsia-400`
+            : ''
+        }
+      `}
       style={{
         ...backgroundImageStyle,
       }}>
@@ -227,7 +241,7 @@ export default function MoonshotDesktop() {
       ) : null}
 
       {isShowWindowSavedSession ? (
-        <WindowSavedSessions
+        <FileExplorerSavedSessions
           onCloseClick={() => setIsShowWindowSavedSession(false)}
           onContinueSessionClick={handleContinueSessionClick}
         />

@@ -16,10 +16,10 @@
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)))
-    rgb(var(--background-start-rgb));
+.btn-primary {
+  @apply text-white text-sm rounded px-3 py-1.5
+  bg-fuchsia-900 hover:bg-fuchsia-800 active:bg-fuchsia-700
+  dark:bg-sky-700 dark:hover:bg-sky-800 dark:active:bg-sky-600;
 }
 
 .custom-scrollbar::-webkit-scrollbar {

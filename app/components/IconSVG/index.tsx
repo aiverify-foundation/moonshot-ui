@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import { useAppSelector } from '@/lib/redux';
 import { BurgerMenuIcon } from './icons/burger-menu-icon';
 import { ChatBubblesIcon } from './icons/chat-bubbles-icon';
+import { CloseIcon } from './icons/close-x-icon';
 import { DarkMoonIcon } from './icons/dark-moon-icon';
 import { FolderForChatSessionsIcon } from './icons/folder-chat-icon';
 import { FolderIcon } from './icons/folder-icon';
@@ -17,16 +18,18 @@ enum IconName {
   BurgerMenu,
   DarkMoon,
   LightSun,
+  Close,
 }
 
 type IconProps = {
   name: IconName;
   size?: number;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
+  onMouseDown?: (e: React.MouseEvent) => void;
 };
 
 function Icon(props: IconProps) {
-  const { name, onClick, size = 20 } = props;
+  const { name, onClick, onMouseDown, size = 20 } = props;
 
   let iconToRender: ReactElement | null = null;
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
@@ -100,6 +103,15 @@ function Icon(props: IconProps) {
         />
       );
       break;
+    case IconName.Close:
+      iconToRender = (
+        <CloseIcon
+          outlineColor={isDarkMode ? '#FFFFFF' : '#FFFFFF'}
+          width={size}
+          height={size}
+        />
+      );
+      break;
     default:
       iconToRender = null;
   }
@@ -109,9 +121,10 @@ function Icon(props: IconProps) {
       className={`
         flex items-center justify-center 
         cursor-pointer
-        ${onClick ? 'hover:opacity-50' : ''}
+        ${onClick ? 'hover:opacity-50 active:opacity-25' : ''}
       `}
-      onClick={onClick}>
+      onClick={onClick}
+      onMouseDown={onMouseDown}>
       {iconToRender}
     </div>
   );
@@ -125,4 +138,5 @@ export {
   FolderForChatSessionsIcon,
   ChatBubblesIcon,
   RunCookbookIcon,
+  CloseIcon,
 };
