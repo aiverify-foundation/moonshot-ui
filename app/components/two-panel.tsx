@@ -1,17 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-function TwoPanel({ children }) {
+function TwoPanel({ children }: { children: React.ReactNode[] }) {
   const [dividerPosition, setDividerPosition] = useState(50);
-  const dividerRef = useRef(null);
-  const containerRef = useRef(null);
+  const dividerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const startResizing = (e) => {
+  const startResizing = (e: React.MouseEvent) => {
     e.preventDefault();
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', stopResizing);
   };
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: MouseEvent) => {
     if (!containerRef.current) return;
     const containerRect =
       containerRef.current.getBoundingClientRect();
@@ -37,14 +37,18 @@ function TwoPanel({ children }) {
       ref={containerRef}
       className="flex w-full h-full"
       style={{ userSelect: 'none' }}>
-      <div style={{ width: `${dividerPosition}%`, height: '100%' }}>
+      <div
+        className="h-full"
+        style={{ width: `${dividerPosition}%` }}>
         {children[0]}
       </div>
       <div
         ref={dividerRef}
         onMouseDown={startResizing}
-        className="cursor-col-resize bg-gray-400"
-        style={{ width: '5px', height: '100%' }}
+        className="
+          cursor-col-resize h-full w-1  
+          bg-fuchsia-900/70
+          dark:bg-neutral-900/70 "
       />
       <div
         style={{

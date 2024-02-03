@@ -9,6 +9,7 @@ import {
   useLazyGetSessionQuery,
   useLazySetActiveSessionQuery,
 } from '../services/session-api-service';
+import TwoPanel from '@/app/components/two-panel';
 
 type FileExplorerSavedSessionsProps = {
   onCloseClick: () => void;
@@ -54,14 +55,7 @@ function FileExplorerSavedSessions(
       initialWindowSize={[720, 470]}
       onCloseClick={onCloseClick}
       name="Saved Sessions">
-      <div
-        style={{
-          display: 'flex',
-          height: '100%',
-          color: 'gray',
-          padding: 15,
-          position: 'relative',
-        }}>
+      <TwoPanel>
         <WindowList styles={{ flexBasis: '35%' }}>
           {sessions
             ? sessions.map((session) => (
@@ -133,7 +127,7 @@ function FileExplorerSavedSessions(
             ) : null}
           </div>
         </WindowInfoPanel>
-      </div>
+      </TwoPanel>
     </Window>
   );
 }
