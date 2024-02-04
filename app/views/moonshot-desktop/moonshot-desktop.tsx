@@ -4,21 +4,31 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { CodeEditor } from '@/app/components/code-editor';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import {
   removeActiveSession,
   setActiveSession,
 } from '@/lib/redux/slices/activeSessionSlice';
 import { toggleDarkMode } from '@/lib/redux/slices/darkModeSlice';
-import { WindowCreateSession } from './components/window-create-session';
 import { FileExplorerSavedSessions } from './components/file-explorer-saved-sessions';
+import { WindowCreateSession } from './components/window-create-session';
 import { useCreateSessionMutation } from './services/session-api-service';
 import { DesktopIcon } from '@components/desktop-icon';
-import JSONEditor from '@components/json-editor';
 import Menu from '@components/menu';
 import TaskBar from '@components/taskbar';
 import { Window } from '@components/window';
 import { ActiveChatSession } from '@views/active-chat-session/active-chat-session';
+import { FileExplorerEndpoints } from './components/file-explorer-endpoints';
+import {
+  getWindowId,
+  getWindowScrollTop,
+  getWindowSize,
+  getWindowXY,
+} from '@/app/lib/window';
+import { useWindowChange } from '@/app/hooks/use-window-change';
+import { WindowIds } from './constants';
+import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 
 const legalSummarisation = {
   name: 'Legal Summarisation',
@@ -41,7 +51,8 @@ const legalSummarisation = {
 export default function MoonshotDesktop() {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [isChatSessionOpen, setIsChatSessionOpen] = useState(false);
-  const [isJsonEditorOpen, setIsJsonEditorOpen] = useState(false);
+  const [isEndpointsExplorerOpen, setIsEndpointsExplorerOpen] =
+    useState(false);
   const [isShowWindowCreateSession, setIsShowWindowCreateSession] =
     useState(false);
   const [isShowWindowSavedSession, setIsShowWindowSavedSession] =
@@ -51,6 +62,8 @@ export default function MoonshotDesktop() {
   const [isShowPromptPreview, setIsShowPromptPreview] =
     useState(false);
   const dispatch = useAppDispatch();
+  const handleOnWindowChange = useWindowChange();
+  const windowsMap = useAppSelector((state) => state.windows.map);
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
   const backgroundImageStyle = !isDarkMode
     ? {
@@ -107,6 +120,15 @@ export default function MoonshotDesktop() {
     }
   }, [isDarkMode]);
 
+  useEffect(() => {
+    //set default window dimensions
+    const defaults: Record<string, WindowData> = {};
+    defaults[getWindowId(WindowIds.LLM_ENDPOINTS)] = [
+      600, 200, 820, 470, 0,
+    ];
+    dispatch(updateWindows(defaults));
+  }, []);
+
   return (
     <div
       className={`
@@ -152,7 +174,8 @@ export default function MoonshotDesktop() {
           />
           <DesktopIcon
             name={IconName.Folder}
-            label="Endpoints"
+            label="LLM Endpoints"
+            onClick={() => setIsEndpointsExplorerOpen(true)}
           />
           <DesktopIcon
             name={IconName.Folder}
@@ -174,11 +197,6 @@ export default function MoonshotDesktop() {
             label="Saved Sessions"
             onClick={() => setIsShowWindowSavedSession(true)}
           />
-          {/* <DesktopIcon
-            name={IconName.RunCookbook}
-            label="Toggle Darkmode"
-            onClick={handleToggleDarkMode}
-          /> */}
         </div>
       </div>
 
@@ -193,7 +211,7 @@ export default function MoonshotDesktop() {
                 borderBottom: '1px solid #dbdada',
                 cursor: 'pointer',
               }}
-              onClick={() => setIsJsonEditorOpen(true)}>
+              onClick={() => null}>
               legal-summarisation.json
             </li>
             <li
@@ -220,24 +238,24 @@ export default function MoonshotDesktop() {
           onStartClick={startNewSession}
         />
       ) : null}
+
       {isChatSessionOpen ? (
         <ActiveChatSession
           onCloseBtnClick={handlePromptWindowCloseClick}
         />
       ) : null}
 
-      {isJsonEditorOpen ? (
-        <Window
-          id="json-editor"
-          name="legal-summarisation.json"
-          initialXY={[800, 300]}
-          onCloseClick={() => setIsJsonEditorOpen(false)}
-          styles={{
-            width: 510,
-            zIndex: 100,
-          }}>
-          <JSONEditor placeholder={legalSummarisation} />
-        </Window>
+      {isEndpointsExplorerOpen ? (
+        <FileExplorerEndpoints
+          windowId={getWindowId(WindowIds.LLM_ENDPOINTS)}
+          initialXY={getWindowXY(windowsMap, WindowIds.LLM_ENDPOINTS)}
+          initialSize={getWindowSize(
+            windowsMap,
+            WindowIds.LLM_ENDPOINTS
+          )}
+          onWindowChange={handleOnWindowChange}
+          onCloseClick={() => setIsEndpointsExplorerOpen(false)}
+        />
       ) : null}
 
       {isShowWindowSavedSession ? (
@@ -261,6 +279,7 @@ export default function MoonshotDesktop() {
 
       {isShowPromptTemplates ? (
         <Window
+          id="prompt-templates"
           styles={{ width: 800 }}
           name="Prompt Templates"
           initialXY={[950, 370]}

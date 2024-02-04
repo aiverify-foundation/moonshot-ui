@@ -30,6 +30,7 @@ type WindowProps = {
   contentAreaStyles?: React.CSSProperties;
   resizeable?: boolean;
   disableCloseIcon?: boolean;
+  leftFooterText?: string;
   onCloseClick?: () => void;
   onWheel?: (e: React.WheelEvent<HTMLDivElement>) => void;
   onWindowChange?: (
@@ -58,6 +59,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       backgroundColor,
       children,
       disableCloseIcon = false,
+      leftFooterText,
       onCloseClick,
       onWheel,
       onWindowChange,
@@ -221,16 +223,9 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       <div
         id={id}
         ref={windowRef}
-        className="
-          absolute p-4 pt-0
-          shadow-lg select-none min-w-96 
-          shadow-neutral-800/40
-          bg-fuchsia-900/70
-          dark:shadow-neutral-900 
-          dark:bg-neutral-900/70 
-          backdrop-blur-sm 
-          text-white
-          fadeScaleInAnimation"
+        className={`absolute px-3 pt-0 ${!leftFooterText ? 'pb-4' : ''} text-white 
+          shadow-lg select-none min-w-96 shadow-neutral-800/40 bg-fuchsia-900/70 
+          dark:shadow-neutral-900 dark:bg-neutral-900/70 backdrop-blur-sm fadeScaleInAnimation`}
         style={{
           left: initialPosition[0],
           top: initialPosition[1],
@@ -243,7 +238,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         onMouseDown={handleMouseDown}>
         <div className="flex flex-col w-full h-full">
           <div className="flex justify-between w-full">
-            <div className="text-sm h-8 flex items-center">
+            <div className="flex items-center h-8 text-sm">
               {name}
             </div>
             {!disableCloseIcon ? (
@@ -257,9 +252,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
           </div>
           <div
             ref={scrollDivRef}
-            className="
-              size-full h-full bg-white
-              custom-scrollbar snap-mandatory overflow-y-auto overflow-x-hidden"
+            className="h-full overflow-x-hidden overflow-y-auto bg-white size-full custom-scrollbar snap-mandatory"
             style={{
               ...contentAreaStyles,
             }}
@@ -267,6 +260,9 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
             onScroll={debouncedOnScroll}
             onWheel={onWheel}>
             {children}
+          </div>
+          <div className="text-xs text-white/70">
+            {leftFooterText}
           </div>
           {resizeable ? (
             <div

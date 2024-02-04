@@ -1,14 +1,23 @@
 import { PropsWithChildren } from 'react';
 
 type WindowInfoPanelProps = {
-  styles?: React.CSSProperties;
+  title: string;
+  description?: string;
 };
 
 function WindowInfoPanel(
   props: PropsWithChildren<WindowInfoPanelProps>
 ) {
-  const { children } = props;
-  return <div className="p-4 h-full text-gray-600">{children}</div>;
+  const { title, description, children } = props;
+  return (
+    <div className="h-full p-4 text-gray-600 ">
+      <div className="flex flex-col">
+        <h3 className="text-lg font-extrabold">{title}</h3>
+        <p className="mb-3 text-sm">{description}</p>
+        {children}
+      </div>
+    </div>
+  );
 }
 
 export { WindowInfoPanel };

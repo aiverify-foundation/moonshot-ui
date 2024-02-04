@@ -1,16 +1,16 @@
 import { useState } from 'react';
+import { KeyValueDisplay } from '@/app/components/keyvalue-display';
 import TwoPanel from '@/app/components/two-panel';
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
 import { useAppDispatch } from '@/lib/redux';
 import { setActiveSession } from '@/lib/redux/slices/activeSessionSlice';
-import useSessionList from '../hooks/useSessionList';
+import useSessionList from '@views/moonshot-desktop/hooks/useSessionList';
 import {
   useLazyGetSessionQuery,
   useLazySetActiveSessionQuery,
-} from '../services/session-api-service';
-import { KeyValueDisplay } from '@/app/components/keyvalue-display';
+} from '@views/moonshot-desktop/services/session-api-service';
 
 type FileExplorerSavedSessionsProps = {
   onCloseClick: () => void;
@@ -55,8 +55,74 @@ function FileExplorerSavedSessions(
       initialXY={[600, 200]}
       initialWindowSize={[720, 470]}
       onCloseClick={onCloseClick}
-      name="Saved Sessions">
-      <TwoPanel>
+      name="Saved Sessions"
+      leftFooterText={
+        sessions.length ? `${sessions.length} Sessions` : ''
+      }>
+      {selectedSession ? (
+        <TwoPanel>
+          <WindowList>
+            {sessions
+              ? sessions.map((session) => (
+                  <WindowList.Item
+                    key={session.session_id}
+                    displayName={session.name}
+                    id={session.session_id}
+                    onClick={handleListItemClick}
+                    selected={
+                      selectedSession?.session_id ===
+                      session.session_id
+                    }
+                  />
+                ))
+              : null}
+          </WindowList>
+          <WindowInfoPanel
+            title="Session Info"
+            description={selectedSession.description}>
+            <div className="h-full">
+              {selectedSession ? (
+                <div className="flex flex-col gap-6">
+                  <div>
+                    <KeyValueDisplay
+                      label="Session Name"
+                      value={selectedSession.name}
+                    />
+                    <KeyValueDisplay
+                      label="Session ID"
+                      value={selectedSession.session_id}
+                    />
+                    <KeyValueDisplay
+                      label="Endpoints"
+                      value={selectedSession.endpoints
+                        .map((endpoint) => endpoint)
+                        .join(', ')}
+                    />
+                    <KeyValueDisplay
+                      label="Metadata File"
+                      value={selectedSession.metadata_file}
+                    />
+                    <KeyValueDisplay
+                      label="Created At"
+                      value={new Date(
+                        selectedSession.created_epoch * 1000
+                      ).toLocaleString()}
+                    />
+                  </div>
+                  <div>
+                    <button
+                      className="btn-primary"
+                      type="button"
+                      onClick={handleContinueSessionClick}>
+                      Continue Session
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          </WindowInfoPanel>
+        </TwoPanel>
+      ) : (
         <WindowList>
           {sessions
             ? sessions.map((session) => (
@@ -69,55 +135,7 @@ function FileExplorerSavedSessions(
               ))
             : null}
         </WindowList>
-        <WindowInfoPanel>
-          <div className="h-full">
-            {selectedSession ? (
-              <div className="flex flex-col gap-6">
-                <div>
-                  <h3 className="text-lg font-extrabold">
-                    Session Info
-                  </h3>
-                  <p className="mb-3 text-sm">
-                    {selectedSession.description}
-                  </p>
-                  <KeyValueDisplay
-                    label="Session Name"
-                    value={selectedSession.name}
-                  />
-                  <KeyValueDisplay
-                    label="Session ID"
-                    value={selectedSession.session_id}
-                  />
-                  <KeyValueDisplay
-                    label="Endpoints"
-                    value={selectedSession.endpoints
-                      .map((endpoint) => endpoint)
-                      .join(', ')}
-                  />
-                  <KeyValueDisplay
-                    label="Metadata File"
-                    value={selectedSession.metadata_file}
-                  />
-                  <KeyValueDisplay
-                    label="Created At"
-                    value={new Date(
-                      selectedSession.created_epoch * 1000
-                    ).toLocaleString()}
-                  />
-                </div>
-                <div>
-                  <button
-                    className="btn-primary"
-                    type="button"
-                    onClick={handleContinueSessionClick}>
-                    Continue Session
-                  </button>
-                </div>
-              </div>
-            ) : null}
-          </div>
-        </WindowInfoPanel>
-      </TwoPanel>
+      )}
     </Window>
   );
 }
