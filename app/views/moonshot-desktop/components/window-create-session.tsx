@@ -1,13 +1,18 @@
+import { Formik, Form, FieldArray } from 'formik';
 import React from 'react';
-import { TextInput } from '@components/textInput';
-import { Window } from '@components/window';
+import useLLMEndpointList from '@/app/views/moonshot-desktop/hooks/useLLMEndpointList';
 import { CheckBox } from '@components/checkbox';
 import { TextArea } from '@components/textArea';
-import { Formik, Form, FieldArray } from 'formik';
+import { TextInput } from '@components/textInput';
+import { Window } from '@components/window';
 
 type WindowChatStartProps = {
   onCloseClick: () => void;
-  onStartClick: (sessionName: string, description: string, llmEndpoints: string[]) => void;
+  onStartClick: (
+    sessionName: string,
+    description: string,
+    llmEndpoints: string[]
+  ) => void;
 };
 
 type FormValues = {
@@ -22,34 +27,16 @@ const initialFormValues: FormValues = {
   llmEndpoints: [],
 };
 
-const llmEndpoints = [
-  {
-    id: 'my-openai-gpt35-amin',
-    name: 'OpenAI-GPT35',
-    description: 'OpenAI GPT-3.5',
-  },
-  {
-    id: 'my-openai-gpt4-amin',
-    name: 'OpenAI-GPT4',
-    description: 'OpenAI GPT-4',
-  },
-  {
-    id: 'claude2',
-    name: 'Claude2',
-    description: 'Claude2',
-  },
-  {
-    id: 'llama2',
-    name: 'Llama2',
-    description: 'Llama2',
-  },
-];
-
 function WindowCreateSession(props: WindowChatStartProps) {
   const { onCloseClick, onStartClick } = props;
+  const { llmEndpoints, error, isLoading } = useLLMEndpointList();
 
   async function handleFormSubmit(values: FormValues) {
-    onStartClick(values.sessionName, values.description, values.llmEndpoints);
+    onStartClick(
+      values.sessionName,
+      values.description,
+      values.llmEndpoints
+    );
   }
 
   return (
@@ -60,8 +47,7 @@ function WindowCreateSession(props: WindowChatStartProps) {
       initialWindowSize={[600, 470]}
       name="Start New Session"
       styles={{ zIndex: 100 }}
-      onCloseClick={onCloseClick}
-    >
+      onCloseClick={onCloseClick}>
       <div
         style={{
           color: 'gray',
@@ -69,9 +55,10 @@ function WindowCreateSession(props: WindowChatStartProps) {
           position: 'relative',
           height: '100%',
           width: '100%',
-        }}
-      >
-        <Formik<FormValues> initialValues={initialFormValues} onSubmit={handleFormSubmit}>
+        }}>
+        <Formik<FormValues>
+          initialValues={initialFormValues}
+          onSubmit={handleFormSubmit}>
           {(formProps) => (
             <Form>
               <TextInput
@@ -81,7 +68,8 @@ function WindowCreateSession(props: WindowChatStartProps) {
                 value={formProps.values.sessionName}
                 onBlur={formProps.handleBlur}
                 error={
-                  formProps.touched.sessionName && formProps.errors.sessionName
+                  formProps.touched.sessionName &&
+                  formProps.errors.sessionName
                     ? formProps.errors.sessionName
                     : undefined
                 }
@@ -92,7 +80,8 @@ function WindowCreateSession(props: WindowChatStartProps) {
                 label="Description"
                 onChange={formProps.handleChange}
                 error={
-                  formProps.touched.description && formProps.errors.description
+                  formProps.touched.description &&
+                  formProps.errors.description
                     ? formProps.errors.description
                     : undefined
                 }
@@ -105,8 +94,7 @@ function WindowCreateSession(props: WindowChatStartProps) {
                   fontWeight: 600,
                   marginBottom: 4,
                   fontSize: 13,
-                }}
-              >
+                }}>
                 LLM Endpoints
               </div>
               <div
@@ -120,36 +108,42 @@ function WindowCreateSession(props: WindowChatStartProps) {
                   alignItems: 'flex-start',
                   justifyContent: 'flex-start',
                   gap: 15,
-                }}
-              >
+                }}>
                 <div
                   style={{
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'flex-start',
                     gap: 20,
-                  }}
-                >
+                  }}>
                   <FieldArray
                     name="llmEndpoints"
                     render={(arrayHelpers) =>
                       llmEndpoints.map((endpoint) => (
                         <CheckBox
-                          key={endpoint.id}
+                          key={endpoint.name}
                           style={{ marginBottom: 0 }}
                           label={endpoint.name}
-                          name={endpoint.id}
-                          checked={formProps.values.llmEndpoints.includes(endpoint.id)}
+                          name={endpoint.name}
+                          checked={formProps.values.llmEndpoints.includes(
+                            endpoint.name
+                          )}
                           onChange={() => {
-                            if (formProps.values.llmEndpoints.includes(endpoint.id)) {
+                            if (
+                              formProps.values.llmEndpoints.includes(
+                                endpoint.name
+                              )
+                            ) {
                               arrayHelpers.remove(
-                                formProps.values.llmEndpoints.indexOf(endpoint.id)
+                                formProps.values.llmEndpoints.indexOf(
+                                  endpoint.name
+                                )
                               );
                             } else {
-                              arrayHelpers.push(endpoint.id);
+                              arrayHelpers.push(endpoint.name);
                             }
                           }}
-                          value={endpoint.id}
+                          value={endpoint.name}
                         />
                       ))
                     }
@@ -162,8 +156,7 @@ function WindowCreateSession(props: WindowChatStartProps) {
                   position: 'absolute',
                   bottom: 10,
                   textAlign: 'right',
-                }}
-              >
+                }}>
                 <button
                   style={{
                     minWidth: 100,
@@ -173,8 +166,7 @@ function WindowCreateSession(props: WindowChatStartProps) {
                     color: '#FFF',
                     fontSize: 13,
                   }}
-                  type="submit"
-                >
+                  type="submit">
                   Start
                 </button>
               </div>

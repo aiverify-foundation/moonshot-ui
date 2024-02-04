@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 function TwoPanel({ children }: { children: React.ReactNode[] }) {
-  const [dividerPosition, setDividerPosition] = useState(50);
+  const [dividerPosition, setDividerPosition] = useState(40);
   const dividerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -35,8 +35,7 @@ function TwoPanel({ children }: { children: React.ReactNode[] }) {
   return (
     <div
       ref={containerRef}
-      className="flex w-full h-full"
-      style={{ userSelect: 'none' }}>
+      className="flex w-full h-full select-none">
       <div
         className="h-full"
         style={{ width: `${dividerPosition}%` }}>
@@ -46,7 +45,7 @@ function TwoPanel({ children }: { children: React.ReactNode[] }) {
         ref={dividerRef}
         onMouseDown={startResizing}
         className="
-          cursor-col-resize h-full w-1  
+          cursor-col-resize h-full w-1.5  
           bg-fuchsia-900/70
           dark:bg-neutral-900/70 "
       />

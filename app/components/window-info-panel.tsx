@@ -4,20 +4,11 @@ type WindowInfoPanelProps = {
   styles?: React.CSSProperties;
 };
 
-function WindowInfoPanel(props: PropsWithChildren<WindowInfoPanelProps>) {
-  const { styles, children } = props;
-  return (
-    <div
-      style={{
-        borderLeft: '1px solid #dbdada',
-        color: '#494848',
-        paddingTop: 15,
-        paddingLeft: 15,
-        ...styles,
-      }}>
-      {children}
-    </div>
-  );
+function WindowInfoPanel(
+  props: PropsWithChildren<WindowInfoPanelProps>
+) {
+  const { children } = props;
+  return <div className="p-4 h-full text-gray-600">{children}</div>;
 }
 
 export { WindowInfoPanel };

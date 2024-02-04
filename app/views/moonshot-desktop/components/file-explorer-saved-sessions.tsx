@@ -10,6 +10,7 @@ import {
   useLazyGetSessionQuery,
   useLazySetActiveSessionQuery,
 } from '../services/session-api-service';
+import { KeyValueDisplay } from '@/app/components/keyvalue-display';
 
 type FileExplorerSavedSessionsProps = {
   onCloseClick: () => void;
@@ -56,7 +57,7 @@ function FileExplorerSavedSessions(
       onCloseClick={onCloseClick}
       name="Saved Sessions">
       <TwoPanel>
-        <WindowList styles={{ flexBasis: '35%' }}>
+        <WindowList>
           {sessions
             ? sessions.map((session) => (
                 <WindowList.Item
@@ -68,54 +69,43 @@ function FileExplorerSavedSessions(
               ))
             : null}
         </WindowList>
-        <WindowInfoPanel
-          styles={{ flexBasis: '65%', height: '100%' }}>
-          <div style={{ height: '100%' }}>
+        <WindowInfoPanel>
+          <div className="h-full">
             {selectedSession ? (
-              <div style={{ position: 'relative', height: '100%' }}>
-                <h3 style={{ fontWeight: 800 }}>Session Info</h3>
-                <p style={{ marginBottom: 10 }}>
-                  {selectedSession.description}
-                </p>
-                <p style={{ fontSize: 14 }}>
-                  <span style={{ fontWeight: 500, marginRight: 5 }}>
-                    Session Name:
-                  </span>{' '}
-                  <span style={{ color: '#1189b9' }}>
-                    {selectedSession.name}
-                  </span>
-                </p>
-                <p style={{ fontSize: 14, marginRight: 5 }}>
-                  <span style={{ fontWeight: 500 }}>Session ID:</span>{' '}
-                  <span style={{ color: '#1189b9' }}>
-                    {selectedSession.session_id}
-                  </span>
-                </p>
-                <p style={{ fontSize: 14, marginRight: 5 }}>
-                  <span style={{ fontWeight: 500 }}>Endpoints:</span>{' '}
-                  <span style={{ color: '#1189b9' }}>
-                    {selectedSession.endpoints
+              <div className="flex flex-col gap-6">
+                <div>
+                  <h3 className="text-lg font-extrabold">
+                    Session Info
+                  </h3>
+                  <p className="mb-3 text-sm">
+                    {selectedSession.description}
+                  </p>
+                  <KeyValueDisplay
+                    label="Session Name"
+                    value={selectedSession.name}
+                  />
+                  <KeyValueDisplay
+                    label="Session ID"
+                    value={selectedSession.session_id}
+                  />
+                  <KeyValueDisplay
+                    label="Endpoints"
+                    value={selectedSession.endpoints
                       .map((endpoint) => endpoint)
                       .join(', ')}
-                  </span>
-                </p>
-                <p style={{ fontSize: 14, marginRight: 5 }}>
-                  <span style={{ fontWeight: 500 }}>
-                    Metadata File:
-                  </span>{' '}
-                  <span style={{ color: '#1189b9' }}>
-                    {selectedSession.metadata_file}
-                  </span>
-                </p>
-                <p style={{ fontSize: 14, marginRight: 5 }}>
-                  <span style={{ fontWeight: 500 }}>Created At:</span>{' '}
-                  <span style={{ color: '#1189b9' }}>
-                    {new Date(
+                  />
+                  <KeyValueDisplay
+                    label="Metadata File"
+                    value={selectedSession.metadata_file}
+                  />
+                  <KeyValueDisplay
+                    label="Created At"
+                    value={new Date(
                       selectedSession.created_epoch * 1000
                     ).toLocaleString()}
-                  </span>
-                </p>
-                <div className="flex justify-end absolute bottom-0 w-full">
+                  />
+                </div>
+                <div>
                   <button
                     className="btn-primary"
                     type="button"

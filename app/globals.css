@@ -22,23 +22,27 @@
   dark:bg-sky-700 dark:hover:bg-sky-800 dark:active:bg-sky-600;
 }
 
+.scroll-container {
+
+  @apply snap-mandatory overflow-y-auto overflow-x-hidden;
+}
+
+
 .custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
+
+  @apply w-2 rounded-md;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  @apply bg-gray-200;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(122, 121, 122, 0.4);
-  border-radius: 5px;
+  @apply bg-gray-400/80 rounded-md;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  @apply bg-gray-400/60;
 }
 
 @keyframes bounce {

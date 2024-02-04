@@ -1,19 +1,24 @@
-import { useAppDispatch, useAppSelector } from '@/lib/redux';
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
-import { ChatWindow } from '../moonshot-desktop/components/window-chatbox';
+import { useAppDispatch, useAppSelector } from '@/lib/redux';
+import { updateChatHistory } from '@/lib/redux/slices/activeSessionSlice';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
-import { getWindowId, getWindowScrollTop, getWindowSize, getWindowXY } from '@/app/lib/window';
-import { useSendPromptMutation } from '../moonshot-desktop/services/session-api-service';
 import { BoxPrompt } from './box-prompt';
+import {
+  getWindowId,
+  getWindowScrollTop,
+  getWindowSize,
+  getWindowXY,
+} from '@app/lib/window';
+import { ScreenOverlay } from '@components/screen-overlay';
+import TaskBar from '@components/taskbar';
+import { ChatWindow } from '@views/active-chat-session/window-chatbox';
+import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTemplateList';
 import {
   useUnusePromptTemplateMutation,
   useUsePromptTemplateMutation,
-} from '../moonshot-desktop/services/prompt-template-api-service';
-import { setActiveSession, updateChatHistory } from '@/lib/redux/slices/activeSessionSlice';
-import usePromptTemplateList from '../moonshot-desktop/hooks/usePromptTemplateList';
-import { ScreenOverlay } from '@/app/components/screen-overlay';
-import TaskBar from '@/app/components/taskbar';
-import Image from 'next/image';
+} from '@views/moonshot-desktop/services/prompt-template-api-service';
+import { useSendPromptMutation } from '@views/moonshot-desktop/services/session-api-service';
 
 type ActiveSessionProps = {
   onCloseBtnClick: () => void;
@@ -21,16 +26,22 @@ type ActiveSessionProps = {
 
 function ActiveChatSession(props: ActiveSessionProps) {
   const { onCloseBtnClick } = props;
-  const activeSession = useAppSelector((state) => state.activeSession.entity);
-  const { promptTemplates, error, isLoading } = usePromptTemplateList();
-  const [promptText, setPromptText] = useState('');
-  const [selectedPromptTemplate, setSelectedPromptTemplate] = useState<PromptTemplate | undefined>(
-    undefined
+  const activeSession = useAppSelector(
+    (state) => state.activeSession.entity
   );
+  const { promptTemplates, error, isLoading } =
+    usePromptTemplateList();
+  const [promptText, setPromptText] = useState('');
+  const [selectedPromptTemplate, setSelectedPromptTemplate] =
+    useState<PromptTemplate | undefined>(undefined);
   const windowsMap = useAppSelector((state) => state.windows.map);
   const [
     sendPrompt,
-    { data: updatedChatHistory, isLoading: sendPromptIsLoading, error: sendPromptError },
+    {
+      data: updatedChatHistory,
+      isLoading: sendPromptIsLoading,
+      error: sendPromptError,
+    },
   ] = useSendPromptMutation();
   const [
     triggerSetPromptTemplate,
@@ -79,7 +90,10 @@ function ActiveChatSession(props: ActiveSessionProps) {
   };
 
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    if (isZKeyPressed.current !== undefined && isZKeyPressed.current === true) {
+    if (
+      isZKeyPressed.current !== undefined &&
+      isZKeyPressed.current === true
+    ) {
       syncScroll(e.deltaY);
     }
   };
@@ -92,7 +106,9 @@ function ActiveChatSession(props: ActiveSessionProps) {
     scrollTop: number,
     windowId: string
   ) {
-    dispatch(updateWindows({ [windowId]: [x, y, width, height, scrollTop] }));
+    dispatch(
+      updateWindows({ [windowId]: [x, y, width, height, scrollTop] })
+    );
   }
 
   async function handleSendPromptClick(message: string) {
@@ -109,14 +125,20 @@ function ActiveChatSession(props: ActiveSessionProps) {
     }
   }
 
-  async function handleSelectPromptTemplate(template: PromptTemplate | undefined) {
+  async function handleSelectPromptTemplate(
+    template: PromptTemplate | undefined
+  ) {
     if (!template && activeSession && selectedPromptTemplate) {
-      const result = triggerUnSetPromptTemplate(selectedPromptTemplate.name);
+      const result = triggerUnSetPromptTemplate(
+        selectedPromptTemplate.name
+      );
       setSelectedPromptTemplate(undefined);
       return;
     }
     setSelectedPromptTemplate(template);
-    const result = await triggerSetPromptTemplate(template ? template.name : '');
+    const result = await triggerSetPromptTemplate(
+      template ? template.name : ''
+    );
   }
 
   useEffect(() => {
@@ -141,8 +163,17 @@ function ActiveChatSession(props: ActiveSessionProps) {
       const margin = 250;
       const spacing = 50;
       activeSession.chats.forEach((id, index) => {
-        const leftPos = index === 0 ? margin : margin + chatboxWidth * index + spacing;
-        chatWindows[getWindowId(id)] = [leftPos, 100, chatboxWidth, 450, 0];
+        const leftPos =
+          index === 0
+            ? margin
+            : margin + chatboxWidth * index + spacing;
+        chatWindows[getWindowId(id)] = [
+          leftPos,
+          100,
+          chatboxWidth,
+          450,
+          0,
+        ];
       });
       dispatch(updateWindows(chatWindows));
     }
@@ -191,7 +222,10 @@ function ActiveChatSession(props: ActiveSessionProps) {
           <div className="flex justify-start items-center h-full w-full">
             <h2 className="capitalize text-xl text-blue-500">
               Red Teaming Session:
-              <span className="font-bold text-white"> {activeSession.name}</span>
+              <span className="font-bold text-white">
+                {' '}
+                {activeSession.name}
+              </span>
             </h2>
           </div>
         </TaskBar>
@@ -199,7 +233,9 @@ function ActiveChatSession(props: ActiveSessionProps) {
           if (windowsMap[getWindowId(id)]) {
             return (
               <ChatWindow.ChatBox
-                ref={(el) => (chatBoxRefs.current[index] = el as HTMLDivElement)}
+                ref={(el) =>
+                  (chatBoxRefs.current[index] = el as HTMLDivElement)
+                }
                 windowId={getWindowId(id)}
                 key={id}
                 name={id}
@@ -211,47 +247,60 @@ function ActiveChatSession(props: ActiveSessionProps) {
                 onWheel={handleWheel}>
                 {!activeSession.chat_history
                   ? null
-                  : activeSession.chat_history[id].map((dialogue, index) => {
-                      return (
-                        <div
-                          key={index}
-                          style={{ display: 'flex', flexDirection: 'column', paddingRight: 10 }}>
+                  : activeSession.chat_history[id].map(
+                      (dialogue, index) => {
+                        return (
                           <div
+                            key={index}
                             style={{
-                              color: 'black',
-                              textAlign: 'right',
+                              display: 'flex',
+                              flexDirection: 'column',
                               paddingRight: 10,
-                              fontSize: 12,
                             }}>
-                            You
+                            <div
+                              style={{
+                                color: 'black',
+                                textAlign: 'right',
+                                paddingRight: 10,
+                                fontSize: 12,
+                              }}>
+                              You
+                            </div>
+                            <ChatWindow.TalkBubble
+                              backgroundColor="#a3a3a3"
+                              fontColor="#FFF"
+                              styles={{
+                                alignSelf: 'flex-end',
+                                maxWidth: '90%',
+                              }}>
+                              {dialogue.prepared_prompt}
+                            </ChatWindow.TalkBubble>
+                            <div
+                              style={{
+                                color: 'black',
+                                textAlign: 'left',
+                                maxWidth: '90%',
+                                paddingLeft: 10,
+                                fontSize: 12,
+                              }}>
+                              AI
+                            </div>
+                            <ChatWindow.TalkBubble
+                              backgroundColor="#3498db"
+                              fontColor="#FFF"
+                              styles={{ textAlign: 'left' }}>
+                              {dialogue.predicted_result}
+                            </ChatWindow.TalkBubble>
                           </div>
-                          <ChatWindow.TalkBubble
-                            backgroundColor="#a3a3a3"
-                            fontColor="#FFF"
-                            styles={{ alignSelf: 'flex-end', maxWidth: '90%' }}>
-                            {dialogue.prepared_prompt}
-                          </ChatWindow.TalkBubble>
-                          <div
-                            style={{
-                              color: 'black',
-                              textAlign: 'left',
-                              maxWidth: '90%',
-                              paddingLeft: 10,
-                              fontSize: 12,
-                            }}>
-                            AI
-                          </div>
-                          <ChatWindow.TalkBubble
-                            backgroundColor="#3498db"
-                            fontColor="#FFF"
-                            styles={{ textAlign: 'left' }}>
-                            {dialogue.predicted_result}
-                          </ChatWindow.TalkBubble>
-                        </div>
-                      );
-                    })}
+                        );
+                      }
+                    )}
                 {sendPromptIsLoading ? (
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}>
                     <div
                       style={{
                         color: 'black',
@@ -266,7 +315,10 @@ function ActiveChatSession(props: ActiveSessionProps) {
                       fontColor="#FFF"
                       styles={{ alignSelf: 'flex-end' }}>
                       {selectedPromptTemplate
-                        ? selectedPromptTemplate.template.replace('{{ prompt }}', promptText)
+                        ? selectedPromptTemplate.template.replace(
+                            '{{ prompt }}',
+                            promptText
+                          )
                         : promptText}
                     </ChatWindow.TalkBubble>
                     <div
@@ -278,7 +330,12 @@ function ActiveChatSession(props: ActiveSessionProps) {
                       }}>
                       AI
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'flex-start', marginRight: 15 }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        marginRight: 15,
+                      }}>
                       <ChatWindow.LoadingAnimation />
                     </div>
                   </div>

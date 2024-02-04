@@ -1,15 +1,14 @@
 import { PropsWithChildren } from 'react';
 
-type WindowListProps = {
-  styles?: React.CSSProperties;
-};
-
-function WindowList(props: PropsWithChildren<WindowListProps>) {
-  const { styles, children } = props;
+function WindowList(props: PropsWithChildren) {
+  const { children } = props;
   return (
-    <div style={{ ...styles }}>
-      <ul style={{ color: '#494848', padding: 15 }}>{children}</ul>
-    </div>
+    <ul
+      className="text-sm text-gray-600 divide-dashed
+      divide-y scroll-container
+      divide-fuchsia-200 dark:divide-slate-300">
+      {children}
+    </ul>
   );
 }
 
@@ -17,15 +16,15 @@ type ListItemProps = {
   id: string;
   displayName: string;
   onClick: (id: string) => void;
-  styles?: React.CSSProperties;
 };
 
 function ListItem(props: ListItemProps) {
-  const { id, displayName, onClick, styles } = props;
+  const { id, displayName, onClick } = props;
   return (
     <li
-      onClick={() => onClick(id)}
-      style={{ borderBottom: '1px solid #dbdada', cursor: 'pointer', ...styles }}>
+      className="border-fuchsia-200 cursor-pointer 
+        hover:bg-fuchsia-200 dark:hover:bg-slate-200"
+      onClick={() => onClick(id)}>
       {displayName}
     </li>
   );

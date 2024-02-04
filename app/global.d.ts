@@ -34,3 +34,14 @@ type PromptTemplate = {
   description: string;
   template: string;
 };
+
+type LLMEndpoint = {
+  type: string;
+  name: string;
+  description: string;
+  uri: string;
+  token: string;
+  max_calls_per_second: number;
+  max_concurrency: number;
+  params: Record<string, string | number>;
+};
