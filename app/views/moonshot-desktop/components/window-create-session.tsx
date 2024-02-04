@@ -42,7 +42,8 @@ function WindowCreateSession(props: WindowChatStartProps) {
   return (
     <Window
       id="create-session"
-      resizeable
+      resizeable={false}
+      draggable={false}
       initialXY={[600, 200]}
       initialWindowSize={[600, 470]}
       name="Start New Session"
@@ -158,14 +159,7 @@ function WindowCreateSession(props: WindowChatStartProps) {
                   textAlign: 'right',
                 }}>
                 <button
-                  style={{
-                    minWidth: 100,
-                    border: '1px solid #cfcfcf',
-                    padding: '5px 15px',
-                    background: '#1189b9',
-                    color: '#FFF',
-                    fontSize: 13,
-                  }}
+                  className="btn-primary"
                   type="submit">
                   Start
                 </button>

@@ -57,7 +57,9 @@ function FileExplorerSavedSessions(
       onCloseClick={onCloseClick}
       name="Saved Sessions"
       leftFooterText={
-        sessions.length ? `${sessions.length} Sessions` : ''
+        sessions.length
+          ? `${sessions.length} Session${sessions.length > 1 ? 's' : ''}`
+          : ''
       }>
       {selectedSession ? (
         <TwoPanel>

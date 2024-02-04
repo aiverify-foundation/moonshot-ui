@@ -30,6 +30,7 @@ type WindowProps = {
   contentAreaStyles?: React.CSSProperties;
   resizeable?: boolean;
   disableCloseIcon?: boolean;
+  draggable?: boolean; // Added this line
   leftFooterText?: string;
   onCloseClick?: () => void;
   onWheel?: (e: React.WheelEvent<HTMLDivElement>) => void;
@@ -59,6 +60,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       backgroundColor,
       children,
       disableCloseIcon = false,
+      draggable = true, // Added this line
       leftFooterText,
       onCloseClick,
       onWheel,
@@ -83,6 +85,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
     );
 
     function handleMouseDown(e: React.MouseEvent) {
+      if (!draggable) return; // Added this line
       e.stopPropagation();
       if (!windowRef.current) return;
       prevMouseXY.current = [e.clientX, e.clientY];

@@ -50,7 +50,12 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
       initialWindowSize={initialSize}
       onCloseClick={onCloseClick}
       onWindowChange={onWindowChange}
-      name="LLM Endpoints">
+      name="LLM Endpoints"
+      leftFooterText={
+        llmEndpoints.length
+          ? `${llmEndpoints.length} Endpoint${llmEndpoints.length > 1 ? 's' : ''}`
+          : ''
+      }>
       {selectedEndpoint ? (
         <TwoPanel>
           <WindowList>
@@ -66,12 +71,7 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
                 ))
               : null}
           </WindowList>
-          <WindowInfoPanel
-            title={
-              selectedEndpoint
-                ? selectedEndpoint.name
-                : 'Select an Endpoint'
-            }>
+          <WindowInfoPanel title="LLM Endpoint">
             <div className="h-full">
               {selectedEndpoint ? (
                 <div className="flex flex-col gap-6">
