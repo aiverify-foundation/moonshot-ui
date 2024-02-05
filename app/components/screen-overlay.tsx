@@ -1,8 +1,9 @@
 type ScreenOverlayProps = {
+  bgColor?: string;
   children?: React.ReactNode;
 };
 
-function ScreenOverlay({ children }: ScreenOverlayProps) {
+function ScreenOverlay({ children, bgColor = 'transparent' }: ScreenOverlayProps) {
   return (
     <div
       style={{
@@ -11,7 +12,7 @@ function ScreenOverlay({ children }: ScreenOverlayProps) {
         left: 0,
         width: '100vw',
         height: '100vh',
-        backgroundColor: 'rgba(255, 255, 255, 0.3)',
+        backgroundColor: bgColor,
         zIndex: 1000,
       }}>
       {children}

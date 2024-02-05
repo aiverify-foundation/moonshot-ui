@@ -64,6 +64,7 @@ export default function MoonshotDesktop() {
     useState(false);
   const [isShowPromptPreview, setIsShowPromptPreview] =
     useState(false);
+  const [isDesktopIconsHidden, setIsDesktopIconsHidden] = useState(false);
   const [triggerSetActiveSession] = useLazySetActiveSessionQuery();
   const dispatch = useAppDispatch();
   const handleOnWindowChange = useWindowChange();
@@ -71,13 +72,13 @@ export default function MoonshotDesktop() {
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
   const backgroundImageStyle = !isDarkMode
     ? {
-        backgroundImage: 'url("/pink-bg-fade3.png")',
-        backgroundBlendMode: 'multiply',
-      }
+      backgroundImage: 'url("/pink-bg-fade3.png")',
+      backgroundBlendMode: 'multiply',
+    }
     : {
-        backgroundImage:
-          'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #434343, black)',
-      };
+      backgroundImage:
+        'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #595858, #090909)',
+    };
   const [
     createSession,
     {
@@ -105,6 +106,7 @@ export default function MoonshotDesktop() {
         dispatch(setActiveSession(activeSessionResponse.data));
         setIsShowWindowCreateSession(false);
         setIsChatSessionOpen(true);
+        setIsDesktopIconsHidden(true);
       }
     } // todo - else and error handling
   }
@@ -112,11 +114,13 @@ export default function MoonshotDesktop() {
   function handleContinueSessionClick() {
     setIsShowWindowSavedSession(false);
     setIsChatSessionOpen(true);
+    setIsDesktopIconsHidden(true);
   }
 
   function handlePromptWindowCloseClick() {
     setIsChatSessionOpen(false);
     dispatch(removeActiveSession());
+    setIsDesktopIconsHidden(false)
   }
 
   function handleToggleDarkMode() {
@@ -146,12 +150,11 @@ export default function MoonshotDesktop() {
       className={`
         h-screen overflow-y-hidden
         flex flex-col bg-fuchsia-100
-        ${
-          !isDarkMode
-            ? `
+        ${!isDarkMode
+          ? `
           bg-gradient-to-br bg-no-repeat bg-right
           from-fuchsia-100 to-fuchsia-400`
-            : ''
+          : ''
         }
       `}
       style={{
@@ -173,44 +176,45 @@ export default function MoonshotDesktop() {
           </div>
         </div>
       </TaskBar>
-      <div className="flex pt-10">
-        <div className="grid grid-rows-6 grid-cols-10 grid-flow-col p-10 gap-y-12 gap-x-4">
-          <DesktopIcon
-            name={IconName.Folder}
-            label="Cookbooks"
-            onClick={() => setIsWindowOpen(true)}
-          />
-          <DesktopIcon
-            name={IconName.Folder}
-            label="Recipes"
-          />
-          <DesktopIcon
-            name={IconName.Folder}
-            label="LLM Endpoints"
-            onClick={() => setIsEndpointsExplorerOpen(true)}
-          />
-          <DesktopIcon
-            name={IconName.Folder}
-            label="Prompt Templates"
-          />
-          <DesktopIcon
-            name={IconName.ChatBubbles}
-            label="RedTeaming"
-            size={40}
-            onClick={() => setIsShowWindowCreateSession(true)}
-          />
-          <DesktopIcon
-            name={IconName.RunCookbook}
-            label="Run Cookbook"
-            onClick={() => null}
-          />
-          <DesktopIcon
-            name={IconName.FolderForChatSessions}
-            label="Saved Sessions"
-            onClick={() => setIsShowWindowSavedSession(true)}
-          />
-        </div>
-      </div>
+      {!isDesktopIconsHidden ?
+        <div className="flex pt-10">
+          <div className="grid grid-rows-6 grid-cols-10 grid-flow-col p-10 gap-y-12 gap-x-4">
+            <DesktopIcon
+              name={IconName.Folder}
+              label="Cookbooks"
+              onClick={() => setIsWindowOpen(true)}
+            />
+            <DesktopIcon
+              name={IconName.Folder}
+              label="Recipes"
+            />
+            <DesktopIcon
+              name={IconName.Folder}
+              label="LLM Endpoints"
+              onClick={() => setIsEndpointsExplorerOpen(true)}
+            />
+            <DesktopIcon
+              name={IconName.Folder}
+              label="Prompt Templates"
+            />
+            <DesktopIcon
+              name={IconName.ChatBubbles}
+              label="RedTeaming"
+              size={40}
+              onClick={() => setIsShowWindowCreateSession(true)}
+            />
+            <DesktopIcon
+              name={IconName.RunCookbook}
+              label="Run Cookbook"
+              onClick={() => null}
+            />
+            <DesktopIcon
+              name={IconName.FolderForChatSessions}
+              label="Saved Sessions"
+              onClick={() => setIsShowWindowSavedSession(true)}
+            />
+          </div>
+        </div> : null}
 
       {isWindowOpen ? (
         <Window
@@ -286,6 +290,7 @@ export default function MoonshotDesktop() {
           position: 'absolute',
           bottom: 50,
           right: 0,
+          zIndex: 1,
         }}
       />
 
