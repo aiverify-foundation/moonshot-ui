@@ -13,7 +13,10 @@ import {
 import { toggleDarkMode } from '@/lib/redux/slices/darkModeSlice';
 import { FileExplorerSavedSessions } from './components/file-explorer-saved-sessions';
 import { WindowCreateSession } from './components/window-create-session';
-import { useCreateSessionMutation } from './services/session-api-service';
+import {
+  useCreateSessionMutation,
+  useLazySetActiveSessionQuery,
+} from './services/session-api-service';
 import { DesktopIcon } from '@components/desktop-icon';
 import Menu from '@components/menu';
 import TaskBar from '@components/taskbar';
@@ -61,6 +64,7 @@ export default function MoonshotDesktop() {
     useState(false);
   const [isShowPromptPreview, setIsShowPromptPreview] =
     useState(false);
+  const [triggerSetActiveSession] = useLazySetActiveSessionQuery();
   const dispatch = useAppDispatch();
   const handleOnWindowChange = useWindowChange();
   const windowsMap = useAppSelector((state) => state.windows.map);
@@ -93,8 +97,16 @@ export default function MoonshotDesktop() {
       description,
       endpoints,
     });
-    dispatch(setActiveSession(response.data));
-    setIsShowWindowCreateSession(false);
+    if (response.data) {
+      const activeSessionResponse = await triggerSetActiveSession(
+        response.data.session_id
+      );
+      if (activeSessionResponse.data) {
+        dispatch(setActiveSession(activeSessionResponse.data));
+        setIsShowWindowCreateSession(false);
+        setIsChatSessionOpen(true);
+      }
+    } // todo - else and error handling
   }
 
   function handleContinueSessionClick() {

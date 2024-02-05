@@ -1,11 +1,11 @@
 import Image from 'next/image';
-import { TextInput } from '../../components/textInput';
-import { Window } from '../../components/window';
 import React, { useEffect, useState } from 'react';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import { ListItem, SelectList } from '@/app/components/selectList';
+import { TextArea } from '@/app/components/textArea';
 import useOutsideClick from '@/app/hooks/use-outside-click';
 import { getWindowId } from '@/app/lib/window';
-import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
+import { Window } from '@components/window';
 
 enum TextInputMode {
   PROMPT_LLM,
@@ -32,11 +32,18 @@ function BoxPrompt(props: {
     styles,
   } = props;
   const [promptMessage, setPromptMessage] = useState('');
-  const [showPromptTemplateList, setShowPromptTemplateList] = useState(false);
-  const [textInputMode, setTextInputMode] = useState<TextInputMode>(TextInputMode.PROMPT_LLM);
+  const [showPromptTemplateList, setShowPromptTemplateList] =
+    useState(false);
+  const [textInputMode, setTextInputMode] = useState<TextInputMode>(
+    TextInputMode.PROMPT_LLM
+  );
   const [listItems, setListItems] = useState<ListItem[]>([]);
   useOutsideClick(
-    ['prompt-template-list', 'box-prompt-text-input', 'prompt-template-trigger'],
+    [
+      'prompt-template-list',
+      'box-prompt-text-input',
+      'prompt-template-trigger',
+    ],
     () => {
       setShowPromptTemplateList(false);
       if (textInputMode === TextInputMode.FILTER_LIST) {
@@ -46,7 +53,9 @@ function BoxPrompt(props: {
     }
   );
 
-  function handleTextChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleTextChange(
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) {
     setPromptMessage(e.target.value);
   }
 
@@ -55,9 +64,19 @@ function BoxPrompt(props: {
     setPromptMessage('');
   }
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (textInputMode === TextInputMode.PROMPT_LLM && e.key === 'Enter') {
+  function handleKeyDown(
+    e: React.KeyboardEvent<HTMLTextAreaElement>
+  ) {
+    if (
+      textInputMode === TextInputMode.PROMPT_LLM &&
+      e.key === 'Enter'
+    ) {
       handleOnSendMessageClick();
+      e.preventDefault();
+    } else if (
+      textInputMode === TextInputMode.FILTER_LIST &&
+      e.key === 'Enter'
+    ) {
       e.preventDefault();
     }
   }
@@ -68,7 +87,9 @@ function BoxPrompt(props: {
   }
 
   function handlePromptTemplateClick(item: ListItem) {
-    const selected = promptTemplates.find((pt) => pt.name === item.id);
+    const selected = promptTemplates.find(
+      (pt) => pt.name === item.id
+    );
     if (selected) {
       onSelectPromptTemplate(selected);
     }
@@ -77,14 +98,17 @@ function BoxPrompt(props: {
     setTextInputMode(TextInputMode.PROMPT_LLM);
   }
 
-  function handleRemoveActivePromptTemplate(e: React.MouseEvent<HTMLImageElement>) {
+  function handleRemoveActivePromptTemplate(e: React.MouseEvent) {
     e.stopPropagation();
     onSelectPromptTemplate(undefined);
     setTextInputMode(TextInputMode.PROMPT_LLM);
   }
 
   useEffect(() => {
-    const list: ListItem[] = promptTemplates.map((pt) => ({ id: pt.name, displayName: pt.name }));
+    const list: ListItem[] = promptTemplates.map((pt) => ({
+      id: pt.name,
+      displayName: pt.name,
+    }));
     setListItems(list);
   }, [promptTemplates]);
 
@@ -92,7 +116,7 @@ function BoxPrompt(props: {
     <Window
       id={getWindowId('box-prompt')}
       initialXY={[600, 600]}
-      initialWindowSize={[500, 115]}
+      initialWindowSize={[500, 170]}
       resizeable={false}
       name="Prompt"
       onCloseClick={onCloseClick}
@@ -103,44 +127,38 @@ function BoxPrompt(props: {
         overflowY: 'visible',
         overflowX: 'visible',
       }}>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative',
-        }}>
-        <div style={{ display: 'flex', gap: 5 }}>
-          <TextInput
-            id="box-prompt-text-input"
-            name="sessionName"
-            placeholder={
-              textInputMode === TextInputMode.FILTER_LIST ? 'Search Prompt Templates' : 'Message'
-            }
-            style={{ width: 400 }}
-            onChange={handleTextChange}
-            value={promptMessage}
-            onKeyDown={handleKeyDown}
-          />
-          <button
-            style={{
-              minWidth: 80,
-              border: '1px solid #cfcfcf',
-              padding: '5px 15px',
-              background: '#1189b9',
-              color: '#FFF',
-              fontSize: 13,
-              borderRadius: 4,
-              height: 33,
-            }}
-            type="button"
-            onClick={handleOnSendMessageClick}>
-            Send
-          </button>
+      <div className="relative flex flex-col">
+        <div className="flex gap-1">
+          <div className="flex-1">
+            <TextArea
+              id="box-prompt-text-input"
+              name="sessionName"
+              placeholder={
+                textInputMode === TextInputMode.FILTER_LIST
+                  ? 'Search Prompt Templates'
+                  : 'Message'
+              }
+              onChange={handleTextChange}
+              value={promptMessage}
+              onKeyDown={handleKeyDown}
+              containerStyles={{
+                marginBottom: 0,
+              }}
+            />
+          </div>
+          <div className="">
+            <button
+              className="btn-primary h-10 w-20"
+              type="button"
+              onClick={handleOnSendMessageClick}>
+              Send
+            </button>
+          </div>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
           <div
+            className="flex items-center cursor-pointer"
             id="prompt-template-trigger"
-            style={{ display: 'flex ', alignItems: 'center', cursor: 'pointer' }}
             onClick={handleTogglePromptTemplateList}>
             <Image
               src="icons/prompt_template.svg"
@@ -152,20 +170,20 @@ function BoxPrompt(props: {
                 marginRight: 3,
               }}
             />
+
             <div className="flex items-center text-xs">
               Prompt Template
               {activePromptTemplate && (
                 <div className="flex items-center">
                   <div className="text-white ml-1">--</div>
                   <div className="text-white ml-1">
-                    <div className="text-blue-500 text-sm flex">
-                      {activePromptTemplate.name}
-                      <Image
-                        src="icons/close_icon.svg"
-                        alt="close"
-                        width={14}
-                        height={14}
-                        className="ml-1 cursor-pointer"
+                    <div className="text-blue-400 text-sm flex items-center">
+                      <div className="mr-1">
+                        {activePromptTemplate.name}
+                      </div>
+                      <Icon
+                        name={IconName.Close}
+                        size={14}
                         onClick={handleRemoveActivePromptTemplate}
                       />
                     </div>
@@ -192,8 +210,17 @@ function BoxPrompt(props: {
           <SelectList
             id="prompt-template-list"
             data={listItems}
-            styles={{ position: 'absolute', top: -90, left: 350, width: 300 }}
-            highlight={textInputMode === TextInputMode.FILTER_LIST ? promptMessage : undefined}
+            styles={{
+              position: 'absolute',
+              top: -90,
+              left: 350,
+              width: 300,
+            }}
+            highlight={
+              textInputMode === TextInputMode.FILTER_LIST
+                ? promptMessage
+                : undefined
+            }
             onItemClick={handlePromptTemplateClick}
           />
         )}

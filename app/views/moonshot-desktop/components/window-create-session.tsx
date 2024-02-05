@@ -55,7 +55,6 @@ function WindowCreateSession(props: WindowChatStartProps) {
           initialValues={initialFormValues}
           onSubmit={handleFormSubmit}>
           {(formProps) => {
-            console.log(formProps.values);
             return (
               <Form>
                 <TextInput
