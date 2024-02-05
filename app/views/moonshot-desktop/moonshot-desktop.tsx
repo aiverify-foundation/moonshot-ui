@@ -30,7 +30,7 @@ import {
   getWindowXY,
 } from '@/app/lib/window';
 import { useWindowChange } from '@/app/hooks/use-window-change';
-import { WindowIds } from './constants';
+import { WindowIds, Z_Index } from './constants';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 
 const legalSummarisation = {
@@ -64,7 +64,8 @@ export default function MoonshotDesktop() {
     useState(false);
   const [isShowPromptPreview, setIsShowPromptPreview] =
     useState(false);
-  const [isDesktopIconsHidden, setIsDesktopIconsHidden] = useState(false);
+  const [isDesktopIconsHidden, setIsDesktopIconsHidden] =
+    useState(false);
   const [triggerSetActiveSession] = useLazySetActiveSessionQuery();
   const dispatch = useAppDispatch();
   const handleOnWindowChange = useWindowChange();
@@ -72,13 +73,13 @@ export default function MoonshotDesktop() {
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
   const backgroundImageStyle = !isDarkMode
     ? {
-      backgroundImage: 'url("/pink-bg-fade3.png")',
-      backgroundBlendMode: 'multiply',
-    }
+        backgroundImage: 'url("/pink-bg-fade3.png")',
+        backgroundBlendMode: 'multiply',
+      }
     : {
-      backgroundImage:
-        'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #595858, #090909)',
-    };
+        backgroundImage:
+          'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #454545, #0e0e0e)',
+      };
   const [
     createSession,
     {
@@ -120,7 +121,7 @@ export default function MoonshotDesktop() {
   function handlePromptWindowCloseClick() {
     setIsChatSessionOpen(false);
     dispatch(removeActiveSession());
-    setIsDesktopIconsHidden(false)
+    setIsDesktopIconsHidden(false);
   }
 
   function handleToggleDarkMode() {
@@ -150,17 +151,18 @@ export default function MoonshotDesktop() {
       className={`
         h-screen overflow-y-hidden
         flex flex-col bg-fuchsia-100
-        ${!isDarkMode
-          ? `
+        ${
+          !isDarkMode
+            ? `
           bg-gradient-to-br bg-no-repeat bg-right
           from-fuchsia-100 to-fuchsia-400`
-          : ''
+            : ''
         }
       `}
       style={{
         ...backgroundImageStyle,
       }}>
-      <TaskBar>
+      <TaskBar zIndex={Z_Index.Top}>
         <div className="flex w-full">
           <div className="flex-1">
             <Menu />
@@ -176,8 +178,11 @@ export default function MoonshotDesktop() {
           </div>
         </div>
       </TaskBar>
-      {!isDesktopIconsHidden ?
-        <div className="flex pt-10">
+      {!isDesktopIconsHidden ? (
+        <div
+          id="desktopIcons"
+          className="flex pt-10"
+          style={{ zIndex: Z_Index.Level_1 }}>
           <div className="grid grid-rows-6 grid-cols-10 grid-flow-col p-10 gap-y-12 gap-x-4">
             <DesktopIcon
               name={IconName.Folder}
@@ -214,7 +219,8 @@ export default function MoonshotDesktop() {
               onClick={() => setIsShowWindowSavedSession(true)}
             />
           </div>
-        </div> : null}
+        </div>
+      ) : null}
 
       {isWindowOpen ? (
         <Window
@@ -250,6 +256,7 @@ export default function MoonshotDesktop() {
 
       {isShowWindowCreateSession ? (
         <WindowCreateSession
+          zIndex={Z_Index.Level_2}
           onCloseClick={() => setIsShowWindowCreateSession(false)}
           onStartClick={startNewSession}
         />
@@ -257,12 +264,14 @@ export default function MoonshotDesktop() {
 
       {isChatSessionOpen ? (
         <ActiveChatSession
+          zIndex={Z_Index.Level_2}
           onCloseBtnClick={handlePromptWindowCloseClick}
         />
       ) : null}
 
       {isEndpointsExplorerOpen ? (
         <FileExplorerEndpoints
+          zIndex={Z_Index.Level_2}
           windowId={getWindowId(WindowIds.LLM_ENDPOINTS)}
           initialXY={getWindowXY(windowsMap, WindowIds.LLM_ENDPOINTS)}
           initialSize={getWindowSize(
@@ -276,6 +285,7 @@ export default function MoonshotDesktop() {
 
       {isShowWindowSavedSession ? (
         <FileExplorerSavedSessions
+          zIndex={Z_Index.Level_2}
           onCloseClick={() => setIsShowWindowSavedSession(false)}
           onContinueSessionClick={handleContinueSessionClick}
         />
@@ -289,175 +299,12 @@ export default function MoonshotDesktop() {
         style={{
           position: 'absolute',
           bottom: 50,
-          right: 0,
-          zIndex: 1,
+          right: -40,
+          zIndex: Z_Index.Base,
         }}
       />
 
-      {isShowPromptTemplates ? (
-        <Window
-          id="prompt-templates"
-          styles={{ width: 800 }}
-          name="Prompt Templates"
-          initialXY={[950, 370]}
-          onCloseClick={() => setIsShowPromptTemplates(false)}>
-          <div style={{ display: 'flex' }}>
-            <ul style={{ color: '#494848', padding: 15 }}>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}
-                onClick={() => setIsShowPromptPreview(true)}>
-                advglue-templatemnli
-              </li>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}>
-                advglue-templateqnli
-              </li>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}>
-                advglue-templateqqp
-              </li>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}>
-                advglue-templaterte
-              </li>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}>
-                advglue-templatesst2
-              </li>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}>
-                analogical-similarity
-              </li>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}>
-                auto-categorisation
-              </li>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}>
-                bbq-template1
-              </li>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}>
-                cause-and-effect-one-sentence
-              </li>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}>
-                cause-and-effect-two-sentence
-              </li>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}>
-                contextual-parametric-knowledge-conflicts
-              </li>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}>
-                coqa-conversational-question-answering
-              </li>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}>
-                enronemail-templatea
-              </li>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}>
-                enronemail-templateb
-              </li>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}>
-                enronemail-templatec
-              </li>
-              <li
-                style={{
-                  borderBottom: '1px solid #dbdada',
-                  cursor: 'pointer',
-                }}>
-                enronemail-templated
-              </li>
-            </ul>
-            {isShowPromptPreview ? (
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  paddingTop: 15,
-                }}>
-                <h2
-                  style={{
-                    marginTop: 20,
-                    color: '#000',
-                    marginBottom: 10,
-                  }}>
-                  advglue-templatemnli
-                </h2>
-
-                <div style={{ fontSize: 14, color: 'gray' }}>
-                  This template is used for the MNLI dataset. Given a
-                  premise sentence and a hypothesis sentence, the task
-                  is to predict whether the premise entails the
-                  hypothesis.
-                </div>
-                <h4
-                  style={{
-                    marginTop: 20,
-                    color: '#000',
-                    marginBottom: 10,
-                  }}>
-                  Template
-                </h4>
-                <div style={{ fontSize: 14, color: 'gray' }}>
-                  &quot;&#123;&#123;prompt&#125;&#125;&quot; Please
-                  identify whether the premise entails the hypothesis.
-                  The answer should be exactly &apos;yes&apos; or
-                  &apos;no&apos;, without capitalization.
-                </div>
-              </div>
-            ) : null}
-          </div>
-        </Window>
-      ) : null}
+      {isShowPromptTemplates ? <div>TODO</div> : null}
     </div>
   );
 }

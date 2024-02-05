@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { updateChatHistory } from '@/lib/redux/slices/activeSessionSlice';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
@@ -21,11 +22,12 @@ import {
 import { useSendPromptMutation } from '@views/moonshot-desktop/services/session-api-service';
 
 type ActiveSessionProps = {
+  zIndex: number;
   onCloseBtnClick: () => void;
 };
 
 function ActiveChatSession(props: ActiveSessionProps) {
-  const { onCloseBtnClick } = props;
+  const { zIndex, onCloseBtnClick } = props;
   const activeSession = useAppSelector(
     (state) => state.activeSession.entity
   );
@@ -203,32 +205,33 @@ function ActiveChatSession(props: ActiveSessionProps) {
   if (activeSession === undefined) return null;
 
   return (
-    <>
-      <ScreenOverlay>
-        <TaskBar>
-          <Image
-            src="icons/close_icon.svg"
-            alt="close"
-            width={24}
-            height={24}
-            style={{
-              cursor: 'pointer',
-              right: 10,
-              top: 7,
-              position: 'absolute',
-            }}
-            onClick={onCloseBtnClick}
-          />
-          <div className="flex justify-start items-center h-full w-full">
-            <h2 className="capitalize text-xl text-blue-500">
-              Red Teaming Session:
-              <span className="font-bold text-white">
-                {' '}
+    <ScreenOverlay zIndex={zIndex}>
+      <div
+        style={{ zIndex: zIndex + 1 }}
+        className="w-full h-full">
+        <div className="absolute h-10 w-full top-11">
+          <div className="absolute flex flex-col top-3 left-6">
+            <h2 className="capitalize text-lg text-red-700">
+              Red Teaming Topic:
+              <span className="font-bold text-slate-800 dark:text-white ml-2 text-xl">
                 {activeSession.name}
               </span>
             </h2>
+            <div className="w-80 text-slate-800 dark:text-white text-sm">
+              {activeSession.description}
+            </div>
           </div>
-        </TaskBar>
+          <div className="absolute top-3 right-4 flex items-center gap-2">
+            <div className="dark:text-white text-sm font-normal">
+              Close Session
+            </div>
+            <Icon
+              size={30}
+              name={IconName.Close}
+              onClick={onCloseBtnClick}
+            />
+          </div>
+        </div>
         {activeSession.chats.map((id: string, index: number) => {
           if (windowsMap[getWindowId(id)]) {
             return (
@@ -319,8 +322,8 @@ function ActiveChatSession(props: ActiveSessionProps) {
           onSendClick={handleSendPromptClick}
           onSelectPromptTemplate={handleSelectPromptTemplate}
         />
-      </ScreenOverlay>
-    </>
+      </div>
+    </ScreenOverlay>
   );
 }
 

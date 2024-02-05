@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { updateFocusedWindowId } from '@/lib/redux/slices/windowsSlice';
 import { Icon, IconName } from './IconSVG';
 import { debounce } from '@app/lib/throttle';
+import { Z_Index } from '@views/moonshot-desktop/constants';
 
 enum WindowState {
   drag,
@@ -22,6 +23,7 @@ type WindowProps = {
   initialXY?: [number, number];
   initialWindowSize?: [number, number];
   initialScrollTop?: number;
+  zIndex?: number | 'auto';
   minWidth?: number;
   minHeight?: number;
   backgroundColor?: string;
@@ -52,6 +54,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       initialXY = [180, 140],
       initialWindowSize = [640, 470],
       initialScrollTop = 0,
+      zIndex,
       minWidth = 200,
       minHeight = 200,
       styles,
@@ -89,7 +92,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       e.stopPropagation();
       if (!windowRef.current) return;
       prevMouseXY.current = [e.clientX, e.clientY];
-      windowRef.current.style.zIndex = '9999';
+      windowRef.current.style.zIndex =
+        Z_Index.FocusedWindow.toString();
       setWindowState(WindowState.drag);
       dispatch(updateFocusedWindowId(id));
     }
@@ -228,7 +232,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         ref={windowRef}
         className={`absolute px-3 pt-0 ${!leftFooterText ? 'pb-4' : ''} text-white 
           shadow-lg select-none min-w-96 shadow-neutral-800/40 bg-fuchsia-900/70 
-          dark:shadow-neutral-900 dark:bg-neutral-900/70 backdrop-blur-sm fadeScaleInAnimation`}
+          dark:shadow-neutral-900/30 dark:bg-neutral-900/70 backdrop-blur-sm fadeScaleInAnimation`}
         style={{
           left: initialPosition[0],
           top: initialPosition[1],
@@ -237,9 +241,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
           height: windowSize[1],
           ...styles,
           zIndex:
-            selectedWindowId === id
-              ? 9999
-              : (styles?.zIndex as number) || 'auto',
+            selectedWindowId === id ? Z_Index.FocusedWindow : zIndex,
         }}
         onMouseDown={handleMouseDown}>
         <div className="flex flex-col w-full h-full">
@@ -249,6 +251,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
             </div>
             {!disableCloseIcon ? (
               <Icon
+                lightModeColor="#FFFFFF"
                 name={IconName.Close}
                 size={18}
                 onClick={onCloseClick}

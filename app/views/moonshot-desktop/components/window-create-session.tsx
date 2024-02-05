@@ -1,13 +1,13 @@
-import { Formik, Form, FieldArray } from 'formik';
-import React, { useEffect } from 'react';
+import { Formik, Form } from 'formik';
+import React from 'react';
 import { SelectInput } from '@/app/components/selectInput';
 import useLLMEndpointList from '@/app/views/moonshot-desktop/hooks/useLLMEndpointList';
-import { CheckBox } from '@components/checkbox';
 import { TextArea } from '@components/textArea';
 import { TextInput } from '@components/textInput';
 import { Window } from '@components/window';
 
 type WindowChatStartProps = {
+  zIndex: number | 'auto';
   onCloseClick: () => void;
   onStartClick: (
     sessionName: string,
@@ -29,7 +29,7 @@ const initialFormValues: FormValues = {
 };
 
 function WindowCreateSession(props: WindowChatStartProps) {
-  const { onCloseClick, onStartClick } = props;
+  const { zIndex, onCloseClick, onStartClick } = props;
   const { llmEndpoints, error, isLoading } = useLLMEndpointList();
 
   async function handleFormSubmit(values: FormValues) {
@@ -45,6 +45,7 @@ function WindowCreateSession(props: WindowChatStartProps) {
       id="create-session"
       resizeable
       draggable
+      zIndex={zIndex}
       initialXY={[600, 100]}
       initialWindowSize={[600, 400]}
       name="Start New Session"

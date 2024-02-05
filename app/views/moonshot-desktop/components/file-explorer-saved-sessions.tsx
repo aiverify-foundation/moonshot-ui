@@ -13,6 +13,7 @@ import {
 } from '@views/moonshot-desktop/services/session-api-service';
 
 type FileExplorerSavedSessionsProps = {
+  zIndex: number | 'auto';
   onCloseClick: () => void;
   onContinueSessionClick: () => void;
 };
@@ -20,7 +21,7 @@ type FileExplorerSavedSessionsProps = {
 function FileExplorerSavedSessions(
   props: FileExplorerSavedSessionsProps
 ) {
-  const { onCloseClick, onContinueSessionClick } = props;
+  const { zIndex, onCloseClick, onContinueSessionClick } = props;
   const [selectedSession, setSelectedSession] = useState<Session>();
   const { isLoading, error, sessions } = useSessionList();
   const [triggerGetSession] = useLazyGetSessionQuery();
@@ -54,6 +55,7 @@ function FileExplorerSavedSessions(
       resizeable
       initialXY={[600, 200]}
       initialWindowSize={[720, 470]}
+      zIndex={zIndex}
       onCloseClick={onCloseClick}
       name="Saved Sessions"
       leftFooterText={

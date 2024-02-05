@@ -116,7 +116,7 @@ function BoxPrompt(props: {
     <Window
       id={getWindowId('box-prompt')}
       initialXY={[600, 600]}
-      initialWindowSize={[500, 170]}
+      initialWindowSize={[500, 180]}
       resizeable={false}
       name="Prompt"
       onCloseClick={onCloseClick}
@@ -128,7 +128,7 @@ function BoxPrompt(props: {
         overflowX: 'visible',
       }}>
       <div className="relative flex flex-col">
-        <div className="flex gap-1">
+        <div className="flex gap-2">
           <div className="flex-1">
             <TextArea
               id="box-prompt-text-input"
@@ -146,16 +146,8 @@ function BoxPrompt(props: {
               }}
             />
           </div>
-          <div className="">
-            <button
-              className="btn-primary h-10 w-20"
-              type="button"
-              onClick={handleOnSendMessageClick}>
-              Send
-            </button>
-          </div>
         </div>
-        <div style={{ display: 'flex', gap: 10 }}>
+        <div className="flex gap-2 w-full justify-between">
           <div
             className="flex items-center cursor-pointer"
             id="prompt-template-trigger"
@@ -170,7 +162,6 @@ function BoxPrompt(props: {
                 marginRight: 3,
               }}
             />
-
             <div className="flex items-center text-xs">
               Prompt Template
               {activePromptTemplate && (
@@ -205,6 +196,12 @@ function BoxPrompt(props: {
             />
             <div style={{ fontSize: 11 }}> Context Strategy </div>
           </div> */}
+          <button
+            className="btn-primary w-20"
+            type="button"
+            onClick={handleOnSendMessageClick}>
+            Send
+          </button>
         </div>
         {showPromptTemplateList && (
           <SelectList
@@ -212,7 +209,7 @@ function BoxPrompt(props: {
             data={listItems}
             styles={{
               position: 'absolute',
-              top: -90,
+              top: -60,
               left: 350,
               width: 300,
             }}

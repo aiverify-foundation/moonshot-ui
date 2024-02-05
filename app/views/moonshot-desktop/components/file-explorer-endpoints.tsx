@@ -10,6 +10,7 @@ type FileExplorerEndpointsProps = {
   windowId: string;
   initialXY: [number, number];
   initialSize: [number, number];
+  zIndex: number | 'auto';
   onCloseClick: () => void;
   onWindowChange?: (
     x: number,
@@ -27,6 +28,7 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
     onCloseClick,
     initialXY = [600, 200],
     initialSize = [720, 470],
+    zIndex,
     onWindowChange,
   } = props;
   const { llmEndpoints, error, isLoading } = useLLMEndpointList();
@@ -47,6 +49,7 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
       id={windowId}
       resizeable
       initialXY={initialXY}
+      zIndex={zIndex}
       initialWindowSize={initialSize}
       onCloseClick={onCloseClick}
       onWindowChange={onWindowChange}

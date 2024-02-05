@@ -1,7 +1,11 @@
 import { PropsWithChildren } from 'react';
 
-function TaskBar(props: PropsWithChildren) {
-  const { children } = props;
+type TaskBarProps = {
+  zIndex: number;
+};
+
+function TaskBar(props: PropsWithChildren<TaskBarProps>) {
+  const { zIndex, children } = props;
   return (
     <div
       className="
@@ -14,7 +18,8 @@ function TaskBar(props: PropsWithChildren) {
       border-b
       dark:border-none
       border-fuchsia-900
-      shadow-sm">
+      shadow-sm"
+      style={{ zIndex }}>
       {children}
     </div>
   );

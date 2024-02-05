@@ -10,10 +10,16 @@ export const metadata: Metadata = {
   description: 'LLM Red Teaming and Benchmarking',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <Providers>
-      <html lang="en" className="">
+      <html
+        lang="en"
+        className="overflow-hidden">
         <body className={inter.className}>{children}</body>
       </html>
     </Providers>
