@@ -16,6 +16,7 @@ enum TextInputMode {
 
 function BoxPrompt(props: {
   name: string;
+  initialXY: [number, number];
   children?: React.ReactNode;
   styles?: React.CSSProperties;
   promptTemplates: PromptTemplate[];
@@ -26,6 +27,7 @@ function BoxPrompt(props: {
 }) {
   const {
     promptTemplates,
+    initialXY,
     onCloseClick,
     activePromptTemplate,
     onSelectPromptTemplate,
@@ -35,6 +37,12 @@ function BoxPrompt(props: {
   const [promptMessage, setPromptMessage] = useState('');
   const [showPromptTemplateList, setShowPromptTemplateList] =
     useState(false);
+  const [hoveredPromptTemplate, setHoveredPromptTemplate] =
+    useState<PromptTemplate>();
+  const [
+    hoveredSelectedPromptTemplate,
+    setSelectedHoveredPromptTemplate,
+  ] = useState<PromptTemplate>();
   const [textInputMode, setTextInputMode] = useState<TextInputMode>(
     TextInputMode.NORMAL_TEXT
   );
@@ -170,6 +178,36 @@ function BoxPrompt(props: {
     clearPromptMessage();
   }
 
+  function handlePromptTemplateMouseOver(item: ListItem) {
+    const promptTemplate = promptTemplates.find(
+      (pt) => pt.name === item.id
+    );
+    if (promptTemplate) {
+      setHoveredPromptTemplate(promptTemplate);
+    }
+  }
+
+  function handleSelectedPromptTemplateMouseOver(
+    templateName: string
+  ) {
+    return () => {
+      const promptTemplate = promptTemplates.find(
+        (pt) => pt.name === templateName
+      );
+      if (promptTemplate) {
+        setSelectedHoveredPromptTemplate(promptTemplate);
+      }
+    };
+  }
+
+  function handleSelectedPromptTemplateMouseout() {
+    setSelectedHoveredPromptTemplate(undefined);
+  }
+
+  function handlePromptTemplateMouseOut() {
+    setHoveredPromptTemplate(undefined);
+  }
+
   function removeActivePromptTemplate() {
     onSelectPromptTemplate(undefined);
   }
@@ -198,7 +236,7 @@ function BoxPrompt(props: {
   return (
     <Window
       id={getWindowId('box-prompt')}
-      initialXY={[600, 600]}
+      initialXY={initialXY}
       initialWindowSize={[500, 180]}
       resizeable={false}
       disableFadeIn
@@ -253,7 +291,14 @@ function BoxPrompt(props: {
                   <div className="text-white ml-1">--</div>
                   <div className="text-white ml-1">
                     <div className="text-blue-400 text-sm flex items-center">
-                      <div className="mr-1 max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+                      <div
+                        className="mr-1 max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap"
+                        onMouseOver={handleSelectedPromptTemplateMouseOver(
+                          activePromptTemplate.name
+                        )}
+                        onMouseOut={
+                          handleSelectedPromptTemplateMouseout
+                        }>
                         {activePromptTemplate.name}
                       </div>
                       <Icon
@@ -275,23 +320,58 @@ function BoxPrompt(props: {
             Send
           </button>
         </div>
+        {hoveredSelectedPromptTemplate && !showPromptTemplateList ? (
+          <div className="absolute left-[520px] flex flex-col w-[500px]">
+            <div className="bg-white/80 p-2 rounded-md shadow-md flex flex-col gap-0">
+              <div className="text-sm font-bold text-gray-800">
+                {hoveredSelectedPromptTemplate.name}
+              </div>
+              <div className="text-xs text-gray-700">
+                {hoveredSelectedPromptTemplate.description}
+              </div>
+              <div className="text-xs text-gray-800 pt-3">
+                Template:
+              </div>
+              <div className="text-xs text-gray-700">
+                {hoveredSelectedPromptTemplate.template}
+              </div>
+            </div>
+          </div>
+        ) : null}
         {showPromptTemplateList && (
-          <SelectList
-            id="prompt-template-list"
-            data={listItems}
-            styles={{
-              position: 'absolute',
-              top: -60,
-              left: 350,
-              width: 300,
-            }}
-            highlight={
-              textInputMode === TextInputMode.FILTER_LIST
-                ? promptMessage
-                : undefined
-            }
-            onItemClick={handlePromptTemplateClick}
-          />
+          <div className="absolute flex top-[-60px] left-[350px] gap-2">
+            <SelectList
+              id="prompt-template-list"
+              data={listItems}
+              styles={{ width: 300 }}
+              highlight={
+                textInputMode === TextInputMode.FILTER_LIST
+                  ? promptMessage
+                  : undefined
+              }
+              onItemClick={handlePromptTemplateClick}
+              onItemMouseOver={handlePromptTemplateMouseOver}
+              onItemMouseOut={handlePromptTemplateMouseOut}
+            />
+            {hoveredPromptTemplate && (
+              <div className="flex flex-col w-[500px]">
+                <div className="bg-white/80 p-2 rounded-md shadow-md flex flex-col gap-0">
+                  <div className="text-sm font-bold text-gray-800">
+                    {hoveredPromptTemplate.name}
+                  </div>
+                  <div className="text-xs text-gray-700">
+                    {hoveredPromptTemplate.description}
+                  </div>
+                  <div className="text-xs text-gray-800 pt-3">
+                    Template:
+                  </div>
+                  <div className="text-xs text-gray-700">
+                    {hoveredPromptTemplate.template}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         )}
         {autoCompleteSuggestions.length > 0 && (
           <SelectList

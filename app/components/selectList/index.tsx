@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export type ListItem = {
+type ListItem = {
   id: string;
   displayName: string;
 };
@@ -11,15 +11,37 @@ type SelectListProps = {
   styles?: React.CSSProperties;
   highlight?: string;
   onItemClick?: (item: ListItem) => void;
+  onItemMouseOver?: (item: ListItem) => void;
+  onItemMouseOut?: (item: ListItem) => void;
 };
 
 function SelectList(props: SelectListProps) {
-  const { id, data, styles, highlight, onItemClick } = props;
+  const {
+    id,
+    data,
+    styles,
+    highlight,
+    onItemClick,
+    onItemMouseOver,
+    onItemMouseOut,
+  } = props;
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   function handleItemClick(item: ListItem) {
     if (onItemClick) {
       onItemClick(item);
+    }
+  }
+
+  function handleItemMouseOver(item: ListItem) {
+    if (onItemMouseOver) {
+      onItemMouseOver(item);
+    }
+  }
+
+  function handleItemMouseOut(item: ListItem) {
+    if (onItemMouseOut) {
+      onItemMouseOut(item);
     }
   }
 
@@ -80,7 +102,9 @@ function SelectList(props: SelectListProps) {
             className={`p-2 cursor-pointer border-b border-lightGray ${
               isHighlighted ? 'bg-e7e7e7' : 'bg-white'
             } hover:bg-e7e7e7`}
-            onClick={() => handleItemClick(item)}>
+            onClick={() => handleItemClick(item)}
+            onMouseOver={() => handleItemMouseOver(item)}
+            onMouseOut={() => handleItemMouseOut(item)}>
             {isHighlighted ? (
               <span
                 dangerouslySetInnerHTML={{
