@@ -251,19 +251,9 @@ function ActiveChatSession(props: ActiveSessionProps) {
                       (dialogue, index) => {
                         return (
                           <div
-                            key={index}
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'column',
-                              paddingRight: 10,
-                            }}>
-                            <div
-                              style={{
-                                color: 'black',
-                                textAlign: 'right',
-                                paddingRight: 10,
-                                fontSize: 12,
-                              }}>
+                            className="flex flex-col p-2"
+                            key={index}>
+                            <div className="flex flex-col text-right pr-2 text-xs text-black">
                               You
                             </div>
                             <ChatWindow.TalkBubble
@@ -276,12 +266,9 @@ function ActiveChatSession(props: ActiveSessionProps) {
                               {dialogue.prepared_prompt}
                             </ChatWindow.TalkBubble>
                             <div
+                              className="flex flex-col text-left pl-2 text-xs text-black"
                               style={{
-                                color: 'black',
-                                textAlign: 'left',
                                 maxWidth: '90%',
-                                paddingLeft: 10,
-                                fontSize: 12,
                               }}>
                               AI
                             </div>
@@ -296,18 +283,8 @@ function ActiveChatSession(props: ActiveSessionProps) {
                       }
                     )}
                 {sendPromptIsLoading ? (
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                    }}>
-                    <div
-                      style={{
-                        color: 'black',
-                        textAlign: 'right',
-                        paddingRight: 10,
-                        fontSize: 12,
-                      }}>
+                  <div className="flex flex-col p-2">
+                    <div className="flex flex-col text-right pr-2 text-xs text-black">
                       You
                     </div>
                     <ChatWindow.TalkBubble
@@ -321,21 +298,10 @@ function ActiveChatSession(props: ActiveSessionProps) {
                           )
                         : promptText}
                     </ChatWindow.TalkBubble>
-                    <div
-                      style={{
-                        color: 'black',
-                        textAlign: 'left',
-                        paddingLeft: 10,
-                        fontSize: 12,
-                      }}>
+                    <div className="flex flex-col text-left pl-2 text-xs text-black">
                       AI
                     </div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        marginRight: 15,
-                      }}>
+                    <div className="flex justify-start mr-4">
                       <ChatWindow.LoadingAnimation />
                     </div>
                   </div>

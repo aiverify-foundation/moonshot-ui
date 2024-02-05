@@ -236,7 +236,10 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
           width: windowSize[0],
           height: windowSize[1],
           ...styles,
-          zIndex: selectedWindowId === id ? 9999 : 'auto',
+          zIndex:
+            selectedWindowId === id
+              ? 9999
+              : (styles?.zIndex as number) || 'auto',
         }}
         onMouseDown={handleMouseDown}>
         <div className="flex flex-col w-full h-full">
