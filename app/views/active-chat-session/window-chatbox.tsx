@@ -50,6 +50,7 @@ const ChatBox = forwardRef(
       <Window
         ref={scrollDivRef}
         resizeable
+        disableFadeIn
         id={windowId}
         name={name}
         initialXY={initialXY}

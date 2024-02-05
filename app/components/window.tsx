@@ -34,6 +34,7 @@ type WindowProps = {
   disableCloseIcon?: boolean;
   draggable?: boolean; // Added this line
   leftFooterText?: string;
+  disableFadeIn?: boolean;
   onCloseClick?: () => void;
   onWheel?: (e: React.WheelEvent<HTMLDivElement>) => void;
   onWindowChange?: (
@@ -65,6 +66,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       disableCloseIcon = false,
       draggable = true, // Added this line
       leftFooterText,
+      disableFadeIn = false,
       onCloseClick,
       onWheel,
       onWindowChange,
@@ -232,7 +234,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         ref={windowRef}
         className={`absolute px-3 pt-0 ${!leftFooterText ? 'pb-4' : ''} text-white 
           shadow-lg select-none min-w-96 shadow-neutral-800/40 bg-fuchsia-900/70 
-          dark:shadow-neutral-900/30 dark:bg-neutral-900/70 backdrop-blur-sm fadeScaleInAnimation`}
+          dark:shadow-neutral-900/30 dark:bg-neutral-900/70 backdrop-blur-sm ${disableFadeIn ? '' : 'fadeScaleInAnimation'}`}
         style={{
           left: initialPosition[0],
           top: initialPosition[1],

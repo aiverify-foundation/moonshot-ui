@@ -6,11 +6,12 @@ import { TextArea } from '@/app/components/textArea';
 import useOutsideClick from '@/app/hooks/use-outside-click';
 import { getWindowId } from '@/app/lib/window';
 import { Window } from '@components/window';
+import { SlashCommand } from './slash-commands';
 
 enum TextInputMode {
-  PROMPT_LLM,
-  SLASH_COMMAND,
+  NORMAL_TEXT,
   FILTER_LIST,
+  AUTO_COMPLETE,
 }
 
 function BoxPrompt(props: {
@@ -35,9 +36,11 @@ function BoxPrompt(props: {
   const [showPromptTemplateList, setShowPromptTemplateList] =
     useState(false);
   const [textInputMode, setTextInputMode] = useState<TextInputMode>(
-    TextInputMode.PROMPT_LLM
+    TextInputMode.NORMAL_TEXT
   );
   const [listItems, setListItems] = useState<ListItem[]>([]);
+  const [autoCompleteSuggestions, setAutoCompleteSuggestions] =
+    useState<ListItem[]>([]);
   useOutsideClick(
     [
       'prompt-template-list',
@@ -47,43 +50,113 @@ function BoxPrompt(props: {
     () => {
       setShowPromptTemplateList(false);
       if (textInputMode === TextInputMode.FILTER_LIST) {
-        setPromptMessage('');
-        setTextInputMode(TextInputMode.PROMPT_LLM);
+        clearPromptMessage();
+        return;
+      }
+
+      if (textInputMode === TextInputMode.AUTO_COMPLETE) {
+        clearCommandSuggestions();
+        clearPromptMessage();
+        return;
       }
     }
   );
 
+  function clearPromptMessage() {
+    setPromptMessage('');
+  }
+
+  function clearCommandSuggestions() {
+    setAutoCompleteSuggestions([]);
+  }
+
   function handleTextChange(
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) {
-    setPromptMessage(e.target.value);
+    const inputValue = e.target.value;
+    setPromptMessage(inputValue);
+
+    // if (inputValue.startsWith('/')) {
+    //   const commandFragment = inputValue.slice(1); // Remove the slash
+    //   const suggestions: ListItem[] = Object.values(SlashCommand)
+    //     .filter((cmd) => cmd.startsWith(commandFragment))
+    //     .map((cmd) => ({
+    //       id: cmd,
+    //       displayName: cmd,
+    //     }));
+    //   setAutoCompleteSuggestions(suggestions);
+    //   setTextInputMode(TextInputMode.AUTO_COMPLETE);
+    // } else {
+    //   clearCommandSuggestions();
+    //   setTextInputMode(TextInputMode.NORMAL_TEXT);
+    // }
   }
+
+  // function handleSelectSuggestion(suggestion: string) {
+  //   setPromptMessage('/' + suggestion);
+  //   setAutoCompleteSuggestions([]);
+  //   setTextInputMode(TextInputMode.NORMAL_TEXT);
+  // }
 
   function handleOnSendMessageClick() {
     onSendClick(promptMessage);
-    setPromptMessage('');
+    clearPromptMessage();
+  }
+
+  function handleSlashCommand(cmd: SlashCommand) {
+    switch (cmd) {
+      case SlashCommand.PROMPT_TEMPLATE:
+        setShowPromptTemplateList(true);
+        break;
+      case SlashCommand.CLEAR_PROMPT_TEMPLATE:
+        removeActivePromptTemplate();
+        break;
+      default:
+        console.log('Unknown command', cmd);
+        break;
+    }
+    clearPromptMessage();
   }
 
   function handleKeyDown(
     e: React.KeyboardEvent<HTMLTextAreaElement>
   ) {
-    if (
-      textInputMode === TextInputMode.PROMPT_LLM &&
-      e.key === 'Enter'
-    ) {
-      handleOnSendMessageClick();
+    if (e.key === 'Enter') {
       e.preventDefault();
-    } else if (
-      textInputMode === TextInputMode.FILTER_LIST &&
-      e.key === 'Enter'
-    ) {
-      e.preventDefault();
+
+      if (promptMessage[0] === '/') {
+        handleSlashCommand(
+          promptMessage.substring(1) as SlashCommand
+        );
+        return;
+      }
+
+      if (textInputMode === TextInputMode.NORMAL_TEXT) {
+        handleOnSendMessageClick();
+        return;
+      }
+
+      if (textInputMode === TextInputMode.FILTER_LIST) {
+        return;
+      }
+    }
+
+    if (e.key === 'Escape') {
+      if (textInputMode === TextInputMode.FILTER_LIST) {
+        setShowPromptTemplateList(false);
+        return;
+      }
+
+      if (textInputMode === TextInputMode.AUTO_COMPLETE) {
+        clearCommandSuggestions();
+        clearPromptMessage();
+        return;
+      }
     }
   }
 
   function handleTogglePromptTemplateList() {
     setShowPromptTemplateList((prev) => !prev);
-    setTextInputMode(TextInputMode.FILTER_LIST);
   }
 
   function handlePromptTemplateClick(item: ListItem) {
@@ -94,14 +167,16 @@ function BoxPrompt(props: {
       onSelectPromptTemplate(selected);
     }
     setShowPromptTemplateList(false);
-    setPromptMessage('');
-    setTextInputMode(TextInputMode.PROMPT_LLM);
+    clearPromptMessage();
+  }
+
+  function removeActivePromptTemplate() {
+    onSelectPromptTemplate(undefined);
   }
 
   function handleRemoveActivePromptTemplate(e: React.MouseEvent) {
     e.stopPropagation();
-    onSelectPromptTemplate(undefined);
-    setTextInputMode(TextInputMode.PROMPT_LLM);
+    removeActivePromptTemplate();
   }
 
   useEffect(() => {
@@ -112,12 +187,21 @@ function BoxPrompt(props: {
     setListItems(list);
   }, [promptTemplates]);
 
+  useEffect(() => {
+    if (showPromptTemplateList) {
+      setTextInputMode(TextInputMode.FILTER_LIST);
+    } else {
+      setTextInputMode(TextInputMode.NORMAL_TEXT);
+    }
+  }, [showPromptTemplateList]);
+
   return (
     <Window
       id={getWindowId('box-prompt')}
       initialXY={[600, 600]}
       initialWindowSize={[500, 180]}
       resizeable={false}
+      disableFadeIn
       name="Prompt"
       onCloseClick={onCloseClick}
       styles={{ overflow: 'show', position: 'absolute', ...styles }}
@@ -169,12 +253,13 @@ function BoxPrompt(props: {
                   <div className="text-white ml-1">--</div>
                   <div className="text-white ml-1">
                     <div className="text-blue-400 text-sm flex items-center">
-                      <div className="mr-1">
+                      <div className="mr-1 max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
                         {activePromptTemplate.name}
                       </div>
                       <Icon
                         name={IconName.Close}
                         size={14}
+                        lightModeColor="white"
                         onClick={handleRemoveActivePromptTemplate}
                       />
                     </div>
@@ -183,19 +268,6 @@ function BoxPrompt(props: {
               )}
             </div>
           </div>
-          {/* <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Image
-              src="icons/context_strategy_icon.svg"
-              alt="close"
-              width={23}
-              height={23}
-              style={{
-                cursor: 'pointer',
-                marginRight: 3,
-              }}
-            />
-            <div style={{ fontSize: 11 }}> Context Strategy </div>
-          </div> */}
           <button
             className="btn-primary w-20"
             type="button"
@@ -219,6 +291,19 @@ function BoxPrompt(props: {
                 : undefined
             }
             onItemClick={handlePromptTemplateClick}
+          />
+        )}
+        {autoCompleteSuggestions.length > 0 && (
+          <SelectList
+            id="autocomplete-command-list"
+            data={autoCompleteSuggestions}
+            styles={{
+              position: 'absolute',
+              top: -10,
+              left: -320,
+              width: 300,
+            }}
+            onItemClick={() => null}
           />
         )}
       </div>

@@ -211,7 +211,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
         className="w-full h-full">
         <div className="absolute h-10 w-full top-11">
           <div className="absolute flex flex-col top-3 left-6">
-            <h2 className="capitalize text-lg text-red-700">
+            <h2 className="capitalize text-lg text-red-600">
               Red Teaming Topic:
               <span className="font-bold text-slate-800 dark:text-white ml-2 text-xl">
                 {activeSession.name}

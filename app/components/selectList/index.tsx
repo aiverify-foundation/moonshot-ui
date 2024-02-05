@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-type ListItem = {
+export type ListItem = {
   id: string;
   displayName: string;
 };
@@ -25,7 +25,9 @@ function SelectList(props: SelectListProps) {
 
   function handleKeyPress(event: KeyboardEvent) {
     if (event.key === 'Enter' && highlight) {
-      const index = data.findIndex((item) => item.displayName.startsWith(highlight));
+      const index = data.findIndex((item) =>
+        item.displayName.startsWith(highlight)
+      );
       if (index !== -1) {
         handleItemClick(data[index]);
       }
@@ -40,7 +42,9 @@ function SelectList(props: SelectListProps) {
   }, [highlight, data, handleItemClick]);
 
   useEffect(() => {
-    const index = data.findIndex((item) => item.displayName.startsWith(highlight || ''));
+    const index = data.findIndex((item) =>
+      item.displayName.startsWith(highlight || '')
+    );
     if (index !== -1 && itemRefs.current[index]) {
       itemRefs.current[index]?.scrollIntoView({ behavior: 'smooth' });
     }
@@ -62,7 +66,11 @@ function SelectList(props: SelectListProps) {
       }}>
       {data.map((item, index) => {
         const firstMatchIndex = data.findIndex(
-          (item) => highlight && item.displayName.toLowerCase().startsWith(highlight.toLowerCase())
+          (item) =>
+            highlight &&
+            item.displayName
+              .toLowerCase()
+              .startsWith(highlight.toLowerCase())
         );
         const isHighlighted = index === firstMatchIndex;
         return (
