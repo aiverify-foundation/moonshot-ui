@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
-import styles from './styles/selectInput.module.css';
 import Select from 'react-select';
+import styles from './styles/selectInput.module.css';
 
 type SelectOption<T = string> = {
   value: T;
@@ -9,6 +9,7 @@ type SelectOption<T = string> = {
 
 type SelectInputProps<valueType = string> = {
   id?: string;
+  isMulti?: boolean;
   name: string;
   width?: number;
   label?: string;
@@ -21,7 +22,9 @@ type SelectInputProps<valueType = string> = {
   style?: React.CSSProperties;
   inputBgColor?: string;
   inputStyle?: React.CSSProperties;
-  selectedOptionPredicateFn?: (option: SelectOption<valueType>) => boolean;
+  selectedOptionPredicateFn?: (
+    option: SelectOption<valueType>
+  ) => boolean;
   onChange?: (value: valueType) => void;
   // change handler to support formik's `handleChange` method. If this becomes unstable, use onChange prop with formik's `setFieldValue` method at the consumer
   onSyntheticChange?: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -30,6 +33,8 @@ type SelectInputProps<valueType = string> = {
 const BORDER_COLOR = '#cfcfcf';
 const BORDER_FOCUS_COLOR = 'hsl(0, 0%, 70%)';
 const PLACEHOLDER_COLOR = '#cfcfcf';
+const OPTION_TEXT_COLOR = '#374151';
+const OPTION_SELECTED_TEXT_COLOR = '#ffffff';
 const OPTION_HOVER_COLOR = '#ebc8f9';
 const OPTION_SELECTED_COLOR = '#702f8a';
 const CONTROL_ENABLED_COLOR = '#ffffff';
@@ -38,6 +43,7 @@ const CONTROL_DISABLED_COLOR = '#f5f5f5';
 function SelectInput<T = string>(props: SelectInputProps<T>) {
   const {
     id,
+    isMulti = false,
     name,
     width = 'auto',
     label,
@@ -63,6 +69,25 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
   const containerStyles = { width, ...style };
 
   function handleChange(option: SelectOption<T>) {
+    // For multi-select, option is an array of selected options
+    if (Array.isArray(option)) {
+      const values = option.map((opt) => (opt ? opt.value : null)); // Extract values from options
+      // if (onChange) onChange(values as unknown as T); // Assuming onChange can handle T | T[]
+      // return;
+      if (onSyntheticChange) {
+        const syntheticEvent = {
+          target: {
+            name,
+            value: values,
+          },
+        };
+        onSyntheticChange(
+          syntheticEvent as unknown as ChangeEvent<HTMLInputElement>
+        );
+        return;
+      }
+    }
+    // For single select, option is a single object
     if (!option) return;
     /*
       To support formik's `handleChange` method, we shape an event object and cast it to react ChangeEvent<HTMLInputElement>. This seems to work.
@@ -84,7 +109,10 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
   }
 
   return (
-    <div className={styles.selectInput} style={containerStyles} id={id}>
+    <div
+      className={styles.selectInput}
+      style={containerStyles}
+      id={id}>
       <label htmlFor={name}>
         {label !== '' && label !== undefined ? (
           <div className={styles.label}>
@@ -104,7 +132,9 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
               fontSize: 16,
               lineHeight: 'normal',
               boxShadow: 'none',
-              borderColor: state.isFocused ? BORDER_FOCUS_COLOR : BORDER_COLOR,
+              borderColor: state.isFocused
+                ? BORDER_FOCUS_COLOR
+                : BORDER_COLOR,
               '&:hover': {
                 borderColor: BORDER_FOCUS_COLOR,
               },
@@ -112,6 +142,12 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
                 ? CONTROL_DISABLED_COLOR
                 : inputBgColor || CONTROL_ENABLED_COLOR,
               ...inputStyle,
+            }),
+            menu: (baseStyles) => ({
+              ...baseStyles,
+              zIndex: 1000,
+              maxHeight: '200px',
+              overflowY: 'auto',
             }),
             valueContainer: (baseStyles) => ({
               ...baseStyles,
@@ -140,19 +176,27 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
               backgroundColor: state.isSelected
                 ? OPTION_SELECTED_COLOR
                 : 'inherit',
+              color: OPTION_TEXT_COLOR,
               '&:hover': {
                 backgroundColor: state.isSelected
                   ? OPTION_SELECTED_COLOR
                   : OPTION_HOVER_COLOR,
+                color: OPTION_TEXT_COLOR,
               },
+            }),
+            menuPortal: (base) => ({
+              ...base,
+              zIndex: 9999, // Ensure the menu is above other content
             }),
           }}
           name={name}
+          isMulti={isMulti}
           placeholder={placeholder}
           value={selectedOption}
           options={options}
           classNamePrefix="aiv"
           isDisabled={disabled}
+          menuPortalTarget={document.body}
           onChange={handleChange}
         />
         {Boolean(error) ? (

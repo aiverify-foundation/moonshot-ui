@@ -9,11 +9,11 @@
 .label {
   display: flex;
   justify-content: space-between;
-  color: var(--color-gray);
+  color: #676767;
   font-weight: 600;
   margin-bottom: 4px;
 }
 
 .inputError {
-  color: var(--color-alert-red);
+  color: #f73939;
 }

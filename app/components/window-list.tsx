@@ -20,7 +20,7 @@ function ListItem(props: ListItemProps) {
   const { id, displayName, selected, onClick } = props;
   return (
     <li
-      className={`border-fuchsia-200 cursor-pointer 
+      className={`border-fuchsia-200 cursor-pointer py-1
         hover:bg-fuchsia-100 dark:hover:bg-slate-100 
         ${selected ? 'bg-fuchsia-200 dark:bg-slate-200' : ''}
       `}
