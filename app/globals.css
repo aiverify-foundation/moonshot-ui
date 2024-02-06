@@ -70,8 +70,7 @@
 .chat-window-container {
   display: flex;
   overflow: hidden;
-  width: 1400px; /* Adjust based on your layout */
-  justify-content: center;
+  width: 1400px;
   height: 550px;
   top: 50%;
   left: 50%;
