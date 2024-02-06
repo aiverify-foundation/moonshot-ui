@@ -30,7 +30,7 @@ type ChatboxProps = {
 const ChatBox = forwardRef(
   (
     props: PropsWithChildren<ChatboxProps>,
-    ref: React.Ref<HTMLDivElement>
+    scrollDivRef: React.Ref<HTMLDivElement>
   ) => {
     const {
       windowId,
@@ -46,9 +46,6 @@ const ChatBox = forwardRef(
       onWheel,
       onWindowChange,
     } = props;
-    const scrollDivRef = useRef<HTMLDivElement>(null);
-
-    useImperativeHandle(ref, () => scrollDivRef.current);
 
     return (
       <Window

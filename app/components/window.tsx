@@ -216,7 +216,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       if (scrollDivRef.current) {
         scrollDivRef.current.scrollTop = initialScrollTop;
       }
-    }, []);
+    }, [initialScrollTop]);
 
     useEffect(() => {
       const timer = setTimeout(() => {

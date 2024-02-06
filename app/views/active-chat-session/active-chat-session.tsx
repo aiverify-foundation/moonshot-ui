@@ -24,6 +24,11 @@ type ActiveSessionProps = {
   onCloseBtnClick: () => void;
 };
 
+enum LayoutMode {
+  FREE,
+  SLIDE,
+}
+
 function ActiveChatSession(props: ActiveSessionProps) {
   const { zIndex, onCloseBtnClick } = props;
   const activeSession = useAppSelector(
@@ -35,8 +40,8 @@ function ActiveChatSession(props: ActiveSessionProps) {
   const [selectedPromptTemplate, setSelectedPromptTemplate] =
     useState<PromptTemplate | undefined>(undefined);
   const [currentChatIndex, setCurrentChatIndex] = useState(0);
-  const [layoutMode, setLayoutMode] = useState<'slide' | 'free'>(
-    'slide'
+  const [layoutMode, setLayoutMode] = useState<LayoutMode>(
+    LayoutMode.SLIDE
   );
   const windowsMap = useAppSelector((state) => state.windows.map);
   const [
@@ -231,7 +236,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
           </div>
         </div>
 
-        {layoutMode === 'free' &&
+        {layoutMode === LayoutMode.FREE &&
           activeSession.chats.map((id: string, index: number) => {
             if (windowsMap[getWindowId(id)]) {
               return (
@@ -318,7 +323,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
             }
           })}
 
-        {layoutMode === 'slide' && (
+        {layoutMode === LayoutMode.SLIDE && (
           <div
             id="navigation-arrows"
             className="absolute w-screen justify-between"
@@ -357,7 +362,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
           </div>
         )}
 
-        {layoutMode === 'slide' ? (
+        {layoutMode === LayoutMode.SLIDE ? (
           <div className="chat-window-container">
             <div
               className="chat-window-slide"
@@ -374,12 +379,12 @@ function ActiveChatSession(props: ActiveSessionProps) {
                     index === currentChatIndex + 2 ||
                     index === currentChatIndex + 3
                   ) {
-                    let xpos: number;
-                    if (index === 0) {
-                      xpos = 0;
-                    } else {
-                      xpos = (windowWidth + gap) * index;
-                    }
+                    const xpos =
+                      index === 0 ? 0 : (windowWidth + gap) * index;
+                    const scrollPosition = chatBoxRefs.current[index]
+                      ? chatBoxRefs.current[index].scrollHeight -
+                        chatBoxRefs.current[index].clientHeight
+                      : 0;
                     return (
                       <ChatWindow.ChatBox
                         ref={(el) =>
@@ -391,7 +396,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
                         name={id}
                         initialXY={[xpos, 0]}
                         initialSize={[windowWidth, 550]}
-                        initialScrollTop={0}
+                        initialScrollTop={scrollPosition}
                         resizable={false}
                         draggable={false}
                         onCloseClick={() => null}

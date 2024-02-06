@@ -71,7 +71,7 @@
   /* These dimensions must match dimensions defined in active-chat-session component */
   --chatwindow-width: 470px;
   --gap-width: 20px;
-  @apply absolute flex overflow-hidden h-[550px] top-[47%] left-[50%];
+  @apply absolute flex overflow-hidden h-[550px] top-[47%] left-[50%] transform-gpu;
   transform: translate(-50%, -50%);
   width: calc(3 * var(--chatwindow-width) + 2 * var(--gap-width));
 
