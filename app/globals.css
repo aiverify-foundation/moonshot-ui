@@ -68,16 +68,15 @@
 }
 
 .chat-window-container {
-  display: flex;
-  overflow: hidden;
-  width: 1400px;
-  height: 550px;
-  top: 50%;
-  left: 50%;
+  /* These dimensions must match dimensions defined in active-chat-session component */
+  --chatwindow-width: 470px;
+  --gap-width: 20px;
+  @apply absolute flex overflow-hidden h-[550px] top-[47%] left-[50%];
   transform: translate(-50%, -50%);
-  position: absolute;
+  width: calc(3 * var(--chatwindow-width) + 2 * var(--gap-width));
+
 }
 
 .chat-window-slide {
-  transition: transform 0.5s ease-in-out;
+  @apply flex w-full h-full gap-x-[50px] transition-transform duration-300 ease-in-out;
 }

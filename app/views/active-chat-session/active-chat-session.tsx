@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
@@ -68,10 +67,8 @@ function ActiveChatSession(props: ActiveSessionProps) {
   const chatBoxRefs = useRef<HTMLDivElement[]>([]);
   const isZKeyPressed = useRef(false);
 
-  const windowWidth = 500;
+  const windowWidth = 470;
   const gap = 20;
-  const totalWidth = windowWidth * 3 + gap * 2; // Total width for 3 windows and 2 gaps
-  const startX = 0;
 
   const syncScroll = (deltaY: number) => {
     chatBoxRefs.current.forEach((ref) => {
@@ -159,10 +156,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
   }, [promptTemplates, activeSession]);
 
   useEffect(() => {
-    console.log('selectedPromptTemplate', selectedPromptTemplate);
-  }, [selectedPromptTemplate]);
-
-  useEffect(() => {
+    if (layoutMode === 'slide') return;
     if (activeSession && activeSession.chats.length) {
       const chatWindows: Record<string, WindowData> = {};
       const chatboxWidth = 400;
@@ -236,6 +230,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
             />
           </div>
         </div>
+
         {layoutMode === 'free' &&
           activeSession.chats.map((id: string, index: number) => {
             if (windowsMap[getWindowId(id)]) {
@@ -322,6 +317,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
               );
             }
           })}
+
         {layoutMode === 'slide' && (
           <div
             id="navigation-arrows"
@@ -331,18 +327,19 @@ function ActiveChatSession(props: ActiveSessionProps) {
               left: '50%',
               transform: 'translate(-50%, -50%)',
             }}>
-            <div className="flex items-center justify-between gap-4 w-full">
+            <div className="flex items-center justify-between gap-4 w-full px-20 select-none">
               <Icon
-                size={30}
+                size={40}
                 name={IconName.CircleArrowLeft}
                 onClick={() =>
                   setCurrentChatIndex((prevIndex) =>
                     Math.max(prevIndex - 1, 0)
                   )
                 }
+                disabled={currentChatIndex === 0}
               />
               <Icon
-                size={30}
+                size={40}
                 name={IconName.CircleArrowRight}
                 onClick={() =>
                   setCurrentChatIndex((prevIndex) =>
@@ -352,34 +349,36 @@ function ActiveChatSession(props: ActiveSessionProps) {
                     )
                   )
                 }
+                disabled={
+                  currentChatIndex === activeSession.chats.length - 3
+                }
               />
             </div>
           </div>
         )}
+
         {layoutMode === 'slide' ? (
           <div className="chat-window-container">
             <div
-              className="chat-window-slide border-2 border-solid border-red-500 w-full"
+              className="chat-window-slide"
               style={{
                 transform: `translateX(-${currentChatIndex * (windowWidth + gap)}px)`,
               }}>
               {activeSession.chats.map(
                 (id: string, index: number) => {
-                  console.log(currentChatIndex);
                   if (
-                    windowsMap[getWindowId(id)] &&
-                    ((currentChatIndex > 0 &&
+                    (currentChatIndex > 0 &&
                       index === currentChatIndex - 1) ||
-                      index === currentChatIndex ||
-                      index === currentChatIndex + 1 ||
-                      (currentChatIndex === 0 &&
-                        index === currentChatIndex + 2))
+                    index === currentChatIndex ||
+                    index === currentChatIndex + 1 ||
+                    index === currentChatIndex + 2 ||
+                    index === currentChatIndex + 3
                   ) {
-                    let xOffset: number;
+                    let xpos: number;
                     if (index === 0) {
-                      xOffset = 0;
+                      xpos = 0;
                     } else {
-                      xOffset = startX + (windowWidth + gap) * index;
+                      xpos = (windowWidth + gap) * index;
                     }
                     return (
                       <ChatWindow.ChatBox
@@ -390,12 +389,9 @@ function ActiveChatSession(props: ActiveSessionProps) {
                         windowId={getWindowId(id)}
                         key={id}
                         name={id}
-                        initialXY={[xOffset, 0]}
+                        initialXY={[xpos, 0]}
                         initialSize={[windowWidth, 550]}
-                        initialScrollTop={getWindowScrollTop(
-                          windowsMap,
-                          id
-                        )}
+                        initialScrollTop={0}
                         resizable={false}
                         draggable={false}
                         onCloseClick={() => null}

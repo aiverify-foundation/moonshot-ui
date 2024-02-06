@@ -1,6 +1,8 @@
 import { ReactElement } from 'react';
 
 import { useAppSelector } from '@/lib/redux';
+import { CircleArrowLeftIcon } from './icons/arrow-left-icon';
+import { CircleArrowRightIcon } from './icons/arrow-right-icon';
 import { BurgerMenuIcon } from './icons/burger-menu-icon';
 import { ChatBubblesIcon } from './icons/chat-bubbles-icon';
 import { CloseIcon } from './icons/close-x-icon';
@@ -9,8 +11,6 @@ import { FolderForChatSessionsIcon } from './icons/folder-chat-icon';
 import { FolderIcon } from './icons/folder-icon';
 import { LightSunIcon } from './icons/light-sun-icon';
 import { RunCookbookIcon } from './icons/run-cookbook-icon';
-import { CircleArrowRightIcon } from './icons/arrow-right-icon';
-import { CircleArrowLeftIcon } from './icons/arrow-left-icon';
 
 enum IconName {
   Folder,
@@ -30,6 +30,7 @@ type IconProps = {
   size?: number;
   lightModeColor?: string;
   darkModeColor?: string;
+  disabled?: boolean;
   onClick?: (e: React.MouseEvent) => void;
   onMouseDown?: (e: React.MouseEvent) => void;
 };
@@ -39,6 +40,7 @@ function Icon(props: IconProps) {
     name,
     onClick,
     onMouseDown,
+    disabled = false,
     size = 20,
     lightModeColor,
     darkModeColor,
@@ -185,9 +187,10 @@ function Icon(props: IconProps) {
         flex items-center justify-center 
         cursor-pointer
         ${onClick ? 'hover:opacity-50 active:opacity-25' : ''}
+        ${disabled ? 'opacity-20 pointer-events-none' : ''}
       `}
-      onClick={onClick}
-      onMouseDown={onMouseDown}>
+      onClick={disabled ? undefined : onClick}
+      onMouseDown={disabled ? undefined : onMouseDown}>
       {iconToRender}
     </div>
   );
