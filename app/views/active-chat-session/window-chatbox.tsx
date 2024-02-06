@@ -9,6 +9,8 @@ import {
 type ChatboxProps = {
   windowId: string;
   name: string;
+  draggable?: boolean;
+  resizable?: boolean;
   initialXY: [number, number];
   initialSize: [number, number];
   initialScrollTop: number;
@@ -36,6 +38,8 @@ const ChatBox = forwardRef(
       initialXY,
       initialSize,
       initialScrollTop,
+      draggable,
+      resizable,
       onCloseClick,
       children,
       styles,
@@ -49,7 +53,8 @@ const ChatBox = forwardRef(
     return (
       <Window
         ref={scrollDivRef}
-        resizeable
+        resizeable={resizable}
+        draggable={draggable}
         disableFadeIn
         id={windowId}
         name={name}

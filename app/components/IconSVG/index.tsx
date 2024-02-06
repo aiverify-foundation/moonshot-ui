@@ -9,6 +9,8 @@ import { FolderForChatSessionsIcon } from './icons/folder-chat-icon';
 import { FolderIcon } from './icons/folder-icon';
 import { LightSunIcon } from './icons/light-sun-icon';
 import { RunCookbookIcon } from './icons/run-cookbook-icon';
+import { CircleArrowRightIcon } from './icons/arrow-right-icon';
+import { CircleArrowLeftIcon } from './icons/arrow-left-icon';
 
 enum IconName {
   Folder,
@@ -19,6 +21,8 @@ enum IconName {
   DarkMoon,
   LightSun,
   Close,
+  CircleArrowRight,
+  CircleArrowLeft,
 }
 
 type IconProps = {
@@ -135,6 +139,32 @@ function Icon(props: IconProps) {
     case IconName.Close:
       iconToRender = (
         <CloseIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#a21caf'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.CircleArrowRight:
+      iconToRender = (
+        <CircleArrowRightIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#a21caf'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.CircleArrowLeft:
+      iconToRender = (
+        <CircleArrowLeftIcon
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'

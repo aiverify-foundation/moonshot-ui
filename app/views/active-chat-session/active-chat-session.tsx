@@ -12,7 +12,6 @@ import {
   getWindowXY,
 } from '@app/lib/window';
 import { ScreenOverlay } from '@components/screen-overlay';
-import TaskBar from '@components/taskbar';
 import { ChatWindow } from '@views/active-chat-session/window-chatbox';
 import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTemplateList';
 import {
@@ -36,6 +35,10 @@ function ActiveChatSession(props: ActiveSessionProps) {
   const [promptText, setPromptText] = useState('');
   const [selectedPromptTemplate, setSelectedPromptTemplate] =
     useState<PromptTemplate | undefined>(undefined);
+  const [currentChatIndex, setCurrentChatIndex] = useState(0);
+  const [layoutMode, setLayoutMode] = useState<'slide' | 'free'>(
+    'slide'
+  );
   const windowsMap = useAppSelector((state) => state.windows.map);
   const [
     sendPrompt,
@@ -232,87 +235,217 @@ function ActiveChatSession(props: ActiveSessionProps) {
             />
           </div>
         </div>
-        {activeSession.chats.map((id: string, index: number) => {
-          if (windowsMap[getWindowId(id)]) {
-            return (
-              <ChatWindow.ChatBox
-                ref={(el) =>
-                  (chatBoxRefs.current[index] = el as HTMLDivElement)
-                }
-                windowId={getWindowId(id)}
-                key={id}
-                name={id}
-                initialXY={getWindowXY(windowsMap, id)}
-                initialSize={getWindowSize(windowsMap, id)}
-                initialScrollTop={getWindowScrollTop(windowsMap, id)}
-                onCloseClick={() => null}
-                onWindowChange={handleOnWindowChange}
-                onWheel={handleWheel}>
-                {!activeSession.chat_history
-                  ? null
-                  : activeSession.chat_history[id].map(
-                      (dialogue, index) => {
-                        return (
-                          <div
-                            className="flex flex-col p-2"
-                            key={index}>
-                            <div className="flex flex-col text-right pr-2 text-xs text-black">
-                              You
-                            </div>
-                            <ChatWindow.TalkBubble
-                              backgroundColor="#a3a3a3"
-                              fontColor="#FFF"
-                              styles={{
-                                alignSelf: 'flex-end',
-                                maxWidth: '90%',
-                              }}>
-                              {dialogue.prepared_prompt}
-                            </ChatWindow.TalkBubble>
+        {layoutMode === 'free' &&
+          activeSession.chats.map((id: string, index: number) => {
+            if (windowsMap[getWindowId(id)]) {
+              return (
+                <ChatWindow.ChatBox
+                  ref={(el) =>
+                    (chatBoxRefs.current[index] =
+                      el as HTMLDivElement)
+                  }
+                  windowId={getWindowId(id)}
+                  key={id}
+                  name={id}
+                  initialXY={getWindowXY(windowsMap, id)}
+                  initialSize={getWindowSize(windowsMap, id)}
+                  initialScrollTop={getWindowScrollTop(
+                    windowsMap,
+                    id
+                  )}
+                  onCloseClick={() => null}
+                  onWindowChange={handleOnWindowChange}
+                  onWheel={handleWheel}>
+                  {!activeSession.chat_history
+                    ? null
+                    : activeSession.chat_history[id].map(
+                        (dialogue, index) => {
+                          return (
                             <div
-                              className="flex flex-col text-left pl-2 text-xs text-black"
-                              style={{
-                                maxWidth: '90%',
-                              }}>
-                              AI
+                              className="flex flex-col p-2"
+                              key={index}>
+                              <div className="flex flex-col text-right pr-2 text-xs text-black">
+                                You
+                              </div>
+                              <ChatWindow.TalkBubble
+                                backgroundColor="#a3a3a3"
+                                fontColor="#FFF"
+                                styles={{
+                                  alignSelf: 'flex-end',
+                                  maxWidth: '90%',
+                                }}>
+                                {dialogue.prepared_prompt}
+                              </ChatWindow.TalkBubble>
+                              <div
+                                className="flex flex-col text-left pl-2 text-xs text-black"
+                                style={{
+                                  maxWidth: '90%',
+                                }}>
+                                AI
+                              </div>
+                              <ChatWindow.TalkBubble
+                                backgroundColor="#3498db"
+                                fontColor="#FFF"
+                                styles={{ textAlign: 'left' }}>
+                                {dialogue.predicted_result}
+                              </ChatWindow.TalkBubble>
                             </div>
-                            <ChatWindow.TalkBubble
-                              backgroundColor="#3498db"
-                              fontColor="#FFF"
-                              styles={{ textAlign: 'left' }}>
-                              {dialogue.predicted_result}
-                            </ChatWindow.TalkBubble>
-                          </div>
-                        );
-                      }
-                    )}
-                {sendPromptIsLoading ? (
-                  <div className="flex flex-col p-2">
-                    <div className="flex flex-col text-right pr-2 text-xs text-black">
-                      You
+                          );
+                        }
+                      )}
+                  {sendPromptIsLoading ? (
+                    <div className="flex flex-col p-2">
+                      <div className="flex flex-col text-right pr-2 text-xs text-black">
+                        You
+                      </div>
+                      <ChatWindow.TalkBubble
+                        backgroundColor="#a3a3a3"
+                        fontColor="#FFF"
+                        styles={{ alignSelf: 'flex-end' }}>
+                        {selectedPromptTemplate
+                          ? selectedPromptTemplate.template.replace(
+                              '{{ prompt }}',
+                              promptText
+                            )
+                          : promptText}
+                      </ChatWindow.TalkBubble>
+                      <div className="flex flex-col text-left pl-2 text-xs text-black">
+                        AI
+                      </div>
+                      <div className="flex justify-start mr-4">
+                        <ChatWindow.LoadingAnimation />
+                      </div>
                     </div>
-                    <ChatWindow.TalkBubble
-                      backgroundColor="#a3a3a3"
-                      fontColor="#FFF"
-                      styles={{ alignSelf: 'flex-end' }}>
-                      {selectedPromptTemplate
-                        ? selectedPromptTemplate.template.replace(
-                            '{{ prompt }}',
-                            promptText
-                          )
-                        : promptText}
-                    </ChatWindow.TalkBubble>
-                    <div className="flex flex-col text-left pl-2 text-xs text-black">
-                      AI
+                  ) : null}
+                </ChatWindow.ChatBox>
+              );
+            }
+          })}
+        {layoutMode === 'slide' && (
+          <div
+            id="navigation-arrows"
+            className="absolute w-[800px] justify-between"
+            style={{
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}>
+            <div className="flex items-center justify-between gap-4 w-full">
+              <Icon
+                size={30}
+                name={IconName.CircleArrowLeft}
+                onClick={() =>
+                  setCurrentChatIndex((prevIndex) =>
+                    Math.max(prevIndex - 1, 0)
+                  )
+                }
+              />
+              <Icon
+                size={30}
+                name={IconName.CircleArrowRight}
+                onClick={() =>
+                  setCurrentChatIndex((prevIndex) =>
+                    Math.min(
+                      prevIndex + 1,
+                      activeSession.chats.length - 1
+                    )
+                  )
+                }
+              />
+            </div>
+          </div>
+        )}
+        {layoutMode === 'slide' &&
+          activeSession.chats.map((id: string, index: number) => {
+            if (
+              windowsMap[getWindowId(id)] &&
+              index === currentChatIndex
+            ) {
+              return (
+                <ChatWindow.ChatBox
+                  ref={(el) =>
+                    (chatBoxRefs.current[index] =
+                      el as HTMLDivElement)
+                  }
+                  windowId={getWindowId(id)}
+                  key={id}
+                  name={id}
+                  initialXY={[window.innerWidth / 2 - 500 / 2, 120]}
+                  initialSize={[500, 550]}
+                  initialScrollTop={getWindowScrollTop(
+                    windowsMap,
+                    id
+                  )}
+                  resizable={false}
+                  draggable={false}
+                  onCloseClick={() => null}
+                  onWindowChange={handleOnWindowChange}
+                  onWheel={handleWheel}>
+                  {!activeSession.chat_history
+                    ? null
+                    : activeSession.chat_history[id].map(
+                        (dialogue, index) => {
+                          return (
+                            <div
+                              className="flex flex-col p-2"
+                              key={index}>
+                              <div className="flex flex-col text-right pr-2 text-xs text-black">
+                                You
+                              </div>
+                              <ChatWindow.TalkBubble
+                                backgroundColor="#a3a3a3"
+                                fontColor="#FFF"
+                                styles={{
+                                  alignSelf: 'flex-end',
+                                  maxWidth: '90%',
+                                }}>
+                                {dialogue.prepared_prompt}
+                              </ChatWindow.TalkBubble>
+                              <div
+                                className="flex flex-col text-left pl-2 text-xs text-black"
+                                style={{
+                                  maxWidth: '90%',
+                                }}>
+                                AI
+                              </div>
+                              <ChatWindow.TalkBubble
+                                backgroundColor="#3498db"
+                                fontColor="#FFF"
+                                styles={{ textAlign: 'left' }}>
+                                {dialogue.predicted_result}
+                              </ChatWindow.TalkBubble>
+                            </div>
+                          );
+                        }
+                      )}
+                  {sendPromptIsLoading ? (
+                    <div className="flex flex-col p-2">
+                      <div className="flex flex-col text-right pr-2 text-xs text-black">
+                        You
+                      </div>
+                      <ChatWindow.TalkBubble
+                        backgroundColor="#a3a3a3"
+                        fontColor="#FFF"
+                        styles={{ alignSelf: 'flex-end' }}>
+                        {selectedPromptTemplate
+                          ? selectedPromptTemplate.template.replace(
+                              '{{ prompt }}',
+                              promptText
+                            )
+                          : promptText}
+                      </ChatWindow.TalkBubble>
+                      <div className="flex flex-col text-left pl-2 text-xs text-black">
+                        AI
+                      </div>
+                      <div className="flex justify-start mr-4">
+                        <ChatWindow.LoadingAnimation />
+                      </div>
                     </div>
-                    <div className="flex justify-start mr-4">
-                      <ChatWindow.LoadingAnimation />
-                    </div>
-                  </div>
-                ) : null}
-              </ChatWindow.ChatBox>
-            );
-          }
-        })}
+                  ) : null}
+                </ChatWindow.ChatBox>
+              );
+            }
+          })}
 
         <BoxPrompt
           name="Prompt"
