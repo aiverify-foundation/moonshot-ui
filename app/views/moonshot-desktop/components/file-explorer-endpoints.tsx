@@ -64,14 +64,14 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
           <WindowList>
             {llmEndpoints
               ? llmEndpoints.map((endpoint) => (
-                  <WindowList.Item
-                    key={endpoint.name}
-                    displayName={endpoint.name}
-                    id={endpoint.name}
-                    onClick={() => handleListItemClick(endpoint.name)}
-                    selected={selectedEndpoint.name === endpoint.name}
-                  />
-                ))
+                <WindowList.Item
+                  key={endpoint.name}
+                  displayName={endpoint.name}
+                  id={endpoint.name}
+                  onClick={() => handleListItemClick(endpoint.name)}
+                  selected={selectedEndpoint.name === endpoint.name}
+                />
+              ))
               : null}
           </WindowList>
           <WindowInfoPanel title="LLM Endpoint">
@@ -101,7 +101,8 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
                     />
                     <KeyValueDisplay
                       label="API Token"
-                      value={selectedEndpoint.token}
+                      value={selectedEndpoint.token.substring(0, Math.ceil(selectedEndpoint.token.length / 2)) +
+                        '*'.repeat(Math.floor(selectedEndpoint.token.length / 2))}
                     />
                   </div>
                   <div>
@@ -121,13 +122,13 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
         <WindowList>
           {llmEndpoints
             ? llmEndpoints.map((endpoint) => (
-                <WindowList.Item
-                  key={endpoint.name}
-                  displayName={endpoint.name}
-                  id={endpoint.name}
-                  onClick={handleListItemClick}
-                />
-              ))
+              <WindowList.Item
+                key={endpoint.name}
+                displayName={endpoint.name}
+                id={endpoint.name}
+                onClick={handleListItemClick}
+              />
+            ))
             : null}
         </WindowList>
       )}
