@@ -1,4 +1,4 @@
 export enum SlashCommand {
-  PROMPT_TEMPLATE = 'tp',
-  CLEAR_PROMPT_TEMPLATE = 'notp',
+  PROMPT_TEMPLATE = 'pt',
+  CLEAR_PROMPT_TEMPLATE = 'nopt',
 }

@@ -4,15 +4,24 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
 import { Icon, IconName } from '@/app/components/IconSVG';
-import { CodeEditor } from '@/app/components/code-editor';
+import { useWindowChange } from '@/app/hooks/use-window-change';
+import {
+  getWindowId,
+  getWindowScrollTop,
+  getWindowSize,
+  getWindowXY,
+} from '@/app/lib/window';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import {
   removeActiveSession,
   setActiveSession,
 } from '@/lib/redux/slices/activeSessionSlice';
 import { toggleDarkMode } from '@/lib/redux/slices/darkModeSlice';
+import { updateWindows } from '@/lib/redux/slices/windowsSlice';
+import { FileExplorerEndpoints } from './components/file-explorer-endpoints';
 import { FileExplorerSavedSessions } from './components/file-explorer-saved-sessions';
 import { WindowCreateSession } from './components/window-create-session';
+import { WindowIds, Z_Index } from './constants';
 import {
   useCreateSessionMutation,
   useLazySetActiveSessionQuery,
@@ -22,16 +31,6 @@ import Menu from '@components/menu';
 import TaskBar from '@components/taskbar';
 import { Window } from '@components/window';
 import { ActiveChatSession } from '@views/active-chat-session/active-chat-session';
-import { FileExplorerEndpoints } from './components/file-explorer-endpoints';
-import {
-  getWindowId,
-  getWindowScrollTop,
-  getWindowSize,
-  getWindowXY,
-} from '@/app/lib/window';
-import { useWindowChange } from '@/app/hooks/use-window-change';
-import { WindowIds, Z_Index } from './constants';
-import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 
 const legalSummarisation = {
   name: 'Legal Summarisation',
@@ -73,13 +72,13 @@ export default function MoonshotDesktop() {
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
   const backgroundImageStyle = !isDarkMode
     ? {
-        backgroundImage: 'url("/pink-bg-fade3.png")',
-        backgroundBlendMode: 'multiply',
-      }
+      backgroundImage: 'url("/pink-bg-fade3.png")',
+      backgroundBlendMode: 'multiply',
+    }
     : {
-        backgroundImage:
-          'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #454545, #0e0e0e)',
-      };
+      backgroundImage:
+        'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #454545, #0e0e0e)',
+    };
   const [
     createSession,
     {
@@ -151,12 +150,11 @@ export default function MoonshotDesktop() {
       className={`
         h-screen overflow-y-hidden
         flex flex-col bg-fuchsia-100
-        ${
-          !isDarkMode
-            ? `
+        ${!isDarkMode
+          ? `
           bg-gradient-to-br bg-no-repeat bg-right
           from-fuchsia-100 to-fuchsia-400`
-            : ''
+          : ''
         }
       `}
       style={{

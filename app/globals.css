@@ -23,13 +23,10 @@
 }
 
 .scroll-container {
-
   @apply snap-mandatory overflow-y-auto overflow-x-hidden;
 }
 
-
 .custom-scrollbar::-webkit-scrollbar {
-
   @apply w-2 rounded-md;
 }
 
@@ -58,7 +55,7 @@
 @keyframes fadeScaleIn {
   from {
     opacity: 0;
-    transform: scale(0.95) translate(-35px, -35px);;
+    transform: scale(0.95) translate(-35px, -35px);
   }
   to {
     opacity: 1;
@@ -73,8 +70,13 @@
 .chat-window-container {
   display: flex;
   overflow: hidden;
-  width: calc(100% - 60px); /* Adjust based on your layout */
+  width: 1400px; /* Adjust based on your layout */
   justify-content: center;
+  height: 550px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
 }
 
 .chat-window-slide {
