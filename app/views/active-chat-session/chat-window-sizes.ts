@@ -1,6 +1,6 @@
-export const chatWindowWidth = 400;
-export const chatWindowHeight = 450;
-export const chatWindowGap = 20;
+// export const chatWindowWidth = 400;
+// export const chatWindowHeight = 450;
+// export const chatWindowGap = 20;
 
 export function getChatWindowDimensions() {
   // Default values
@@ -8,8 +8,8 @@ export function getChatWindowDimensions() {
   let chatWindowHeight = 450;
   let chatWindowGap = 20;
 
-  // Media query for large screens (e.g., less than 1200px)
-  if (window.matchMedia('(max-width: 1200px)').matches) {
+  // Media query for large screens (e.g., more than 1180px)
+  if (window.matchMedia('(min-width: 1180px)').matches) {
     chatWindowWidth = 300; // Smaller width for small screens
     chatWindowHeight = 350; // Smaller height for small screens
     chatWindowGap = 15; // Smaller gap for small screens

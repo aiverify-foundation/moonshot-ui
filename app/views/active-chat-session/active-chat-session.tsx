@@ -19,12 +19,14 @@ import {
 } from '@views/moonshot-desktop/services/prompt-template-api-service';
 import { useSendPromptMutation } from '@views/moonshot-desktop/services/session-api-service';
 import { LayoutMode } from '@/lib/redux/slices/chatLayoutModeSlice';
-import { chatWindowGap, chatWindowHeight, chatWindowWidth } from './chat-window-sizes';
+import { getChatWindowDimensions } from './chat-window-sizes';
 
 type ActiveSessionProps = {
   zIndex: number;
   onCloseBtnClick: () => void;
 };
+
+const promptBoxId = 'prompt-box';
 
 function ActiveChatSession(props: ActiveSessionProps) {
   const { zIndex, onCloseBtnClick } = props;
@@ -41,6 +43,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
     (state) => state.chatLayoutMode.value
   );
   const windowsMap = useAppSelector((state) => state.windows.map);
+  const { chatWindowWidth, chatWindowHeight, chatWindowGap } = getChatWindowDimensions();
   const [
     sendPrompt,
     {
@@ -178,6 +181,19 @@ function ActiveChatSession(props: ActiveSessionProps) {
       });
       dispatch(updateWindows(chatWindows));
     }
+  }, []);
+
+  useEffect(() => {
+    //set default window dimensions
+    const promptBoxDefaults: Record<string, WindowData> = {};
+    const width = 500;
+    const height = 180;
+    const left = window.innerWidth / 2 - width / 2;
+    const top = window.innerHeight - height - 5;
+    promptBoxDefaults[getWindowId(promptBoxId)] = [
+      width, height, left, top, 0,
+    ];
+    dispatch(updateWindows(promptBoxDefaults));
   }, []);
 
   useEffect(() => {
@@ -472,12 +488,10 @@ function ActiveChatSession(props: ActiveSessionProps) {
         ) : null}
 
         <BoxPrompt
-          name="Prompt"
+          windowId={getWindowId(promptBoxId)}
+          name={promptBoxId}
           draggable={layoutMode === LayoutMode.FREE}
-          initialXY={[
-            window.innerWidth / 2 - 500 / 2, //500 width of box
-            window.innerHeight - 180 - 30, //180 height of box
-          ]}
+          initialXY={getWindowXY(windowsMap, promptBoxId)}
           promptTemplates={promptTemplates}
           activePromptTemplate={selectedPromptTemplate}
           onCloseClick={onCloseBtnClick}

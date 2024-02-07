@@ -26,23 +26,34 @@ enum Size {
 }
 
 function BoxPrompt(props: {
+  windowId: string;
   name: string;
   initialXY: [number, number];
   children?: React.ReactNode;
   styles?: React.CSSProperties;
   promptTemplates: PromptTemplate[];
   activePromptTemplate?: PromptTemplate;
+  onWindowChange?: (
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    scrollTop: number,
+    windowId: string
+  ) => void;
   draggable?: boolean;
   onCloseClick?: () => void;
   onSelectPromptTemplate: (item: PromptTemplate | undefined) => void;
   onSendClick: (message: string) => void;
 }) {
   const {
+    windowId,
     promptTemplates,
     initialXY,
     draggable,
     onCloseClick,
     activePromptTemplate,
+    onWindowChange,
     onSelectPromptTemplate,
     onSendClick,
     styles,
@@ -260,7 +271,7 @@ function BoxPrompt(props: {
 
   return (
     <Window
-      id={getWindowId('box-prompt')}
+      id={windowId}
       initialXY={initialXY}
       initialWindowSize={[500, size === Size.LARGE ? 180 : 120]}
       resizeable={false}
@@ -269,6 +280,7 @@ function BoxPrompt(props: {
       disableFadeIn
       name="Prompt"
       onCloseClick={onCloseClick}
+      onWindowChange={onWindowChange}
       styles={{ overflow: 'show', position: 'absolute', ...styles }}
       contentAreaStyles={{
         background: 'none',
