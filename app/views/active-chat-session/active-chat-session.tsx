@@ -18,16 +18,12 @@ import {
   useUsePromptTemplateMutation,
 } from '@views/moonshot-desktop/services/prompt-template-api-service';
 import { useSendPromptMutation } from '@views/moonshot-desktop/services/session-api-service';
+import { LayoutMode } from '@/lib/redux/slices/chatLayoutModeSlice';
 
 type ActiveSessionProps = {
   zIndex: number;
   onCloseBtnClick: () => void;
 };
-
-enum LayoutMode {
-  FREE,
-  SLIDE,
-}
 
 function ActiveChatSession(props: ActiveSessionProps) {
   const { zIndex, onCloseBtnClick } = props;
@@ -40,8 +36,8 @@ function ActiveChatSession(props: ActiveSessionProps) {
   const [selectedPromptTemplate, setSelectedPromptTemplate] =
     useState<PromptTemplate | undefined>(undefined);
   const [currentChatIndex, setCurrentChatIndex] = useState(0);
-  const [layoutMode, setLayoutMode] = useState<LayoutMode>(
-    LayoutMode.SLIDE
+  const layoutMode = useAppSelector(
+    (state) => state.chatLayoutMode.value
   );
   const windowsMap = useAppSelector((state) => state.windows.map);
   const [
@@ -161,7 +157,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
   }, [promptTemplates, activeSession]);
 
   useEffect(() => {
-    if (layoutMode === 'slide') return;
+    if (layoutMode === LayoutMode.SLIDE) return;
     if (activeSession && activeSession.chats.length) {
       const chatWindows: Record<string, WindowData> = {};
       const chatboxWidth = 400;
@@ -214,9 +210,9 @@ function ActiveChatSession(props: ActiveSessionProps) {
         className="w-full h-full">
         <div className="absolute h-10 w-full top-11">
           <div className="absolute flex flex-col top-3 left-6">
-            <h2 className="capitalize text-lg text-red-500">
-              Red Teaming Topic:
-              <span className="font-bold text-slate-800 dark:text-white ml-2 text-xl">
+            <h2 className="capitalize text-lg dark:text-red-500 text-fuchsia-900">
+              Red Teaming -
+              <span className="font-bold text-fuchsia-800 dark:text-white ml-2 text-lg">
                 {activeSession.name}
               </span>
             </h2>

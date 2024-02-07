@@ -7,6 +7,11 @@ import useOutsideClick from '@/app/hooks/use-outside-click';
 import { getWindowId } from '@/app/lib/window';
 import { Window } from '@components/window';
 import { SlashCommand } from './slash-commands';
+import {
+  LayoutMode,
+  setChatLayoutMode,
+} from '@/lib/redux/slices/chatLayoutModeSlice';
+import { useAppDispatch } from '@/lib/redux';
 
 enum TextInputMode {
   NORMAL_TEXT,
@@ -49,6 +54,8 @@ function BoxPrompt(props: {
   const [listItems, setListItems] = useState<ListItem[]>([]);
   const [autoCompleteSuggestions, setAutoCompleteSuggestions] =
     useState<ListItem[]>([]);
+  const dispatch = useAppDispatch();
+
   useOutsideClick(
     [
       'prompt-template-list',
@@ -119,6 +126,10 @@ function BoxPrompt(props: {
       case SlashCommand.CLEAR_PROMPT_TEMPLATE:
         removeActivePromptTemplate();
         break;
+      case SlashCommand.CHAT_LAYOUT_MODE_FREE:
+        dispatch(setChatLayoutMode(LayoutMode.FREE));
+      case SlashCommand.CHAT_LAYOUT_MODE_SLIDE:
+        dispatch(setChatLayoutMode(LayoutMode.SLIDE));
       default:
         console.log('Unknown command', cmd);
         break;
