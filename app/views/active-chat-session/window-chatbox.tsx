@@ -14,6 +14,7 @@ type ChatboxProps = {
   initialXY: [number, number];
   initialSize: [number, number];
   initialScrollTop: number;
+  disableOnScroll?: boolean;
   styles?: React.CSSProperties;
   onCloseClick: () => void;
   onWheel: (e: React.WheelEvent<HTMLDivElement>) => void;
@@ -38,6 +39,7 @@ const ChatBox = forwardRef(
       initialXY,
       initialSize,
       initialScrollTop,
+      disableOnScroll,
       draggable,
       resizable,
       onCloseClick,
@@ -58,6 +60,7 @@ const ChatBox = forwardRef(
         initialXY={initialXY}
         initialWindowSize={initialSize}
         initialScrollTop={initialScrollTop}
+        disableOnScroll={disableOnScroll}
         onCloseClick={onCloseClick}
         onWheel={onWheel}
         onWindowChange={onWindowChange}

@@ -35,6 +35,7 @@ type WindowProps = {
   draggable?: boolean; // Added this line
   leftFooterText?: string;
   disableFadeIn?: boolean;
+  disableOnScroll?: boolean;
   onCloseClick?: () => void;
   onWheel?: (e: React.WheelEvent<HTMLDivElement>) => void;
   onWindowChange?: (
@@ -67,6 +68,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       draggable = true, // Added this line
       leftFooterText,
       disableFadeIn = false,
+      disableOnScroll = false,
       onCloseClick,
       onWheel,
       onWindowChange,
@@ -175,9 +177,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       if (!windowRef.current || windowState !== WindowState.drag)
         return;
 
-      windowRef.current.style.transform = `translate(${e.clientX - prevMouseXY.current[0]}px, ${
-        e.clientY - prevMouseXY.current[1]
-      }px)`;
+      windowRef.current.style.transform = `translate(${e.clientX - prevMouseXY.current[0]}px, ${e.clientY - prevMouseXY.current[1]
+        }px)`;
     }
 
     const handleScrollStop = (e: React.UIEvent<HTMLDivElement>) => {
@@ -268,7 +269,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
               ...contentAreaStyles,
             }}
             onMouseDown={handleContentAreaMouseDown}
-            onScroll={debouncedOnScroll}
+            onScroll={!disableOnScroll ? debouncedOnScroll : undefined}
             onWheel={onWheel}>
             {children}
           </div>

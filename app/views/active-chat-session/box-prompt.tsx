@@ -128,8 +128,10 @@ function BoxPrompt(props: {
         break;
       case SlashCommand.CHAT_LAYOUT_MODE_FREE:
         dispatch(setChatLayoutMode(LayoutMode.FREE));
+        break;
       case SlashCommand.CHAT_LAYOUT_MODE_SLIDE:
         dispatch(setChatLayoutMode(LayoutMode.SLIDE));
+        break;
       default:
         console.log('Unknown command', cmd);
         break;

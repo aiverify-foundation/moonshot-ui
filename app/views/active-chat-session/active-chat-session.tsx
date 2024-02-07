@@ -19,6 +19,7 @@ import {
 } from '@views/moonshot-desktop/services/prompt-template-api-service';
 import { useSendPromptMutation } from '@views/moonshot-desktop/services/session-api-service';
 import { LayoutMode } from '@/lib/redux/slices/chatLayoutModeSlice';
+import { chatWindowGap, chatWindowHeight, chatWindowWidth } from './chat-window-sizes';
 
 type ActiveSessionProps = {
   zIndex: number;
@@ -68,8 +69,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
   const chatBoxRefs = useRef<HTMLDivElement[]>([]);
   const isZKeyPressed = useRef(false);
 
-  const windowWidth = 470;
-  const gap = 20;
+
 
   const syncScroll = (deltaY: number) => {
     chatBoxRefs.current.forEach((ref) => {
@@ -238,8 +238,8 @@ function ActiveChatSession(props: ActiveSessionProps) {
               return (
                 <ChatWindow.ChatBox
                   ref={(el) =>
-                    (chatBoxRefs.current[index] =
-                      el as HTMLDivElement)
+                  (chatBoxRefs.current[index] =
+                    el as HTMLDivElement)
                   }
                   windowId={getWindowId(id)}
                   key={id}
@@ -256,40 +256,40 @@ function ActiveChatSession(props: ActiveSessionProps) {
                   {!activeSession.chat_history
                     ? null
                     : activeSession.chat_history[id].map(
-                        (dialogue, index) => {
-                          return (
-                            <div
-                              className="flex flex-col p-2"
-                              key={index}>
-                              <div className="flex flex-col text-right pr-2 text-xs text-black">
-                                You
-                              </div>
-                              <ChatWindow.TalkBubble
-                                backgroundColor="#a3a3a3"
-                                fontColor="#FFF"
-                                styles={{
-                                  alignSelf: 'flex-end',
-                                  maxWidth: '90%',
-                                }}>
-                                {dialogue.prepared_prompt}
-                              </ChatWindow.TalkBubble>
-                              <div
-                                className="flex flex-col text-left pl-2 text-xs text-black"
-                                style={{
-                                  maxWidth: '90%',
-                                }}>
-                                AI
-                              </div>
-                              <ChatWindow.TalkBubble
-                                backgroundColor="#3498db"
-                                fontColor="#FFF"
-                                styles={{ textAlign: 'left' }}>
-                                {dialogue.predicted_result}
-                              </ChatWindow.TalkBubble>
+                      (dialogue, index) => {
+                        return (
+                          <div
+                            className="flex flex-col p-2"
+                            key={index}>
+                            <div className="flex flex-col text-right pr-2 text-xs text-black">
+                              You
                             </div>
-                          );
-                        }
-                      )}
+                            <ChatWindow.TalkBubble
+                              backgroundColor="#a3a3a3"
+                              fontColor="#FFF"
+                              styles={{
+                                alignSelf: 'flex-end',
+                                maxWidth: '90%',
+                              }}>
+                              {dialogue.prepared_prompt}
+                            </ChatWindow.TalkBubble>
+                            <div
+                              className="flex flex-col text-left pl-2 text-xs text-black"
+                              style={{
+                                maxWidth: '90%',
+                              }}>
+                              AI
+                            </div>
+                            <ChatWindow.TalkBubble
+                              backgroundColor="#3498db"
+                              fontColor="#FFF"
+                              styles={{ textAlign: 'left' }}>
+                              {dialogue.predicted_result}
+                            </ChatWindow.TalkBubble>
+                          </div>
+                        );
+                      }
+                    )}
                   {sendPromptIsLoading ? (
                     <div className="flex flex-col p-2">
                       <div className="flex flex-col text-right pr-2 text-xs text-black">
@@ -301,9 +301,9 @@ function ActiveChatSession(props: ActiveSessionProps) {
                         styles={{ alignSelf: 'flex-end' }}>
                         {selectedPromptTemplate
                           ? selectedPromptTemplate.template.replace(
-                              '{{ prompt }}',
-                              promptText
-                            )
+                            '{{ prompt }}',
+                            promptText
+                          )
                           : promptText}
                       </ChatWindow.TalkBubble>
                       <div className="flex flex-col text-left pl-2 text-xs text-black">
@@ -363,7 +363,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
             <div
               className="chat-window-slide"
               style={{
-                transform: `translateX(-${currentChatIndex * (windowWidth + gap)}px)`,
+                transform: `translateX(-${currentChatIndex * (chatWindowWidth + chatWindowGap)}px)`,
               }}>
               {activeSession.chats.map(
                 (id: string, index: number) => {
@@ -376,67 +376,68 @@ function ActiveChatSession(props: ActiveSessionProps) {
                     index === currentChatIndex + 3
                   ) {
                     const xpos =
-                      index === 0 ? 0 : (windowWidth + gap) * index;
+                      index === 0 ? 0 : (chatWindowWidth + chatWindowGap) * index;
                     const scrollPosition = chatBoxRefs.current[index]
                       ? chatBoxRefs.current[index].scrollHeight -
-                        chatBoxRefs.current[index].clientHeight
+                      chatBoxRefs.current[index].clientHeight
                       : 0;
                     return (
                       <ChatWindow.ChatBox
                         ref={(el) =>
-                          (chatBoxRefs.current[index] =
-                            el as HTMLDivElement)
+                        (chatBoxRefs.current[index] =
+                          el as HTMLDivElement)
                         }
                         windowId={getWindowId(id)}
                         key={id}
                         name={id}
                         initialXY={[xpos, 0]}
-                        initialSize={[windowWidth, 550]}
+                        initialSize={[chatWindowWidth, chatWindowHeight]}
                         initialScrollTop={scrollPosition}
                         resizable={false}
                         draggable={false}
+                        disableOnScroll
                         onCloseClick={() => null}
                         onWindowChange={handleOnWindowChange}
                         onWheel={handleWheel}>
                         {!activeSession.chat_history
                           ? null
                           : activeSession.chat_history[id].map(
-                              (dialogue, index) => {
-                                return (
-                                  <div
-                                    className="flex flex-col p-2"
-                                    key={index}>
-                                    <div className="flex flex-col text-right pr-2 text-xs text-black">
-                                      You
-                                    </div>
-                                    <ChatWindow.TalkBubble
-                                      backgroundColor="#a3a3a3"
-                                      fontColor="#FFF"
-                                      styles={{
-                                        alignSelf: 'flex-end',
-                                        maxWidth: '90%',
-                                      }}>
-                                      {dialogue.prepared_prompt}
-                                    </ChatWindow.TalkBubble>
-                                    <div
-                                      className="flex flex-col text-left pl-2 text-xs text-black"
-                                      style={{
-                                        maxWidth: '90%',
-                                      }}>
-                                      AI
-                                    </div>
-                                    <ChatWindow.TalkBubble
-                                      backgroundColor="#3498db"
-                                      fontColor="#FFF"
-                                      styles={{
-                                        textAlign: 'left',
-                                      }}>
-                                      {dialogue.predicted_result}
-                                    </ChatWindow.TalkBubble>
+                            (dialogue, index) => {
+                              return (
+                                <div
+                                  className="flex flex-col p-2"
+                                  key={index}>
+                                  <div className="flex flex-col text-right pr-2 text-xs text-black">
+                                    You
                                   </div>
-                                );
-                              }
-                            )}
+                                  <ChatWindow.TalkBubble
+                                    backgroundColor="#a3a3a3"
+                                    fontColor="#FFF"
+                                    styles={{
+                                      alignSelf: 'flex-end',
+                                      maxWidth: '90%',
+                                    }}>
+                                    {dialogue.prepared_prompt}
+                                  </ChatWindow.TalkBubble>
+                                  <div
+                                    className="flex flex-col text-left pl-2 text-xs text-black"
+                                    style={{
+                                      maxWidth: '90%',
+                                    }}>
+                                    AI
+                                  </div>
+                                  <ChatWindow.TalkBubble
+                                    backgroundColor="#3498db"
+                                    fontColor="#FFF"
+                                    styles={{
+                                      textAlign: 'left',
+                                    }}>
+                                    {dialogue.predicted_result}
+                                  </ChatWindow.TalkBubble>
+                                </div>
+                              );
+                            }
+                          )}
                         {sendPromptIsLoading ? (
                           <div className="flex flex-col p-2">
                             <div className="flex flex-col text-right pr-2 text-xs text-black">
@@ -448,9 +449,9 @@ function ActiveChatSession(props: ActiveSessionProps) {
                               styles={{ alignSelf: 'flex-end' }}>
                               {selectedPromptTemplate
                                 ? selectedPromptTemplate.template.replace(
-                                    '{{ prompt }}',
-                                    promptText
-                                  )
+                                  '{{ prompt }}',
+                                  promptText
+                                )
                                 : promptText}
                             </ChatWindow.TalkBubble>
                             <div className="flex flex-col text-left pl-2 text-xs text-black">
