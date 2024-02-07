@@ -5,18 +5,24 @@ import { ListItem, SelectList } from '@/app/components/selectList';
 import { TextArea } from '@/app/components/textArea';
 import useOutsideClick from '@/app/hooks/use-outside-click';
 import { getWindowId } from '@/app/lib/window';
-import { Window } from '@components/window';
-import { SlashCommand } from './slash-commands';
+import { useAppDispatch } from '@/lib/redux';
 import {
   LayoutMode,
   setChatLayoutMode,
 } from '@/lib/redux/slices/chatLayoutModeSlice';
-import { useAppDispatch } from '@/lib/redux';
+import { SlashCommand } from './slash-commands';
+import { Window } from '@components/window';
+import { TextInput } from '@/app/components/textInput';
 
 enum TextInputMode {
   NORMAL_TEXT,
   FILTER_LIST,
   AUTO_COMPLETE,
+}
+
+enum Size {
+  SMALL,
+  LARGE
 }
 
 function BoxPrompt(props: {
@@ -26,6 +32,7 @@ function BoxPrompt(props: {
   styles?: React.CSSProperties;
   promptTemplates: PromptTemplate[];
   activePromptTemplate?: PromptTemplate;
+  draggable?: boolean;
   onCloseClick?: () => void;
   onSelectPromptTemplate: (item: PromptTemplate | undefined) => void;
   onSendClick: (message: string) => void;
@@ -33,12 +40,14 @@ function BoxPrompt(props: {
   const {
     promptTemplates,
     initialXY,
+    draggable,
     onCloseClick,
     activePromptTemplate,
     onSelectPromptTemplate,
     onSendClick,
     styles,
   } = props;
+  const [size, setSize] = useState<Size>(Size.SMALL);
   const [promptMessage, setPromptMessage] = useState('');
   const [showPromptTemplateList, setShowPromptTemplateList] =
     useState(false);
@@ -86,7 +95,7 @@ function BoxPrompt(props: {
   }
 
   function handleTextChange(
-    e: React.ChangeEvent<HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) {
     const inputValue = e.target.value;
     setPromptMessage(inputValue);
@@ -140,7 +149,7 @@ function BoxPrompt(props: {
   }
 
   function handleKeyDown(
-    e: React.KeyboardEvent<HTMLTextAreaElement>
+    e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>
   ) {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -229,6 +238,9 @@ function BoxPrompt(props: {
     e.stopPropagation();
     removeActivePromptTemplate();
   }
+  function handleResizeClick() {
+    setSize(prevSize => prevSize === Size.LARGE ? Size.SMALL : Size.LARGE)
+  }
 
   useEffect(() => {
     const list: ListItem[] = promptTemplates.map((pt) => ({
@@ -250,8 +262,10 @@ function BoxPrompt(props: {
     <Window
       id={getWindowId('box-prompt')}
       initialXY={initialXY}
-      initialWindowSize={[500, 180]}
+      initialWindowSize={[500, size === Size.LARGE ? 180 : 120]}
       resizeable={false}
+      draggable={draggable}
+      disableCloseIcon
       disableFadeIn
       name="Prompt"
       onCloseClick={onCloseClick}
@@ -262,24 +276,44 @@ function BoxPrompt(props: {
         overflowY: 'visible',
         overflowX: 'visible',
       }}>
+      <div className='absolute top-2 right-2'>
+        <Icon
+          name={size === Size.LARGE ? IconName.Minimize : IconName.Maximize}
+          size={14}
+          lightModeColor="white"
+          onClick={handleResizeClick}
+        />
+      </div>
       <div className="relative flex flex-col">
         <div className="flex gap-2">
           <div className="flex-1">
-            <TextArea
-              id="box-prompt-text-input"
-              name="sessionName"
-              placeholder={
-                textInputMode === TextInputMode.FILTER_LIST
-                  ? 'Search Prompt Templates'
-                  : 'Message'
-              }
-              onChange={handleTextChange}
-              value={promptMessage}
-              onKeyDown={handleKeyDown}
-              containerStyles={{
-                marginBottom: 0,
-              }}
-            />
+            {size === Size.LARGE ?
+              <TextArea
+                id="box-prompt-text-input"
+                name="sessionName"
+                placeholder={
+                  textInputMode === TextInputMode.FILTER_LIST
+                    ? 'Search Prompt Templates'
+                    : 'Message'
+                }
+                onChange={handleTextChange}
+                value={promptMessage}
+                onKeyDown={handleKeyDown}
+                containerStyles={{
+                  marginBottom: 0,
+                }} /> :
+              <TextInput
+                id="box-prompt-text-input"
+                name="sessionName"
+                placeholder={
+                  textInputMode === TextInputMode.FILTER_LIST
+                    ? 'Search Prompt Templates'
+                    : 'Message'
+                }
+                onChange={handleTextChange}
+                value={promptMessage}
+                onKeyDown={handleKeyDown} />
+            }
           </div>
         </div>
         <div className="flex gap-2 w-full justify-between">

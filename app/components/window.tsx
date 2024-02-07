@@ -77,7 +77,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       WindowState.default
     );
     const [initialPosition, setInitialPosition] = useState(initialXY);
-    const [windowSize, setWindowSize] = useState(initialWindowSize);
+    const [windowSize, setWindowSize] = useState<[number, number]>(initialWindowSize);
     const windowRef = useRef<HTMLDivElement>(null);
     const scrollDivRef = useRef<HTMLDivElement>(null);
     const prevMouseXY = useRef([0, 0]);
@@ -218,6 +218,10 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         scrollDivRef.current.scrollTop = initialScrollTop;
       }
     }, [initialScrollTop]);
+
+    useEffect(() => {
+      setWindowSize(initialWindowSize)
+    }, [initialWindowSize])
 
     useEffect(() => {
       const timer = setTimeout(() => {

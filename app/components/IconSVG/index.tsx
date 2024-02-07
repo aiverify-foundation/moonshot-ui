@@ -11,6 +11,8 @@ import { FolderForChatSessionsIcon } from './icons/folder-chat-icon';
 import { FolderIcon } from './icons/folder-icon';
 import { LightSunIcon } from './icons/light-sun-icon';
 import { RunCookbookIcon } from './icons/run-cookbook-icon';
+import { MaximizeIcon } from './icons/maximize-icon';
+import { MinimizeIcon } from './icons/minimize-icon';
 
 enum IconName {
   Folder,
@@ -23,6 +25,8 @@ enum IconName {
   Close,
   CircleArrowRight,
   CircleArrowLeft,
+  Maximize,
+  Minimize
 }
 
 type IconProps = {
@@ -167,6 +171,32 @@ function Icon(props: IconProps) {
     case IconName.CircleArrowLeft:
       iconToRender = (
         <CircleArrowLeftIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#a21caf'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Maximize:
+      iconToRender = (
+        <MaximizeIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#a21caf'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Minimize:
+      iconToRender = (
+        <MinimizeIcon
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'

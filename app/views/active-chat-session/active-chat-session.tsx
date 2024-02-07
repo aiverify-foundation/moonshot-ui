@@ -473,6 +473,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
 
         <BoxPrompt
           name="Prompt"
+          draggable={layoutMode === LayoutMode.FREE}
           initialXY={[
             window.innerWidth / 2 - 500 / 2, //500 width of box
             window.innerHeight - 180 - 30, //180 height of box
