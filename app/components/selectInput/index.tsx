@@ -22,9 +22,7 @@ type SelectInputProps<valueType = string> = {
   style?: React.CSSProperties;
   inputBgColor?: string;
   inputStyle?: React.CSSProperties;
-  selectedOptionPredicateFn?: (
-    option: SelectOption<valueType>
-  ) => boolean;
+  selectedOptionPredicateFn?: (option: SelectOption<valueType>) => boolean;
   onChange?: (value: valueType) => void;
   // change handler to support formik's `handleChange` method. If this becomes unstable, use onChange prop with formik's `setFieldValue` method at the consumer
   onSyntheticChange?: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -132,9 +130,7 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
               fontSize: 16,
               lineHeight: 'normal',
               boxShadow: 'none',
-              borderColor: state.isFocused
-                ? BORDER_FOCUS_COLOR
-                : BORDER_COLOR,
+              borderColor: state.isFocused ? BORDER_FOCUS_COLOR : BORDER_COLOR,
               '&:hover': {
                 borderColor: BORDER_FOCUS_COLOR,
               },
@@ -190,6 +186,7 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
             }),
           }}
           name={name}
+          // @ts-ignore
           isMulti={isMulti}
           placeholder={placeholder}
           value={selectedOption}

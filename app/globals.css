@@ -6,6 +6,24 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+   /* These dimensions must match dimensions defined in active-chat-session component */
+  --chatwindow-width: 400px;
+  --gap-width: 20px;
+}
+
+@media (min-width: 1180px) {
+  :root {
+    --chatwindow-width: 500px;
+    --gap-width: 20px;
+  }
+}
+
+/* Example for larger screens */
+@media (max-width: 992px) {
+  :root {
+    --chatwindow-width: 400px;
+    --gap-width: 15px;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -68,9 +86,6 @@
 }
 
 .chat-window-container {
-  /* These dimensions must match dimensions defined in active-chat-session component */
-  --chatwindow-width: 400px;
-  --gap-width: 20px;
   @apply absolute flex overflow-hidden h-[550px] top-[150px] left-[50%] transform-gpu;
   transform: translate(-50%);
   width: calc(3 * var(--chatwindow-width) + 2 * var(--gap-width));

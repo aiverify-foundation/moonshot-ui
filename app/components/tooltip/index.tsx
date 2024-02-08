@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import styles from './styles/tooltip.module.css';
 import clsx from 'clsx';
-import { boolean } from 'yup';
 
 enum TooltipPosition {
   top = 'top',
@@ -163,7 +162,9 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
           className={clsx(styles.pointer, styles[positionClassname])}
           style={{ borderColor }}
         />
-        <div className={styles.content} style={{ backgroundColor }}>
+        <div
+          className={styles.content}
+          style={{ backgroundColor }}>
           {content}
         </div>
       </div>

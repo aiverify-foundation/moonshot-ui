@@ -32,39 +32,15 @@ import TaskBar from '@components/taskbar';
 import { Window } from '@components/window';
 import { ActiveChatSession } from '@views/active-chat-session/active-chat-session';
 
-const legalSummarisation = {
-  name: 'Legal Summarisation',
-  description:
-    'This cookbook runs general capabilitiy benchmark on legal summarisation model.',
-  recipes: [
-    'analogical-similarity',
-    'auto-categorisation',
-    'cause-and-effect-one-sentence',
-    'cause-and-effect-two-sentence',
-    'contextual-parametric-knowledge-conflicts',
-    'coqa-conversational-qna',
-    'gre-reading-comprehension',
-    'squad_shifts-tnf',
-    'sg-legal-glossary',
-    'sg-university-tutorial-questions-legal',
-  ],
-};
-
 export default function MoonshotDesktop() {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [isChatSessionOpen, setIsChatSessionOpen] = useState(false);
-  const [isEndpointsExplorerOpen, setIsEndpointsExplorerOpen] =
-    useState(false);
+  const [isEndpointsExplorerOpen, setIsEndpointsExplorerOpen] = useState(false);
   const [isShowWindowCreateSession, setIsShowWindowCreateSession] =
     useState(false);
   const [isShowWindowSavedSession, setIsShowWindowSavedSession] =
     useState(false);
-  const [isShowPromptTemplates, setIsShowPromptTemplates] =
-    useState(false);
-  const [isShowPromptPreview, setIsShowPromptPreview] =
-    useState(false);
-  const [isDesktopIconsHidden, setIsDesktopIconsHidden] =
-    useState(false);
+  const [isDesktopIconsHidden, setIsDesktopIconsHidden] = useState(false);
   const [triggerSetActiveSession] = useLazySetActiveSessionQuery();
   const dispatch = useAppDispatch();
   const handleOnWindowChange = useWindowChange();
@@ -72,13 +48,13 @@ export default function MoonshotDesktop() {
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
   const backgroundImageStyle = !isDarkMode
     ? {
-      backgroundImage: 'url("/pink-bg-fade3.png")',
-      backgroundBlendMode: 'multiply',
-    }
+        backgroundImage: 'url("/pink-bg-fade3.png")',
+        backgroundBlendMode: 'multiply',
+      }
     : {
-      backgroundImage:
-        'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #454545, #0e0e0e)',
-    };
+        backgroundImage:
+          'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #454545, #0e0e0e)',
+      };
   const [
     createSession,
     {
@@ -98,8 +74,10 @@ export default function MoonshotDesktop() {
       description,
       endpoints,
     });
+    //@ts-ignore
     if (response.data) {
       const activeSessionResponse = await triggerSetActiveSession(
+        //@ts-ignore
         response.data.session_id
       );
       if (activeSessionResponse.data) {
@@ -138,10 +116,14 @@ export default function MoonshotDesktop() {
 
   useEffect(() => {
     //set default window dimensions
+    const defaultExplorerWindowDimensions: WindowData = [600, 200, 820, 470, 0];
     const defaults: Record<string, WindowData> = {};
-    defaults[getWindowId(WindowIds.LLM_ENDPOINTS)] = [
-      600, 200, 820, 470, 0,
-    ];
+    defaults[getWindowId(WindowIds.LLM_ENDPOINTS)] =
+      defaultExplorerWindowDimensions;
+    defaults[getWindowId(WindowIds.SAVED_SESSIONS)] =
+      defaultExplorerWindowDimensions;
+    defaults[getWindowId(WindowIds.CREATE_SESSION)] =
+      defaultExplorerWindowDimensions;
     dispatch(updateWindows(defaults));
   }, []);
 
@@ -150,11 +132,12 @@ export default function MoonshotDesktop() {
       className={`
         h-screen overflow-y-hidden
         flex flex-col bg-fuchsia-100
-        ${!isDarkMode
-          ? `
+        ${
+          !isDarkMode
+            ? `
           bg-gradient-to-br bg-no-repeat bg-right
           from-fuchsia-100 to-fuchsia-400`
-          : ''
+            : ''
         }
       `}
       style={{
@@ -167,9 +150,7 @@ export default function MoonshotDesktop() {
           </div>
           <div className="flex flex-1 justify-end items-center pr-4">
             <Icon
-              name={
-                isDarkMode ? IconName.LightSun : IconName.DarkMoon
-              }
+              name={isDarkMode ? IconName.LightSun : IconName.DarkMoon}
               size={isDarkMode ? 20 : 22}
               onClick={handleToggleDarkMode}
             />
@@ -255,8 +236,12 @@ export default function MoonshotDesktop() {
       {isShowWindowCreateSession ? (
         <WindowCreateSession
           zIndex={Z_Index.Level_2}
+          windowId={getWindowId(WindowIds.CREATE_SESSION)}
+          initialXY={getWindowXY(windowsMap, WindowIds.CREATE_SESSION)}
+          initialSize={getWindowSize(windowsMap, WindowIds.CREATE_SESSION)}
           onCloseClick={() => setIsShowWindowCreateSession(false)}
           onStartClick={startNewSession}
+          onWindowChange={handleOnWindowChange}
         />
       ) : null}
 
@@ -272,10 +257,7 @@ export default function MoonshotDesktop() {
           zIndex={Z_Index.Level_2}
           windowId={getWindowId(WindowIds.LLM_ENDPOINTS)}
           initialXY={getWindowXY(windowsMap, WindowIds.LLM_ENDPOINTS)}
-          initialSize={getWindowSize(
-            windowsMap,
-            WindowIds.LLM_ENDPOINTS
-          )}
+          initialSize={getWindowSize(windowsMap, WindowIds.LLM_ENDPOINTS)}
           onWindowChange={handleOnWindowChange}
           onCloseClick={() => setIsEndpointsExplorerOpen(false)}
         />
@@ -284,8 +266,12 @@ export default function MoonshotDesktop() {
       {isShowWindowSavedSession ? (
         <FileExplorerSavedSessions
           zIndex={Z_Index.Level_2}
+          windowId={getWindowId(WindowIds.SAVED_SESSIONS)}
+          initialXY={getWindowXY(windowsMap, WindowIds.SAVED_SESSIONS)}
+          initialSize={getWindowSize(windowsMap, WindowIds.SAVED_SESSIONS)}
           onCloseClick={() => setIsShowWindowSavedSession(false)}
           onContinueSessionClick={handleContinueSessionClick}
+          onWindowChange={handleOnWindowChange}
         />
       ) : null}
 
@@ -301,8 +287,6 @@ export default function MoonshotDesktop() {
           zIndex: Z_Index.Base,
         }}
       />
-
-      {isShowPromptTemplates ? <div>TODO</div> : null}
     </div>
   );
 }

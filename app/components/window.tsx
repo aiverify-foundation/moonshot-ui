@@ -77,7 +77,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       WindowState.default
     );
     const [initialPosition, setInitialPosition] = useState(initialXY);
-    const [windowSize, setWindowSize] = useState<[number, number]>(initialWindowSize);
+    const [windowSize, setWindowSize] =
+      useState<[number, number]>(initialWindowSize);
     const windowRef = useRef<HTMLDivElement>(null);
     const scrollDivRef = useRef<HTMLDivElement>(null);
     const prevMouseXY = useRef([0, 0]);
@@ -86,18 +87,14 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
     );
     const dispatch = useAppDispatch();
 
-    useImperativeHandle(
-      ref,
-      () => scrollDivRef.current as HTMLDivElement
-    );
+    useImperativeHandle(ref, () => scrollDivRef.current as HTMLDivElement);
 
     function handleMouseDown(e: React.MouseEvent) {
       if (!draggable) return; // Added this line
       e.stopPropagation();
       if (!windowRef.current) return;
       prevMouseXY.current = [e.clientX, e.clientY];
-      windowRef.current.style.zIndex =
-        Z_Index.FocusedWindow.toString();
+      windowRef.current.style.zIndex = Z_Index.FocusedWindow.toString();
       setWindowState(WindowState.drag);
       dispatch(updateFocusedWindowId(id));
     }
@@ -120,8 +117,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
     }
 
     const handleResizeMouseMove = (e: MouseEvent) => {
-      if (!windowRef.current || windowState !== WindowState.resize)
-        return;
+      if (!windowRef.current || windowState !== WindowState.resize) return;
       const dx = e.clientX - prevMouseXY.current[0];
       const dy = e.clientY - prevMouseXY.current[1];
       prevMouseXY.current = [e.clientX, e.clientY];
@@ -129,8 +125,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
     };
 
     function handleMouseUp() {
-      if (!windowRef.current || windowState !== WindowState.drag)
-        return;
+      if (!windowRef.current || windowState !== WindowState.drag) return;
       setWindowState(WindowState.default);
       document.body.removeEventListener('mousemove', handleMouseMove);
       document.body.removeEventListener('mouseup', handleMouseUp);
@@ -150,17 +145,11 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
     }
 
     function handleResizeMouseUp() {
-      if (!windowRef.current || windowState !== WindowState.resize)
-        return;
+      if (!windowRef.current || windowState !== WindowState.resize) return;
       setWindowState(WindowState.default);
-      document.body.removeEventListener(
-        'mousemove',
-        handleResizeMouseMove
-      );
-      document.body.removeEventListener(
-        'mouseup',
-        handleResizeMouseUp
-      );
+      document.body.removeEventListener('mousemove', handleResizeMouseMove);
+      document.body.removeEventListener('mouseup', handleResizeMouseUp);
+      console.log(windowSize);
       if (onWindowChange) {
         onWindowChange(
           initialPosition[0],
@@ -174,11 +163,10 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
     }
 
     function handleMouseMove(e: MouseEvent) {
-      if (!windowRef.current || windowState !== WindowState.drag)
-        return;
-
-      windowRef.current.style.transform = `translate(${e.clientX - prevMouseXY.current[0]}px, ${e.clientY - prevMouseXY.current[1]
-        }px)`;
+      if (!windowRef.current || windowState !== WindowState.drag) return;
+      windowRef.current.style.transform = `translate(${e.clientX - prevMouseXY.current[0]}px, ${
+        e.clientY - prevMouseXY.current[1]
+      }px)`;
     }
 
     const handleScrollStop = (e: React.UIEvent<HTMLDivElement>) => {
@@ -202,14 +190,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         document.body.addEventListener('mousemove', handleMouseMove);
         document.body.addEventListener('mouseup', handleMouseUp);
       } else if (windowState === WindowState.resize) {
-        document.body.addEventListener(
-          'mousemove',
-          handleResizeMouseMove
-        );
-        document.body.addEventListener(
-          'mouseup',
-          handleResizeMouseUp
-        );
+        document.body.addEventListener('mousemove', handleResizeMouseMove);
+        document.body.addEventListener('mouseup', handleResizeMouseUp);
       }
     }, [windowState]);
 
@@ -220,8 +202,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
     }, [initialScrollTop]);
 
     useEffect(() => {
-      setWindowSize(initialWindowSize)
-    }, [initialWindowSize])
+      setWindowSize(initialWindowSize);
+    }, []);
 
     useEffect(() => {
       const timer = setTimeout(() => {
@@ -247,15 +229,12 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
           width: windowSize[0],
           height: windowSize[1],
           ...styles,
-          zIndex:
-            selectedWindowId === id ? Z_Index.FocusedWindow : zIndex,
+          zIndex: selectedWindowId === id ? Z_Index.FocusedWindow : zIndex,
         }}
         onMouseDown={handleMouseDown}>
         <div className="flex flex-col w-full h-full">
           <div className="flex justify-between w-full">
-            <div className="flex items-center h-8 text-sm">
-              {name}
-            </div>
+            <div className="flex items-center h-8 text-sm">{name}</div>
             {!disableCloseIcon ? (
               <Icon
                 lightModeColor="#FFFFFF"
@@ -277,9 +256,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
             onWheel={onWheel}>
             {children}
           </div>
-          <div className="text-xs text-white/70">
-            {leftFooterText}
-          </div>
+          <div className="text-xs text-white/70">{leftFooterText}</div>
           {resizeable ? (
             <div
               className="

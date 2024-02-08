@@ -5,9 +5,21 @@ import useLLMEndpointList from '@/app/views/moonshot-desktop/hooks/useLLMEndpoin
 import { TextArea } from '@components/textArea';
 import { TextInput } from '@components/textInput';
 import { Window } from '@components/window';
+import { getWindowId } from '@/app/lib/window';
 
 type WindowChatStartProps = {
   zIndex: number | 'auto';
+  windowId: string;
+  initialXY: [number, number];
+  initialSize: [number, number];
+  onWindowChange: (
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    scrollTop: number,
+    windowId: string
+  ) => void;
   onCloseClick: () => void;
   onStartClick: (
     sessionName: string,
@@ -29,25 +41,30 @@ const initialFormValues: FormValues = {
 };
 
 function WindowCreateSession(props: WindowChatStartProps) {
-  const { zIndex, onCloseClick, onStartClick } = props;
+  const {
+    zIndex,
+    windowId,
+    initialXY,
+    initialSize,
+    onCloseClick,
+    onStartClick,
+    onWindowChange,
+  } = props;
   const { llmEndpoints, error, isLoading } = useLLMEndpointList();
 
   async function handleFormSubmit(values: FormValues) {
-    onStartClick(
-      values.sessionName,
-      values.description,
-      values.llmEndpoints
-    );
+    onStartClick(values.sessionName, values.description, values.llmEndpoints);
   }
 
   return (
     <Window
-      id="create-session"
+      id={getWindowId(windowId)}
       resizeable
       draggable
       zIndex={zIndex}
-      initialXY={[600, 100]}
-      initialWindowSize={[600, 400]}
+      initialXY={initialXY}
+      initialWindowSize={initialSize}
+      onWindowChange={onWindowChange}
       name="Start New Session"
       styles={{ zIndex: 100 }}
       onCloseClick={onCloseClick}>

@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { updateChatHistory } from '@/lib/redux/slices/activeSessionSlice';
+import { LayoutMode } from '@/lib/redux/slices/chatLayoutModeSlice';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 import { BoxPrompt } from './box-prompt';
+import { getChatWindowDimensions } from './chat-window-sizes';
 import {
   getWindowId,
   getWindowScrollTop,
@@ -18,8 +20,6 @@ import {
   useUsePromptTemplateMutation,
 } from '@views/moonshot-desktop/services/prompt-template-api-service';
 import { useSendPromptMutation } from '@views/moonshot-desktop/services/session-api-service';
-import { LayoutMode } from '@/lib/redux/slices/chatLayoutModeSlice';
-import { getChatWindowDimensions } from './chat-window-sizes';
 
 type ActiveSessionProps = {
   zIndex: number;
@@ -30,20 +30,18 @@ const promptBoxId = 'prompt-box';
 
 function ActiveChatSession(props: ActiveSessionProps) {
   const { zIndex, onCloseBtnClick } = props;
-  const activeSession = useAppSelector(
-    (state) => state.activeSession.entity
-  );
-  const { promptTemplates, error, isLoading } =
-    usePromptTemplateList();
+  const activeSession = useAppSelector((state) => state.activeSession.entity);
+  const { promptTemplates, error, isLoading } = usePromptTemplateList();
   const [promptText, setPromptText] = useState('');
-  const [selectedPromptTemplate, setSelectedPromptTemplate] =
-    useState<PromptTemplate | undefined>(undefined);
+  const [selectedPromptTemplate, setSelectedPromptTemplate] = useState<
+    PromptTemplate | undefined
+  >(undefined);
   const [currentChatIndex, setCurrentChatIndex] = useState(0);
-  const layoutMode = useAppSelector(
-    (state) => state.chatLayoutMode.value
-  );
+  const layoutMode = useAppSelector((state) => state.chatLayoutMode.value);
   const windowsMap = useAppSelector((state) => state.windows.map);
-  const { chatWindowWidth, chatWindowHeight, chatWindowGap } = getChatWindowDimensions();
+  console.log(windowsMap);
+  const { chatWindowWidth, chatWindowHeight, chatWindowGap } =
+    getChatWindowDimensions();
   const [
     sendPrompt,
     {
@@ -72,8 +70,6 @@ function ActiveChatSession(props: ActiveSessionProps) {
   const chatBoxRefs = useRef<HTMLDivElement[]>([]);
   const isZKeyPressed = useRef(false);
 
-
-
   const syncScroll = (deltaY: number) => {
     chatBoxRefs.current.forEach((ref) => {
       if (ref) {
@@ -101,10 +97,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
   };
 
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    if (
-      isZKeyPressed.current !== undefined &&
-      isZKeyPressed.current === true
-    ) {
+    if (isZKeyPressed.current !== undefined && isZKeyPressed.current === true) {
       syncScroll(e.deltaY);
     }
   };
@@ -117,9 +110,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
     scrollTop: number,
     windowId: string
   ) {
-    dispatch(
-      updateWindows({ [windowId]: [x, y, width, height, scrollTop] })
-    );
+    dispatch(updateWindows({ [windowId]: [x, y, width, height, scrollTop] }));
   }
 
   async function handleSendPromptClick(message: string) {
@@ -168,31 +159,20 @@ function ActiveChatSession(props: ActiveSessionProps) {
       const spacing = 50;
       activeSession.chats.forEach((id, index) => {
         const leftPos =
-          index === 0
-            ? margin
-            : margin + chatboxWidth * index + spacing;
-        chatWindows[getWindowId(id)] = [
-          leftPos,
-          100,
-          chatboxWidth,
-          450,
-          0,
-        ];
+          index === 0 ? margin : margin + chatboxWidth * index + spacing;
+        chatWindows[getWindowId(id)] = [leftPos, 100, chatboxWidth, 450, 0];
       });
       dispatch(updateWindows(chatWindows));
     }
   }, []);
 
   useEffect(() => {
-    //set default window dimensions
     const promptBoxDefaults: Record<string, WindowData> = {};
     const width = 500;
     const height = 180;
     const left = window.innerWidth / 2 - width / 2;
     const top = window.innerHeight - height - 5;
-    promptBoxDefaults[getWindowId(promptBoxId)] = [
-      width, height, left, top, 0,
-    ];
+    promptBoxDefaults[getWindowId(promptBoxId)] = [width, height, left, top, 0];
     dispatch(updateWindows(promptBoxDefaults));
   }, []);
 
@@ -254,25 +234,20 @@ function ActiveChatSession(props: ActiveSessionProps) {
               return (
                 <ChatWindow.ChatBox
                   ref={(el) =>
-                  (chatBoxRefs.current[index] =
-                    el as HTMLDivElement)
+                    (chatBoxRefs.current[index] = el as HTMLDivElement)
                   }
                   windowId={getWindowId(id)}
                   key={id}
                   name={id}
                   initialXY={getWindowXY(windowsMap, id)}
                   initialSize={getWindowSize(windowsMap, id)}
-                  initialScrollTop={getWindowScrollTop(
-                    windowsMap,
-                    id
-                  )}
+                  initialScrollTop={getWindowScrollTop(windowsMap, id)}
                   onCloseClick={() => null}
                   onWindowChange={handleOnWindowChange}
                   onWheel={handleWheel}>
                   {!activeSession.chat_history
                     ? null
-                    : activeSession.chat_history[id].map(
-                      (dialogue, index) => {
+                    : activeSession.chat_history[id].map((dialogue, index) => {
                         return (
                           <div
                             className="flex flex-col p-2"
@@ -304,8 +279,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
                             </ChatWindow.TalkBubble>
                           </div>
                         );
-                      }
-                    )}
+                      })}
                   {sendPromptIsLoading ? (
                     <div className="flex flex-col p-2">
                       <div className="flex flex-col text-right pr-2 text-xs text-black">
@@ -317,9 +291,9 @@ function ActiveChatSession(props: ActiveSessionProps) {
                         styles={{ alignSelf: 'flex-end' }}>
                         {selectedPromptTemplate
                           ? selectedPromptTemplate.template.replace(
-                            '{{ prompt }}',
-                            promptText
-                          )
+                              '{{ prompt }}',
+                              promptText
+                            )
                           : promptText}
                       </ChatWindow.TalkBubble>
                       <div className="flex flex-col text-left pl-2 text-xs text-black">
@@ -349,9 +323,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
                 size={40}
                 name={IconName.CircleArrowLeft}
                 onClick={() =>
-                  setCurrentChatIndex((prevIndex) =>
-                    Math.max(prevIndex - 1, 0)
-                  )
+                  setCurrentChatIndex((prevIndex) => Math.max(prevIndex - 1, 0))
                 }
                 disabled={currentChatIndex === 0}
               />
@@ -360,15 +332,10 @@ function ActiveChatSession(props: ActiveSessionProps) {
                 name={IconName.CircleArrowRight}
                 onClick={() =>
                   setCurrentChatIndex((prevIndex) =>
-                    Math.min(
-                      prevIndex + 1,
-                      activeSession.chats.length - 1
-                    )
+                    Math.min(prevIndex + 1, activeSession.chats.length - 1)
                   )
                 }
-                disabled={
-                  currentChatIndex === activeSession.chats.length - 3
-                }
+                disabled={currentChatIndex === activeSession.chats.length - 3}
               />
             </div>
           </div>
@@ -381,43 +348,40 @@ function ActiveChatSession(props: ActiveSessionProps) {
               style={{
                 transform: `translateX(-${currentChatIndex * (chatWindowWidth + chatWindowGap)}px)`,
               }}>
-              {activeSession.chats.map(
-                (id: string, index: number) => {
-                  if (
-                    (currentChatIndex > 0 &&
-                      index === currentChatIndex - 1) ||
-                    index === currentChatIndex ||
-                    index === currentChatIndex + 1 ||
-                    index === currentChatIndex + 2 ||
-                    index === currentChatIndex + 3
-                  ) {
-                    const xpos =
-                      index === 0 ? 0 : (chatWindowWidth + chatWindowGap) * index;
-                    const scrollPosition = chatBoxRefs.current[index]
-                      ? chatBoxRefs.current[index].scrollHeight -
+              {activeSession.chats.map((id: string, index: number) => {
+                if (
+                  (currentChatIndex > 0 && index === currentChatIndex - 1) ||
+                  index === currentChatIndex ||
+                  index === currentChatIndex + 1 ||
+                  index === currentChatIndex + 2 ||
+                  index === currentChatIndex + 3
+                ) {
+                  const xpos =
+                    index === 0 ? 0 : (chatWindowWidth + chatWindowGap) * index;
+                  const scrollPosition = chatBoxRefs.current[index]
+                    ? chatBoxRefs.current[index].scrollHeight -
                       chatBoxRefs.current[index].clientHeight
-                      : 0;
-                    return (
-                      <ChatWindow.ChatBox
-                        ref={(el) =>
-                        (chatBoxRefs.current[index] =
-                          el as HTMLDivElement)
-                        }
-                        windowId={getWindowId(id)}
-                        key={id}
-                        name={id}
-                        initialXY={[xpos, 0]}
-                        initialSize={[chatWindowWidth, chatWindowHeight]}
-                        initialScrollTop={scrollPosition}
-                        resizable={false}
-                        draggable={false}
-                        disableOnScroll
-                        onCloseClick={() => null}
-                        onWindowChange={handleOnWindowChange}
-                        onWheel={handleWheel}>
-                        {!activeSession.chat_history
-                          ? null
-                          : activeSession.chat_history[id].map(
+                    : 0;
+                  return (
+                    <ChatWindow.ChatBox
+                      ref={(el) =>
+                        (chatBoxRefs.current[index] = el as HTMLDivElement)
+                      }
+                      windowId={getWindowId(id)}
+                      key={id}
+                      name={id}
+                      initialXY={[xpos, 0]}
+                      initialSize={[chatWindowWidth, chatWindowHeight]}
+                      initialScrollTop={scrollPosition}
+                      resizable={false}
+                      draggable={false}
+                      disableOnScroll
+                      onCloseClick={() => null}
+                      onWindowChange={handleOnWindowChange}
+                      onWheel={handleWheel}>
+                      {!activeSession.chat_history
+                        ? null
+                        : activeSession.chat_history[id].map(
                             (dialogue, index) => {
                               return (
                                 <div
@@ -454,35 +418,34 @@ function ActiveChatSession(props: ActiveSessionProps) {
                               );
                             }
                           )}
-                        {sendPromptIsLoading ? (
-                          <div className="flex flex-col p-2">
-                            <div className="flex flex-col text-right pr-2 text-xs text-black">
-                              You
-                            </div>
-                            <ChatWindow.TalkBubble
-                              backgroundColor="#a3a3a3"
-                              fontColor="#FFF"
-                              styles={{ alignSelf: 'flex-end' }}>
-                              {selectedPromptTemplate
-                                ? selectedPromptTemplate.template.replace(
+                      {sendPromptIsLoading ? (
+                        <div className="flex flex-col p-2">
+                          <div className="flex flex-col text-right pr-2 text-xs text-black">
+                            You
+                          </div>
+                          <ChatWindow.TalkBubble
+                            backgroundColor="#a3a3a3"
+                            fontColor="#FFF"
+                            styles={{ alignSelf: 'flex-end' }}>
+                            {selectedPromptTemplate
+                              ? selectedPromptTemplate.template.replace(
                                   '{{ prompt }}',
                                   promptText
                                 )
-                                : promptText}
-                            </ChatWindow.TalkBubble>
-                            <div className="flex flex-col text-left pl-2 text-xs text-black">
-                              AI
-                            </div>
-                            <div className="flex justify-start mr-4">
-                              <ChatWindow.LoadingAnimation />
-                            </div>
+                              : promptText}
+                          </ChatWindow.TalkBubble>
+                          <div className="flex flex-col text-left pl-2 text-xs text-black">
+                            AI
                           </div>
-                        ) : null}
-                      </ChatWindow.ChatBox>
-                    );
-                  }
+                          <div className="flex justify-start mr-4">
+                            <ChatWindow.LoadingAnimation />
+                          </div>
+                        </div>
+                      ) : null}
+                    </ChatWindow.ChatBox>
+                  );
                 }
-              )}
+              })}
             </div>
           </div>
         ) : null}
@@ -491,7 +454,11 @@ function ActiveChatSession(props: ActiveSessionProps) {
           windowId={getWindowId(promptBoxId)}
           name={promptBoxId}
           draggable={layoutMode === LayoutMode.FREE}
-          initialXY={getWindowXY(windowsMap, promptBoxId)}
+          initialXY={
+            windowsMap[getWindowId(promptBoxId)]
+              ? getWindowXY(windowsMap, promptBoxId)
+              : [710, 760]
+          }
           promptTemplates={promptTemplates}
           activePromptTemplate={selectedPromptTemplate}
           onCloseClick={onCloseBtnClick}

@@ -1,5 +1,9 @@
 /* Core */
-import { configureStore, type ThunkAction, type Action } from '@reduxjs/toolkit';
+import {
+  configureStore,
+  type ThunkAction,
+  type Action,
+} from '@reduxjs/toolkit';
 import {
   useSelector as useReduxSelector,
   useDispatch as useReduxDispatch,
@@ -12,12 +16,14 @@ import { middleware } from './middleware';
 
 export const applicationStore = configureStore({
   reducer,
+  //@ts-ignore
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware().concat(middleware);
   },
 });
 export const useAppDispatch = () => useReduxDispatch<ReduxDispatch>();
-export const useAppSelector: TypedUseSelectorHook<ApplicationState> = useReduxSelector;
+export const useAppSelector: TypedUseSelectorHook<ApplicationState> =
+  useReduxSelector;
 
 /* Types */
 export type ApplicationStore = typeof applicationStore;

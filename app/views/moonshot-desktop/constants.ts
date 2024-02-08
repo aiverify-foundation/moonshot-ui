@@ -1,5 +1,7 @@
 export const WindowIds = {
   LLM_ENDPOINTS: 'llmendpExplorer',
+  SAVED_SESSIONS: 'savedSessions',
+  CREATE_SESSION: 'createSession',
 };
 
 export const Z_Index = {

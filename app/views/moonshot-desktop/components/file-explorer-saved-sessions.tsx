@@ -14,14 +14,31 @@ import {
 
 type FileExplorerSavedSessionsProps = {
   zIndex: number | 'auto';
+  windowId: string;
+  initialXY: [number, number];
+  initialSize: [number, number];
   onCloseClick: () => void;
   onContinueSessionClick: () => void;
+  onWindowChange: (
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    scrollTop: number,
+    windowId: string
+  ) => void;
 };
 
-function FileExplorerSavedSessions(
-  props: FileExplorerSavedSessionsProps
-) {
-  const { zIndex, onCloseClick, onContinueSessionClick } = props;
+function FileExplorerSavedSessions(props: FileExplorerSavedSessionsProps) {
+  const {
+    zIndex,
+    windowId,
+    initialSize,
+    initialXY,
+    onWindowChange,
+    onCloseClick,
+    onContinueSessionClick,
+  } = props;
   const [selectedSession, setSelectedSession] = useState<Session>();
   const { isLoading, error, sessions } = useSessionList();
   const [triggerGetSession] = useLazyGetSessionQuery();
@@ -30,9 +47,7 @@ function FileExplorerSavedSessions(
   const dispatch = useAppDispatch();
 
   function handleListItemClick(id: string) {
-    const session = sessions.find(
-      (session) => session.session_id === id
-    );
+    const session = sessions.find((session) => session.session_id === id);
     if (session) {
       setSelectedSession(session);
     }
@@ -51,10 +66,11 @@ function FileExplorerSavedSessions(
 
   return (
     <Window
-      id="window-saved-sessions"
+      id={windowId}
       resizeable
-      initialXY={[600, 200]}
-      initialWindowSize={[720, 470]}
+      initialXY={initialXY}
+      initialWindowSize={initialSize}
+      onWindowChange={onWindowChange}
       zIndex={zIndex}
       onCloseClick={onCloseClick}
       name="Saved Sessions"
@@ -74,8 +90,7 @@ function FileExplorerSavedSessions(
                     id={session.session_id}
                     onClick={handleListItemClick}
                     selected={
-                      selectedSession?.session_id ===
-                      session.session_id
+                      selectedSession?.session_id === session.session_id
                     }
                   />
                 ))
