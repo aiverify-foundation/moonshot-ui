@@ -7,7 +7,6 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { useWindowChange } from '@/app/hooks/use-window-change';
 import {
   getWindowId,
-  getWindowScrollTop,
   getWindowSize,
   getWindowXY,
 } from '@/app/lib/window';
@@ -48,13 +47,13 @@ export default function MoonshotDesktop() {
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
   const backgroundImageStyle = !isDarkMode
     ? {
-        backgroundImage: 'url("/pink-bg-fade3.png")',
-        backgroundBlendMode: 'multiply',
-      }
+      backgroundImage: 'url("/pink-bg-fade3.png")',
+      backgroundBlendMode: 'multiply',
+    }
     : {
-        backgroundImage:
-          'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #454545, #0e0e0e)',
-      };
+      backgroundImage:
+        'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #454545, #0e0e0e)',
+    };
   const [
     createSession,
     {
@@ -132,12 +131,11 @@ export default function MoonshotDesktop() {
       className={`
         h-screen overflow-y-hidden
         flex flex-col bg-fuchsia-100
-        ${
-          !isDarkMode
-            ? `
+        ${!isDarkMode
+          ? `
           bg-gradient-to-br bg-no-repeat bg-right
           from-fuchsia-100 to-fuchsia-400`
-            : ''
+          : ''
         }
       `}
       style={{

@@ -88,6 +88,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
     const dispatch = useAppDispatch();
 
     useImperativeHandle(ref, () => scrollDivRef.current as HTMLDivElement);
+    const windowSizeRef = useRef(windowSize);
 
     function handleMouseDown(e: React.MouseEvent) {
       if (!draggable) return; // Added this line
@@ -136,8 +137,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         onWindowChange(
           windowDomRect.x,
           windowDomRect.y,
-          windowSize[0],
-          windowSize[1],
+          windowSizeRef.current[0],
+          windowSizeRef.current[1],
           scrollDivRef.current?.scrollTop || 0,
           id
         );
@@ -149,13 +150,12 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       setWindowState(WindowState.default);
       document.body.removeEventListener('mousemove', handleResizeMouseMove);
       document.body.removeEventListener('mouseup', handleResizeMouseUp);
-      console.log(windowSize);
       if (onWindowChange) {
         onWindowChange(
           initialPosition[0],
           initialPosition[1],
-          windowSize[0],
-          windowSize[1],
+          windowSizeRef.current[0],
+          windowSizeRef.current[1],
           scrollDivRef.current?.scrollTop || 0,
           id
         );
@@ -164,9 +164,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
 
     function handleMouseMove(e: MouseEvent) {
       if (!windowRef.current || windowState !== WindowState.drag) return;
-      windowRef.current.style.transform = `translate(${e.clientX - prevMouseXY.current[0]}px, ${
-        e.clientY - prevMouseXY.current[1]
-      }px)`;
+      windowRef.current.style.transform = `translate(${e.clientX - prevMouseXY.current[0]}px, ${e.clientY - prevMouseXY.current[1]
+        }px)`;
     }
 
     const handleScrollStop = (e: React.UIEvent<HTMLDivElement>) => {
@@ -203,7 +202,12 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
 
     useEffect(() => {
       setWindowSize(initialWindowSize);
-    }, []);
+    }, [initialWindowSize]);
+
+    useEffect(() => {
+      windowSizeRef.current = windowSize;
+    }, [windowSize]);
+
 
     useEffect(() => {
       const timer = setTimeout(() => {

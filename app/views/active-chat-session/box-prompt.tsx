@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { ListItem, SelectList } from '@/app/components/selectList';
 import { TextArea } from '@/app/components/textArea';
+import { TextInput } from '@/app/components/textInput';
 import useOutsideClick from '@/app/hooks/use-outside-click';
-import { getWindowId } from '@/app/lib/window';
 import { useAppDispatch } from '@/lib/redux';
 import {
   LayoutMode,
@@ -12,7 +12,6 @@ import {
 } from '@/lib/redux/slices/chatLayoutModeSlice';
 import { SlashCommand } from './slash-commands';
 import { Window } from '@components/window';
-import { TextInput } from '@/app/components/textInput';
 
 enum TextInputMode {
   NORMAL_TEXT,
