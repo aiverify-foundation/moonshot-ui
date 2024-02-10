@@ -322,18 +322,13 @@ function PromptBox(props: {
         </div>
         <div className="flex gap-2 w-full justify-between">
           <div
-            className="flex items-center cursor-pointer"
+            className="flex items-center cursor-pointer gap-1"
             id="prompt-template-trigger"
             onClick={handleTogglePromptTemplateList}>
-            <Image
-              src="icons/prompt_template.svg"
-              alt="close"
-              width={24}
-              height={24}
-              style={{
-                cursor: 'pointer',
-                marginRight: 3,
-              }}
+            <Icon
+              name={IconName.ChatBubbleWide}
+              size={24}
+              lightModeColor="white"
             />
             <div className="flex items-center text-xs">
               Prompt Template

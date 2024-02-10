@@ -10,7 +10,7 @@ import useSessionList from '@views/moonshot-desktop/hooks/useSessionList';
 import {
   useLazyGetSessionQuery,
   useLazySetActiveSessionQuery,
-} from '@views/moonshot-desktop/services/session-api-service';
+} from '@/app/services/session-api-service';
 
 type FileExplorerSavedSessionsProps = {
   zIndex: number | 'auto';

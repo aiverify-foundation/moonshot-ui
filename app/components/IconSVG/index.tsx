@@ -15,11 +15,13 @@ import { MaximizeIcon } from './icons/maximize-icon';
 import { MinimizeIcon } from './icons/minimize-icon';
 import { LayoutWtfIcon } from './icons/layout-wtf-icon';
 import { LayoutColumnsIcon } from './icons/layout-columns-icon';
+import { ChatBubbleWideIcon } from './icons/chat-bubble-wide-icon';
 
 enum IconName {
   Folder,
   FolderForChatSessions,
   ChatBubbles,
+  ChatBubbleWide,
   RunCookbook,
   BurgerMenu,
   DarkMoon,
@@ -227,6 +229,19 @@ function Icon(props: IconProps) {
     case IconName.LayoutColumns:
       iconToRender = (
         <LayoutColumnsIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#a21caf'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.ChatBubbleWide:
+      iconToRender = (
+        <ChatBubbleWideIcon
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'

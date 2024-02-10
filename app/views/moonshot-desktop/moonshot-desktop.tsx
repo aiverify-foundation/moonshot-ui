@@ -21,7 +21,7 @@ import { WindowIds, Z_Index } from './constants';
 import {
   useCreateSessionMutation,
   useLazySetActiveSessionQuery,
-} from './services/session-api-service';
+} from '../../services/session-api-service';
 import { DesktopIcon } from '@components/desktop-icon';
 import Menu from '@components/menu';
 import TaskBar from '@components/taskbar';

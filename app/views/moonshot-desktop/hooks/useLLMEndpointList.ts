@@ -1,4 +1,4 @@
-import { useGetLLMEndpointsQuery } from '@/app/views/moonshot-desktop/services/llm-endpoint-api-service';
+import { useGetLLMEndpointsQuery } from '@/app/services/llm-endpoint-api-service';
 
 export default function useLLMEndpointList() {
   const { data, error, isLoading } = useGetLLMEndpointsQuery();

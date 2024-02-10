@@ -1,4 +1,4 @@
-import { useGetAllSessionsQuery } from '@/app/views/moonshot-desktop/services/session-api-service';
+import { useGetAllSessionsQuery } from '@/app/services/session-api-service';
 
 export default function useSessionList() {
   const { data, error, isLoading } = useGetAllSessionsQuery();

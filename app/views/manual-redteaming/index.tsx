@@ -13,8 +13,8 @@ import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTempla
 import {
   useUnusePromptTemplateMutation,
   useUsePromptTemplateMutation,
-} from '@views/moonshot-desktop/services/prompt-template-api-service';
-import { useSendPromptMutation } from '@views/moonshot-desktop/services/session-api-service';
+} from '@/app/services/prompt-template-api-service';
+import { useSendPromptMutation } from '@/app/services/session-api-service';
 
 type ActiveSessionProps = {
   zIndex: number;

@@ -1,4 +1,4 @@
-import { useGetPromptTemplatesQuery } from '@/app/views/moonshot-desktop/services/prompt-template-api-service';
+import { useGetPromptTemplatesQuery } from '@/app/services/prompt-template-api-service';
 
 export default function usePromptTemplateList() {
   const { data, error, isLoading } = useGetPromptTemplatesQuery();
