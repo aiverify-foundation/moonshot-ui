@@ -10,7 +10,7 @@ type ChatLayoutModeState = {
 };
 
 const initialState: ChatLayoutModeState = {
-  value: LayoutMode.SLIDE,
+  value: LayoutMode.FREE,
 };
 
 export const chatLayoutModeSlice = createSlice({

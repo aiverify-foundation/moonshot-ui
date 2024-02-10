@@ -1,10 +1,5 @@
+import { PropsWithChildren, forwardRef } from 'react';
 import { Window } from '@/app/components/window';
-import {
-  PropsWithChildren,
-  forwardRef,
-  useImperativeHandle,
-  useRef,
-} from 'react';
 
 type ChatboxProps = {
   windowId: string;
@@ -16,7 +11,7 @@ type ChatboxProps = {
   initialScrollTop: number;
   disableOnScroll?: boolean;
   styles?: React.CSSProperties;
-  onCloseClick: () => void;
+  onCloseClick?: () => void;
   onWheel: (e: React.WheelEvent<HTMLDivElement>) => void;
   onWindowChange?: (
     x: number,
@@ -28,7 +23,7 @@ type ChatboxProps = {
   ) => void;
 };
 
-const ChatBox = forwardRef(
+const Container = forwardRef(
   (
     props: PropsWithChildren<ChatboxProps>,
     scrollDivRef: React.Ref<HTMLDivElement>
@@ -110,11 +105,7 @@ type LoadingAnimationProps = {
 };
 
 function LoadingAnimation(props: LoadingAnimationProps) {
-  const {
-    backgroundColor = '#3498db',
-    dotColor = '#FFFFFF',
-    styles,
-  } = props;
+  const { backgroundColor = '#3498db', dotColor = '#FFFFFF', styles } = props;
   return (
     <div
       style={{
@@ -171,11 +162,11 @@ function LoadingAnimation(props: LoadingAnimationProps) {
   );
 }
 
-const ChatWindow = {
+const Chatbox = {
   TalkBubble,
   LoadingAnimation,
-  ChatBox,
+  Container,
 };
-ChatBox.displayName = 'Chatbox';
+Container.displayName = 'Chatbox';
 
-export { ChatWindow };
+export { Chatbox };
