@@ -1,13 +1,11 @@
-import { MutableRefObject, SetStateAction, useState } from 'react';
+import { MutableRefObject, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
-import { Chatbox } from './chatbox';
 import { getWindowId } from '@/app/lib/window';
+import { Chatbox } from './chatbox';
+import { getDefaultChatBoxSizes } from './chatbox-slide-box-sizes';
 
 type ChatSlideLayoutProps = {
   chatSession: Session;
-  boxWidth: number;
-  boxHeight: number;
-  boxGap: number;
   boxRefs: MutableRefObject<HTMLDivElement[]>;
   chatCompletionInProgress: boolean;
   selectedPromptTemplate: PromptTemplate | undefined;
@@ -26,9 +24,6 @@ type ChatSlideLayoutProps = {
 function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
   const {
     chatSession,
-    boxWidth,
-    boxHeight,
-    boxGap,
     boxRefs,
     chatCompletionInProgress,
     selectedPromptTemplate,
@@ -37,6 +32,7 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
     handleOnWheel,
   } = props;
   const [currentBoxIndex, setCurrentBoxIndex] = useState(0);
+  const { width, height, gap } = getDefaultChatBoxSizes();
   return (
     <>
       <div
@@ -72,7 +68,7 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
         <div
           className="chat-window-slide"
           style={{
-            transform: `translateX(-${currentBoxIndex * (boxWidth + boxGap)}px)`,
+            transform: `translateX(-${currentBoxIndex * (width + gap)}px)`,
           }}>
           {chatSession.chats.map((id: string, index: number) => {
             if (
@@ -82,7 +78,7 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
               index === currentBoxIndex + 2 ||
               index === currentBoxIndex + 3
             ) {
-              const xpos = index === 0 ? 0 : (boxWidth + boxGap) * index;
+              const xpos = index === 0 ? 0 : (width + gap) * index;
               const scrollPosition = boxRefs.current[index]
                 ? boxRefs.current[index].scrollHeight -
                   boxRefs.current[index].clientHeight
@@ -94,7 +90,7 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
                   key={id}
                   name={id}
                   initialXY={[xpos, 0]}
-                  initialSize={[boxWidth, boxHeight]}
+                  initialSize={[width, height]}
                   initialScrollTop={scrollPosition}
                   resizable={false}
                   draggable={false}

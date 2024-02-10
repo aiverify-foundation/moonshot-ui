@@ -1,5 +1,4 @@
 import { MutableRefObject, SetStateAction } from 'react';
-import { Icon, IconName } from '@/app/components/IconSVG';
 import {
   getWindowId,
   getWindowScrollTop,

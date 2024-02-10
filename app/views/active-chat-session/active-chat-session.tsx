@@ -5,17 +5,10 @@ import { updateChatHistory } from '@/lib/redux/slices/activeSessionSlice';
 import { LayoutMode } from '@/lib/redux/slices/chatLayoutModeSlice';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 import { BoxPrompt } from './box-prompt';
-import { getChatWindowDimensions } from './chat-window-sizes';
 import { ChatboxFreeLayout } from './chatbox-free-layout';
 import { ChatboxSlideLayout } from './chatbox-slide-layout';
-import {
-  getWindowId,
-  getWindowScrollTop,
-  getWindowSize,
-  getWindowXY,
-} from '@app/lib/window';
+import { getWindowId, getWindowXY } from '@app/lib/window';
 import { ScreenOverlay } from '@components/screen-overlay';
-import { Chatbox } from '@views/active-chat-session/chatbox';
 import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTemplateList';
 import {
   useUnusePromptTemplateMutation,
@@ -41,9 +34,6 @@ function ActiveChatSession(props: ActiveSessionProps) {
 
   const layoutMode = useAppSelector((state) => state.chatLayoutMode.value);
   const windowsMap = useAppSelector((state) => state.windows.map);
-  console.log(windowsMap);
-  const { chatWindowWidth, chatWindowHeight, chatWindowGap } =
-    getChatWindowDimensions();
   const [
     sendPrompt,
     {
@@ -168,6 +158,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
       const margin = 250;
       const spacing = 50;
       activeSession.chats.forEach((id, index) => {
+        if (windowsMap[getWindowId(id)]) return; // if window has size and position in application state from previous launch, skip setting defaults
         const leftPos =
           index === 0 ? margin : margin + chatboxWidth * index + spacing;
         chatWindows[getWindowId(id)] = [leftPos, 100, chatboxWidth, 450, 0];
@@ -249,9 +240,6 @@ function ActiveChatSession(props: ActiveSessionProps) {
         {layoutMode === LayoutMode.SLIDE ? (
           <ChatboxSlideLayout
             chatSession={activeSession}
-            boxWidth={chatWindowWidth}
-            boxHeight={chatWindowHeight}
-            boxGap={chatWindowGap}
             boxRefs={chatBoxRefs}
             chatCompletionInProgress={sendPromptIsLoading}
             selectedPromptTemplate={selectedPromptTemplate}
