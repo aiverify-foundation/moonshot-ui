@@ -1,4 +1,4 @@
-import { LayoutMode } from '@redux/slices';
+import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { updateChatHistory } from '@redux/slices';
 import { useEffect, useRef, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
@@ -212,6 +212,18 @@ function ManualRedTeaming(props: ActiveSessionProps) {
             <div className="w-80 text-slate-800 dark:text-white text-sm">
               {activeSession.description}
             </div>
+          </div>
+          <div className="flex gap-6 absolute top-4 left-[50%] transform -translate-x-1/2">
+            <Icon
+              size={26}
+              name={IconName.LayoutWtf}
+              onClick={() => dispatch(setChatLayoutMode(LayoutMode.FREE))}
+            />
+            <Icon
+              size={25}
+              name={IconName.LayoutColumns}
+              onClick={() => dispatch(setChatLayoutMode(LayoutMode.SLIDE))}
+            />
           </div>
           <div className="absolute top-3 right-4 flex items-center gap-2">
             <div className="dark:text-white text-sm font-normal">

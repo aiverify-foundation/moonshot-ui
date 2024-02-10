@@ -13,6 +13,8 @@ import { LightSunIcon } from './icons/light-sun-icon';
 import { RunCookbookIcon } from './icons/run-cookbook-icon';
 import { MaximizeIcon } from './icons/maximize-icon';
 import { MinimizeIcon } from './icons/minimize-icon';
+import { LayoutWtfIcon } from './icons/layout-wtf-icon';
+import { LayoutColumnsIcon } from './icons/layout-columns-icon';
 
 enum IconName {
   Folder,
@@ -26,7 +28,9 @@ enum IconName {
   CircleArrowRight,
   CircleArrowLeft,
   Maximize,
-  Minimize
+  Minimize,
+  LayoutWtf,
+  LayoutColumns,
 }
 
 type IconProps = {
@@ -197,6 +201,32 @@ function Icon(props: IconProps) {
     case IconName.Minimize:
       iconToRender = (
         <MinimizeIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#a21caf'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.LayoutWtf:
+      iconToRender = (
+        <LayoutWtfIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#a21caf'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.LayoutColumns:
+      iconToRender = (
+        <LayoutColumnsIcon
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
