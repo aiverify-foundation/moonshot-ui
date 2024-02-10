@@ -1,4 +1,4 @@
-import { MutableRefObject, SetStateAction } from 'react';
+import { MutableRefObject } from 'react';
 import {
   getWindowId,
   getWindowScrollTop,

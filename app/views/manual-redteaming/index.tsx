@@ -1,12 +1,12 @@
+import { LayoutMode } from '@redux/slices';
+import { updateChatHistory } from '@redux/slices';
 import { useEffect, useRef, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
-import { updateChatHistory } from '@/lib/redux/slices/activeSessionSlice';
-import { LayoutMode } from '@/lib/redux/slices/chatLayoutModeSlice';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
-import { BoxPrompt } from './box-prompt';
 import { ChatboxFreeLayout } from './chatbox-free-layout';
 import { ChatboxSlideLayout } from './chatbox-slide-layout';
+import { PromptBox } from './prompt-box';
 import { getWindowId, getWindowXY } from '@app/lib/window';
 import { ScreenOverlay } from '@components/screen-overlay';
 import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTemplateList';
@@ -23,7 +23,7 @@ type ActiveSessionProps = {
 
 const promptBoxId = 'prompt-box';
 
-function ActiveChatSession(props: ActiveSessionProps) {
+function ManualRedTeaming(props: ActiveSessionProps) {
   const { zIndex, onCloseBtnClick } = props;
   const activeSession = useAppSelector((state) => state.activeSession.entity);
   const { promptTemplates, error, isLoading } = usePromptTemplateList();
@@ -249,7 +249,7 @@ function ActiveChatSession(props: ActiveSessionProps) {
           />
         ) : null}
 
-        <BoxPrompt
+        <PromptBox
           windowId={getWindowId(promptBoxId)}
           name={promptBoxId}
           draggable={layoutMode === LayoutMode.FREE}
@@ -270,4 +270,4 @@ function ActiveChatSession(props: ActiveSessionProps) {
   );
 }
 
-export { ActiveChatSession };
+export { ManualRedTeaming };

@@ -21,10 +21,10 @@ enum TextInputMode {
 
 enum Size {
   SMALL,
-  LARGE
+  LARGE,
 }
 
-function BoxPrompt(props: {
+function PromptBox(props: {
   windowId: string;
   name: string;
   initialXY: [number, number];
@@ -59,20 +59,18 @@ function BoxPrompt(props: {
   } = props;
   const [size, setSize] = useState<Size>(Size.SMALL);
   const [promptMessage, setPromptMessage] = useState('');
-  const [showPromptTemplateList, setShowPromptTemplateList] =
-    useState(false);
+  const [showPromptTemplateList, setShowPromptTemplateList] = useState(false);
   const [hoveredPromptTemplate, setHoveredPromptTemplate] =
     useState<PromptTemplate>();
-  const [
-    hoveredSelectedPromptTemplate,
-    setSelectedHoveredPromptTemplate,
-  ] = useState<PromptTemplate>();
+  const [hoveredSelectedPromptTemplate, setSelectedHoveredPromptTemplate] =
+    useState<PromptTemplate>();
   const [textInputMode, setTextInputMode] = useState<TextInputMode>(
     TextInputMode.NORMAL_TEXT
   );
   const [listItems, setListItems] = useState<ListItem[]>([]);
-  const [autoCompleteSuggestions, setAutoCompleteSuggestions] =
-    useState<ListItem[]>([]);
+  const [autoCompleteSuggestions, setAutoCompleteSuggestions] = useState<
+    ListItem[]
+  >([]);
   const dispatch = useAppDispatch();
 
   useOutsideClick(
@@ -165,9 +163,7 @@ function BoxPrompt(props: {
       e.preventDefault();
 
       if (promptMessage[0] === '/') {
-        handleSlashCommand(
-          promptMessage.substring(1) as SlashCommand
-        );
+        handleSlashCommand(promptMessage.substring(1) as SlashCommand);
         return;
       }
 
@@ -200,9 +196,7 @@ function BoxPrompt(props: {
   }
 
   function handlePromptTemplateClick(item: ListItem) {
-    const selected = promptTemplates.find(
-      (pt) => pt.name === item.id
-    );
+    const selected = promptTemplates.find((pt) => pt.name === item.id);
     if (selected) {
       onSelectPromptTemplate(selected);
     }
@@ -211,17 +205,13 @@ function BoxPrompt(props: {
   }
 
   function handlePromptTemplateMouseOver(item: ListItem) {
-    const promptTemplate = promptTemplates.find(
-      (pt) => pt.name === item.id
-    );
+    const promptTemplate = promptTemplates.find((pt) => pt.name === item.id);
     if (promptTemplate) {
       setHoveredPromptTemplate(promptTemplate);
     }
   }
 
-  function handleSelectedPromptTemplateMouseOver(
-    templateName: string
-  ) {
+  function handleSelectedPromptTemplateMouseOver(templateName: string) {
     return () => {
       const promptTemplate = promptTemplates.find(
         (pt) => pt.name === templateName
@@ -249,7 +239,7 @@ function BoxPrompt(props: {
     removeActivePromptTemplate();
   }
   function handleResizeClick() {
-    setSize(prevSize => prevSize === Size.LARGE ? Size.SMALL : Size.LARGE)
+    setSize((prevSize) => (prevSize === Size.LARGE ? Size.SMALL : Size.LARGE));
   }
 
   useEffect(() => {
@@ -287,7 +277,7 @@ function BoxPrompt(props: {
         overflowY: 'visible',
         overflowX: 'visible',
       }}>
-      <div className='absolute top-2 right-2'>
+      <div className="absolute top-2 right-2">
         <Icon
           name={size === Size.LARGE ? IconName.Minimize : IconName.Maximize}
           size={14}
@@ -298,7 +288,7 @@ function BoxPrompt(props: {
       <div className="relative flex flex-col">
         <div className="flex gap-2">
           <div className="flex-1">
-            {size === Size.LARGE ?
+            {size === Size.LARGE ? (
               <TextArea
                 id="box-prompt-text-input"
                 name="sessionName"
@@ -312,7 +302,9 @@ function BoxPrompt(props: {
                 onKeyDown={handleKeyDown}
                 containerStyles={{
                   marginBottom: 0,
-                }} /> :
+                }}
+              />
+            ) : (
               <TextInput
                 id="box-prompt-text-input"
                 name="sessionName"
@@ -323,8 +315,9 @@ function BoxPrompt(props: {
                 }
                 onChange={handleTextChange}
                 value={promptMessage}
-                onKeyDown={handleKeyDown} />
-            }
+                onKeyDown={handleKeyDown}
+              />
+            )}
           </div>
         </div>
         <div className="flex gap-2 w-full justify-between">
@@ -354,9 +347,7 @@ function BoxPrompt(props: {
                         onMouseOver={handleSelectedPromptTemplateMouseOver(
                           activePromptTemplate.name
                         )}
-                        onMouseOut={
-                          handleSelectedPromptTemplateMouseout
-                        }>
+                        onMouseOut={handleSelectedPromptTemplateMouseout}>
                         {activePromptTemplate.name}
                       </div>
                       <Icon
@@ -387,9 +378,7 @@ function BoxPrompt(props: {
               <div className="text-xs text-gray-700">
                 {hoveredSelectedPromptTemplate.description}
               </div>
-              <div className="text-xs text-gray-800 pt-3">
-                Template:
-              </div>
+              <div className="text-xs text-gray-800 pt-3">Template:</div>
               <div className="text-xs text-gray-700">
                 {hoveredSelectedPromptTemplate.template}
               </div>
@@ -420,9 +409,7 @@ function BoxPrompt(props: {
                   <div className="text-xs text-gray-700">
                     {hoveredPromptTemplate.description}
                   </div>
-                  <div className="text-xs text-gray-800 pt-3">
-                    Template:
-                  </div>
+                  <div className="text-xs text-gray-800 pt-3">Template:</div>
                   <div className="text-xs text-gray-700">
                     {hoveredPromptTemplate.template}
                   </div>
@@ -449,4 +436,4 @@ function BoxPrompt(props: {
   );
 }
 
-export { BoxPrompt };
+export { PromptBox };
