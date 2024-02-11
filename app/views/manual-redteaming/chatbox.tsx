@@ -1,172 +1,122 @@
-import { PropsWithChildren, forwardRef } from 'react';
-import { Window } from '@/app/components/window';
+import { forwardRef } from 'react';
+import { Chat } from '@components/chat';
 
-type ChatboxProps = {
+type ChatBoxProps = {
   windowId: string;
-  name: string;
-  draggable?: boolean;
-  resizable?: boolean;
+  title: string;
+  resizable: boolean;
+  draggable: boolean;
+  disableOnScroll: boolean;
+  chatHistory: DialoguePairInfo[];
   initialXY: [number, number];
   initialSize: [number, number];
   initialScrollTop: number;
-  disableOnScroll?: boolean;
-  styles?: React.CSSProperties;
-  onCloseClick?: () => void;
-  onWheel: (e: React.WheelEvent<HTMLDivElement>) => void;
-  onWindowChange?: (
+  currentPromptTemplate?: PromptTemplate;
+  currentPromptText?: string;
+  isChatCompletionInProgress: boolean;
+  onWindowChange: (
     x: number,
     y: number,
     width: number,
     height: number,
-    scrollTop: number,
+    scrollPosition: number,
     windowId: string
   ) => void;
+  onWheel: (event: React.WheelEvent<HTMLDivElement>) => void;
 };
 
-const Container = forwardRef(
-  (
-    props: PropsWithChildren<ChatboxProps>,
-    scrollDivRef: React.Ref<HTMLDivElement>
-  ) => {
-    const {
-      windowId,
-      name,
-      initialXY,
-      initialSize,
-      initialScrollTop,
-      disableOnScroll,
-      draggable,
-      resizable,
-      onCloseClick,
-      children,
-      styles,
-      onWheel,
-      onWindowChange,
-    } = props;
+const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
+  const {
+    windowId,
+    resizable,
+    draggable,
+    disableOnScroll,
+    title,
+    chatHistory,
+    initialXY,
+    initialSize,
+    initialScrollTop,
+    currentPromptTemplate,
+    currentPromptText,
+    isChatCompletionInProgress,
+    onWindowChange,
+    onWheel,
+  } = props;
 
-    return (
-      <Window
-        ref={scrollDivRef}
-        resizeable={resizable}
-        draggable={draggable}
-        disableFadeIn
-        id={windowId}
-        name={name}
-        initialXY={initialXY}
-        initialWindowSize={initialSize}
-        initialScrollTop={initialScrollTop}
-        disableOnScroll={disableOnScroll}
-        onCloseClick={onCloseClick}
-        onWheel={onWheel}
-        onWindowChange={onWindowChange}
-        disableCloseIcon
-        styles={{
-          zIndex: 100,
-          ...styles,
-        }}>
-        {children}
-      </Window>
-    );
-  }
-);
-
-type TalkBubbleProps = {
-  backgroundColor: string;
-  fontColor: string;
-  styles?: React.CSSProperties;
-};
-
-function TalkBubble(props: PropsWithChildren<TalkBubbleProps>) {
-  const { fontColor, backgroundColor, styles, children } = props;
   return (
-    <div
-      className="snap-top"
-      style={{
-        color: fontColor,
-        padding: '12px 16px',
-        fontSize: 12,
-        background: backgroundColor,
-        margin: 0,
-        marginBottom: 25,
-        borderRadius: 14,
-        width: 'fit-content',
-        minWidth: '35%',
-        ...styles,
-      }}>
-      {children}
-    </div>
+    <Chat.Container
+      ref={ref}
+      windowId={windowId}
+      name={title}
+      initialXY={initialXY}
+      initialSize={initialSize}
+      initialScrollTop={initialScrollTop}
+      resizable={resizable}
+      draggable={draggable}
+      disableOnScroll={disableOnScroll}
+      onWindowChange={onWindowChange}
+      onWheel={onWheel}>
+      {chatHistory.map((dialogue, index) => {
+        return (
+          <div
+            className="flex flex-col p-2"
+            key={index}>
+            <div className="flex flex-col text-right pr-2 text-xs text-black">
+              You
+            </div>
+            <Chat.TalkBubble
+              backgroundColor="#a3a3a3"
+              fontColor="#FFF"
+              styles={{
+                alignSelf: 'flex-end',
+                maxWidth: '90%',
+              }}>
+              {dialogue.prepared_prompt}
+            </Chat.TalkBubble>
+            <div
+              className="flex flex-col text-left pl-2 text-xs text-black"
+              style={{
+                maxWidth: '90%',
+              }}>
+              AI
+            </div>
+            <Chat.TalkBubble
+              backgroundColor="#3498db"
+              fontColor="#FFF"
+              styles={{ textAlign: 'left' }}>
+              {dialogue.predicted_result}
+            </Chat.TalkBubble>
+          </div>
+        );
+      })}
+      {isChatCompletionInProgress ? (
+        <div className="flex flex-col p-2">
+          <div className="flex flex-col text-right pr-2 text-xs text-black">
+            You
+          </div>
+          <Chat.TalkBubble
+            backgroundColor="#a3a3a3"
+            fontColor="#FFF"
+            styles={{ alignSelf: 'flex-end' }}>
+            {currentPromptTemplate && currentPromptText
+              ? currentPromptTemplate.template.replace(
+                '{{ prompt }}',
+                currentPromptText
+              )
+              : currentPromptText}
+          </Chat.TalkBubble>
+          <div className="flex flex-col text-left pl-2 text-xs text-black">
+            AI
+          </div>
+          <div className="flex justify-start mr-4">
+            <Chat.LoadingAnimation />
+          </div>
+        </div>
+      ) : null}
+    </Chat.Container>
   );
-}
+});
 
-type LoadingAnimationProps = {
-  backgroundColor?: string;
-  dotColor?: string;
-  styles?: React.CSSProperties;
-};
+ChatBox.displayName = 'Chatbox';
 
-function LoadingAnimation(props: LoadingAnimationProps) {
-  const { backgroundColor = '#3498db', dotColor = '#FFFFFF', styles } = props;
-  return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        ...styles,
-      }}>
-      <div
-        style={{
-          width: '65px',
-          height: '35px',
-          background: backgroundColor,
-          borderRadius: 14,
-          display: 'flex',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          padding: 15,
-        }}>
-        <div
-          className="dot dot1"
-          style={{
-            width: 5,
-            height: 5,
-            background: dotColor,
-            borderRadius: '50%',
-            animation: 'bounce 1s infinite',
-            animationDelay: '-0.4s',
-          }}
-        />
-        <div
-          className="dot dot2"
-          style={{
-            width: 5,
-            height: 5,
-            background: dotColor,
-            borderRadius: '50%',
-            animation: 'bounce 1s infinite',
-            animationDelay: '-0.2s',
-          }}
-        />
-        <div
-          className="dot dot3"
-          style={{
-            width: 5,
-            height: 5,
-            background: dotColor,
-            borderRadius: '50%',
-            animation: 'bounce 1s infinite',
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
-const Chatbox = {
-  TalkBubble,
-  LoadingAnimation,
-  Container,
-};
-Container.displayName = 'Chatbox';
-
-export { Chatbox };
+export { ChatBox }

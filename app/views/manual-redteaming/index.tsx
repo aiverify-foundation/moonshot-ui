@@ -1,7 +1,10 @@
-import { LayoutMode, setChatLayoutMode } from '@redux/slices';
-import { updateChatHistory } from '@redux/slices';
 import { useEffect, useRef, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import {
+  useUnusePromptTemplateMutation,
+  useUsePromptTemplateMutation,
+} from '@/app/services/prompt-template-api-service';
+import { useSendPromptMutation } from '@/app/services/session-api-service';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 import { ChatboxFreeLayout } from './chatbox-free-layout';
@@ -9,12 +12,9 @@ import { ChatboxSlideLayout } from './chatbox-slide-layout';
 import { PromptBox } from './prompt-box';
 import { getWindowId, getWindowXY } from '@app/lib/window';
 import { ScreenOverlay } from '@components/screen-overlay';
+import { updateChatHistory } from '@redux/slices';
+import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTemplateList';
-import {
-  useUnusePromptTemplateMutation,
-  useUsePromptTemplateMutation,
-} from '@/app/services/prompt-template-api-service';
-import { useSendPromptMutation } from '@/app/services/session-api-service';
 
 type ActiveSessionProps = {
   zIndex: number;

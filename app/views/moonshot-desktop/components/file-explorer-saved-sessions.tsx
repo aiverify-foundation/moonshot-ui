@@ -4,13 +4,13 @@ import TwoPanel from '@/app/components/two-panel';
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
-import { useAppDispatch } from '@/lib/redux';
-import { setActiveSession } from '@/lib/redux/slices/activeSessionSlice';
-import useSessionList from '@views/moonshot-desktop/hooks/useSessionList';
 import {
   useLazyGetSessionQuery,
   useLazySetActiveSessionQuery,
 } from '@/app/services/session-api-service';
+import { useAppDispatch } from '@/lib/redux';
+import { setActiveSession } from '@/lib/redux/slices/activeSessionSlice';
+import useSessionList from '@views/moonshot-desktop/hooks/useSessionList';
 
 type FileExplorerSavedSessionsProps = {
   zIndex: number | 'auto';
@@ -84,16 +84,16 @@ function FileExplorerSavedSessions(props: FileExplorerSavedSessionsProps) {
           <WindowList>
             {sessions
               ? sessions.map((session) => (
-                  <WindowList.Item
-                    key={session.session_id}
-                    displayName={session.name}
-                    id={session.session_id}
-                    onClick={handleListItemClick}
-                    selected={
-                      selectedSession?.session_id === session.session_id
-                    }
-                  />
-                ))
+                <WindowList.Item
+                  key={session.session_id}
+                  displayName={session.name}
+                  id={session.session_id}
+                  onClick={handleListItemClick}
+                  selected={
+                    selectedSession?.session_id === session.session_id
+                  }
+                />
+              ))
               : null}
           </WindowList>
           <WindowInfoPanel
@@ -145,13 +145,13 @@ function FileExplorerSavedSessions(props: FileExplorerSavedSessionsProps) {
         <WindowList>
           {sessions
             ? sessions.map((session) => (
-                <WindowList.Item
-                  key={session.session_id}
-                  displayName={session.name}
-                  id={session.session_id}
-                  onClick={handleListItemClick}
-                />
-              ))
+              <WindowList.Item
+                key={session.session_id}
+                displayName={session.name}
+                id={session.session_id}
+                onClick={handleListItemClick}
+              />
+            ))
             : null}
         </WindowList>
       )}

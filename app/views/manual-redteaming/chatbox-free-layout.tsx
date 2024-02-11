@@ -6,7 +6,7 @@ import {
   getWindowXY,
 } from '@/app/lib/window';
 import { useAppSelector } from '@/lib/redux';
-import { Chatbox } from './chatbox';
+import { ChatBox } from './chatbox';
 
 type ChatFreeLayoutProps = {
   chatSession: Session;
@@ -41,76 +41,24 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
   return chatSession.chats.map((id: string, index: number) => {
     if (windowsMap[getWindowId(id)]) {
       return (
-        <Chatbox.Container
+        <ChatBox
+          key={id}
+          resizable
+          draggable
+          disableOnScroll
           ref={(el) => (boxRefs.current[index] = el as HTMLDivElement)}
           windowId={getWindowId(id)}
-          key={id}
-          name={id}
+          title={id}
           initialXY={getWindowXY(windowsMap, id)}
           initialSize={getWindowSize(windowsMap, id)}
           initialScrollTop={getWindowScrollTop(windowsMap, id)}
+          chatHistory={chatSession.chat_history[id]}
+          currentPromptTemplate={selectedPromptTemplate}
+          currentPromptText={promptText}
+          isChatCompletionInProgress={chatCompletionInProgress}
           onWindowChange={handleOnWindowChange}
-          onWheel={handleOnWheel}>
-          {!chatSession.chat_history
-            ? null
-            : chatSession.chat_history[id].map((dialogue, index) => {
-                return (
-                  <div
-                    className="flex flex-col p-2"
-                    key={index}>
-                    <div className="flex flex-col text-right pr-2 text-xs text-black">
-                      You
-                    </div>
-                    <Chatbox.TalkBubble
-                      backgroundColor="#a3a3a3"
-                      fontColor="#FFF"
-                      styles={{
-                        alignSelf: 'flex-end',
-                        maxWidth: '90%',
-                      }}>
-                      {dialogue.prepared_prompt}
-                    </Chatbox.TalkBubble>
-                    <div
-                      className="flex flex-col text-left pl-2 text-xs text-black"
-                      style={{
-                        maxWidth: '90%',
-                      }}>
-                      AI
-                    </div>
-                    <Chatbox.TalkBubble
-                      backgroundColor="#3498db"
-                      fontColor="#FFF"
-                      styles={{ textAlign: 'left' }}>
-                      {dialogue.predicted_result}
-                    </Chatbox.TalkBubble>
-                  </div>
-                );
-              })}
-          {chatCompletionInProgress ? (
-            <div className="flex flex-col p-2">
-              <div className="flex flex-col text-right pr-2 text-xs text-black">
-                You
-              </div>
-              <Chatbox.TalkBubble
-                backgroundColor="#a3a3a3"
-                fontColor="#FFF"
-                styles={{ alignSelf: 'flex-end' }}>
-                {selectedPromptTemplate
-                  ? selectedPromptTemplate.template.replace(
-                      '{{ prompt }}',
-                      promptText
-                    )
-                  : promptText}
-              </Chatbox.TalkBubble>
-              <div className="flex flex-col text-left pl-2 text-xs text-black">
-                AI
-              </div>
-              <div className="flex justify-start mr-4">
-                <Chatbox.LoadingAnimation />
-              </div>
-            </div>
-          ) : null}
-        </Chatbox.Container>
+          onWheel={handleOnWheel}
+        />
       );
     }
   });
