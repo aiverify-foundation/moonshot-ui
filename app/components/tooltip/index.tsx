@@ -19,6 +19,8 @@ enum TooltipPosition {
 
 type TooltipProps = {
   defaultShow?: boolean;
+  flash?: boolean;
+  flashDuration?: number;
   disabled?: boolean;
   backgroundColor?: string;
   fontColor?: string;
@@ -97,6 +99,8 @@ const defaultPlacement: TooltipPlacementStyle = {
 function Tooltip(props: PropsWithChildren<TooltipProps>) {
   const {
     defaultShow = false,
+    flash = false,
+    flashDuration = 5000,
     disabled = false,
     content,
     position = TooltipPosition.left,
@@ -154,6 +158,15 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
     }
   }, [defaultShow]);
 
+  useEffect(() => {
+    if (flash) {
+      handleMouseOver();
+      setTimeout(() => {
+        handleMouseOut();
+      }, flashDuration);
+    }
+  }, [flash]);
+
   return (
     <>
       {ReactDOM.createPortal(
@@ -176,8 +189,8 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
       <div
         className={styles.childWrapper}
         ref={triggerRef}
-        onMouseOver={handleMouseOver}
-        onMouseOut={handleMouseOut}>
+        onMouseOver={!flash ? handleMouseOver : undefined}
+        onMouseOut={!flash ? handleMouseOut : undefined}>
         {children}
       </div>
     </>

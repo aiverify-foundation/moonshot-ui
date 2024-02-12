@@ -1,9 +1,11 @@
+import clsx from 'clsx';
 import React, {
   ChangeEventHandler,
   KeyboardEventHandler,
+  useEffect,
+  useRef,
 } from 'react';
 import styles from './styles/textArea.module.css';
-import clsx from 'clsx';
 
 type TextInputProps = {
   id?: string;
@@ -13,8 +15,10 @@ type TextInputProps = {
   error?: string;
   value?: string;
   maxLength?: number;
+  shouldFocus?: boolean;
   labelSibling?: React.ReactElement;
   containerStyles?: React.CSSProperties;
+  inputStyles?: React.CSSProperties;
   onChange?: ChangeEventHandler<HTMLTextAreaElement>;
   onKeyDown?: KeyboardEventHandler<HTMLTextAreaElement>;
 };
@@ -27,12 +31,22 @@ function TextArea(props: TextInputProps) {
     placeholder,
     error,
     maxLength,
+    shouldFocus = false,
     value,
     labelSibling,
     containerStyles,
+    inputStyles,
     onChange,
     onKeyDown,
   } = props;
+
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (shouldFocus) {
+      inputRef.current?.focus();
+    }
+  }, [shouldFocus]);
 
   return (
     <div
@@ -50,12 +64,15 @@ function TextArea(props: TextInputProps) {
           </div>
         ) : null}
         <textarea
+          ref={inputRef}
           name={name}
           placeholder={placeholder}
           value={value}
           maxLength={maxLength}
           onChange={onChange}
           onKeyDown={onKeyDown}
+          style={inputStyles}
+          autoComplete="off"
         />
         {Boolean(error) ? (
           <div className={styles.errorText}>{error}</div>

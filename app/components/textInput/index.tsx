@@ -1,4 +1,9 @@
-import React, { ChangeEventHandler, KeyboardEventHandler } from 'react';
+import React, {
+  ChangeEventHandler,
+  KeyboardEventHandler,
+  useEffect,
+  useRef,
+} from 'react';
 import styles from './styles/textInput.module.css';
 import clsx from 'clsx';
 
@@ -11,9 +16,10 @@ type TextInputProps = {
   error?: string;
   value?: string;
   maxLength?: number;
+  shouldFocus?: boolean;
   labelSibling?: React.ReactElement;
   style?: React.CSSProperties;
-  inputStyle?: React.CSSProperties;
+  inputStyles?: React.CSSProperties;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onBlur?: ChangeEventHandler<HTMLInputElement>;
   onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
@@ -28,19 +34,31 @@ function TextInput(props: TextInputProps) {
     disabled,
     error,
     maxLength,
+    shouldFocus = false,
     value,
     labelSibling,
     style,
-    inputStyle,
+    inputStyles,
     onChange,
     onBlur,
     onKeyDown,
   } = props;
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (shouldFocus) {
+      inputRef.current?.focus();
+    }
+  }, [shouldFocus]);
+
   return (
     <div
       id={id}
-      className={clsx(styles.textInput, error !== undefined ? styles.inputError : null)}
+      className={clsx(
+        styles.textInput,
+        error !== undefined ? styles.inputError : null
+      )}
       style={style}>
       <label>
         {label !== '' && label !== undefined ? (
@@ -50,6 +68,7 @@ function TextInput(props: TextInputProps) {
           </div>
         ) : null}
         <input
+          ref={inputRef}
           disabled={disabled}
           type="text"
           name={name}
@@ -59,9 +78,12 @@ function TextInput(props: TextInputProps) {
           onChange={onChange}
           onBlur={onBlur}
           onKeyDown={onKeyDown}
-          style={inputStyle}
+          style={inputStyles}
+          autoComplete="off"
         />
-        {Boolean(error) ? <div className={styles.errorText}>{error}</div> : null}
+        {Boolean(error) ? (
+          <div className={styles.errorText}>{error}</div>
+        ) : null}
       </label>
     </div>
   );

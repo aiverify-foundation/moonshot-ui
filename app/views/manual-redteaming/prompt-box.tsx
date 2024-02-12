@@ -12,6 +12,7 @@ import {
 } from '@/lib/redux/slices/chatLayoutModeSlice';
 import { SlashCommand } from './slash-commands';
 import { Window } from '@components/window';
+import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 
 enum TextInputMode {
   NORMAL_TEXT,
@@ -180,6 +181,7 @@ function PromptBox(props: {
     if (e.key === 'Escape') {
       if (textInputMode === TextInputMode.FILTER_LIST) {
         setShowPromptTemplateList(false);
+        clearPromptMessage();
         return;
       }
 
@@ -191,8 +193,8 @@ function PromptBox(props: {
     }
   }
 
-  function handleTogglePromptTemplateList() {
-    setShowPromptTemplateList((prev) => !prev);
+  function handleShowPromptTemplateList() {
+    setShowPromptTemplateList(true);
   }
 
   function handlePromptTemplateClick(item: ListItem) {
@@ -288,14 +290,27 @@ function PromptBox(props: {
       <div className="relative flex flex-col">
         <div className="flex gap-2">
           <div className="flex-1">
+            {showPromptTemplateList ? (
+              <Tooltip
+                flash
+                content="Enter template name to search the prompt template list"
+                position={TooltipPosition.left}
+                offsetLeft={-20}>
+                <div className="h-full w-0" />
+              </Tooltip>
+            ) : null}
             {size === Size.LARGE ? (
               <TextArea
                 id="box-prompt-text-input"
                 name="sessionName"
+                shouldFocus={showPromptTemplateList}
                 placeholder={
                   textInputMode === TextInputMode.FILTER_LIST
                     ? 'Search Prompt Templates'
                     : 'Message'
+                }
+                inputStyles={
+                  showPromptTemplateList ? { backgroundColor: '#fef08a' } : {}
                 }
                 onChange={handleTextChange}
                 value={promptMessage}
@@ -308,10 +323,14 @@ function PromptBox(props: {
               <TextInput
                 id="box-prompt-text-input"
                 name="sessionName"
+                shouldFocus={showPromptTemplateList}
                 placeholder={
                   textInputMode === TextInputMode.FILTER_LIST
                     ? 'Search Prompt Templates'
                     : 'Message'
+                }
+                inputStyles={
+                  showPromptTemplateList ? { backgroundColor: '#fef08a' } : {}
                 }
                 onChange={handleTextChange}
                 value={promptMessage}
@@ -324,14 +343,14 @@ function PromptBox(props: {
           <div
             className="flex items-center cursor-pointer gap-1"
             id="prompt-template-trigger"
-            onClick={handleTogglePromptTemplateList}>
+            onClick={handleShowPromptTemplateList}>
             <Icon
               name={IconName.ChatBubbleWide}
               size={24}
               lightModeColor="white"
             />
             <div className="flex items-center text-xs">
-              Prompt Template
+              <span className="hover:opacity-60">Prompt Template</span>
               {activePromptTemplate && (
                 <div className="flex items-center">
                   <div className="text-white ml-1">--</div>
@@ -396,16 +415,18 @@ function PromptBox(props: {
               onItemMouseOut={handlePromptTemplateMouseOut}
             />
             {hoveredPromptTemplate && (
-              <div className="flex flex-col w-[500px]">
-                <div className="bg-white/80 p-2 rounded-md shadow-md flex flex-col gap-0">
-                  <div className="text-sm font-bold text-gray-800">
+              <div className="flex flex-col w-[400px]">
+                <div className="bg-white/90 p-2 rounded-md shadow-md flex flex-col gap-0">
+                  <div className="text-md font-bold text-gray-800 underline">
                     {hoveredPromptTemplate.name}
                   </div>
-                  <div className="text-xs text-gray-700">
+                  <div className="text-sm text-gray-700">
                     {hoveredPromptTemplate.description}
                   </div>
-                  <div className="text-xs text-gray-800 pt-3">Template:</div>
-                  <div className="text-xs text-gray-700">
+                  <div className="text-sm text-gray-800 pt-3 font-bold">
+                    Template
+                  </div>
+                  <div className="text-sm text-gray-700">
                     {hoveredPromptTemplate.template}
                   </div>
                 </div>
