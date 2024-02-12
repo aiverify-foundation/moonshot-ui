@@ -1,4 +1,5 @@
 import { MutableRefObject, useEffect } from 'react';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import {
   getWindowId,
   getWindowScrollTop,
@@ -7,7 +8,7 @@ import {
 } from '@/app/lib/window';
 import { updateWindows, useAppDispatch, useAppSelector } from '@/lib/redux';
 import { ChatBox } from './chatbox';
-import { Icon, IconName } from '@/app/components/IconSVG';
+import { Tooltip, TooltipPosition } from '@components/tooltip';
 
 type ChatFreeLayoutProps = {
   chatSession: Session;
@@ -101,16 +102,25 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
   return (
     <div>
       <div className="absolute top-[56px] w-full">
-        <div className="absolute flex items-center justify-center w-8 h-8 bg-white dark:bg-gray-800 rounded-full shadow-md left-[60%]">
-          <Icon
-            name={IconName.Reset}
-            onClick={handleResetClick}
-            size={20}
-          />
+        <div
+          className="absolute flex items-center 
+              justify-center w-8 h-8 
+            bg-white dark:bg-gray-800 
+              rounded-full shadow-md left-[60%]">
+          <Tooltip
+            fontColor="#1e293b"
+            content="Reset chatbox positions"
+            position={TooltipPosition.right}
+            offsetLeft={18}>
+            <Icon
+              name={IconName.Reset}
+              onClick={handleResetClick}
+              size={20}
+            />
+          </Tooltip>
         </div>
       </div>
       {chatSession.chats.map((id: string, index: number) => {
-        console.log(windowsMap[getWindowId(id)]);
         return windowsMap[getWindowId(id)] ? (
           <ChatBox
             key={id}

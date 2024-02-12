@@ -12,6 +12,7 @@ import { ChatboxSlideLayout } from './chatbox-slide-layout';
 import { PromptBox } from './prompt-box';
 import { getWindowId, getWindowXY } from '@app/lib/window';
 import { ScreenOverlay } from '@components/screen-overlay';
+import { Tooltip, TooltipPosition } from '@components/tooltip';
 import { updateChatHistory } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTemplateList';
@@ -197,18 +198,32 @@ function ManualRedTeaming(props: ActiveSessionProps) {
             </div>
           </div>
           <div className="flex gap-6 absolute top-4 left-[50%] transform -translate-x-1/2">
-            <Icon
-              size={26}
-              name={IconName.LayoutWtf}
+            <Tooltip
               disabled={layoutMode === LayoutMode.FREE}
-              onClick={() => dispatch(setChatLayoutMode(LayoutMode.FREE))}
-            />
-            <Icon
-              size={25}
-              name={IconName.LayoutColumns}
+              content="Switch to free layout"
+              position={TooltipPosition.left}
+              offsetLeft={-18}
+              offsetTop={5}>
+              <Icon
+                size={26}
+                name={IconName.LayoutWtf}
+                disabled={layoutMode === LayoutMode.FREE}
+                onClick={() => dispatch(setChatLayoutMode(LayoutMode.FREE))}
+              />
+            </Tooltip>
+            <Tooltip
               disabled={layoutMode === LayoutMode.SLIDE}
-              onClick={() => dispatch(setChatLayoutMode(LayoutMode.SLIDE))}
-            />
+              content="Switch to slide layout"
+              position={TooltipPosition.right}
+              offsetLeft={18}
+              offsetTop={5}>
+              <Icon
+                size={25}
+                name={IconName.LayoutColumns}
+                disabled={layoutMode === LayoutMode.SLIDE}
+                onClick={() => dispatch(setChatLayoutMode(LayoutMode.SLIDE))}
+              />
+            </Tooltip>
           </div>
           <div className="absolute top-3 right-4 flex items-center gap-2">
             <div className="dark:text-white text-sm font-normal">

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, {
   PropsWithChildren,
   ReactElement,
@@ -5,8 +6,9 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import ReactDOM from 'react-dom';
+
 import styles from './styles/tooltip.module.css';
-import clsx from 'clsx';
 
 enum TooltipPosition {
   top = 'top',
@@ -154,20 +156,23 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
 
   return (
     <>
-      <div
-        ref={tooltipRef}
-        className={styles.tooltip}
-        style={{ ...placement, backgroundColor, color: fontColor }}>
+      {ReactDOM.createPortal(
         <div
-          className={clsx(styles.pointer, styles[positionClassname])}
-          style={{ borderColor }}
-        />
-        <div
-          className={styles.content}
-          style={{ backgroundColor }}>
-          {content}
-        </div>
-      </div>
+          ref={tooltipRef}
+          className={styles.tooltip}
+          style={{ ...placement, backgroundColor, color: fontColor }}>
+          <div
+            className={clsx(styles.pointer, styles[positionClassname])}
+            style={{ borderColor }}
+          />
+          <div
+            className={styles.content}
+            style={{ backgroundColor }}>
+            {content}
+          </div>
+        </div>,
+        document.body // This is where the portal will render
+      )}
       <div
         className={styles.childWrapper}
         ref={triggerRef}
