@@ -151,23 +151,6 @@ function ManualRedTeaming(props: ActiveSessionProps) {
   }, [promptTemplates, activeSession]);
 
   useEffect(() => {
-    if (layoutMode === LayoutMode.SLIDE) return;
-    if (activeSession && activeSession.chats.length) {
-      const chatWindows: Record<string, WindowData> = {};
-      const chatboxWidth = 400;
-      const margin = 250;
-      const spacing = 50;
-      activeSession.chats.forEach((id, index) => {
-        if (windowsMap[getWindowId(id)]) return; // if window has size and position in application state from previous launch, skip setting defaults
-        const leftPos =
-          index === 0 ? margin : margin + chatboxWidth * index + spacing;
-        chatWindows[getWindowId(id)] = [leftPos, 100, chatboxWidth, 450, 0];
-      });
-      dispatch(updateWindows(chatWindows));
-    }
-  }, []);
-
-  useEffect(() => {
     const promptBoxDefaults: Record<string, WindowData> = {};
     promptBoxDefaults[getWindowId(promptBoxId)] = calcPromptBoxDefaults();
     dispatch(updateWindows(promptBoxDefaults));
