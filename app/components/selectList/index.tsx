@@ -10,6 +10,8 @@ type SelectListProps = {
   data: ListItem[];
   styles?: React.CSSProperties;
   highlight?: string;
+  onHighlighted?: (item: ListItem) => void;
+  onUnHighlighted?: () => void;
   onItemClick?: (item: ListItem) => void;
   onItemMouseOver?: (item: ListItem) => void;
   onItemMouseOut?: (item: ListItem) => void;
@@ -21,6 +23,8 @@ function SelectList(props: SelectListProps) {
     data,
     styles,
     highlight,
+    onHighlighted,
+    onUnHighlighted,
     onItemClick,
     onItemMouseOver,
     onItemMouseOut,
@@ -64,11 +68,24 @@ function SelectList(props: SelectListProps) {
   }, [highlight, data, handleItemClick]);
 
   useEffect(() => {
+    if (!highlight) {
+      if (onUnHighlighted) {
+        onUnHighlighted();
+      }
+      return;
+    }
     const index = data.findIndex((item) =>
-      item.displayName.startsWith(highlight || '')
+      item.displayName.startsWith(highlight)
     );
     if (index !== -1 && itemRefs.current[index]) {
       itemRefs.current[index]?.scrollIntoView({ behavior: 'smooth' });
+      if (onHighlighted) {
+        onHighlighted(data[index]);
+      }
+    } else if (index === -1) {
+      if (onUnHighlighted) {
+        onUnHighlighted();
+      }
     }
   }, [highlight, data]);
 
@@ -90,9 +107,7 @@ function SelectList(props: SelectListProps) {
         const firstMatchIndex = data.findIndex(
           (item) =>
             highlight &&
-            item.displayName
-              .toLowerCase()
-              .startsWith(highlight.toLowerCase())
+            item.displayName.toLowerCase().startsWith(highlight.toLowerCase())
         );
         const isHighlighted = index === firstMatchIndex;
         return (

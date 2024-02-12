@@ -1,9 +1,9 @@
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { ListItem, SelectList } from '@/app/components/selectList';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
+import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import useOutsideClick from '@/app/hooks/use-outside-click';
 import { useAppDispatch } from '@/lib/redux';
 import {
@@ -12,7 +12,8 @@ import {
 } from '@/lib/redux/slices/chatLayoutModeSlice';
 import { SlashCommand } from './slash-commands';
 import { Window } from '@components/window';
-import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
+import { ColorCodedTemplateString } from './color-coded-template';
+import { debounce } from '@/app/lib/throttle';
 
 enum TextInputMode {
   NORMAL_TEXT,
@@ -213,6 +214,18 @@ function PromptBox(props: {
     }
   }
 
+  // Debounced version of handlePromptTemplateMatched
+  const handlePromptTemplateMatch = debounce((item: ListItem) => {
+    const promptTemplate = promptTemplates.find((pt) => pt.name === item.id);
+    if (promptTemplate) {
+      setHoveredPromptTemplate(promptTemplate);
+    }
+  }, 100);
+
+  function handlePromptTemplateUnMatch() {
+    setHoveredPromptTemplate(undefined);
+  }
+
   function handleSelectedPromptTemplateMouseOver(templateName: string) {
     return () => {
       const promptTemplate = promptTemplates.find(
@@ -293,6 +306,7 @@ function PromptBox(props: {
             {showPromptTemplateList ? (
               <Tooltip
                 flash
+                flashDuration={8000}
                 content="Enter template name to search the prompt template list"
                 position={TooltipPosition.left}
                 offsetLeft={-20}>
@@ -410,6 +424,8 @@ function PromptBox(props: {
                   ? promptMessage
                   : undefined
               }
+              onHighlighted={handlePromptTemplateMatch}
+              onUnHighlighted={handlePromptTemplateUnMatch}
               onItemClick={handlePromptTemplateClick}
               onItemMouseOver={handlePromptTemplateMouseOver}
               onItemMouseOut={handlePromptTemplateMouseOut}
@@ -417,7 +433,7 @@ function PromptBox(props: {
             {hoveredPromptTemplate && (
               <div className="flex flex-col w-[400px]">
                 <div className="bg-white/90 p-2 rounded-md shadow-md flex flex-col gap-0">
-                  <div className="text-md font-bold text-gray-800 underline">
+                  <div className="text-sm font-bold text-gray-800 underline">
                     {hoveredPromptTemplate.name}
                   </div>
                   <div className="text-sm text-gray-700">
@@ -427,7 +443,9 @@ function PromptBox(props: {
                     Template
                   </div>
                   <div className="text-sm text-gray-700">
-                    {hoveredPromptTemplate.template}
+                    <ColorCodedTemplateString
+                      template={hoveredPromptTemplate.template}
+                    />
                   </div>
                 </div>
               </div>
