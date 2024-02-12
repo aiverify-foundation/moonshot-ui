@@ -89,9 +89,10 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
 
     useImperativeHandle(ref, () => scrollDivRef.current as HTMLDivElement);
     const windowSizeRef = useRef(windowSize);
+    const windowPositionRef = useRef(initialXY);
 
     function handleMouseDown(e: React.MouseEvent) {
-      if (!draggable) return; // Added this line
+      if (!draggable) return;
       e.stopPropagation();
       if (!windowRef.current) return;
       prevMouseXY.current = [e.clientX, e.clientY];
@@ -152,8 +153,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       document.body.removeEventListener('mouseup', handleResizeMouseUp);
       if (onWindowChange) {
         onWindowChange(
-          initialPosition[0],
-          initialPosition[1],
+          windowPositionRef.current[0],
+          windowPositionRef.current[1],
           windowSizeRef.current[0],
           windowSizeRef.current[1],
           scrollDivRef.current?.scrollTop || 0,
@@ -164,8 +165,9 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
 
     function handleMouseMove(e: MouseEvent) {
       if (!windowRef.current || windowState !== WindowState.drag) return;
-      windowRef.current.style.transform = `translate(${e.clientX - prevMouseXY.current[0]}px, ${e.clientY - prevMouseXY.current[1]
-        }px)`;
+      windowRef.current.style.transform = `translate(${e.clientX - prevMouseXY.current[0]}px, ${
+        e.clientY - prevMouseXY.current[1]
+      }px)`;
     }
 
     const handleScrollStop = (e: React.UIEvent<HTMLDivElement>) => {
@@ -205,9 +207,16 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
     }, [initialWindowSize]);
 
     useEffect(() => {
+      setInitialPosition(initialXY);
+    }, [initialXY]);
+
+    useEffect(() => {
       windowSizeRef.current = windowSize;
     }, [windowSize]);
 
+    useEffect(() => {
+      windowPositionRef.current = initialPosition;
+    }, [initialPosition]);
 
     useEffect(() => {
       const timer = setTimeout(() => {

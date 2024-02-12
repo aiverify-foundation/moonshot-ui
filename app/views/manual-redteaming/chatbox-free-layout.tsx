@@ -39,7 +39,9 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
   const dispatch = useAppDispatch();
   const windowsMap = useAppSelector((state) => state.windows.map);
 
-  function calcDefaultChatboxesPositionsMap(overrideCachedPositions = false): Record<string, WindowData> | null {
+  function calcDefaultChatboxesPositionsMap(
+    overrideCachedPositions = false
+  ): Record<string, WindowData> | null {
     let chatboxesMap: Record<string, WindowData> | null = null;
     if (!chatSession.chats.length) return chatboxesMap;
 
@@ -60,15 +62,13 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
       chatBoxWidth * numberOfChats + gap * (numberOfChats - 1); // Total width needed for all ChatBoxes and gaps
     const startX = (adjustedViewportWidth - totalWidthNeeded) / 2 + margin; // Calculate starting X position for centralization
     chatSession.chats.forEach((id, index) => {
-      console.log(windowsMap[getWindowId(id)])
-      console.log(overrideCachedPositions);
-      // if (windowsMap[getWindowId(id)] && !overrideCachedPositions) return; // if window has size and position in application state from previous launch, skip setting defaults
+      if (windowsMap[getWindowId(id)] && !overrideCachedPositions) return; // if window has size and position in application state from previous launch, skip setting defaults
 
       let xyPos: [number, number] = [0, 0];
       const xpos =
         numberOfChats > 4
-          ? index * spacing + margin
-          : startX + index * (chatBoxWidth + gap); // Calculate x position for even spread
+          ? index * spacing + margin // Calculate x position for even spread (more than 4 chats)
+          : startX + index * (chatBoxWidth + gap); // Calculate x position for centralization (4 or less chats)
       const ypos = index % 2 === 0 ? 150 : 200; // Alternate y position
       xyPos = [xpos, ypos];
       if (chatboxesMap) {
@@ -81,7 +81,7 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
       }
     });
 
-    return chatboxesMap
+    return chatboxesMap;
   }
 
   function handleResetClick() {
@@ -98,38 +98,43 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
     }
   }, []);
 
-  console.log('renderrrrr')
-  return <div>
-    <div className="absolute top-[56px] w-full">
-      <div className="absolute flex items-center justify-center w-8 h-8 bg-white rounded-full shadow-md left-[60%]">
-        <Icon name={IconName.Reset} onClick={handleResetClick} size={20} />
+  return (
+    <div>
+      <div className="absolute top-[56px] w-full">
+        <div className="absolute flex items-center justify-center w-8 h-8 bg-white dark:bg-gray-800 rounded-full shadow-md left-[60%]">
+          <Icon
+            name={IconName.Reset}
+            onClick={handleResetClick}
+            size={20}
+          />
+        </div>
       </div>
+      {chatSession.chats.map((id: string, index: number) => {
+        console.log(windowsMap[getWindowId(id)]);
+        return windowsMap[getWindowId(id)] ? (
+          <ChatBox
+            key={id}
+            resizable
+            draggable
+            disableOnScroll
+            ref={(el) => (boxRefs.current[index] = el as HTMLDivElement)}
+            windowId={getWindowId(id)}
+            title={id}
+            initialXY={getWindowXY(windowsMap, id)}
+            initialSize={getWindowSize(windowsMap, id)}
+            initialScrollTop={getWindowScrollTop(windowsMap, id)}
+            chatHistory={chatSession.chat_history[id] || []}
+            currentPromptTemplate={selectedPromptTemplate}
+            currentPromptText={promptText}
+            isChatCompletionInProgress={chatCompletionInProgress}
+            onWindowChange={handleOnWindowChange}
+            onWheel={handleOnWheel}
+          />
+        ) : null;
+      })}
+      ;
     </div>
-    {chatSession.chats.map((id: string, index: number) => {
-      console.log(windowsMap[getWindowId(id)])
-      return windowsMap[getWindowId(id)] ?
-        <ChatBox
-          key={id}
-          resizable
-          draggable
-          disableOnScroll
-          ref={(el) => (boxRefs.current[index] = el as HTMLDivElement)}
-          windowId={getWindowId(id)}
-          title={id}
-          initialXY={getWindowXY(windowsMap, id)}
-          initialSize={getWindowSize(windowsMap, id)}
-          initialScrollTop={getWindowScrollTop(windowsMap, id)}
-          chatHistory={chatSession.chat_history[id] || []}
-          currentPromptTemplate={selectedPromptTemplate}
-          currentPromptText={promptText}
-          isChatCompletionInProgress={chatCompletionInProgress}
-          onWindowChange={handleOnWindowChange}
-          onWheel={handleOnWheel}
-        />
-        : null
-    }
-    )};
-  </div>
+  );
 }
 
 export { ChatboxFreeLayout };
