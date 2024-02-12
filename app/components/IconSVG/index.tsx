@@ -4,18 +4,19 @@ import { useAppSelector } from '@/lib/redux';
 import { CircleArrowLeftIcon } from './icons/arrow-left-icon';
 import { CircleArrowRightIcon } from './icons/arrow-right-icon';
 import { BurgerMenuIcon } from './icons/burger-menu-icon';
+import { ChatBubbleWideIcon } from './icons/chat-bubble-wide-icon';
 import { ChatBubblesIcon } from './icons/chat-bubbles-icon';
 import { CloseIcon } from './icons/close-x-icon';
 import { DarkMoonIcon } from './icons/dark-moon-icon';
 import { FolderForChatSessionsIcon } from './icons/folder-chat-icon';
 import { FolderIcon } from './icons/folder-icon';
+import { LayoutColumnsIcon } from './icons/layout-columns-icon';
+import { LayoutWtfIcon } from './icons/layout-wtf-icon';
 import { LightSunIcon } from './icons/light-sun-icon';
-import { RunCookbookIcon } from './icons/run-cookbook-icon';
 import { MaximizeIcon } from './icons/maximize-icon';
 import { MinimizeIcon } from './icons/minimize-icon';
-import { LayoutWtfIcon } from './icons/layout-wtf-icon';
-import { LayoutColumnsIcon } from './icons/layout-columns-icon';
-import { ChatBubbleWideIcon } from './icons/chat-bubble-wide-icon';
+import { ResetIcon } from './icons/reset-icon';
+import { RunCookbookIcon } from './icons/run-cookbook-icon';
 
 enum IconName {
   Folder,
@@ -33,6 +34,7 @@ enum IconName {
   Minimize,
   LayoutWtf,
   LayoutColumns,
+  Reset,
 }
 
 type IconProps = {
@@ -242,6 +244,19 @@ function Icon(props: IconProps) {
     case IconName.ChatBubbleWide:
       iconToRender = (
         <ChatBubbleWideIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#a21caf'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Reset:
+      iconToRender = (
+        <ResetIcon
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'

@@ -7,6 +7,7 @@ import {
 } from '@/app/lib/window';
 import { updateWindows, useAppDispatch, useAppSelector } from '@/lib/redux';
 import { ChatBox } from './chatbox';
+import { Icon, IconName } from '@/app/components/IconSVG';
 
 type ChatFreeLayoutProps = {
   chatSession: Session;
@@ -38,49 +39,75 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
   const dispatch = useAppDispatch();
   const windowsMap = useAppSelector((state) => state.windows.map);
 
-  useEffect(() => {
+  function calcDefaultChatboxesPositionsMap(overrideCachedPositions = false): Record<string, WindowData> | null {
+    let chatboxesMap: Record<string, WindowData> | null = null;
+    if (!chatSession.chats.length) return chatboxesMap;
+
+    chatboxesMap = {};
     const numberOfChats = chatSession.chats.length;
-    if (numberOfChats) {
-      const viewportWidth = window.innerWidth; // Get the viewport width
-      const margin = 20; // Left and right margin
-      const adjustedViewportWidth = viewportWidth - margin * 2; // Adjust viewport width for margins
-      const chatBoxWidth = 400; // Fixed width for each ChatBox
-      const chatBoxHeight = 450; // Fixed height for each ChatBox
-      const spacing =
-        (adjustedViewportWidth - chatBoxWidth) / Math.max(numberOfChats - 1, 1); // Calculate spacing, avoid division by zero
+    const viewportWidth = window.innerWidth; // Get the viewport width
+    const margin = 20; // Left and right margin
+    const adjustedViewportWidth = viewportWidth - margin * 2; // Adjust viewport width for margins
+    const chatBoxWidth = 400; // Fixed width for each ChatBox
+    const chatBoxHeight = 450; // Fixed height for each ChatBox
+    const spacing =
+      (adjustedViewportWidth - chatBoxWidth) / Math.max(numberOfChats - 1, 1); // Calculate spacing, avoid division by zero
 
-      //These 3 are for layout calculation where number of chats is 4 or less
-      //Centralize them side by side
+    //These 3 are for layout calculation where number of chats is 4 or less
+    //Centralize them side by side
+    const gap = 10; // Gap between ChatBoxes
+    const totalWidthNeeded =
+      chatBoxWidth * numberOfChats + gap * (numberOfChats - 1); // Total width needed for all ChatBoxes and gaps
+    const startX = (adjustedViewportWidth - totalWidthNeeded) / 2 + margin; // Calculate starting X position for centralization
+    chatSession.chats.forEach((id, index) => {
+      console.log(windowsMap[getWindowId(id)])
+      console.log(overrideCachedPositions);
+      // if (windowsMap[getWindowId(id)] && !overrideCachedPositions) return; // if window has size and position in application state from previous launch, skip setting defaults
 
-      const gap = 10; // Gap between ChatBoxes
-      const totalWidthNeeded =
-        chatBoxWidth * numberOfChats + gap * (numberOfChats - 1); // Total width needed for all ChatBoxes and gaps
-      const startX = (adjustedViewportWidth - totalWidthNeeded) / 2 + margin; // Calculate starting X position for centralization
-
-      const chatWindows: Record<string, WindowData> = {};
-      chatSession.chats.forEach((id, index) => {
-        if (windowsMap[getWindowId(id)]) return; // if window has size and position in application state from previous launch, skip setting defaults
-        let xyPos: [number, number] = [0, 0];
-        const xpos =
-          numberOfChats > 4
-            ? index * spacing + margin
-            : startX + index * (chatBoxWidth + gap); // Calculate x position for even spread
-        const ypos = index % 2 === 0 ? 150 : 200; // Alternate y position
-        xyPos = [xpos, ypos];
-        chatWindows[getWindowId(id)] = [
+      let xyPos: [number, number] = [0, 0];
+      const xpos =
+        numberOfChats > 4
+          ? index * spacing + margin
+          : startX + index * (chatBoxWidth + gap); // Calculate x position for even spread
+      const ypos = index % 2 === 0 ? 150 : 200; // Alternate y position
+      xyPos = [xpos, ypos];
+      if (chatboxesMap) {
+        chatboxesMap[getWindowId(id)] = [
           ...xyPos,
           chatBoxWidth,
           chatBoxHeight,
           0,
         ];
-      });
-      dispatch(updateWindows(chatWindows));
+      }
+    });
+
+    return chatboxesMap
+  }
+
+  function handleResetClick() {
+    const defaults = calcDefaultChatboxesPositionsMap(true);
+    if (defaults) {
+      dispatch(updateWindows(defaults));
+    }
+  }
+
+  useEffect(() => {
+    const defaults = calcDefaultChatboxesPositionsMap();
+    if (defaults) {
+      dispatch(updateWindows(defaults));
     }
   }, []);
 
-  return chatSession.chats.map((id: string, index: number) => {
-    if (windowsMap[getWindowId(id)]) {
-      return (
+  console.log('renderrrrr')
+  return <div>
+    <div className="absolute top-[56px] w-full">
+      <div className="absolute flex items-center justify-center w-8 h-8 bg-white rounded-full shadow-md left-[60%]">
+        <Icon name={IconName.Reset} onClick={handleResetClick} size={20} />
+      </div>
+    </div>
+    {chatSession.chats.map((id: string, index: number) => {
+      console.log(windowsMap[getWindowId(id)])
+      return windowsMap[getWindowId(id)] ?
         <ChatBox
           key={id}
           resizable
@@ -99,9 +126,10 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
           onWindowChange={handleOnWindowChange}
           onWheel={handleOnWheel}
         />
-      );
+        : null
     }
-  });
+    )};
+  </div>
 }
 
 export { ChatboxFreeLayout };

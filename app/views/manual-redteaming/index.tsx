@@ -200,11 +200,13 @@ function ManualRedTeaming(props: ActiveSessionProps) {
             <Icon
               size={26}
               name={IconName.LayoutWtf}
+              disabled={layoutMode === LayoutMode.FREE}
               onClick={() => dispatch(setChatLayoutMode(LayoutMode.FREE))}
             />
             <Icon
               size={25}
               name={IconName.LayoutColumns}
+              disabled={layoutMode === LayoutMode.SLIDE}
               onClick={() => dispatch(setChatLayoutMode(LayoutMode.SLIDE))}
             />
           </div>
