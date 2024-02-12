@@ -1,10 +1,10 @@
 import { useState } from 'react';
+import { KeyValueDisplay } from '@/app/components/keyvalue-display';
 import TwoPanel from '@/app/components/two-panel';
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
 import useLLMEndpointList from '@views/moonshot-desktop/hooks/useLLMEndpointList';
-import { KeyValueDisplay } from '@/app/components/keyvalue-display';
 
 type FileExplorerEndpointsProps = {
   windowId: string;
@@ -32,19 +32,16 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
     onWindowChange,
   } = props;
   const { llmEndpoints, error, isLoading } = useLLMEndpointList();
-  const [selectedEndpoint, setSelectedEndpoint] =
-    useState<LLMEndpoint>();
+  const [selectedEndpoint, setSelectedEndpoint] = useState<LLMEndpoint>();
 
   function handleListItemClick(name: string) {
-    const endpoint = llmEndpoints.find(
-      (epoint) => epoint.name === name
-    );
+    const endpoint = llmEndpoints.find((epoint) => epoint.name === name);
     if (endpoint) {
       setSelectedEndpoint(endpoint);
     }
   }
 
-  return (
+  return isLoading ? null : (
     <Window
       id={windowId}
       resizeable
@@ -64,14 +61,14 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
           <WindowList>
             {llmEndpoints
               ? llmEndpoints.map((endpoint) => (
-                <WindowList.Item
-                  key={endpoint.name}
-                  displayName={endpoint.name}
-                  id={endpoint.name}
-                  onClick={() => handleListItemClick(endpoint.name)}
-                  selected={selectedEndpoint.name === endpoint.name}
-                />
-              ))
+                  <WindowList.Item
+                    key={endpoint.name}
+                    displayName={endpoint.name}
+                    id={endpoint.name}
+                    onClick={() => handleListItemClick(endpoint.name)}
+                    selected={selectedEndpoint.name === endpoint.name}
+                  />
+                ))
               : null}
           </WindowList>
           <WindowInfoPanel title="LLM Endpoint">
@@ -101,8 +98,15 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
                     />
                     <KeyValueDisplay
                       label="API Token"
-                      value={selectedEndpoint.token.substring(0, Math.ceil(selectedEndpoint.token.length / 2)) +
-                        '*'.repeat(Math.floor(selectedEndpoint.token.length / 2))}
+                      value={
+                        selectedEndpoint.token.substring(
+                          0,
+                          Math.ceil(selectedEndpoint.token.length / 2)
+                        ) +
+                        '*'.repeat(
+                          Math.floor(selectedEndpoint.token.length / 2)
+                        )
+                      }
                     />
                   </div>
                   <div>
@@ -122,13 +126,13 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
         <WindowList>
           {llmEndpoints
             ? llmEndpoints.map((endpoint) => (
-              <WindowList.Item
-                key={endpoint.name}
-                displayName={endpoint.name}
-                id={endpoint.name}
-                onClick={handleListItemClick}
-              />
-            ))
+                <WindowList.Item
+                  key={endpoint.name}
+                  displayName={endpoint.name}
+                  id={endpoint.name}
+                  onClick={handleListItemClick}
+                />
+              ))
             : null}
         </WindowList>
       )}

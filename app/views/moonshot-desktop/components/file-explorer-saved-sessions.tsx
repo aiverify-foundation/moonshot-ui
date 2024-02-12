@@ -64,7 +64,7 @@ function FileExplorerSavedSessions(props: FileExplorerSavedSessionsProps) {
     }
   }
 
-  return (
+  return isLoading ? null : (
     <Window
       id={windowId}
       resizeable
@@ -84,16 +84,16 @@ function FileExplorerSavedSessions(props: FileExplorerSavedSessionsProps) {
           <WindowList>
             {sessions
               ? sessions.map((session) => (
-                <WindowList.Item
-                  key={session.session_id}
-                  displayName={session.name}
-                  id={session.session_id}
-                  onClick={handleListItemClick}
-                  selected={
-                    selectedSession?.session_id === session.session_id
-                  }
-                />
-              ))
+                  <WindowList.Item
+                    key={session.session_id}
+                    displayName={session.name}
+                    id={session.session_id}
+                    onClick={handleListItemClick}
+                    selected={
+                      selectedSession?.session_id === session.session_id
+                    }
+                  />
+                ))
               : null}
           </WindowList>
           <WindowInfoPanel
@@ -145,13 +145,13 @@ function FileExplorerSavedSessions(props: FileExplorerSavedSessionsProps) {
         <WindowList>
           {sessions
             ? sessions.map((session) => (
-              <WindowList.Item
-                key={session.session_id}
-                displayName={session.name}
-                id={session.session_id}
-                onClick={handleListItemClick}
-              />
-            ))
+                <WindowList.Item
+                  key={session.session_id}
+                  displayName={session.name}
+                  id={session.session_id}
+                  onClick={handleListItemClick}
+                />
+              ))
             : null}
         </WindowList>
       )}
