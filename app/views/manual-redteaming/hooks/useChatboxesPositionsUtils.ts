@@ -34,8 +34,6 @@ export default function useChatboxesPositionsUtils(
       chatBoxWidth * numberOfChats + gap * (numberOfChats - 1); // Total width needed for all ChatBoxes and gaps
     const startX = (adjustedViewportWidth - totalWidthNeeded) / 2 + margin; // Calculate starting X position for centralization
     chatSession.chats.forEach((id, index) => {
-      console.log(windowsMap[getWindowId(id)]);
-      console.log(overrideCachedPositions);
       if (windowsMap[getWindowId(id)] && !overrideCachedPositions) return; // if window has size and position in application state from previous launch, skip setting defaults
 
       let xyPos: [number, number] = [0, 0];

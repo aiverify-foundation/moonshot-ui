@@ -52,7 +52,7 @@ function SelectList(props: SelectListProps) {
   function handleKeyPress(event: KeyboardEvent) {
     if (event.key === 'Enter' && highlight) {
       const index = data.findIndex((item) =>
-        item.displayName.startsWith(highlight)
+        item.displayName.toLowerCase().startsWith(highlight.toLowerCase())
       );
       if (index !== -1) {
         handleItemClick(data[index]);
@@ -90,25 +90,31 @@ function SelectList(props: SelectListProps) {
   }, [highlight, data]);
 
   return (
-    <div className="p-1 rounded shadow-lg  h-[215px] bg-white"
+    <div
+      className="p-1 rounded shadow-lg  h-[215px] bg-white"
       style={{
         ...styles,
       }}>
-      <div id={id} className="h-full pr-1 bg-white custom-scrollbar overflow-auto">
+      <div
+        id={id}
+        className="h-full pr-1 bg-white custom-scrollbar overflow-auto">
         <div className="rounded bg-white text-black h-full text-xs">
           {data.map((item, index) => {
             const firstMatchIndex = data.findIndex(
               (item) =>
                 highlight &&
-                item.displayName.toLowerCase().startsWith(highlight.toLowerCase())
+                item.displayName
+                  .toLowerCase()
+                  .startsWith(highlight.toLowerCase())
             );
             const isHighlighted = index === firstMatchIndex;
             return (
               <div
                 ref={(el) => (itemRefs.current[index] = el)}
                 key={item.id}
-                className={`p-2 cursor-pointer border-b border-lightGray ${isHighlighted ? 'bg-e7e7e7' : 'bg-white'
-                  } hover:bg-e7e7e7`}
+                className={`p-2 cursor-pointer border-b border-lightGray ${
+                  isHighlighted ? 'bg-e7e7e7' : 'bg-white'
+                } hover:bg-e7e7e7`}
                 onClick={() => handleItemClick(item)}
                 onMouseOver={() => handleItemMouseOver(item)}
                 onMouseOut={() => handleItemMouseOut(item)}>
@@ -128,7 +134,7 @@ function SelectList(props: SelectListProps) {
             );
           })}
         </div>
-      </div >
+      </div>
     </div>
   );
 }

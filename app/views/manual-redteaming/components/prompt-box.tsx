@@ -6,6 +6,7 @@ import { TextInput } from '@/app/components/textInput';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import useOutsideClick from '@/app/hooks/use-outside-click';
 import { debounce } from '@/app/lib/throttle';
+import useChatboxesPositionsUtils from '@/app/views/manual-redteaming/hooks/useChatboxesPositionsUtils';
 import { toggleDarkMode, useAppDispatch } from '@/lib/redux';
 import {
   LayoutMode,
@@ -14,10 +15,9 @@ import {
 import { ColorCodedTemplateString } from './color-coded-template';
 import { SlashCommand, descriptionByCommand } from './slash-commands';
 import { Window } from '@components/window';
-import useChatboxesPositionsUtils from '@/app/views/manual-redteaming/hooks/useChatboxesPositionsUtils';
 
 enum TextInputMode {
-  NORMAL_TEXT,
+  PROMPT_TEXT,
   PROMPT_TEMPLATE,
   SLASH_COMMAND,
 }
@@ -49,7 +49,7 @@ type PromptBoxProps = {
   onSelectPromptTemplate: (item: PromptTemplate | undefined) => void;
   onSendClick: (message: string) => void;
   onCloseSessionCommand: () => void;
-}
+};
 
 function PromptBox(props: PromptBoxProps) {
   const {
@@ -74,7 +74,7 @@ function PromptBox(props: PromptBoxProps) {
   const [hoveredSelectedPromptTemplate, setSelectedHoveredPromptTemplate] =
     useState<PromptTemplate>();
   const [textInputMode, setTextInputMode] = useState<TextInputMode>(
-    TextInputMode.NORMAL_TEXT
+    TextInputMode.PROMPT_TEXT
   );
   const [listItems, setListItems] = useState<ListItem[]>([]);
   const [commandString, setCommandString] = useState<string | undefined>();
@@ -117,7 +117,7 @@ function PromptBox(props: PromptBoxProps) {
 
     if (inputValue.startsWith('/')) {
       const commandFragment = inputValue.slice(1); // Remove the slash
-      setShowPromptTemplateList(false)
+      setShowPromptTemplateList(false);
       setCommandString(commandFragment);
       setShowSlashCommands(true);
       setTextInputMode(TextInputMode.SLASH_COMMAND);
@@ -125,7 +125,7 @@ function PromptBox(props: PromptBoxProps) {
       setCommandString(undefined);
       setShowSlashCommands(false);
       if (!showPromptTemplateList) {
-        setTextInputMode(TextInputMode.NORMAL_TEXT);
+        setTextInputMode(TextInputMode.PROMPT_TEXT);
       }
     }
   }
@@ -150,7 +150,7 @@ function PromptBox(props: PromptBoxProps) {
         dispatch(setChatLayoutMode(LayoutMode.SLIDE));
         break;
       case SlashCommand.RESET_LAYOUT_MODE:
-        resetChatboxPositions(true)
+        resetChatboxPositions(true);
         break;
       case SlashCommand.MAXIMIZE_PROMPT:
         setSize(Size.LARGE);
@@ -182,7 +182,7 @@ function PromptBox(props: PromptBoxProps) {
     if (e.key === 'Enter') {
       e.preventDefault();
 
-      if (textInputMode === TextInputMode.NORMAL_TEXT) {
+      if (textInputMode === TextInputMode.PROMPT_TEXT) {
         handleOnSendMessageClick();
         return;
       }
@@ -295,7 +295,7 @@ function PromptBox(props: PromptBoxProps) {
     } else if (showSlashCommands) {
       setTextInputMode(TextInputMode.SLASH_COMMAND);
     } else {
-      setTextInputMode(TextInputMode.NORMAL_TEXT);
+      setTextInputMode(TextInputMode.PROMPT_TEXT);
     }
   }, [showPromptTemplateList, showSlashCommands]);
 
@@ -427,16 +427,18 @@ function PromptBox(props: PromptBoxProps) {
           </button>
         </div>
         {hoveredSelectedPromptTemplate && !showPromptTemplateList ? (
-          <div className="absolute left-[520px] flex flex-col w-[500px]">
-            <div className="bg-white/80 p-2 rounded-md shadow-md flex flex-col gap-0">
+          <div className="absolute left-[500px] top-[-40px] flex flex-col w-[400px]">
+            <div className="bg-white/90 p-2 rounded-md shadow-md flex flex-col gap-0">
               <div className="text-sm font-bold text-gray-800 underline">
                 {hoveredSelectedPromptTemplate.name}
               </div>
               <div className="text-xs text-gray-700">
                 {hoveredSelectedPromptTemplate.description}
               </div>
-              <div className="text-sm text-gray-800 pt-3 font-bold">Template:</div>
-              <div className="text-xs text-gray-700">
+              <div className="text-sm text-gray-800 pt-3 font-bold">
+                Template:
+              </div>
+              <div className="text-xs text-gray-700 max-h-[200px] overflow-y-auto custom-scrollbar">
                 <ColorCodedTemplateString
                   template={hoveredSelectedPromptTemplate.template}
                 />
@@ -473,7 +475,7 @@ function PromptBox(props: PromptBoxProps) {
                   <div className="text-sm text-gray-800 pt-3 font-bold">
                     Template
                   </div>
-                  <div className="text-sm text-gray-700">
+                  <div className="text-xs text-gray-700 max-h-[200px] overflow-y-auto custom-scrollbar">
                     <ColorCodedTemplateString
                       template={hoveredPromptTemplate.template}
                     />
