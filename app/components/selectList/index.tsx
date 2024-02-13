@@ -90,51 +90,45 @@ function SelectList(props: SelectListProps) {
   }, [highlight, data]);
 
   return (
-    <div
-      id={id}
-      className="custom-scrollbar"
+    <div className="p-1 rounded shadow-lg  h-[215px] bg-white"
       style={{
-        borderRadius: 4,
-        background: 'white',
-        color: 'black',
-        maxHeight: 200,
-        overflowY: 'auto',
-        boxShadow: '0px 10px 10px #00000047',
-        fontSize: 12,
         ...styles,
       }}>
-      {data.map((item, index) => {
-        const firstMatchIndex = data.findIndex(
-          (item) =>
-            highlight &&
-            item.displayName.toLowerCase().startsWith(highlight.toLowerCase())
-        );
-        const isHighlighted = index === firstMatchIndex;
-        return (
-          <div
-            ref={(el) => (itemRefs.current[index] = el)}
-            key={item.id}
-            className={`p-2 cursor-pointer border-b border-lightGray ${
-              isHighlighted ? 'bg-e7e7e7' : 'bg-white'
-            } hover:bg-e7e7e7`}
-            onClick={() => handleItemClick(item)}
-            onMouseOver={() => handleItemMouseOver(item)}
-            onMouseOut={() => handleItemMouseOut(item)}>
-            {isHighlighted ? (
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: item.displayName.replace(
-                    new RegExp(`^(${highlight})`, 'gi'),
-                    '<mark><b>$1</b></mark>'
-                  ),
-                }}
-              />
-            ) : (
-              item.displayName
-            )}
-          </div>
-        );
-      })}
+      <div id={id} className="h-full pr-1 bg-white custom-scrollbar overflow-auto">
+        <div className="rounded bg-white text-black h-full text-xs">
+          {data.map((item, index) => {
+            const firstMatchIndex = data.findIndex(
+              (item) =>
+                highlight &&
+                item.displayName.toLowerCase().startsWith(highlight.toLowerCase())
+            );
+            const isHighlighted = index === firstMatchIndex;
+            return (
+              <div
+                ref={(el) => (itemRefs.current[index] = el)}
+                key={item.id}
+                className={`p-2 cursor-pointer border-b border-lightGray ${isHighlighted ? 'bg-e7e7e7' : 'bg-white'
+                  } hover:bg-e7e7e7`}
+                onClick={() => handleItemClick(item)}
+                onMouseOver={() => handleItemMouseOver(item)}
+                onMouseOut={() => handleItemMouseOut(item)}>
+                {isHighlighted ? (
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: item.displayName.replace(
+                        new RegExp(`^(${highlight})`, 'gi'),
+                        '<mark><b>$1</b></mark>'
+                      ),
+                    }}
+                  />
+                ) : (
+                  item.displayName
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div >
     </div>
   );
 }

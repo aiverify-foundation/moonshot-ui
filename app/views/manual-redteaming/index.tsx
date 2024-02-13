@@ -270,6 +270,7 @@ function ManualRedTeaming(props: ActiveSessionProps) {
               ? getWindowXY(windowsMap, promptBoxId)
               : [710, 760]
           }
+          chatSession={activeSession}
           promptTemplates={promptTemplates}
           activePromptTemplate={selectedPromptTemplate}
           onCloseClick={onCloseBtnClick}

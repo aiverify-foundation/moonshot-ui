@@ -14,6 +14,7 @@ import {
 import { ColorCodedTemplateString } from './color-coded-template';
 import { SlashCommand, descriptionByCommand } from './slash-commands';
 import { Window } from '@components/window';
+import useChatboxesPositionsUtils from './hooks/useDefaultChatPositioning';
 
 enum TextInputMode {
   NORMAL_TEXT,
@@ -34,6 +35,7 @@ function PromptBox(props: {
   styles?: React.CSSProperties;
   promptTemplates: PromptTemplate[];
   activePromptTemplate?: PromptTemplate;
+  chatSession: Session;
   onWindowChange?: (
     x: number,
     y: number,
@@ -54,6 +56,7 @@ function PromptBox(props: {
     draggable,
     onCloseClick,
     activePromptTemplate,
+    chatSession,
     onWindowChange,
     onSelectPromptTemplate,
     onSendClick,
@@ -72,6 +75,7 @@ function PromptBox(props: {
   const [listItems, setListItems] = useState<ListItem[]>([]);
   const [commandString, setCommandString] = useState<string | undefined>();
   const [showSlashCommands, setShowSlashCommands] = useState(false);
+  const { resetChatboxPositions } = useChatboxesPositionsUtils(chatSession);
   const dispatch = useAppDispatch();
 
   const slashCommandList = Object.values(SlashCommand).map((cmd) => ({
@@ -109,6 +113,7 @@ function PromptBox(props: {
 
     if (inputValue.startsWith('/')) {
       const commandFragment = inputValue.slice(1); // Remove the slash
+      setShowPromptTemplateList(false)
       setCommandString(commandFragment);
       setShowSlashCommands(true);
       setTextInputMode(TextInputMode.SLASH_COMMAND);
@@ -139,6 +144,19 @@ function PromptBox(props: {
         break;
       case SlashCommand.CHAT_LAYOUT_MODE_SLIDE:
         dispatch(setChatLayoutMode(LayoutMode.SLIDE));
+        break;
+      case SlashCommand.RESET_LAYOUT_MODE:
+        resetChatboxPositions()
+        break;
+      case SlashCommand.MAXIMIZE_PROMPT:
+        break;
+      case SlashCommand.MINIMIZE_PROMPT:
+        break;
+      case SlashCommand.CLOSE_SESSION:
+        break;
+      case SlashCommand.DARK_MODE_ON:
+        break;
+      case SlashCommand.DARK_MODE_OFF:
         break;
       default:
         console.log('Unknown command', cmd);
@@ -406,21 +424,23 @@ function PromptBox(props: {
         {hoveredSelectedPromptTemplate && !showPromptTemplateList ? (
           <div className="absolute left-[520px] flex flex-col w-[500px]">
             <div className="bg-white/80 p-2 rounded-md shadow-md flex flex-col gap-0">
-              <div className="text-sm font-bold text-gray-800">
+              <div className="text-sm font-bold text-gray-800 underline">
                 {hoveredSelectedPromptTemplate.name}
               </div>
               <div className="text-xs text-gray-700">
                 {hoveredSelectedPromptTemplate.description}
               </div>
-              <div className="text-xs text-gray-800 pt-3">Template:</div>
+              <div className="text-sm text-gray-800 pt-3 font-bold">Template:</div>
               <div className="text-xs text-gray-700">
-                {hoveredSelectedPromptTemplate.template}
+                <ColorCodedTemplateString
+                  template={hoveredSelectedPromptTemplate.template}
+                />
               </div>
             </div>
           </div>
         ) : null}
         {showPromptTemplateList && (
-          <div className="absolute flex top-[-60px] left-[350px] gap-2">
+          <div className="absolute flex top-[-100px] left-[450px] gap-2">
             <SelectList
               id="prompt-template-list"
               data={listItems}
