@@ -14,7 +14,7 @@ import {
 import { ColorCodedTemplateString } from './color-coded-template';
 import { SlashCommand, descriptionByCommand } from './slash-commands';
 import { Window } from '@components/window';
-import useChatboxesPositionsUtils from './hooks/useDefaultChatPositioning';
+import useChatboxesPositionsUtils from './hooks/useChatboxesPositionsUtils';
 
 enum TextInputMode {
   NORMAL_TEXT,
@@ -146,11 +146,13 @@ function PromptBox(props: {
         dispatch(setChatLayoutMode(LayoutMode.SLIDE));
         break;
       case SlashCommand.RESET_LAYOUT_MODE:
-        resetChatboxPositions()
+        resetChatboxPositions(true)
         break;
       case SlashCommand.MAXIMIZE_PROMPT:
+        setSize(Size.LARGE);
         break;
       case SlashCommand.MINIMIZE_PROMPT:
+        setSize(Size.SMALL);
         break;
       case SlashCommand.CLOSE_SESSION:
         break;
@@ -170,11 +172,6 @@ function PromptBox(props: {
   ) {
     if (e.key === 'Enter') {
       e.preventDefault();
-
-      // if (promptMessage[0] === '/') {
-      //   handleSlashCommand(promptMessage.substring(1) as SlashCommand);
-      //   return;
-      // }
 
       if (textInputMode === TextInputMode.NORMAL_TEXT) {
         handleOnSendMessageClick();
@@ -223,7 +220,6 @@ function PromptBox(props: {
     }
   }
 
-  // Debounced version of handlePromptTemplateMatched
   const handlePromptTemplateMatch = debounce((item: ListItem) => {
     const promptTemplate = promptTemplates.find((pt) => pt.name === item.id);
     if (promptTemplate) {
