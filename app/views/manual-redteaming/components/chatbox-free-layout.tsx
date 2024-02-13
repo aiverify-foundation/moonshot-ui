@@ -8,7 +8,7 @@ import {
 } from '@/app/lib/window';
 import { useAppSelector } from '@/lib/redux';
 import { ChatBox } from './chatbox';
-import useChatboxesPositionsUtils from './hooks/useChatboxesPositionsUtils';
+import useChatboxesPositionsUtils from '../hooks/useChatboxesPositionsUtils';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
 
 type ChatFreeLayoutProps = {

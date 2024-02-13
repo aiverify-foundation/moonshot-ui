@@ -7,9 +7,9 @@ import {
 import { useSendPromptMutation } from '@/app/services/session-api-service';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
-import { ChatboxFreeLayout } from './chatbox-free-layout';
-import { ChatboxSlideLayout } from './chatbox-slide-layout';
-import { PromptBox } from './prompt-box';
+import { ChatboxFreeLayout } from './components/chatbox-free-layout';
+import { ChatboxSlideLayout } from './components/chatbox-slide-layout';
+import { PromptBox } from './components/prompt-box';
 import { getWindowId, getWindowXY } from '@app/lib/window';
 import { ScreenOverlay } from '@components/screen-overlay';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
@@ -277,6 +277,7 @@ function ManualRedTeaming(props: ActiveSessionProps) {
           onSendClick={handleSendPromptClick}
           onSelectPromptTemplate={handleSelectPromptTemplate}
           onWindowChange={handleOnWindowChange}
+          onCloseSessionCommand={onCloseBtnClick}
         />
       </div>
     </ScreenOverlay>
