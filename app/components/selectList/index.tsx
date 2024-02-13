@@ -100,7 +100,7 @@ function SelectList(props: SelectListProps) {
         maxHeight: 200,
         overflowY: 'auto',
         boxShadow: '0px 10px 10px #00000047',
-        fontSize: 13,
+        fontSize: 12,
         ...styles,
       }}>
       {data.map((item, index) => {

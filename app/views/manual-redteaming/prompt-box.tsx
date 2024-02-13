@@ -5,20 +5,20 @@ import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import useOutsideClick from '@/app/hooks/use-outside-click';
+import { debounce } from '@/app/lib/throttle';
 import { useAppDispatch } from '@/lib/redux';
 import {
   LayoutMode,
   setChatLayoutMode,
 } from '@/lib/redux/slices/chatLayoutModeSlice';
-import { SlashCommand } from './slash-commands';
-import { Window } from '@components/window';
 import { ColorCodedTemplateString } from './color-coded-template';
-import { debounce } from '@/app/lib/throttle';
+import { SlashCommand, descriptionByCommand } from './slash-commands';
+import { Window } from '@components/window';
 
 enum TextInputMode {
   NORMAL_TEXT,
-  FILTER_LIST,
-  AUTO_COMPLETE,
+  PROMPT_TEMPLATE,
+  SLASH_COMMAND,
 }
 
 enum Size {
@@ -70,10 +70,14 @@ function PromptBox(props: {
     TextInputMode.NORMAL_TEXT
   );
   const [listItems, setListItems] = useState<ListItem[]>([]);
-  const [autoCompleteSuggestions, setAutoCompleteSuggestions] = useState<
-    ListItem[]
-  >([]);
+  const [commandString, setCommandString] = useState<string | undefined>();
+  const [showSlashCommands, setShowSlashCommands] = useState(false);
   const dispatch = useAppDispatch();
+
+  const slashCommandList = Object.values(SlashCommand).map((cmd) => ({
+    id: cmd,
+    displayName: `${cmd} - ${descriptionByCommand[cmd]}`,
+  }));
 
   useOutsideClick(
     [
@@ -83,25 +87,18 @@ function PromptBox(props: {
     ],
     () => {
       setShowPromptTemplateList(false);
-      if (textInputMode === TextInputMode.FILTER_LIST) {
-        clearPromptMessage();
-        return;
-      }
-
-      if (textInputMode === TextInputMode.AUTO_COMPLETE) {
-        clearCommandSuggestions();
-        clearPromptMessage();
-        return;
-      }
+      setShowSlashCommands(false);
+      clearPromptMessage();
     }
   );
 
+  useOutsideClick(['command-list'], () => {
+    setShowSlashCommands(false);
+    clearPromptMessage();
+  });
+
   function clearPromptMessage() {
     setPromptMessage('');
-  }
-
-  function clearCommandSuggestions() {
-    setAutoCompleteSuggestions([]);
   }
 
   function handleTextChange(
@@ -110,27 +107,19 @@ function PromptBox(props: {
     const inputValue = e.target.value;
     setPromptMessage(inputValue);
 
-    // if (inputValue.startsWith('/')) {
-    //   const commandFragment = inputValue.slice(1); // Remove the slash
-    //   const suggestions: ListItem[] = Object.values(SlashCommand)
-    //     .filter((cmd) => cmd.startsWith(commandFragment))
-    //     .map((cmd) => ({
-    //       id: cmd,
-    //       displayName: cmd,
-    //     }));
-    //   setAutoCompleteSuggestions(suggestions);
-    //   setTextInputMode(TextInputMode.AUTO_COMPLETE);
-    // } else {
-    //   clearCommandSuggestions();
-    //   setTextInputMode(TextInputMode.NORMAL_TEXT);
-    // }
+    if (inputValue.startsWith('/')) {
+      const commandFragment = inputValue.slice(1); // Remove the slash
+      setCommandString(commandFragment);
+      setShowSlashCommands(true);
+      setTextInputMode(TextInputMode.SLASH_COMMAND);
+    } else {
+      setCommandString(undefined);
+      setShowSlashCommands(false);
+      if (!showPromptTemplateList) {
+        setTextInputMode(TextInputMode.NORMAL_TEXT);
+      }
+    }
   }
-
-  // function handleSelectSuggestion(suggestion: string) {
-  //   setPromptMessage('/' + suggestion);
-  //   setAutoCompleteSuggestions([]);
-  //   setTextInputMode(TextInputMode.NORMAL_TEXT);
-  // }
 
   function handleOnSendMessageClick() {
     onSendClick(promptMessage);
@@ -164,37 +153,39 @@ function PromptBox(props: {
     if (e.key === 'Enter') {
       e.preventDefault();
 
-      if (promptMessage[0] === '/') {
-        handleSlashCommand(promptMessage.substring(1) as SlashCommand);
-        return;
-      }
+      // if (promptMessage[0] === '/') {
+      //   handleSlashCommand(promptMessage.substring(1) as SlashCommand);
+      //   return;
+      // }
 
       if (textInputMode === TextInputMode.NORMAL_TEXT) {
         handleOnSendMessageClick();
         return;
       }
 
-      if (textInputMode === TextInputMode.FILTER_LIST) {
+      if (textInputMode === TextInputMode.PROMPT_TEMPLATE) {
         return;
       }
     }
 
     if (e.key === 'Escape') {
-      if (textInputMode === TextInputMode.FILTER_LIST) {
+      if (textInputMode === TextInputMode.PROMPT_TEMPLATE) {
         setShowPromptTemplateList(false);
         clearPromptMessage();
         return;
       }
 
-      if (textInputMode === TextInputMode.AUTO_COMPLETE) {
-        clearCommandSuggestions();
+      if (textInputMode === TextInputMode.SLASH_COMMAND) {
+        setShowSlashCommands(false);
         clearPromptMessage();
+        setCommandString(undefined);
         return;
       }
     }
   }
 
   function handleShowPromptTemplateList() {
+    setShowSlashCommands(false);
     setShowPromptTemplateList(true);
   }
 
@@ -253,8 +244,18 @@ function PromptBox(props: {
     e.stopPropagation();
     removeActivePromptTemplate();
   }
+
   function handleResizeClick() {
     setSize((prevSize) => (prevSize === Size.LARGE ? Size.SMALL : Size.LARGE));
+  }
+
+  function handleCommandListItemSelected(item: ListItem) {
+    const selected = slashCommandList.find((cmd) => cmd.id === item.id);
+    if (selected) {
+      handleSlashCommand(selected.id as SlashCommand);
+    }
+    setShowSlashCommands(false);
+    clearPromptMessage();
   }
 
   useEffect(() => {
@@ -267,11 +268,13 @@ function PromptBox(props: {
 
   useEffect(() => {
     if (showPromptTemplateList) {
-      setTextInputMode(TextInputMode.FILTER_LIST);
+      setTextInputMode(TextInputMode.PROMPT_TEMPLATE);
+    } else if (showSlashCommands) {
+      setTextInputMode(TextInputMode.SLASH_COMMAND);
     } else {
       setTextInputMode(TextInputMode.NORMAL_TEXT);
     }
-  }, [showPromptTemplateList]);
+  }, [showPromptTemplateList, showSlashCommands]);
 
   return (
     <Window
@@ -292,6 +295,9 @@ function PromptBox(props: {
         overflowY: 'visible',
         overflowX: 'visible',
       }}>
+      <div className="absolute top-2 right-8 text-xs text-white/90">
+        (Enter &apos;/ &apos; for commands)
+      </div>
       <div className="absolute top-2 right-2">
         <Icon
           name={size === Size.LARGE ? IconName.Minimize : IconName.Maximize}
@@ -319,7 +325,7 @@ function PromptBox(props: {
                 name="sessionName"
                 shouldFocus={showPromptTemplateList}
                 placeholder={
-                  textInputMode === TextInputMode.FILTER_LIST
+                  textInputMode === TextInputMode.PROMPT_TEMPLATE
                     ? 'Search Prompt Templates'
                     : 'Message'
                 }
@@ -339,7 +345,7 @@ function PromptBox(props: {
                 name="sessionName"
                 shouldFocus={showPromptTemplateList}
                 placeholder={
-                  textInputMode === TextInputMode.FILTER_LIST
+                  textInputMode === TextInputMode.PROMPT_TEMPLATE
                     ? 'Search Prompt Templates'
                     : 'Message'
                 }
@@ -420,7 +426,7 @@ function PromptBox(props: {
               data={listItems}
               styles={{ width: 300 }}
               highlight={
-                textInputMode === TextInputMode.FILTER_LIST
+                textInputMode === TextInputMode.PROMPT_TEMPLATE
                   ? promptMessage
                   : undefined
               }
@@ -452,17 +458,22 @@ function PromptBox(props: {
             )}
           </div>
         )}
-        {autoCompleteSuggestions.length > 0 && (
+        {showSlashCommands && (
           <SelectList
-            id="autocomplete-command-list"
-            data={autoCompleteSuggestions}
+            id="command-list"
+            data={slashCommandList}
             styles={{
               position: 'absolute',
-              top: -10,
-              left: -320,
-              width: 300,
+              top: -100,
+              left: -370,
+              width: 350,
             }}
-            onItemClick={() => null}
+            highlight={
+              textInputMode === TextInputMode.SLASH_COMMAND
+                ? commandString
+                : undefined
+            }
+            onItemClick={handleCommandListItemSelected}
           />
         )}
       </div>
