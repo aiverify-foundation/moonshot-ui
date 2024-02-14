@@ -78,7 +78,7 @@ function SlidesIndexBtns(props: SlidesIndexBtnsProps) {
                 rounded-full bg-white inline-block mr-2
                 hover:scale-150 transition-transform transform-gpu
                 ${currentIndex === btnIndex - 1 ? 'cursor-default' : 'cursor-pointer'}
-                border-2 border-fuchsia-800`}
+                border-2 border-fuchsia-800 dark:border-blue-600`}
               onClick={
                 currentIndex === btnIndex - 1
                   ? undefined
