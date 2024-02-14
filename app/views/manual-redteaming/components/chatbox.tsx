@@ -14,6 +14,7 @@ type ChatBoxProps = {
   currentPromptTemplate?: PromptTemplate;
   currentPromptText?: string;
   isChatCompletionInProgress: boolean;
+  styles?: React.CSSProperties;
   onWindowChange: (
     x: number,
     y: number,
@@ -39,6 +40,7 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
     currentPromptTemplate,
     currentPromptText,
     isChatCompletionInProgress,
+    styles,
     onWindowChange,
     onWheel,
   } = props;
@@ -54,6 +56,7 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
       resizable={resizable}
       draggable={draggable}
       disableOnScroll={disableOnScroll}
+      styles={styles}
       onWindowChange={onWindowChange}
       onWheel={onWheel}>
       {chatHistory.map((dialogue, index) => {
@@ -100,9 +103,9 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
             styles={{ alignSelf: 'flex-end' }}>
             {currentPromptTemplate && currentPromptText
               ? currentPromptTemplate.template.replace(
-                '{{ prompt }}',
-                currentPromptText
-              )
+                  '{{ prompt }}',
+                  currentPromptText
+                )
               : currentPromptText}
           </Chat.TalkBubble>
           <div className="flex flex-col text-left pl-2 text-xs text-black">
@@ -119,4 +122,4 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
 
 ChatBox.displayName = 'Chatbox';
 
-export { ChatBox }
+export { ChatBox };
