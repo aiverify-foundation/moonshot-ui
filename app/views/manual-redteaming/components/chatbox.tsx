@@ -1,4 +1,6 @@
 import { forwardRef } from 'react';
+import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
+import { ColorCodedTemplateString } from './color-coded-template';
 import { Chat } from '@components/chat';
 
 type ChatBoxProps = {
@@ -11,6 +13,7 @@ type ChatBoxProps = {
   initialXY: [number, number];
   initialSize: [number, number];
   initialScrollTop: number;
+  promptTemplates: PromptTemplate[];
   currentPromptTemplate?: PromptTemplate;
   currentPromptText?: string;
   isChatCompletionInProgress: boolean;
@@ -37,6 +40,7 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
     initialXY,
     initialSize,
     initialScrollTop,
+    promptTemplates,
     currentPromptTemplate,
     currentPromptText,
     isChatCompletionInProgress,
@@ -60,6 +64,13 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
       onWindowChange={onWindowChange}
       onWheel={onWheel}>
       {chatHistory.map((dialogue, index) => {
+        console.log(dialogue);
+        const appliedPromptTemplate = promptTemplates
+          ? promptTemplates.find(
+              (template) => template.name === dialogue.prompt_template
+            )
+          : undefined;
+
         return (
           <div
             className="flex flex-col p-2"
@@ -67,20 +78,26 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
             <div className="flex flex-col text-right pr-2 text-xs text-black">
               You
             </div>
-            <Chat.TalkBubble
-              backgroundColor="#a3a3a3"
-              fontColor="#FFF"
-              styles={{
-                alignSelf: 'flex-end',
-                maxWidth: '90%',
-              }}>
-              {dialogue.prepared_prompt}
-            </Chat.TalkBubble>
-            <div
-              className="flex flex-col text-left pl-2 text-xs text-black"
-              style={{
-                maxWidth: '90%',
-              }}>
+            <div className="self-end snap-top max-w-[90%]">
+              <Tooltip
+                position={TooltipPosition.left}
+                content={
+                  appliedPromptTemplate ? (
+                    <ColorCodedTemplateString
+                      template={appliedPromptTemplate?.template}
+                    />
+                  ) : (
+                    'no template'
+                  )
+                }>
+                <Chat.TalkBubble
+                  backgroundColor="#a3a3a3"
+                  fontColor="#FFF">
+                  {dialogue.prepared_prompt}
+                </Chat.TalkBubble>
+              </Tooltip>
+            </div>
+            <div className="max-w-[90%] flex flex-col text-left pl-2 text-xs text-black">
               AI
             </div>
             <Chat.TalkBubble

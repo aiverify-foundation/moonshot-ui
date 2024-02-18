@@ -8,13 +8,14 @@ import {
 } from '@/app/lib/window';
 import { useAppSelector } from '@/lib/redux';
 import { ChatBox } from './chatbox';
-import useChatboxesPositionsUtils from '../hooks/useChatboxesPositionsUtils';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
+import useChatboxesPositionsUtils from '@views/manual-redteaming/hooks/useChatboxesPositionsUtils';
 
 type ChatFreeLayoutProps = {
   chatSession: Session;
   boxRefs: MutableRefObject<HTMLDivElement[]>;
   chatCompletionInProgress: boolean;
+  promptTemplates: PromptTemplate[];
   selectedPromptTemplate: PromptTemplate | undefined;
   promptText: string;
   handleOnWindowChange: (
@@ -33,6 +34,7 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
     chatSession,
     boxRefs,
     chatCompletionInProgress,
+    promptTemplates,
     selectedPromptTemplate,
     promptText,
     handleOnWindowChange,
@@ -84,6 +86,7 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
             initialSize={getWindowSize(windowsMap, id)}
             initialScrollTop={getWindowScrollTop(windowsMap, id)}
             chatHistory={chatSession.chat_history[id] || []}
+            promptTemplates={promptTemplates}
             currentPromptTemplate={selectedPromptTemplate}
             currentPromptText={promptText}
             isChatCompletionInProgress={chatCompletionInProgress}
