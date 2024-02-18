@@ -1,0 +1,242 @@
+{
+	"info": {
+		"_postman_id": "1872faef-88ed-40b3-b3e7-a1b4ea115d63",
+		"name": "moonshot",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7712756"
+	},
+	"item": [
+		{
+			"name": "Create New Session",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"test-20\",\r\n    \"description\": \"Test chat gpt3.5 and gpt4\",\r\n    \"endpoints\": [\"openai-gpt35-amin\", \"openai-gpt4-amin\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/v1/sessions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"sessions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Use Prompt Template",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/v1/prompt_templates/enronemail-templatea",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"prompt_templates",
+						"enronemail-templatea"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Prompt Template in use",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/v1/prompt_templates/enronemail-templatea",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"prompt_templates",
+						"enronemail-templatea"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Prompt Templates",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/v1/prompt_templates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"prompt_templates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Sessions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:{{PORT}}/v1/sessions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{PORT}}",
+					"path": [
+						"v1",
+						"sessions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set Active Session",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/v1/sessions/test-1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"sessions",
+						"test-1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Endpoints",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/v1/llm_endpoints",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"llm_endpoints"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Session By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/v1/sessions/test-1?include_history=true&length=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"sessions",
+						"test-1"
+					],
+					"query": [
+						{
+							"key": "include_history",
+							"value": "true"
+						},
+						{
+							"key": "length",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Prompt to Session",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"prompt\": \"hi\",\r\n    \"history_length\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/v1/sessions/test-1/prompt",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"sessions",
+						"test-1",
+						"prompt"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
