@@ -1,7 +1,8 @@
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
-import { ColorCodedTemplateString } from './color-coded-template';
 import { Chat } from '@components/chat';
+import { PromptBubbleInfo } from './prompt-bubble-info';
+import { useAppSelector } from '@/lib/redux';
 
 type ChatBoxProps = {
   windowId: string;
@@ -49,6 +50,9 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
     onWheel,
   } = props;
 
+  const [dialoguePairHovered, setDialoguePairHovered] = useState<number | undefined>();
+  const isDarkMode = useAppSelector((state) => state.darkMode.value);
+
   return (
     <Chat.Container
       ref={ref}
@@ -64,35 +68,41 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
       onWindowChange={onWindowChange}
       onWheel={onWheel}>
       {chatHistory.map((dialogue, index) => {
-        console.log(dialogue);
         const appliedPromptTemplate = promptTemplates
           ? promptTemplates.find(
-              (template) => template.name === dialogue.prompt_template
-            )
+            (template) => template.name === dialogue.prompt_template
+          )
           : undefined;
-
         return (
           <div
             className="flex flex-col p-2"
-            key={index}>
+            key={index}
+            onMouseEnter={() => setDialoguePairHovered(index)}
+            onMouseLeave={() => setDialoguePairHovered(undefined)}>
             <div className="flex flex-col text-right pr-2 text-xs text-black">
               You
             </div>
             <div className="self-end snap-top max-w-[90%]">
               <Tooltip
-                position={TooltipPosition.left}
+                position={TooltipPosition.top}
+                contentMaxWidth={500}
+                contentMinWidth={300}
+                backgroundColor={isDarkMode ? '#132171' : '#FFFFFF'}
+                fontColor={isDarkMode ? '#FFFFFF' : '#000000'}
+                offsetLeft={-100}
+                offsetTop={-10}
                 content={
-                  appliedPromptTemplate ? (
-                    <ColorCodedTemplateString
-                      template={appliedPromptTemplate?.template}
-                    />
-                  ) : (
-                    'no template'
-                  )
+                  <PromptBubbleInfo
+                    duration={dialogue.duration}
+                    prompt={dialogue.prepared_prompt}
+                    prompt_template={dialogue.prompt_template}
+                    templateString={appliedPromptTemplate ? appliedPromptTemplate.template : undefined}
+                  />
                 }>
                 <Chat.TalkBubble
                   backgroundColor="#a3a3a3"
-                  fontColor="#FFF">
+                  fontColor="#FFF"
+                  styles={{ border: dialoguePairHovered === index ? '2px solid red' : '2px solid transparent' }}>
                   {dialogue.prepared_prompt}
                 </Chat.TalkBubble>
               </Tooltip>
@@ -103,7 +113,10 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
             <Chat.TalkBubble
               backgroundColor="#3498db"
               fontColor="#FFF"
-              styles={{ textAlign: 'left' }}>
+              styles={{
+                textAlign: 'left',
+                border: dialoguePairHovered === index ? '2px solid red' : '2px solid transparent'
+              }}>
               {dialogue.predicted_result}
             </Chat.TalkBubble>
           </div>
@@ -120,9 +133,9 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
             styles={{ alignSelf: 'flex-end' }}>
             {currentPromptTemplate && currentPromptText
               ? currentPromptTemplate.template.replace(
-                  '{{ prompt }}',
-                  currentPromptText
-                )
+                '{{ prompt }}',
+                currentPromptText
+              )
               : currentPromptText}
           </Chat.TalkBubble>
           <div className="flex flex-col text-left pl-2 text-xs text-black">

@@ -33,7 +33,10 @@ function ManualRedTeaming(props: ActiveSessionProps) {
     PromptTemplate | undefined
   >(undefined);
 
-  const layoutMode = useAppSelector((state) => state.chatLayoutMode.value);
+  let layoutMode = useAppSelector((state) => state.chatLayoutMode.value);
+  if (activeSession && activeSession.chats.length < 4) {
+    layoutMode = LayoutMode.FREE
+  }
   const windowsMap = useAppSelector((state) => state.windows.map);
   const [
     sendPrompt,
@@ -197,34 +200,35 @@ function ManualRedTeaming(props: ActiveSessionProps) {
               {activeSession.description}
             </div>
           </div>
-          <div className="flex gap-6 absolute top-4 left-[50%] transform -translate-x-1/2">
-            <Tooltip
-              disabled={layoutMode === LayoutMode.SLIDE}
-              content="Switch to slide layout"
-              position={TooltipPosition.left}
-              offsetLeft={-18}
-              offsetTop={5}>
-              <Icon
-                size={25}
-                name={IconName.LayoutColumns}
+          {(activeSession && activeSession.chats.length > 3) ?
+            <div className="flex gap-6 absolute top-4 left-[50%] transform -translate-x-1/2">
+              <Tooltip
                 disabled={layoutMode === LayoutMode.SLIDE}
-                onClick={() => dispatch(setChatLayoutMode(LayoutMode.SLIDE))}
-              />
-            </Tooltip>
-            <Tooltip
-              disabled={layoutMode === LayoutMode.FREE}
-              content="Switch to free layout"
-              position={TooltipPosition.right}
-              offsetLeft={18}
-              offsetTop={5}>
-              <Icon
-                size={26}
-                name={IconName.LayoutWtf}
+                content="Switch to slide layout"
+                position={TooltipPosition.left}
+                offsetLeft={-18}
+                offsetTop={5}>
+                <Icon
+                  size={25}
+                  name={IconName.LayoutColumns}
+                  disabled={layoutMode === LayoutMode.SLIDE}
+                  onClick={() => dispatch(setChatLayoutMode(LayoutMode.SLIDE))}
+                />
+              </Tooltip>
+              <Tooltip
                 disabled={layoutMode === LayoutMode.FREE}
-                onClick={() => dispatch(setChatLayoutMode(LayoutMode.FREE))}
-              />
-            </Tooltip>
-          </div>
+                content="Switch to free layout"
+                position={TooltipPosition.right}
+                offsetLeft={18}
+                offsetTop={5}>
+                <Icon
+                  size={26}
+                  name={IconName.LayoutWtf}
+                  disabled={layoutMode === LayoutMode.FREE}
+                  onClick={() => dispatch(setChatLayoutMode(LayoutMode.FREE))}
+                />
+              </Tooltip>
+            </div> : null}
           <div className="absolute top-3 right-4 flex items-center gap-2">
             <div className="dark:text-white text-sm font-normal">
               Close Session

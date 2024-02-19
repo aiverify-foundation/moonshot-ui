@@ -1,4 +1,11 @@
-function ColorCodedTemplateString({ template }: { template: string }) {
+type ColorCodedTemplateStringProps = {
+  placeHolderColor?: string;
+  fontColor?: string;
+  template: string
+}
+
+function ColorCodedTemplateString(props: ColorCodedTemplateStringProps) {
+  const { placeHolderColor = '#be123c', fontColor = '#3b82f6', template } = props;
   const parts = template.split(/(\{\{ prompt \}\})/);
 
   return (
@@ -7,13 +14,13 @@ function ColorCodedTemplateString({ template }: { template: string }) {
         part === '{{ prompt }}' ? (
           <span
             key={index}
-            style={{ color: '#be123c' }}>
+            style={{ color: placeHolderColor }}>
             {part}
           </span>
         ) : (
           <span
             key={index}
-            style={{ color: '#3b82f6' }}>
+            style={{ color: fontColor }}>
             {part}
           </span>
         )

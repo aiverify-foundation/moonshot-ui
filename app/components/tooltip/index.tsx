@@ -26,6 +26,8 @@ type TooltipProps = {
   fontColor?: string;
   position?: TooltipPosition;
   content: ReactElement | string;
+  contentMaxWidth?: number;
+  contentMinWidth?: number;
   offsetLeft?: number;
   offsetTop?: number;
 };
@@ -103,6 +105,8 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
     flashDuration = 5000,
     disabled = false,
     content,
+    contentMaxWidth = 300,
+    contentMinWidth,
     position = TooltipPosition.left,
     backgroundColor = '#FFFFFF',
     fontColor = '#676767',
@@ -112,6 +116,7 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
   } = props;
   const [placement, setPlacement] =
     useState<TooltipPlacementStyle>(defaultPlacement);
+  const [isHovering, setIsHovering] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const positionClassname = `pos__${position}`;
@@ -136,6 +141,7 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
   function handleMouseOver() {
     if (disabled && !defaultShow) return;
     if (!tooltipRef.current || !triggerRef.current) return;
+    setIsHovering(true);
     const placementStyle = calculateTooltipPosition(
       triggerRef.current,
       tooltipRef.current,
@@ -148,24 +154,29 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
 
   function handleMouseOut() {
     if (disabled && defaultShow) return;
-    setPlacement(defaultPlacement);
+    setIsHovering(false);
+    if (!isHovering) {
+      setPlacement(defaultPlacement);
+    }
   }
 
   useEffect(() => {
     if (defaultShow) handleMouseOver();
-    else {
+    else if (!isHovering) { // Added check for isHovering before hiding the tooltip
       handleMouseOut();
     }
-  }, [defaultShow]);
+  }, [defaultShow, isHovering]);
 
   useEffect(() => {
     if (flash) {
       handleMouseOver();
       setTimeout(() => {
-        handleMouseOut();
+        if (!isHovering) { // Check if not hovering over the tooltip before hiding
+          handleMouseOut();
+        }
       }, flashDuration);
     }
-  }, [flash]);
+  }, [flash, isHovering]);
 
   return (
     <>
@@ -173,14 +184,17 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
         <div
           ref={tooltipRef}
           className={styles.tooltip}
-          style={{ ...placement, backgroundColor, color: fontColor }}>
+          style={{ ...placement, backgroundColor, color: fontColor }}
+          onMouseOver={handleMouseOver} // Added onMouseOver event to the tooltip
+          onMouseOut={handleMouseOut} // Added onMouseOut event to the tooltip
+        >
           <div
             className={clsx(styles.pointer, styles[positionClassname])}
             style={{ borderColor }}
           />
           <div
             className={styles.content}
-            style={{ backgroundColor }}>
+            style={{ backgroundColor, maxWidth: contentMaxWidth, minWidth: contentMinWidth }}>
             {content}
           </div>
         </div>,
