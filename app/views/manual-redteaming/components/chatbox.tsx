@@ -9,6 +9,7 @@ type ChatBoxProps = {
   title: string;
   resizable: boolean;
   draggable: boolean;
+  disableCloseIcon: boolean;
   disableOnScroll: boolean;
   chatHistory: DialoguePairInfo[];
   initialXY: [number, number];
@@ -28,6 +29,8 @@ type ChatBoxProps = {
     windowId: string
   ) => void;
   onWheel: (event: React.WheelEvent<HTMLDivElement>) => void;
+  onCloseClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onWholeWindowClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
 const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
@@ -35,6 +38,7 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
     windowId,
     resizable,
     draggable,
+    disableCloseIcon = true,
     disableOnScroll,
     title,
     chatHistory,
@@ -48,6 +52,8 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
     styles,
     onWindowChange,
     onWheel,
+    onCloseClick,
+    onWholeWindowClick,
   } = props;
 
   const [dialoguePairHovered, setDialoguePairHovered] = useState<
@@ -66,9 +72,12 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
       resizable={resizable}
       draggable={draggable}
       disableOnScroll={disableOnScroll}
+      disableCloseIcon={disableCloseIcon}
       styles={styles}
       onWindowChange={onWindowChange}
-      onWheel={onWheel}>
+      onWheel={onWheel}
+      onCloseClick={onCloseClick}
+      onWholeWindowClick={onWholeWindowClick}>
       {chatHistory.map((dialogue, index) => {
         const appliedPromptTemplate = promptTemplates
           ? promptTemplates.find(

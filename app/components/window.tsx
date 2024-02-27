@@ -36,7 +36,8 @@ type WindowProps = {
   leftFooterText?: string;
   disableFadeIn?: boolean;
   disableOnScroll?: boolean;
-  onCloseClick?: () => void;
+  onWholeWindowClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onCloseClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onWheel?: (e: React.WheelEvent<HTMLDivElement>) => void;
   onWindowChange?: (
     x: number,
@@ -72,6 +73,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       onCloseClick,
       onWheel,
       onWindowChange,
+      onWholeWindowClick,
     } = props;
     const [windowState, setWindowState] = useState<WindowState>(
       WindowState.default
@@ -232,6 +234,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       <div
         id={id}
         ref={windowRef}
+        onClick={onWholeWindowClick}
         className={`absolute px-3 pt-0 ${!leftFooterText ? 'pb-4' : ''} text-white 
           shadow-lg select-none min-w-96 shadow-neutral-800/40 bg-fuchsia-1000/80 
           dark:shadow-neutral-900/30 dark:bg-neutral-900/70 backdrop-blur-sm ${disableFadeIn ? '' : 'fadeScaleInAnimation'}`}

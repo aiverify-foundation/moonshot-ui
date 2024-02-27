@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect } from 'react';
+import { MutableRefObject, useEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import {
   getWindowId,
@@ -10,6 +10,13 @@ import { useAppSelector } from '@/lib/redux';
 import { ChatBox } from './chatbox';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
 import useChatboxesPositionsUtils from '@views/manual-redteaming/hooks/useChatboxesPositionsUtils';
+
+const minimizedStyle = {
+  transform: 'scale(0.1)', // Scale down the chatbox
+  top: `calc(100vh - 300px)`,
+  transition:
+    'transform 0.3s ease-in-out, top 0.5s ease-in-out, left 0.5s ease-in-out', // Smooth transition for the animation
+};
 
 type ChatFreeLayoutProps = {
   chatSession: Session;
@@ -42,14 +49,35 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
   } = props;
   const windowsMap = useAppSelector((state) => state.windows.map);
   const { resetChatboxPositions } = useChatboxesPositionsUtils(chatSession);
+  const [minizedChats, setMinizedChats] = useState<string[]>([]);
+  const [isMaximizing, setIsMazimizing] = useState(false);
 
   function handleResetClick() {
     resetChatboxPositions(true);
   }
 
+  function handleMinimizeClick(windowId: string) {
+    return () => {
+      setMinizedChats([...minizedChats, windowId]);
+    };
+  }
+
+  function handleMaximizeClick(windowId: string) {
+    return () => {
+      setIsMazimizing(true);
+      setMinizedChats(minizedChats.filter((id) => id !== windowId));
+    };
+  }
+
   useEffect(() => {
     resetChatboxPositions(false);
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsMazimizing(false);
+    }, 300);
+  }, [isMaximizing]);
 
   return (
     <div>
@@ -73,9 +101,12 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
         </div>
       </div>
       {chatSession.chats.map((id: string, index: number) => {
+        const isMinimized = minizedChats.includes(getWindowId(id));
+        const left = index * 20;
         return windowsMap[getWindowId(id)] ? (
           <ChatBox
             key={id}
+            disableCloseIcon={false}
             resizable
             draggable
             disableOnScroll
@@ -92,6 +123,20 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
             isChatCompletionInProgress={chatCompletionInProgress}
             onWindowChange={handleOnWindowChange}
             onWheel={handleOnWheel}
+            styles={
+              isMinimized
+                ? { ...minimizedStyle, left }
+                : isMaximizing
+                  ? {
+                      transition:
+                        'transform 0.3s ease-in-out, top 0.5s ease-in-out, left 0.5s ease-in-out',
+                    }
+                  : {}
+            }
+            onCloseClick={handleMinimizeClick(getWindowId(id))}
+            onWholeWindowClick={
+              isMinimized ? handleMaximizeClick(getWindowId(id)) : null
+            }
           />
         ) : null;
       })}

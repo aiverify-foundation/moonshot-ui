@@ -12,7 +12,7 @@ function PromptBubbleInfo(props: PromptBubbleInfoProps) {
     <div className="w-full p-2">
       <h3 className="mb-1 underline text-stone-50">Prompt Details</h3>
       <div>
-        <span className="text-sky-400 pr-1">Time Taken (secs):</span>
+        <span className="text-sky-400 pr-1">Response Time Taken (secs):</span>
         <span className="text-white">
           {parseFloat(duration as string).toFixed(4)}
         </span>

@@ -4,6 +4,7 @@ import { Window } from '@/app/components/window';
 type ChatboxProps = {
   windowId: string;
   name: string;
+  disableCloseIcon?: boolean;
   draggable?: boolean;
   resizable?: boolean;
   initialXY: [number, number];
@@ -11,8 +12,9 @@ type ChatboxProps = {
   initialScrollTop: number;
   disableOnScroll?: boolean;
   styles?: React.CSSProperties;
-  onCloseClick?: () => void;
+  onCloseClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onWheel: (e: React.WheelEvent<HTMLDivElement>) => void;
+  onWholeWindowClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onWindowChange?: (
     x: number,
     y: number,
@@ -31,6 +33,7 @@ const Container = forwardRef(
     const {
       windowId,
       name,
+      disableCloseIcon = true,
       initialXY,
       initialSize,
       initialScrollTop,
@@ -42,6 +45,7 @@ const Container = forwardRef(
       styles,
       onWheel,
       onWindowChange,
+      onWholeWindowClick,
     } = props;
 
     return (
@@ -59,7 +63,8 @@ const Container = forwardRef(
         onCloseClick={onCloseClick}
         onWheel={onWheel}
         onWindowChange={onWindowChange}
-        disableCloseIcon
+        onWholeWindowClick={onWholeWindowClick}
+        disableCloseIcon={disableCloseIcon}
         styles={{
           zIndex: 100,
           ...styles,
