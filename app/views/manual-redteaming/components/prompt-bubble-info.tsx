@@ -1,35 +1,42 @@
-import { useAppSelector } from "@/lib/redux";
-import { ColorCodedTemplateString } from "./color-coded-template";
+import { useAppSelector } from '@/lib/redux';
+import { ColorCodedTemplateString } from './color-coded-template';
 
 type PromptBubbleInfoProps = Partial<DialoguePairInfo> & {
   templateString?: string;
 };
-
 
 function PromptBubbleInfo(props: PromptBubbleInfoProps) {
   const { duration, prompt_template, templateString } = props;
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
   return (
     <div className="w-full p-2">
-      <h3 className="mb-1 underline">Prompt Details</h3>
+      <h3 className="mb-1 underline text-stone-50">Prompt Details</h3>
       <div>
-        <span className="text-slate-950 dark:text-sky-400 pr-1">Time Taken:</span>
-        <span className="text-blue-700 dark:text-white">{duration}</span>
+        <span className="text-sky-400 pr-1">Time Taken (secs):</span>
+        <span className="text-white">
+          {parseFloat(duration as string).toFixed(4)}
+        </span>
       </div>
       <div>
-        <span className="text-slate-950 dark:text-sky-400 pr-1">Template Name:</span>
-        <span className="text-blue-700 dark:text-white">{prompt_template || 'No Template'}</span>
+        <span className="text-sky-400 pr-1">Template Name:</span>
+        <span className="text-white">{prompt_template || 'No Template'}</span>
       </div>
-      {templateString ? <div className="text-slate-950 dark:text-sky-400 mb-1">Template String:</div> : null}
-      {templateString ? <div className="max-h-[200px] custom-scrollbar overflow-y-auto">
-        <ColorCodedTemplateString
-          fontColor={isDarkMode ? '#cffafe' : '#3b82f6'}
-          placeHolderColor={isDarkMode ? '#f87171' : '#be123c'}
-          template={templateString}
-        /></div> : null}
+      {templateString ? (
+        <div className="text-slate-950 dark:text-sky-400 mb-1">
+          Template String:
+        </div>
+      ) : null}
+      {templateString ? (
+        <div className="max-h-[200px] custom-scrollbar overflow-y-auto">
+          <ColorCodedTemplateString
+            fontColor={isDarkMode ? '#cffafe' : '#3b82f6'}
+            placeHolderColor={isDarkMode ? '#f87171' : '#be123c'}
+            template={templateString}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }
 
-export { PromptBubbleInfo }
-
+export { PromptBubbleInfo };

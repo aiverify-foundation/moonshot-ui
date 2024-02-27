@@ -98,7 +98,7 @@ function SelectList(props: SelectListProps) {
       <div
         id={id}
         className="h-full pr-1 bg-white custom-scrollbar overflow-auto">
-        <div className="rounded bg-white text-black h-full text-xs">
+        <div className="rounded bg-white text-black h-full text-sm">
           {data.map((item, index) => {
             const firstMatchIndex = data.findIndex(
               (item) =>

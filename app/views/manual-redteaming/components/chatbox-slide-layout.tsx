@@ -54,7 +54,7 @@ function SlidesIndexBtns(props: SlidesIndexBtnsProps) {
   return (
     <div
       id="slidesIndexBtns"
-      className="absolute left-[50%] translate-x-[-50%] bottom-[210px] flex justify-center items-center">
+      className="absolute left-[50%] translate-x-[-50%] bottom-[210px] flex justify-center items-center z-[100]">
       {chats.map((name, btnIndex) => {
         let targetBoxIndex = btnIndex;
         if (btnIndex === 0 || btnIndex === 1) {
@@ -78,7 +78,7 @@ function SlidesIndexBtns(props: SlidesIndexBtnsProps) {
                 rounded-full bg-white inline-block mr-2
                 hover:scale-150 transition-transform transform-gpu
                 ${currentIndex === btnIndex - 1 ? 'cursor-default' : 'cursor-pointer'}
-                border-2 border-fuchsia-800 dark:border-blue-600`}
+                border border-fuchsia-800 dark:border-blue-600`}
               onClick={
                 currentIndex === btnIndex - 1
                   ? undefined

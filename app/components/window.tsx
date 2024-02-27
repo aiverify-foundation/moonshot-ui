@@ -233,7 +233,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         id={id}
         ref={windowRef}
         className={`absolute px-3 pt-0 ${!leftFooterText ? 'pb-4' : ''} text-white 
-          shadow-lg select-none min-w-96 shadow-neutral-800/40 bg-fuchsia-900/70 
+          shadow-lg select-none min-w-96 shadow-neutral-800/40 bg-fuchsia-1000/80 
           dark:shadow-neutral-900/30 dark:bg-neutral-900/70 backdrop-blur-sm ${disableFadeIn ? '' : 'fadeScaleInAnimation'}`}
         style={{
           left: initialPosition[0],
@@ -277,7 +277,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
                 absolute border-b-2 border-r-2
                 border-solid bottom-1 right-1 cursor-se-resize 
                 dark:border-neutral-400/30
-                border-fuchsia-800"
+                border-fuchsia-200"
               onMouseDown={handleResizeMouseDown}
             />
           ) : null}

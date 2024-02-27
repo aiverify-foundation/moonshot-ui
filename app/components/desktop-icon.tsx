@@ -24,8 +24,8 @@ function DesktopIcon(props: DesktopIconProps) {
     case IconName.Folder:
       iconToRender = (
         <FolderIcon
-          backColor={isDarkMode ? '#2980b9' : '#701a75'}
-          frontColor={isDarkMode ? '#3498db' : '#86198f'}
+          backColor={isDarkMode ? '#2980b9' : '#702f8a'}
+          frontColor={isDarkMode ? '#3498db' : '#702f8a'}
           midColor="#bdc3c7"
           width={size}
           height={size}
@@ -35,8 +35,8 @@ function DesktopIcon(props: DesktopIconProps) {
     case IconName.FolderForChatSessions:
       iconToRender = (
         <FolderForChatSessionsIcon
-          backColor={isDarkMode ? '#2980b9' : '#701a75'}
-          frontColor={isDarkMode ? '#3498db' : '#86198f'}
+          backColor={isDarkMode ? '#2980b9' : '#702f8a'}
+          frontColor={isDarkMode ? '#3498db' : '#702f8a'}
           midColor="#bdc3c7"
           chatIconColor={isDarkMode ? '#2980b9' : '#f5d0fe'}
           width={size}
@@ -47,7 +47,7 @@ function DesktopIcon(props: DesktopIconProps) {
     case IconName.ChatBubbles:
       iconToRender = (
         <ChatBubblesIcon
-          outlineColor={isDarkMode ? '#FFFFFF' : '#a21caf'}
+          outlineColor={isDarkMode ? '#FFFFFF' : '#702f8a'}
           width={size}
           height={size}
         />
@@ -56,7 +56,7 @@ function DesktopIcon(props: DesktopIconProps) {
     case IconName.RunCookbook:
       iconToRender = (
         <RunCookbookIcon
-          outlineColor={isDarkMode ? '#FFFFFF' : '#a21caf'}
+          outlineColor={isDarkMode ? '#FFFFFF' : '#702f8a'}
           width={40}
           height={40}
         />

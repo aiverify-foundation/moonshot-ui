@@ -353,7 +353,7 @@ function PromptBox(props: PromptBoxProps) {
                     : 'Message'
                 }
                 inputStyles={
-                  showPromptTemplateList ? { backgroundColor: '#fef08a' } : {}
+                  showPromptTemplateList ? { backgroundColor: '#f5d0fe' } : {}
                 }
                 onChange={handleTextChange}
                 value={promptMessage}
@@ -373,7 +373,7 @@ function PromptBox(props: PromptBoxProps) {
                     : 'Message'
                 }
                 inputStyles={
-                  showPromptTemplateList ? { backgroundColor: '#fef08a' } : {}
+                  showPromptTemplateList ? { backgroundColor: '#ffedd5' } : {}
                 }
                 onChange={handleTextChange}
                 value={promptMessage}
@@ -438,7 +438,7 @@ function PromptBox(props: PromptBoxProps) {
               <div className="text-sm text-gray-800 pt-3 font-bold">
                 Template:
               </div>
-              <div className="text-xs text-gray-700 max-h-[200px] overflow-y-auto custom-scrollbar">
+              <div className="text-sm text-gray-700 max-h-[200px] overflow-y-auto custom-scrollbar">
                 <ColorCodedTemplateString
                   template={hoveredSelectedPromptTemplate.template}
                 />
@@ -447,11 +447,14 @@ function PromptBox(props: PromptBoxProps) {
           </div>
         ) : null}
         {showPromptTemplateList && (
-          <div className="absolute flex top-[-100px] left-[450px] gap-2">
+          <div className="absolute flex top-[-220px] gap-2">
             <SelectList
               id="prompt-template-list"
               data={listItems}
-              styles={{ width: 300 }}
+              styles={{
+                width: 475,
+                boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.4)',
+              }}
               highlight={
                 textInputMode === TextInputMode.PROMPT_TEMPLATE
                   ? promptMessage
@@ -465,8 +468,8 @@ function PromptBox(props: PromptBoxProps) {
             />
             {hoveredPromptTemplate && (
               <div className="flex flex-col w-[400px]">
-                <div className="bg-white/90 p-2 rounded-md shadow-md flex flex-col gap-0">
-                  <div className="text-sm font-bold text-gray-800 underline">
+                <div className="bg-white p-2 rounded-md shadow-md flex flex-col gap-0 border">
+                  <div className="text-lg font-bold text-gray-800">
                     {hoveredPromptTemplate.name}
                   </div>
                   <div className="text-sm text-gray-700">
@@ -475,7 +478,7 @@ function PromptBox(props: PromptBoxProps) {
                   <div className="text-sm text-gray-800 pt-3 font-bold">
                     Template
                   </div>
-                  <div className="text-xs text-gray-700 max-h-[200px] overflow-y-auto custom-scrollbar">
+                  <div className="text-sm text-gray-700 max-h-[200px] overflow-y-auto custom-scrollbar">
                     <ColorCodedTemplateString
                       template={hoveredPromptTemplate.template}
                     />
@@ -491,9 +494,9 @@ function PromptBox(props: PromptBoxProps) {
             data={slashCommandList}
             styles={{
               position: 'absolute',
-              top: -100,
-              left: -370,
-              width: 350,
+              top: -220,
+              boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.4)',
+              width: 475,
             }}
             highlight={
               textInputMode === TextInputMode.SLASH_COMMAND

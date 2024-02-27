@@ -43,13 +43,14 @@ export default function MoonshotDesktop() {
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
   const backgroundImageStyle = !isDarkMode
     ? {
-      backgroundImage: 'url("/pink-bg-fade3.png")',
-      backgroundBlendMode: 'multiply',
-    }
+        backgroundImage: 'url("/pink-bg-fade5.png")',
+        backgroundBlendMode: 'multiply',
+        backgroundSize: 'cover',
+      }
     : {
-      backgroundImage:
-        'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #454545, #0e0e0e)',
-    };
+        backgroundImage:
+          'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to bottom right, #454545, #0e0e0e)',
+      };
   const [
     createSession,
     {
@@ -127,11 +128,12 @@ export default function MoonshotDesktop() {
       className={`
         h-screen overflow-y-hidden
         flex flex-col bg-fuchsia-100
-        ${!isDarkMode
-          ? `
+        ${
+          !isDarkMode
+            ? `
           bg-gradient-to-br bg-no-repeat bg-right
           from-fuchsia-100 to-fuchsia-400`
-          : ''
+            : ''
         }
       `}
       style={{
@@ -269,18 +271,20 @@ export default function MoonshotDesktop() {
         />
       ) : null}
 
-      <Image
-        src="/moonshot_glow.png"
-        alt="Moonshot"
-        width={400}
-        height={80}
-        style={{
-          position: 'absolute',
-          bottom: 50,
-          right: -40,
-          zIndex: Z_Index.Base,
-        }}
-      />
+      {!isDesktopIconsHidden ? (
+        <Image
+          src="/moonshot_glow.png"
+          alt="Moonshot"
+          width={400}
+          height={80}
+          style={{
+            position: 'absolute',
+            bottom: 50,
+            right: -40,
+            zIndex: Z_Index.Base,
+          }}
+        />
+      ) : null}
     </div>
   );
 }

@@ -91,7 +91,7 @@ function Icon(props: IconProps) {
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#a21caf'
+              : lightModeColor || '#702f8a'
           }
           width={size}
           height={size}
@@ -104,7 +104,7 @@ function Icon(props: IconProps) {
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#a21caf'
+              : lightModeColor || '#702f8a'
           }
           width={size}
           height={size}
@@ -117,7 +117,7 @@ function Icon(props: IconProps) {
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#a21caf'
+              : lightModeColor || '#702f8a'
           }
           width={size}
           height={size}
@@ -130,7 +130,7 @@ function Icon(props: IconProps) {
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#a21caf'
+              : lightModeColor || '#702f8a'
           }
           width={size}
           height={size}
@@ -143,7 +143,7 @@ function Icon(props: IconProps) {
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#a21caf'
+              : lightModeColor || '#702f8a'
           }
           width={size}
           height={size}
@@ -156,7 +156,7 @@ function Icon(props: IconProps) {
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#a21caf'
+              : lightModeColor || '#702f8a'
           }
           width={size}
           height={size}
@@ -169,7 +169,7 @@ function Icon(props: IconProps) {
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#a21caf'
+              : lightModeColor || '#702f8a'
           }
           width={size}
           height={size}
@@ -182,7 +182,7 @@ function Icon(props: IconProps) {
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#a21caf'
+              : lightModeColor || '#702f8a'
           }
           width={size}
           height={size}
@@ -195,7 +195,7 @@ function Icon(props: IconProps) {
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#a21caf'
+              : lightModeColor || '#702f8a'
           }
           width={size}
           height={size}
@@ -208,7 +208,7 @@ function Icon(props: IconProps) {
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#a21caf'
+              : lightModeColor || '#702f8a'
           }
           width={size}
           height={size}
@@ -221,7 +221,7 @@ function Icon(props: IconProps) {
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#a21caf'
+              : lightModeColor || '#702f8a'
           }
           width={size}
           height={size}
@@ -234,7 +234,7 @@ function Icon(props: IconProps) {
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#a21caf'
+              : lightModeColor || '#702f8a'
           }
           width={size}
           height={size}
@@ -247,7 +247,7 @@ function Icon(props: IconProps) {
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#a21caf'
+              : lightModeColor || '#702f8a'
           }
           width={size}
           height={size}
@@ -260,7 +260,7 @@ function Icon(props: IconProps) {
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#a21caf'
+              : lightModeColor || '#702f8a'
           }
           width={size}
           height={size}

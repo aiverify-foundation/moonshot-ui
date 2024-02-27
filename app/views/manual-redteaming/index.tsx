@@ -35,7 +35,7 @@ function ManualRedTeaming(props: ActiveSessionProps) {
 
   let layoutMode = useAppSelector((state) => state.chatLayoutMode.value);
   if (activeSession && activeSession.chats.length < 4) {
-    layoutMode = LayoutMode.FREE
+    layoutMode = LayoutMode.FREE;
   }
   const windowsMap = useAppSelector((state) => state.windows.map);
   const [
@@ -192,7 +192,7 @@ function ManualRedTeaming(props: ActiveSessionProps) {
           <div className="absolute flex flex-col top-3 left-6">
             <h2 className="capitalize text-lg dark:text-red-500 text-fuchsia-900">
               Red Teaming -
-              <span className="font-bold text-fuchsia-800 dark:text-white ml-2 text-lg">
+              <span className="font-bold text-fuchsia-980 dark:text-white ml-2 text-lg">
                 {activeSession.name}
               </span>
             </h2>
@@ -200,7 +200,7 @@ function ManualRedTeaming(props: ActiveSessionProps) {
               {activeSession.description}
             </div>
           </div>
-          {(activeSession && activeSession.chats.length > 3) ?
+          {activeSession && activeSession.chats.length > 3 ? (
             <div className="flex gap-6 absolute top-4 left-[50%] transform -translate-x-1/2">
               <Tooltip
                 disabled={layoutMode === LayoutMode.SLIDE}
@@ -228,7 +228,8 @@ function ManualRedTeaming(props: ActiveSessionProps) {
                   onClick={() => dispatch(setChatLayoutMode(LayoutMode.FREE))}
                 />
               </Tooltip>
-            </div> : null}
+            </div>
+          ) : null}
           <div className="absolute top-3 right-4 flex items-center gap-2">
             <div className="dark:text-white text-sm font-normal">
               Close Session

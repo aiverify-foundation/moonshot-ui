@@ -7,7 +7,7 @@ export function getDefaultChatBoxSizes() {
   // Media query for large screens (e.g., more than 1180px)
   if (window.matchMedia('(min-width: 1180px)').matches) {
     width = 500; // Smaller width for small screens
-    height = 550; // Smaller height for small screens
+    height = 510; // Smaller height for small screens
     gap = 20; // Smaller gap for small screens
   }
 
