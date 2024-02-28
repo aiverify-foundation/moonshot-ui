@@ -172,11 +172,11 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
               (currentBoxIndex > 0 && index === currentBoxIndex - 1) ||
               (currentBoxIndex <= index && currentBoxIndex + 4 > index)
             ) {
-              if (!chatSession.chat_history[id]) return null;
+              // if (!chatSession.chat_history || !chatSession.chat_history[id]) return null;
               const xpos = index === 0 ? 0 : (width + gap) * index;
               const scrollPosition = boxRefs.current[index]
                 ? boxRefs.current[index].scrollHeight -
-                  boxRefs.current[index].clientHeight
+                boxRefs.current[index].clientHeight
                 : 0;
               return (
                 <ChatBox
@@ -189,7 +189,7 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
                         ? '3px solid #3498db'
                         : '3px solid transparent',
                   }}
-                  chatHistory={chatSession.chat_history[id]}
+                  chatHistory={chatSession.chat_history ? chatSession.chat_history[id] : []}
                   currentPromptTemplate={selectedPromptTemplate}
                   currentPromptText={promptText}
                   title={id}

@@ -110,7 +110,7 @@ type LoadingAnimationProps = {
 };
 
 function LoadingAnimation(props: LoadingAnimationProps) {
-  const { backgroundColor = '#3498db', dotColor = '#FFFFFF', styles } = props;
+  const { backgroundColor = '#94a3b8', dotColor = '#FFFFFF', styles } = props;
   return (
     <div
       style={{

@@ -116,7 +116,7 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
             initialXY={getWindowXY(windowsMap, id)}
             initialSize={getWindowSize(windowsMap, id)}
             initialScrollTop={getWindowScrollTop(windowsMap, id)}
-            chatHistory={chatSession.chat_history[id] || []}
+            chatHistory={chatSession.chat_history ? chatSession.chat_history[id] || [] : []}
             promptTemplates={promptTemplates}
             currentPromptTemplate={selectedPromptTemplate}
             currentPromptText={promptText}
@@ -128,9 +128,9 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
                 ? { ...minimizedStyle, left }
                 : isMaximizing
                   ? {
-                      transition:
-                        'transform 0.3s ease-in-out, top 0.5s ease-in-out, left 0.5s ease-in-out',
-                    }
+                    transition:
+                      'transform 0.3s ease-in-out, top 0.5s ease-in-out, left 0.5s ease-in-out',
+                  }
                   : {}
             }
             onCloseClick={handleMinimizeClick(getWindowId(id))}

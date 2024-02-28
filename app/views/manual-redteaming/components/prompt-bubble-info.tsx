@@ -22,15 +22,15 @@ function PromptBubbleInfo(props: PromptBubbleInfoProps) {
         <span className="text-white">{prompt_template || 'No Template'}</span>
       </div>
       {templateString ? (
-        <div className="text-slate-950 dark:text-sky-400 mb-1">
-          Template String:
+        <div className="text-stone-50 dark:text-sky-400 mb-1 mt-2 underline">
+          Template String
         </div>
       ) : null}
       {templateString ? (
         <div className="max-h-[200px] custom-scrollbar overflow-y-auto">
           <ColorCodedTemplateString
-            fontColor={isDarkMode ? '#cffafe' : '#3b82f6'}
-            placeHolderColor={isDarkMode ? '#f87171' : '#be123c'}
+            fontColor={isDarkMode ? '#cffafe' : '#ffffff'}
+            placeHolderColor={isDarkMode ? '#f87171' : '#ef4444'}
             template={templateString}
           />
         </div>
