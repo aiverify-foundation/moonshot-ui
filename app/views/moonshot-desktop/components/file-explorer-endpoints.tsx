@@ -61,14 +61,18 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
           <WindowList>
             {llmEndpoints
               ? llmEndpoints.map((endpoint) => (
-                  <WindowList.Item
-                    key={endpoint.name}
-                    displayName={endpoint.name}
-                    id={endpoint.name}
-                    onClick={() => handleListItemClick(endpoint.name)}
-                    selected={selectedEndpoint.name === endpoint.name}
-                  />
-                ))
+                <WindowList.Item
+                  key={endpoint.name}
+                  // displayName={endpoint.name}
+                  id={endpoint.name}
+                  onClick={() => handleListItemClick(endpoint.name)}
+                  selected={selectedEndpoint.name === endpoint.name}>
+                  <div className="flex items-center gap-2">
+                    <div className="font-bold">{endpoint.name}</div>
+                    <div><span>Type:</span><span>{endpoint.type}</span></div>
+                  </div>
+                </WindowList.Item>
+              ))
               : null}
           </WindowList>
           <WindowInfoPanel title="LLM Endpoint">
@@ -126,13 +130,13 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
         <WindowList>
           {llmEndpoints
             ? llmEndpoints.map((endpoint) => (
-                <WindowList.Item
-                  key={endpoint.name}
-                  displayName={endpoint.name}
-                  id={endpoint.name}
-                  onClick={handleListItemClick}
-                />
-              ))
+              <WindowList.Item
+                key={endpoint.name}
+                displayName={endpoint.name}
+                id={endpoint.name}
+                onClick={handleListItemClick}
+              />
+            ))
             : null}
         </WindowList>
       )}

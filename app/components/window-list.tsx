@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, ReactElement } from 'react';
 
 function WindowList(props: PropsWithChildren) {
   const { children } = props;
@@ -11,13 +11,13 @@ function WindowList(props: PropsWithChildren) {
 
 type ListItemProps = {
   id: string;
-  displayName: string;
+  displayName?: string;
   selected?: boolean;
   onClick: (id: string) => void;
 };
 
-function ListItem(props: ListItemProps) {
-  const { id, displayName, selected, onClick } = props;
+function ListItem(props: PropsWithChildren<ListItemProps>) {
+  const { id, displayName, selected, onClick, children } = props;
   return (
     <li
       className={`border-fuchsia-200 cursor-pointer py-1
@@ -26,6 +26,9 @@ function ListItem(props: ListItemProps) {
       `}
       onClick={() => onClick(id)}>
       {displayName}
+      <div>
+        {children}
+      </div>
     </li>
   );
 }
