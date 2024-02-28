@@ -12,6 +12,7 @@ type ChatBoxProps = {
   disableCloseIcon: boolean;
   disableOnScroll: boolean;
   chatHistory: DialoguePairInfo[];
+  disableBubbleTooltips?: boolean;
   initialXY: [number, number];
   initialSize: [number, number];
   initialScrollTop: number;
@@ -40,6 +41,7 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
     draggable,
     disableCloseIcon = true,
     disableOnScroll,
+    disableBubbleTooltips = false,
     title,
     chatHistory,
     initialXY,
@@ -81,8 +83,8 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
       {chatHistory.map((dialogue, index) => {
         const appliedPromptTemplate = promptTemplates
           ? promptTemplates.find(
-              (template) => template.name === dialogue.prompt_template
-            )
+            (template) => template.name === dialogue.prompt_template
+          )
           : undefined;
         return (
           <div
@@ -95,6 +97,7 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
             </div>
             <div className="self-end snap-top max-w-[90%]">
               <Tooltip
+                disabled={disableBubbleTooltips}
                 position={TooltipPosition.top}
                 contentMaxWidth={500}
                 contentMinWidth={300}
@@ -157,9 +160,9 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
             styles={{ alignSelf: 'flex-end', fontSize: 14 }}>
             {currentPromptTemplate && currentPromptText
               ? currentPromptTemplate.template.replace(
-                  '{{ prompt }}',
-                  currentPromptText
-                )
+                '{{ prompt }}',
+                currentPromptText
+              )
               : currentPromptText}
           </Chat.TalkBubble>
           <div className="flex flex-col text-left pl-2 text-xs text-black">

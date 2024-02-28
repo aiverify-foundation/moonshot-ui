@@ -106,10 +106,11 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
         return windowsMap[getWindowId(id)] ? (
           <ChatBox
             key={id}
-            disableCloseIcon={false}
+            disableCloseIcon={chatSession.chats.length === 1 || chatSession.chats.length - minizedChats.length === 1}
             resizable
             draggable
             disableOnScroll
+            disableBubbleTooltips={isMinimized}
             ref={(el) => (boxRefs.current[index] = el as HTMLDivElement)}
             windowId={getWindowId(id)}
             title={id}

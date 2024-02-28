@@ -120,6 +120,7 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const positionClassname = `pos__${position}`;
+  const showTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Use useRef to store the timeout
 
   let borderColor = '';
 
@@ -141,18 +142,25 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
   function handleMouseOver() {
     if (disabled && !defaultShow) return;
     if (!tooltipRef.current || !triggerRef.current) return;
-    setIsHovering(true);
-    const placementStyle = calculateTooltipPosition(
-      triggerRef.current,
-      tooltipRef.current,
-      position,
-      offsetLeft,
-      offsetTop
-    );
-    setPlacement(placementStyle);
+    showTimeoutRef.current = setTimeout(() => {
+      setIsHovering(true);
+      const placementStyle = calculateTooltipPosition(
+        triggerRef.current,
+        tooltipRef.current,
+        position,
+        offsetLeft,
+        offsetTop
+      );
+      setPlacement(placementStyle);
+    }, 200); // Delay of 200 milliseconds
   }
 
   function handleMouseOut() {
+    if (showTimeoutRef.current) {
+      clearTimeout(showTimeoutRef.current);
+      showTimeoutRef.current = null;
+    }
+
     if (disabled && defaultShow) return;
     setIsHovering(false);
     if (!isHovering) {
@@ -177,6 +185,14 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
       }, flashDuration);
     }
   }, [flash, isHovering]);
+
+  useEffect(() => {
+    return () => {
+      if (showTimeoutRef.current) {
+        clearTimeout(showTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <>
