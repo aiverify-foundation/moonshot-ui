@@ -27,15 +27,16 @@ type WindowProps = {
   minWidth?: number;
   minHeight?: number;
   backgroundColor?: string;
-  children?: React.ReactNode;
   styles?: React.CSSProperties;
   contentAreaStyles?: React.CSSProperties;
   resizeable?: boolean;
   disableCloseIcon?: boolean;
-  draggable?: boolean; // Added this line
+  draggable?: boolean;
   leftFooterText?: string;
   disableFadeIn?: boolean;
   disableOnScroll?: boolean;
+  children?: React.ReactNode;
+  topPanel?: React.ReactNode;
   onWholeWindowClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onCloseClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onWheel?: (e: React.WheelEvent<HTMLDivElement>) => void;
@@ -65,6 +66,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       resizeable = true,
       backgroundColor,
       children,
+      topPanel,
       disableCloseIcon = false,
       draggable = true, // Added this line
       leftFooterText,
@@ -261,6 +263,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
               />
             ) : null}
           </div>
+          {topPanel}
           <div
             ref={scrollDivRef}
             className="h-full overflow-x-hidden overflow-y-auto bg-white size-full custom-scrollbar snap-mandatory"

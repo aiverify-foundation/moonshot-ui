@@ -5,6 +5,10 @@ import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
 import useLLMEndpointList from '@views/moonshot-desktop/hooks/useLLMEndpointList';
+import { Icon, IconName } from '@/app/components/IconSVG';
+import { LLMItemCard } from './llm-item-card';
+import { LLMDetailsCard } from './llm-details-card';
+import { WindowTopBar } from '@/app/components/window-top-bar';
 
 type FileExplorerEndpointsProps = {
   windowId: string;
@@ -33,6 +37,9 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
   } = props;
   const { llmEndpoints, error, isLoading } = useLLMEndpointList();
   const [selectedEndpoint, setSelectedEndpoint] = useState<LLMEndpoint>();
+  const footerText = llmEndpoints.length
+    ? `${llmEndpoints.length} Endpoint${llmEndpoints.length > 1 ? 's' : ''}`
+    : '';
 
   function handleListItemClick(name: string) {
     const endpoint = llmEndpoints.find((epoint) => epoint.name === name);
@@ -44,75 +51,39 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
   return isLoading ? null : (
     <Window
       id={windowId}
-      resizeable
+      resizeable={false}
       initialXY={initialXY}
       zIndex={zIndex}
       initialWindowSize={initialSize}
       onCloseClick={onCloseClick}
       onWindowChange={onWindowChange}
       name="LLM Endpoints"
-      leftFooterText={
-        llmEndpoints.length
-          ? `${llmEndpoints.length} Endpoint${llmEndpoints.length > 1 ? 's' : ''}`
-          : ''
+      leftFooterText={footerText}
+      topPanel={
+        <WindowTopBar>
+          <h2>test</h2>
+        </WindowTopBar>
       }>
       {selectedEndpoint ? (
         <TwoPanel>
           <WindowList>
             {llmEndpoints
               ? llmEndpoints.map((endpoint) => (
-                <WindowList.Item
-                  key={endpoint.name}
-                  // displayName={endpoint.name}
-                  id={endpoint.name}
-                  onClick={() => handleListItemClick(endpoint.name)}
-                  selected={selectedEndpoint.name === endpoint.name}>
-                  <div className="flex items-center gap-2">
-                    <div className="font-bold">{endpoint.name}</div>
-                    <div><span>Type:</span><span>{endpoint.type}</span></div>
-                  </div>
-                </WindowList.Item>
-              ))
+                  <WindowList.Item
+                    key={endpoint.name}
+                    id={endpoint.name}
+                    onClick={() => handleListItemClick(endpoint.name)}
+                    selected={selectedEndpoint.name === endpoint.name}>
+                    <LLMItemCard endpoint={endpoint} />
+                  </WindowList.Item>
+                ))
               : null}
           </WindowList>
           <WindowInfoPanel title="LLM Endpoint">
             <div className="h-full">
               {selectedEndpoint ? (
                 <div className="flex flex-col gap-6">
-                  <div>
-                    <KeyValueDisplay
-                      label="Endpoint Name"
-                      value={selectedEndpoint.name}
-                    />
-                    <KeyValueDisplay
-                      label="Type"
-                      value={selectedEndpoint.type}
-                    />
-                    <KeyValueDisplay
-                      label="URI"
-                      value={selectedEndpoint.uri}
-                    />
-                    <KeyValueDisplay
-                      label="Max Calls / second"
-                      value={selectedEndpoint.max_calls_per_second.toString()}
-                    />
-                    <KeyValueDisplay
-                      label="Max Concurrency"
-                      value={selectedEndpoint.max_concurrency.toString()}
-                    />
-                    <KeyValueDisplay
-                      label="API Token"
-                      value={
-                        selectedEndpoint.token.substring(
-                          0,
-                          Math.ceil(selectedEndpoint.token.length / 2)
-                        ) +
-                        '*'.repeat(
-                          Math.floor(selectedEndpoint.token.length / 2)
-                        )
-                      }
-                    />
-                  </div>
+                  <LLMDetailsCard endpoint={selectedEndpoint} />
                   <div>
                     <button
                       className="btn-primary"
@@ -130,13 +101,13 @@ function FileExplorerEndpoints(props: FileExplorerEndpointsProps) {
         <WindowList>
           {llmEndpoints
             ? llmEndpoints.map((endpoint) => (
-              <WindowList.Item
-                key={endpoint.name}
-                displayName={endpoint.name}
-                id={endpoint.name}
-                onClick={handleListItemClick}
-              />
-            ))
+                <WindowList.Item
+                  key={endpoint.name}
+                  id={endpoint.name}
+                  onClick={handleListItemClick}>
+                  <LLMItemCard endpoint={endpoint} />
+                </WindowList.Item>
+              ))
             : null}
         </WindowList>
       )}

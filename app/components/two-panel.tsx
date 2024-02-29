@@ -13,8 +13,7 @@ function TwoPanel({ children }: { children: React.ReactNode[] }) {
 
   const handleMouseMove = (e: MouseEvent) => {
     if (!containerRef.current) return;
-    const containerRect =
-      containerRef.current.getBoundingClientRect();
+    const containerRect = containerRef.current.getBoundingClientRect();
     const newDividerPosition =
       ((e.clientX - containerRect.left) / containerRect.width) * 100;
     setDividerPosition(newDividerPosition);
@@ -37,7 +36,7 @@ function TwoPanel({ children }: { children: React.ReactNode[] }) {
       ref={containerRef}
       className="flex w-full h-full select-none">
       <div
-        className="h-full"
+        className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar"
         style={{ width: `${dividerPosition}%` }}>
         {children[0]}
       </div>
@@ -50,6 +49,7 @@ function TwoPanel({ children }: { children: React.ReactNode[] }) {
           dark:bg-neutral-900/70 "
       />
       <div
+        className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar"
         style={{
           width: `${100 - dividerPosition}%`,
           height: '100%',

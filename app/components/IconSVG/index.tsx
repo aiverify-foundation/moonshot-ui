@@ -17,6 +17,7 @@ import { MaximizeIcon } from './icons/maximize-icon';
 import { MinimizeIcon } from './icons/minimize-icon';
 import { ResetIcon } from './icons/reset-icon';
 import { RunCookbookIcon } from './icons/run-cookbook-icon';
+import { SolidBoxIcon } from './icons/box-icon';
 
 enum IconName {
   Folder,
@@ -35,6 +36,7 @@ enum IconName {
   LayoutWtf,
   LayoutColumns,
   Reset,
+  SolidBox,
 }
 
 type IconProps = {
@@ -258,6 +260,19 @@ function Icon(props: IconProps) {
       iconToRender = (
         <ResetIcon
           outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.SolidBox:
+      iconToRender = (
+        <SolidBoxIcon
+          fillColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
               : lightModeColor || '#702f8a'
