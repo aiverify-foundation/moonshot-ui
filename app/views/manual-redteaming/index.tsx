@@ -10,7 +10,7 @@ import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 import { ChatboxFreeLayout } from './components/chatbox-free-layout';
 import { ChatboxSlideLayout } from './components/chatbox-slide-layout';
 import { PromptBox } from './components/prompt-box';
-import { getWindowId, getWindowXY } from '@app/lib/window';
+import { getWindowId, getWindowXYById } from '@app/lib/window-utils';
 import { ScreenOverlay } from '@components/screen-overlay';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
 import { updateChatHistory } from '@redux/slices';
@@ -273,7 +273,7 @@ function ManualRedTeaming(props: ActiveSessionProps) {
           draggable={layoutMode === LayoutMode.FREE}
           initialXY={
             windowsMap[getWindowId(promptBoxId)]
-              ? getWindowXY(windowsMap, promptBoxId)
+              ? getWindowXYById(windowsMap, promptBoxId)
               : [710, 760]
           }
           chatSession={activeSession}

@@ -45,7 +45,7 @@ function TwoPanel({ children }: { children: React.ReactNode[] }) {
         onMouseDown={startResizing}
         className="
           cursor-col-resize h-full w-1.5  
-          bg-fuchsia-900/70
+          bg-fuchsia-1000/80
           dark:bg-neutral-900/70 "
       />
       <div

@@ -2,10 +2,10 @@ import { MutableRefObject, useEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import {
   getWindowId,
-  getWindowScrollTop,
-  getWindowSize,
-  getWindowXY,
-} from '@/app/lib/window';
+  getWindowScrollTopById,
+  getWindowSizeById,
+  getWindowXYById,
+} from '@/app/lib/window-utils';
 import { useAppSelector } from '@/lib/redux';
 import { ChatBox } from './chatbox';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
@@ -106,7 +106,10 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
         return windowsMap[getWindowId(id)] ? (
           <ChatBox
             key={id}
-            disableCloseIcon={chatSession.chats.length === 1 || chatSession.chats.length - minizedChats.length === 1}
+            disableCloseIcon={
+              chatSession.chats.length === 1 ||
+              chatSession.chats.length - minizedChats.length === 1
+            }
             resizable
             draggable
             disableOnScroll
@@ -114,10 +117,12 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
             ref={(el) => (boxRefs.current[index] = el as HTMLDivElement)}
             windowId={getWindowId(id)}
             title={id}
-            initialXY={getWindowXY(windowsMap, id)}
-            initialSize={getWindowSize(windowsMap, id)}
-            initialScrollTop={getWindowScrollTop(windowsMap, id)}
-            chatHistory={chatSession.chat_history ? chatSession.chat_history[id] || [] : []}
+            initialXY={getWindowXYById(windowsMap, id)}
+            initialSize={getWindowSizeById(windowsMap, id)}
+            initialScrollTop={getWindowScrollTopById(windowsMap, id)}
+            chatHistory={
+              chatSession.chat_history ? chatSession.chat_history[id] || [] : []
+            }
             promptTemplates={promptTemplates}
             currentPromptTemplate={selectedPromptTemplate}
             currentPromptText={promptText}
@@ -129,9 +134,9 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
                 ? { ...minimizedStyle, left }
                 : isMaximizing
                   ? {
-                    transition:
-                      'transform 0.3s ease-in-out, top 0.5s ease-in-out, left 0.5s ease-in-out',
-                  }
+                      transition:
+                        'transform 0.3s ease-in-out, top 0.5s ease-in-out, left 0.5s ease-in-out',
+                    }
                   : {}
             }
             onCloseClick={handleMinimizeClick(getWindowId(id))}

@@ -5,7 +5,12 @@ import React, { useEffect, useState } from 'react';
 
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { useWindowChange } from '@/app/hooks/use-window-change';
-import { getWindowId, getWindowSize, getWindowXY } from '@/app/lib/window';
+import {
+  calcCentralizedWindowXY,
+  getWindowId,
+  getWindowSizeById,
+  getWindowXYById,
+} from '@/app/lib/window-utils';
 import {
   useCreateSessionMutation,
   useLazySetActiveSessionQuery,
@@ -18,14 +23,14 @@ import {
 } from '@/lib/redux/slices/activeSessionSlice';
 import { toggleDarkMode } from '@/lib/redux/slices/darkModeSlice';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
-import { FileExplorerEndpoints } from './components/file-explorer-endpoints';
 import { FileExplorerSavedSessions } from './components/file-explorer-saved-sessions';
 import { WindowCreateSession } from './components/window-create-session';
-import { WindowIds, Z_Index } from './constants';
+import { WindowIds, Z_Index, defaultWindowWidthHeight } from './constants';
 import { DesktopIcon } from '@components/desktop-icon';
 import Menu from '@components/menu';
 import TaskBar from '@components/taskbar';
 import { Window } from '@components/window';
+import { EndpointsExplorer } from '@views/model-management/explorer-endpoints';
 
 export default function MoonshotDesktop() {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
@@ -43,14 +48,14 @@ export default function MoonshotDesktop() {
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
   const backgroundImageStyle = !isDarkMode
     ? {
-      backgroundImage: 'url("/pink-bg-fade5.png")',
-      backgroundBlendMode: 'multiply',
-      backgroundSize: 'cover',
-    }
+        backgroundImage: 'url("/pink-bg-fade5.png")',
+        backgroundBlendMode: 'multiply',
+        backgroundSize: 'cover',
+      }
     : {
-      backgroundImage:
-        'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to right bottom, rgb(113 112 112), rgb(34 34 34))',
-    };
+        backgroundImage:
+          'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to right bottom, rgb(113 112 112), rgb(34 34 34))',
+      };
   const [
     createSession,
     {
@@ -112,14 +117,31 @@ export default function MoonshotDesktop() {
 
   useEffect(() => {
     //set default window dimensions
-    const defaultExplorerWindowDimensions: WindowData = [600, 200, 820, 470, 0];
     const defaults: Record<string, WindowData> = {};
-    defaults[getWindowId(WindowIds.LLM_ENDPOINTS)] =
-      defaultExplorerWindowDimensions;
-    defaults[getWindowId(WindowIds.SAVED_SESSIONS)] =
-      defaultExplorerWindowDimensions;
-    defaults[getWindowId(WindowIds.CREATE_SESSION)] =
-      defaultExplorerWindowDimensions;
+    defaults[getWindowId(WindowIds.LLM_ENDPOINTS)] = [
+      ...calcCentralizedWindowXY(
+        ...defaultWindowWidthHeight[WindowIds.LLM_ENDPOINTS]
+      ),
+      defaultWindowWidthHeight[WindowIds.LLM_ENDPOINTS][0],
+      defaultWindowWidthHeight[WindowIds.LLM_ENDPOINTS][1],
+      0,
+    ];
+    defaults[getWindowId(WindowIds.SAVED_SESSIONS)] = [
+      ...calcCentralizedWindowXY(
+        ...defaultWindowWidthHeight[WindowIds.SAVED_SESSIONS]
+      ),
+      defaultWindowWidthHeight[WindowIds.SAVED_SESSIONS][0],
+      defaultWindowWidthHeight[WindowIds.SAVED_SESSIONS][1],
+      0,
+    ];
+    defaults[getWindowId(WindowIds.CREATE_SESSION)] = [
+      ...calcCentralizedWindowXY(
+        ...defaultWindowWidthHeight[WindowIds.CREATE_SESSION]
+      ),
+      defaultWindowWidthHeight[WindowIds.CREATE_SESSION][0],
+      defaultWindowWidthHeight[WindowIds.CREATE_SESSION][1],
+      0,
+    ];
     dispatch(updateWindows(defaults));
   }, []);
 
@@ -128,11 +150,12 @@ export default function MoonshotDesktop() {
       className={`
         h-screen overflow-y-hidden
         flex flex-col bg-fuchsia-100
-        ${!isDarkMode
-          ? `
+        ${
+          !isDarkMode
+            ? `
           bg-gradient-to-br bg-no-repeat bg-right
           from-fuchsia-100 to-fuchsia-400`
-          : ''
+            : ''
         }
       `}
       style={{
@@ -232,8 +255,8 @@ export default function MoonshotDesktop() {
         <WindowCreateSession
           zIndex={Z_Index.Level_2}
           windowId={getWindowId(WindowIds.CREATE_SESSION)}
-          initialXY={getWindowXY(windowsMap, WindowIds.CREATE_SESSION)}
-          initialSize={getWindowSize(windowsMap, WindowIds.CREATE_SESSION)}
+          initialXY={getWindowXYById(windowsMap, WindowIds.CREATE_SESSION)}
+          initialSize={getWindowSizeById(windowsMap, WindowIds.CREATE_SESSION)}
           onCloseClick={() => setIsShowWindowCreateSession(false)}
           onStartClick={startNewSession}
           onWindowChange={handleOnWindowChange}
@@ -248,11 +271,11 @@ export default function MoonshotDesktop() {
       ) : null}
 
       {isEndpointsExplorerOpen ? (
-        <FileExplorerEndpoints
+        <EndpointsExplorer
           zIndex={Z_Index.Level_2}
           windowId={getWindowId(WindowIds.LLM_ENDPOINTS)}
-          initialXY={getWindowXY(windowsMap, WindowIds.LLM_ENDPOINTS)}
-          initialSize={getWindowSize(windowsMap, WindowIds.LLM_ENDPOINTS)}
+          initialXY={getWindowXYById(windowsMap, WindowIds.LLM_ENDPOINTS)}
+          initialSize={getWindowSizeById(windowsMap, WindowIds.LLM_ENDPOINTS)}
           onWindowChange={handleOnWindowChange}
           onCloseClick={() => setIsEndpointsExplorerOpen(false)}
         />
@@ -262,8 +285,8 @@ export default function MoonshotDesktop() {
         <FileExplorerSavedSessions
           zIndex={Z_Index.Level_2}
           windowId={getWindowId(WindowIds.SAVED_SESSIONS)}
-          initialXY={getWindowXY(windowsMap, WindowIds.SAVED_SESSIONS)}
-          initialSize={getWindowSize(windowsMap, WindowIds.SAVED_SESSIONS)}
+          initialXY={getWindowXYById(windowsMap, WindowIds.SAVED_SESSIONS)}
+          initialSize={getWindowSizeById(windowsMap, WindowIds.SAVED_SESSIONS)}
           onCloseClick={() => setIsShowWindowSavedSession(false)}
           onContinueSessionClick={handleContinueSessionClick}
           onWindowChange={handleOnWindowChange}

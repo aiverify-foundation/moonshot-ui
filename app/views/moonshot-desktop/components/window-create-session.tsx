@@ -5,7 +5,7 @@ import useLLMEndpointList from '@/app/views/moonshot-desktop/hooks/useLLMEndpoin
 import { TextArea } from '@components/textArea';
 import { TextInput } from '@components/textInput';
 import { Window } from '@components/window';
-import { getWindowId } from '@/app/lib/window';
+import { getWindowId } from '@/app/lib/window-utils';
 
 type WindowChatStartProps = {
   zIndex: number | 'auto';

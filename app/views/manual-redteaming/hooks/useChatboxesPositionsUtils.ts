@@ -1,4 +1,4 @@
-import { getWindowId } from '@/app/lib/window';
+import { getWindowId } from '@/app/lib/window-utils';
 import { updateWindows, useAppDispatch, useAppSelector } from '@/lib/redux';
 
 type ChatboxesPositionsUtils = {

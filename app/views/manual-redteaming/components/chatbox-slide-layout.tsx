@@ -1,6 +1,6 @@
 import { MutableRefObject, useEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
-import { getWindowId } from '@/app/lib/window';
+import { getWindowId } from '@/app/lib/window-utils';
 import { ChatBox } from './chatbox';
 import { getDefaultChatBoxSizes } from './chatbox-slide-box-sizes';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
@@ -176,7 +176,7 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
               const xpos = index === 0 ? 0 : (width + gap) * index;
               const scrollPosition = boxRefs.current[index]
                 ? boxRefs.current[index].scrollHeight -
-                boxRefs.current[index].clientHeight
+                  boxRefs.current[index].clientHeight
                 : 0;
               return (
                 <ChatBox
@@ -189,7 +189,9 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
                         ? '3px solid #3498db'
                         : '3px solid transparent',
                   }}
-                  chatHistory={chatSession.chat_history ? chatSession.chat_history[id] : []}
+                  chatHistory={
+                    chatSession.chat_history ? chatSession.chat_history[id] : []
+                  }
                   currentPromptTemplate={selectedPromptTemplate}
                   currentPromptText={promptText}
                   title={id}
