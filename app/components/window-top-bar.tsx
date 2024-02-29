@@ -6,7 +6,13 @@ type WindowTopBarProps = {
 
 function WindowTopBar(props: PropsWithChildren<WindowTopBarProps>) {
   const { height = 40, children } = props;
-  return <div style={{ height }}>{children}</div>;
+  return (
+    <div
+      style={{ height }}
+      className="shrink-0">
+      {children}
+    </div>
+  );
 }
 
 export { WindowTopBar };

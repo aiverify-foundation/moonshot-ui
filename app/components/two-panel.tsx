@@ -36,23 +36,23 @@ function TwoPanel({ children }: { children: React.ReactNode[] }) {
       ref={containerRef}
       className="flex w-full h-full select-none">
       <div
-        className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar"
-        style={{ width: `${dividerPosition}%` }}>
+        className="overflow-x-hidden overflow-y-auto custom-scrollbar mr-[2px] my-[2px]"
+        style={{ width: `${dividerPosition}%`, height: 'calc(100% - 4px)' }}>
         {children[0]}
       </div>
       <div
         ref={dividerRef}
         onMouseDown={startResizing}
         className="
-          cursor-col-resize h-full w-1.5  
+          cursor-col-resize h-full w-2  
           bg-fuchsia-1000/80
-          dark:bg-neutral-900/70 "
+          dark:bg-neutral-900/70"
       />
       <div
-        className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar"
+        className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar mr-[2px] my-[2px]"
         style={{
+          height: 'calc(100% - 4px)',
           width: `${100 - dividerPosition}%`,
-          height: '100%',
         }}>
         {children[1]}
       </div>

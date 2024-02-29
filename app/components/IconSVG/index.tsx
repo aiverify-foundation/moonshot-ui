@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import { useAppSelector } from '@/lib/redux';
 import { CircleArrowLeftIcon } from './icons/arrow-left-icon';
 import { CircleArrowRightIcon } from './icons/arrow-right-icon';
+import { SolidBoxIcon } from './icons/box-icon';
 import { BurgerMenuIcon } from './icons/burger-menu-icon';
 import { ChatBubbleWideIcon } from './icons/chat-bubble-wide-icon';
 import { ChatBubblesIcon } from './icons/chat-bubbles-icon';
@@ -15,9 +16,9 @@ import { LayoutWtfIcon } from './icons/layout-wtf-icon';
 import { LightSunIcon } from './icons/light-sun-icon';
 import { MaximizeIcon } from './icons/maximize-icon';
 import { MinimizeIcon } from './icons/minimize-icon';
+import { PlusIcon } from './icons/plus-icon';
 import { ResetIcon } from './icons/reset-icon';
 import { RunCookbookIcon } from './icons/run-cookbook-icon';
-import { SolidBoxIcon } from './icons/box-icon';
 
 enum IconName {
   Folder,
@@ -37,6 +38,7 @@ enum IconName {
   LayoutColumns,
   Reset,
   SolidBox,
+  Plus,
 }
 
 type IconProps = {
@@ -273,6 +275,19 @@ function Icon(props: IconProps) {
       iconToRender = (
         <SolidBoxIcon
           fillColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Plus:
+      iconToRender = (
+        <PlusIcon
+          outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
               : lightModeColor || '#702f8a'

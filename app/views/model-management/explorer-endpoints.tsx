@@ -7,6 +7,7 @@ import { WindowTopBar } from '@/app/components/window-top-bar';
 import { LLMDetailsCard } from './components/llm-details-card';
 import { LLMItemCard } from './components/llm-item-card';
 import useLLMEndpointList from '@views/moonshot-desktop/hooks/useLLMEndpointList';
+import { Icon, IconName } from '@/app/components/IconSVG';
 
 type EndpointsExplorerProps = {
   windowId: string;
@@ -55,11 +56,27 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
       initialWindowSize={initialSize}
       onCloseClick={onCloseClick}
       onWindowChange={onWindowChange}
-      name="LLM Endpoints"
+      name="My Models"
       leftFooterText={footerText}
+      footerHeight={24}
       topPanel={
-        <WindowTopBar>
-          <h2>test</h2>
+        <WindowTopBar height={45}>
+          <div className="flex flex-col justify-end h-full py-2">
+            <div className="flex items-end">
+              <button
+                className="btn-outline btn-small rounded-none"
+                type="button">
+                <div className="flex items-center gap-2">
+                  <Icon
+                    name={IconName.Plus}
+                    lightModeColor="#FFFFFF"
+                    size={15}
+                  />
+                  Add New Model
+                </div>
+              </button>
+            </div>
+          </div>
         </WindowTopBar>
       }>
       {selectedEndpoint ? (
@@ -77,19 +94,11 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                 ))
               : null}
           </WindowList>
-          <WindowInfoPanel title="LLM Endpoint">
-            <div className="h-full">
+          <WindowInfoPanel title="Model Details">
+            <div className="h-full bg-gray-100">
               {selectedEndpoint ? (
                 <div className="flex flex-col gap-6">
                   <LLMDetailsCard endpoint={selectedEndpoint} />
-                  <div>
-                    <button
-                      className="btn-primary"
-                      type="button"
-                      onClick={() => null}>
-                      Edit
-                    </button>
-                  </div>
                 </div>
               ) : null}
             </div>

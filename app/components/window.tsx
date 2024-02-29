@@ -33,6 +33,7 @@ type WindowProps = {
   disableCloseIcon?: boolean;
   draggable?: boolean;
   leftFooterText?: string;
+  footerHeight?: number;
   disableFadeIn?: boolean;
   disableOnScroll?: boolean;
   children?: React.ReactNode;
@@ -68,8 +69,9 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       children,
       topPanel,
       disableCloseIcon = false,
-      draggable = true, // Added this line
+      draggable = true,
       leftFooterText,
+      footerHeight,
       disableFadeIn = false,
       disableOnScroll = false,
       onCloseClick,
@@ -252,7 +254,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         onMouseDown={handleMouseDown}>
         <div className="flex flex-col w-full h-full">
           <div className="flex justify-between w-full">
-            <div className="flex items-center h-8 text-sm">{name}</div>
+            <div className="flex items-center h-8 text-lg mt-2">{name}</div>
             {!disableCloseIcon ? (
               <Icon
                 lightModeColor="#FFFFFF"
@@ -275,7 +277,11 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
             onWheel={onWheel}>
             {children}
           </div>
-          <div className="text-xs text-white/70">{leftFooterText}</div>
+          <div
+            className="flex items-center justify-start text-xs text-white/70"
+            style={footerHeight !== undefined ? { height: footerHeight } : {}}>
+            {leftFooterText}
+          </div>
           {resizeable ? (
             <div
               className="

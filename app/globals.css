@@ -35,9 +35,19 @@
 }
 
 .btn-primary {
-  @apply text-white text-sm rounded px-3 py-1.5
+  @apply text-white text-sm px-3 py-1.5
   bg-fuchsia-900 hover:bg-fuchsia-800 active:bg-fuchsia-700
   dark:bg-sky-700 dark:hover:bg-sky-800 dark:active:bg-sky-600;
+}
+
+.btn-outline {
+  @apply text-white text-sm px-3 py-1.5
+  bg-fuchsia-900 hover:bg-fuchsia-800 active:bg-fuchsia-700
+  dark:bg-sky-700 dark:hover:bg-sky-800 dark:active:bg-sky-600;
+}
+
+.btn-small {
+  @apply h-7 py-0 px-2
 }
 
 .scroll-container {
