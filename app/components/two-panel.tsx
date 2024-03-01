@@ -35,9 +35,7 @@ function TwoPanel({ children }: { children: React.ReactNode[] }) {
     <div
       ref={containerRef}
       className="flex w-full h-full select-none">
-      <div
-        className="overflow-x-hidden overflow-y-auto custom-scrollbar mr-[2px] my-[2px]"
-        style={{ width: `${dividerPosition}%`, height: 'calc(100% - 4px)' }}>
+      <div style={{ width: `${dividerPosition}%`, height: 'calc(100% - 4px)' }}>
         {children[0]}
       </div>
       <div
@@ -49,7 +47,6 @@ function TwoPanel({ children }: { children: React.ReactNode[] }) {
           dark:bg-neutral-900/70"
       />
       <div
-        className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar mr-[2px] my-[2px]"
         style={{
           height: 'calc(100% - 4px)',
           width: `${100 - dividerPosition}%`,

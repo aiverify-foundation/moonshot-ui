@@ -58,7 +58,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
       onWindowChange={onWindowChange}
       name="My Models"
       leftFooterText={footerText}
-      footerHeight={24}
+      footerHeight={30}
       topPanel={
         <WindowTopBar height={45}>
           <div className="flex flex-col justify-end h-full py-2">
@@ -70,7 +70,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                   <Icon
                     name={IconName.Plus}
                     lightModeColor="#FFFFFF"
-                    size={15}
+                    size={11}
                   />
                   Add New Model
                 </div>

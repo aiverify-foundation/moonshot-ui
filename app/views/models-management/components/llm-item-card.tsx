@@ -7,7 +7,7 @@ type LLMItemCardProps = {
 function LLMItemCard(props: LLMItemCardProps) {
   const { endpoint } = props;
   return (
-    <div className="flex flex-col items-start py-2">
+    <div className="flex flex-col items-start">
       <div className="flex items-center gap-2 pb-2">
         <Icon
           name={IconName.SolidBox}

@@ -47,7 +47,7 @@
 }
 
 .btn-small {
-  @apply h-7 py-0 px-2
+  @apply h-7 py-0 px-2 text-xs
 }
 
 .scroll-container {

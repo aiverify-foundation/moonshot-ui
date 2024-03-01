@@ -268,7 +268,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
           {topPanel}
           <div
             ref={scrollDivRef}
-            className="h-full overflow-x-hidden overflow-y-auto bg-white size-full custom-scrollbar snap-mandatory"
+            className="h-full overflow-x-hidden overflow-y-auto
+              bg-white size-full custom-scrollbar snap-mandatory"
             style={{
               ...contentAreaStyles,
             }}
