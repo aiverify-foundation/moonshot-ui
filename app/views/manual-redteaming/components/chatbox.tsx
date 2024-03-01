@@ -1,15 +1,15 @@
 import { forwardRef, useState } from 'react';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
-import { Chat } from '@components/chat';
-import { PromptBubbleInfo } from './prompt-bubble-info';
 import { useAppSelector } from '@/lib/redux';
+import { PromptBubbleInfo } from './prompt-bubble-info';
+import { Chat } from '@components/chat';
 
 type ChatBoxProps = {
   windowId: string;
   title: string;
   resizable: boolean;
   draggable: boolean;
-  disableCloseIcon: boolean;
+  disableCloseIcon?: boolean;
   disableOnScroll: boolean;
   chatHistory: DialoguePairInfo[];
   disableBubbleTooltips?: boolean;
@@ -83,8 +83,8 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
       {chatHistory.map((dialogue, index) => {
         const appliedPromptTemplate = promptTemplates
           ? promptTemplates.find(
-            (template) => template.name === dialogue.prompt_template
-          )
+              (template) => template.name === dialogue.prompt_template
+            )
           : undefined;
         return (
           <div
@@ -160,9 +160,9 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
             styles={{ alignSelf: 'flex-end', fontSize: 14 }}>
             {currentPromptTemplate && currentPromptText
               ? currentPromptTemplate.template.replace(
-                '{{ prompt }}',
-                currentPromptText
-              )
+                  '{{ prompt }}',
+                  currentPromptText
+                )
               : currentPromptText}
           </Chat.TalkBubble>
           <div className="flex flex-col text-left pl-2 text-xs text-black">

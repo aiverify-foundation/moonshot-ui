@@ -308,7 +308,7 @@ function PromptBox(props: PromptBoxProps) {
       draggable={draggable}
       disableCloseIcon
       disableFadeIn
-      name="Prompt"
+      header={<div className="flex items-center h-8 text-sm">Prompt</div>}
       onCloseClick={onCloseClick}
       onWindowChange={onWindowChange}
       styles={{ overflow: 'show', position: 'absolute', ...styles }}

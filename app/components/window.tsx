@@ -19,7 +19,8 @@ enum WindowState {
 
 type WindowProps = {
   id: string;
-  name: string;
+  name?: string;
+  header?: React.ReactNode;
   initialXY?: [number, number];
   initialWindowSize?: [number, number];
   initialScrollTop?: number;
@@ -56,6 +57,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
     const {
       id,
       name,
+      header,
       initialXY = [180, 140],
       initialWindowSize = [640, 470],
       initialScrollTop = 0,
@@ -254,7 +256,9 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         onMouseDown={handleMouseDown}>
         <div className="flex flex-col w-full h-full">
           <div className="flex justify-between w-full">
-            <div className="flex items-center h-8 text-lg mt-2">{name}</div>
+            {header || (
+              <div className="flex items-center h-8 text-lg mt-2">{name}</div>
+            )}
             {!disableCloseIcon ? (
               <Icon
                 lightModeColor="#FFFFFF"

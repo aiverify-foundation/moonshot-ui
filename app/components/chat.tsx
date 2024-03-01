@@ -55,7 +55,7 @@ const Container = forwardRef(
         draggable={draggable}
         disableFadeIn
         id={windowId}
-        name={name}
+        header={<div className="flex items-center h-7 text-sm">{name}</div>}
         initialXY={initialXY}
         initialWindowSize={initialSize}
         initialScrollTop={initialScrollTop}
@@ -69,7 +69,9 @@ const Container = forwardRef(
           zIndex: 100,
           ...styles,
         }}>
-        {children}
+        <div className="h-full overflow-y-auto custom-scrollbar mr-[2px]">
+          {children}
+        </div>
       </Window>
     );
   }

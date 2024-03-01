@@ -260,6 +260,7 @@ function ManualRedTeaming(props: ActiveSessionProps) {
             chatSession={activeSession}
             boxRefs={chatBoxRefs}
             chatCompletionInProgress={sendPromptIsLoading}
+            promptTemplates={promptTemplates}
             selectedPromptTemplate={selectedPromptTemplate}
             promptText={promptText}
             handleOnWindowChange={handleOnWindowChange}

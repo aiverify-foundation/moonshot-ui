@@ -1,14 +1,15 @@
-import { MutableRefObject, useEffect, useState } from 'react';
+import { MutableRefObject, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { getWindowId } from '@/app/lib/window-utils';
 import { ChatBox } from './chatbox';
 import { getDefaultChatBoxSizes } from './chatbox-slide-box-sizes';
-import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 
 type ChatSlideLayoutProps = {
   chatSession: Session;
   boxRefs: MutableRefObject<HTMLDivElement[]>;
   chatCompletionInProgress: boolean;
+  promptTemplates: PromptTemplate[];
   selectedPromptTemplate: PromptTemplate | undefined;
   promptText: string;
   handleOnWindowChange: (
@@ -99,6 +100,7 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
     chatSession,
     boxRefs,
     chatCompletionInProgress,
+    promptTemplates,
     selectedPromptTemplate,
     promptText,
     handleOnWindowChange,
@@ -172,7 +174,6 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
               (currentBoxIndex > 0 && index === currentBoxIndex - 1) ||
               (currentBoxIndex <= index && currentBoxIndex + 4 > index)
             ) {
-              // if (!chatSession.chat_history || !chatSession.chat_history[id]) return null;
               const xpos = index === 0 ? 0 : (width + gap) * index;
               const scrollPosition = boxRefs.current[index]
                 ? boxRefs.current[index].scrollHeight -
@@ -183,15 +184,16 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
                   key={id}
                   ref={(el) => (boxRefs.current[index] = el as HTMLDivElement)}
                   windowId={getWindowId(id)}
-                  styles={{
-                    border:
-                      index === hoveredIndex
-                        ? '3px solid #3498db'
-                        : '3px solid transparent',
-                  }}
+                  // styles={{
+                  //   border:
+                  //     index === hoveredIndex
+                  //       ? '3px solid #3498db'
+                  //       : '3px solid transparent',
+                  // }}
                   chatHistory={
                     chatSession.chat_history ? chatSession.chat_history[id] : []
                   }
+                  promptTemplates={promptTemplates}
                   currentPromptTemplate={selectedPromptTemplate}
                   currentPromptText={promptText}
                   title={id}
