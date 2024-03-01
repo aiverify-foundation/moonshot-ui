@@ -1,10 +1,18 @@
+type ZIndex = {
+  Base: number;
+  Level_1: number;
+  Level_2: number;
+  FocusedWindow: number;
+  Top: number;
+};
+
 export const WindowIds = {
   LLM_ENDPOINTS: 'llmendpExplorer',
   SAVED_SESSIONS: 'savedSessions',
   CREATE_SESSION: 'createSession',
 };
 
-export const Z_Index = {
+export const Z_Index: ZIndex = {
   Base: 1,
   Level_1: 100,
   Level_2: 200,

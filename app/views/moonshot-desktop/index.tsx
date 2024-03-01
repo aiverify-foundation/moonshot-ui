@@ -30,7 +30,7 @@ import { DesktopIcon } from '@components/desktop-icon';
 import Menu from '@components/menu';
 import TaskBar from '@components/taskbar';
 import { Window } from '@components/window';
-import { EndpointsExplorer } from '@views/model-management/explorer-endpoints';
+import { EndpointsExplorer } from '@/app/views/model-management/endpoints-explorer';
 
 export default function MoonshotDesktop() {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
@@ -48,14 +48,14 @@ export default function MoonshotDesktop() {
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
   const backgroundImageStyle = !isDarkMode
     ? {
-        backgroundImage: 'url("/pink-bg-fade5.png")',
-        backgroundBlendMode: 'multiply',
-        backgroundSize: 'cover',
-      }
+      backgroundImage: 'url("/pink-bg-fade5.png")',
+      backgroundBlendMode: 'multiply',
+      backgroundSize: 'cover',
+    }
     : {
-        backgroundImage:
-          'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to right bottom, rgb(113 112 112), rgb(34 34 34))',
-      };
+      backgroundImage:
+        'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to right bottom, rgb(113 112 112), rgb(34 34 34))',
+    };
   const [
     createSession,
     {
@@ -150,12 +150,11 @@ export default function MoonshotDesktop() {
       className={`
         h-screen overflow-y-hidden
         flex flex-col bg-fuchsia-100
-        ${
-          !isDarkMode
-            ? `
+        ${!isDarkMode
+          ? `
           bg-gradient-to-br bg-no-repeat bg-right
           from-fuchsia-100 to-fuchsia-400`
-            : ''
+          : ''
         }
       `}
       style={{
