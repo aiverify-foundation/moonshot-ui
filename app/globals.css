@@ -50,6 +50,10 @@
   @apply h-7 py-0 px-2 text-xs
 }
 
+button:disabled {
+  @apply cursor-not-allowed pointer-events-none bg-fuchsia-900/30;
+}
+
 .scroll-container {
   @apply snap-mandatory overflow-y-auto overflow-x-hidden;
 }

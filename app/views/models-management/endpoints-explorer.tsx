@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import TwoPanel from '@/app/components/two-panel';
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
@@ -7,7 +8,6 @@ import { WindowTopBar } from '@/app/components/window-top-bar';
 import { LLMDetailsCard } from './components/llm-details-card';
 import { LLMItemCard } from './components/llm-item-card';
 import useLLMEndpointList from '@views/moonshot-desktop/hooks/useLLMEndpointList';
-import { Icon, IconName } from '@/app/components/IconSVG';
 
 type EndpointsExplorerProps = {
   windowId: string;
@@ -62,7 +62,20 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
       topPanel={
         <WindowTopBar height={45}>
           <div className="flex flex-col justify-end h-full py-2">
-            <div className="flex items-end">
+            <div className="flex items-end gap-1">
+              <button
+                disabled
+                className="btn-outline btn-small rounded-none"
+                type="button">
+                <div className="flex items-center gap-2">
+                  <Icon
+                    name={IconName.Plus}
+                    lightModeColor="#FFFFFF"
+                    size={11}
+                  />
+                  View Models
+                </div>
+              </button>
               <button
                 className="btn-outline btn-small rounded-none"
                 type="button">
@@ -73,6 +86,18 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                     size={11}
                   />
                   Add New Model
+                </div>
+              </button>
+              <button
+                className="btn-outline btn-small rounded-none"
+                type="button">
+                <div className="flex items-center gap-2">
+                  <Icon
+                    name={IconName.Plus}
+                    lightModeColor="#FFFFFF"
+                    size={11}
+                  />
+                  Select Models for Testing
                 </div>
               </button>
             </div>
