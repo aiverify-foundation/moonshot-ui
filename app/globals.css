@@ -34,6 +34,23 @@
   }
 }
 
+input[type="checkbox"] {
+  @apply appearance-none relative border border-slate-400
+}
+
+input[type="checkbox"]:checked {
+  @apply bg-fuchsia-200
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  clip-path: polygon(0 18%, 18% 10%, 28% 35%, 87% 2%, 96% 21%, 19% 63%);
+}
+
+input[type="checkbox"]:checked::before {
+  @apply absolute w-5 h-5 left-[2px] top-[-1px] rotate-[-15deg] bg-gray-600 dark:bg-slate-800
+}
+
 .btn-primary {
   @apply text-white text-sm px-3 py-1.5
   bg-fuchsia-900 hover:bg-fuchsia-800 active:bg-fuchsia-700
@@ -47,7 +64,7 @@
 }
 
 .btn-small {
-  @apply h-7 py-0 px-2 text-xs
+  @apply h-6 py-0 px-[7px] text-xs
 }
 
 button:disabled {

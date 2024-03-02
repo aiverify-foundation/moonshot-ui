@@ -21,6 +21,7 @@ import { ResetIcon } from './icons/reset-icon';
 import { RunCookbookIcon } from './icons/run-cookbook-icon';
 import { SquareIcon } from './icons/square-icon';
 import { CheckedSquareIcon } from './icons/checked-square-icon';
+import { ListIcon } from './icons/list-icon';
 
 enum IconName {
   Folder,
@@ -43,6 +44,7 @@ enum IconName {
   Plus,
   Square,
   CheckedSquare,
+  List,
 }
 
 type IconProps = {
@@ -317,6 +319,19 @@ function Icon(props: IconProps) {
     case IconName.CheckedSquare:
       iconToRender = (
         <CheckedSquareIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.List:
+      iconToRender = (
+        <ListIcon
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
