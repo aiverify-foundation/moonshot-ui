@@ -3,8 +3,13 @@ import TwoPanel from '@/app/components/two-panel';
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
+import { useCreateLLMEndpointMutation } from '@/app/services/llm-endpoint-api-service';
 import { LLMDetailsCard } from './components/llm-details-card';
 import { LLMItemCard } from './components/llm-item-card';
+import {
+  LLMEndpointFormValues,
+  NewModelEndpointForm,
+} from './components/new-endpoint-form';
 import { TaglabelsBox } from './components/tag-labels-box';
 import { ButtonAction, TopButtonsBar } from './components/top-buttons-bar';
 import useLLMEndpointList from '@views/moonshot-desktop/hooks/useLLMEndpointList';
@@ -27,6 +32,17 @@ type EndpointsExplorerProps = {
   ) => void;
 };
 
+function getWindowSubTitle(selectedBtnAction: ButtonAction) {
+  switch (selectedBtnAction) {
+    case ButtonAction.SELECT_MODELS:
+      return `My Models > Select Models`;
+    case ButtonAction.VIEW_MODELS:
+      return `My Models > View Models`;
+    case ButtonAction.ADD_NEW_MODEL:
+      return `My Models > Add New Model`;
+  }
+}
+
 function EndpointsExplorer(props: EndpointsExplorerProps) {
   const {
     windowId,
@@ -38,7 +54,12 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     zIndex,
     onWindowChange,
   } = props;
-  const { llmEndpoints, error, isLoading } = useLLMEndpointList();
+  const {
+    llmEndpoints,
+    error,
+    isLoading,
+    refetch: refetchLLMEndpoints,
+  } = useLLMEndpointList();
   const [selectedEndpoint, setSelectedEndpoint] = useState<
     LLMEndpoint | undefined
   >();
@@ -47,13 +68,25 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
   );
   const [selectedModels, setSelectedModels] = useState<LLMEndpoint[]>([]);
 
+  const [
+    createModelEndpoint,
+    {
+      data: newModelEndpoint,
+      isLoading: createModelEndpointIsLoding,
+      error: createModelEndpointError,
+    },
+  ] = useCreateLLMEndpointMutation();
+
   const isTwoPanel =
     selectedBtnAction === ButtonAction.SELECT_MODELS ||
+    selectedBtnAction === ButtonAction.ADD_NEW_MODEL ||
     (selectedBtnAction === ButtonAction.VIEW_MODELS && selectedEndpoint);
 
   const footerText = llmEndpoints.length
     ? `${llmEndpoints.length} Model${llmEndpoints.length > 1 ? 's' : ''}`
     : '';
+
+  const windowTitle = getWindowSubTitle(selectedBtnAction);
 
   function selectItem(name: string) {
     const endpoint = llmEndpoints.find((epoint) => epoint.name === name);
@@ -91,6 +124,25 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     setSelectedBtnAction(action);
   }
 
+  async function submitNewModel(data: LLMEndpointFormValues) {
+    const response = await createModelEndpoint({
+      type: data.type,
+      name: data.name,
+      uri: data.uri,
+      token: data.token,
+      max_calls_per_second: parseInt(data.maxCallsPerSecond),
+      max_concurrency: parseInt(data.maxConcurrency),
+      params: data.params,
+    });
+    if ('error' in response) {
+      console.error(response.error);
+      //TODO - create error visuals
+      return;
+    }
+    setSelectedBtnAction(ButtonAction.VIEW_MODELS);
+    setSelectedEndpoint(response.data);
+    refetchLLMEndpoints();
+  }
   useEffect(() => {
     setSelectedEndpoint(undefined);
   }, [selectedBtnAction]);
@@ -110,7 +162,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
       initialWindowSize={initialSize}
       onCloseClick={onCloseClick}
       onWindowChange={onWindowChange}
-      name="My Models"
+      name={windowTitle}
       leftFooterText={footerText}
       footerHeight={30}
       contentAreaStyles={{ backgroundColor: 'transparent' }}
@@ -154,34 +206,41 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                 ))
               : null}
           </WindowList>
-          <div className="flex flex-col h-full">
-            <div
-              className={`${
-                selectedBtnAction === ButtonAction.SELECT_MODELS
-                  ? 'h-[40%]'
-                  : 'h-full'
-              } bg-white`}>
-              <WindowInfoPanel title="Model Details">
-                <div className="h-full">
-                  {selectedEndpoint ? (
-                    <div className="flex flex-col gap-6">
-                      <LLMDetailsCard endpoint={selectedEndpoint} />
-                    </div>
+          {selectedBtnAction === ButtonAction.ADD_NEW_MODEL ? (
+            <div className="flex justify-center h-full">
+              <NewModelEndpointForm onFormSubmit={submitNewModel} />
+            </div>
+          ) : selectedBtnAction === ButtonAction.SELECT_MODELS ||
+            selectedBtnAction === ButtonAction.VIEW_MODELS ? (
+            <div className="flex flex-col h-full">
+              <div
+                className={`${
+                  selectedBtnAction === ButtonAction.SELECT_MODELS
+                    ? 'h-[40%]'
+                    : 'h-full'
+                } bg-white`}>
+                <WindowInfoPanel title="Model Details">
+                  <div className="h-full">
+                    {selectedEndpoint ? (
+                      <div className="flex flex-col gap-6">
+                        <LLMDetailsCard endpoint={selectedEndpoint} />
+                      </div>
+                    ) : null}
+                  </div>
+                </WindowInfoPanel>
+              </div>
+              {selectedBtnAction === ButtonAction.SELECT_MODELS ? (
+                <div className="h-[60%] flex items-center pt-4">
+                  {selectedModels.length ? (
+                    <TaglabelsBox
+                      models={selectedModels}
+                      onTaglabelIconClick={handleListItemClick}
+                    />
                   ) : null}
                 </div>
-              </WindowInfoPanel>
+              ) : null}
             </div>
-            {selectedBtnAction === ButtonAction.SELECT_MODELS ? (
-              <div className="h-[60%] flex items-center pt-4">
-                {selectedModels.length ? (
-                  <TaglabelsBox
-                    models={selectedModels}
-                    onTaglabelIconClick={handleListItemClick}
-                  />
-                ) : null}
-              </div>
-            ) : null}
-          </div>
+          ) : null}
         </TwoPanel>
       ) : (
         <WindowList styles={{ backgroundColor: '#FFFFFF' }}>

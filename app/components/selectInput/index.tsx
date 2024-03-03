@@ -33,8 +33,8 @@ const BORDER_FOCUS_COLOR = 'hsl(0, 0%, 70%)';
 const PLACEHOLDER_COLOR = '#cfcfcf';
 const OPTION_TEXT_COLOR = '#374151';
 const OPTION_SELECTED_TEXT_COLOR = '#ffffff';
-const OPTION_HOVER_COLOR = '#ebc8f9';
-const OPTION_SELECTED_COLOR = '#702f8a';
+const OPTION_HOVER_COLOR = '#e5e7eb';
+const OPTION_SELECTED_COLOR = '#d1d5db';
 const CONTROL_ENABLED_COLOR = '#ffffff';
 const CONTROL_DISABLED_COLOR = '#f5f5f5';
 
@@ -142,8 +142,24 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
             menu: (baseStyles) => ({
               ...baseStyles,
               zIndex: 1000,
-              maxHeight: '200px',
-              overflowY: 'auto',
+              borderRadius: 4,
+            }),
+            menuList: (baseStyles) => ({
+              ...baseStyles,
+              marginRight: 2,
+              '::-webkit-scrollbar': {
+                width: '0.5rem',
+              },
+              '::-webkit-scrollbar-track': {
+                backgroundColor: 'rgb(229 231 235)',
+              },
+              '::-webkit-scrollbar-thumb': {
+                backgroundColor: 'rgb(156 163 175 / 0.8)',
+                borderRadius: '0.375rem',
+              },
+              '::-webkit-scrollbar-thumb:hover': {
+                backgroundColor: 'rgb(156 163 175 / 0.6)',
+              },
             }),
             valueContainer: (baseStyles) => ({
               ...baseStyles,
