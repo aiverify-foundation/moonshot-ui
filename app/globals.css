@@ -39,7 +39,7 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-  @apply bg-fuchsia-200
+  @apply bg-fuchsia-200 dark:bg-sky-200
 }
 
 input[type="checkbox"]::before {

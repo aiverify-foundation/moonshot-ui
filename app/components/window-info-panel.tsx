@@ -10,7 +10,7 @@ function WindowInfoPanel(props: PropsWithChildren<WindowInfoPanelProps>) {
   return (
     <div className="h-full p-4 text-gray-600">
       <div className="flex flex-col">
-        <h3 className="text-lg font-bold">{title}</h3>
+        <h3 className="text-md font-bold">{title}</h3>
         <p className="mb-3 text-sm">{description}</p>
         {children}
       </div>

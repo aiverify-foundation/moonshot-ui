@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { IconName } from '@/app/components/IconSVG';
+import { TagLabel } from '@/app/components/tag-label';
 import TwoPanel from '@/app/components/two-panel';
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
@@ -7,8 +9,7 @@ import { LLMDetailsCard } from './components/llm-details-card';
 import { LLMItemCard } from './components/llm-item-card';
 import { ButtonAction, TopButtonsBar } from './components/top-buttons-bar';
 import useLLMEndpointList from '@views/moonshot-desktop/hooks/useLLMEndpointList';
-import { TagLabel } from '@/app/components/tag-label';
-import { IconName } from '@/app/components/IconSVG';
+import { TaglabelsBox } from './components/tag-labels-box';
 
 type EndpointsExplorerProps = {
   windowId: string;
@@ -49,7 +50,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     (selectedBtnAction === ButtonAction.VIEW_MODELS && selectedEndpoint);
 
   const footerText = llmEndpoints.length
-    ? `${llmEndpoints.length} Endpoint${llmEndpoints.length > 1 ? 's' : ''}`
+    ? `${llmEndpoints.length} Model${llmEndpoints.length > 1 ? 's' : ''}`
     : '';
 
   function selectItem(name: string) {
@@ -162,25 +163,10 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
             </div>
             {selectedBtnAction === ButtonAction.SELECT_MODELS ? (
               <div className="h-[60%] flex items-center pt-4">
-                <div
-                  className="relative h-full w-full flex flex-wrap gap-3  
-                  p-6 pt-11 content-start border">
-                  <div
-                    className="absolute h-7 top-0 left-0 bg-white p-1
-                    w-full text-gray-600 text-lg font-bold
-                    flex items-center px-4">
-                    Selected Models
-                  </div>
-                  {selectedModels.map((model) => (
-                    <TagLabel
-                      key={model.name}
-                      className="bg-slate-400 border dark:bg-sky-70"
-                      iconName={IconName.Close}
-                      text={model.name}
-                      onIconClick={handleListItemClick(model.name)}
-                    />
-                  ))}
-                </div>
+                <TaglabelsBox
+                  models={selectedModels}
+                  onTaglabelIconClick={handleListItemClick}
+                />
               </div>
             ) : null}
           </div>
