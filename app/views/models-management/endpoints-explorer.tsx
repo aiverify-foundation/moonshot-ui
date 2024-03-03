@@ -7,6 +7,8 @@ import { LLMDetailsCard } from './components/llm-details-card';
 import { LLMItemCard } from './components/llm-item-card';
 import { ButtonAction, TopButtonsBar } from './components/top-buttons-bar';
 import useLLMEndpointList from '@views/moonshot-desktop/hooks/useLLMEndpointList';
+import { TagLabel } from '@/app/components/tag-label';
+import { IconName } from '@/app/components/IconSVG';
 
 type EndpointsExplorerProps = {
   windowId: string;
@@ -140,15 +142,32 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                 ))
               : null}
           </WindowList>
-          <WindowInfoPanel title="Model Details">
-            <div className="h-full bg-gray-100">
-              {selectedEndpoint ? (
-                <div className="flex flex-col gap-6">
-                  <LLMDetailsCard endpoint={selectedEndpoint} />
-                </div>
-              ) : null}
+          <div className="flex flex-col">
+            <WindowInfoPanel title="Model Details">
+              <div className="h-full bg-gray-100">
+                {selectedEndpoint ? (
+                  <div className="flex flex-col gap-6">
+                    <LLMDetailsCard endpoint={selectedEndpoint} />
+                  </div>
+                ) : null}
+              </div>
+            </WindowInfoPanel>
+            <div className="flex flex-wrap gap-3 ">
+              {selectedModels.map((model) => (
+                <TagLabel
+                  key={model.name}
+                  className="bg-fuchsia-900/80 dark:bg-sky-70"
+                  iconName={IconName.Close}
+                  text={model.name}
+                />
+                // <div
+                //   key={model.name}
+                //   className=" bg-fuchsia-700 text-white">
+                //   {model.name}
+                // </div>
+              ))}
             </div>
-          </WindowInfoPanel>
+          </div>
         </TwoPanel>
       ) : (
         <WindowList>
@@ -157,14 +176,6 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                 <WindowList.Item
                   key={endpoint.name}
                   id={endpoint.name}
-                  enableCheckbox={
-                    selectedBtnAction === ButtonAction.SELECT_MODELS
-                  }
-                  checked={
-                    selectedModels.findIndex(
-                      (epoint) => epoint.name === endpoint.name
-                    ) > -1
-                  }
                   onClick={handleListItemClick(endpoint.name)}>
                   <LLMItemCard endpoint={endpoint} />
                 </WindowList.Item>
