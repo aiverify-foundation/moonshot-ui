@@ -19,7 +19,7 @@ const TagLabel: React.FC<TagLabelProps> = ({
   return (
     <div
       className={`flex items-center py-0 text-xs text-white divide-x 
-        divide-slate-100/50 h-fit rounded ${className}`}>
+        divide-slate-100/50 h-fit shadow-md rounded ${className}`}>
       {text !== undefined ? (
         <div className="h-full text-white px-2">{text}</div>
       ) : null}

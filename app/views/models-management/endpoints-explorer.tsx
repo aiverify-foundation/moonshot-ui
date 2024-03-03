@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
-import { IconName } from '@/app/components/IconSVG';
-import { TagLabel } from '@/app/components/tag-label';
 import TwoPanel from '@/app/components/two-panel';
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
 import { LLMDetailsCard } from './components/llm-details-card';
 import { LLMItemCard } from './components/llm-item-card';
+import { TaglabelsBox } from './components/tag-labels-box';
 import { ButtonAction, TopButtonsBar } from './components/top-buttons-bar';
 import useLLMEndpointList from '@views/moonshot-desktop/hooks/useLLMEndpointList';
-import { TaglabelsBox } from './components/tag-labels-box';
 
 type EndpointsExplorerProps = {
   windowId: string;
   initialXY: [number, number];
   initialSize: [number, number];
   zIndex: number | 'auto';
+  hideMenuButtons?: boolean;
+  buttonAction?: ButtonAction;
   onCloseClick: () => void;
   onWindowChange?: (
     x: number,
@@ -30,6 +30,8 @@ type EndpointsExplorerProps = {
 function EndpointsExplorer(props: EndpointsExplorerProps) {
   const {
     windowId,
+    hideMenuButtons = false,
+    buttonAction = ButtonAction.SELECT_MODELS,
     onCloseClick,
     initialXY = [600, 200],
     initialSize = [720, 470],
@@ -93,6 +95,12 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     setSelectedEndpoint(undefined);
   }, [selectedBtnAction]);
 
+  useEffect(() => {
+    if (buttonAction && hideMenuButtons) {
+      setSelectedBtnAction(buttonAction);
+    }
+  }, [buttonAction, hideMenuButtons]);
+
   return isLoading ? null : (
     <Window
       id={windowId}
@@ -107,10 +115,12 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
       footerHeight={30}
       contentAreaStyles={{ backgroundColor: 'transparent' }}
       topPanel={
-        <TopButtonsBar
-          onButtonClick={handleButtonClick}
-          activeButton={selectedBtnAction}
-        />
+        hideMenuButtons ? null : (
+          <TopButtonsBar
+            onButtonClick={handleButtonClick}
+            activeButton={selectedBtnAction}
+          />
+        )
       }>
       {isTwoPanel ? (
         <TwoPanel>
@@ -163,10 +173,12 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
             </div>
             {selectedBtnAction === ButtonAction.SELECT_MODELS ? (
               <div className="h-[60%] flex items-center pt-4">
-                <TaglabelsBox
-                  models={selectedModels}
-                  onTaglabelIconClick={handleListItemClick}
-                />
+                {selectedModels.length ? (
+                  <TaglabelsBox
+                    models={selectedModels}
+                    onTaglabelIconClick={handleListItemClick}
+                  />
+                ) : null}
               </div>
             ) : null}
           </div>
