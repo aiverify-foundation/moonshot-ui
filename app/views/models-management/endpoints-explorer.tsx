@@ -82,6 +82,9 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     selectedBtnAction === ButtonAction.ADD_NEW_MODEL ||
     (selectedBtnAction === ButtonAction.VIEW_MODELS && selectedEndpoint);
 
+  const initialDividerPosition =
+    selectedBtnAction === ButtonAction.ADD_NEW_MODEL ? 55 : 40;
+
   const footerText = llmEndpoints.length
     ? `${llmEndpoints.length} Model${llmEndpoints.length > 1 ? 's' : ''}`
     : '';
@@ -125,7 +128,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
   }
 
   async function submitNewModel(data: LLMEndpointFormValues) {
-    const response = await createModelEndpoint({
+    const newModelEndpoint = {
       type: data.type,
       name: data.name,
       uri: data.uri,
@@ -133,19 +136,20 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
       max_calls_per_second: parseInt(data.maxCallsPerSecond),
       max_concurrency: parseInt(data.maxConcurrency),
       params: data.params,
-    });
+    };
+    const response = await createModelEndpoint(newModelEndpoint);
     if ('error' in response) {
       console.error(response.error);
       //TODO - create error visuals
       return;
     }
     setSelectedBtnAction(ButtonAction.VIEW_MODELS);
-    setSelectedEndpoint(response.data);
+    setSelectedEndpoint(newModelEndpoint);
     refetchLLMEndpoints();
   }
-  useEffect(() => {
-    setSelectedEndpoint(undefined);
-  }, [selectedBtnAction]);
+  // useEffect(() => {
+  //   setSelectedEndpoint(undefined);
+  // }, [selectedBtnAction]);
 
   useEffect(() => {
     if (buttonAction && hideMenuButtons) {
@@ -175,8 +179,14 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
         )
       }>
       {isTwoPanel ? (
-        <TwoPanel>
-          <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
+        <TwoPanel
+          disableResize
+          initialDividerPosition={initialDividerPosition}>
+          <WindowList
+            disableMouseInteraction={
+              selectedBtnAction === ButtonAction.ADD_NEW_MODEL ? true : false
+            }
+            styles={{ backgroundColor: '#FFFFFF' }}>
             {llmEndpoints
               ? llmEndpoints.map((endpoint) => (
                   <WindowList.Item

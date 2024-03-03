@@ -1,18 +1,31 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-function TwoPanel({ children }: { children: React.ReactNode[] }) {
-  const [dividerPosition, setDividerPosition] = useState(40);
+type TwoPanelProps = {
+  disableResize?: boolean;
+  children: React.ReactNode[];
+  initialDividerPosition?: number;
+};
+
+function TwoPanel({
+  children,
+  disableResize = false,
+  initialDividerPosition = 40,
+}: TwoPanelProps) {
+  const [dividerPosition, setDividerPosition] = useState(
+    initialDividerPosition
+  );
   const dividerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const startResizing = (e: React.MouseEvent) => {
+    if (disableResize) return;
     e.preventDefault();
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', stopResizing);
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || disableResize) return;
     const containerRect = containerRef.current.getBoundingClientRect();
     const newDividerPosition =
       ((e.clientX - containerRect.left) / containerRect.width) * 100;
@@ -31,6 +44,10 @@ function TwoPanel({ children }: { children: React.ReactNode[] }) {
     };
   }, []);
 
+  useEffect(() => {
+    setDividerPosition(initialDividerPosition);
+  }, [initialDividerPosition]);
+
   return (
     <div
       ref={containerRef}
@@ -43,8 +60,8 @@ function TwoPanel({ children }: { children: React.ReactNode[] }) {
       <div
         ref={dividerRef}
         onMouseDown={startResizing}
-        className="
-          cursor-col-resize h-full w-2 bg-transparent"
+        className={`
+          ${disableResize ? 'cursor-default' : 'cursor-col-resize'} h-full w-2 bg-transparent`}
       />
       <div
         className="h-full"

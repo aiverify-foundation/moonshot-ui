@@ -38,6 +38,14 @@ const maxCallsPerSecondOptions: SelectOption[] = Array.from(
   })
 );
 
+const connectionTypeOptions: SelectOption[] = [
+  { value: 'hf-gpt2', label: 'hf-gpt2' },
+  { value: 'hf-llama2-13b-gptq', label: 'hf-llama2-13b-gptq' },
+  { value: 'claude2', label: 'calude2' },
+  { value: 'openai-gpt35', label: 'openai-gpt35' },
+  { value: 'openai-gpt4', label: 'openai-gpt4' },
+];
+
 type NewModelEndpointFormProps = {
   onFormSubmit: (data: LLMEndpointFormValues) => void;
 };
@@ -46,7 +54,6 @@ const NewModelEndpointForm: React.FC<NewModelEndpointFormProps> = ({
   onFormSubmit,
 }) => {
   async function handleFormSubmit(values: LLMEndpointFormValues) {
-    console.log(values);
     onFormSubmit(values);
   }
   return (
@@ -57,19 +64,6 @@ const NewModelEndpointForm: React.FC<NewModelEndpointFormProps> = ({
         {(formProps) => {
           return (
             <Form>
-              <TextInput
-                name="type"
-                label="Connection Type"
-                onChange={formProps.handleChange}
-                value={formProps.values.type}
-                onBlur={formProps.handleBlur}
-                error={
-                  formProps.touched.type && formProps.errors.type
-                    ? formProps.errors.type
-                    : undefined
-                }
-                placeholder=""
-              />
               <TextInput
                 name="name"
                 label="Name"
@@ -82,6 +76,13 @@ const NewModelEndpointForm: React.FC<NewModelEndpointFormProps> = ({
                     : undefined
                 }
                 placeholder=""
+              />
+              <SelectInput
+                label="Connection Type"
+                name="type"
+                options={connectionTypeOptions}
+                onSyntheticChange={formProps.handleChange}
+                value={formProps.values.type}
               />
               <TextInput
                 name="uri"
@@ -114,12 +115,14 @@ const NewModelEndpointForm: React.FC<NewModelEndpointFormProps> = ({
                 name="maxCallsPerSecond"
                 options={maxCallsPerSecondOptions}
                 onSyntheticChange={formProps.handleChange}
+                value={formProps.values.maxCallsPerSecond}
               />
               <SelectInput
                 label="Max Concurrency"
                 name="maxConcurrency"
                 options={maxConcurrencyOptions}
                 onSyntheticChange={formProps.handleChange}
+                value={formProps.values.maxConcurrency}
               />
               <div className="bottom-3 text-right">
                 <button

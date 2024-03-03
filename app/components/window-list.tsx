@@ -1,18 +1,19 @@
 import React, { PropsWithChildren } from 'react';
 
 type WindowListProps = {
+  disableMouseInteraction?: boolean;
   styles?: React.CSSProperties;
 };
 function WindowList(props: PropsWithChildren<WindowListProps>) {
-  const { children, styles } = props;
+  const { children, styles, disableMouseInteraction = false } = props;
   return (
     <div
       className="h-full overflow-x-hidden overflow-y-auto
       custom-scrollbar mr-[2px]"
       style={styles}>
       <ul
-        className="text-sm text-gray-600 divide-y divide-solid
-        divide-gray-200 dark:divide-slate-300">
+        className={`text-sm text-gray-600 divide-y divide-solid
+        divide-gray-200 dark:divide-slate-300 ${disableMouseInteraction ? 'pointer-events-none' : ''}`}>
         {children}
       </ul>
     </div>
