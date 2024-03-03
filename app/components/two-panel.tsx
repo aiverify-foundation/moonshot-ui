@@ -35,20 +35,20 @@ function TwoPanel({ children }: { children: React.ReactNode[] }) {
     <div
       ref={containerRef}
       className="flex w-full h-full select-none">
-      <div style={{ width: `${dividerPosition}%`, height: 'calc(100% - 4px)' }}>
+      <div
+        className="h-full"
+        style={{ width: `${dividerPosition}%` }}>
         {children[0]}
       </div>
       <div
         ref={dividerRef}
         onMouseDown={startResizing}
         className="
-          cursor-col-resize h-full w-2  
-          bg-fuchsia-1000/80
-          dark:bg-neutral-900/70"
+          cursor-col-resize h-full w-2 bg-transparent"
       />
       <div
+        className="h-full"
         style={{
-          height: 'calc(100% - 4px)',
           width: `${100 - dividerPosition}%`,
         }}>
         {children[1]}

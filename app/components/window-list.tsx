@@ -1,11 +1,15 @@
-import { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react';
 
-function WindowList(props: PropsWithChildren) {
-  const { children } = props;
+type WindowListProps = {
+  styles?: React.CSSProperties;
+};
+function WindowList(props: PropsWithChildren<WindowListProps>) {
+  const { children, styles } = props;
   return (
     <div
       className="h-full overflow-x-hidden overflow-y-auto
-      custom-scrollbar mr-[2px]">
+      custom-scrollbar mr-[2px]"
+      style={styles}>
       <ul
         className="text-sm text-gray-600 divide-y divide-solid
         divide-gray-200 dark:divide-slate-300">

@@ -104,6 +104,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
       name="My Models"
       leftFooterText={footerText}
       footerHeight={30}
+      contentAreaStyles={{ backgroundColor: 'transparent' }}
       topPanel={
         <TopButtonsBar
           onButtonClick={handleButtonClick}
@@ -112,7 +113,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
       }>
       {isTwoPanel ? (
         <TwoPanel>
-          <WindowList>
+          <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
             {llmEndpoints
               ? llmEndpoints.map((endpoint) => (
                   <WindowList.Item
@@ -142,35 +143,50 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                 ))
               : null}
           </WindowList>
-          <div className="flex flex-col">
-            <WindowInfoPanel title="Model Details">
-              <div className="h-full bg-gray-100">
-                {selectedEndpoint ? (
-                  <div className="flex flex-col gap-6">
-                    <LLMDetailsCard endpoint={selectedEndpoint} />
-                  </div>
-                ) : null}
-              </div>
-            </WindowInfoPanel>
-            <div className="flex flex-wrap gap-3 ">
-              {selectedModels.map((model) => (
-                <TagLabel
-                  key={model.name}
-                  className="bg-fuchsia-900/80 dark:bg-sky-70"
-                  iconName={IconName.Close}
-                  text={model.name}
-                />
-                // <div
-                //   key={model.name}
-                //   className=" bg-fuchsia-700 text-white">
-                //   {model.name}
-                // </div>
-              ))}
+          <div className="flex flex-col h-full">
+            <div
+              className={`${
+                selectedBtnAction === ButtonAction.SELECT_MODELS
+                  ? 'h-[40%]'
+                  : 'h-full'
+              } bg-white`}>
+              <WindowInfoPanel title="Model Details">
+                <div className="h-full">
+                  {selectedEndpoint ? (
+                    <div className="flex flex-col gap-6">
+                      <LLMDetailsCard endpoint={selectedEndpoint} />
+                    </div>
+                  ) : null}
+                </div>
+              </WindowInfoPanel>
             </div>
+            {selectedBtnAction === ButtonAction.SELECT_MODELS ? (
+              <div className="h-[60%] flex items-center pt-4">
+                <div
+                  className="relative h-full w-full flex flex-wrap gap-3  
+                  p-6 pt-11 content-start border">
+                  <div
+                    className="absolute h-7 top-0 left-0 bg-white p-1
+                    w-full text-gray-600 text-lg font-bold
+                    flex items-center px-4">
+                    Selected Models
+                  </div>
+                  {selectedModels.map((model) => (
+                    <TagLabel
+                      key={model.name}
+                      className="bg-slate-400 border dark:bg-sky-70"
+                      iconName={IconName.Close}
+                      text={model.name}
+                      onIconClick={handleListItemClick(model.name)}
+                    />
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
         </TwoPanel>
       ) : (
-        <WindowList>
+        <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
           {llmEndpoints
             ? llmEndpoints.map((endpoint) => (
                 <WindowList.Item

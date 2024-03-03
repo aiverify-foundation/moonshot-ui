@@ -6,6 +6,7 @@ type TagLabelProps = {
   iconName: IconName;
   iconSize?: number;
   className?: string;
+  onIconClick?: () => void;
 };
 
 const TagLabel: React.FC<TagLabelProps> = ({
@@ -13,14 +14,18 @@ const TagLabel: React.FC<TagLabelProps> = ({
   className,
   iconName,
   iconSize = 13,
+  onIconClick,
 }) => {
   return (
     <div
-      className={`flex items-center gap-2 py-0 text-xs text-white rounded-md px-2 divide-x divide-slate-100/50 ${className}`}>
+      className={`flex items-center py-0 text-xs text-white divide-x 
+        divide-slate-100/50 h-fit rounded ${className}`}>
       {text !== undefined ? (
-        <div className="mb-[2px] text-white">{text}</div>
+        <div className="h-full text-white px-2">{text}</div>
       ) : null}
-      <div className="pl-2">
+      <div
+        className="hover:bg-fuchsia-600 bg-fuchsia-500 rounded-r-[4px] p-1 cursor-pointer"
+        onClick={onIconClick}>
         <Icon
           name={iconName}
           lightModeColor="#FFFFFF"
