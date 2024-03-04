@@ -10,13 +10,13 @@ import {
 } from '@/app/services/session-api-service';
 import { useAppDispatch } from '@/lib/redux';
 import { setActiveSession } from '@/lib/redux/slices/activeSessionSlice';
+import { SessionDetailsCard } from './components/explorer/session-details-card';
 import { SessionItemCard } from './components/explorer/session-item-card';
 import {
   ButtonAction,
   TopButtonsBar,
 } from './components/explorer/top-buttons-bar';
 import useSessionList from './hooks/useSessionList';
-import { SessionDetailsCard } from './components/explorer/session-details-card';
 
 type SessionsExplorerProps = {
   zIndex: number | 'auto';

@@ -29,6 +29,18 @@ function SessionDetailsCard(props: SessionDetailsCardProps) {
         label="Created At"
         value={new Date(session.created_epoch * 1000).toLocaleString()}
       />
+      <KeyValueDisplay
+        label="Last Prompt Template set"
+        value={session.prompt_template || 'No Template'}
+      />
+      <KeyValueDisplay
+        label="Last Context Strategy used"
+        value={
+          session.context_strategy != undefined
+            ? session.context_strategy.toString()
+            : 'No Strategy'
+        }
+      />
       <div className="mt-6">
         <button
           className="btn-primary"
