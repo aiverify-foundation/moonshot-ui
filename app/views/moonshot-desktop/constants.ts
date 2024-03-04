@@ -24,6 +24,6 @@ export const defaultWindowWidthHeight: {
   [x: string]: [number, number];
 } = {
   [WindowIds.LLM_ENDPOINTS]: [1050, 650],
-  [WindowIds.SAVED_SESSIONS]: [820, 470],
+  [WindowIds.SAVED_SESSIONS]: [1050, 650],
   [WindowIds.CREATE_SESSION]: [820, 470],
 };

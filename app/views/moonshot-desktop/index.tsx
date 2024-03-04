@@ -24,13 +24,13 @@ import {
 } from '@/lib/redux/slices/activeSessionSlice';
 import { toggleDarkMode } from '@/lib/redux/slices/darkModeSlice';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
-import { FileExplorerSavedSessions } from './components/file-explorer-saved-sessions';
-import { WindowCreateSession } from './components/window-create-session';
 import { WindowIds, Z_Index, defaultWindowWidthHeight } from './constants';
 import { DesktopIcon } from '@components/desktop-icon';
 import Menu from '@components/menu';
 import TaskBar from '@components/taskbar';
 import { Window } from '@components/window';
+import { SessionsExplorer } from '@views/manual-redteaming/sessions-explorer';
+import { WindowCreateSession } from '@views/manual-redteaming/window-create-session';
 
 export default function MoonshotDesktop() {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
@@ -282,7 +282,7 @@ export default function MoonshotDesktop() {
       ) : null}
 
       {isShowWindowSavedSession ? (
-        <FileExplorerSavedSessions
+        <SessionsExplorer
           zIndex={Z_Index.Level_2}
           windowId={getWindowId(WindowIds.SAVED_SESSIONS)}
           initialXY={getWindowXYById(windowsMap, WindowIds.SAVED_SESSIONS)}

@@ -147,9 +147,6 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     setSelectedEndpoint(newModelEndpoint);
     refetchLLMEndpoints();
   }
-  // useEffect(() => {
-  //   setSelectedEndpoint(undefined);
-  // }, [selectedBtnAction]);
 
   useEffect(() => {
     if (buttonAction && hideMenuButtons) {
