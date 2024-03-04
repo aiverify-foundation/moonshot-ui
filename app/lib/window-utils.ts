@@ -38,3 +38,19 @@ export function calcCentralizedWindowXY(
   const left = (viewportWidth - width) / 2 + offsetX;
   return [left, top];
 }
+
+export function calcMaximizedWindowWidthHeight(
+  widthOffsetPx: number,
+  heightOffsetPx: number
+): [number, number] {
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+
+  const marginPx = 16;
+
+  // Apply width offset in addition to the margin
+  const width = viewportWidth - widthOffsetPx - 2 * marginPx;
+  const height = viewportHeight - heightOffsetPx - 2 * marginPx;
+
+  return [width, height];
+}

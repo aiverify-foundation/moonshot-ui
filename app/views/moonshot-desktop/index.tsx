@@ -31,6 +31,7 @@ import TaskBar from '@components/taskbar';
 import { Window } from '@components/window';
 import { SessionsExplorer } from '@views/manual-redteaming/sessions-explorer';
 import { WindowCreateSession } from '@views/manual-redteaming/window-create-session';
+import { ButtonAction } from '../manual-redteaming/components/explorer/top-buttons-bar';
 
 export default function MoonshotDesktop() {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
@@ -142,11 +143,20 @@ export default function MoonshotDesktop() {
       defaultWindowWidthHeight[WindowIds.CREATE_SESSION][1],
       0,
     ];
+    defaults[getWindowId(WindowIds.LLM_ENDPOINTS_PICKER)] = [
+      ...calcCentralizedWindowXY(
+        ...defaultWindowWidthHeight[WindowIds.LLM_ENDPOINTS_PICKER]
+      ),
+      defaultWindowWidthHeight[WindowIds.LLM_ENDPOINTS_PICKER][0],
+      defaultWindowWidthHeight[WindowIds.LLM_ENDPOINTS_PICKER][1],
+      0,
+    ];
     dispatch(updateWindows(defaults));
   }, []);
 
   return (
     <div
+      id="moonshotDesktop"
       className={`
         h-screen overflow-y-hidden
         flex flex-col bg-fuchsia-100
@@ -284,6 +294,7 @@ export default function MoonshotDesktop() {
       {isShowWindowSavedSession ? (
         <SessionsExplorer
           zIndex={Z_Index.Level_2}
+          buttonAction={ButtonAction.VIEW}
           windowId={getWindowId(WindowIds.SAVED_SESSIONS)}
           initialXY={getWindowXYById(windowsMap, WindowIds.SAVED_SESSIONS)}
           initialSize={getWindowSizeById(windowsMap, WindowIds.SAVED_SESSIONS)}
