@@ -1,11 +1,3 @@
-type ZIndex = {
-  Base: number;
-  Level_1: number;
-  Level_2: number;
-  FocusedWindow: number;
-  Top: number;
-};
-
 export enum WindowIds {
   LLM_ENDPOINTS = 'llmendpExplorer',
   LLM_ENDPOINTS_PICKER = 'llmendpPicker',
@@ -15,6 +7,7 @@ export enum WindowIds {
 
 // Reserved z-indexes
 // Try to follow these zindex layers as much as possible
+// The values are currently typechecked to these fixed values. The type is in global.dts
 export const Z_Index: ZIndex = {
   Base: 1, // first layer - for any elements that need to sit between the desktop background and icons (background logo image, etc)
   Level_1: 100, // second layer - specifically the desktop icons layer
@@ -32,4 +25,4 @@ export const defaultWindowWidthHeight: {
   [WindowIds.CREATE_SESSION]: [820, 470],
 };
 
-export const moonshotDesktopDivID = 'moonshotDesktop'; // This is a crucial div element id. There are react portals that port this div
+export const moonshotDesktopDivID = 'moonshotDesktop'; // This is a crucial div element id. There are react portals that port elements to this div

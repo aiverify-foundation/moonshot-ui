@@ -1,40 +1,88 @@
+import { Form, Formik } from 'formik';
 import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
-import useLLMEndpointList from '@/app/views/moonshot-desktop/hooks/useLLMEndpointList';
 import usePromptTemplateList from '@/app/views/moonshot-desktop/hooks/usePromptTemplateList';
-import { Form, Formik } from 'formik';
+import {
+  useCreateSessionMutation,
+  useLazySetActiveSessionQuery,
+} from '@/app/services/session-api-service';
+import { setActiveSession, useAppDispatch } from '@/lib/redux';
 
 type FormValues = {
   sessionName: string;
   description: string;
-  promptTemplates: string[];
+  promptTemplate: string;
   llmEndpoints: string[];
 };
 
 const initialFormValues: FormValues = {
   sessionName: '',
   description: '',
-  promptTemplates: [],
+  promptTemplate: '',
   llmEndpoints: [],
 };
 
 const contextStrategyOptions: SelectOption[] = [
-  { value: 'Strategy1', label: 'Strategy1' },
-  { value: 'Strategy2', label: 'Strategy2' },
-  { value: 'Strategy2', label: 'Strategy3' },
+  { value: '0', label: 'Strategy1' },
+  { value: '1', label: 'Strategy2' },
+  { value: '2', label: 'Strategy3' },
 ];
 
 type NewSessonFormProps = {
-  onFormSubmit: (data: FormValues) => void;
+  selectedEndpoints: LLMEndpoint[];
+  onFormSubmit?: (data: FormValues) => void;
 };
 
-const NewSessionForm: React.FC<NewSessonFormProps> = ({ onFormSubmit }) => {
+const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
+  const { selectedEndpoints, onFormSubmit } = props;
   const { promptTemplates, error, isLoading } = usePromptTemplateList();
-  async function handleFormSubmit(values: FormValues) {
-    onFormSubmit(values);
+  const dispatch = useAppDispatch();
+  const [triggerSetActiveSession] = useLazySetActiveSessionQuery();
+
+  const [
+    createSession,
+    {
+      data: newSession,
+      isLoading: createSessionIsLoding,
+      error: createSessionError,
+    },
+  ] = useCreateSessionMutation();
+
+  async function submitNewSessionForm(
+    name: string,
+    description: string,
+    endpoints: string[]
+  ) {
+    const response = await createSession({
+      name,
+      description,
+      endpoints,
+    });
+    //@ts-ignore
+    if (response.data) {
+      const activeSessionResponse = await triggerSetActiveSession(
+        //@ts-ignore
+        response.data.session_id
+      );
+      if (activeSessionResponse.data) {
+        dispatch(setActiveSession(activeSessionResponse.data));
+      }
+    } // todo - else and error handling
   }
-  return (
+
+  async function handleFormSubmit(values: FormValues) {
+    values.llmEndpoints = selectedEndpoints.map((endpoint) => endpoint.name);
+    console.log(values);
+    submitNewSessionForm(
+      values.sessionName,
+      values.description,
+      values.llmEndpoints
+    );
+    if (onFormSubmit) onFormSubmit(values);
+  }
+
+  return isLoading ? null : (
     <div className="p-4 w-96 h-full">
       <Formik<FormValues>
         initialValues={initialFormValues}

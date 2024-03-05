@@ -4,10 +4,6 @@ import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
 import {
-  calcCentralizedWindowXY,
-  calcMaximizedWindowWidthHeight,
-} from '@/app/lib/window-utils';
-import {
   useLazyGetSessionQuery,
   useLazySetActiveSessionQuery,
 } from '@/app/services/session-api-service';
@@ -21,10 +17,6 @@ import {
   TopButtonsBar,
 } from './components/explorer/top-buttons-bar';
 import useSessionList from './hooks/useSessionList';
-import {
-  WindowIds,
-  defaultWindowWidthHeight,
-} from '@views/moonshot-desktop/constants';
 
 type SessionsExplorerProps = {
   zIndex: number | 'auto';

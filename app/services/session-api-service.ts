@@ -6,6 +6,8 @@ const port = parseInt(process.env.PORT || '3000', 10);
 type CreateSessionParams = {
   name: string;
   description: string;
+  promptTemplate?: string;
+  contextStrategy?: string;
   endpoints: string[];
 };
 
@@ -36,11 +38,19 @@ const sessionApi = createApi({
       transformResponse: (response: { session: Session }) => response.session,
     }),
     setActiveSession: builder.query<Session, string>({
-      query: (session_id) => ({ url: `api/v1/sessions/${session_id}`, method: 'PUT' }),
+      query: (session_id) => ({
+        url: `api/v1/sessions/${session_id}`,
+        method: 'PUT',
+      }),
       transformResponse: (response: { session: Session }) => response.session,
     }),
     sendPrompt: builder.mutation<ChatHistory, SendPromptQueryParams>({
-      query: ({ session_id, prompt, include_history = true, history_length = 50 }) => ({
+      query: ({
+        session_id,
+        prompt,
+        include_history = true,
+        history_length = 50,
+      }) => ({
         url: `api/v1/sessions/${session_id}/prompt?include_history=${include_history}&length=${history_length}`,
         method: 'POST',
         body: { prompt },

@@ -95,7 +95,10 @@ function NewSessionFlow(props: NewSessionFormProps) {
           </WindowList>
         )}
         <div className="flex justify-center h-full">
-          <NewSessionForm onFormSubmit={() => null} />
+          <NewSessionForm
+            onFormSubmit={() => null}
+            selectedEndpoints={llmEndpoints}
+          />
         </div>
       </TwoPanel>
     </>
