@@ -15,7 +15,11 @@ import { WindowList } from '@components/window-list';
 import { LLMItemCard } from '@views/models-management/components/llm-item-card';
 import { ButtonAction } from '@views/models-management/components/top-buttons-bar';
 import { EndpointsExplorer } from '@views/models-management/endpoints-explorer';
-import { WindowIds, Z_Index } from '@views/moonshot-desktop/constants';
+import {
+  WindowIds,
+  Z_Index,
+  moonshotDesktopDivID,
+} from '@views/moonshot-desktop/constants';
 
 type NewSessionFormProps = {
   onNewSession: () => void;
@@ -64,7 +68,7 @@ function NewSessionFlow(props: NewSessionFormProps) {
               onCloseClick={() => setIsEndpointsExplorerOpen(false)}
               onListItemClick={handleEndpointPickerClick}
             />,
-            document.getElementById('moonshotDesktop') as HTMLDivElement
+            document.getElementById(moonshotDesktopDivID) as HTMLDivElement
           )
         : null}
       <TwoPanel initialDividerPosition={initialDividerPosition}>

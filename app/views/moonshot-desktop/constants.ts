@@ -6,12 +6,12 @@ type ZIndex = {
   Top: number;
 };
 
-export const WindowIds = {
-  LLM_ENDPOINTS: 'llmendpExplorer',
-  LLM_ENDPOINTS_PICKER: 'llmendpPicker',
-  SAVED_SESSIONS: 'savedSessions',
-  CREATE_SESSION: 'createSession',
-};
+export enum WindowIds {
+  LLM_ENDPOINTS = 'llmendpExplorer',
+  LLM_ENDPOINTS_PICKER = 'llmendpPicker',
+  SAVED_SESSIONS = 'savedSessions',
+  CREATE_SESSION = 'createSession',
+}
 
 export const Z_Index: ZIndex = {
   Base: 1,
@@ -29,3 +29,5 @@ export const defaultWindowWidthHeight: {
   [WindowIds.SAVED_SESSIONS]: [1050, 650],
   [WindowIds.CREATE_SESSION]: [820, 470],
 };
+
+export const moonshotDesktopDivID = 'moonshotDesktop'; // This is a crucial div element id. There are react portals that port this div

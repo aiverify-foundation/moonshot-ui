@@ -2,11 +2,9 @@
 
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { useWindowChange } from '@/app/hooks/use-window-change';
 import {
-  calcCentralizedWindowXY,
   getWindowId,
   getWindowSizeById,
   getWindowXYById,
@@ -23,8 +21,8 @@ import {
   setActiveSession,
 } from '@/lib/redux/slices/activeSessionSlice';
 import { toggleDarkMode } from '@/lib/redux/slices/darkModeSlice';
-import { updateWindows } from '@/lib/redux/slices/windowsSlice';
-import { WindowIds, Z_Index, defaultWindowWidthHeight } from './constants';
+import { WindowIds, Z_Index, moonshotDesktopDivID } from './constants';
+import { useResetWindows } from './hooks/useResetWindows';
 import { DesktopIcon } from '@components/desktop-icon';
 import Menu from '@components/menu';
 import TaskBar from '@components/taskbar';
@@ -44,6 +42,7 @@ export default function MoonshotDesktop() {
   const [isDesktopIconsHidden, setIsDesktopIconsHidden] = useState(false);
   const [triggerSetActiveSession] = useLazySetActiveSessionQuery();
   const dispatch = useAppDispatch();
+  const resetWindows = useResetWindows();
   const handleOnWindowChange = useWindowChange();
   const windowsMap = useAppSelector((state) => state.windows.map);
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
@@ -118,45 +117,17 @@ export default function MoonshotDesktop() {
 
   useEffect(() => {
     //set default window dimensions
-    const defaults: Record<string, WindowData> = {};
-    defaults[getWindowId(WindowIds.LLM_ENDPOINTS)] = [
-      ...calcCentralizedWindowXY(
-        ...defaultWindowWidthHeight[WindowIds.LLM_ENDPOINTS]
-      ),
-      defaultWindowWidthHeight[WindowIds.LLM_ENDPOINTS][0],
-      defaultWindowWidthHeight[WindowIds.LLM_ENDPOINTS][1],
-      0,
-    ];
-    defaults[getWindowId(WindowIds.SAVED_SESSIONS)] = [
-      ...calcCentralizedWindowXY(
-        ...defaultWindowWidthHeight[WindowIds.SAVED_SESSIONS]
-      ),
-      defaultWindowWidthHeight[WindowIds.SAVED_SESSIONS][0],
-      defaultWindowWidthHeight[WindowIds.SAVED_SESSIONS][1],
-      0,
-    ];
-    defaults[getWindowId(WindowIds.CREATE_SESSION)] = [
-      ...calcCentralizedWindowXY(
-        ...defaultWindowWidthHeight[WindowIds.CREATE_SESSION]
-      ),
-      defaultWindowWidthHeight[WindowIds.CREATE_SESSION][0],
-      defaultWindowWidthHeight[WindowIds.CREATE_SESSION][1],
-      0,
-    ];
-    defaults[getWindowId(WindowIds.LLM_ENDPOINTS_PICKER)] = [
-      ...calcCentralizedWindowXY(
-        ...defaultWindowWidthHeight[WindowIds.LLM_ENDPOINTS_PICKER]
-      ),
-      defaultWindowWidthHeight[WindowIds.LLM_ENDPOINTS_PICKER][0],
-      defaultWindowWidthHeight[WindowIds.LLM_ENDPOINTS_PICKER][1],
-      0,
-    ];
-    dispatch(updateWindows(defaults));
+    resetWindows(
+      WindowIds.LLM_ENDPOINTS,
+      WindowIds.LLM_ENDPOINTS_PICKER,
+      WindowIds.SAVED_SESSIONS,
+      WindowIds.CREATE_SESSION
+    );
   }, []);
 
   return (
     <div
-      id="moonshotDesktop"
+      id={moonshotDesktopDivID}
       className={`
         h-screen overflow-y-hidden
         flex flex-col bg-fuchsia-100
