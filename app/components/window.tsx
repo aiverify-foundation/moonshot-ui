@@ -90,7 +90,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
     const windowRef = useRef<HTMLDivElement>(null);
     const scrollDivRef = useRef<HTMLDivElement>(null);
     const prevMouseXY = useRef([0, 0]);
-    const selectedWindowId = useAppSelector(
+    const focusedWindowId = useAppSelector(
       (state) => state.windows.focusedWindowId
     );
     const dispatch = useAppDispatch();
@@ -99,6 +99,13 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
     const windowSizeRef = useRef(windowSize);
     const windowPositionRef = useRef(initialXY);
 
+    // TODO - this should not be encapsulated in this component. pass the function in from caller instead
+    function dispatchFocusedWindowId() {
+      if (focusedWindowId !== id) {
+        dispatch(updateFocusedWindowId(id));
+      }
+    }
+
     function handleMouseDown(e: React.MouseEvent) {
       if (!draggable) return;
       e.stopPropagation();
@@ -106,12 +113,12 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       prevMouseXY.current = [e.clientX, e.clientY];
       windowRef.current.style.zIndex = Z_Index.FocusedWindow.toString();
       setWindowState(WindowState.drag);
-      dispatch(updateFocusedWindowId(id));
+      dispatchFocusedWindowId();
     }
 
     function handleContentAreaMouseDown(e: React.MouseEvent) {
       e.stopPropagation();
-      dispatch(updateFocusedWindowId(id));
+      dispatchFocusedWindowId();
     }
 
     function handleCloseIconMouseDown(e: React.MouseEvent) {
@@ -136,7 +143,6 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
 
     function handleMouseUp() {
       if (!windowRef.current || windowState !== WindowState.drag) return;
-      setWindowState(WindowState.default);
       document.body.removeEventListener('mousemove', handleMouseMove);
       document.body.removeEventListener('mouseup', handleMouseUp);
       const windowDomRect = windowRef.current.getBoundingClientRect();
@@ -152,11 +158,11 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
           id
         );
       }
+      setWindowState(WindowState.default);
     }
 
     function handleResizeMouseUp() {
       if (!windowRef.current || windowState !== WindowState.resize) return;
-      setWindowState(WindowState.default);
       document.body.removeEventListener('mousemove', handleResizeMouseMove);
       document.body.removeEventListener('mouseup', handleResizeMouseUp);
       if (onWindowChange) {
@@ -169,6 +175,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
           id
         );
       }
+      setWindowState(WindowState.default);
     }
 
     function handleMouseMove(e: MouseEvent) {
@@ -251,7 +258,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
           width: windowSize[0],
           height: windowSize[1],
           ...styles,
-          zIndex: selectedWindowId === id ? Z_Index.FocusedWindow : zIndex,
+          zIndex: focusedWindowId === id ? Z_Index.FocusedWindow : zIndex,
         }}
         onMouseDown={handleMouseDown}>
         <div className="flex flex-col w-full h-full">

@@ -84,8 +84,6 @@ function SessionsExplorer(props: SessionsExplorerProps) {
   const initialDividerPosition =
     selectedBtnAction === ButtonAction.ADD ? 55 : 40;
 
-  console.log(initialDividerPosition);
-
   const footerText = sessions.length
     ? `${sessions.length} Session${sessions.length > 1 ? 's' : ''}`
     : '';

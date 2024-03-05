@@ -16,11 +16,16 @@ import useLLMEndpointList from '@views/moonshot-desktop/hooks/useLLMEndpointList
 
 type EndpointsExplorerProps = {
   windowId: string;
+  mini?: boolean;
+  endpoints?: LLMEndpoint[];
+  title?: string;
   initialXY: [number, number];
   initialSize: [number, number];
   zIndex: number | 'auto';
   hideMenuButtons?: boolean;
   buttonAction?: ButtonAction;
+  returnedEndpoint?: LLMEndpoint;
+  onListItemClick?: (endpoint: LLMEndpoint) => void;
   onCloseClick: () => void;
   onWindowChange?: (
     x: number,
@@ -46,12 +51,16 @@ function getWindowSubTitle(selectedBtnAction: ButtonAction) {
 function EndpointsExplorer(props: EndpointsExplorerProps) {
   const {
     windowId,
+    title,
+    mini = false,
     hideMenuButtons = false,
     buttonAction = ButtonAction.SELECT_MODELS,
-    onCloseClick,
     initialXY = [600, 200],
     initialSize = [720, 470],
     zIndex,
+    returnedEndpoint,
+    onCloseClick,
+    onListItemClick,
     onWindowChange,
   } = props;
   const {
@@ -60,13 +69,18 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     isLoading,
     refetch: refetchLLMEndpoints,
   } = useLLMEndpointList();
-  const [selectedEndpoint, setSelectedEndpoint] = useState<
-    LLMEndpoint | undefined
-  >();
   const [selectedBtnAction, setSelectedBtnAction] = useState<ButtonAction>(
     ButtonAction.VIEW_MODELS
   );
-  const [selectedModels, setSelectedModels] = useState<LLMEndpoint[]>([]);
+  const [selectedEndpointsList, setSelectedEndpointsList] = useState<
+    LLMEndpoint[]
+  >([]);
+  const [displayedEndpointsList, setDisplayedEndpointsList] = useState<
+    LLMEndpoint[]
+  >([]);
+  const [selectedEndpoint, setSelectedEndpoint] = useState<
+    LLMEndpoint | undefined
+  >();
 
   const [
     createModelEndpoint,
@@ -78,9 +92,10 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
   ] = useCreateLLMEndpointMutation();
 
   const isTwoPanel =
-    selectedBtnAction === ButtonAction.SELECT_MODELS ||
-    selectedBtnAction === ButtonAction.ADD_NEW_MODEL ||
-    (selectedBtnAction === ButtonAction.VIEW_MODELS && selectedEndpoint);
+    !mini &&
+    (selectedBtnAction === ButtonAction.SELECT_MODELS ||
+      selectedBtnAction === ButtonAction.ADD_NEW_MODEL ||
+      (selectedBtnAction === ButtonAction.VIEW_MODELS && selectedEndpoint));
 
   const initialDividerPosition =
     selectedBtnAction === ButtonAction.ADD_NEW_MODEL ? 55 : 40;
@@ -89,7 +104,9 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     ? `${llmEndpoints.length} Model${llmEndpoints.length > 1 ? 's' : ''}`
     : '';
 
-  const windowTitle = getWindowSubTitle(selectedBtnAction);
+  const miniFooterText = `${llmEndpoints.length - displayedEndpointsList.length} / ${footerText} Selected`;
+
+  const windowTitle = title || getWindowSubTitle(selectedBtnAction);
 
   function selectItem(name: string) {
     const endpoint = llmEndpoints.find((epoint) => epoint.name === name);
@@ -108,12 +125,24 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
         );
         if (!clickedEndpoint) return;
 
-        if (selectedModels.findIndex((epoint) => epoint.name === name) > -1) {
-          setSelectedModels((prev) =>
+        if (
+          selectedEndpointsList.findIndex((epoint) => epoint.name === name) > -1
+        ) {
+          setSelectedEndpointsList((prev) =>
             prev.filter((epoint) => epoint.name !== clickedEndpoint.name)
           );
         } else {
-          setSelectedModels((prev) => [...prev, clickedEndpoint]);
+          setSelectedEndpointsList((prev) => [...prev, clickedEndpoint]);
+        }
+
+        if (onListItemClick) {
+          onListItemClick(clickedEndpoint);
+          // Hide the clicked item from the list by filtering it out
+          const updatedEndpoints = displayedEndpointsList.filter(
+            (epoint) => epoint.name !== clickedEndpoint.name
+          );
+          console.log(updatedEndpoints);
+          setDisplayedEndpointsList(updatedEndpoints);
         }
       }
     };
@@ -125,6 +154,10 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
 
   function handleButtonClick(action: ButtonAction) {
     setSelectedBtnAction(action);
+  }
+
+  function sortDisplayedEndpointsByName(list: LLMEndpoint[]): LLMEndpoint[] {
+    return [...list].sort((a, b) => a.name.localeCompare(b.name));
   }
 
   async function submitNewModel(data: LLMEndpointFormValues) {
@@ -149,22 +182,41 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
   }
 
   useEffect(() => {
+    if (!isLoading && llmEndpoints) {
+      setDisplayedEndpointsList(sortDisplayedEndpointsByName(llmEndpoints));
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
     if (buttonAction && hideMenuButtons) {
       setSelectedBtnAction(buttonAction);
     }
   }, [buttonAction, hideMenuButtons]);
 
+  useEffect(() => {
+    if (returnedEndpoint) {
+      if (mini) {
+        setDisplayedEndpointsList(
+          sortDisplayedEndpointsByName([
+            returnedEndpoint,
+            ...displayedEndpointsList,
+          ])
+        );
+      }
+    }
+  }, [returnedEndpoint]);
+
   return isLoading ? null : (
     <Window
       id={windowId}
-      resizeable={false}
+      resizeable={mini ? true : false}
       initialXY={initialXY}
       zIndex={zIndex}
       initialWindowSize={initialSize}
       onCloseClick={onCloseClick}
       onWindowChange={onWindowChange}
       name={windowTitle}
-      leftFooterText={footerText}
+      leftFooterText={mini ? miniFooterText : footerText}
       footerHeight={30}
       contentAreaStyles={{ backgroundColor: 'transparent' }}
       topPanel={
@@ -184,8 +236,8 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
               selectedBtnAction === ButtonAction.ADD_NEW_MODEL ? true : false
             }
             styles={{ backgroundColor: '#FFFFFF' }}>
-            {llmEndpoints
-              ? llmEndpoints.map((endpoint) => (
+            {displayedEndpointsList
+              ? displayedEndpointsList.map((endpoint) => (
                   <WindowList.Item
                     key={endpoint.name}
                     id={endpoint.name}
@@ -193,7 +245,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                       selectedBtnAction === ButtonAction.SELECT_MODELS
                     }
                     checked={
-                      selectedModels.findIndex(
+                      selectedEndpointsList.findIndex(
                         (epoint) => epoint.name === endpoint.name
                       ) > -1
                     }
@@ -238,9 +290,9 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
               </div>
               {selectedBtnAction === ButtonAction.SELECT_MODELS ? (
                 <div className="h-[60%] flex items-center pt-4">
-                  {selectedModels.length ? (
+                  {selectedEndpointsList.length ? (
                     <TaglabelsBox
-                      models={selectedModels}
+                      models={selectedEndpointsList}
                       onTaglabelIconClick={handleListItemClick}
                     />
                   ) : null}
@@ -251,8 +303,8 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
         </TwoPanel>
       ) : (
         <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
-          {llmEndpoints
-            ? llmEndpoints.map((endpoint) => (
+          {displayedEndpointsList
+            ? displayedEndpointsList.map((endpoint) => (
                 <WindowList.Item
                   key={endpoint.name}
                   id={endpoint.name}

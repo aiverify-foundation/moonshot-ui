@@ -29,9 +29,9 @@ import { DesktopIcon } from '@components/desktop-icon';
 import Menu from '@components/menu';
 import TaskBar from '@components/taskbar';
 import { Window } from '@components/window';
+import { ButtonAction } from '@views/manual-redteaming/components/explorer/top-buttons-bar';
 import { SessionsExplorer } from '@views/manual-redteaming/sessions-explorer';
 import { WindowCreateSession } from '@views/manual-redteaming/window-create-session';
-import { ButtonAction } from '../manual-redteaming/components/explorer/top-buttons-bar';
 
 export default function MoonshotDesktop() {
   const [isWindowOpen, setIsWindowOpen] = useState(false);

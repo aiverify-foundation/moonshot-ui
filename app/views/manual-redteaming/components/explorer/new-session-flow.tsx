@@ -26,13 +26,27 @@ function NewSessionFlow(props: NewSessionFormProps) {
   const { initialDividerPosition } = props;
   const [llmEndpoints, setLlmEndpoints] = useState<LLMEndpoint[]>([]);
   const [isEndpointsExplorerOpen, setIsEndpointsExplorerOpen] = useState(false);
+  const [unselectedEndpoint, setUnselectedEndpoint] = useState<LLMEndpoint>();
   const windowsMap = useAppSelector((state) => state.windows.map);
+  const handleOnWindowChange = useWindowChange();
+
+  function handleEndpointPickerClick(endpoint: LLMEndpoint) {
+    setLlmEndpoints([...llmEndpoints, endpoint]);
+  }
+
+  function handleEndpointToEvaluateClick(name: string) {
+    const clickedEndpoint = llmEndpoints.find((epoint) => epoint.name === name);
+    setUnselectedEndpoint(clickedEndpoint);
+    setLlmEndpoints(llmEndpoints.filter((epoint) => epoint.name !== name));
+  }
 
   return (
     <>
       {isEndpointsExplorerOpen
         ? ReactDOM.createPortal(
             <EndpointsExplorer
+              title="Select Models to Evaluate"
+              mini
               hideMenuButtons
               buttonAction={ButtonAction.SELECT_MODELS}
               zIndex={Z_Index.Top}
@@ -45,8 +59,10 @@ function NewSessionFlow(props: NewSessionFormProps) {
                 windowsMap,
                 WindowIds.LLM_ENDPOINTS_PICKER
               )}
-              onWindowChange={() => null}
+              returnedEndpoint={unselectedEndpoint}
+              onWindowChange={handleOnWindowChange}
               onCloseClick={() => setIsEndpointsExplorerOpen(false)}
+              onListItemClick={handleEndpointPickerClick}
             />,
             document.getElementById('moonshotDesktop') as HTMLDivElement
           )
@@ -67,7 +83,7 @@ function NewSessionFlow(props: NewSessionFormProps) {
                   <WindowList.Item
                     key={endpoint.name}
                     id={endpoint.name}
-                    onHover={() => null}>
+                    onClick={handleEndpointToEvaluateClick}>
                     <LLMItemCard endpoint={endpoint} />
                   </WindowList.Item>
                 ))
