@@ -34,14 +34,11 @@ import TaskBar from '@components/taskbar';
 import { Window } from '@components/window';
 import { SessionExplorerButtonAction } from '@views/manual-redteaming/components/explorer/top-buttons-bar';
 import { SessionsExplorer } from '@views/manual-redteaming/sessions-explorer';
-import { WindowCreateSession } from '@views/manual-redteaming/window-create-session';
 
 export default function MoonshotDesktop() {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [isChatSessionOpen, setIsChatSessionOpen] = useState(false);
   const [isEndpointsExplorerOpen, setIsEndpointsExplorerOpen] = useState(false);
-  const [isShowWindowCreateSession, setIsShowWindowCreateSession] =
-    useState(false);
   const [isShowWindowSavedSession, setIsShowWindowSavedSession] =
     useState(false);
   const [isDesktopIconsHidden, setIsDesktopIconsHidden] = useState(false);
@@ -195,12 +192,6 @@ export default function MoonshotDesktop() {
               label="Prompt Templates"
             />
             <DesktopIcon
-              name={IconName.ChatBubbles}
-              label="RedTeaming"
-              size={40}
-              onClick={() => setIsShowWindowCreateSession(true)}
-            />
-            <DesktopIcon
               name={IconName.RunCookbook}
               label="Run Cookbook"
               onClick={() => null}
@@ -244,18 +235,6 @@ export default function MoonshotDesktop() {
             </li>
           </ul>
         </Window>
-      ) : null}
-
-      {isShowWindowCreateSession ? (
-        <WindowCreateSession
-          zIndex={Z_Index.Level_2}
-          windowId={getWindowId(WindowIds.CREATE_SESSION)}
-          initialXY={getWindowXYById(windowsMap, WindowIds.CREATE_SESSION)}
-          initialSize={getWindowSizeById(windowsMap, WindowIds.CREATE_SESSION)}
-          onCloseClick={() => setIsShowWindowCreateSession(false)}
-          onStartClick={startNewSession}
-          onWindowChange={handleOnWindowChange}
-        />
       ) : null}
 
       {isChatSessionOpen ? (
