@@ -3,55 +3,85 @@ import { IconButton } from '@/app/components/icon-button';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { WindowTopBarButtonGroup } from '@/app/components/window-top-bar';
 
-enum ButtonAction {
+enum ModelsExplorerButtonAction {
   VIEW_MODELS,
   ADD_NEW_MODEL,
   SELECT_MODELS,
 }
 
 type TopButtonsBarProps = {
-  onButtonClick: (action: ButtonAction) => void;
-  activeButton?: ButtonAction;
+  onButtonClick: (action: ModelsExplorerButtonAction) => void;
+  activeButton?: ModelsExplorerButtonAction;
 };
 
 function TopButtonsBar(props: TopButtonsBarProps) {
   const { onButtonClick, activeButton } = props;
 
   return (
-    <WindowTopBarButtonGroup height={45}>
-      <div className="flex flex-col justify-end h-full py-2">
-        <div className="flex items-end gap-[2px]">
+    <WindowTopBarButtonGroup height={30}>
+      <div className="flex flex-col justify-center h-full">
+        <div className="flex items-end gap-1">
           <Tooltip
+            delay={100}
             position={TooltipPosition.top}
             offsetTop={-10}
             content="View Models">
             <IconButton
-              disabled={activeButton === ButtonAction.VIEW_MODELS}
+              label="List Models"
+              backgroundColor={
+                activeButton === ModelsExplorerButtonAction.VIEW_MODELS
+                  ? '#425d85'
+                  : 'transparent'
+              }
+              disabled={activeButton === ModelsExplorerButtonAction.VIEW_MODELS}
               iconName={IconName.List}
-              onClick={() => onButtonClick(ButtonAction.VIEW_MODELS)}
+              onClick={() =>
+                onButtonClick(ModelsExplorerButtonAction.VIEW_MODELS)
+              }
               iconSize={11}
             />
           </Tooltip>
           <Tooltip
-            position={TooltipPosition.top}
-            offsetTop={-10}
+            delay={100}
+            position={TooltipPosition.bottom}
+            offsetTop={10}
             content="Add New Model">
             <IconButton
-              disabled={activeButton === ButtonAction.ADD_NEW_MODEL}
+              label="Add New Model"
+              backgroundColor={
+                activeButton === ModelsExplorerButtonAction.ADD_NEW_MODEL
+                  ? '#425d85'
+                  : 'transparent'
+              }
+              disabled={
+                activeButton === ModelsExplorerButtonAction.ADD_NEW_MODEL
+              }
               iconName={IconName.Plus}
-              onClick={() => onButtonClick(ButtonAction.ADD_NEW_MODEL)}
+              onClick={() =>
+                onButtonClick(ModelsExplorerButtonAction.ADD_NEW_MODEL)
+              }
               iconSize={11}
             />
           </Tooltip>
           <Tooltip
+            delay={100}
             position={TooltipPosition.top}
             offsetTop={-10}
             content="Enable models selection for benchmarking or redteaming">
             <IconButton
-              disabled={activeButton === ButtonAction.SELECT_MODELS}
+              backgroundColor={
+                activeButton === ModelsExplorerButtonAction.SELECT_MODELS
+                  ? '#425d85'
+                  : 'transparent'
+              }
+              disabled={
+                activeButton === ModelsExplorerButtonAction.SELECT_MODELS
+              }
               iconName={IconName.CheckedSquare}
               label="Select Models for Testing"
-              onClick={() => onButtonClick(ButtonAction.SELECT_MODELS)}
+              onClick={() =>
+                onButtonClick(ModelsExplorerButtonAction.SELECT_MODELS)
+              }
               iconSize={11}
             />
           </Tooltip>
@@ -61,4 +91,4 @@ function TopButtonsBar(props: TopButtonsBarProps) {
   );
 }
 
-export { TopButtonsBar, ButtonAction };
+export { TopButtonsBar, ModelsExplorerButtonAction };

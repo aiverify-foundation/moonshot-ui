@@ -11,7 +11,10 @@ import {
   NewModelEndpointForm,
 } from './components/new-endpoint-form';
 import { TaglabelsBox } from './components/tag-labels-box';
-import { ButtonAction, TopButtonsBar } from './components/top-buttons-bar';
+import {
+  ModelsExplorerButtonAction,
+  TopButtonsBar,
+} from './components/top-buttons-bar';
 import useLLMEndpointList from '@views/moonshot-desktop/hooks/useLLMEndpointList';
 
 type EndpointsExplorerProps = {
@@ -23,7 +26,7 @@ type EndpointsExplorerProps = {
   initialSize: [number, number];
   zIndex: number | 'auto';
   hideMenuButtons?: boolean;
-  buttonAction?: ButtonAction;
+  buttonAction?: ModelsExplorerButtonAction;
   returnedEndpoint?: LLMEndpoint;
   onListItemClick?: (endpoint: LLMEndpoint) => void;
   onCloseClick: () => void;
@@ -37,13 +40,13 @@ type EndpointsExplorerProps = {
   ) => void;
 };
 
-function getWindowSubTitle(selectedBtnAction: ButtonAction) {
+function getWindowSubTitle(selectedBtnAction: ModelsExplorerButtonAction) {
   switch (selectedBtnAction) {
-    case ButtonAction.SELECT_MODELS:
+    case ModelsExplorerButtonAction.SELECT_MODELS:
       return `My Models > Select Models`;
-    case ButtonAction.VIEW_MODELS:
+    case ModelsExplorerButtonAction.VIEW_MODELS:
       return `My Models > View Models`;
-    case ButtonAction.ADD_NEW_MODEL:
+    case ModelsExplorerButtonAction.ADD_NEW_MODEL:
       return `My Models > Add New Model`;
   }
 }
@@ -54,7 +57,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     title,
     mini = false,
     hideMenuButtons = false,
-    buttonAction = ButtonAction.SELECT_MODELS,
+    buttonAction = ModelsExplorerButtonAction.SELECT_MODELS,
     initialXY = [600, 200],
     initialSize = [720, 470],
     zIndex,
@@ -69,9 +72,10 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     isLoading,
     refetch: refetchLLMEndpoints,
   } = useLLMEndpointList();
-  const [selectedBtnAction, setSelectedBtnAction] = useState<ButtonAction>(
-    ButtonAction.VIEW_MODELS
-  );
+  const [selectedBtnAction, setSelectedBtnAction] =
+    useState<ModelsExplorerButtonAction>(
+      ModelsExplorerButtonAction.VIEW_MODELS
+    );
   const [selectedEndpointsList, setSelectedEndpointsList] = useState<
     LLMEndpoint[]
   >([]);
@@ -93,12 +97,13 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
 
   const isTwoPanel =
     !mini &&
-    (selectedBtnAction === ButtonAction.SELECT_MODELS ||
-      selectedBtnAction === ButtonAction.ADD_NEW_MODEL ||
-      (selectedBtnAction === ButtonAction.VIEW_MODELS && selectedEndpoint));
+    (selectedBtnAction === ModelsExplorerButtonAction.SELECT_MODELS ||
+      selectedBtnAction === ModelsExplorerButtonAction.ADD_NEW_MODEL ||
+      (selectedBtnAction === ModelsExplorerButtonAction.VIEW_MODELS &&
+        selectedEndpoint));
 
   const initialDividerPosition =
-    selectedBtnAction === ButtonAction.ADD_NEW_MODEL ? 55 : 40;
+    selectedBtnAction === ModelsExplorerButtonAction.ADD_NEW_MODEL ? 55 : 40;
 
   const footerText = llmEndpoints.length
     ? `${llmEndpoints.length} Model${llmEndpoints.length > 1 ? 's' : ''}`
@@ -117,9 +122,11 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
 
   function handleListItemClick(name: string) {
     return () => {
-      if (selectedBtnAction === ButtonAction.VIEW_MODELS) {
+      if (selectedBtnAction === ModelsExplorerButtonAction.VIEW_MODELS) {
         selectItem(name);
-      } else if (selectedBtnAction === ButtonAction.SELECT_MODELS) {
+      } else if (
+        selectedBtnAction === ModelsExplorerButtonAction.SELECT_MODELS
+      ) {
         const clickedEndpoint = llmEndpoints.find(
           (epoint) => epoint.name === name
         );
@@ -152,7 +159,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     return () => selectItem(name);
   }
 
-  function handleButtonClick(action: ButtonAction) {
+  function handleButtonClick(action: ModelsExplorerButtonAction) {
     setSelectedBtnAction(action);
   }
 
@@ -176,7 +183,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
       //TODO - create error visuals
       return;
     }
-    setSelectedBtnAction(ButtonAction.VIEW_MODELS);
+    setSelectedBtnAction(ModelsExplorerButtonAction.VIEW_MODELS);
     setSelectedEndpoint(newModelEndpoint);
     refetchLLMEndpoints();
   }
@@ -233,7 +240,9 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
           initialDividerPosition={initialDividerPosition}>
           <WindowList
             disableMouseInteraction={
-              selectedBtnAction === ButtonAction.ADD_NEW_MODEL ? true : false
+              selectedBtnAction === ModelsExplorerButtonAction.ADD_NEW_MODEL
+                ? true
+                : false
             }
             styles={{ backgroundColor: '#FFFFFF' }}>
             {displayedEndpointsList
@@ -241,8 +250,10 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                   <WindowList.Item
                     key={endpoint.name}
                     id={endpoint.name}
+                    className="justify-start"
                     enableCheckbox={
-                      selectedBtnAction === ButtonAction.SELECT_MODELS
+                      selectedBtnAction ===
+                      ModelsExplorerButtonAction.SELECT_MODELS
                     }
                     checked={
                       selectedEndpointsList.findIndex(
@@ -251,7 +262,8 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                     }
                     onClick={handleListItemClick(endpoint.name)}
                     onHover={
-                      selectedBtnAction === ButtonAction.SELECT_MODELS
+                      selectedBtnAction ===
+                      ModelsExplorerButtonAction.SELECT_MODELS
                         ? handleListItemHover(endpoint.name)
                         : undefined
                     }
@@ -265,16 +277,16 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                 ))
               : null}
           </WindowList>
-          {selectedBtnAction === ButtonAction.ADD_NEW_MODEL ? (
+          {selectedBtnAction === ModelsExplorerButtonAction.ADD_NEW_MODEL ? (
             <div className="flex justify-center h-full">
               <NewModelEndpointForm onFormSubmit={submitNewModel} />
             </div>
-          ) : selectedBtnAction === ButtonAction.SELECT_MODELS ||
-            selectedBtnAction === ButtonAction.VIEW_MODELS ? (
+          ) : selectedBtnAction === ModelsExplorerButtonAction.SELECT_MODELS ||
+            selectedBtnAction === ModelsExplorerButtonAction.VIEW_MODELS ? (
             <div className="flex flex-col h-full">
               <div
                 className={`${
-                  selectedBtnAction === ButtonAction.SELECT_MODELS
+                  selectedBtnAction === ModelsExplorerButtonAction.SELECT_MODELS
                     ? 'h-[40%]'
                     : 'h-full'
                 } bg-white`}>
@@ -288,7 +300,8 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                   </div>
                 </WindowInfoPanel>
               </div>
-              {selectedBtnAction === ButtonAction.SELECT_MODELS ? (
+              {selectedBtnAction ===
+              ModelsExplorerButtonAction.SELECT_MODELS ? (
                 <div className="h-[60%] flex items-center pt-4">
                   {selectedEndpointsList.length ? (
                     <TaglabelsBox

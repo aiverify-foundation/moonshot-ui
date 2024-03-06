@@ -13,7 +13,7 @@ import { IconButton } from '@components/icon-button';
 import TwoPanel from '@components/two-panel';
 import { WindowList } from '@components/window-list';
 import { LLMItemCard } from '@views/models-management/components/llm-item-card';
-import { ButtonAction } from '@views/models-management/components/top-buttons-bar';
+import { ModelsExplorerButtonAction } from '@views/models-management/components/top-buttons-bar';
 import { EndpointsExplorer } from '@views/models-management/endpoints-explorer';
 import {
   WindowIds,
@@ -91,6 +91,7 @@ function NewSessionFlow(props: NewSessionFormProps) {
                     <WindowList.Item
                       key={endpoint.name}
                       id={endpoint.name}
+                      className="justify-between"
                       onCloseIconClick={handleEndpointToEvaluateClick}>
                       <LLMItemCard endpoint={endpoint} />
                     </WindowList.Item>
@@ -112,7 +113,7 @@ function NewSessionFlow(props: NewSessionFormProps) {
               title="Select Models to Evaluate"
               mini
               hideMenuButtons
-              buttonAction={ButtonAction.SELECT_MODELS}
+              buttonAction={ModelsExplorerButtonAction.SELECT_MODELS}
               zIndex={Z_Index.Top}
               windowId={getWindowId(WindowIds.LLM_ENDPOINTS_PICKER)}
               initialXY={getWindowXYById(

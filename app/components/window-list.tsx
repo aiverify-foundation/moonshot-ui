@@ -25,6 +25,7 @@ type ListItemProps = {
   id: string;
   displayName?: string;
   selected?: boolean;
+  className?: string;
   enableCheckbox?: boolean;
   checked?: boolean;
   onClick?: (id: string) => void;
@@ -38,6 +39,7 @@ function ListItem(props: PropsWithChildren<ListItemProps>) {
     id,
     displayName,
     selected,
+    className,
     enableCheckbox = false,
     checked = false,
     onCheckboxChange,
@@ -68,11 +70,12 @@ function ListItem(props: PropsWithChildren<ListItemProps>) {
 
   return (
     <li
-      className={`flex items-center justify-between border-fuchsia-200
+      className={`flex items-center border-fuchsia-200
         transition-colors duration-100 ease-in-out px-3 py-2
         hover:bg-gray-100 dark:hover:bg-slate-100 
         ${selected ? 'bg-gray-200 dark:bg-slate-200' : ''}
         ${onClick ? 'cursor-pointer' : ''}
+        ${className}
       `}
       onMouseOver={itemHoverHandler(id)}
       onClick={itemClickHandler(id)}>
