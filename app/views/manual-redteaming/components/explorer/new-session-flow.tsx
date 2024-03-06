@@ -59,28 +59,39 @@ function NewSessionFlow(props: NewSessionFormProps) {
   return (
     <>
       <TwoPanel initialDividerPosition={initialDividerPosition}>
-        {llmEndpoints.length == 0 ? (
-          <div className="flex h-full items-center justify-center bg-white">
+        <div className="flex flex-col h-full justify-start gap-1">
+          <div className="flex justify-between">
             <IconButton
+              backgroundColor="transparent"
               label="Select Models to Evaluate"
               iconName={IconName.SolidBox}
               onClick={() => setIsEndpointsExplorerOpen(true)}
             />
+            <IconButton
+              iconName={IconName.Plus}
+              iconSize={15}
+              onClick={() => setIsEndpointsExplorerOpen(true)}
+            />
           </div>
-        ) : (
-          <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
-            {llmEndpoints
-              ? llmEndpoints.map((endpoint) => (
-                  <WindowList.Item
-                    key={endpoint.name}
-                    id={endpoint.name}
-                    onClick={handleEndpointToEvaluateClick}>
-                    <LLMItemCard endpoint={endpoint} />
-                  </WindowList.Item>
-                ))
-              : null}
-          </WindowList>
-        )}
+          {llmEndpoints.length == 0 ? (
+            <div className="flex flex-grow items-center justify-center bg-white">
+              <div className="text-sm text-gray-500">No models selected</div>
+            </div>
+          ) : (
+            <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
+              {llmEndpoints
+                ? llmEndpoints.map((endpoint) => (
+                    <WindowList.Item
+                      key={endpoint.name}
+                      id={endpoint.name}
+                      onClick={handleEndpointToEvaluateClick}>
+                      <LLMItemCard endpoint={endpoint} />
+                    </WindowList.Item>
+                  ))
+                : null}
+            </WindowList>
+          )}
+        </div>
         <div className="flex justify-center h-full">
           <NewSessionForm
             onFormSubmit={() => null}

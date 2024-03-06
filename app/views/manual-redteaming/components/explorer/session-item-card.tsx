@@ -18,7 +18,7 @@ function SessionItemCard(props: SessionItemCardProps) {
         />
         <div className="font-bold">{session.name}</div>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-start gap-2">
         <div className="font-medium">Models:</div>
         <div>{models}</div>
       </div>

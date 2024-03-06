@@ -278,7 +278,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
               />
             ) : null}
           </div>
-          <div className="pb-6">{topBar}</div>
+          {topBar ? <div className="pb-8">{topBar}</div> : null}
           <div
             ref={scrollDivRef}
             className="h-full overflow-x-hidden overflow-y-auto
