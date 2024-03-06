@@ -57,7 +57,12 @@ function NewSessionFlow(props: NewSessionFormProps) {
   }
 
   return (
-    <>
+    <div className="h-full flex flex-col">
+      <div className="text-sm text-white mb-7">
+        This red teaming interface enables you to prompt multiple models at once
+        and compare results. <br />
+        Once session starts, models cannot be changed.
+      </div>
       <TwoPanel
         disableResize
         initialDividerPosition={initialDividerPosition}>
@@ -126,7 +131,7 @@ function NewSessionFlow(props: NewSessionFormProps) {
             document.getElementById(moonshotDesktopDivID) as HTMLDivElement
           )
         : null}
-    </>
+    </div>
   );
 }
 

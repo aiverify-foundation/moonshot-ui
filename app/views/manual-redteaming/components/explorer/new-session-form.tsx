@@ -80,7 +80,6 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
 
   async function handleFormSubmit(values: FormValues) {
     values.llmEndpoints = selectedEndpoints.map((endpoint) => endpoint.name);
-    console.log(values);
     submitNewSessionForm(
       values.sessionName,
       values.description,
@@ -123,7 +122,7 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
                     onSyntheticChange={formProps.handleChange}
                   />
                 </div>
-                <div className="flex-1 pl-4 h-full flex flex-col justify-end pb-6">
+                <div className="flex-1 pl-4 h-full flex flex-col justify-end">
                   <TextInput
                     name="sessionName"
                     label="Session Name"
@@ -136,7 +135,7 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
                         ? formProps.errors.sessionName
                         : undefined
                     }
-                    placeholder="Give an identifier name to this session"
+                    placeholder="Add an identifier name to this session"
                   />
                   <TextArea
                     name="description"
@@ -149,16 +148,16 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
                         : undefined
                     }
                     value={formProps.values.description}
-                    placeholder="Give a description of this session"
+                    placeholder="Provide a description of this session"
                   />
+                  <div className="text-right mt-6">
+                    <button
+                      className="btn-primary btn-large rounded"
+                      type="submit">
+                      Start Red Teaming Session
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="bottom-3 text-right">
-                <button
-                  className="btn-primary rounded"
-                  type="submit">
-                  Start Red Teaming Session
-                </button>
               </div>
             </Form>
           );

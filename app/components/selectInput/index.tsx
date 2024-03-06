@@ -151,6 +151,7 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
             }),
             menuList: (baseStyles) => ({
               ...baseStyles,
+              fontSize: 14,
               marginRight: 2,
               '::-webkit-scrollbar': {
                 width: '0.5rem',

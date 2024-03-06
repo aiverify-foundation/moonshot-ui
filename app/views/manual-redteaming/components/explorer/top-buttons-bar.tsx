@@ -29,7 +29,7 @@ function TopButtonsBar(props: TopButtonsBarProps) {
               <IconButton
                 backgroundColor={
                   activeButton === SessionExplorerButtonAction.VIEW
-                    ? '#334155'
+                    ? '#425d85'
                     : 'transparent'
                 }
                 label="List Sessions"
@@ -49,7 +49,7 @@ function TopButtonsBar(props: TopButtonsBarProps) {
               <IconButton
                 backgroundColor={
                   activeButton === SessionExplorerButtonAction.ADD
-                    ? '#334155'
+                    ? '#425d85'
                     : 'transparent'
                 }
                 disabled={activeButton === SessionExplorerButtonAction.ADD}
