@@ -185,7 +185,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     if (!isLoading && llmEndpoints) {
       setDisplayedEndpointsList(sortDisplayedEndpointsByName(llmEndpoints));
     }
-  }, [isLoading]);
+  }, [isLoading, llmEndpoints]);
 
   useEffect(() => {
     if (buttonAction && hideMenuButtons) {
@@ -219,7 +219,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
       leftFooterText={mini ? miniFooterText : footerText}
       footerHeight={30}
       contentAreaStyles={{ backgroundColor: 'transparent' }}
-      topPanel={
+      topBar={
         hideMenuButtons ? null : (
           <TopButtonsBar
             onButtonClick={handleButtonClick}

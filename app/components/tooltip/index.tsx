@@ -21,6 +21,7 @@ type TooltipProps = {
   defaultShow?: boolean;
   flash?: boolean;
   flashDuration?: number;
+  delay?: number;
   disabled?: boolean;
   backgroundColor?: string;
   fontColor?: string;
@@ -104,6 +105,7 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
     flash = false,
     flashDuration = 5000,
     disabled = false,
+    delay = 200,
     content,
     contentMaxWidth = 300,
     contentMinWidth,
@@ -152,7 +154,7 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
         offsetTop
       );
       setPlacement(placementStyle);
-    }, 200); // Delay of 200 milliseconds
+    }, delay);
   }
 
   function handleMouseOut() {
@@ -170,7 +172,8 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
 
   useEffect(() => {
     if (defaultShow) handleMouseOver();
-    else if (!isHovering) { // Added check for isHovering before hiding the tooltip
+    else if (!isHovering) {
+      // Added check for isHovering before hiding the tooltip
       handleMouseOut();
     }
   }, [defaultShow, isHovering]);
@@ -179,7 +182,8 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
     if (flash) {
       handleMouseOver();
       setTimeout(() => {
-        if (!isHovering) { // Check if not hovering over the tooltip before hiding
+        if (!isHovering) {
+          // Check if not hovering over the tooltip before hiding
           handleMouseOut();
         }
       }, flashDuration);
@@ -210,7 +214,11 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
           />
           <div
             className={styles.content}
-            style={{ backgroundColor, maxWidth: contentMaxWidth, minWidth: contentMinWidth }}>
+            style={{
+              backgroundColor,
+              maxWidth: contentMaxWidth,
+              minWidth: contentMinWidth,
+            }}>
             {content}
           </div>
         </div>,

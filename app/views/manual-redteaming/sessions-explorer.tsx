@@ -13,7 +13,7 @@ import { NewSessionFlow } from './components/explorer/new-session-flow';
 import { SessionDetailsCard } from './components/explorer/session-details-card';
 import { SessionItemCard } from './components/explorer/session-item-card';
 import {
-  ButtonAction,
+  SessionExplorerButtonAction,
   TopButtonsBar,
 } from './components/explorer/top-buttons-bar';
 import useSessionList from './hooks/useSessionList';
@@ -24,7 +24,7 @@ type SessionsExplorerProps = {
   initialXY: [number, number];
   initialSize: [number, number];
   hideMenuButtons?: boolean;
-  buttonAction?: ButtonAction;
+  buttonAction?: SessionExplorerButtonAction;
   onCloseClick: () => void;
   onContinueSessionClick: () => void;
   onWindowChange: (
@@ -37,12 +37,12 @@ type SessionsExplorerProps = {
   ) => void;
 };
 
-function getWindowSubTitle(selectedBtnAction: ButtonAction) {
+function getWindowSubTitle(selectedBtnAction: SessionExplorerButtonAction) {
   switch (selectedBtnAction) {
-    case ButtonAction.VIEW:
-      return 'Red Teaming Sessions > List Sessions';
-    case ButtonAction.ADD:
-      return 'Red Teaming Sessions > Create New Session';
+    case SessionExplorerButtonAction.VIEW:
+      return 'Red Teaming';
+    case SessionExplorerButtonAction.ADD:
+      return 'Red Teaming';
   }
 }
 
@@ -51,7 +51,7 @@ function SessionsExplorer(props: SessionsExplorerProps) {
     zIndex,
     windowId,
     hideMenuButtons = false,
-    buttonAction = ButtonAction.VIEW,
+    buttonAction = SessionExplorerButtonAction.VIEW,
     initialSize,
     initialXY,
     onWindowChange,
@@ -60,9 +60,8 @@ function SessionsExplorer(props: SessionsExplorerProps) {
   } = props;
   const [selectedSession, setSelectedSession] = useState<Session | undefined>();
   const { isLoading, error, sessions } = useSessionList();
-  const [selectedBtnAction, setSelectedBtnAction] = useState<ButtonAction>(
-    ButtonAction.VIEW
-  );
+  const [selectedBtnAction, setSelectedBtnAction] =
+    useState<SessionExplorerButtonAction>(SessionExplorerButtonAction.VIEW);
   const [initialWindowSize, setInitialWindowSize] =
     useState<[number, number]>(initialSize);
   const [initialWindowXY, setInitialWindowXY] =
@@ -71,10 +70,11 @@ function SessionsExplorer(props: SessionsExplorerProps) {
   const [triggerSetActiveSession] = useLazySetActiveSessionQuery();
   const dispatch = useAppDispatch();
 
-  const isTwoPanel = selectedBtnAction === ButtonAction.VIEW && selectedSession;
+  const isTwoPanel =
+    selectedBtnAction === SessionExplorerButtonAction.VIEW && selectedSession;
 
   const initialDividerPosition =
-    selectedBtnAction === ButtonAction.ADD ? 55 : 40;
+    selectedBtnAction === SessionExplorerButtonAction.ADD ? 40 : 40;
 
   const footerText = sessions.length
     ? `${sessions.length} Session${sessions.length > 1 ? 's' : ''}`
@@ -102,24 +102,7 @@ function SessionsExplorer(props: SessionsExplorerProps) {
     }
   }
 
-  function handleButtonClick(action: ButtonAction) {
-    // if (action === ButtonAction.ADD) {
-    //   const widthHeight = calcMaximizedWindowWidthHeight(100, 50);
-    //   const position = calcCentralizedWindowXY(
-    //     widthHeight[0],
-    //     widthHeight[1],
-    //     0,
-    //     10
-    //   );
-    //   setInitialWindowSize(widthHeight);
-    //   setInitialWindowXY(position);
-    // } else {
-    //   const position = calcCentralizedWindowXY(
-    //     ...defaultWindowWidthHeight[WindowIds.SAVED_SESSIONS]
-    //   );
-    //   setInitialWindowSize(defaultWindowWidthHeight[WindowIds.SAVED_SESSIONS]);
-    //   setInitialWindowXY(position);
-    // }
+  function handleButtonClick(action: SessionExplorerButtonAction) {
     setSelectedBtnAction(action);
   }
 
@@ -150,7 +133,7 @@ function SessionsExplorer(props: SessionsExplorerProps) {
       leftFooterText={footerText}
       footerHeight={30}
       contentAreaStyles={{ backgroundColor: 'transparent' }}
-      topPanel={
+      topBar={
         hideMenuButtons ? null : (
           <TopButtonsBar
             onButtonClick={handleButtonClick}
@@ -158,13 +141,13 @@ function SessionsExplorer(props: SessionsExplorerProps) {
           />
         )
       }>
-      {selectedBtnAction === ButtonAction.ADD ? (
+      {selectedBtnAction === SessionExplorerButtonAction.ADD ? (
         <NewSessionFlow
           initialDividerPosition={initialDividerPosition}
           onNewSession={() => null}
         />
       ) : null}
-      {selectedBtnAction === ButtonAction.VIEW ? (
+      {selectedBtnAction === SessionExplorerButtonAction.VIEW ? (
         <>
           {isTwoPanel ? (
             <TwoPanel

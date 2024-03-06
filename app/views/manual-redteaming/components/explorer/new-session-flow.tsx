@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useWindowChange } from '@/app/hooks/use-window-change';
 import { useAppSelector } from '@/lib/redux';
@@ -26,6 +26,11 @@ type NewSessionFormProps = {
   initialDividerPosition: number;
 };
 
+/*
+  Renders 2 panel layout with selected endpoints on the left panel and new session form on the right.
+  Also renders minified endpoints explorer as a modal via portal.
+  Clicking on endpoints from the minified endpoints explorer will add them to the selected endpoints list.
+*/
 function NewSessionFlow(props: NewSessionFormProps) {
   const { initialDividerPosition } = props;
   const [llmEndpoints, setLlmEndpoints] = useState<LLMEndpoint[]>([]);
@@ -38,39 +43,21 @@ function NewSessionFlow(props: NewSessionFormProps) {
     setLlmEndpoints([...llmEndpoints, endpoint]);
   }
 
+  function handleCloseEndpointPickerClick() {
+    setUnselectedEndpoint(undefined);
+    setIsEndpointsExplorerOpen(false);
+  }
+
   function handleEndpointToEvaluateClick(name: string) {
     const clickedEndpoint = llmEndpoints.find((epoint) => epoint.name === name);
-    setUnselectedEndpoint(clickedEndpoint);
+    if (isEndpointsExplorerOpen) {
+      setUnselectedEndpoint(clickedEndpoint);
+    }
     setLlmEndpoints(llmEndpoints.filter((epoint) => epoint.name !== name));
   }
 
   return (
     <>
-      {isEndpointsExplorerOpen
-        ? ReactDOM.createPortal(
-            <EndpointsExplorer
-              title="Select Models to Evaluate"
-              mini
-              hideMenuButtons
-              buttonAction={ButtonAction.SELECT_MODELS}
-              zIndex={Z_Index.Top}
-              windowId={getWindowId(WindowIds.LLM_ENDPOINTS_PICKER)}
-              initialXY={getWindowXYById(
-                windowsMap,
-                WindowIds.LLM_ENDPOINTS_PICKER
-              )}
-              initialSize={getWindowSizeById(
-                windowsMap,
-                WindowIds.LLM_ENDPOINTS_PICKER
-              )}
-              returnedEndpoint={unselectedEndpoint}
-              onWindowChange={handleOnWindowChange}
-              onCloseClick={() => setIsEndpointsExplorerOpen(false)}
-              onListItemClick={handleEndpointPickerClick}
-            />,
-            document.getElementById(moonshotDesktopDivID) as HTMLDivElement
-          )
-        : null}
       <TwoPanel initialDividerPosition={initialDividerPosition}>
         {llmEndpoints.length == 0 ? (
           <div className="flex h-full items-center justify-center bg-white">
@@ -101,6 +88,31 @@ function NewSessionFlow(props: NewSessionFormProps) {
           />
         </div>
       </TwoPanel>
+      {isEndpointsExplorerOpen
+        ? ReactDOM.createPortal(
+            <EndpointsExplorer
+              title="Select Models to Evaluate"
+              mini
+              hideMenuButtons
+              buttonAction={ButtonAction.SELECT_MODELS}
+              zIndex={Z_Index.Top}
+              windowId={getWindowId(WindowIds.LLM_ENDPOINTS_PICKER)}
+              initialXY={getWindowXYById(
+                windowsMap,
+                WindowIds.LLM_ENDPOINTS_PICKER
+              )}
+              initialSize={getWindowSizeById(
+                windowsMap,
+                WindowIds.LLM_ENDPOINTS_PICKER
+              )}
+              returnedEndpoint={unselectedEndpoint}
+              onWindowChange={handleOnWindowChange}
+              onCloseClick={handleCloseEndpointPickerClick}
+              onListItemClick={handleEndpointPickerClick}
+            />,
+            document.getElementById(moonshotDesktopDivID) as HTMLDivElement
+          )
+        : null}
     </>
   );
 }

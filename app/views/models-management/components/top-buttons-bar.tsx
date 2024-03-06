@@ -1,7 +1,7 @@
 import { IconName } from '@/app/components/IconSVG';
 import { IconButton } from '@/app/components/icon-button';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
-import { WindowTopBar } from '@/app/components/window-top-bar';
+import { WindowTopBarButtonGroup } from '@/app/components/window-top-bar';
 
 enum ButtonAction {
   VIEW_MODELS,
@@ -18,7 +18,7 @@ function TopButtonsBar(props: TopButtonsBarProps) {
   const { onButtonClick, activeButton } = props;
 
   return (
-    <WindowTopBar height={45}>
+    <WindowTopBarButtonGroup height={45}>
       <div className="flex flex-col justify-end h-full py-2">
         <div className="flex items-end gap-[2px]">
           <Tooltip
@@ -57,7 +57,7 @@ function TopButtonsBar(props: TopButtonsBarProps) {
           </Tooltip>
         </div>
       </div>
-    </WindowTopBar>
+    </WindowTopBarButtonGroup>
   );
 }
 

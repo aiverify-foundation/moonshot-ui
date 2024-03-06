@@ -4,7 +4,7 @@ import TwoPanel from '@/app/components/two-panel';
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
-import { WindowTopBar } from '@/app/components/window-top-bar';
+import { WindowTopBarButtonGroup } from '@/app/components/window-top-bar';
 import { CookbookDetailsCard } from './components/cookbook-details-card';
 import { CookbookItemCard } from './components/cookbook-item-card';
 import useLLMEndpointList from '@views/moonshot-desktop/hooks/useLLMEndpointList';
@@ -59,8 +59,8 @@ function CookbooksExplorer(props: CookbooksExplorerProps) {
       name="Cookbooks"
       leftFooterText={footerText}
       footerHeight={24}
-      topPanel={
-        <WindowTopBar height={45}>
+      topBar={
+        <WindowTopBarButtonGroup height={45}>
           <div className="flex flex-col justify-end h-full py-2">
             <div className="flex items-end">
               <button
@@ -77,21 +77,21 @@ function CookbooksExplorer(props: CookbooksExplorerProps) {
               </button>
             </div>
           </div>
-        </WindowTopBar>
+        </WindowTopBarButtonGroup>
       }>
       {selectedEndpoint ? (
         <TwoPanel>
           <WindowList>
             {llmEndpoints
               ? llmEndpoints.map((endpoint) => (
-                <WindowList.Item
-                  key={endpoint.name}
-                  id={endpoint.name}
-                  onClick={() => handleListItemClick(endpoint.name)}
-                  selected={selectedEndpoint.name === endpoint.name}>
-                  <CookbookItemCard endpoint={endpoint} />
-                </WindowList.Item>
-              ))
+                  <WindowList.Item
+                    key={endpoint.name}
+                    id={endpoint.name}
+                    onClick={() => handleListItemClick(endpoint.name)}
+                    selected={selectedEndpoint.name === endpoint.name}>
+                    <CookbookItemCard endpoint={endpoint} />
+                  </WindowList.Item>
+                ))
               : null}
           </WindowList>
           <WindowInfoPanel title="Model Details">
@@ -108,13 +108,13 @@ function CookbooksExplorer(props: CookbooksExplorerProps) {
         <WindowList>
           {llmEndpoints
             ? llmEndpoints.map((endpoint) => (
-              <WindowList.Item
-                key={endpoint.name}
-                id={endpoint.name}
-                onClick={handleListItemClick}>
-                <CookbookItemCard endpoint={endpoint} />
-              </WindowList.Item>
-            ))
+                <WindowList.Item
+                  key={endpoint.name}
+                  id={endpoint.name}
+                  onClick={handleListItemClick}>
+                  <CookbookItemCard endpoint={endpoint} />
+                </WindowList.Item>
+              ))
             : null}
         </WindowList>
       )}

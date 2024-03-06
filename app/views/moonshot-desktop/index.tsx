@@ -27,7 +27,7 @@ import { DesktopIcon } from '@components/desktop-icon';
 import Menu from '@components/menu';
 import TaskBar from '@components/taskbar';
 import { Window } from '@components/window';
-import { ButtonAction } from '@views/manual-redteaming/components/explorer/top-buttons-bar';
+import { SessionExplorerButtonAction } from '@views/manual-redteaming/components/explorer/top-buttons-bar';
 import { SessionsExplorer } from '@views/manual-redteaming/sessions-explorer';
 import { WindowCreateSession } from '@views/manual-redteaming/window-create-session';
 
@@ -265,7 +265,7 @@ export default function MoonshotDesktop() {
       {isShowWindowSavedSession ? (
         <SessionsExplorer
           zIndex={Z_Index.Level_2}
-          buttonAction={ButtonAction.VIEW}
+          buttonAction={SessionExplorerButtonAction.VIEW}
           windowId={getWindowId(WindowIds.SAVED_SESSIONS)}
           initialXY={getWindowXYById(windowsMap, WindowIds.SAVED_SESSIONS)}
           initialSize={getWindowSizeById(windowsMap, WindowIds.SAVED_SESSIONS)}

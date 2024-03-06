@@ -4,15 +4,15 @@ type WindowTopBarProps = {
   height?: number;
 };
 
-function WindowTopBar(props: PropsWithChildren<WindowTopBarProps>) {
+function WindowTopBarButtonGroup(props: PropsWithChildren<WindowTopBarProps>) {
   const { height = 40, children } = props;
   return (
     <div
       style={{ height }}
-      className="shrink-0">
+      className="shrink-0 bg-fuchsia-950/60 rounded px-1">
       {children}
     </div>
   );
 }
 
-export { WindowTopBar };
+export { WindowTopBarButtonGroup };
