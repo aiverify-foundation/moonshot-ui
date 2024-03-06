@@ -3,6 +3,7 @@ export enum WindowIds {
   LLM_ENDPOINTS_PICKER = 'llmendpPicker',
   SAVED_SESSIONS = 'savedSessions',
   CREATE_SESSION = 'createSession',
+  RED_TEAMING_SESSION = 'redTeamingSession',
 }
 
 // Reserved z-indexes

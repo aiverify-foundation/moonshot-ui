@@ -13,9 +13,14 @@ import {
   useCreateSessionMutation,
   useLazySetActiveSessionQuery,
 } from '@/app/services/session-api-service';
-import { ManualRedTeaming } from '@/app/views/manual-redteaming';
+import { ManualRedTeaming } from '@/app/views/manual-redteaming/red-teaming-session';
 import { EndpointsExplorer } from '@/app/views/models-management/endpoints-explorer';
-import { useAppDispatch, useAppSelector } from '@/lib/redux';
+import {
+  addOpenedWindowId,
+  removeOpenedWindowId,
+  useAppDispatch,
+  useAppSelector,
+} from '@/lib/redux';
 import {
   removeActiveSession,
   setActiveSession,
@@ -46,6 +51,9 @@ export default function MoonshotDesktop() {
   const handleOnWindowChange = useWindowChange();
   const windowsMap = useAppSelector((state) => state.windows.map);
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
+  const openedWindowIds = useAppSelector(
+    (state) => state.windows.openedWindowIds
+  );
   const backgroundImageStyle = !isDarkMode
     ? {
         backgroundImage: 'url("/pink-bg-fade5.png")',
@@ -84,21 +92,18 @@ export default function MoonshotDesktop() {
       if (activeSessionResponse.data) {
         dispatch(setActiveSession(activeSessionResponse.data));
         setIsShowWindowCreateSession(false);
-        setIsChatSessionOpen(true);
-        setIsDesktopIconsHidden(true);
       }
     } // todo - else and error handling
   }
 
-  function handleContinueSessionClick() {
-    setIsShowWindowSavedSession(false);
-    setIsChatSessionOpen(true);
-    setIsDesktopIconsHidden(true);
+  function handleResumeSessionClick() {
+    dispatch(addOpenedWindowId(getWindowId(WindowIds.RED_TEAMING_SESSION)));
   }
 
-  function handlePromptWindowCloseClick() {
+  function handleManualRedteamingSessionCloseClick() {
     setIsChatSessionOpen(false);
     dispatch(removeActiveSession());
+    dispatch(removeOpenedWindowId(getWindowId(WindowIds.RED_TEAMING_SESSION)));
     setIsDesktopIconsHidden(false);
   }
 
@@ -106,6 +111,15 @@ export default function MoonshotDesktop() {
     dispatch(toggleDarkMode());
     document.documentElement.classList.toggle('dark');
   }
+
+  useEffect(() => {
+    if (!openedWindowIds.length) return;
+    if (openedWindowIds.includes(getWindowId(WindowIds.RED_TEAMING_SESSION))) {
+      setIsShowWindowSavedSession(false);
+      setIsDesktopIconsHidden(true);
+      setIsChatSessionOpen(true);
+    }
+  }, [openedWindowIds]);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -247,7 +261,7 @@ export default function MoonshotDesktop() {
       {isChatSessionOpen ? (
         <ManualRedTeaming
           zIndex={Z_Index.Level_2}
-          onCloseBtnClick={handlePromptWindowCloseClick}
+          onCloseBtnClick={handleManualRedteamingSessionCloseClick}
         />
       ) : null}
 
@@ -270,7 +284,7 @@ export default function MoonshotDesktop() {
           initialXY={getWindowXYById(windowsMap, WindowIds.SAVED_SESSIONS)}
           initialSize={getWindowSizeById(windowsMap, WindowIds.SAVED_SESSIONS)}
           onCloseClick={() => setIsShowWindowSavedSession(false)}
-          onContinueSessionClick={handleContinueSessionClick}
+          onResumeSessionClick={handleResumeSessionClick}
           onWindowChange={handleOnWindowChange}
         />
       ) : null}

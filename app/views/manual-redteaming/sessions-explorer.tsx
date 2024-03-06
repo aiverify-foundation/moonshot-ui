@@ -26,7 +26,7 @@ type SessionsExplorerProps = {
   hideMenuButtons?: boolean;
   buttonAction?: SessionExplorerButtonAction;
   onCloseClick: () => void;
-  onContinueSessionClick: () => void;
+  onResumeSessionClick: () => void;
   onWindowChange: (
     x: number,
     y: number,
@@ -56,7 +56,7 @@ function SessionsExplorer(props: SessionsExplorerProps) {
     initialXY,
     onWindowChange,
     onCloseClick,
-    onContinueSessionClick,
+    onResumeSessionClick,
   } = props;
   const [selectedSession, setSelectedSession] = useState<Session | undefined>();
   const { isLoading, error, sessions } = useSessionList();
@@ -91,13 +91,13 @@ function SessionsExplorer(props: SessionsExplorerProps) {
     };
   }
 
-  async function handleContinueSessionClick() {
+  async function handleResumeSessionClick() {
     if (selectedSession) {
       const result = await triggerGetSession(selectedSession);
       if (result.data) {
         await triggerSetActiveSession(result.data.session_id);
         dispatch(setActiveSession(result.data));
-        onContinueSessionClick();
+        onResumeSessionClick();
       }
     }
   }
@@ -181,7 +181,7 @@ function SessionsExplorer(props: SessionsExplorerProps) {
                       <div className="flex flex-col gap-6">
                         <SessionDetailsCard
                           session={selectedSession}
-                          onResumeSessionClick={handleContinueSessionClick}
+                          onResumeSessionClick={handleResumeSessionClick}
                         />
                       </div>
                     ) : null}

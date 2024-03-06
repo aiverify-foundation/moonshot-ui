@@ -7,7 +7,13 @@ import {
   useCreateSessionMutation,
   useLazySetActiveSessionQuery,
 } from '@/app/services/session-api-service';
-import { setActiveSession, useAppDispatch } from '@/lib/redux';
+import {
+  addOpenedWindowId,
+  setActiveSession,
+  useAppDispatch,
+} from '@/lib/redux';
+import { getWindowId } from '@/app/lib/window-utils';
+import { WindowIds } from '@/app/views/moonshot-desktop/constants';
 
 type FormValues = {
   sessionName: string;
@@ -67,6 +73,7 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
       );
       if (activeSessionResponse.data) {
         dispatch(setActiveSession(activeSessionResponse.data));
+        dispatch(addOpenedWindowId(getWindowId(WindowIds.RED_TEAMING_SESSION)));
       }
     } // todo - else and error handling
   }
@@ -109,8 +116,9 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
                     label="Context Strategy"
                     name="contextStrategy"
                     placeholder="Select a context strategy"
-                    description="Context strategies define how previous prompts will be included in the current prompt, such as appending a newly summarized context with each prompt. 
-                    Using a context strategy is optional and can be changed while red teaming is in progress."
+                    description="Context strategies define how previous prompts will be included in the current prompt, 
+                    such as appending a newly summarized context with each prompt. Using a context strategy is optional 
+                    and can be changed while red teaming is in progress."
                     options={contextStrategyOptions}
                     onSyntheticChange={formProps.handleChange}
                   />
