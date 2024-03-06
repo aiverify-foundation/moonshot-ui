@@ -74,7 +74,7 @@ function SessionsExplorer(props: SessionsExplorerProps) {
     selectedBtnAction === SessionExplorerButtonAction.VIEW && selectedSession;
 
   const initialDividerPosition =
-    selectedBtnAction === SessionExplorerButtonAction.ADD ? 40 : 40;
+    selectedBtnAction === SessionExplorerButtonAction.ADD ? 30 : 40;
 
   const footerText = sessions.length
     ? `${sessions.length} Session${sessions.length > 1 ? 's' : ''}`
@@ -130,7 +130,11 @@ function SessionsExplorer(props: SessionsExplorerProps) {
       zIndex={zIndex}
       onCloseClick={onCloseClick}
       name={windowTitle}
-      leftFooterText={footerText}
+      leftFooterText={
+        selectedBtnAction === SessionExplorerButtonAction.VIEW
+          ? footerText
+          : undefined
+      }
       footerHeight={30}
       contentAreaStyles={{ backgroundColor: 'transparent' }}
       topBar={

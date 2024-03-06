@@ -83,60 +83,73 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
   }
 
   return isLoading ? null : (
-    <div className="p-4 w-96 h-full">
+    <div className="pl-4 pt-8 w-full h-full">
       <Formik<FormValues>
         initialValues={initialFormValues}
         onSubmit={handleFormSubmit}>
         {(formProps) => {
           return (
-            <Form>
-              <SelectInput
-                label="Prompt Template"
-                name="promptTemplate"
-                options={promptTemplates.map((template) => ({
-                  value: template.name,
-                  label: template.name,
-                }))}
-                onSyntheticChange={formProps.handleChange}
-              />
+            <Form className="w-full h-full flex flex-col">
+              <div className="flex divide-x divide-fuchsia-100/40 w-full h-full gap-6">
+                <div className="flex-0 basis-[55%] h-full">
+                  <SelectInput
+                    label="Prompt Template"
+                    name="promptTemplate"
+                    placeholder="Select a prompt template"
+                    description="Templates enable you to wrap your prompts with a pre or post prompt automatically.
+                    Using a prompt template is optional and can be changed while red teaming is in progress."
+                    options={promptTemplates.map((template) => ({
+                      value: template.name,
+                      label: template.name,
+                    }))}
+                    onSyntheticChange={formProps.handleChange}
+                  />
 
-              <SelectInput
-                label="Context Strategy"
-                name="contextStrategy"
-                options={contextStrategyOptions}
-                onSyntheticChange={formProps.handleChange}
-              />
-              <TextInput
-                name="sessionName"
-                label="Session Name"
-                onChange={formProps.handleChange}
-                value={formProps.values.sessionName}
-                onBlur={formProps.handleBlur}
-                error={
-                  formProps.touched.sessionName && formProps.errors.sessionName
-                    ? formProps.errors.sessionName
-                    : undefined
-                }
-                placeholder="Give an identifier name to this session"
-              />
-              <TextArea
-                name="description"
-                label="Description"
-                onChange={formProps.handleChange}
-                error={
-                  formProps.touched.description && formProps.errors.description
-                    ? formProps.errors.description
-                    : undefined
-                }
-                value={formProps.values.description}
-                placeholder="Give a description of this session"
-              />
-
+                  <SelectInput
+                    label="Context Strategy"
+                    name="contextStrategy"
+                    placeholder="Select a context strategy"
+                    description="Context strategies define how previous prompts will be included in the current prompt, such as appending a newly summarized context with each prompt. 
+                    Using a context strategy is optional and can be changed while red teaming is in progress."
+                    options={contextStrategyOptions}
+                    onSyntheticChange={formProps.handleChange}
+                  />
+                </div>
+                <div className="flex-1 pl-4 h-full flex flex-col justify-end pb-6">
+                  <TextInput
+                    name="sessionName"
+                    label="Session Name"
+                    onChange={formProps.handleChange}
+                    value={formProps.values.sessionName}
+                    onBlur={formProps.handleBlur}
+                    error={
+                      formProps.touched.sessionName &&
+                      formProps.errors.sessionName
+                        ? formProps.errors.sessionName
+                        : undefined
+                    }
+                    placeholder="Give an identifier name to this session"
+                  />
+                  <TextArea
+                    name="description"
+                    label="Description"
+                    onChange={formProps.handleChange}
+                    error={
+                      formProps.touched.description &&
+                      formProps.errors.description
+                        ? formProps.errors.description
+                        : undefined
+                    }
+                    value={formProps.values.description}
+                    placeholder="Give a description of this session"
+                  />
+                </div>
+              </div>
               <div className="bottom-3 text-right">
                 <button
-                  className="btn-primary"
+                  className="btn-primary rounded"
                   type="submit">
-                  Submit
+                  Start Red Teaming Session
                 </button>
               </div>
             </Form>

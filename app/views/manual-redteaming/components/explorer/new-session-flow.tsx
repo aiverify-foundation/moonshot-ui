@@ -58,7 +58,9 @@ function NewSessionFlow(props: NewSessionFormProps) {
 
   return (
     <>
-      <TwoPanel initialDividerPosition={initialDividerPosition}>
+      <TwoPanel
+        disableResize
+        initialDividerPosition={initialDividerPosition}>
         <div className="flex flex-col h-full justify-start gap-1">
           <div className="flex justify-between">
             <IconButton
@@ -84,7 +86,7 @@ function NewSessionFlow(props: NewSessionFormProps) {
                     <WindowList.Item
                       key={endpoint.name}
                       id={endpoint.name}
-                      onClick={handleEndpointToEvaluateClick}>
+                      onCloseIconClick={handleEndpointToEvaluateClick}>
                       <LLMItemCard endpoint={endpoint} />
                     </WindowList.Item>
                   ))

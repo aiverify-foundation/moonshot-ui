@@ -13,6 +13,7 @@ type SelectInputProps<valueType = string> = {
   name: string;
   width?: number;
   label?: string;
+  description?: string;
   placeholder?: string;
   disabled?: boolean;
   error?: string;
@@ -45,6 +46,7 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
     name,
     width = 'auto',
     label,
+    description,
     placeholder,
     disabled = false,
     error,
@@ -117,6 +119,9 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
             <div>{label}</div>
             {labelSibling}
           </div>
+        ) : null}
+        {description !== '' && description !== undefined ? (
+          <div className={styles.description}>{description}</div>
         ) : null}
         <Select<SelectOption<T>>
           styles={{

@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from 'react';
+import { Icon, IconName } from './IconSVG';
 
 type WindowListProps = {
   disableMouseInteraction?: boolean;
@@ -27,6 +28,7 @@ type ListItemProps = {
   enableCheckbox?: boolean;
   checked?: boolean;
   onClick?: (id: string) => void;
+  onCloseIconClick?: (id: string) => void;
   onHover?: (id: string) => void;
   onCheckboxChange?: (id: string, checked: boolean) => void;
 };
@@ -40,6 +42,7 @@ function ListItem(props: PropsWithChildren<ListItemProps>) {
     checked = false,
     onCheckboxChange,
     onClick,
+    onCloseIconClick,
     onHover,
     children,
   } = props;
@@ -56,12 +59,20 @@ function ListItem(props: PropsWithChildren<ListItemProps>) {
     return () => (onHover ? onHover(id) : undefined);
   }
 
+  function handleCloseIconClick(id: string) {
+    return (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (onCloseIconClick) onCloseIconClick(id);
+    };
+  }
+
   return (
     <li
-      className={`flex items-center border-fuchsia-200 cursor-pointer
+      className={`flex items-center justify-between border-fuchsia-200
         transition-colors duration-100 ease-in-out px-3 py-2
         hover:bg-gray-100 dark:hover:bg-slate-100 
         ${selected ? 'bg-gray-200 dark:bg-slate-200' : ''}
+        ${onClick ? 'cursor-pointer' : ''}
       `}
       onMouseOver={itemHoverHandler(id)}
       onClick={itemClickHandler(id)}>
@@ -75,6 +86,12 @@ function ListItem(props: PropsWithChildren<ListItemProps>) {
       )}
       {displayName}
       <div>{children}</div>
+      {onCloseIconClick ? (
+        <Icon
+          name={IconName.Close}
+          onClick={handleCloseIconClick(id)}
+        />
+      ) : null}
     </li>
   );
 }

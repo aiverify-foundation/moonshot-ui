@@ -248,9 +248,11 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         id={id}
         ref={windowRef}
         onClick={onWholeWindowClick}
-        className={`absolute px-3 pt-0 text-white 
+        className={`absolute pt-0 text-white 
           shadow-lg select-none min-w-96 shadow-neutral-800/40 bg-fuchsia-1000/80 
-          dark:shadow-neutral-900/30 dark:bg-neutral-900/70 backdrop-blur-sm ${disableFadeIn ? '' : 'fadeScaleInAnimation'}`}
+          dark:shadow-neutral-900/30 dark:bg-neutral-900/70 backdrop-blur-sm 
+          ${disableFadeIn ? '' : 'fadeScaleInAnimation'}
+        `}
         style={{
           left: initialPosition[0],
           top: initialPosition[1],
@@ -262,26 +264,28 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         }}
         onMouseDown={handleMouseDown}>
         <div className="flex flex-col w-full h-full">
-          <div className="flex justify-between w-full">
-            {header || (
-              <div className="flex items-center h-8 text-lg mt-1 mb-1">
-                {name}
-              </div>
-            )}
-            {!disableCloseIcon ? (
-              <Icon
-                lightModeColor="#FFFFFF"
-                name={IconName.Close}
-                size={18}
-                onClick={onCloseClick}
-                onMouseDown={handleCloseIconMouseDown}
-              />
-            ) : null}
+          <div className="flex flex-col w-full mb-6 bg-fuchsia-950/40">
+            <div className="flex px-3 justify-between w-full">
+              {header || (
+                <div className="flex items-center h-8 text-lg mt-1 mb-1">
+                  {name}
+                </div>
+              )}
+              {!disableCloseIcon ? (
+                <Icon
+                  lightModeColor="#FFFFFF"
+                  name={IconName.Close}
+                  size={18}
+                  onClick={onCloseClick}
+                  onMouseDown={handleCloseIconMouseDown}
+                />
+              ) : null}
+            </div>
+            {topBar ? <div className="pb-2 px-3">{topBar}</div> : null}
           </div>
-          {topBar ? <div className="pb-8">{topBar}</div> : null}
           <div
             ref={scrollDivRef}
-            className="h-full overflow-x-hidden overflow-y-auto
+            className="h-full px-3 overflow-x-hidden overflow-y-auto
               bg-white size-full custom-scrollbar snap-mandatory"
             style={{
               ...contentAreaStyles,
@@ -292,7 +296,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
             {children}
           </div>
           <div
-            className="flex items-center justify-start text-xs text-white/70"
+            className="flex items-center justify-start text-xs text-white/70 px-3"
             style={footerHeight !== undefined ? { height: footerHeight } : {}}>
             {leftFooterText}
           </div>

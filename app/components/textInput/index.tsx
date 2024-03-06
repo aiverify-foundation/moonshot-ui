@@ -11,6 +11,7 @@ type TextInputProps = {
   id?: string;
   name: string;
   label?: string;
+  description?: string;
   placeholder?: string;
   disabled?: boolean;
   error?: string;
@@ -30,6 +31,7 @@ function TextInput(props: TextInputProps) {
     id,
     name,
     label,
+    description,
     placeholder,
     disabled,
     error,
@@ -66,6 +68,9 @@ function TextInput(props: TextInputProps) {
             <div>{label}</div>
             {labelSibling}
           </div>
+        ) : null}
+        {description ? (
+          <div className={styles.description}>{description}</div>
         ) : null}
         <input
           ref={inputRef}
