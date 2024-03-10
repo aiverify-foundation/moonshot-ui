@@ -1,11 +1,11 @@
 import { Icon, IconName } from '@/app/components/IconSVG';
 
 type CookbookItemCardProps = {
-  endpoint: LLMEndpoint;
+  cookbook: Cookbook;
 };
 
 function CookbookItemCard(props: CookbookItemCardProps) {
-  const { endpoint } = props;
+  const { cookbook } = props;
   return (
     <div className="flex flex-col items-start py-2">
       <div className="flex items-center gap-2 pb-2">
@@ -15,14 +15,14 @@ function CookbookItemCard(props: CookbookItemCardProps) {
           lightModeColor="#475569"
           darkModeColor="#475569"
         />
-        <div className="font-bold">{endpoint.name}</div>
+        <div className="font-bold">{cookbook.name}</div>
       </div>
       <div className="flex items-center gap-2">
-        <div className="font-medium">Type:</div>
-        <div>{endpoint.type}</div>
+        <div className="font-medium">Name:</div>
+        <div>{cookbook.name}</div>
       </div>
       <div className="flex items-center gap-2">
-        <div>{endpoint.uri}</div>
+        <div>{cookbook.description}</div>
       </div>
     </div>
   );

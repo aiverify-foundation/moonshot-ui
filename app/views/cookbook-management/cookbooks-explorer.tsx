@@ -1,19 +1,34 @@
-import { useState } from 'react';
-import { Icon, IconName } from '@/app/components/IconSVG';
+import { useEffect, useState } from 'react';
 import TwoPanel from '@/app/components/two-panel';
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
-import { WindowTopBarButtonGroup } from '@/app/components/window-top-bar';
+import { useCreateCookbookMutation } from '@/app/services/cookbook-api-service';
 import { CookbookDetailsCard } from './components/cookbook-details-card';
 import { CookbookItemCard } from './components/cookbook-item-card';
-import useLLMEndpointList from '@views/moonshot-desktop/hooks/useLLMEndpointList';
+import {
+  CookbookFormValues,
+  NewCookbookForm,
+} from './components/new-cookbook-form';
+import { TaglabelsBox } from './components/tag-labels-box';
+import {
+  CookbooksExplorerButtonAction,
+  TopButtonsBar,
+} from './components/top-buttons-bar';
+import useCookbookList from './hooks/useCookbookList';
 
-type CookbooksExplorerProps = {
+type cookbooksExplorerProps = {
   windowId: string;
+  mini?: boolean;
+  cookbooks?: Cookbook[];
+  title?: string;
   initialXY: [number, number];
   initialSize: [number, number];
   zIndex: number | 'auto';
+  hideMenuButtons?: boolean;
+  buttonAction?: CookbooksExplorerButtonAction;
+  returnedcookbook?: Cookbook;
+  onListItemClick?: (cookbook: Cookbook) => void;
   onCloseClick: () => void;
   onWindowChange?: (
     x: number,
@@ -25,94 +40,291 @@ type CookbooksExplorerProps = {
   ) => void;
 };
 
-function CookbooksExplorer(props: CookbooksExplorerProps) {
+function getWindowSubTitle(selectedBtnAction: CookbooksExplorerButtonAction) {
+  switch (selectedBtnAction) {
+    case CookbooksExplorerButtonAction.SELECT_COOKBOOK:
+      return `Cookbooks`;
+    case CookbooksExplorerButtonAction.VIEW_COOKBOOKS:
+      return `Cookbooks`;
+    case CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK:
+      return `Cookbooks`;
+  }
+}
+
+function CookbooksExplorer(props: cookbooksExplorerProps) {
   const {
     windowId,
-    onCloseClick,
+    title,
+    mini = false,
+    hideMenuButtons = false,
+    buttonAction = CookbooksExplorerButtonAction.SELECT_COOKBOOK,
     initialXY = [600, 200],
     initialSize = [720, 470],
     zIndex,
+    returnedcookbook,
+    onCloseClick,
+    onListItemClick,
     onWindowChange,
   } = props;
-  const { llmEndpoints, error, isLoading } = useLLMEndpointList();
-  const [selectedEndpoint, setSelectedEndpoint] = useState<LLMEndpoint>();
-  const footerText = llmEndpoints.length
-    ? `${llmEndpoints.length} Endpoint${llmEndpoints.length > 1 ? 's' : ''}`
+  const {
+    cookbooks,
+    error,
+    isLoading,
+    refetch: refetchCookbooks,
+  } = useCookbookList();
+  const [
+    createCookbook,
+    {
+      data: newCookbook,
+      isLoading: createCookbookIsLoding,
+      error: createCookbookError,
+    },
+  ] = useCreateCookbookMutation();
+  const [selectedBtnAction, setSelectedBtnAction] =
+    useState<CookbooksExplorerButtonAction>(
+      CookbooksExplorerButtonAction.VIEW_COOKBOOKS
+    );
+  const [selectedCookbookList, setSelectedCookbooksList] = useState<Cookbook[]>(
+    []
+  );
+  const [displayedCookbooksList, setDisplayedCookbooksList] = useState<
+    Cookbook[]
+  >([]);
+  const [selectedCookbook, setSelectedCookbook] = useState<
+    Cookbook | undefined
+  >();
+
+  const isTwoPanel =
+    !mini &&
+    (selectedBtnAction === CookbooksExplorerButtonAction.SELECT_COOKBOOK ||
+      selectedBtnAction === CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK ||
+      (selectedBtnAction === CookbooksExplorerButtonAction.VIEW_COOKBOOKS &&
+        selectedCookbook));
+
+  const initialDividerPosition =
+    selectedBtnAction === CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK
+      ? 55
+      : 40;
+
+  const footerText = cookbooks.length
+    ? `${cookbooks.length} Model${cookbooks.length > 1 ? 's' : ''}`
     : '';
 
-  function handleListItemClick(name: string) {
-    const endpoint = llmEndpoints.find((epoint) => epoint.name === name);
-    if (endpoint) {
-      setSelectedEndpoint(endpoint);
+  const miniFooterText = `${cookbooks.length - displayedCookbooksList.length} / ${footerText} Selected`;
+
+  const windowTitle = title || getWindowSubTitle(selectedBtnAction);
+
+  function selectItem(name: string) {
+    const cookbook = cookbooks.find((epoint) => epoint.name === name);
+    if (cookbook) {
+      setSelectedCookbook(cookbook);
     }
   }
+
+  function handleListItemClick(name: string) {
+    return () => {
+      if (selectedBtnAction === CookbooksExplorerButtonAction.VIEW_COOKBOOKS) {
+        selectItem(name);
+      } else if (
+        selectedBtnAction === CookbooksExplorerButtonAction.SELECT_COOKBOOK
+      ) {
+        const clickedcookbook = cookbooks.find(
+          (epoint) => epoint.name === name
+        );
+        if (!clickedcookbook) return;
+
+        if (
+          selectedCookbookList.findIndex((epoint) => epoint.name === name) > -1
+        ) {
+          setSelectedCookbooksList((prev) =>
+            prev.filter((epoint) => epoint.name !== clickedcookbook.name)
+          );
+        } else {
+          setSelectedCookbooksList((prev) => [...prev, clickedcookbook]);
+        }
+
+        if (onListItemClick) {
+          onListItemClick(clickedcookbook);
+          // Hide the clicked item from the list by filtering it out
+          const updatedcookbooks = displayedCookbooksList.filter(
+            (epoint) => epoint.name !== clickedcookbook.name
+          );
+          console.log(updatedcookbooks);
+          setDisplayedCookbooksList(updatedcookbooks);
+        }
+      }
+    };
+  }
+
+  function handleListItemHover(name: string) {
+    return () => selectItem(name);
+  }
+
+  function handleButtonClick(action: CookbooksExplorerButtonAction) {
+    setSelectedBtnAction(action);
+  }
+
+  function sortDisplayedcookbooksByName(list: Cookbook[]): Cookbook[] {
+    return [...list].sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  async function submitNewCookbook(data: CookbookFormValues) {
+    const newCookbook = {
+      name: data.name,
+      description: data.description,
+      recipes: data.recipes,
+    };
+    const response = await createCookbook(newCookbook);
+    if ('error' in response) {
+      console.error(response.error);
+      //TODO - create error visuals
+      return;
+    }
+    setSelectedBtnAction(CookbooksExplorerButtonAction.VIEW_COOKBOOKS);
+    setSelectedCookbook(newCookbook);
+    refetchCookbooks();
+  }
+
+  useEffect(() => {
+    if (!isLoading && cookbooks) {
+      setDisplayedCookbooksList(sortDisplayedcookbooksByName(cookbooks));
+    }
+  }, [isLoading, cookbooks]);
+
+  useEffect(() => {
+    if (buttonAction && hideMenuButtons) {
+      setSelectedBtnAction(buttonAction);
+    }
+  }, [buttonAction, hideMenuButtons]);
+
+  useEffect(() => {
+    if (returnedcookbook) {
+      if (mini) {
+        setDisplayedCookbooksList(
+          sortDisplayedcookbooksByName([
+            returnedcookbook,
+            ...displayedCookbooksList,
+          ])
+        );
+      }
+    }
+  }, [returnedcookbook]);
 
   return isLoading ? null : (
     <Window
       id={windowId}
-      resizeable={false}
+      resizeable={mini ? true : false}
       initialXY={initialXY}
       zIndex={zIndex}
       initialWindowSize={initialSize}
       onCloseClick={onCloseClick}
       onWindowChange={onWindowChange}
-      name="Cookbooks"
-      leftFooterText={footerText}
-      footerHeight={24}
+      name={windowTitle}
+      leftFooterText={mini ? miniFooterText : footerText}
+      footerHeight={30}
+      contentAreaStyles={{ backgroundColor: 'transparent' }}
       topBar={
-        <WindowTopBarButtonGroup height={45}>
-          <div className="flex flex-col justify-end h-full py-2">
-            <div className="flex items-end">
-              <button
-                className="btn-outline btn-small rounded-none"
-                type="button">
-                <div className="flex items-center gap-2">
-                  <Icon
-                    name={IconName.Plus}
-                    lightModeColor="#FFFFFF"
-                    size={15}
-                  />
-                  Add New Model
-                </div>
-              </button>
-            </div>
-          </div>
-        </WindowTopBarButtonGroup>
+        hideMenuButtons ? null : (
+          <TopButtonsBar
+            onButtonClick={handleButtonClick}
+            activeButton={selectedBtnAction}
+          />
+        )
       }>
-      {selectedEndpoint ? (
-        <TwoPanel>
-          <WindowList>
-            {llmEndpoints
-              ? llmEndpoints.map((endpoint) => (
+      {isTwoPanel ? (
+        <TwoPanel
+          disableResize
+          initialDividerPosition={initialDividerPosition}>
+          <WindowList
+            disableMouseInteraction={
+              selectedBtnAction ===
+              CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK
+                ? true
+                : false
+            }
+            styles={{ backgroundColor: '#FFFFFF' }}>
+            {displayedCookbooksList
+              ? displayedCookbooksList.map((cookbook) => (
                   <WindowList.Item
-                    key={endpoint.name}
-                    id={endpoint.name}
-                    onClick={() => handleListItemClick(endpoint.name)}
-                    selected={selectedEndpoint.name === endpoint.name}>
-                    <CookbookItemCard endpoint={endpoint} />
+                    key={cookbook.name}
+                    id={cookbook.name}
+                    className="justify-start"
+                    enableCheckbox={
+                      selectedBtnAction ===
+                      CookbooksExplorerButtonAction.SELECT_COOKBOOK
+                    }
+                    checked={
+                      selectedCookbookList.findIndex(
+                        (epoint) => epoint.name === cookbook.name
+                      ) > -1
+                    }
+                    onClick={handleListItemClick(cookbook.name)}
+                    onHover={
+                      selectedBtnAction ===
+                      CookbooksExplorerButtonAction.SELECT_COOKBOOK
+                        ? handleListItemHover(cookbook.name)
+                        : undefined
+                    }
+                    selected={
+                      selectedCookbook
+                        ? selectedCookbook.name === cookbook.name
+                        : false
+                    }>
+                    <CookbookItemCard cookbook={cookbook} />
                   </WindowList.Item>
                 ))
               : null}
           </WindowList>
-          <WindowInfoPanel title="Model Details">
-            <div className="h-full bg-gray-100">
-              {selectedEndpoint ? (
-                <div className="flex flex-col gap-6">
-                  <CookbookDetailsCard endpoint={selectedEndpoint} />
+          {selectedBtnAction ===
+          CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK ? (
+            <div className="flex justify-center h-full">
+              <NewCookbookForm onFormSubmit={submitNewCookbook} />
+            </div>
+          ) : selectedBtnAction ===
+              CookbooksExplorerButtonAction.SELECT_COOKBOOK ||
+            selectedBtnAction ===
+              CookbooksExplorerButtonAction.VIEW_COOKBOOKS ? (
+            <div className="flex flex-col h-full">
+              <div
+                className={`${
+                  selectedBtnAction ===
+                  CookbooksExplorerButtonAction.SELECT_COOKBOOK
+                    ? 'h-[40%]'
+                    : 'h-full'
+                } bg-white`}>
+                <WindowInfoPanel title="Model Details">
+                  <div className="h-full">
+                    {selectedCookbook ? (
+                      <div className="flex flex-col gap-6">
+                        <CookbookDetailsCard cookbook={selectedCookbook} />
+                      </div>
+                    ) : null}
+                  </div>
+                </WindowInfoPanel>
+              </div>
+              {selectedBtnAction ===
+              CookbooksExplorerButtonAction.SELECT_COOKBOOK ? (
+                <div className="h-[60%] flex items-center pt-4">
+                  {selectedCookbookList.length ? (
+                    <TaglabelsBox
+                      cookbooks={selectedCookbookList}
+                      onTaglabelIconClick={handleListItemClick}
+                    />
+                  ) : null}
                 </div>
               ) : null}
             </div>
-          </WindowInfoPanel>
+          ) : null}
         </TwoPanel>
       ) : (
-        <WindowList>
-          {llmEndpoints
-            ? llmEndpoints.map((endpoint) => (
+        <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
+          {displayedCookbooksList
+            ? displayedCookbooksList.map((cookbook) => (
                 <WindowList.Item
-                  key={endpoint.name}
-                  id={endpoint.name}
-                  onClick={handleListItemClick}>
-                  <CookbookItemCard endpoint={endpoint} />
+                  key={cookbook.name}
+                  id={cookbook.name}
+                  onClick={handleListItemClick(cookbook.name)}>
+                  <CookbookItemCard cookbook={cookbook} />
                 </WindowList.Item>
               ))
             : null}

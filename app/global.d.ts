@@ -45,6 +45,21 @@ type LLMEndpoint = {
   params?: Record<string, string | number>;
 };
 
+type Cookbook = {
+  name: string;
+  description: string;
+  recipes: string[];
+};
+
+type Recipe = {
+  name: string;
+  description: string;
+  tags: string[];
+  datasets: string[];
+  prompt_templates: string[];
+  metrics: string[];
+};
+
 // Reserved z-indexes
 type ZIndex = {
   Base: 1;

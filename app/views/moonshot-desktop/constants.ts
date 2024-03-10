@@ -4,6 +4,7 @@ export enum WindowIds {
   SAVED_SESSIONS = 'savedSessions',
   CREATE_SESSION = 'createSession',
   RED_TEAMING_SESSION = 'redTeamingSession',
+  COOKBOOKS = 'cookbooks',
 }
 
 // Reserved z-indexes
@@ -21,6 +22,7 @@ export const defaultWindowWidthHeight: {
   [x: string]: [number, number];
 } = {
   [WindowIds.LLM_ENDPOINTS]: [1050, 650],
+  [WindowIds.COOKBOOKS]: [1050, 650],
   [WindowIds.LLM_ENDPOINTS_PICKER]: [500, 460],
   [WindowIds.SAVED_SESSIONS]: [1250, 700],
   [WindowIds.CREATE_SESSION]: [820, 470],

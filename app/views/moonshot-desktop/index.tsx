@@ -25,12 +25,12 @@ import { useResetWindows } from './hooks/useResetWindows';
 import { DesktopIcon } from '@components/desktop-icon';
 import Menu from '@components/menu';
 import TaskBar from '@components/taskbar';
-import { Window } from '@components/window';
+import { CookbooksExplorer } from '@views/cookbook-management/cookbooks-explorer';
 import { SessionExplorerButtonAction } from '@views/manual-redteaming/components/explorer/top-buttons-bar';
 import { SessionsExplorer } from '@views/manual-redteaming/sessions-explorer';
 
 export default function MoonshotDesktop() {
-  const [isWindowOpen, setIsWindowOpen] = useState(false);
+  const [isCookbooksExplorerOpen, setIsCookbooksExplorerOpen] = useState(false);
   const [isChatSessionOpen, setIsChatSessionOpen] = useState(false);
   const [isEndpointsExplorerOpen, setIsEndpointsExplorerOpen] = useState(false);
   const [isShowWindowSavedSession, setIsShowWindowSavedSession] =
@@ -99,6 +99,7 @@ export default function MoonshotDesktop() {
   useEffect(() => {
     //set default window dimensions
     resetWindows(
+      WindowIds.COOKBOOKS,
       WindowIds.LLM_ENDPOINTS,
       WindowIds.LLM_ENDPOINTS_PICKER,
       WindowIds.SAVED_SESSIONS,
@@ -146,7 +147,7 @@ export default function MoonshotDesktop() {
             <DesktopIcon
               name={IconName.Folder}
               label="Cookbooks"
-              onClick={() => setIsWindowOpen(true)}
+              onClick={() => setIsCookbooksExplorerOpen(true)}
             />
             <DesktopIcon
               name={IconName.Folder}
@@ -175,36 +176,15 @@ export default function MoonshotDesktop() {
         </div>
       ) : null}
 
-      {isWindowOpen ? (
-        <Window
-          id="cookbooks"
-          name="Cookbooks"
-          onCloseClick={() => setIsWindowOpen(false)}>
-          <ul style={{ color: '#494848', padding: 15 }}>
-            <li
-              style={{
-                borderBottom: '1px solid #dbdada',
-                cursor: 'pointer',
-              }}
-              onClick={() => null}>
-              legal-summarisation.json
-            </li>
-            <li
-              style={{
-                borderBottom: '1px solid #dbdada',
-                cursor: 'pointer',
-              }}>
-              bbq-lite-age-cookbook.json
-            </li>
-            <li
-              style={{
-                borderBottom: '1px solid #dbdada',
-                cursor: 'pointer',
-              }}>
-              evaluation-catalogue-cookbook.json
-            </li>
-          </ul>
-        </Window>
+      {isCookbooksExplorerOpen ? (
+        <CookbooksExplorer
+          zIndex={Z_Index.Level_2}
+          windowId={getWindowId(WindowIds.COOKBOOKS)}
+          initialXY={getWindowXYById(windowsMap, WindowIds.COOKBOOKS)}
+          initialSize={getWindowSizeById(windowsMap, WindowIds.COOKBOOKS)}
+          onWindowChange={handleOnWindowChange}
+          onCloseClick={() => setIsCookbooksExplorerOpen(false)}
+        />
       ) : null}
 
       {isChatSessionOpen ? (
