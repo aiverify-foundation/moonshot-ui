@@ -15,10 +15,10 @@ export default function useChatboxesPositionsUtils(
   function calculateChatboxPositions(
     overrideCachedPositions = false
   ): Record<string, WindowData> | null {
-    if (!chatSession.chats.length) return chatboxesMap;
+    if (!chatSession.chat_ids.length) return chatboxesMap;
 
     chatboxesMap = {};
-    const numberOfChats = chatSession.chats.length;
+    const numberOfChats = chatSession.chat_ids.length;
     const viewportWidth = window.innerWidth; // Get the viewport width
     const margin = 20; // Left and right margin
     const adjustedViewportWidth = viewportWidth - margin * 2; // Adjust viewport width for margins
@@ -33,7 +33,7 @@ export default function useChatboxesPositionsUtils(
     const totalWidthNeeded =
       chatBoxWidth * numberOfChats + gap * (numberOfChats - 1); // Total width needed for all ChatBoxes and gaps
     const startX = (adjustedViewportWidth - totalWidthNeeded) / 2 + margin; // Calculate starting X position for centralization
-    chatSession.chats.forEach((id, index) => {
+    chatSession.chat_ids.forEach((id, index) => {
       if (windowsMap[getWindowId(id)] && !overrideCachedPositions) return; // if window has size and position in application state from previous launch, skip setting defaults
 
       let xyPos: [number, number] = [0, 0];

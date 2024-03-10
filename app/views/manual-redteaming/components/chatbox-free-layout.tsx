@@ -100,15 +100,15 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
           </Tooltip>
         </div>
       </div>
-      {chatSession.chats.map((id: string, index: number) => {
+      {chatSession.chat_ids.map((id: string, index: number) => {
         const isMinimized = minizedChats.includes(getWindowId(id));
         const left = index * 20;
         return windowsMap[getWindowId(id)] ? (
           <ChatBox
             key={id}
             disableCloseIcon={
-              chatSession.chats.length === 1 ||
-              chatSession.chats.length - minizedChats.length === 1
+              chatSession.chat_ids.length === 1 ||
+              chatSession.chat_ids.length - minizedChats.length === 1
             }
             resizable
             draggable

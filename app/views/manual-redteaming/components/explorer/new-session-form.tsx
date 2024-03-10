@@ -3,10 +3,7 @@ import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
 import usePromptTemplateList from '@/app/views/moonshot-desktop/hooks/usePromptTemplateList';
-import {
-  useCreateSessionMutation,
-  useLazySetActiveSessionQuery,
-} from '@/app/services/session-api-service';
+import { useCreateSessionMutation } from '@/app/services/session-api-service';
 import {
   addOpenedWindowId,
   setActiveSession,
@@ -44,7 +41,6 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
   const { selectedEndpoints, onFormSubmit } = props;
   const { promptTemplates, error, isLoading } = usePromptTemplateList();
   const dispatch = useAppDispatch();
-  const [triggerSetActiveSession] = useLazySetActiveSessionQuery();
 
   const [
     createSession,
@@ -67,14 +63,8 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
     });
     //@ts-ignore
     if (response.data) {
-      const activeSessionResponse = await triggerSetActiveSession(
-        //@ts-ignore
-        response.data.session_id
-      );
-      if (activeSessionResponse.data) {
-        dispatch(setActiveSession(activeSessionResponse.data));
-        dispatch(addOpenedWindowId(getWindowId(WindowIds.RED_TEAMING_SESSION)));
-      }
+      dispatch(setActiveSession(response.data));
+      dispatch(addOpenedWindowId(getWindowId(WindowIds.RED_TEAMING_SESSION)));
     } // todo - else and error handling
   }
 

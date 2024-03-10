@@ -3,10 +3,7 @@ import TwoPanel from '@/app/components/two-panel';
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
-import {
-  useLazyGetSessionQuery,
-  useLazySetActiveSessionQuery,
-} from '@/app/services/session-api-service';
+import { useLazyGetSessionQuery } from '@/app/services/session-api-service';
 import { useAppDispatch } from '@/lib/redux';
 import { setActiveSession } from '@/lib/redux/slices/activeSessionSlice';
 import { NewSessionFlow } from './components/explorer/new-session-flow';
@@ -67,7 +64,6 @@ function SessionsExplorer(props: SessionsExplorerProps) {
   const [initialWindowXY, setInitialWindowXY] =
     useState<[number, number]>(initialXY);
   const [triggerGetSession] = useLazyGetSessionQuery();
-  const [triggerSetActiveSession] = useLazySetActiveSessionQuery();
   const dispatch = useAppDispatch();
 
   const isTwoPanel =
@@ -95,7 +91,6 @@ function SessionsExplorer(props: SessionsExplorerProps) {
     if (selectedSession) {
       const result = await triggerGetSession(selectedSession);
       if (result.data) {
-        await triggerSetActiveSession(result.data.session_id);
         dispatch(setActiveSession(result.data));
         onResumeSessionClick();
       }

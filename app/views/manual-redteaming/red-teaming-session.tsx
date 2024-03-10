@@ -34,7 +34,7 @@ function ManualRedTeaming(props: ActiveSessionProps) {
   >(undefined);
 
   let layoutMode = useAppSelector((state) => state.chatLayoutMode.value);
-  if (activeSession && activeSession.chats.length < 4) {
+  if (activeSession && activeSession.chat_ids.length < 4) {
     layoutMode = LayoutMode.FREE;
   }
   const windowsMap = useAppSelector((state) => state.windows.map);
@@ -200,7 +200,7 @@ function ManualRedTeaming(props: ActiveSessionProps) {
               {activeSession.description}
             </div>
           </div>
-          {activeSession && activeSession.chats.length > 3 ? (
+          {activeSession && activeSession.chat_ids.length > 3 ? (
             <div className="flex gap-6 absolute top-4 left-[50%] transform -translate-x-1/2">
               <Tooltip
                 disabled={layoutMode === LayoutMode.SLIDE}

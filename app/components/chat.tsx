@@ -65,11 +65,23 @@ const Container = forwardRef(
         onWindowChange={onWindowChange}
         onWholeWindowClick={onWholeWindowClick}
         disableCloseIcon={disableCloseIcon}
+        footerHeight={17}
         styles={{
           zIndex: 100,
           ...styles,
+        }}
+        contentAreaStyles={{
+          paddingLeft: 0,
+          paddingRight: 0,
+          marginLeft: '0.7rem',
+          marginRight: '0.7rem',
+        }}
+        headerAreaStyles={{
+          marginBottom: 14,
         }}>
-        <div className="h-full overflow-y-auto custom-scrollbar mr-[2px]">
+        <div
+          id="chatContainer"
+          className="h-full overflow-y-auto custom-scrollbar mr-[2px]">
           {children}
         </div>
       </Window>

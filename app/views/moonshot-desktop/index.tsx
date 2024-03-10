@@ -9,10 +9,7 @@ import {
   getWindowSizeById,
   getWindowXYById,
 } from '@/app/lib/window-utils';
-import {
-  useCreateSessionMutation,
-  useLazySetActiveSessionQuery,
-} from '@/app/services/session-api-service';
+import { useCreateSessionMutation } from '@/app/services/session-api-service';
 import { ManualRedTeaming } from '@/app/views/manual-redteaming/red-teaming-session';
 import { EndpointsExplorer } from '@/app/views/models-management/endpoints-explorer';
 import {
@@ -21,10 +18,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '@/lib/redux';
-import {
-  removeActiveSession,
-  setActiveSession,
-} from '@/lib/redux/slices/activeSessionSlice';
+import { removeActiveSession } from '@/lib/redux/slices/activeSessionSlice';
 import { toggleDarkMode } from '@/lib/redux/slices/darkModeSlice';
 import { WindowIds, Z_Index, moonshotDesktopDivID } from './constants';
 import { useResetWindows } from './hooks/useResetWindows';
@@ -42,7 +36,6 @@ export default function MoonshotDesktop() {
   const [isShowWindowSavedSession, setIsShowWindowSavedSession] =
     useState(false);
   const [isDesktopIconsHidden, setIsDesktopIconsHidden] = useState(false);
-  const [triggerSetActiveSession] = useLazySetActiveSessionQuery();
   const dispatch = useAppDispatch();
   const resetWindows = useResetWindows();
   const handleOnWindowChange = useWindowChange();
@@ -69,29 +62,6 @@ export default function MoonshotDesktop() {
       error: createSessionError,
     },
   ] = useCreateSessionMutation();
-
-  async function startNewSession(
-    name: string,
-    description: string,
-    endpoints: string[]
-  ) {
-    const response = await createSession({
-      name,
-      description,
-      endpoints,
-    });
-    //@ts-ignore
-    if (response.data) {
-      const activeSessionResponse = await triggerSetActiveSession(
-        //@ts-ignore
-        response.data.session_id
-      );
-      if (activeSessionResponse.data) {
-        dispatch(setActiveSession(activeSessionResponse.data));
-        setIsShowWindowCreateSession(false);
-      }
-    } // todo - else and error handling
-  }
 
   function handleResumeSessionClick() {
     dispatch(addOpenedWindowId(getWindowId(WindowIds.RED_TEAMING_SESSION)));

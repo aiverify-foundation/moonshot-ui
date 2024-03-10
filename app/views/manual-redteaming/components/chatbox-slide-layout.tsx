@@ -142,10 +142,10 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
             name={IconName.CircleArrowRight}
             onClick={() => {
               setCurrentBoxIndex((prevIndex) =>
-                Math.min(prevIndex + 1, chatSession.chats.length - 1)
+                Math.min(prevIndex + 1, chatSession.chat_ids.length - 1)
               );
             }}
-            disabled={currentBoxIndex === chatSession.chats.length - 3}
+            disabled={currentBoxIndex === chatSession.chat_ids.length - 3}
           />
         </div>
       </div>
@@ -156,7 +156,7 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
     <>
       <SlidesNavBtns />
       <SlidesIndexBtns
-        chats={chatSession.chats}
+        chats={chatSession.chat_ids}
         currentIndex={currentBoxIndex}
         onIndexClick={handleIndexBtnClick}
         onIndexMouseOver={handleIndexBtnMouseOver}
@@ -169,7 +169,7 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
           style={{
             transform: `translateX(-${currentBoxIndex * (width + gap)}px)`,
           }}>
-          {chatSession.chats.map((id: string, index: number) => {
+          {chatSession.chat_ids.map((id: string, index: number) => {
             if (
               (currentBoxIndex > 0 && index === currentBoxIndex - 1) ||
               (currentBoxIndex <= index && currentBoxIndex + 4 > index)

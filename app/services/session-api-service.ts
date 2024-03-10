@@ -37,13 +37,6 @@ const sessionApi = createApi({
       query: ({ session_id }) => ({ url: `api/v1/sessions/${session_id}` }),
       transformResponse: (response: { session: Session }) => response.session,
     }),
-    setActiveSession: builder.query<Session, string>({
-      query: (session_id) => ({
-        url: `api/v1/sessions/${session_id}`,
-        method: 'PUT',
-      }),
-      transformResponse: (response: { session: Session }) => response.session,
-    }),
     sendPrompt: builder.mutation<ChatHistory, SendPromptQueryParams>({
       query: ({
         session_id,
@@ -66,7 +59,6 @@ const {
   useLazyGetSessionQuery,
   useSendPromptMutation,
   useCreateSessionMutation,
-  useLazySetActiveSessionQuery,
 } = sessionApi;
 
 export {
@@ -76,5 +68,4 @@ export {
   useLazyGetSessionQuery,
   useSendPromptMutation,
   useCreateSessionMutation,
-  useLazySetActiveSessionQuery,
 };

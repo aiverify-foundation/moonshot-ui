@@ -4,7 +4,7 @@ type Session = {
   description: string;
   created_epoch: number;
   created_datetime: string;
-  chats: string[];
+  chat_ids: string[];
   endpoints: string[];
   metadata_file: string;
   prompt_template: string;

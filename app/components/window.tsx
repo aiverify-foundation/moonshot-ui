@@ -30,6 +30,7 @@ type WindowProps = {
   backgroundColor?: string;
   styles?: React.CSSProperties;
   contentAreaStyles?: React.CSSProperties;
+  headerAreaStyles?: React.CSSProperties;
   resizeable?: boolean;
   disableCloseIcon?: boolean;
   draggable?: boolean;
@@ -70,6 +71,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       backgroundColor,
       children,
       topBar,
+      headerAreaStyles,
       disableCloseIcon = false,
       draggable = true,
       leftFooterText,
@@ -264,7 +266,9 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         }}
         onMouseDown={handleMouseDown}>
         <div className="flex flex-col w-full h-full">
-          <div className="flex flex-col w-full mb-6 bg-fuchsia-950/40">
+          <div
+            className="flex flex-col w-full mb-6 bg-fuchsia-950/40"
+            style={headerAreaStyles}>
             <div className="flex px-3 justify-between w-full">
               {header || (
                 <div className="flex items-center h-8 text-lg mt-1 mb-1">

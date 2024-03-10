@@ -317,6 +317,12 @@ function PromptBox(props: PromptBoxProps) {
         padding: 0,
         overflowY: 'visible',
         overflowX: 'visible',
+        marginRight: '1rem',
+        marginLeft: '1rem',
+      }}
+      headerAreaStyles={{
+        backgroundColor: 'transparent',
+        marginBottom: 0,
       }}>
       <div className="absolute top-2 right-8 text-xs text-white/90">
         (Enter &apos;/ &apos; for commands)
