@@ -3,15 +3,15 @@ import { IconButton } from '@/app/components/icon-button';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { WindowTopBarButtonGroup } from '@/app/components/window-top-bar';
 
-enum CookbooksExplorerButtonAction {
-  VIEW_COOKBOOKS,
-  ADD_NEW_COOKBOOK,
-  SELECT_COOKBOOK,
+enum RecipesExplorerButtonAction {
+  VIEW_RECIPES,
+  ADD_NEW_RECIPE,
+  SELECT_RECIPES,
 }
 
 type TopButtonsBarProps = {
-  onButtonClick: (action: CookbooksExplorerButtonAction) => void;
-  activeButton?: CookbooksExplorerButtonAction;
+  onButtonClick: (action: RecipesExplorerButtonAction) => void;
+  activeButton?: RecipesExplorerButtonAction;
 };
 
 function TopButtonsBar(props: TopButtonsBarProps) {
@@ -25,20 +25,20 @@ function TopButtonsBar(props: TopButtonsBarProps) {
             delay={100}
             position={TooltipPosition.top}
             offsetTop={-10}
-            content="View Cookbook">
+            content="View All Recipes">
             <IconButton
-              label="List Cookbooks"
+              label="List Recipes"
               backgroundColor={
-                activeButton === CookbooksExplorerButtonAction.VIEW_COOKBOOKS
+                activeButton === RecipesExplorerButtonAction.VIEW_RECIPES
                   ? '#425d85'
                   : 'transparent'
               }
               disabled={
-                activeButton === CookbooksExplorerButtonAction.VIEW_COOKBOOKS
+                activeButton === RecipesExplorerButtonAction.VIEW_RECIPES
               }
               iconName={IconName.List}
               onClick={() =>
-                onButtonClick(CookbooksExplorerButtonAction.VIEW_COOKBOOKS)
+                onButtonClick(RecipesExplorerButtonAction.VIEW_RECIPES)
               }
               iconSize={11}
             />
@@ -47,20 +47,20 @@ function TopButtonsBar(props: TopButtonsBarProps) {
             delay={100}
             position={TooltipPosition.bottom}
             offsetTop={10}
-            content="Add New Cookbook">
+            content="Add New Recipe">
             <IconButton
-              label="Add New Cookbook"
+              label="Add New Recipe"
               backgroundColor={
-                activeButton === CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK
+                activeButton === RecipesExplorerButtonAction.ADD_NEW_RECIPE
                   ? '#425d85'
                   : 'transparent'
               }
               disabled={
-                activeButton === CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK
+                activeButton === RecipesExplorerButtonAction.ADD_NEW_RECIPE
               }
               iconName={IconName.Plus}
               onClick={() =>
-                onButtonClick(CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK)
+                onButtonClick(RecipesExplorerButtonAction.ADD_NEW_RECIPE)
               }
               iconSize={11}
             />
@@ -69,20 +69,20 @@ function TopButtonsBar(props: TopButtonsBarProps) {
             delay={100}
             position={TooltipPosition.top}
             offsetTop={-10}
-            content="Enable Cookbook selection for benchmarking or redteaming">
+            content="Enable Recipe selection for benchmarking">
             <IconButton
               backgroundColor={
-                activeButton === CookbooksExplorerButtonAction.SELECT_COOKBOOK
+                activeButton === RecipesExplorerButtonAction.SELECT_RECIPES
                   ? '#425d85'
                   : 'transparent'
               }
               disabled={
-                activeButton === CookbooksExplorerButtonAction.SELECT_COOKBOOK
+                activeButton === RecipesExplorerButtonAction.SELECT_RECIPES
               }
               iconName={IconName.CheckedSquare}
-              label="Select Cookbook for Testing"
+              label="Select Recipes for Testing"
               onClick={() =>
-                onButtonClick(CookbooksExplorerButtonAction.SELECT_COOKBOOK)
+                onButtonClick(RecipesExplorerButtonAction.SELECT_RECIPES)
               }
               iconSize={11}
             />
@@ -93,4 +93,4 @@ function TopButtonsBar(props: TopButtonsBarProps) {
   );
 }
 
-export { TopButtonsBar, CookbooksExplorerButtonAction };
+export { TopButtonsBar, RecipesExplorerButtonAction };

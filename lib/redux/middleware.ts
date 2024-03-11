@@ -3,6 +3,7 @@ import { createLogger } from 'redux-logger';
 import { cookbookApi } from '@/app/services/cookbook-api-service';
 import { llmEndpointApi } from '@/app/services/llm-endpoint-api-service';
 import { promptTemplateApi } from '@/app/services/prompt-template-api-service';
+import { recipeApi } from '@/app/services/recipe-api-service';
 import { sessionApi } from '@/app/services/session-api-service';
 
 const middleware = [
@@ -10,6 +11,7 @@ const middleware = [
   promptTemplateApi.middleware,
   llmEndpointApi.middleware,
   cookbookApi.middleware,
+  recipeApi.middleware,
   createLogger({
     duration: true,
     timestamp: false,

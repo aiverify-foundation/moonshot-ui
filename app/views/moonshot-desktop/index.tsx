@@ -28,11 +28,13 @@ import TaskBar from '@components/taskbar';
 import { CookbooksExplorer } from '@views/cookbook-management/cookbooks-explorer';
 import { SessionExplorerButtonAction } from '@views/manual-redteaming/components/explorer/top-buttons-bar';
 import { SessionsExplorer } from '@views/manual-redteaming/sessions-explorer';
+import { RecipesExplorer } from '@views/recipes-management/recipes-explorer';
 
 export default function MoonshotDesktop() {
   const [isCookbooksExplorerOpen, setIsCookbooksExplorerOpen] = useState(false);
   const [isChatSessionOpen, setIsChatSessionOpen] = useState(false);
   const [isEndpointsExplorerOpen, setIsEndpointsExplorerOpen] = useState(false);
+  const [isRecipesExplorerOpen, setIsRecipesExplorerOpen] = useState(false);
   const [isShowWindowSavedSession, setIsShowWindowSavedSession] =
     useState(false);
   const [isDesktopIconsHidden, setIsDesktopIconsHidden] = useState(false);
@@ -97,9 +99,14 @@ export default function MoonshotDesktop() {
   }, [isDarkMode]);
 
   useEffect(() => {
+    console.log(isRecipesExplorerOpen);
+  }, [isRecipesExplorerOpen])
+
+  useEffect(() => {
     //set default window dimensions
     resetWindows(
       WindowIds.COOKBOOKS,
+      WindowIds.RECIPES,
       WindowIds.LLM_ENDPOINTS,
       WindowIds.LLM_ENDPOINTS_PICKER,
       WindowIds.SAVED_SESSIONS,
@@ -152,6 +159,7 @@ export default function MoonshotDesktop() {
             <DesktopIcon
               name={IconName.Folder}
               label="Recipes"
+              onClick={() => setIsRecipesExplorerOpen(true)}
             />
             <DesktopIcon
               name={IconName.Folder}
@@ -184,6 +192,17 @@ export default function MoonshotDesktop() {
           initialSize={getWindowSizeById(windowsMap, WindowIds.COOKBOOKS)}
           onWindowChange={handleOnWindowChange}
           onCloseClick={() => setIsCookbooksExplorerOpen(false)}
+        />
+      ) : null}
+
+      {isRecipesExplorerOpen ? (
+        <RecipesExplorer
+          zIndex={Z_Index.Level_2}
+          windowId={getWindowId(WindowIds.RECIPES)}
+          initialXY={getWindowXYById(windowsMap, WindowIds.RECIPES)}
+          initialSize={getWindowSizeById(windowsMap, WindowIds.RECIPES)}
+          onWindowChange={handleOnWindowChange}
+          onCloseClick={() => setIsRecipesExplorerOpen(false)}
         />
       ) : null}
 
