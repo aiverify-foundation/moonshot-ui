@@ -3,3 +3,4 @@ export const basePathSessions = '/v1/sessions';
 export const basePathPromptTemplates = '/v1/prompt_templates';
 export const basePathLLMEndpoints = '/v1/llm_endpoints';
 export const basePathCookbooks = '/v1/cookbooks';
+export const basePathRecipes = '/v1/recipes';
