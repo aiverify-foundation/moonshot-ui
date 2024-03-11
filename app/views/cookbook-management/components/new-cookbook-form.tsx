@@ -46,8 +46,8 @@ const NewCookbookForm: React.FC<NewCookbookFormProps> = ({ onFormSubmit }) => {
               />
 
               <TextArea
-                name="name"
-                label="Name"
+                name="description"
+                label="Description"
                 onChange={formProps.handleChange}
                 value={formProps.values.description}
                 error={

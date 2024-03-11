@@ -107,7 +107,7 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
       : 40;
 
   const footerText = cookbooks.length
-    ? `${cookbooks.length} Model${cookbooks.length > 1 ? 's' : ''}`
+    ? `${cookbooks.length} Cookbook${cookbooks.length > 1 ? 's' : ''}`
     : '';
 
   const miniFooterText = `${cookbooks.length - displayedCookbooksList.length} / ${footerText} Selected`;

@@ -43,7 +43,7 @@ function TopButtonsBar(props: TopButtonsBarProps) {
               iconSize={11}
             />
           </Tooltip>
-          <Tooltip
+          {/* <Tooltip
             delay={100}
             position={TooltipPosition.bottom}
             offsetTop={10}
@@ -64,7 +64,7 @@ function TopButtonsBar(props: TopButtonsBarProps) {
               }
               iconSize={11}
             />
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip
             delay={100}
             position={TooltipPosition.top}

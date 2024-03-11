@@ -7,19 +7,20 @@ type RecipeItemCardProps = {
 function RecipeItemCard(props: RecipeItemCardProps) {
   const { recipe } = props;
   return (
-    <div className="flex flex-col items-start py-2">
+    <div className="flex flex-col items-start py-2 w-full">
       <div className="flex items-center gap-2 pb-2">
         <Icon
-          name={IconName.SolidBox}
+          name={IconName.File}
           size={16}
           lightModeColor="#475569"
           darkModeColor="#475569"
         />
         <div className="font-bold">{recipe.name}</div>
       </div>
-      <div className="flex items-start gap-2">
-        <div className="font-medium">Type:</div>
-        <div>{recipe.description}</div>
+      <div className="flex items-start gap-2 w-full">
+        <div className="overflow-hidden text-ellipsis whitespace-nowrap pr-4">
+          {recipe.description}
+        </div>
       </div>
     </div>
   );

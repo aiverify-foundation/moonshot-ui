@@ -88,7 +88,7 @@ function ListItem(props: PropsWithChildren<ListItemProps>) {
         />
       )}
       {displayName}
-      <div>{children}</div>
+      {children}
       {onCloseIconClick ? (
         <Icon
           name={IconName.Close}

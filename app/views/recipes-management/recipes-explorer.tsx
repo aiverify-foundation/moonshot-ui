@@ -4,10 +4,7 @@ import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
 import { useCreateRecipeMutation } from '@/app/services/recipe-api-service';
-import {
-  NewRecipeForm,
-  RecipeFormValues,
-} from './components/new-recipe-form';
+import { NewRecipeForm, RecipeFormValues } from './components/new-recipe-form';
 import { RecipeDetailsCard } from './components/recipe-details-card';
 import { RecipeItemCard } from './components/recipe-item-card';
 import { TaglabelsBox } from './components/tag-labels-box';
@@ -84,15 +81,11 @@ function RecipesExplorer(props: RecipesExplorerProps) {
     useState<RecipesExplorerButtonAction>(
       RecipesExplorerButtonAction.VIEW_RECIPES
     );
-  const [selectedRecipeList, setSelectedRecipesList] = useState<Recipe[]>(
+  const [selectedRecipeList, setSelectedRecipesList] = useState<Recipe[]>([]);
+  const [displayedRecipesList, setDisplayedRecipesList] = useState<Recipe[]>(
     []
   );
-  const [displayedRecipesList, setDisplayedRecipesList] = useState<
-    Recipe[]
-  >([]);
-  const [selectedRecipe, setSelectedRecipe] = useState<
-    Recipe | undefined
-  >();
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | undefined>();
 
   const isTwoPanel =
     !mini &&
@@ -102,12 +95,10 @@ function RecipesExplorer(props: RecipesExplorerProps) {
         selectedRecipe));
 
   const initialDividerPosition =
-    selectedBtnAction === RecipesExplorerButtonAction.ADD_NEW_RECIPE
-      ? 55
-      : 40;
+    selectedBtnAction === RecipesExplorerButtonAction.ADD_NEW_RECIPE ? 55 : 40;
 
   const footerText = recipes.length
-    ? `${recipes.length} Model${recipes.length > 1 ? 's' : ''}`
+    ? `${recipes.length} Recipe${recipes.length > 1 ? 's' : ''}`
     : '';
 
   const miniFooterText = `${recipes.length - displayedRecipesList.length} / ${footerText} Selected`;
@@ -128,9 +119,7 @@ function RecipesExplorer(props: RecipesExplorerProps) {
       } else if (
         selectedBtnAction === RecipesExplorerButtonAction.SELECT_RECIPES
       ) {
-        const clickedrecipe = recipes.find(
-          (epoint) => epoint.name === name
-        );
+        const clickedrecipe = recipes.find((epoint) => epoint.name === name);
         if (!clickedrecipe) return;
 
         if (
@@ -175,7 +164,7 @@ function RecipesExplorer(props: RecipesExplorerProps) {
       tags: data.tags,
       datasets: data.datasets,
       prompt_templates: data.prompt_templates,
-      metrics: data.metrics
+      metrics: data.metrics,
     };
     const response = await createRecipe(newRecipe);
     if ('error' in response) {
@@ -204,10 +193,7 @@ function RecipesExplorer(props: RecipesExplorerProps) {
     if (returnedrecipe) {
       if (mini) {
         setDisplayedRecipesList(
-          sortDisplayedrecipesByName([
-            returnedrecipe,
-            ...displayedRecipesList,
-          ])
+          sortDisplayedrecipesByName([returnedrecipe, ...displayedRecipesList])
         );
       }
     }
@@ -240,8 +226,7 @@ function RecipesExplorer(props: RecipesExplorerProps) {
           initialDividerPosition={initialDividerPosition}>
           <WindowList
             disableMouseInteraction={
-              selectedBtnAction ===
-              RecipesExplorerButtonAction.ADD_NEW_RECIPE
+              selectedBtnAction === RecipesExplorerButtonAction.ADD_NEW_RECIPE
                 ? true
                 : false
             }
@@ -249,7 +234,7 @@ function RecipesExplorer(props: RecipesExplorerProps) {
             {displayedRecipesList
               ? displayedRecipesList.map((recipe) => (
                   <WindowList.Item
-                    key={recipe.name}
+                    key={recipe.id}
                     id={recipe.name}
                     className="justify-start"
                     enableCheckbox={
@@ -278,15 +263,13 @@ function RecipesExplorer(props: RecipesExplorerProps) {
                 ))
               : null}
           </WindowList>
-          {selectedBtnAction ===
-          RecipesExplorerButtonAction.ADD_NEW_RECIPE ? (
+          {selectedBtnAction === RecipesExplorerButtonAction.ADD_NEW_RECIPE ? (
             <div className="flex justify-center h-full">
               <NewRecipeForm onFormSubmit={submitNewCookbook} />
             </div>
           ) : selectedBtnAction ===
               RecipesExplorerButtonAction.SELECT_RECIPES ||
-            selectedBtnAction ===
-              RecipesExplorerButtonAction.VIEW_RECIPES ? (
+            selectedBtnAction === RecipesExplorerButtonAction.VIEW_RECIPES ? (
             <div className="flex flex-col h-full">
               <div
                 className={`${
@@ -324,7 +307,7 @@ function RecipesExplorer(props: RecipesExplorerProps) {
           {displayedRecipesList
             ? displayedRecipesList.map((recipe) => (
                 <WindowList.Item
-                  key={recipe.name}
+                  key={recipe.id}
                   id={recipe.name}
                   onClick={handleListItemClick(recipe.name)}>
                   <RecipeItemCard recipe={recipe} />

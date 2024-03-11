@@ -52,6 +52,7 @@ type Cookbook = {
 };
 
 type Recipe = {
+  id: string;
   name: string;
   description: string;
   tags: string[];
