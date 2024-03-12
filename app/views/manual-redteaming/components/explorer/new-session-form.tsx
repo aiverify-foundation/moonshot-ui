@@ -2,15 +2,15 @@ import { Form, Formik } from 'formik';
 import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
-import usePromptTemplateList from '@/app/views/moonshot-desktop/hooks/usePromptTemplateList';
+import { getWindowId } from '@/app/lib/window-utils';
 import { useCreateSessionMutation } from '@/app/services/session-api-service';
+import { WindowIds } from '@/app/views/moonshot-desktop/constants';
+import usePromptTemplateList from '@/app/views/moonshot-desktop/hooks/usePromptTemplateList';
 import {
   addOpenedWindowId,
   setActiveSession,
   useAppDispatch,
 } from '@/lib/redux';
-import { getWindowId } from '@/app/lib/window-utils';
-import { WindowIds } from '@/app/views/moonshot-desktop/constants';
 
 type FormValues = {
   sessionName: string;

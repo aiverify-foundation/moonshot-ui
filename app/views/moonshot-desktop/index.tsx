@@ -99,14 +99,11 @@ export default function MoonshotDesktop() {
   }, [isDarkMode]);
 
   useEffect(() => {
-    console.log(isRecipesExplorerOpen);
-  }, [isRecipesExplorerOpen])
-
-  useEffect(() => {
     //set default window dimensions
     resetWindows(
       WindowIds.COOKBOOKS,
       WindowIds.RECIPES,
+      WindowIds.RECIPES_PICKER,
       WindowIds.LLM_ENDPOINTS,
       WindowIds.LLM_ENDPOINTS_PICKER,
       WindowIds.SAVED_SESSIONS,

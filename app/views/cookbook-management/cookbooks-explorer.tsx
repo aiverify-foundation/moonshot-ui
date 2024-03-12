@@ -16,6 +16,7 @@ import {
   TopButtonsBar,
 } from './components/top-buttons-bar';
 import useCookbookList from './hooks/useCookbookList';
+import { NewCookbookFlow } from './components/new-cookbook-flow';
 
 type cookbooksExplorerProps = {
   windowId: string;
@@ -97,7 +98,6 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
   const isTwoPanel =
     !mini &&
     (selectedBtnAction === CookbooksExplorerButtonAction.SELECT_COOKBOOK ||
-      selectedBtnAction === CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK ||
       (selectedBtnAction === CookbooksExplorerButtonAction.VIEW_COOKBOOKS &&
         selectedCookbook));
 
@@ -231,105 +231,103 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
           />
         )
       }>
-      {isTwoPanel ? (
-        <TwoPanel
-          disableResize
-          initialDividerPosition={initialDividerPosition}>
-          <WindowList
-            disableMouseInteraction={
-              selectedBtnAction ===
-              CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK
-                ? true
-                : false
-            }
-            styles={{ backgroundColor: '#FFFFFF' }}>
-            {displayedCookbooksList
-              ? displayedCookbooksList.map((cookbook) => (
-                  <WindowList.Item
-                    key={cookbook.name}
-                    id={cookbook.name}
-                    className="justify-start"
-                    enableCheckbox={
-                      selectedBtnAction ===
-                      CookbooksExplorerButtonAction.SELECT_COOKBOOK
-                    }
-                    checked={
-                      selectedCookbookList.findIndex(
-                        (epoint) => epoint.name === cookbook.name
-                      ) > -1
-                    }
-                    onClick={handleListItemClick(cookbook.name)}
-                    onHover={
-                      selectedBtnAction ===
-                      CookbooksExplorerButtonAction.SELECT_COOKBOOK
-                        ? handleListItemHover(cookbook.name)
-                        : undefined
-                    }
-                    selected={
-                      selectedCookbook
-                        ? selectedCookbook.name === cookbook.name
-                        : false
-                    }>
-                    <CookbookItemCard cookbook={cookbook} />
-                  </WindowList.Item>
-                ))
-              : null}
-          </WindowList>
-          {selectedBtnAction ===
-          CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK ? (
-            <div className="flex justify-center h-full">
-              <NewCookbookForm onFormSubmit={submitNewCookbook} />
-            </div>
-          ) : selectedBtnAction ===
-              CookbooksExplorerButtonAction.SELECT_COOKBOOK ||
-            selectedBtnAction ===
-              CookbooksExplorerButtonAction.VIEW_COOKBOOKS ? (
-            <div className="flex flex-col h-full">
-              <div
-                className={`${
-                  selectedBtnAction ===
-                  CookbooksExplorerButtonAction.SELECT_COOKBOOK
-                    ? 'h-[40%]'
-                    : 'h-full'
-                } bg-white`}>
-                <WindowInfoPanel title="Model Details">
-                  <div className="h-full">
-                    {selectedCookbook ? (
-                      <div className="flex flex-col gap-6">
-                        <CookbookDetailsCard cookbook={selectedCookbook} />
-                      </div>
-                    ) : null}
-                  </div>
-                </WindowInfoPanel>
-              </div>
+      {selectedBtnAction === CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK ? (
+        <div className="flex justify-center h-full">
+          <NewCookbookFlow initialDividerPosition={initialDividerPosition} />
+        </div>
+      ) : null}
+      {selectedBtnAction === CookbooksExplorerButtonAction.VIEW_COOKBOOKS ||
+      selectedBtnAction === CookbooksExplorerButtonAction.SELECT_COOKBOOK ? (
+        <>
+          {isTwoPanel ? (
+            <TwoPanel
+              disableResize
+              initialDividerPosition={initialDividerPosition}>
+              <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
+                {displayedCookbooksList
+                  ? displayedCookbooksList.map((cookbook) => (
+                      <WindowList.Item
+                        key={cookbook.name}
+                        id={cookbook.name}
+                        className="justify-start"
+                        enableCheckbox={
+                          selectedBtnAction ===
+                          CookbooksExplorerButtonAction.SELECT_COOKBOOK
+                        }
+                        checked={
+                          selectedCookbookList.findIndex(
+                            (epoint) => epoint.name === cookbook.name
+                          ) > -1
+                        }
+                        onClick={handleListItemClick(cookbook.name)}
+                        onHover={
+                          selectedBtnAction ===
+                          CookbooksExplorerButtonAction.SELECT_COOKBOOK
+                            ? handleListItemHover(cookbook.name)
+                            : undefined
+                        }
+                        selected={
+                          selectedCookbook
+                            ? selectedCookbook.name === cookbook.name
+                            : false
+                        }>
+                        <CookbookItemCard cookbook={cookbook} />
+                      </WindowList.Item>
+                    ))
+                  : null}
+              </WindowList>
               {selectedBtnAction ===
-              CookbooksExplorerButtonAction.SELECT_COOKBOOK ? (
-                <div className="h-[60%] flex items-center pt-4">
-                  {selectedCookbookList.length ? (
-                    <TaglabelsBox
-                      cookbooks={selectedCookbookList}
-                      onTaglabelIconClick={handleListItemClick}
-                    />
+                CookbooksExplorerButtonAction.SELECT_COOKBOOK ||
+              selectedBtnAction ===
+                CookbooksExplorerButtonAction.VIEW_COOKBOOKS ? (
+                <div className="flex flex-col h-full">
+                  <div
+                    className={`${
+                      selectedBtnAction ===
+                      CookbooksExplorerButtonAction.SELECT_COOKBOOK
+                        ? 'h-[40%]'
+                        : 'h-full'
+                    } bg-white`}>
+                    <WindowInfoPanel title="Model Details">
+                      <div className="h-full">
+                        {selectedCookbook ? (
+                          <div className="flex flex-col gap-6">
+                            <CookbookDetailsCard cookbook={selectedCookbook} />
+                          </div>
+                        ) : null}
+                      </div>
+                    </WindowInfoPanel>
+                  </div>
+                  {selectedBtnAction ===
+                  CookbooksExplorerButtonAction.SELECT_COOKBOOK ? (
+                    <div className="h-[60%] flex items-center pt-4">
+                      {selectedCookbookList.length ? (
+                        <TaglabelsBox
+                          cookbooks={selectedCookbookList}
+                          onTaglabelIconClick={handleListItemClick}
+                        />
+                      ) : null}
+                    </div>
                   ) : null}
                 </div>
               ) : null}
-            </div>
-          ) : null}
-        </TwoPanel>
-      ) : (
-        <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
-          {displayedCookbooksList
-            ? displayedCookbooksList.map((cookbook) => (
-                <WindowList.Item
-                  key={cookbook.name}
-                  id={cookbook.name}
-                  onClick={handleListItemClick(cookbook.name)}>
-                  <CookbookItemCard cookbook={cookbook} />
-                </WindowList.Item>
-              ))
-            : null}
-        </WindowList>
-      )}
+            </TwoPanel>
+          ) : (
+            <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
+              {displayedCookbooksList
+                ? displayedCookbooksList.map((cookbook) => (
+                    <WindowList.Item
+                      key={cookbook.name}
+                      id={cookbook.name}
+                      onClick={handleListItemClick(cookbook.name)}>
+                      <CookbookItemCard cookbook={cookbook} />
+                    </WindowList.Item>
+                  ))
+                : null}
+            </WindowList>
+          )}
+        </>
+      ) : null}
     </Window>
   );
 }

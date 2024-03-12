@@ -24,7 +24,7 @@ type RecipesExplorerProps = {
   zIndex: number | 'auto';
   hideMenuButtons?: boolean;
   buttonAction?: RecipesExplorerButtonAction;
-  returnedrecipe?: Recipe;
+  returnedRecipe?: Recipe;
   onListItemClick?: (recipe: Recipe) => void;
   onCloseClick: () => void;
   onWindowChange?: (
@@ -58,7 +58,7 @@ function RecipesExplorer(props: RecipesExplorerProps) {
     initialXY = [600, 200],
     initialSize = [720, 470],
     zIndex,
-    returnedrecipe,
+    returnedRecipe,
     onCloseClick,
     onListItemClick,
     onWindowChange,
@@ -190,14 +190,14 @@ function RecipesExplorer(props: RecipesExplorerProps) {
   }, [buttonAction, hideMenuButtons]);
 
   useEffect(() => {
-    if (returnedrecipe) {
+    if (returnedRecipe) {
       if (mini) {
         setDisplayedRecipesList(
-          sortDisplayedrecipesByName([returnedrecipe, ...displayedRecipesList])
+          sortDisplayedrecipesByName([returnedRecipe, ...displayedRecipesList])
         );
       }
     }
-  }, [returnedrecipe]);
+  }, [returnedRecipe]);
 
   return isLoading ? null : (
     <Window

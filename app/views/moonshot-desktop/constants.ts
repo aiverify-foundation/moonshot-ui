@@ -6,6 +6,7 @@ export enum WindowIds {
   RED_TEAMING_SESSION = 'redTeamingSession',
   COOKBOOKS = 'cookbooks',
   RECIPES = 'recipes',
+  RECIPES_PICKER = 'recipesPicker',
 }
 
 // Reserved z-indexes
@@ -26,6 +27,7 @@ export const defaultWindowWidthHeight: {
   [WindowIds.COOKBOOKS]: [1050, 650],
   [WindowIds.RECIPES]: [1050, 750],
   [WindowIds.LLM_ENDPOINTS_PICKER]: [500, 460],
+  [WindowIds.RECIPES_PICKER]: [500, 460],
   [WindowIds.SAVED_SESSIONS]: [1250, 700],
   [WindowIds.CREATE_SESSION]: [820, 470],
 };

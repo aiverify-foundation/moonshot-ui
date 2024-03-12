@@ -2,6 +2,9 @@ import { Form, Formik } from 'formik';
 import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
+import { useRecipeList } from '@views/recipes-management/hooks/useRecipeList';
+import { useAppDispatch } from '@/lib/redux';
+import { useCreateCookbookMutation } from '@/app/services/cookbook-api-service';
 
 export type CookbookFormValues = {
   name: string;
@@ -16,15 +19,44 @@ const initialFormValues: CookbookFormValues = {
 };
 
 type NewCookbookFormProps = {
+  selectedRecipes: Recipe[];
   onFormSubmit: (data: CookbookFormValues) => void;
 };
 
-const NewCookbookForm: React.FC<NewCookbookFormProps> = ({ onFormSubmit }) => {
-  async function handleFormSubmit(values: CookbookFormValues) {
-    onFormSubmit(values);
+const NewCookbookForm: React.FC<NewCookbookFormProps> = (props) => {
+  const { selectedRecipes, onFormSubmit } = props;
+  const { recipes, error, isLoading } = useRecipeList();
+  const dispatch = useAppDispatch;
+
+  const [
+    createCookbook,
+    {
+      data: newCookbook,
+      error: createCookbookError,
+      isLoading: createCookbookIsLoading,
+    },
+  ] = useCreateCookbookMutation();
+
+  async function submitNewCookbookForm(
+    name: string,
+    description: string,
+    recipes: string[]
+  ) {
+    const response = await createCookbook({ name, description, recipes });
+    if (response.data) {
+      console.info('New cookbook created', response.data);
+      // TODO - do success visuals
+    }
   }
+
+  async function handleFormSubmit(values: CookbookFormValues) {
+    values.recipes = selectedRecipes.map((recipe) => recipe.id);
+    submitNewCookbookForm(values.name, values.description, values.recipes);
+    if (onFormSubmit) onFormSubmit(values);
+  }
+
   return (
-    <div className="p-4 w-96 h-full">
+    <div className="w-96 h-full">
       <Formik<CookbookFormValues>
         initialValues={initialFormValues}
         onSubmit={handleFormSubmit}>
