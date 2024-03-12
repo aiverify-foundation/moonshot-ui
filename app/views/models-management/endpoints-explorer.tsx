@@ -43,11 +43,11 @@ type EndpointsExplorerProps = {
 function getWindowSubTitle(selectedBtnAction: ModelsExplorerButtonAction) {
   switch (selectedBtnAction) {
     case ModelsExplorerButtonAction.SELECT_MODELS:
-      return `My Models > Select Models`;
+      return `My Models`;
     case ModelsExplorerButtonAction.VIEW_MODELS:
-      return `My Models > View Models`;
+      return `My Models`;
     case ModelsExplorerButtonAction.ADD_NEW_MODEL:
-      return `My Models > Add New Model`;
+      return `My Models`;
   }
 }
 
@@ -102,8 +102,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
       (selectedBtnAction === ModelsExplorerButtonAction.VIEW_MODELS &&
         selectedEndpoint));
 
-  const initialDividerPosition =
-    selectedBtnAction === ModelsExplorerButtonAction.ADD_NEW_MODEL ? 55 : 40;
+  const initialDividerPosition = 40;
 
   const footerText = llmEndpoints.length
     ? `${llmEndpoints.length} Model${llmEndpoints.length > 1 ? 's' : ''}`
@@ -216,7 +215,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
   return isLoading ? null : (
     <Window
       id={windowId}
-      resizeable={mini ? true : false}
+      resizeable={true}
       initialXY={initialXY}
       zIndex={zIndex}
       initialWindowSize={initialSize}
@@ -235,9 +234,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
         )
       }>
       {isTwoPanel ? (
-        <TwoPanel
-          disableResize
-          initialDividerPosition={initialDividerPosition}>
+        <TwoPanel initialDividerPosition={initialDividerPosition}>
           <WindowList
             disableMouseInteraction={
               selectedBtnAction === ModelsExplorerButtonAction.ADD_NEW_MODEL
@@ -278,8 +275,11 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
               : null}
           </WindowList>
           {selectedBtnAction === ModelsExplorerButtonAction.ADD_NEW_MODEL ? (
-            <div className="flex justify-center h-full">
-              <NewModelEndpointForm onFormSubmit={submitNewModel} />
+            <div className="flex flex-1 justify-center h-full">
+              <NewModelEndpointForm
+                onFormSubmit={submitNewModel}
+                className="pt-5"
+              />
             </div>
           ) : selectedBtnAction === ModelsExplorerButtonAction.SELECT_MODELS ||
             selectedBtnAction === ModelsExplorerButtonAction.VIEW_MODELS ? (
@@ -287,11 +287,11 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
               <div
                 className={`${
                   selectedBtnAction === ModelsExplorerButtonAction.SELECT_MODELS
-                    ? 'h-[40%]'
+                    ? 'h-[60%]'
                     : 'h-full'
                 } bg-white`}>
                 <WindowInfoPanel title="Model Details">
-                  <div className="h-full">
+                  <div className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar mr-[2px]">
                     {selectedEndpoint ? (
                       <div className="flex flex-col gap-6">
                         <LLMDetailsCard endpoint={selectedEndpoint} />

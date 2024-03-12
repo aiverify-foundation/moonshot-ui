@@ -47,17 +47,17 @@ const connectionTypeOptions: SelectOption[] = [
 ];
 
 type NewModelEndpointFormProps = {
+  className?: string;
   onFormSubmit: (data: LLMEndpointFormValues) => void;
 };
 
-const NewModelEndpointForm: React.FC<NewModelEndpointFormProps> = ({
-  onFormSubmit,
-}) => {
+const NewModelEndpointForm: React.FC<NewModelEndpointFormProps> = (props) => {
+  const { className, onFormSubmit } = props;
   async function handleFormSubmit(values: LLMEndpointFormValues) {
     onFormSubmit(values);
   }
   return (
-    <div className="p-4 w-96 h-full">
+    <div className={`pl-4 w-full h-full ${className}`}>
       <Formik<LLMEndpointFormValues>
         initialValues={initialFormValues}
         onSubmit={handleFormSubmit}>
