@@ -9,7 +9,7 @@ function CookbookDetailsCard(props: CookbookDetailsCardProps) {
   return (
     <div>
       <KeyValueDisplay
-        label="Cookbook Name"
+        label="Name"
         value={cookbook.name}
       />
       <KeyValueDisplay

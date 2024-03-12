@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useWindowChange } from '@/app/hooks/use-window-change';
 import { useAppSelector } from '@/lib/redux';
-import { NewCookbookForm } from './new-cookbook-form';
+import { CookbookFormValues, NewCookbookForm } from './new-cookbook-form';
 import {
   getWindowId,
   getWindowSizeById,
@@ -22,7 +22,7 @@ import { RecipesExplorerButtonAction } from '@views/recipes-management/component
 import { RecipesExplorer } from '@views/recipes-management/recipes-explorer';
 
 type NewCookbookFormProps = {
-  onNewCookbook?: () => void;
+  onSaveCookbook: (data: CookbookFormValues) => void;
   initialDividerPosition: number;
 };
 
@@ -32,7 +32,7 @@ type NewCookbookFormProps = {
   Clicking on endpoints from the minified endpoints explorer will add them to the selected endpoints list.
 */
 function NewCookbookFlow(props: NewCookbookFormProps) {
-  const { initialDividerPosition } = props;
+  const { initialDividerPosition, onSaveCookbook } = props;
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [isRecipesExplorerOpen, setIsRecipesExplorerOpen] = useState(false);
   const [unselectedRecipe, setUnselectedRecipe] = useState<Recipe>();
@@ -62,12 +62,14 @@ function NewCookbookFlow(props: NewCookbookFormProps) {
       <TwoPanel
         disableResize
         initialDividerPosition={initialDividerPosition}>
-        <div className="flex flex-col h-full justify-start gap-1">
+        <div className="flex flex-col flex-1 h-full justify-start gap-1">
           <div className="flex justify-between">
             <IconButton
-              backgroundColor="transparent"
               label="Select Recipes to add to the cookbook"
+              labelSize={14}
               iconName={IconName.File}
+              iconSize={15}
+              className="bg-transparent"
               onClick={() => setIsRecipesExplorerOpen(true)}
             />
             <IconButton
@@ -89,17 +91,21 @@ function NewCookbookFlow(props: NewCookbookFormProps) {
                       id={rec.name}
                       className="justify-between"
                       onCloseIconClick={handleEndpointToEvaluateClick}>
-                      <RecipeItemCard recipe={rec} />
+                      <RecipeItemCard
+                        recipe={rec}
+                        className="w-[94%]"
+                      />
                     </WindowList.Item>
                   ))
                 : null}
             </WindowList>
           )}
         </div>
-        <div className="flex justify-center h-full">
+        <div className="flex flex-1 justify-center h-full">
           <NewCookbookForm
-            onFormSubmit={() => null}
+            onFormSubmit={onSaveCookbook}
             selectedRecipes={recipes}
+            className="pt-5"
           />
         </div>
       </TwoPanel>

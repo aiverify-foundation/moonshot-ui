@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import TwoPanel from '@/app/components/two-panel';
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
@@ -6,17 +6,14 @@ import { WindowList } from '@/app/components/window-list';
 import { useCreateCookbookMutation } from '@/app/services/cookbook-api-service';
 import { CookbookDetailsCard } from './components/cookbook-details-card';
 import { CookbookItemCard } from './components/cookbook-item-card';
-import {
-  CookbookFormValues,
-  NewCookbookForm,
-} from './components/new-cookbook-form';
+import { NewCookbookFlow } from './components/new-cookbook-flow';
+import { CookbookFormValues } from './components/new-cookbook-form';
 import { TaglabelsBox } from './components/tag-labels-box';
 import {
   CookbooksExplorerButtonAction,
   TopButtonsBar,
 } from './components/top-buttons-bar';
 import useCookbookList from './hooks/useCookbookList';
-import { NewCookbookFlow } from './components/new-cookbook-flow';
 
 type cookbooksExplorerProps = {
   windowId: string;
@@ -94,6 +91,10 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
   const [selectedCookbook, setSelectedCookbook] = useState<
     Cookbook | undefined
   >();
+  const [newlyAddedCookbookName, setNewlyAddedCookbookName] = useState<
+    string | undefined
+  >();
+  const newCookbookRef = useRef<HTMLLIElement | null>(null);
 
   const isTwoPanel =
     !mini &&
@@ -101,14 +102,15 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
       (selectedBtnAction === CookbooksExplorerButtonAction.VIEW_COOKBOOKS &&
         selectedCookbook));
 
-  const initialDividerPosition =
-    selectedBtnAction === CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK
-      ? 55
-      : 40;
+  const initialDividerPosition = 40;
 
-  const footerText = cookbooks.length
+  let footerText: string | undefined = cookbooks.length
     ? `${cookbooks.length} Cookbook${cookbooks.length > 1 ? 's' : ''}`
     : '';
+
+  if (selectedBtnAction === CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK) {
+    footerText = undefined;
+  }
 
   const miniFooterText = `${cookbooks.length - displayedCookbooksList.length} / ${footerText} Selected`;
 
@@ -168,7 +170,7 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
     return [...list].sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  async function submitNewCookbook(data: CookbookFormValues) {
+  async function saveNewCookbook(data: CookbookFormValues) {
     const newCookbook = {
       name: data.name,
       description: data.description,
@@ -182,6 +184,7 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
     }
     setSelectedBtnAction(CookbooksExplorerButtonAction.VIEW_COOKBOOKS);
     setSelectedCookbook(newCookbook);
+    setNewlyAddedCookbookName(newCookbook.name);
     refetchCookbooks();
   }
 
@@ -210,10 +213,19 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
     }
   }, [returnedcookbook]);
 
+  useEffect(() => {
+    if (newCookbookRef.current) {
+      newCookbookRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [newlyAddedCookbookName, newCookbookRef.current]);
+
   return isLoading ? null : (
     <Window
       id={windowId}
-      resizeable={mini ? true : false}
+      resizeable={true}
       initialXY={initialXY}
       zIndex={zIndex}
       initialWindowSize={initialSize}
@@ -233,20 +245,26 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
       }>
       {selectedBtnAction === CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK ? (
         <div className="flex justify-center h-full">
-          <NewCookbookFlow initialDividerPosition={initialDividerPosition} />
+          <NewCookbookFlow
+            initialDividerPosition={initialDividerPosition}
+            onSaveCookbook={saveNewCookbook}
+          />
         </div>
       ) : null}
       {selectedBtnAction === CookbooksExplorerButtonAction.VIEW_COOKBOOKS ||
       selectedBtnAction === CookbooksExplorerButtonAction.SELECT_COOKBOOK ? (
         <>
           {isTwoPanel ? (
-            <TwoPanel
-              disableResize
-              initialDividerPosition={initialDividerPosition}>
+            <TwoPanel initialDividerPosition={initialDividerPosition}>
               <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
                 {displayedCookbooksList
                   ? displayedCookbooksList.map((cookbook) => (
                       <WindowList.Item
+                        ref={
+                          newlyAddedCookbookName === cookbook.name
+                            ? newCookbookRef
+                            : undefined
+                        }
                         key={cookbook.name}
                         id={cookbook.name}
                         className="justify-start"
@@ -271,7 +289,10 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
                             ? selectedCookbook.name === cookbook.name
                             : false
                         }>
-                        <CookbookItemCard cookbook={cookbook} />
+                        <CookbookItemCard
+                          cookbook={cookbook}
+                          className="w-[94%]"
+                        />
                       </WindowList.Item>
                     ))
                   : null}
@@ -285,11 +306,11 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
                     className={`${
                       selectedBtnAction ===
                       CookbooksExplorerButtonAction.SELECT_COOKBOOK
-                        ? 'h-[40%]'
+                        ? 'h-[60%]'
                         : 'h-full'
                     } bg-white`}>
-                    <WindowInfoPanel title="Model Details">
-                      <div className="h-full">
+                    <WindowInfoPanel title="Cookbook Details">
+                      <div className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar mr-[2px]">
                         {selectedCookbook ? (
                           <div className="flex flex-col gap-6">
                             <CookbookDetailsCard cookbook={selectedCookbook} />

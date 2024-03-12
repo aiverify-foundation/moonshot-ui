@@ -2,12 +2,13 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 
 type CookbookItemCardProps = {
   cookbook: Cookbook;
+  className?: string;
 };
 
 function CookbookItemCard(props: CookbookItemCardProps) {
-  const { cookbook } = props;
+  const { cookbook, className } = props;
   return (
-    <div className="flex flex-col items-start py-2 w-full">
+    <div className={`flex flex-col items-start py-2 w-full ${className}`}>
       <div className="flex items-center gap-2 pb-2">
         <Icon
           name={IconName.Book}

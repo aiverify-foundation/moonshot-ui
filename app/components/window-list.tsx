@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, forwardRef } from 'react';
 import { Icon, IconName } from './IconSVG';
 
 type WindowListProps = {
@@ -34,70 +34,73 @@ type ListItemProps = {
   onCheckboxChange?: (id: string, checked: boolean) => void;
 };
 
-function ListItem(props: PropsWithChildren<ListItemProps>) {
-  const {
-    id,
-    displayName,
-    selected,
-    className,
-    enableCheckbox = false,
-    checked = false,
-    onCheckboxChange,
-    onClick,
-    onCloseIconClick,
-    onHover,
-    children,
-  } = props;
+const ListItem = forwardRef<HTMLLIElement, PropsWithChildren<ListItemProps>>(
+  function comp(props, ref) {
+    const {
+      id,
+      displayName,
+      selected,
+      className,
+      enableCheckbox = false,
+      checked = false,
+      onCheckboxChange,
+      onClick,
+      onCloseIconClick,
+      onHover,
+      children,
+    } = props;
 
-  function handleCheckboxChange(e: React.ChangeEvent<HTMLInputElement>) {
-    if (onCheckboxChange) onCheckboxChange?.(id, e.target.checked);
-  }
+    function handleCheckboxChange(e: React.ChangeEvent<HTMLInputElement>) {
+      if (onCheckboxChange) onCheckboxChange?.(id, e.target.checked);
+    }
 
-  function itemClickHandler(id: string) {
-    return () => (onClick ? onClick(id) : undefined);
-  }
+    function itemClickHandler(id: string) {
+      return () => (onClick ? onClick(id) : undefined);
+    }
 
-  function itemHoverHandler(id: string) {
-    return () => (onHover ? onHover(id) : undefined);
-  }
+    function itemHoverHandler(id: string) {
+      return () => (onHover ? onHover(id) : undefined);
+    }
 
-  function handleCloseIconClick(id: string) {
-    return (e: React.MouseEvent) => {
-      e.stopPropagation();
-      if (onCloseIconClick) onCloseIconClick(id);
-    };
-  }
+    function handleCloseIconClick(id: string) {
+      return (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (onCloseIconClick) onCloseIconClick(id);
+      };
+    }
 
-  return (
-    <li
-      className={`flex items-center border-fuchsia-200
+    return (
+      <li
+        ref={ref}
+        className={`flex items-center border-fuchsia-200
         transition-colors duration-100 ease-in-out px-3 py-2
         hover:bg-gray-100 dark:hover:bg-slate-100 
         ${selected ? 'bg-gray-200 dark:bg-slate-200' : ''}
         ${onClick ? 'cursor-pointer' : ''}
         ${className}
       `}
-      onMouseOver={itemHoverHandler(id)}
-      onClick={itemClickHandler(id)}>
-      {enableCheckbox && (
-        <input
-          type="checkbox"
-          className="w-4 h-4 mr-5 ml-2 shrink-0"
-          checked={checked}
-          onChange={handleCheckboxChange}
-        />
-      )}
-      {displayName}
-      {children}
-      {onCloseIconClick ? (
-        <Icon
-          name={IconName.Close}
-          onClick={handleCloseIconClick(id)}
-        />
-      ) : null}
-    </li>
-  );
-}
+        onMouseOver={itemHoverHandler(id)}
+        onClick={itemClickHandler(id)}>
+        {enableCheckbox && (
+          <input
+            type="checkbox"
+            className="w-4 h-4 mr-5 ml-2 shrink-0"
+            checked={checked}
+            onChange={handleCheckboxChange}
+          />
+        )}
+        {displayName}
+        {children}
+        {onCloseIconClick ? (
+          <Icon
+            name={IconName.Close}
+            onClick={handleCloseIconClick(id)}
+          />
+        ) : null}
+      </li>
+    );
+  }
+);
 
 WindowList.Item = ListItem;
 export { WindowList };
