@@ -11,6 +11,7 @@ import {
   setActiveSession,
   useAppDispatch,
 } from '@/lib/redux';
+import { Icon, IconName } from '@/app/components/IconSVG';
 
 type FormValues = {
   sessionName: string;
@@ -140,11 +141,16 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
                     value={formProps.values.description}
                     placeholder="Provide a description of this session"
                   />
-                  <div className="text-right mt-6">
+                  <div className="flex justify-end mt-6">
                     <button
-                      className="btn-primary btn-large rounded"
+                      className="flex btn-primary items-center gap-2 btn-large rounded"
                       type="submit">
-                      Start Red Teaming Session
+                      <div>Start Red Teaming Session</div>
+                      <Icon
+                        name={IconName.ArrowRight}
+                        lightModeColor="#FFFFFF"
+                        size={14}
+                      />
                     </button>
                   </div>
                 </div>

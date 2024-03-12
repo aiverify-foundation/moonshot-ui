@@ -16,6 +16,7 @@ import {
   TopButtonsBar,
 } from './components/top-buttons-bar';
 import useLLMEndpointList from '@views/moonshot-desktop/hooks/useLLMEndpointList';
+import { Icon, IconName } from '@/app/components/IconSVG';
 
 type EndpointsExplorerProps = {
   windowId: string;
@@ -302,12 +303,36 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
               </div>
               {selectedBtnAction ===
               ModelsExplorerButtonAction.SELECT_MODELS ? (
-                <div className="h-[60%] flex items-center pt-4">
+                <div className="h-[60%] flex flex-col items-center pt-4">
                   {selectedEndpointsList.length ? (
-                    <TaglabelsBox
-                      models={selectedEndpointsList}
-                      onTaglabelIconClick={handleListItemClick}
-                    />
+                    <>
+                      <TaglabelsBox
+                        models={selectedEndpointsList}
+                        onTaglabelIconClick={handleListItemClick}
+                      />
+                      <div className="flex gap-4 bottom-3 text-right">
+                        <button
+                          className="flex btn-primary items-center gap-2 btn-large rounded"
+                          type="submit">
+                          <div>Benchmark</div>
+                          <Icon
+                            name={IconName.ArrowRight}
+                            lightModeColor="#FFFFFF"
+                            size={14}
+                          />
+                        </button>
+                        <button
+                          className="flex btn-primary items-center gap-2 btn-large rounded"
+                          type="submit">
+                          <div>Red Team</div>
+                          <Icon
+                            name={IconName.ArrowRight}
+                            lightModeColor="#FFFFFF"
+                            size={14}
+                          />
+                        </button>
+                      </div>
+                    </>
                   ) : null}
                 </div>
               ) : null}

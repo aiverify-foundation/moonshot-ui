@@ -1,3 +1,4 @@
+import { Icon, IconName } from '@/app/components/IconSVG';
 import { KeyValueDisplay } from '@/app/components/keyvalue-display';
 
 type SessionDetailsCardProps = {
@@ -41,12 +42,17 @@ function SessionDetailsCard(props: SessionDetailsCardProps) {
             : 'No Strategy'
         }
       />
-      <div className="mt-6">
+      <div className="mt-10 flex justify-start">
         <button
-          className="btn-primary"
+          className="flex btn-primary items-center gap-2 btn-large rounded"
           type="button"
           onClick={onResumeSessionClick}>
-          Resume Session
+          <div>Resume Session</div>
+          <Icon
+            name={IconName.ArrowRight}
+            lightModeColor="#FFFFFF"
+            size={14}
+          />
         </button>
       </div>
     </div>

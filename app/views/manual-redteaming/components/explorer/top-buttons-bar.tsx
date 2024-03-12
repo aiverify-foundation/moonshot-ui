@@ -17,7 +17,7 @@ function TopButtonsBar(props: TopButtonsBarProps) {
   const { onButtonClick, activeButton } = props;
 
   return (
-    <WindowTopBarButtonGroup height={30}>
+    <WindowTopBarButtonGroup height={38}>
       <div className="flex flex-col justify-center h-full">
         <div className="flex items-end gap-1">
           <div>
@@ -27,16 +27,18 @@ function TopButtonsBar(props: TopButtonsBarProps) {
               offsetTop={-10}
               content="View Existing Sessions">
               <IconButton
-                backgroundColor={
+                labelSize={14}
+                iconSize={14}
+                className="bg-transparent hover:bg-fuchsia-900/40 transition-colors duration-100 ease-in"
+                activeColor={
                   activeButton === SessionExplorerButtonAction.VIEW
                     ? '#425d85'
-                    : 'transparent'
+                    : ''
                 }
                 label="List Sessions"
                 disabled={activeButton === SessionExplorerButtonAction.VIEW}
                 iconName={IconName.List}
                 onClick={() => onButtonClick(SessionExplorerButtonAction.VIEW)}
-                iconSize={11}
               />
             </Tooltip>
           </div>
@@ -47,16 +49,18 @@ function TopButtonsBar(props: TopButtonsBarProps) {
               offsetTop={10}
               content="Start a new red teaming session">
               <IconButton
-                backgroundColor={
+                labelSize={14}
+                iconSize={14}
+                className="bg-transparent hover:bg-fuchsia-900/40 transition-colors duration-100 ease-in"
+                activeColor={
                   activeButton === SessionExplorerButtonAction.ADD
                     ? '#425d85'
-                    : 'transparent'
+                    : ''
                 }
                 disabled={activeButton === SessionExplorerButtonAction.ADD}
                 iconName={IconName.Plus}
                 label="New Session"
                 onClick={() => onButtonClick(SessionExplorerButtonAction.ADD)}
-                iconSize={11}
               />
             </Tooltip>
           </div>

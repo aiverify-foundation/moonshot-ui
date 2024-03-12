@@ -69,8 +69,10 @@ function NewSessionFlow(props: NewSessionFormProps) {
         <div className="flex flex-col h-full justify-start gap-1">
           <div className="flex justify-between">
             <IconButton
-              backgroundColor="transparent"
+              className="bg-transparent"
               label="Select Models to Evaluate"
+              labelSize={14}
+              iconSize={15}
               iconName={IconName.SolidBox}
               onClick={() => setIsEndpointsExplorerOpen(true)}
             />

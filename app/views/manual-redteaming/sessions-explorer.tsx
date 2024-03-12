@@ -118,7 +118,7 @@ function SessionsExplorer(props: SessionsExplorerProps) {
   return isLoading ? null : (
     <Window
       id={windowId}
-      resizeable={false}
+      resizeable
       initialXY={initialWindowXY}
       initialWindowSize={initialWindowSize}
       onWindowChange={onWindowChange}
@@ -149,9 +149,7 @@ function SessionsExplorer(props: SessionsExplorerProps) {
       {selectedBtnAction === SessionExplorerButtonAction.VIEW ? (
         <>
           {isTwoPanel ? (
-            <TwoPanel
-              disableResize
-              initialDividerPosition={initialDividerPosition}>
+            <TwoPanel initialDividerPosition={initialDividerPosition}>
               <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
                 {sessions
                   ? sessions.map((session) => (

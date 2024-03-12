@@ -1,29 +1,31 @@
 import { ReactElement } from 'react';
 
 import { useAppSelector } from '@/lib/redux';
-import { CircleArrowLeftIcon } from './icons/arrow-left-icon';
-import { CircleArrowRightIcon } from './icons/arrow-right-icon';
+import { BookIcon } from './icons/book-icon';
 import { SolidBoxIcon } from './icons/box-icon';
 import { BurgerMenuIcon } from './icons/burger-menu-icon';
 import { ChatBubbleWideIcon } from './icons/chat-bubble-wide-icon';
 import { ChatBubblesIcon } from './icons/chat-bubbles-icon';
+import { CheckedSquareIcon } from './icons/checked-square-icon';
+import { CircleArrowLeftIcon } from './icons/circle-arrow-left-icon';
+import { CircleArrowRightIcon } from './icons/circle-arrow-right-icon';
 import { CloseIcon } from './icons/close-x-icon';
 import { DarkMoonIcon } from './icons/dark-moon-icon';
+import { FileIcon } from './icons/file-icon';
 import { FolderForChatSessionsIcon } from './icons/folder-chat-icon';
 import { FolderIcon } from './icons/folder-icon';
 import { LayoutColumnsIcon } from './icons/layout-columns-icon';
 import { LayoutWtfIcon } from './icons/layout-wtf-icon';
 import { LightSunIcon } from './icons/light-sun-icon';
+import { ListIcon } from './icons/list-icon';
 import { MaximizeIcon } from './icons/maximize-icon';
 import { MinimizeIcon } from './icons/minimize-icon';
 import { PlusIcon } from './icons/plus-icon';
 import { ResetIcon } from './icons/reset-icon';
 import { RunCookbookIcon } from './icons/run-cookbook-icon';
 import { SquareIcon } from './icons/square-icon';
-import { CheckedSquareIcon } from './icons/checked-square-icon';
-import { ListIcon } from './icons/list-icon';
-import { FileIcon } from './icons/file-icon';
-import { BookIcon } from './icons/book-icon';
+import { ArrowLeftIcon } from './icons/arrow-left-icon';
+import { ArrowRightIcon } from './icons/arrow-right-icon';
 
 enum IconName {
   Folder,
@@ -37,6 +39,8 @@ enum IconName {
   Close,
   CircleArrowRight,
   CircleArrowLeft,
+  ArrowLeft,
+  ArrowRight,
   Maximize,
   Minimize,
   LayoutWtf,
@@ -362,6 +366,32 @@ function Icon(props: IconProps) {
     case IconName.Book:
       iconToRender = (
         <BookIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.ArrowLeft:
+      iconToRender = (
+        <ArrowLeftIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.ArrowRight:
+      iconToRender = (
+        <ArrowRightIcon
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'

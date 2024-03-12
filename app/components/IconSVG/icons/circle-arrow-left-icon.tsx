@@ -1,10 +1,10 @@
-type ArrowRightIconProps = {
+type CircleArrowLeftIconProps = {
   outlineColor: string;
   width?: number;
   height?: number;
 };
 
-function ArrowRightIcon(props: ArrowRightIconProps) {
+function CircleArrowLeftIcon(props: CircleArrowLeftIconProps) {
   const { outlineColor = '#FFFFFF', width = 30, height = 30 } = props;
   return (
     <svg
@@ -16,16 +16,22 @@ function ArrowRightIcon(props: ArrowRightIconProps) {
       stroke={outlineColor}
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round">
+      strokeLinejoin="round"
+      className="feather feather-arrow-left-circle">
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+      />
+      <polyline points="12 8 8 12 12 16" />
       <line
-        x1="5"
+        x1="16"
         y1="12"
-        x2="19"
+        x2="8"
         y2="12"
       />
-      <polyline points="12 5 19 12 12 19" />
     </svg>
   );
 }
 
-export { ArrowRightIcon };
+export { CircleArrowLeftIcon };
