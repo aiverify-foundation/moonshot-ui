@@ -6,12 +6,6 @@ import { useCreateCookbookMutation } from '@/app/services/cookbook-api-service';
 import { useAppDispatch } from '@/lib/redux';
 import { useRecipeList } from '@views/recipes-management/hooks/useRecipeList';
 
-export type CookbookFormValues = {
-  name: string;
-  description: string;
-  recipes: string[];
-};
-
 const initialFormValues: CookbookFormValues = {
   name: '',
   description: '',

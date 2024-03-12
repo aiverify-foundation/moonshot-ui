@@ -10,7 +10,7 @@ const cookbookApi = createApi({
     getAllCookbooks: builder.query<Cookbook[], void>({
       query: () => 'api/v1/cookbooks',
     }),
-    createCookbook: builder.mutation<Cookbook, Cookbook>({
+    createCookbook: builder.mutation<CookbookFormValues, CookbookFormValues>({
       query: (cookbookInputData) => ({
         url: 'api/v1/cookbooks',
         method: 'POST',

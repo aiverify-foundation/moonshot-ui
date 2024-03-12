@@ -8,7 +8,7 @@ type CookbookItemCardProps = {
 function CookbookItemCard(props: CookbookItemCardProps) {
   const { cookbook, className } = props;
   return (
-    <div className={`flex flex-col items-start py-2 w-full ${className}`}>
+    <div className={`flex flex-col items-start py-2 ${className}`}>
       <div className="flex items-center gap-2 pb-2">
         <Icon
           name={IconName.Book}

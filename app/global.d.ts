@@ -46,6 +46,13 @@ type LLMEndpoint = {
 };
 
 type Cookbook = {
+  id: string;
+  name: string;
+  description: string;
+  recipes: string[];
+};
+
+type CookbookFormValues = {
   name: string;
   description: string;
   recipes: string[];

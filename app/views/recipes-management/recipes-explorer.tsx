@@ -138,7 +138,6 @@ function RecipesExplorer(props: RecipesExplorerProps) {
           const updatedrecipes = displayedRecipesList.filter(
             (epoint) => epoint.name !== clickedrecipe.name
           );
-          console.log(updatedrecipes);
           setDisplayedRecipesList(updatedrecipes);
         }
       }

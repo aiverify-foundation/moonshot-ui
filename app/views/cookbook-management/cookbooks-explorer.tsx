@@ -214,13 +214,17 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
   }, [returnedcookbook]);
 
   useEffect(() => {
-    if (newCookbookRef.current) {
-      newCookbookRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-      });
-    }
-  }, [newlyAddedCookbookName, newCookbookRef.current]);
+    if (!newlyAddedCookbookName) return;
+    setTimeout(() => {
+      if (newCookbookRef.current) {
+        newCookbookRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      }
+      setTimeout(() => setNewlyAddedCookbookName(undefined), 300);
+    }, 100);
+  }, [newlyAddedCookbookName]);
 
   return isLoading ? null : (
     <Window
@@ -265,8 +269,8 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
                             ? newCookbookRef
                             : undefined
                         }
-                        key={cookbook.name}
-                        id={cookbook.name}
+                        key={cookbook.id}
+                        id={cookbook.id}
                         className="justify-start"
                         enableCheckbox={
                           selectedBtnAction ===
@@ -311,7 +315,7 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
                     } bg-white`}>
                     <WindowInfoPanel title="Cookbook Details">
                       <div className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar mr-[2px]">
-                        {selectedCookbook ? (
+                        {selectedCookbook && !newlyAddedCookbookName ? (
                           <div className="flex flex-col gap-6">
                             <CookbookDetailsCard cookbook={selectedCookbook} />
                           </div>

@@ -71,6 +71,7 @@ const ListItem = forwardRef<HTMLLIElement, PropsWithChildren<ListItemProps>>(
 
     return (
       <li
+        id={id}
         ref={ref}
         className={`flex items-center border-fuchsia-200
         transition-colors duration-100 ease-in-out px-3 py-2
