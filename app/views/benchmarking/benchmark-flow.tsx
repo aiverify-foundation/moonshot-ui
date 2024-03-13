@@ -121,7 +121,7 @@ function BenchmarkFlowWindow(props: BenchmarkFlowProps) {
       console.error('Clicked cookbook not found in added models');
       return;
     }
-    if (isEndpointsExplorerOpen) {
+    if (isCookbookExplorerOpen) {
       setUnselectedCookbook(clickedCookbook);
     }
     dispatch(removeBenchmarkCookbooks([clickedCookbook]));
