@@ -1,5 +1,6 @@
 /* Core */
 import { createLogger } from 'redux-logger';
+import { benchmarkRunApi } from '@/app/services/benchmark-api-service';
 import { cookbookApi } from '@/app/services/cookbook-api-service';
 import { llmEndpointApi } from '@/app/services/llm-endpoint-api-service';
 import { promptTemplateApi } from '@/app/services/prompt-template-api-service';
@@ -12,6 +13,7 @@ const middleware = [
   llmEndpointApi.middleware,
   cookbookApi.middleware,
   recipeApi.middleware,
+  benchmarkRunApi.middleware,
   createLogger({
     duration: true,
     timestamp: false,

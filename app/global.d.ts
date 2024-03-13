@@ -79,6 +79,14 @@ type Recipe = {
   metrics: string[];
 };
 
+type BenchmarkRunFormValues = {
+  name: string;
+  description: string;
+  num_of_prompts: string;
+  cookbooks: string[];
+  endpoints: string[];
+};
+
 // Reserved z-indexes
 type ZIndex = {
   Base: 1;

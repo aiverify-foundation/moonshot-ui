@@ -20,6 +20,10 @@ import {
   removeBenchmarkModels,
   useAppSelector,
 } from '@/lib/redux';
+import { NewBenchMmarkRunForm } from './components/new-benchmark-run-form';
+import { CookbookItemCard } from '@views/cookbook-management/components/cookbook-item-card';
+import { CookbooksExplorerButtonAction } from '@views/cookbook-management/components/top-buttons-bar';
+import { CookbooksExplorer } from '@views/cookbook-management/cookbooks-explorer';
 import { LLMItemCard } from '@views/models-management/components/llm-item-card';
 import { ModelsExplorerButtonAction } from '@views/models-management/components/top-buttons-bar';
 import { EndpointsExplorer } from '@views/models-management/endpoints-explorer';
@@ -28,9 +32,7 @@ import {
   Z_Index,
   moonshotDesktopDivID,
 } from '@views/moonshot-desktop/constants';
-import { CookbookItemCard } from '../cookbook-management/components/cookbook-item-card';
-import { CookbooksExplorer } from '../cookbook-management/cookbooks-explorer';
-import { CookbooksExplorerButtonAction } from '../cookbook-management/components/top-buttons-bar';
+import { useRunBenchmarkMutation } from '@/app/services/benchmark-api-service';
 
 type BenchmarkFlowProps = {
   zIndex: number | 'auto';
@@ -72,6 +74,8 @@ function BenchmarkFlowWindow(props: BenchmarkFlowProps) {
   const dispatch = useDispatch();
   const windowsMap = useAppSelector((state) => state.windows.map);
 
+  const [runBenchmark, { data, error, isLoading }] = useRunBenchmarkMutation();
+
   const benchmarkModelsFromState = useAppSelector(
     (state) => state.benchmarkModels.entities
   );
@@ -99,6 +103,15 @@ function BenchmarkFlowWindow(props: BenchmarkFlowProps) {
   function handleCloseCookbookPickerClick() {
     setUnselectedCookbook(undefined);
     setIsCookbooksExplorerOpen(false);
+  }
+
+  async function createBenchmarkRun(data: BenchmarkRunFormValues) {
+    const response = await runBenchmark(data);
+    if ('error' in response) {
+      console.error(response.error);
+      //TODO - create error visuals
+      return;
+    }
   }
 
   function handleAddedEndpointClick(id: string) {
@@ -228,7 +241,14 @@ function BenchmarkFlowWindow(props: BenchmarkFlowProps) {
                 : null}
             </WindowList>
           </div>
-          <h2>test2</h2>
+          <div className="flex flex-col justify-end">
+            <NewBenchMmarkRunForm
+              className="mt-6"
+              addedCookbooks={addedCookbooks}
+              addedEndpoints={addedModels}
+              onFormSubmit={createBenchmarkRun}
+            />
+          </div>
         </ThreePanel>
         {isEndpointsExplorerOpen
           ? ReactDOM.createPortal(
