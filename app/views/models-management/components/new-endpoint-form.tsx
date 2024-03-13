@@ -1,24 +1,14 @@
+import { Form, Formik } from 'formik';
 import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { TextInput } from '@/app/components/textInput';
-import { Form, Formik } from 'formik';
-
-export type LLMEndpointFormValues = {
-  type: string;
-  name: string;
-  uri: string;
-  token: string;
-  maxCallsPerSecond: string;
-  maxConcurrency: string;
-  params?: Record<string, number | string>;
-};
 
 const initialFormValues: LLMEndpointFormValues = {
-  type: '',
+  connector_type: '',
   name: '',
   uri: '',
   token: '',
-  maxCallsPerSecond: '10',
-  maxConcurrency: '1',
+  max_calls_per_second: '10',
+  max_concurrency: '1',
   params: {},
 };
 
@@ -82,7 +72,7 @@ const NewModelEndpointForm: React.FC<NewModelEndpointFormProps> = (props) => {
                 name="type"
                 options={connectionTypeOptions}
                 onSyntheticChange={formProps.handleChange}
-                value={formProps.values.type}
+                value={formProps.values.connector_type}
               />
               <TextInput
                 name="uri"
@@ -115,14 +105,14 @@ const NewModelEndpointForm: React.FC<NewModelEndpointFormProps> = (props) => {
                 name="maxCallsPerSecond"
                 options={maxCallsPerSecondOptions}
                 onSyntheticChange={formProps.handleChange}
-                value={formProps.values.maxCallsPerSecond}
+                value={formProps.values.max_concurrency}
               />
               <SelectInput
                 label="Max Concurrency"
                 name="maxConcurrency"
                 options={maxConcurrencyOptions}
                 onSyntheticChange={formProps.handleChange}
-                value={formProps.values.maxConcurrency}
+                value={formProps.values.max_concurrency}
               />
               <div className="bottom-3 text-right">
                 <button

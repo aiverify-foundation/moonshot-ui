@@ -15,6 +15,7 @@ import { EndpointsExplorer } from '@/app/views/models-management/endpoints-explo
 import {
   addOpenedWindowId,
   removeOpenedWindowId,
+  resetBenchmarkModels,
   useAppDispatch,
   useAppSelector,
 } from '@/lib/redux';
@@ -25,6 +26,7 @@ import { useResetWindows } from './hooks/useResetWindows';
 import { DesktopIcon } from '@components/desktop-icon';
 import Menu from '@components/menu';
 import TaskBar from '@components/taskbar';
+import { BenchmarkFlowWindow } from '@views/benchmarking/benchmark-flow';
 import { CookbooksExplorer } from '@views/cookbook-management/cookbooks-explorer';
 import { SessionExplorerButtonAction } from '@views/manual-redteaming/components/explorer/top-buttons-bar';
 import { SessionsExplorer } from '@views/manual-redteaming/sessions-explorer';
@@ -69,6 +71,19 @@ export default function MoonshotDesktop() {
     dispatch(addOpenedWindowId(getWindowId(WindowIds.RED_TEAMING_SESSION)));
   }
 
+  function handleModelEndpointIconClick() {
+    dispatch(addOpenedWindowId(getWindowId(WindowIds.LLM_ENDPOINTS)));
+  }
+
+  function handleBenchmarkFlowCloseClick() {
+    dispatch(removeOpenedWindowId(getWindowId(WindowIds.BENCHMARKING)));
+    dispatch(resetBenchmarkModels());
+  }
+
+  function handleModelsExplorerCloseClick() {
+    dispatch(removeOpenedWindowId(getWindowId(WindowIds.LLM_ENDPOINTS)));
+  }
+
   function handleManualRedteamingSessionCloseClick() {
     setIsChatSessionOpen(false);
     dispatch(removeActiveSession());
@@ -107,7 +122,8 @@ export default function MoonshotDesktop() {
       WindowIds.LLM_ENDPOINTS,
       WindowIds.LLM_ENDPOINTS_PICKER,
       WindowIds.SAVED_SESSIONS,
-      WindowIds.CREATE_SESSION
+      WindowIds.CREATE_SESSION,
+      WindowIds.BENCHMARKING
     );
   }, []);
 
@@ -161,7 +177,7 @@ export default function MoonshotDesktop() {
             <DesktopIcon
               name={IconName.Folder}
               label="LLM Endpoints"
-              onClick={() => setIsEndpointsExplorerOpen(true)}
+              onClick={handleModelEndpointIconClick}
             />
             <DesktopIcon
               name={IconName.Folder}
@@ -210,14 +226,14 @@ export default function MoonshotDesktop() {
         />
       ) : null}
 
-      {isEndpointsExplorerOpen ? (
+      {openedWindowIds.includes(getWindowId(WindowIds.LLM_ENDPOINTS)) ? (
         <EndpointsExplorer
           zIndex={Z_Index.Level_2}
           windowId={getWindowId(WindowIds.LLM_ENDPOINTS)}
           initialXY={getWindowXYById(windowsMap, WindowIds.LLM_ENDPOINTS)}
           initialSize={getWindowSizeById(windowsMap, WindowIds.LLM_ENDPOINTS)}
           onWindowChange={handleOnWindowChange}
-          onCloseClick={() => setIsEndpointsExplorerOpen(false)}
+          onCloseClick={handleModelsExplorerCloseClick}
         />
       ) : null}
 
@@ -231,6 +247,17 @@ export default function MoonshotDesktop() {
           onCloseClick={() => setIsShowWindowSavedSession(false)}
           onResumeSessionClick={handleResumeSessionClick}
           onWindowChange={handleOnWindowChange}
+        />
+      ) : null}
+
+      {openedWindowIds.includes(getWindowId(WindowIds.BENCHMARKING)) ? (
+        <BenchmarkFlowWindow
+          zIndex={Z_Index.Level_2}
+          windowId={getWindowId(WindowIds.BENCHMARKING)}
+          initialXY={getWindowXYById(windowsMap, WindowIds.BENCHMARKING)}
+          initialSize={getWindowSizeById(windowsMap, WindowIds.BENCHMARKING)}
+          onWindowChange={handleOnWindowChange}
+          onCloseClick={handleBenchmarkFlowCloseClick}
         />
       ) : null}
 

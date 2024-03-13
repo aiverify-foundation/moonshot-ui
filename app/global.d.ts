@@ -36,13 +36,24 @@ type PromptTemplate = {
 };
 
 type LLMEndpoint = {
-  type: string;
+  id: string;
+  connector_type: string;
   name: string;
   uri: string;
   token: string;
   max_calls_per_second: number;
   max_concurrency: number;
   params?: Record<string, string | number>;
+};
+
+type LLMEndpointFormValues = {
+  connector_type: string;
+  name: string;
+  uri: string;
+  token: string;
+  max_calls_per_second: string;
+  max_concurrency: string;
+  params?: Record<string, number | string>;
 };
 
 type Cookbook = {

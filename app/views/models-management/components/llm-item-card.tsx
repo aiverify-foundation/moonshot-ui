@@ -19,7 +19,7 @@ function LLMItemCard(props: LLMItemCardProps) {
       </div>
       <div className="flex items-center gap-2">
         <div className="font-medium">Type:</div>
-        <div>{endpoint.type}</div>
+        <div>{endpoint.connector_type}</div>
       </div>
       <div className="flex items-center gap-2">
         <div>{endpoint.uri}</div>

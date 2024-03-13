@@ -9,12 +9,16 @@ function LLMDetailsCard(props: LLMDetailsCardProps) {
   return (
     <div>
       <KeyValueDisplay
+        label="ID"
+        value={endpoint.id}
+      />
+      <KeyValueDisplay
         label="Endpoint Name"
         value={endpoint.name}
       />
       <KeyValueDisplay
         label="Type"
-        value={endpoint.type}
+        value={endpoint.connector_type}
       />
       <KeyValueDisplay
         label="URI"

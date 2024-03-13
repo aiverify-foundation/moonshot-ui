@@ -1,22 +1,28 @@
 import { useEffect, useState } from 'react';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import TwoPanel from '@/app/components/two-panel';
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
+import { getWindowId } from '@/app/lib/window-utils';
 import { useCreateLLMEndpointMutation } from '@/app/services/llm-endpoint-api-service';
+import {
+  addBenchmarkModels,
+  addOpenedWindowId,
+  removeOpenedWindowId,
+  updateFocusedWindowId,
+  useAppDispatch,
+} from '@/lib/redux';
 import { LLMDetailsCard } from './components/llm-details-card';
 import { LLMItemCard } from './components/llm-item-card';
-import {
-  LLMEndpointFormValues,
-  NewModelEndpointForm,
-} from './components/new-endpoint-form';
+import { NewModelEndpointForm } from './components/new-endpoint-form';
 import { TaglabelsBox } from './components/tag-labels-box';
 import {
   ModelsExplorerButtonAction,
   TopButtonsBar,
 } from './components/top-buttons-bar';
+import { WindowIds } from '@views/moonshot-desktop/constants';
 import useLLMEndpointList from '@views/moonshot-desktop/hooks/useLLMEndpointList';
-import { Icon, IconName } from '@/app/components/IconSVG';
 
 type EndpointsExplorerProps = {
   windowId: string;
@@ -28,7 +34,8 @@ type EndpointsExplorerProps = {
   zIndex: number | 'auto';
   hideMenuButtons?: boolean;
   buttonAction?: ModelsExplorerButtonAction;
-  returnedEndpoint?: LLMEndpoint;
+  returnedEndpoint?: LLMEndpoint | LLMEndpoint[];
+  removedEndpoints?: LLMEndpoint[];
   onListItemClick?: (endpoint: LLMEndpoint) => void;
   onCloseClick: () => void;
   onWindowChange?: (
@@ -63,6 +70,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     initialSize = [720, 470],
     zIndex,
     returnedEndpoint,
+    removedEndpoints,
     onCloseClick,
     onListItemClick,
     onWindowChange,
@@ -95,6 +103,8 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
       error: createModelEndpointError,
     },
   ] = useCreateLLMEndpointMutation();
+
+  const dispatch = useAppDispatch();
 
   const isTwoPanel =
     !mini &&
@@ -148,7 +158,6 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
           const updatedEndpoints = displayedEndpointsList.filter(
             (epoint) => epoint.name !== clickedEndpoint.name
           );
-          console.log(updatedEndpoints);
           setDisplayedEndpointsList(updatedEndpoints);
         }
       }
@@ -169,12 +178,12 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
 
   async function submitNewModel(data: LLMEndpointFormValues) {
     const newModelEndpoint = {
-      type: data.type,
+      connector_type: data.connector_type,
       name: data.name,
       uri: data.uri,
       token: data.token,
-      max_calls_per_second: parseInt(data.maxCallsPerSecond),
-      max_concurrency: parseInt(data.maxConcurrency),
+      max_calls_per_second: data.max_calls_per_second,
+      max_concurrency: data.max_concurrency,
       params: data.params,
     };
     const response = await createModelEndpoint(newModelEndpoint);
@@ -186,6 +195,13 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     setSelectedBtnAction(ModelsExplorerButtonAction.VIEW_MODELS);
     setSelectedEndpoint(newModelEndpoint);
     refetchLLMEndpoints();
+  }
+
+  function handleBenchmarkBtnClick() {
+    dispatch(addBenchmarkModels(selectedEndpointsList));
+    dispatch(addOpenedWindowId(getWindowId(WindowIds.BENCHMARKING)));
+    dispatch(removeOpenedWindowId(getWindowId(WindowIds.LLM_ENDPOINTS)));
+    dispatch(updateFocusedWindowId(getWindowId(WindowIds.BENCHMARKING)));
   }
 
   useEffect(() => {
@@ -203,15 +219,37 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
   useEffect(() => {
     if (returnedEndpoint) {
       if (mini) {
-        setDisplayedEndpointsList(
-          sortDisplayedEndpointsByName([
-            returnedEndpoint,
-            ...displayedEndpointsList,
-          ])
-        );
+        if (Array.isArray(returnedEndpoint)) {
+          setDisplayedEndpointsList(
+            sortDisplayedEndpointsByName([
+              ...returnedEndpoint,
+              ...displayedEndpointsList,
+            ])
+          );
+        } else {
+          setDisplayedEndpointsList(
+            sortDisplayedEndpointsByName([
+              returnedEndpoint,
+              ...displayedEndpointsList,
+            ])
+          );
+        }
       }
     }
   }, [returnedEndpoint]);
+
+  useEffect(() => {
+    if (!mini || isLoading) return;
+    if (removedEndpoints && removedEndpoints.length) {
+      const filtered = llmEndpoints.filter(
+        (endpoint) =>
+          !removedEndpoints.some(
+            (removedEndpoint) => removedEndpoint.id === endpoint.id
+          )
+      );
+      setDisplayedEndpointsList(sortDisplayedEndpointsByName(filtered));
+    }
+  }, [removedEndpoints, isLoading]);
 
   return isLoading ? null : (
     <Window
@@ -313,7 +351,8 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                       <div className="flex gap-4 bottom-3 text-right">
                         <button
                           className="flex btn-primary items-center gap-2 btn-large rounded"
-                          type="submit">
+                          type="button"
+                          onClick={handleBenchmarkBtnClick}>
                           <div>Benchmark</div>
                           <Icon
                             name={IconName.ArrowRight}
@@ -323,7 +362,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                         </button>
                         <button
                           className="flex btn-primary items-center gap-2 btn-large rounded"
-                          type="submit">
+                          type="button">
                           <div>Red Team</div>
                           <Icon
                             name={IconName.ArrowRight}

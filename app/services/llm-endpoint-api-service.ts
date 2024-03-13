@@ -10,7 +10,10 @@ const llmEndpointApi = createApi({
     getLLMEndpoints: builder.query<LLMEndpoint[], void>({
       query: () => 'api/v1/llm_endpoints',
     }),
-    createLLMEndpoint: builder.mutation<LLMEndpoint, LLMEndpoint>({
+    createLLMEndpoint: builder.mutation<
+      LLMEndpointFormValues,
+      LLMEndpointFormValues
+    >({
       query: (endpointDetails) => ({
         url: 'api/v1/llm_endpoints',
         method: 'POST',
