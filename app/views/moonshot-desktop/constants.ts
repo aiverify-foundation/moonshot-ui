@@ -28,12 +28,12 @@ export const defaultWindowWidthHeight: {
   [WindowIds.LLM_ENDPOINTS]: [1050, 650],
   [WindowIds.COOKBOOKS]: [1050, 650],
   [WindowIds.RECIPES]: [1050, 750],
-  [WindowIds.LLM_ENDPOINTS_PICKER]: [500, 460],
+  [WindowIds.LLM_ENDPOINTS_PICKER]: [600, 400],
   [WindowIds.RECIPES_PICKER]: [500, 460],
-  [WindowIds.COOKBOOKS_PICKER]: [500, 460],
-  [WindowIds.SAVED_SESSIONS]: [1250, 700],
-  [WindowIds.CREATE_SESSION]: [820, 470],
-  [WindowIds.BENCHMARKING]: [1150, 650],
+  [WindowIds.COOKBOOKS_PICKER]: [600, 400],
+  [WindowIds.SAVED_SESSIONS]: [1550, 800],
+  [WindowIds.CREATE_SESSION]: [820, 470], //this seems unused
+  [WindowIds.BENCHMARKING]: [1550, 800],
 };
 
 export const moonshotDesktopDivID = 'moonshotDesktop'; // This is a crucial div element id. There are react portals that port elements to this div

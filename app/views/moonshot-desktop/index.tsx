@@ -185,11 +185,6 @@ export default function MoonshotDesktop() {
               label="Prompt Templates"
             />
             <DesktopIcon
-              name={IconName.RunCookbook}
-              label="Run Cookbook"
-              onClick={() => null}
-            />
-            <DesktopIcon
               name={IconName.FolderForChatSessions}
               label="Saved Sessions"
               onClick={() => setIsShowWindowSavedSession(true)}

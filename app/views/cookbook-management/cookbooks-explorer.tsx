@@ -7,7 +7,6 @@ import { useCreateCookbookMutation } from '@/app/services/cookbook-api-service';
 import { CookbookDetailsCard } from './components/cookbook-details-card';
 import { CookbookItemCard } from './components/cookbook-item-card';
 import { NewCookbookFlow } from './components/new-cookbook-flow';
-import { CookbookFormValues } from './components/new-cookbook-form';
 import { TaglabelsBox } from './components/tag-labels-box';
 import {
   CookbooksExplorerButtonAction,

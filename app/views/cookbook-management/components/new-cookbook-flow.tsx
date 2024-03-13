@@ -60,7 +60,6 @@ function NewCookbookFlow(props: NewCookbookFormProps) {
     <div className="w-full h-full flex flex-col">
       {/* <div className="text-sm text-white mb-7"></div> */}
       <TwoPanel
-        disableResize
         initialDividerPosition={initialDividerPosition}>
         <div className="flex flex-col flex-1 h-full justify-start gap-1">
           <div className="flex justify-between">
