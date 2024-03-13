@@ -6,6 +6,7 @@ export enum WindowIds {
   RED_TEAMING_SESSION = 'redTeamingSession',
   BENCHMARKING = 'benchmarking',
   COOKBOOKS = 'cookbooks',
+  COOKBOOKS_PICKER = 'cookbooksPicker',
   RECIPES = 'recipes',
   RECIPES_PICKER = 'recipesPicker',
 }
@@ -29,9 +30,10 @@ export const defaultWindowWidthHeight: {
   [WindowIds.RECIPES]: [1050, 750],
   [WindowIds.LLM_ENDPOINTS_PICKER]: [500, 460],
   [WindowIds.RECIPES_PICKER]: [500, 460],
+  [WindowIds.COOKBOOKS_PICKER]: [500, 460],
   [WindowIds.SAVED_SESSIONS]: [1250, 700],
   [WindowIds.CREATE_SESSION]: [820, 470],
-  [WindowIds.BENCHMARKING]: [1050, 650],
+  [WindowIds.BENCHMARKING]: [1150, 650],
 };
 
 export const moonshotDesktopDivID = 'moonshotDesktop'; // This is a crucial div element id. There are react portals that port elements to this div

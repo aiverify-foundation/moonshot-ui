@@ -25,7 +25,7 @@ type cookbooksExplorerProps = {
   zIndex: number | 'auto';
   hideMenuButtons?: boolean;
   buttonAction?: CookbooksExplorerButtonAction;
-  returnedcookbook?: Cookbook;
+  returnedCookbook?: Cookbook;
   onListItemClick?: (cookbook: Cookbook) => void;
   onCloseClick: () => void;
   onWindowChange?: (
@@ -59,7 +59,7 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
     initialXY = [600, 200],
     initialSize = [720, 470],
     zIndex,
-    returnedcookbook,
+    returnedCookbook,
     onCloseClick,
     onListItemClick,
     onWindowChange,
@@ -130,16 +130,12 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
       } else if (
         selectedBtnAction === CookbooksExplorerButtonAction.SELECT_COOKBOOK
       ) {
-        const clickedcookbook = cookbooks.find(
-          (epoint) => epoint.name === name
-        );
+        const clickedcookbook = cookbooks.find((cb) => cb.name === name);
         if (!clickedcookbook) return;
 
-        if (
-          selectedCookbookList.findIndex((epoint) => epoint.name === name) > -1
-        ) {
+        if (selectedCookbookList.findIndex((cb) => cb.name === name) > -1) {
           setSelectedCookbooksList((prev) =>
-            prev.filter((epoint) => epoint.name !== clickedcookbook.name)
+            prev.filter((cb) => cb.name !== clickedcookbook.name)
           );
         } else {
           setSelectedCookbooksList((prev) => [...prev, clickedcookbook]);
@@ -149,7 +145,7 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
           onListItemClick(clickedcookbook);
           // Hide the clicked item from the list by filtering it out
           const updatedcookbooks = displayedCookbooksList.filter(
-            (epoint) => epoint.name !== clickedcookbook.name
+            (cb) => cb.id !== clickedcookbook.id
           );
           console.log(updatedcookbooks);
           setDisplayedCookbooksList(updatedcookbooks);
@@ -201,17 +197,17 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
   }, [buttonAction, hideMenuButtons]);
 
   useEffect(() => {
-    if (returnedcookbook) {
+    if (returnedCookbook) {
       if (mini) {
         setDisplayedCookbooksList(
           sortDisplayedcookbooksByName([
-            returnedcookbook,
+            returnedCookbook,
             ...displayedCookbooksList,
           ])
         );
       }
     }
-  }, [returnedcookbook]);
+  }, [returnedCookbook]);
 
   useEffect(() => {
     if (!newlyAddedCookbookName) return;

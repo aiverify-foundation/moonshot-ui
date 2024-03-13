@@ -9,7 +9,7 @@ const initialState: BenchmarkModelsState = {
 };
 
 export const benchmarkModelsStateSlice = createSlice({
-  name: 'activeSession',
+  name: 'benchmarkModels',
   initialState,
   reducers: {
     addBenchmarkModels: (state, action: PayloadAction<LLMEndpoint[]>) => {
@@ -19,7 +19,7 @@ export const benchmarkModelsStateSlice = createSlice({
       state.entities = state.entities.filter(
         (entity) =>
           !action.payload.find(
-            (payloadEntity) => payloadEntity.name === entity.name
+            (payloadEntity) => payloadEntity.id === entity.id
           )
       );
     },

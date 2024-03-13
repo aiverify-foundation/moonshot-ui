@@ -117,6 +117,7 @@ export default function MoonshotDesktop() {
     //set default window dimensions
     resetWindows(
       WindowIds.COOKBOOKS,
+      WindowIds.COOKBOOKS_PICKER,
       WindowIds.RECIPES,
       WindowIds.RECIPES_PICKER,
       WindowIds.LLM_ENDPOINTS,

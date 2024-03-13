@@ -6,6 +6,7 @@ import { recipeApi } from '@/app/services/recipe-api-service';
 import { sessionApi } from '@/app/services/session-api-service';
 import {
   activeSessionSlice,
+  benchmarkCookbooksStateSlice,
   benchmarkModelsStateSlice,
   chatLayoutModeSlice,
   darkModeSlice,
@@ -20,6 +21,7 @@ export const reducer = {
   darkMode: darkModeSlice.reducer,
   chatLayoutMode: chatLayoutModeSlice.reducer,
   benchmarkModels: benchmarkModelsStateSlice.reducer,
+  benchmarkCookbooks: benchmarkCookbooksStateSlice.reducer,
   [sessionApi.reducerPath]: sessionApi.reducer,
   [promptTemplateApi.reducerPath]: promptTemplateApi.reducer,
   [llmEndpointApi.reducerPath]: llmEndpointApi.reducer,

@@ -4,3 +4,4 @@ export * from './chatLayoutModeSlice';
 export * from './darkModeSlice';
 export * from './windowsSlice';
 export * from './benchmarkModelsSlice';
+export * from './benchmarkCookbooksSlice';

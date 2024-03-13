@@ -58,7 +58,7 @@ function ThreePanel({
   return (
     <div
       ref={containerRef}
-      className="flex w-full h-full select-none">
+      className="flex w-full h-full">
       <div
         className="h-full"
         style={{ width: `${dividerPositions[0]}%` }}>
