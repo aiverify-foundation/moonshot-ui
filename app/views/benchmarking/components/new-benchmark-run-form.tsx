@@ -8,6 +8,7 @@ const initialFormValues: BenchmarkRunFormValues = {
   description: '',
   cookbooks: [],
   endpoints: [],
+  num_of_prompts: '4',
 };
 
 type NewBenchmarkRunFormProps = {

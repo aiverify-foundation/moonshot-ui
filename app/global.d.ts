@@ -87,6 +87,11 @@ type BenchmarkRunFormValues = {
   endpoints: string[];
 };
 
+type PushEvent = {
+  type: string;
+  data: Record<string, string | number>;
+};
+
 // Reserved z-indexes
 type ZIndex = {
   Base: 1;
