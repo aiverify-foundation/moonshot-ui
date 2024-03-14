@@ -22,11 +22,22 @@ export interface EventNotifier<
 
 export type BenchMarkEvents = EventNotifier<{
   update: {
-    data: Record<string, string | number>;
+    data: CookbookTestRunProgress;
     event: AppEventTypes;
   };
   complete: {
-    data: Record<string, string | number>;
-    event: 'benchmark-complete';
+    data: CookbookTestRunProgress;
+    event: AppEventTypes;
+  };
+}>;
+
+export type SystemEvents = EventNotifier<{
+  update: {
+    data: Record<string, string>;
+    event: AppEventTypes.SYSTEM_UPDATE;
+  };
+  complete: {
+    data: Record<string, string>;
+    event: AppEventTypes.SYSTEM_UPDATE;
   };
 }>;

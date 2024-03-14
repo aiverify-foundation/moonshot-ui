@@ -1,18 +1,18 @@
 import EventEmitter from 'events';
-import { AppEventTypes } from '../types/enums';
+import { AppEventTypes } from '@/app/types/enums';
 
 export const appEventEmitter = new EventEmitter();
 console.log('\x1b[36m%s\x1b[0m', 'Instantiate event emitter...done');
 
-export function subscribeToBenchmarkEvent(
-  callback: (data: Record<string, string | number>) => void
+export function subscribeToBenchmarkEvent<T = Record<string, string | number>>(
+  callback: (data: T) => void
 ) {
   appEventEmitter.on(AppEventTypes.BENCHMARK_UPDATE, callback);
 }
 
-export function triggerEvent(
+export function triggerEvent<T = Record<string, string | number>>(
   event: AppEventTypes,
-  data: Record<string, string | number>
+  data: T
 ) {
   appEventEmitter.emit(event, data);
 }

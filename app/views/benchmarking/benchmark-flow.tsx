@@ -13,6 +13,7 @@ import {
   getWindowSizeById,
   getWindowXYById,
 } from '@/app/lib/window-utils';
+import { useRunBenchmarkMutation } from '@/app/services/benchmark-api-service';
 import {
   addBenchmarkCookbooks,
   addBenchmarkModels,
@@ -32,7 +33,7 @@ import {
   Z_Index,
   moonshotDesktopDivID,
 } from '@views/moonshot-desktop/constants';
-import { useRunBenchmarkMutation } from '@/app/services/benchmark-api-service';
+import { useEventSource } from '@/app/hooks/use-eventsource';
 
 type BenchmarkFlowProps = {
   zIndex: number | 'auto';
@@ -71,6 +72,7 @@ function BenchmarkFlowWindow(props: BenchmarkFlowProps) {
   const [unselectedCookbook, setUnselectedCookbook] = useState<Cookbook>();
   const [isEndpointsExplorerOpen, setIsEndpointsExplorerOpen] = useState(false);
   const [isCookbookExplorerOpen, setIsCookbooksExplorerOpen] = useState(false);
+  const event = useEventSource('/api/v1/stream');
   const dispatch = useDispatch();
   const windowsMap = useAppSelector((state) => state.windows.map);
 
@@ -139,6 +141,10 @@ function BenchmarkFlowWindow(props: BenchmarkFlowProps) {
     }
     dispatch(removeBenchmarkCookbooks([clickedCookbook]));
   }
+
+  useEffect(() => {
+    console.log(event);
+  }, [event]);
 
   useEffect(() => {
     setAddedModels(benchmarkModelsFromState);

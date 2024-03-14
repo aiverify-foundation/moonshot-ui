@@ -92,6 +92,22 @@ type PushEvent = {
   data: Record<string, string | number>;
 };
 
+type CookbookTestRunProgress = {
+  exec_id: string;
+  exec_name: string;
+  exec_type: string;
+  curr_duration: number;
+  curr_status: string;
+  curr_cookbook_index: number;
+  curr_cookbook_name: string;
+  curr_cookbook_total: number;
+  curr_recipe_index: number;
+  curr_recipe_name: string;
+  curr_recipe_total: number;
+  curr_progress: number;
+  curr_error_messages: string[];
+};
+
 // Reserved z-indexes
 type ZIndex = {
   Base: 1;
