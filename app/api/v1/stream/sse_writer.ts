@@ -46,7 +46,8 @@ export class Writer implements EventNotifier {
       void writer.write(encoder.encode(`retry: ${message.retry}\n`));
     }
     if (message.data) {
-      void writer.write(encoder.encode(toDataString(message.data)));
+      const dataString = toDataString(message.data);
+      void writer.write(encoder.encode(dataString));
     }
   }
 

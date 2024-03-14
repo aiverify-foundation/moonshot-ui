@@ -72,7 +72,8 @@ function BenchmarkFlowWindow(props: BenchmarkFlowProps) {
   const [unselectedCookbook, setUnselectedCookbook] = useState<Cookbook>();
   const [isEndpointsExplorerOpen, setIsEndpointsExplorerOpen] = useState(false);
   const [isCookbookExplorerOpen, setIsCookbooksExplorerOpen] = useState(false);
-  const event = useEventSource<CookbookTestRunProgress>('/api/v1/stream');
+  const [eventData, closeEventSource] =
+    useEventSource<CookbookTestRunProgress>('/api/v1/stream');
   const dispatch = useDispatch();
   const windowsMap = useAppSelector((state) => state.windows.map);
 
@@ -143,8 +144,8 @@ function BenchmarkFlowWindow(props: BenchmarkFlowProps) {
   }
 
   useEffect(() => {
-    console.log(event);
-  }, [event]);
+    console.log(eventData);
+  }, [eventData]);
 
   useEffect(() => {
     setAddedModels(benchmarkModelsFromState);
@@ -161,6 +162,13 @@ function BenchmarkFlowWindow(props: BenchmarkFlowProps) {
   useEffect(() => {
     setInitialWindowXY(initialXY);
   }, [initialXY]);
+
+  useEffect(() => {
+    return () => {
+      console.log('Component unmounted');
+      closeEventSource();
+    };
+  }, []);
 
   return (
     <Window

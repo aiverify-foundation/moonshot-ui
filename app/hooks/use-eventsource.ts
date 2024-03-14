@@ -16,38 +16,40 @@ function initSSE() {
     });
 }
 
-export const useEventSource = <T>(url: string) => {
+export function useEventSource<T>(url: string): [T | null, () => void] {
   const [data, setData] = useState<T | null>(null);
+  let eventSource: EventSource | null = null;
+
+  function closeEventSource() {
+    console.log('Closing EventSource');
+    eventSource?.close();
+  }
 
   useEffect(() => {
     initSSE(); // Workaround a weird issue in the nextjs backend - if /api/v1/stream is called first, followed by /api/v1/status, the eventEmitter is not the same instance. TODO - debug
-    const eventSource = new EventSource(url);
+    eventSource = new EventSource(url);
 
     eventSource.onopen = (event) => {
-      console.debug('EVENTSOURCE Open', event);
+      console.log('EVENTSOURCE Open', event);
     };
 
     eventSource.addEventListener(AppEventTypes.SYSTEM_UPDATE, (event) => {
-      console.debug('SYSTEM-UPDATE', event);
+      console.log('SYSTEM-UPDATE', event);
       const parsedData: T = JSON.parse(event.data);
       setData(parsedData);
     });
 
     eventSource.addEventListener(AppEventTypes.BENCHMARK_UPDATE, (event) => {
-      console.debug('BENCHMARK-UPDATE', event);
+      console.log('BENCHMARK-UPDATE', event);
       const parsedData: T = JSON.parse(event.data);
       setData(parsedData);
     });
 
     eventSource.onerror = (error) => {
       console.error('EventSource failed:', error);
-      eventSource.close();
+      eventSource?.close();
     };
+  }, []);
 
-    return () => {
-      eventSource.close();
-    };
-  }, [url]);
-
-  return data;
-};
+  return [data, closeEventSource];
+}
