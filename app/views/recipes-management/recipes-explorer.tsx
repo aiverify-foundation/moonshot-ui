@@ -277,7 +277,7 @@ function RecipesExplorer(props: RecipesExplorerProps) {
                     ? 'h-[40%]'
                     : 'h-full'
                 } bg-white`}>
-                <WindowInfoPanel title="Model Details">
+                <WindowInfoPanel title="Recipe Details">
                   <div className="h-full">
                     {selectedRecipe ? (
                       <div className="flex flex-col gap-6">

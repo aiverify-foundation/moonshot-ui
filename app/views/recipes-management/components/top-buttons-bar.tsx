@@ -18,7 +18,7 @@ function TopButtonsBar(props: TopButtonsBarProps) {
   const { onButtonClick, activeButton } = props;
 
   return (
-    <WindowTopBarButtonGroup height={30}>
+    <WindowTopBarButtonGroup height={38}>
       <div className="flex flex-col justify-center h-full">
         <div className="flex items-end gap-1">
           <Tooltip
@@ -28,7 +28,9 @@ function TopButtonsBar(props: TopButtonsBarProps) {
             content="View All Recipes">
             <IconButton
               label="List Recipes"
-              backgroundColor={
+              labelSize={14}
+              iconSize={14}
+              activeColor={
                 activeButton === RecipesExplorerButtonAction.VIEW_RECIPES
                   ? '#425d85'
                   : 'transparent'
@@ -40,7 +42,6 @@ function TopButtonsBar(props: TopButtonsBarProps) {
               onClick={() =>
                 onButtonClick(RecipesExplorerButtonAction.VIEW_RECIPES)
               }
-              iconSize={11}
             />
           </Tooltip>
           {/* <Tooltip
@@ -71,7 +72,9 @@ function TopButtonsBar(props: TopButtonsBarProps) {
             offsetTop={-10}
             content="Enable Recipe selection for benchmarking">
             <IconButton
-              backgroundColor={
+              labelSize={14}
+              iconSize={14}
+              activeColor={
                 activeButton === RecipesExplorerButtonAction.SELECT_RECIPES
                   ? '#425d85'
                   : 'transparent'
@@ -84,7 +87,6 @@ function TopButtonsBar(props: TopButtonsBarProps) {
               onClick={() =>
                 onButtonClick(RecipesExplorerButtonAction.SELECT_RECIPES)
               }
-              iconSize={11}
             />
           </Tooltip>
         </div>
