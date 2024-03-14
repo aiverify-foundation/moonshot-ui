@@ -6,35 +6,34 @@ import { BenchMarkEvents, SystemEvents } from '@api/types';
 
 export const dynamic = 'force-dynamic';
 
-const stream = new TransformStream();
-const writer = stream.writable.getWriter();
-const encoder = new TextEncoder();
-const sseWriter = getSSEWriter(writer, encoder);
-let isConnectionClosed = false;
-
-appEventBus.on(
-  AppEventTypes.BENCHMARK_UPDATE,
-  (data: CookbookTestRunProgress) => {
-    console.log('Data received from webhook', data);
-    try {
-      if ('exec_id' in data) {
-        (sseWriter as BenchMarkEvents).update({
-          data,
-          event: AppEventTypes.BENCHMARK_UPDATE,
-        });
-      } else {
-        (sseWriter as SystemEvents).update({
-          data,
-          event: AppEventTypes.SYSTEM_UPDATE,
-        });
-      }
-    } catch (error) {
-      console.error('Error writing to SSE stream', error);
-    }
-  }
-);
-
 export async function GET() {
+  const stream = new TransformStream();
+  const writer = stream.writable.getWriter();
+  const encoder = new TextEncoder();
+  const sseWriter = getSSEWriter(writer, encoder);
+  let isConnectionClosed = false;
+
+  appEventBus.on(
+    AppEventTypes.BENCHMARK_UPDATE,
+    (data: CookbookTestRunProgress) => {
+      console.log('Data received from webhook', data);
+      try {
+        if ('exec_id' in data) {
+          (sseWriter as BenchMarkEvents).update({
+            data,
+            event: AppEventTypes.BENCHMARK_UPDATE,
+          });
+        } else {
+          (sseWriter as SystemEvents).update({
+            data,
+            event: AppEventTypes.SYSTEM_UPDATE,
+          });
+        }
+      } catch (error) {
+        console.error('Error writing to SSE stream', error);
+      }
+    }
+  );
   // Heartbeat mechanism
   const heartbeatInterval = setInterval(() => {
     console.log('Sending SSE heartbeat');
