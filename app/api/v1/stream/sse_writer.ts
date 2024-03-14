@@ -1,21 +1,25 @@
 // SSE implementation follows 'ts-sse' closely
 //https://github.com/michaelangeloio/ts-sse
 
-import { EventNotifier, Message } from '../../types';
+import { EventNotifier, Message } from '@api/types';
 
 function toDataString(data: string | Record<string, unknown>): string {
-  if (data) {
-    if (typeof data === 'object' && data !== null) {
-      return JSON.stringify(data);
-    }
-    return toDataString(JSON.stringify(data));
+  let stringData: string;
+  if (typeof data === 'object' && data !== null) {
+    stringData = JSON.stringify(data);
+  } else {
+    stringData = data.toString();
   }
 
-  //prefix "data:" is required to indicate a piece of data in message
-  return data
-    .split(/\r\n|\r|\n/)
-    .map((line) => `data: ${line}\n\n`) //double new line - signifies end of of message and prompts browser to process the event
-    .join('');
+  // Prefix "data:" is required to indicate a piece of data in the message
+  // Double new line - signifies the end of a message and prompts the browser to process the event
+  // This is brittle. Browser won't process the message if format is broken
+  return (
+    stringData
+      .split(/\r\n|\r|\n/)
+      .map((line) => `data: ${line}\n`)
+      .join('\n') + '\n\n'
+  );
 }
 
 export class Writer implements EventNotifier {

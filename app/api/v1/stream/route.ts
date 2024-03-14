@@ -19,13 +19,18 @@ export async function GET() {
     removeAllBenchmarkListeners();
     removeAllSystemListeners();
     subscribeToBenchmarkEvent<CookbookTestRunProgress>((data) => {
-      console.log('benchmark-update', data);
+      console.debug('Data received from webhook');
       if ('exec_id' in data) {
         (notifier as BenchMarkEvents).update({
           data,
           event: AppEventTypes.BENCHMARK_UPDATE,
         });
+        console.debug('Written to SSE Stream');
       } else {
+        (notifier as SystemEvents).update({
+          data,
+          event: AppEventTypes.SYSTEM_UPDATE,
+        });
         console.error('Invalid data format for cookbookTestRunProgress', data);
       }
     });

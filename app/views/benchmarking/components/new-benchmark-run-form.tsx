@@ -1,7 +1,7 @@
 import { Form, Formik } from 'formik';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
-import { Icon, IconName } from '@/app/components/IconSVG';
 
 const initialFormValues: BenchmarkRunFormValues = {
   name: '',

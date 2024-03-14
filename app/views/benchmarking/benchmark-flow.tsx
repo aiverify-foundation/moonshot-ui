@@ -72,7 +72,7 @@ function BenchmarkFlowWindow(props: BenchmarkFlowProps) {
   const [unselectedCookbook, setUnselectedCookbook] = useState<Cookbook>();
   const [isEndpointsExplorerOpen, setIsEndpointsExplorerOpen] = useState(false);
   const [isCookbookExplorerOpen, setIsCookbooksExplorerOpen] = useState(false);
-  const event = useEventSource('/api/v1/stream');
+  const event = useEventSource<CookbookTestRunProgress>('/api/v1/stream');
   const dispatch = useDispatch();
   const windowsMap = useAppSelector((state) => state.windows.map);
 
