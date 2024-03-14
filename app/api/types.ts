@@ -17,7 +17,7 @@ export interface EventNotifier<
   } = any,
 > {
   update: (message: Message<T['update']>['data']) => void;
-  complete: (message: Message<T['complete']>['data']) => void;
+  complete: (message: Message<T['complete']>['data']) => Promise<void>;
 }
 
 export type BenchMarkEvents = EventNotifier<{

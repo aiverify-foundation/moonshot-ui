@@ -56,8 +56,16 @@ export class Writer implements EventNotifier {
   }
 
   complete(message: Message) {
-    this.writeMessage(this.writer, this.encoder, message);
-    void this.writer.close();
+    const dataString = toDataString(message.data);
+    this.writer
+      .write(this.encoder.encode(dataString))
+      .then(() => {
+        return this.writer.close();
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+    return Promise.resolve();
   }
 }
 
