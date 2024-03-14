@@ -141,7 +141,7 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
             }
             onCloseClick={handleMinimizeClick(getWindowId(id))}
             onWholeWindowClick={
-              isMinimized ? handleMaximizeClick(getWindowId(id)) : null
+              isMinimized ? handleMaximizeClick(getWindowId(id)) : undefined
             }
           />
         ) : null;

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useWindowChange } from '@/app/hooks/use-window-change';
 import { useAppSelector } from '@/lib/redux';
-import { CookbookFormValues, NewCookbookForm } from './new-cookbook-form';
+import { NewCookbookForm } from './new-cookbook-form';
 import {
   getWindowId,
   getWindowSizeById,
@@ -59,8 +59,7 @@ function NewCookbookFlow(props: NewCookbookFormProps) {
   return (
     <div className="w-full h-full flex flex-col">
       {/* <div className="text-sm text-white mb-7"></div> */}
-      <TwoPanel
-        initialDividerPosition={initialDividerPosition}>
+      <TwoPanel initialDividerPosition={initialDividerPosition}>
         <div className="flex flex-col flex-1 h-full justify-start gap-1">
           <div className="flex justify-between">
             <IconButton

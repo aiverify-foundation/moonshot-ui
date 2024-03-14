@@ -61,7 +61,7 @@ type IconProps = {
   lightModeColor?: string;
   darkModeColor?: string;
   disabled?: boolean;
-  onClick?: (e: React.MouseEvent) => void;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onMouseDown?: (e: React.MouseEvent) => void;
 };
 

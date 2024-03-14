@@ -44,12 +44,12 @@ function ThreePanel({
     document.addEventListener('mouseup', stopResizing);
   };
 
-  useEffect(() => {
-    return () => {
-      document.removeEventListener('mousemove', () => {});
-      document.removeEventListener('mouseup', () => {});
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     document.removeEventListener('mousemove', () => {});
+  //     document.removeEventListener('mouseup', () => {});
+  //   };
+  // }, []);
 
   useEffect(() => {
     setDividerPositions(initialDividerPositions);

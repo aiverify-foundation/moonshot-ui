@@ -146,6 +146,7 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
     if (!tooltipRef.current || !triggerRef.current) return;
     showTimeoutRef.current = setTimeout(() => {
       setIsHovering(true);
+      if (!tooltipRef.current || !triggerRef.current) return;
       const placementStyle = calculateTooltipPosition(
         triggerRef.current,
         tooltipRef.current,

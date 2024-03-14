@@ -51,19 +51,19 @@ const NewRecipeForm: React.FC<NewRecipeFormProps> = ({ onFormSubmit }) => {
                 placeholder=""
               />
 
-              <TextInput
+              {/* <TextInput
                 name="Tags"
                 label="tags"
                 onChange={formProps.handleChange}
-                value={formProps.values.Tags}
+                value={formProps.values.tags.join(',')}
                 onBlur={formProps.handleBlur}
                 error={
-                  formProps.touched.Tags && formProps.errors.Tags
-                    ? formProps.errors.Tags
+                  formProps.touched.tags && formProps.errors.tags
+                    ? formProps.errors.tags
                     : undefined
                 }
                 placeholder=""
-              />
+              /> */}
 
               <TextArea
                 name="description"
@@ -78,27 +78,27 @@ const NewRecipeForm: React.FC<NewRecipeFormProps> = ({ onFormSubmit }) => {
                 placeholder=""
               />
 
-              <SelectInput
+              {/* <SelectInput
                 label="Datasets"
                 name="datasets"
                 options={[]}
                 onSyntheticChange={formProps.handleChange}
                 value={formProps.values.datasets}
-              />
-              <SelectInput
+              /> */}
+              {/* <SelectInput
                 label="Prompt Templates"
                 name="prompt_templates"
                 options={[]}
                 onSyntheticChange={formProps.handleChange}
                 value={formProps.values.prompt_templates}
-              />
-              <SelectInput
+              /> */}
+              {/* <SelectInput
                 label="Metrics"
                 name="metrics"
                 options={[]}
                 onSyntheticChange={formProps.handleChange}
                 value={formProps.values.metrics}
-              />
+              /> */}
               <div className="bottom-3 text-right">
                 <button
                   className="btn-primary"

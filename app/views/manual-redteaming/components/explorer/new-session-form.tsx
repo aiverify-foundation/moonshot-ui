@@ -64,6 +64,7 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
     });
     //@ts-ignore
     if (response.data) {
+      //@ts-ignore
       dispatch(setActiveSession(response.data));
       dispatch(addOpenedWindowId(getWindowId(WindowIds.RED_TEAMING_SESSION)));
     } // todo - else and error handling

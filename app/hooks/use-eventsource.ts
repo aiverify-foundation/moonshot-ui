@@ -26,7 +26,7 @@ export function useEventSource<T>(url: string): [T | null, () => void] {
   }
 
   useEffect(() => {
-    initSSE(); // Workaround a weird issue in the nextjs backend - if /api/v1/stream is called first, followed by /api/v1/status, the eventEmitter is not the same instance. TODO - debug
+    // initSSE(); // Workaround a weird issue in the nextjs backend - if /api/v1/stream is called first, followed by /api/v1/status, the eventEmitter is not the same instance. TODO - debug
     eventSource = new EventSource(url);
 
     eventSource.onopen = (event) => {

@@ -193,6 +193,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
       return;
     }
     setSelectedBtnAction(ModelsExplorerButtonAction.VIEW_MODELS);
+    //@ts-ignore
     setSelectedEndpoint(newModelEndpoint);
     refetchLLMEndpoints();
   }

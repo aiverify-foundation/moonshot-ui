@@ -178,7 +178,7 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
       return;
     }
     setSelectedBtnAction(CookbooksExplorerButtonAction.VIEW_COOKBOOKS);
-    setSelectedCookbook(newCookbook);
+    setSelectedCookbook(newCookbook as Cookbook);
     setNewlyAddedCookbookName(newCookbook.name);
     refetchCookbooks();
   }

@@ -157,6 +157,7 @@ function RecipesExplorer(props: RecipesExplorerProps) {
   }
 
   async function submitNewCookbook(data: RecipeFormValues) {
+    //@ts-ignore
     const newRecipe: Recipe = {
       name: data.name,
       description: data.description,
