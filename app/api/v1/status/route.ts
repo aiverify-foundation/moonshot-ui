@@ -7,6 +7,8 @@ export async function POST(request: Request) {
   console.debug('Webhook callback invoked', {
     exec_id: body.exec_id,
     exec_name: body.exec_name,
+    curr_progress: body.curr_progress,
+    curr_status: body.curr_status,
   });
   appEventBus.emit(AppEventTypes.BENCHMARK_UPDATE, body);
   return new Response(JSON.stringify({ msg: 'Updates sent to SSE writer' }));

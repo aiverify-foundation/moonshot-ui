@@ -43,9 +43,9 @@ function isEqual(obj1: any, obj2: any): boolean {
   return true;
 }
 
-export function useEventSource<T>(
+export function useEventSource<T, E extends string>(
   url: string,
-  eventType: AppEventTypes
+  eventType: E
 ): [T | null, () => void] {
   const [data, setData] = useState<T | null>(null);
   let eventSource: EventSource | null = null;

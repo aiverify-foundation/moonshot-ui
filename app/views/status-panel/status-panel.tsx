@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { IconName } from '@/app/components/IconSVG';
 import { IconButton } from '@/app/components/icon-button';
 import { Window } from '@/app/components/window';
@@ -5,11 +6,9 @@ import { WindowList } from '@/app/components/window-list';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { useGetAllStatusQuery } from '@/app/services/status-api-service';
 import { AppEventTypes } from '@/app/types/enums';
-import { useEffect, useState } from 'react';
 
 type StatusPanelProps = {
   windowId: string;
-  mini?: boolean;
   title?: string;
   initialXY: [number, number];
   initialSize: [number, number];
@@ -29,7 +28,6 @@ type StatusPanelProps = {
 function StatusPanel(props: StatusPanelProps) {
   const {
     windowId,
-    mini = true,
     title,
     initialXY,
     initialSize,
@@ -38,14 +36,18 @@ function StatusPanel(props: StatusPanelProps) {
     onCloseClick,
     onWindowChange,
   } = props;
-  const [eventData, closeEventSource] = useEventSource<TestStatus>(
-    '/api/v1/stream',
-    AppEventTypes.BENCHMARK_UPDATE
-  );
-  const { data = {}, error, isLoading } = useGetAllStatusQuery();
+  const [eventData, closeEventSource] = useEventSource<
+    TestStatus,
+    AppEventTypes
+  >('/api/v1/stream', AppEventTypes.BENCHMARK_UPDATE);
+  const {
+    data = {},
+    error,
+    isLoading,
+  } = useGetAllStatusQuery(undefined, { refetchOnMountOrArgChange: true });
   const [statuses, setStatuses] = useState<TestStatuses>({});
   const statusTuples = Object.entries(statuses);
-  const windowTitle = title || 'Status Panel';
+  const windowTitle = title || 'Test Status';
   let countRunning = 0;
   let countCompleted = 0;
 
@@ -60,15 +62,17 @@ function StatusPanel(props: StatusPanelProps) {
   const footerText = `${countRunning} running, ${countCompleted} completed / ${statusTuples.length} total`;
 
   useEffect(() => {
-    console.log(eventData);
     if (!statuses) return;
     if (eventData) {
+      if (!eventData.exec_id) return;
       const id = eventData.exec_id;
       if (
         statuses[id] &&
-        statuses[id].curr_progress === eventData.curr_progress
+        statuses[id].curr_progress == eventData.curr_progress &&
+        statuses[id].curr_status == eventData.curr_status
       )
-        return;
+        return; // if the progress percentage and status is the same, don't update
+      console.log(eventData);
       setStatuses((prev) => {
         return { ...prev, [id]: eventData };
       });
