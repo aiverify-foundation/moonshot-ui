@@ -31,11 +31,11 @@ import { CookbooksExplorer } from '@views/cookbook-management/cookbooks-explorer
 import { SessionExplorerButtonAction } from '@views/manual-redteaming/components/explorer/top-buttons-bar';
 import { SessionsExplorer } from '@views/manual-redteaming/sessions-explorer';
 import { RecipesExplorer } from '@views/recipes-management/recipes-explorer';
+import { StatusPanel } from '@views/status-panel/status-panel';
 
 export default function MoonshotDesktop() {
   const [isCookbooksExplorerOpen, setIsCookbooksExplorerOpen] = useState(false);
   const [isChatSessionOpen, setIsChatSessionOpen] = useState(false);
-  const [isEndpointsExplorerOpen, setIsEndpointsExplorerOpen] = useState(false);
   const [isRecipesExplorerOpen, setIsRecipesExplorerOpen] = useState(false);
   const [isShowWindowSavedSession, setIsShowWindowSavedSession] =
     useState(false);
@@ -58,14 +58,6 @@ export default function MoonshotDesktop() {
         backgroundImage:
           'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to right bottom, rgb(113 112 112), rgb(34 34 34))',
       };
-  const [
-    createSession,
-    {
-      data: newSession,
-      isLoading: createSessionIsLoding,
-      error: createSessionError,
-    },
-  ] = useCreateSessionMutation();
 
   function handleResumeSessionClick() {
     dispatch(addOpenedWindowId(getWindowId(WindowIds.RED_TEAMING_SESSION)));
@@ -82,6 +74,10 @@ export default function MoonshotDesktop() {
 
   function handleModelsExplorerCloseClick() {
     dispatch(removeOpenedWindowId(getWindowId(WindowIds.LLM_ENDPOINTS)));
+  }
+
+  function handleStatusPanelCloseClick() {
+    dispatch(removeOpenedWindowId(getWindowId(WindowIds.STATUS)));
   }
 
   function handleManualRedteamingSessionCloseClick() {
@@ -124,7 +120,8 @@ export default function MoonshotDesktop() {
       WindowIds.LLM_ENDPOINTS_PICKER,
       WindowIds.SAVED_SESSIONS,
       WindowIds.CREATE_SESSION,
-      WindowIds.BENCHMARKING
+      WindowIds.BENCHMARKING,
+      WindowIds.STATUS
     );
   }, []);
 
@@ -254,6 +251,18 @@ export default function MoonshotDesktop() {
           initialSize={getWindowSizeById(windowsMap, WindowIds.BENCHMARKING)}
           onWindowChange={handleOnWindowChange}
           onCloseClick={handleBenchmarkFlowCloseClick}
+        />
+      ) : null}
+
+      {openedWindowIds.includes(getWindowId(WindowIds.STATUS)) ? (
+        <StatusPanel
+          zIndex={Z_Index.Level_2}
+          windowId={getWindowId(WindowIds.STATUS)}
+          initialXY={getWindowXYById(windowsMap, WindowIds.STATUS)}
+          initialSize={getWindowSizeById(windowsMap, WindowIds.STATUS)}
+          statusCollection={{}}
+          onWindowChange={handleOnWindowChange}
+          onCloseClick={handleStatusPanelCloseClick}
         />
       ) : null}
 

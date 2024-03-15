@@ -92,7 +92,7 @@ type PushEvent = {
   data: Record<string, string | number>;
 };
 
-type CookbookTestRunProgress = {
+type TestStatus = {
   exec_id: string;
   exec_name: string;
   exec_type: string;
@@ -107,6 +107,8 @@ type CookbookTestRunProgress = {
   curr_progress: number;
   curr_error_messages: string[];
 };
+
+type TestStatuses = Record<string, TestStatus>;
 
 // Reserved z-indexes
 type ZIndex = {

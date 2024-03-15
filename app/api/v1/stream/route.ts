@@ -13,30 +13,27 @@ export async function GET() {
   const sseWriter = getSSEWriter(writer, encoder);
   let isConnectionClosed = false;
 
-  appEventBus.on(
-    AppEventTypes.BENCHMARK_UPDATE,
-    (data: CookbookTestRunProgress) => {
-      console.log('Data received from webhook', {
-        exec_id: data.exec_id,
-        exec_name: data.exec_name,
-      });
-      try {
-        if ('exec_id' in data) {
-          (sseWriter as BenchMarkEvents).update({
-            data,
-            event: AppEventTypes.BENCHMARK_UPDATE,
-          });
-        } else {
-          (sseWriter as SystemEvents).update({
-            data,
-            event: AppEventTypes.SYSTEM_UPDATE,
-          });
-        }
-      } catch (error) {
-        console.error('Error writing to SSE stream', error);
+  appEventBus.on(AppEventTypes.BENCHMARK_UPDATE, (data: TestStatus) => {
+    console.log('Data received from webhook', {
+      exec_id: data.exec_id,
+      exec_name: data.exec_name,
+    });
+    try {
+      if ('exec_id' in data) {
+        (sseWriter as BenchMarkEvents).update({
+          data,
+          event: AppEventTypes.BENCHMARK_UPDATE,
+        });
+      } else {
+        (sseWriter as SystemEvents).update({
+          data,
+          event: AppEventTypes.SYSTEM_UPDATE,
+        });
       }
+    } catch (error) {
+      console.error('Error writing to SSE stream', error);
     }
-  );
+  });
   // Heartbeat mechanism
   const heartbeatInterval = setInterval(() => {
     console.log('Sending SSE heartbeat');

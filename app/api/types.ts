@@ -22,11 +22,11 @@ export interface EventNotifier<
 
 export type BenchMarkEvents = EventNotifier<{
   update: {
-    data: CookbookTestRunProgress;
+    data: TestStatus;
     event: AppEventTypes;
   };
   complete: {
-    data: CookbookTestRunProgress;
+    data: TestStatus;
     event: AppEventTypes;
   };
 }>;
