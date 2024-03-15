@@ -43,7 +43,7 @@ export async function GET() {
       appEventBus.removeAllListeners(AppEventTypes.SYSTEM_UPDATE);
       clearInterval(heartbeatInterval);
       console.error(
-        'Error writing heartbeat to SSE stream. This is expected if SSE connection was closed. Cleaning up SSE resources.'
+        'Error writing heartbeat to SSE stream. This is expected if SSE connection was closed. Cleaning up SSE resources. Subsequent ResponseError (if any) can be ignored.'
       );
       (sseWriter as SystemEvents)
         .complete({
@@ -52,7 +52,7 @@ export async function GET() {
         })
         .catch((error) => {
           console.error(
-            'Error completing stream. Cleaning up SSE resources.',
+            'Error completing stream. Cleaning up SSE resources.  Subsequent ResponseError (if any) can be ignored.',
             error
           );
         });

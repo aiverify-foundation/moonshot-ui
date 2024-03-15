@@ -1,5 +1,6 @@
 import { AppEventTypes } from '@/app/types/enums';
 import { appEventBus } from '@api/eventbus';
+import { basePathStatusExecutor, hostURL } from '@api/constants';
 
 export async function POST(request: Request) {
   const body = (await request.json()) as TestStatus;
@@ -9,4 +10,11 @@ export async function POST(request: Request) {
   });
   appEventBus.emit(AppEventTypes.BENCHMARK_UPDATE, body);
   return new Response(JSON.stringify({ msg: 'Updates sent to SSE writer' }));
+}
+
+export async function GET() {
+  const response = await fetch(`${hostURL}${basePathStatusExecutor}`, {
+    method: 'GET',
+  });
+  return response;
 }
