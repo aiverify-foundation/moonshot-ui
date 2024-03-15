@@ -124,7 +124,6 @@ export default function MoonshotDesktop() {
       WindowIds.LLM_ENDPOINTS,
       WindowIds.LLM_ENDPOINTS_PICKER,
       WindowIds.SAVED_SESSIONS,
-      WindowIds.CREATE_SESSION,
       WindowIds.BENCHMARKING,
       WindowIds.STATUS,
       WindowIds.PROMPT_TEMPLATES

@@ -2,7 +2,6 @@ export enum WindowIds {
   LLM_ENDPOINTS = 'llmendpExplorer',
   LLM_ENDPOINTS_PICKER = 'llmendpPicker',
   SAVED_SESSIONS = 'savedSessions',
-  CREATE_SESSION = 'createSession',
   RED_TEAMING_SESSION = 'redTeamingSession',
   BENCHMARKING = 'benchmarking',
   COOKBOOKS = 'cookbooks',
@@ -29,14 +28,13 @@ export const defaultWindowWidthHeight: {
 } = {
   [WindowIds.LLM_ENDPOINTS]: [1050, 650],
   [WindowIds.COOKBOOKS]: [1050, 650],
-  [WindowIds.RECIPES]: [1050, 750],
-  [WindowIds.LLM_ENDPOINTS_PICKER]: [600, 400],
-  [WindowIds.RECIPES_PICKER]: [500, 460],
-  [WindowIds.COOKBOOKS_PICKER]: [600, 400],
   [WindowIds.PROMPT_TEMPLATES]: [1050, 650],
+  [WindowIds.RECIPES]: [1050, 650],
   [WindowIds.SAVED_SESSIONS]: [1550, 800],
-  [WindowIds.CREATE_SESSION]: [820, 470], //this seems unused
   [WindowIds.BENCHMARKING]: [1550, 800],
+  [WindowIds.RECIPES_PICKER]: [500, 460],
+  [WindowIds.LLM_ENDPOINTS_PICKER]: [600, 400],
+  [WindowIds.COOKBOOKS_PICKER]: [600, 400],
   [WindowIds.STATUS]: [280, 380],
 };
 
