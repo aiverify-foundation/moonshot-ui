@@ -6,6 +6,7 @@ import { llmEndpointApi } from '@/app/services/llm-endpoint-api-service';
 import { promptTemplateApi } from '@/app/services/prompt-template-api-service';
 import { recipeApi } from '@/app/services/recipe-api-service';
 import { sessionApi } from '@/app/services/session-api-service';
+import { statusApi } from '@/app/services/status-api-service';
 
 const middleware = [
   sessionApi.middleware,
@@ -14,6 +15,7 @@ const middleware = [
   cookbookApi.middleware,
   recipeApi.middleware,
   benchmarkRunApi.middleware,
+  statusApi.middleware,
   createLogger({
     duration: true,
     timestamp: false,

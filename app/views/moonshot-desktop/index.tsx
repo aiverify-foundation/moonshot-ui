@@ -186,6 +186,13 @@ export default function MoonshotDesktop() {
               label="Saved Sessions"
               onClick={() => setIsShowWindowSavedSession(true)}
             />
+            <DesktopIcon
+              name={IconName.Folder}
+              label="test"
+              onClick={() =>
+                dispatch(addOpenedWindowId(getWindowId(WindowIds.STATUS)))
+              }
+            />
           </div>
         </div>
       ) : null}
@@ -260,7 +267,6 @@ export default function MoonshotDesktop() {
           windowId={getWindowId(WindowIds.STATUS)}
           initialXY={getWindowXYById(windowsMap, WindowIds.STATUS)}
           initialSize={getWindowSizeById(windowsMap, WindowIds.STATUS)}
-          statusCollection={{}}
           onWindowChange={handleOnWindowChange}
           onCloseClick={handleStatusPanelCloseClick}
         />

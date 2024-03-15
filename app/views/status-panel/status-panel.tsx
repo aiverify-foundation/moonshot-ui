@@ -1,5 +1,9 @@
+import { IconName } from '@/app/components/IconSVG';
+import { IconButton } from '@/app/components/icon-button';
 import { Window } from '@/app/components/window';
 import { WindowList } from '@/app/components/window-list';
+import { useEventSource } from '@/app/hooks/use-eventsource';
+import { useGetAllStatusQuery } from '@/app/services/status-api-service';
 import { useEffect, useState } from 'react';
 
 type StatusPanelProps = {
@@ -9,7 +13,6 @@ type StatusPanelProps = {
   initialXY: [number, number];
   initialSize: [number, number];
   zIndex: number | 'auto';
-  statusCollection: TestStatuses;
   onListItemClick?: (recipe: Recipe) => void;
   onCloseClick: () => void;
   onWindowChange?: (
@@ -30,18 +33,40 @@ function StatusPanel(props: StatusPanelProps) {
     initialXY,
     initialSize,
     zIndex,
-    statusCollection,
     onListItemClick,
     onCloseClick,
     onWindowChange,
   } = props;
-  const [statuses, setStatuses] = useState<TestStatuses>({});
+  const [eventData, closeEventSource] =
+    useEventSource<TestStatus>('/api/v1/stream');
+  const { data = {}, error, isLoading } = useGetAllStatusQuery();
+  const [statuses, setStatuses] = useState<TestStatuses | undefined>();
   const windowTitle = title || 'Status Panel';
 
   useEffect(() => {
-    setStatuses(statusCollection);
-  }, [statusCollection]);
-  return (
+    console.log(eventData);
+    if (!statuses) return;
+    if (eventData) {
+      const id = eventData.exec_id;
+      if (statuses[id].curr_progress === eventData.curr_progress) return;
+      setStatuses((prev) => {
+        return { ...prev, [id]: eventData };
+      });
+    }
+  }, [eventData]);
+
+  useEffect(() => {
+    if (!isLoading && data) setStatuses(data);
+  }, [isLoading]);
+
+  useEffect(() => {
+    return () => {
+      console.debug('Status unmounted');
+      closeEventSource();
+    };
+  }, []);
+
+  return isLoading || !statuses ? null : (
     <Window
       id={windowId}
       resizeable={true}
@@ -53,16 +78,37 @@ function StatusPanel(props: StatusPanelProps) {
       name={windowTitle}
       leftFooterText={'todo'}
       footerHeight={30}
-      contentAreaStyles={{ backgroundColor: 'transparent' }}>
+      contentAreaStyles={{
+        backgroundColor: '#FFFFFF',
+        paddingLeft: 0,
+        paddingRight: 0,
+      }}>
       <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
         {Object.entries(statuses).map(([id, status]) => (
           <WindowList.Item
             key={id}
             id={id}
             className="justify-start">
-            <div>
-              <h4>{status.exec_name}</h4>
-              <p>{status.curr_progress}</p>
+            <div className="w-full flex flex-col">
+              <div className="flex w-full justify-between mb-1">
+                <h4 className="mb-1">{status.exec_name}</h4>
+                {status.curr_status !== 'completed' ? (
+                  <IconButton
+                    label="Cancel"
+                    labelSize={11}
+                    iconSize={12}
+                    iconName={IconName.Close}
+                    onClick={() => {}}
+                  />
+                ) : null}
+              </div>
+              <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                <div
+                  className="bg-blue-600 text-xs font-medium text-blue-100 
+                  text-center leading-none h-1 rounded-full"
+                  style={{ width: `${status.curr_progress}%` }}
+                />
+              </div>
             </div>
           </WindowList.Item>
         ))}
