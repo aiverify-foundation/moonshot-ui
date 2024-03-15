@@ -26,6 +26,7 @@ import { RunCookbookIcon } from './icons/run-cookbook-icon';
 import { SquareIcon } from './icons/square-icon';
 import { ArrowLeftIcon } from './icons/arrow-left-icon';
 import { ArrowRightIcon } from './icons/arrow-right-icon';
+import { TableIcon } from './icons/table-icon';
 
 enum IconName {
   Folder,
@@ -53,6 +54,7 @@ enum IconName {
   List,
   File,
   Book,
+  Table,
 }
 
 type IconProps = {
@@ -392,6 +394,19 @@ function Icon(props: IconProps) {
     case IconName.ArrowRight:
       iconToRender = (
         <ArrowRightIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Table:
+      iconToRender = (
+        <TableIcon
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'

@@ -43,7 +43,10 @@ function isEqual(obj1: any, obj2: any): boolean {
   return true;
 }
 
-export function useEventSource<T>(url: string): [T | null, () => void] {
+export function useEventSource<T>(
+  url: string,
+  eventType: AppEventTypes
+): [T | null, () => void] {
   const [data, setData] = useState<T | null>(null);
   let eventSource: EventSource | null = null;
 
@@ -53,25 +56,18 @@ export function useEventSource<T>(url: string): [T | null, () => void] {
   }
 
   useEffect(() => {
-    // initSSE(); // Workaround a weird issue in the nextjs backend - if /api/v1/stream is called first, followed by /api/v1/status, the eventEmitter is not the same instance. TODO - debug
+    // initSSE(); // Workaround routes lazy loading eventEmitter issue in nextjs run dev mode
     eventSource = new EventSource(url);
 
     eventSource.onopen = (event) => {
       console.log('EVENTSOURCE Open', event);
     };
 
-    eventSource.addEventListener(AppEventTypes.SYSTEM_UPDATE, (event) => {
+    eventSource.addEventListener(eventType, (event) => {
       console.log('SYSTEM-UPDATE', event);
       const parsedData: T = JSON.parse(event.data);
       // Warning - isEqual does deep equality. Currently this is ok because data is 1 level deep.
-      if (data && isEqual(data, parsedData)) return;
-      setData(parsedData);
-    });
-
-    eventSource.addEventListener(AppEventTypes.BENCHMARK_UPDATE, (event) => {
-      console.log('BENCHMARK-UPDATE', event);
-      const parsedData: T = JSON.parse(event.data);
-      // Warning - isEqual does deep equality. Currently this is ok because data is 1 level deep.
+      // Avoid designing nested objects for data
       if (data && isEqual(data, parsedData)) return;
       setData(parsedData);
     });

@@ -5,23 +5,29 @@ import React, { useEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { useWindowChange } from '@/app/hooks/use-window-change';
 import {
+  calcTopRightWindowXY,
   getWindowId,
   getWindowSizeById,
   getWindowXYById,
 } from '@/app/lib/window-utils';
-import { useCreateSessionMutation } from '@/app/services/session-api-service';
 import { ManualRedTeaming } from '@/app/views/manual-redteaming/red-teaming-session';
 import { EndpointsExplorer } from '@/app/views/models-management/endpoints-explorer';
 import {
   addOpenedWindowId,
   removeOpenedWindowId,
   resetBenchmarkModels,
+  updateWindows,
   useAppDispatch,
   useAppSelector,
 } from '@/lib/redux';
 import { removeActiveSession } from '@/lib/redux/slices/activeSessionSlice';
 import { toggleDarkMode } from '@/lib/redux/slices/darkModeSlice';
-import { WindowIds, Z_Index, moonshotDesktopDivID } from './constants';
+import {
+  WindowIds,
+  Z_Index,
+  defaultWindowWidthHeight,
+  moonshotDesktopDivID,
+} from './constants';
 import { useResetWindows } from './hooks/useResetWindows';
 import { DesktopIcon } from '@components/desktop-icon';
 import Menu from '@components/menu';
@@ -125,8 +131,26 @@ export default function MoonshotDesktop() {
       WindowIds.LLM_ENDPOINTS_PICKER,
       WindowIds.SAVED_SESSIONS,
       WindowIds.BENCHMARKING,
-      WindowIds.STATUS,
       WindowIds.PROMPT_TEMPLATES
+    );
+
+    //custom position for status panel
+    const [statusPanelX, statusPanelY] = calcTopRightWindowXY(
+      defaultWindowWidthHeight[WindowIds.STATUS][0],
+      defaultWindowWidthHeight[WindowIds.STATUS][1],
+      -50,
+      50
+    );
+    dispatch(
+      updateWindows({
+        [getWindowId(WindowIds.STATUS)]: [
+          statusPanelX,
+          statusPanelY,
+          defaultWindowWidthHeight[WindowIds.STATUS][0],
+          defaultWindowWidthHeight[WindowIds.STATUS][1],
+          0,
+        ],
+      })
     );
   }, []);
 
@@ -179,7 +203,7 @@ export default function MoonshotDesktop() {
             />
             <DesktopIcon
               name={IconName.Folder}
-              label="LLM Endpoints"
+              label="Model Endpoints"
               onClick={handleModelEndpointIconClick}
             />
             <DesktopIcon

@@ -9,7 +9,7 @@ type IconButtonProps = {
   className?: string;
   activeColor?: string;
   rounded?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 function IconButton(props: IconButtonProps) {

@@ -4,6 +4,7 @@ import { Window } from '@/app/components/window';
 import { WindowList } from '@/app/components/window-list';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { useGetAllStatusQuery } from '@/app/services/status-api-service';
+import { AppEventTypes } from '@/app/types/enums';
 import { useEffect, useState } from 'react';
 
 type StatusPanelProps = {
@@ -37,18 +38,37 @@ function StatusPanel(props: StatusPanelProps) {
     onCloseClick,
     onWindowChange,
   } = props;
-  const [eventData, closeEventSource] =
-    useEventSource<TestStatus>('/api/v1/stream');
+  const [eventData, closeEventSource] = useEventSource<TestStatus>(
+    '/api/v1/stream',
+    AppEventTypes.BENCHMARK_UPDATE
+  );
   const { data = {}, error, isLoading } = useGetAllStatusQuery();
-  const [statuses, setStatuses] = useState<TestStatuses | undefined>();
+  const [statuses, setStatuses] = useState<TestStatuses>({});
+  const statusTuples = Object.entries(statuses);
   const windowTitle = title || 'Status Panel';
+  let countRunning = 0;
+  let countCompleted = 0;
+
+  statusTuples.forEach(([_, status]) => {
+    if (status.curr_status === 'completed') {
+      countCompleted++;
+    } else {
+      countRunning++;
+    }
+  });
+
+  const footerText = `${countRunning} running, ${countCompleted} completed / ${statusTuples.length} total`;
 
   useEffect(() => {
     console.log(eventData);
     if (!statuses) return;
     if (eventData) {
       const id = eventData.exec_id;
-      if (statuses[id].curr_progress === eventData.curr_progress) return;
+      if (
+        statuses[id] &&
+        statuses[id].curr_progress === eventData.curr_progress
+      )
+        return;
       setStatuses((prev) => {
         return { ...prev, [id]: eventData };
       });
@@ -56,12 +76,14 @@ function StatusPanel(props: StatusPanelProps) {
   }, [eventData]);
 
   useEffect(() => {
-    if (!isLoading && data) setStatuses(data);
+    if (!isLoading && data) {
+      setStatuses(data);
+    }
   }, [isLoading]);
 
   useEffect(() => {
     return () => {
-      console.debug('Status unmounted');
+      console.debug('Unmount status. Closing event source');
       closeEventSource();
     };
   }, []);
@@ -76,7 +98,7 @@ function StatusPanel(props: StatusPanelProps) {
       onCloseClick={onCloseClick}
       onWindowChange={onWindowChange}
       name={windowTitle}
-      leftFooterText={'todo'}
+      leftFooterText={footerText}
       footerHeight={30}
       contentAreaStyles={{
         backgroundColor: '#FFFFFF',
@@ -84,7 +106,7 @@ function StatusPanel(props: StatusPanelProps) {
         paddingRight: 0,
       }}>
       <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
-        {Object.entries(statuses).map(([id, status]) => (
+        {statusTuples.map(([id, status]) => (
           <WindowList.Item
             key={id}
             id={id}
@@ -98,9 +120,15 @@ function StatusPanel(props: StatusPanelProps) {
                     labelSize={11}
                     iconSize={12}
                     iconName={IconName.Close}
-                    onClick={() => {}}
                   />
-                ) : null}
+                ) : (
+                  <IconButton
+                    label="Results"
+                    labelSize={11}
+                    iconSize={12}
+                    iconName={IconName.Table}
+                  />
+                )}
               </div>
               <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
                 <div

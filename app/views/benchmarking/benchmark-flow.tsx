@@ -20,6 +20,7 @@ import {
   addOpenedWindowId,
   removeBenchmarkCookbooks,
   removeBenchmarkModels,
+  removeOpenedWindowId,
   useAppSelector,
 } from '@/lib/redux';
 import { NewBenchMmarkRunForm } from './components/new-benchmark-run-form';
@@ -114,6 +115,7 @@ function BenchmarkFlowWindow(props: BenchmarkFlowProps) {
       return;
     }
     dispatch(addOpenedWindowId(getWindowId(WindowIds.STATUS)));
+    dispatch(removeOpenedWindowId(getWindowId(WindowIds.BENCHMARKING)));
   }
 
   function handleAddedEndpointClick(id: string) {

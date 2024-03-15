@@ -10,16 +10,16 @@ function Menu() {
       bg-fuschia-900 dark:bg-none"
       onClick={() => setIsMenuOpen(!isMenuOpen)}>
       <div className="h-6 flex justify-center items-center gap-2.5">
-        <Icon
+        {/* <Icon
           name={IconName.BurgerMenu}
           size={15}
-        />
+        /> */}
         <div className="dark:text-white font-medium text-fuchsia-950">
           Moonshot
         </div>
       </div>
 
-      {isMenuOpen ? (
+      {/* {isMenuOpen ? (
         <div
           style={{
             display: 'flex',
@@ -118,7 +118,7 @@ function Menu() {
             </div>
           </div>
         </div>
-      ) : null}
+      ) : null} */}
     </div>
   );
 }
