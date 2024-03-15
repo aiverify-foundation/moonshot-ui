@@ -304,7 +304,8 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
                   <div
                     className={`${
                       selectedBtnAction ===
-                      CookbooksExplorerButtonAction.SELECT_COOKBOOK
+                        CookbooksExplorerButtonAction.SELECT_COOKBOOK &&
+                      selectedCookbookList.length
                         ? 'h-[60%]'
                         : 'h-full'
                     } bg-white`}>
@@ -319,14 +320,13 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
                     </WindowInfoPanel>
                   </div>
                   {selectedBtnAction ===
-                  CookbooksExplorerButtonAction.SELECT_COOKBOOK ? (
+                    CookbooksExplorerButtonAction.SELECT_COOKBOOK &&
+                  selectedCookbookList.length ? (
                     <div className="h-[60%] flex items-center pt-4">
-                      {selectedCookbookList.length ? (
-                        <TaglabelsBox
-                          cookbooks={selectedCookbookList}
-                          onTaglabelIconClick={handleListItemClick}
-                        />
-                      ) : null}
+                      <TaglabelsBox
+                        cookbooks={selectedCookbookList}
+                        onTaglabelIconClick={handleListItemClick}
+                      />
                     </div>
                   ) : null}
                 </div>

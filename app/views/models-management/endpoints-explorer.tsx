@@ -326,7 +326,9 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
             <div className="flex flex-col h-full">
               <div
                 className={`${
-                  selectedBtnAction === ModelsExplorerButtonAction.SELECT_MODELS
+                  selectedBtnAction ===
+                    ModelsExplorerButtonAction.SELECT_MODELS &&
+                  selectedEndpointsList.length
                     ? 'h-[60%]'
                     : 'h-full'
                 } bg-white`}>
@@ -340,40 +342,38 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                   </div>
                 </WindowInfoPanel>
               </div>
-              {selectedBtnAction ===
-              ModelsExplorerButtonAction.SELECT_MODELS ? (
+              {selectedBtnAction === ModelsExplorerButtonAction.SELECT_MODELS &&
+              selectedEndpointsList.length ? (
                 <div className="h-[60%] flex flex-col items-center pt-4">
-                  {selectedEndpointsList.length ? (
-                    <>
-                      <TaglabelsBox
-                        models={selectedEndpointsList}
-                        onTaglabelIconClick={handleListItemClick}
-                      />
-                      <div className="flex gap-4 bottom-3 text-right">
-                        <button
-                          className="flex btn-primary items-center gap-2 btn-large rounded"
-                          type="button"
-                          onClick={handleBenchmarkBtnClick}>
-                          <div>Benchmark</div>
-                          <Icon
-                            name={IconName.ArrowRight}
-                            lightModeColor="#FFFFFF"
-                            size={14}
-                          />
-                        </button>
-                        <button
-                          className="flex btn-primary items-center gap-2 btn-large rounded"
-                          type="button">
-                          <div>Red Team</div>
-                          <Icon
-                            name={IconName.ArrowRight}
-                            lightModeColor="#FFFFFF"
-                            size={14}
-                          />
-                        </button>
-                      </div>
-                    </>
-                  ) : null}
+                  <>
+                    <TaglabelsBox
+                      models={selectedEndpointsList}
+                      onTaglabelIconClick={handleListItemClick}
+                    />
+                    <div className="flex gap-4 bottom-3 text-right">
+                      <button
+                        className="flex btn-primary items-center gap-2 btn-large rounded"
+                        type="button"
+                        onClick={handleBenchmarkBtnClick}>
+                        <div>Benchmark</div>
+                        <Icon
+                          name={IconName.ArrowRight}
+                          lightModeColor="#FFFFFF"
+                          size={14}
+                        />
+                      </button>
+                      <button
+                        className="flex btn-primary items-center gap-2 btn-large rounded"
+                        type="button">
+                        <div>Red Team</div>
+                        <Icon
+                          name={IconName.ArrowRight}
+                          lightModeColor="#FFFFFF"
+                          size={14}
+                        />
+                      </button>
+                    </div>
+                  </>
                 </div>
               ) : null}
             </div>

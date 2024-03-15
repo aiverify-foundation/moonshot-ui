@@ -23,11 +23,6 @@ function TemplateItemCard(props: TemplateItemCardProps) {
           {template.description}
         </div>
       </div>
-      <div className="flex items-start gap-2 w-full">
-        <div className="overflow-hidden text-ellipsis whitespace-nowrap pr-4">
-          {template.template}
-        </div>
-      </div>
     </div>
   );
 }

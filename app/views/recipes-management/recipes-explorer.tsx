@@ -69,14 +69,6 @@ function RecipesExplorer(props: RecipesExplorerProps) {
     isLoading,
     refetch: refetchRecipes,
   } = useRecipeList();
-  const [
-    createRecipe,
-    {
-      data: newRecipe,
-      isLoading: createRecipeIsLoding,
-      error: createRecipeError,
-    },
-  ] = useCreateRecipeMutation();
   const [selectedBtnAction, setSelectedBtnAction] =
     useState<RecipesExplorerButtonAction>(
       RecipesExplorerButtonAction.VIEW_RECIPES
@@ -156,27 +148,6 @@ function RecipesExplorer(props: RecipesExplorerProps) {
     return [...list].sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  async function submitNewCookbook(data: RecipeFormValues) {
-    //@ts-ignore
-    const newRecipe: Recipe = {
-      name: data.name,
-      description: data.description,
-      tags: data.tags,
-      datasets: data.datasets,
-      prompt_templates: data.prompt_templates,
-      metrics: data.metrics,
-    };
-    const response = await createRecipe(newRecipe);
-    if ('error' in response) {
-      console.error(response.error);
-      //TODO - create error visuals
-      return;
-    }
-    setSelectedBtnAction(RecipesExplorerButtonAction.VIEW_RECIPES);
-    setSelectedRecipe(newRecipe);
-    refetchRecipes();
-  }
-
   useEffect(() => {
     if (!isLoading && recipes) {
       setDisplayedRecipesList(sortDisplayedrecipesByName(recipes));
@@ -221,16 +192,8 @@ function RecipesExplorer(props: RecipesExplorerProps) {
         )
       }>
       {isTwoPanel ? (
-        <TwoPanel
-          disableResize
-          initialDividerPosition={initialDividerPosition}>
-          <WindowList
-            disableMouseInteraction={
-              selectedBtnAction === RecipesExplorerButtonAction.ADD_NEW_RECIPE
-                ? true
-                : false
-            }
-            styles={{ backgroundColor: '#FFFFFF' }}>
+        <TwoPanel initialDividerPosition={initialDividerPosition}>
+          <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
             {displayedRecipesList
               ? displayedRecipesList.map((recipe) => (
                   <WindowList.Item
@@ -258,28 +221,27 @@ function RecipesExplorer(props: RecipesExplorerProps) {
                         ? selectedRecipe.name === recipe.name
                         : false
                     }>
-                    <RecipeItemCard recipe={recipe} />
+                    <RecipeItemCard
+                      recipe={recipe}
+                      className="w-[94%]"
+                    />
                   </WindowList.Item>
                 ))
               : null}
           </WindowList>
-          {selectedBtnAction === RecipesExplorerButtonAction.ADD_NEW_RECIPE ? (
-            <div className="flex justify-center h-full">
-              <NewRecipeForm onFormSubmit={submitNewCookbook} />
-            </div>
-          ) : selectedBtnAction ===
-              RecipesExplorerButtonAction.SELECT_RECIPES ||
-            selectedBtnAction === RecipesExplorerButtonAction.VIEW_RECIPES ? (
+          {selectedBtnAction === RecipesExplorerButtonAction.SELECT_RECIPES ||
+          selectedBtnAction === RecipesExplorerButtonAction.VIEW_RECIPES ? (
             <div className="flex flex-col h-full">
               <div
                 className={`${
                   selectedBtnAction ===
-                  RecipesExplorerButtonAction.SELECT_RECIPES
-                    ? 'h-[40%]'
+                    RecipesExplorerButtonAction.SELECT_RECIPES &&
+                  selectedRecipeList.length
+                    ? 'h-[60%]'
                     : 'h-full'
                 } bg-white`}>
                 <WindowInfoPanel title="Recipe Details">
-                  <div className="h-full">
+                  <div className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar mr-[2px]">
                     {selectedRecipe ? (
                       <div className="flex flex-col gap-6">
                         <RecipeDetailsCard recipe={selectedRecipe} />
@@ -289,14 +251,13 @@ function RecipesExplorer(props: RecipesExplorerProps) {
                 </WindowInfoPanel>
               </div>
               {selectedBtnAction ===
-              RecipesExplorerButtonAction.SELECT_RECIPES ? (
+                RecipesExplorerButtonAction.SELECT_RECIPES &&
+              selectedRecipeList.length ? (
                 <div className="h-[60%] flex items-center pt-4">
-                  {selectedRecipeList.length ? (
-                    <TaglabelsBox
-                      recipes={selectedRecipeList}
-                      onTaglabelIconClick={handleListItemClick}
-                    />
-                  ) : null}
+                  <TaglabelsBox
+                    recipes={selectedRecipeList}
+                    onTaglabelIconClick={handleListItemClick}
+                  />
                 </div>
               ) : null}
             </div>

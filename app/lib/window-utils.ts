@@ -30,10 +30,15 @@ export function calcCentralizedWindowXY(
   width: number,
   height: number,
   offsetX = 0,
-  offsetY = 0
+  offsetY = 0,
+  randomizeOffsets = true
 ): [number, number] {
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
+  if (randomizeOffsets) {
+    offsetX += Math.random() * 300 - 150;
+    offsetY += Math.random() * 300 - 150;
+  }
   const top = (viewportHeight - height) / 2 + offsetY;
   const left = (viewportWidth - width) / 2 + offsetX;
   return [left, top];

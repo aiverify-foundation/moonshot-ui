@@ -38,7 +38,7 @@ function getWindowSubTitle(
 ) {
   switch (selectedBtnAction) {
     case PromptTemplatesExplorerButtonAction.VIEW_TEMPLATES:
-      return `Recipes`;
+      return `Prompt Templates`;
   }
 }
 

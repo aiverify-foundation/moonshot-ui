@@ -8,7 +8,7 @@ type RecipeItemCardProps = {
 function RecipeItemCard(props: RecipeItemCardProps) {
   const { recipe, className } = props;
   return (
-    <div className={`flex flex-col items-start py-2 w-full ${className}`}>
+    <div className={`flex flex-col items-start py-2 ${className}`}>
       <div className="flex items-center gap-2 pb-2">
         <Icon
           name={IconName.File}
