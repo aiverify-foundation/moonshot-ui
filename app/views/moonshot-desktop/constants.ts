@@ -9,6 +9,7 @@ export enum WindowIds {
   COOKBOOKS_PICKER = 'cookbooksPicker',
   RECIPES = 'recipes',
   RECIPES_PICKER = 'recipesPicker',
+  PROMPT_TEMPLATES = 'promptTemplates',
   STATUS = 'status',
 }
 
@@ -32,6 +33,7 @@ export const defaultWindowWidthHeight: {
   [WindowIds.LLM_ENDPOINTS_PICKER]: [600, 400],
   [WindowIds.RECIPES_PICKER]: [500, 460],
   [WindowIds.COOKBOOKS_PICKER]: [600, 400],
+  [WindowIds.PROMPT_TEMPLATES]: [1050, 650],
   [WindowIds.SAVED_SESSIONS]: [1550, 800],
   [WindowIds.CREATE_SESSION]: [820, 470], //this seems unused
   [WindowIds.BENCHMARKING]: [1550, 800],

@@ -30,6 +30,7 @@ import { BenchmarkFlowWindow } from '@views/benchmarking/benchmark-flow';
 import { CookbooksExplorer } from '@views/cookbook-management/cookbooks-explorer';
 import { SessionExplorerButtonAction } from '@views/manual-redteaming/components/explorer/top-buttons-bar';
 import { SessionsExplorer } from '@views/manual-redteaming/sessions-explorer';
+import { PromptTemplatesExplorer } from '@views/prompt-templates-management/prompt-templates-explorer';
 import { RecipesExplorer } from '@views/recipes-management/recipes-explorer';
 import { StatusPanel } from '@views/status-panel/status-panel';
 
@@ -74,6 +75,10 @@ export default function MoonshotDesktop() {
 
   function handleModelsExplorerCloseClick() {
     dispatch(removeOpenedWindowId(getWindowId(WindowIds.LLM_ENDPOINTS)));
+  }
+
+  function handlePromptTemplatesExplorerCloseClick() {
+    dispatch(removeOpenedWindowId(getWindowId(WindowIds.PROMPT_TEMPLATES)));
   }
 
   function handleStatusPanelCloseClick() {
@@ -121,7 +126,8 @@ export default function MoonshotDesktop() {
       WindowIds.SAVED_SESSIONS,
       WindowIds.CREATE_SESSION,
       WindowIds.BENCHMARKING,
-      WindowIds.STATUS
+      WindowIds.STATUS,
+      WindowIds.PROMPT_TEMPLATES
     );
   }, []);
 
@@ -180,6 +186,11 @@ export default function MoonshotDesktop() {
             <DesktopIcon
               name={IconName.Folder}
               label="Prompt Templates"
+              onClick={() =>
+                dispatch(
+                  addOpenedWindowId(getWindowId(WindowIds.PROMPT_TEMPLATES))
+                )
+              }
             />
             <DesktopIcon
               name={IconName.FolderForChatSessions}
@@ -234,6 +245,20 @@ export default function MoonshotDesktop() {
           initialSize={getWindowSizeById(windowsMap, WindowIds.LLM_ENDPOINTS)}
           onWindowChange={handleOnWindowChange}
           onCloseClick={handleModelsExplorerCloseClick}
+        />
+      ) : null}
+
+      {openedWindowIds.includes(getWindowId(WindowIds.PROMPT_TEMPLATES)) ? (
+        <PromptTemplatesExplorer
+          zIndex={Z_Index.Level_2}
+          windowId={getWindowId(WindowIds.PROMPT_TEMPLATES)}
+          initialXY={getWindowXYById(windowsMap, WindowIds.PROMPT_TEMPLATES)}
+          initialSize={getWindowSizeById(
+            windowsMap,
+            WindowIds.PROMPT_TEMPLATES
+          )}
+          onWindowChange={handleOnWindowChange}
+          onCloseClick={handlePromptTemplatesExplorerCloseClick}
         />
       ) : null}
 
