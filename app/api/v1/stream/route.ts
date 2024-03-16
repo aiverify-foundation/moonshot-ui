@@ -17,6 +17,8 @@ export async function GET() {
     console.log('Data received from webhook', {
       exec_id: data.exec_id,
       exec_name: data.exec_name,
+      curr_progress: data.curr_progress,
+      curr_status: data.curr_status,
     });
     try {
       if ('exec_id' in data) {
@@ -43,19 +45,8 @@ export async function GET() {
       appEventBus.removeAllListeners(AppEventTypes.SYSTEM_UPDATE);
       clearInterval(heartbeatInterval);
       console.error(
-        'Error writing heartbeat to SSE stream. This is expected if SSE connection was closed. Cleaning up SSE resources. Subsequent ResponseError (if any) can be ignored.'
+        'Error writing heartbeat to SSE stream. This is expected if SSE connection was closed. Cleaning up SSE resources.'
       );
-      (sseWriter as SystemEvents)
-        .complete({
-          data: { msg: 'SSE Closed' },
-          event: AppEventTypes.SYSTEM_UPDATE,
-        })
-        .catch((error) => {
-          console.error(
-            'Error completing stream. Cleaning up SSE resources.  Subsequent ResponseError (if any) can be ignored.',
-            error
-          );
-        });
     });
   }, 10000);
 
