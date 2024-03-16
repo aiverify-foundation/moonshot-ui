@@ -11,6 +11,39 @@
   --gap-width: 20px;
 }
 
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes fadeScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translate(-35px, -35px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translate(0px, 0px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
 @media (min-width: 1180px) {
   :root {
     --chatwindow-width: 500px;
@@ -93,27 +126,6 @@ button:disabled {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-400/60;
-}
-
-@keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-@keyframes fadeScaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translate(-35px, -35px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translate(0px, 0px);
-  }
 }
 
 .fadeScaleInAnimation {

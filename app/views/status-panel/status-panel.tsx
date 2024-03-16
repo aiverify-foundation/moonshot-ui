@@ -116,7 +116,7 @@ function StatusPanel(props: StatusPanelProps) {
             id={id}
             className="justify-start">
             <div className="w-full flex flex-col">
-              <div className="flex w-full justify-between mb-1">
+              <div className="flex w-full justify-between my-2">
                 <h4 className="mb-1">{status.exec_name}</h4>
                 {status.curr_status !== 'completed' ? (
                   <IconButton
@@ -136,9 +136,14 @@ function StatusPanel(props: StatusPanelProps) {
               </div>
               <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
                 <div
-                  className="bg-blue-600 text-xs font-medium text-blue-100 
-                  text-center leading-none h-1 rounded-full"
-                  style={{ width: `${status.curr_progress}%` }}
+                  className="bg-blue-600 leading-none h-1 rounded-full"
+                  style={{
+                    width: `${Math.max(status.curr_progress, 10)}%`,
+                    animation:
+                      status.curr_status !== 'completed'
+                        ? 'pulse 1.5s infinite ease-out'
+                        : 'none',
+                  }}
                 />
               </div>
             </div>
