@@ -16,6 +16,7 @@ import {
   addOpenedWindowId,
   removeOpenedWindowId,
   resetBenchmarkModels,
+  setActiveResult,
   updateWindows,
   useAppDispatch,
   useAppSelector,
@@ -238,6 +239,14 @@ export default function MoonshotDesktop() {
               onClick={() =>
                 dispatch(addOpenedWindowId(getWindowId(WindowIds.STATUS)))
               }
+            />
+            <DesktopIcon
+              name={IconName.Folder}
+              label="test"
+              onClick={() => {
+                dispatch(setActiveResult('cookbook-test1'));
+                dispatch(addOpenedWindowId(getWindowId(WindowIds.RESULT)));
+              }}
             />
           </div>
         </div>

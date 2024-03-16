@@ -8,3 +8,9 @@ export enum BenchmarkCollectionType {
   COOKBOOK = 'cookbook',
   BENCHMARK = 'benchmark',
 }
+
+export enum TestStatusProgress {
+  COMPLETED = 'completed',
+  RUNNING = 'running',
+  ERRORS = 'completed_with_errors',
+}

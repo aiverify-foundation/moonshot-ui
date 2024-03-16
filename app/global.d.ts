@@ -166,7 +166,7 @@ type ResultMetadata = {
 };
 
 type Results = {
-  cookbooks: Cookbook[];
+  cookbooks: ResultCookbook[];
 };
 
 type BenchmarkResultsFormat = {

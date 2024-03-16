@@ -5,7 +5,7 @@ import { Window } from '@/app/components/window';
 import { WindowList } from '@/app/components/window-list';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { useGetAllStatusQuery } from '@/app/services/status-api-service';
-import { AppEventTypes } from '@/app/types/enums';
+import { AppEventTypes, TestStatusProgress } from '@/app/types/enums';
 import {
   addOpenedWindowId,
   setActiveResult,
@@ -137,7 +137,7 @@ function StatusPanel(props: StatusPanelProps) {
             <div className="w-full flex flex-col">
               <div className="flex w-full justify-between my-2">
                 <h4 className="mb-1">{status.exec_name}</h4>
-                {status.curr_status !== 'completed' ? (
+                {status.curr_status == TestStatusProgress.RUNNING ? (
                   <IconButton
                     label="Cancel"
                     labelSize={11}
@@ -156,11 +156,15 @@ function StatusPanel(props: StatusPanelProps) {
               </div>
               <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
                 <div
-                  className="bg-blue-600 leading-none h-1 rounded-full"
+                  className={`${
+                    status.curr_status == TestStatusProgress.ERRORS
+                      ? 'bg-red-700'
+                      : 'bg-blue-600'
+                  } leading-none h-1 rounded-full`}
                   style={{
                     width: `${Math.max(status.curr_progress, 10)}%`,
                     animation:
-                      status.curr_status !== 'completed'
+                      status.curr_status == TestStatusProgress.RUNNING
                         ? 'pulse 1.5s infinite ease-out'
                         : 'none',
                   }}
