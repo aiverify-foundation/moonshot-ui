@@ -6,6 +6,13 @@ import { WindowList } from '@/app/components/window-list';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { useGetAllStatusQuery } from '@/app/services/status-api-service';
 import { AppEventTypes } from '@/app/types/enums';
+import {
+  addOpenedWindowId,
+  setActiveResult,
+  useAppDispatch,
+} from '@/lib/redux';
+import { getWindowId } from '@/app/lib/window-utils';
+import { WindowIds } from '../moonshot-desktop/constants';
 
 type StatusPanelProps = {
   windowId: string;
@@ -36,15 +43,20 @@ function StatusPanel(props: StatusPanelProps) {
     onCloseClick,
     onWindowChange,
   } = props;
+
   const [eventData, closeEventSource] = useEventSource<
     TestStatus,
     AppEventTypes
   >('/api/v1/stream', AppEventTypes.BENCHMARK_UPDATE);
+
   const {
     data = {},
     error,
     isLoading,
   } = useGetAllStatusQuery(undefined, { refetchOnMountOrArgChange: true });
+
+  const dispatch = useAppDispatch();
+
   const [statuses, setStatuses] = useState<TestStatuses>({});
   const statusTuples = Object.entries(statuses);
   const windowTitle = title || 'Test Status';
@@ -60,6 +72,13 @@ function StatusPanel(props: StatusPanelProps) {
   });
 
   const footerText = `${countRunning} running, ${countCompleted} completed / ${statusTuples.length} total`;
+
+  function handleResultsClick(execId: string) {
+    return () => {
+      dispatch(setActiveResult(execId));
+      dispatch(addOpenedWindowId(getWindowId(WindowIds.RESULT)));
+    };
+  }
 
   useEffect(() => {
     if (!statuses) return;
@@ -131,6 +150,7 @@ function StatusPanel(props: StatusPanelProps) {
                     labelSize={11}
                     iconSize={12}
                     iconName={IconName.Table}
+                    onClick={handleResultsClick(status.exec_id)}
                   />
                 )}
               </div>

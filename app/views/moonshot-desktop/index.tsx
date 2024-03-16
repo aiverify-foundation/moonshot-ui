@@ -22,6 +22,7 @@ import {
 } from '@/lib/redux';
 import { removeActiveSession } from '@/lib/redux/slices/activeSessionSlice';
 import { toggleDarkMode } from '@/lib/redux/slices/darkModeSlice';
+import { BenchmarksResult } from '../benchmarking/benchmark-report';
 import {
   WindowIds,
   Z_Index,
@@ -49,9 +50,11 @@ export default function MoonshotDesktop() {
   const [isDesktopIconsHidden, setIsDesktopIconsHidden] = useState(false);
   const dispatch = useAppDispatch();
   const resetWindows = useResetWindows();
+  const resetWindowsCentered = useResetWindows(false);
   const handleOnWindowChange = useWindowChange();
   const windowsMap = useAppSelector((state) => state.windows.map);
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
+  const activeResult = useAppSelector((state) => state.activeResult.value);
   const openedWindowIds = useAppSelector(
     (state) => state.windows.openedWindowIds
   );
@@ -91,6 +94,10 @@ export default function MoonshotDesktop() {
     dispatch(removeOpenedWindowId(getWindowId(WindowIds.STATUS)));
   }
 
+  function handleResultCloseClick() {
+    dispatch(removeOpenedWindowId(getWindowId(WindowIds.RESULT)));
+  }
+
   function handleManualRedteamingSessionCloseClick() {
     setIsChatSessionOpen(false);
     dispatch(removeActiveSession());
@@ -122,6 +129,7 @@ export default function MoonshotDesktop() {
 
   useEffect(() => {
     //set default window dimensions
+    //position will be centralized with small random offsets to left/top positions on screen
     resetWindows(
       WindowIds.COOKBOOKS,
       WindowIds.COOKBOOKS_PICKER,
@@ -131,8 +139,12 @@ export default function MoonshotDesktop() {
       WindowIds.LLM_ENDPOINTS_PICKER,
       WindowIds.SAVED_SESSIONS,
       WindowIds.BENCHMARKING,
-      WindowIds.PROMPT_TEMPLATES
+      WindowIds.PROMPT_TEMPLATES,
+      WindowIds.STATUS
     );
+
+    //position will be centralized without any offsets
+    resetWindowsCentered(WindowIds.RESULT);
 
     //custom position for status panel
     const [statusPanelX, statusPanelY] = calcTopRightWindowXY(
@@ -317,6 +329,19 @@ export default function MoonshotDesktop() {
           initialSize={getWindowSizeById(windowsMap, WindowIds.STATUS)}
           onWindowChange={handleOnWindowChange}
           onCloseClick={handleStatusPanelCloseClick}
+        />
+      ) : null}
+
+      {openedWindowIds.includes(getWindowId(WindowIds.RESULT)) &&
+      activeResult != undefined ? (
+        <BenchmarksResult
+          zIndex={Z_Index.Level_2}
+          benchmarkId={activeResult}
+          windowId={getWindowId(WindowIds.RESULT)}
+          initialXY={getWindowXYById(windowsMap, WindowIds.RESULT)}
+          initialSize={getWindowSizeById(windowsMap, WindowIds.RESULT)}
+          onWindowChange={handleOnWindowChange}
+          onCloseClick={handleResultCloseClick}
         />
       ) : null}
 

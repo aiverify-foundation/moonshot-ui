@@ -1,5 +1,5 @@
 import { AppEventTypes } from '@/app/types/enums';
-import { basePathStatusExecutor, hostURL } from '@api/constants';
+import { basePathBenchmarks, hostURL } from '@api/constants';
 import { appEventBus } from '@api/eventbus';
 
 export async function POST(request: Request) {
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-  const response = await fetch(`${hostURL}${basePathStatusExecutor}`, {
+  const response = await fetch(`${hostURL}${basePathBenchmarks}/status`, {
     method: 'GET',
   });
   return response;

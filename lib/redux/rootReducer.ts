@@ -7,6 +7,7 @@ import { recipeApi } from '@/app/services/recipe-api-service';
 import { sessionApi } from '@/app/services/session-api-service';
 import { statusApi } from '@/app/services/status-api-service';
 import {
+  activeResultSlice,
   activeSessionSlice,
   benchmarkCookbooksStateSlice,
   benchmarkModelsStateSlice,
@@ -19,6 +20,7 @@ import {
 export const reducer = {
   sessions: sessionsSlice.reducer,
   activeSession: activeSessionSlice.reducer,
+  activeResult: activeResultSlice.reducer,
   windows: windowsSlice.reducer,
   darkMode: darkModeSlice.reducer,
   chatLayoutMode: chatLayoutModeSlice.reducer,

@@ -35,6 +35,7 @@ import {
   Z_Index,
   moonshotDesktopDivID,
 } from '@views/moonshot-desktop/constants';
+import { BenchmarkCollectionType } from '@/app/types/enums';
 
 type BenchmarkFlowProps = {
   zIndex: number | 'auto';
@@ -108,7 +109,10 @@ function BenchmarkFlowWindow(props: BenchmarkFlowProps) {
   }
 
   async function createBenchmarkRun(data: BenchmarkRunFormValues) {
-    const response = await runBenchmark(data);
+    const response = await runBenchmark({
+      benchmarkRunInputData: data,
+      collectionType: BenchmarkCollectionType.COOKBOOK,
+    });
     if ('error' in response) {
       console.error(response.error);
       //TODO - create error visuals

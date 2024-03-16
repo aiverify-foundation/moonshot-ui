@@ -10,6 +10,7 @@ export enum WindowIds {
   RECIPES_PICKER = 'recipesPicker',
   PROMPT_TEMPLATES = 'promptTemplates',
   STATUS = 'status',
+  RESULT = 'result',
 }
 
 // Reserved z-indexes
@@ -36,6 +37,7 @@ export const defaultWindowWidthHeight: {
   [WindowIds.LLM_ENDPOINTS_PICKER]: [600, 400],
   [WindowIds.COOKBOOKS_PICKER]: [600, 400],
   [WindowIds.STATUS]: [280, 380],
+  [WindowIds.RESULT]: [1550, 800],
 };
 
 export const moonshotDesktopDivID = 'moonshotDesktop'; // This is a crucial div element id. There are react portals that port elements to this div

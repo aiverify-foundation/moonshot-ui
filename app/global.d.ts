@@ -118,3 +118,61 @@ type ZIndex = {
   FocusedWindow: 998;
   Top: 999;
 };
+
+/*
+ * Result format specific type below
+ */
+type ResultMetric = {
+  exact_str_match: number;
+  relax_str_match: number;
+};
+
+type ResultPromptTemplate = {
+  id: string;
+  metrics: ResultMetric[];
+};
+
+type ResultDataset = {
+  id: string;
+  prompt_templates: ResultPromptTemplate[];
+};
+
+type ResultModel = {
+  id: string;
+  datasets: ResultDataset[];
+};
+
+type ResultRecipe = {
+  id: string;
+  models: ResultModel[];
+};
+
+type ResultCookbook = {
+  id: string;
+  recipes: ResultRecipe[];
+};
+
+type ResultMetadata = {
+  id: string;
+  name: string;
+  start_time: string;
+  end_time: string;
+  duration: number;
+  recipes: string[];
+  cookbooks: string[];
+  endpoints: string[];
+  num_of_prompts: number;
+  status: string;
+};
+
+type Results = {
+  cookbooks: Cookbook[];
+};
+
+type BenchmarkResultsFormat = {
+  metadata: ResultMetadata;
+  results: Results;
+};
+/*
+ * End of Result format specific types
+ */

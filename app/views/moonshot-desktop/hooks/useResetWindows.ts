@@ -7,7 +7,7 @@ import {
 
 export type ResetWindowsFunction = (...ids: WindowIds[]) => void;
 
-export function useResetWindows(): ResetWindowsFunction {
+export function useResetWindows(randomizeOffsets = true): ResetWindowsFunction {
   const dispatch = useAppDispatch();
 
   return (...ids: WindowIds[]) => {
@@ -15,7 +15,12 @@ export function useResetWindows(): ResetWindowsFunction {
     const defaults: Record<string, WindowData> = {};
     ids.reduce((acc, id) => {
       acc[getWindowId(id)] = [
-        ...calcCentralizedWindowXY(...defaultWindowWidthHeight[id]),
+        ...calcCentralizedWindowXY(
+          ...defaultWindowWidthHeight[id],
+          0,
+          0,
+          randomizeOffsets
+        ),
         defaultWindowWidthHeight[id][0],
         defaultWindowWidthHeight[id][1],
         0,

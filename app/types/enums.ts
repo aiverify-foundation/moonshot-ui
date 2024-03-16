@@ -3,3 +3,8 @@ export enum AppEventTypes {
   BENCHMARK_UPDATE = 'benchmark-update',
   BENCHMARK_COMPLETE = 'benchmark-complete',
 }
+
+export enum BenchmarkCollectionType {
+  COOKBOOK = 'cookbook',
+  BENCHMARK = 'benchmark',
+}
