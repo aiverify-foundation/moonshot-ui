@@ -27,7 +27,7 @@ export const Z_Index: ZIndex = {
 export const defaultWindowWidthHeight: {
   [x: string]: [number, number];
 } = {
-  [WindowIds.LLM_ENDPOINTS]: [1050, 650],
+  [WindowIds.LLM_ENDPOINTS]: [1050, 825],
   [WindowIds.COOKBOOKS]: [1050, 650],
   [WindowIds.PROMPT_TEMPLATES]: [1050, 650],
   [WindowIds.RECIPES]: [1050, 650],

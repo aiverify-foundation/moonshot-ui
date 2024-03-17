@@ -173,6 +173,7 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
             }),
             placeholder: (baseStyles) => ({
               ...baseStyles,
+              fontSize: 14,
               lineHeight: 'normal',
               color: PLACEHOLDER_COLOR,
             }),

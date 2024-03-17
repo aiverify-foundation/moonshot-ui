@@ -14,20 +14,32 @@ const llmEndpointApi = createApi({
       LLMEndpointFormValues,
       LLMEndpointFormValues
     >({
-      query: (endpointDetails) => ({
-        url: 'api/v1/llm_endpoints',
-        method: 'POST',
-        body: endpointDetails,
-      }),
+      query: (endpointDetails) => {
+        let body: LLMEndpointFormValues;
+        try {
+          body =
+            endpointDetails.params != undefined
+              ? {
+                  ...endpointDetails,
+                  params: JSON.parse(endpointDetails.params),
+                }
+              : endpointDetails;
+        } catch (e) {
+          console.error(e);
+          body = endpointDetails;
+        }
+        return {
+          url: 'api/v1/llm_endpoints',
+          method: 'POST',
+          body,
+        };
+      },
     }),
   }),
 });
 
-const {
-  useGetLLMEndpointsQuery,
-  useCreateLLMEndpointMutation,
-  useLazyGetLLMEndpointsQuery,
-} = llmEndpointApi;
+const { useGetLLMEndpointsQuery, useCreateLLMEndpointMutation } =
+  llmEndpointApi;
 
 export {
   llmEndpointApi,

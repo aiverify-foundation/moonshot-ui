@@ -39,6 +39,10 @@ function LLMDetailsCard(props: LLMDetailsCardProps) {
           '*'.repeat(Math.floor(endpoint.token.length / 2))
         }
       />
+      <KeyValueDisplay
+        label="Additional Params"
+        value={JSON.stringify(endpoint.params, null, 2)}
+      />
     </div>
   );
 }

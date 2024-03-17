@@ -1,5 +1,6 @@
 /* Instruments */
 import { benchmarkRunApi } from '@/app/services/benchmark-api-service';
+import { connectorApi } from '@/app/services/connector-api-service';
 import { cookbookApi } from '@/app/services/cookbook-api-service';
 import { llmEndpointApi } from '@/app/services/llm-endpoint-api-service';
 import { promptTemplateApi } from '@/app/services/prompt-template-api-service';
@@ -33,4 +34,5 @@ export const reducer = {
   [recipeApi.reducerPath]: recipeApi.reducer,
   [benchmarkRunApi.reducerPath]: benchmarkRunApi.reducer,
   [statusApi.reducerPath]: statusApi.reducer,
+  [connectorApi.reducerPath]: connectorApi.reducer,
 };

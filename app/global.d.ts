@@ -53,7 +53,7 @@ type LLMEndpointFormValues = {
   token: string;
   max_calls_per_second: string;
   max_concurrency: string;
-  params?: Record<string, number | string>;
+  params?: string;
 };
 
 type Cookbook = {

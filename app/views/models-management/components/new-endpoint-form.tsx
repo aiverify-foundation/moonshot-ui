@@ -1,6 +1,22 @@
-import { Form, Formik } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import { SelectInput, SelectOption } from '@/app/components/selectInput';
+import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
+import { useGetAllConnectorsQuery } from '@/app/services/connector-api-service';
+
+const requiredFields = [
+  'name',
+  'token',
+  'connector_type',
+  'max_calls_per_second',
+  'max_concurrency',
+];
+
+function areRequiredFieldsFilled(values: LLMEndpointFormValues): boolean {
+  return requiredFields.every((field) =>
+    Boolean(values[field as keyof LLMEndpointFormValues])
+  );
+}
 
 const initialFormValues: LLMEndpointFormValues = {
   connector_type: '',
@@ -9,7 +25,7 @@ const initialFormValues: LLMEndpointFormValues = {
   token: '',
   max_calls_per_second: '10',
   max_concurrency: '1',
-  params: {},
+  params: '',
 };
 
 const maxConcurrencyOptions: SelectOption[] = Array.from(
@@ -28,14 +44,6 @@ const maxCallsPerSecondOptions: SelectOption[] = Array.from(
   })
 );
 
-const connectionTypeOptions: SelectOption[] = [
-  { value: 'hf-gpt2', label: 'hf-gpt2' },
-  { value: 'hf-llama2-13b-gptq', label: 'hf-llama2-13b-gptq' },
-  { value: 'claude2', label: 'calude2' },
-  { value: 'openai-gpt35', label: 'openai-gpt35' },
-  { value: 'openai-gpt4', label: 'openai-gpt4' },
-];
-
 type NewModelEndpointFormProps = {
   className?: string;
   onFormSubmit: (data: LLMEndpointFormValues) => void;
@@ -43,20 +51,43 @@ type NewModelEndpointFormProps = {
 
 const NewModelEndpointForm: React.FC<NewModelEndpointFormProps> = (props) => {
   const { className, onFormSubmit } = props;
-  async function handleFormSubmit(values: LLMEndpointFormValues) {
-    onFormSubmit(values);
+  const { data, isLoading, error, refetch } = useGetAllConnectorsQuery();
+  async function handleFormSubmit(
+    values: LLMEndpointFormValues,
+    { setFieldError }: FormikHelpers<LLMEndpointFormValues>
+  ) {
+    let isValid = true;
+    if (values.params && values.params.trim() !== '') {
+      try {
+        values.params = JSON.parse(values.params);
+      } catch (e) {
+        console.error(e);
+        isValid = false;
+        setFieldError('params', 'Invalid JSON format');
+      }
+    }
+    if (isValid) {
+      onFormSubmit(values);
+    }
   }
-  return (
+  const connectionTypeOptions: SelectOption[] =
+    data?.map((connector) => ({
+      value: connector,
+      label: connector,
+    })) || [];
+
+  return isLoading ? null : (
     <div className={`pl-4 w-full h-full ${className}`}>
       <Formik<LLMEndpointFormValues>
         initialValues={initialFormValues}
         onSubmit={handleFormSubmit}>
         {(formProps) => {
+          const submitEnabled = areRequiredFieldsFilled(formProps.values);
           return (
             <Form>
               <TextInput
                 name="name"
-                label="Name"
+                label="Name *"
                 onChange={formProps.handleChange}
                 value={formProps.values.name}
                 onBlur={formProps.handleBlur}
@@ -65,18 +96,19 @@ const NewModelEndpointForm: React.FC<NewModelEndpointFormProps> = (props) => {
                     ? formProps.errors.name
                     : undefined
                 }
-                placeholder=""
+                placeholder="A name for the model"
               />
               <SelectInput
-                label="Connection Type"
-                name="type"
+                label="Connection Type *"
+                name="connector_type"
                 options={connectionTypeOptions}
                 onSyntheticChange={formProps.handleChange}
                 value={formProps.values.connector_type}
+                placeholder="Select the connector type"
               />
               <TextInput
                 name="uri"
-                label="URI"
+                label="URI *"
                 onChange={formProps.handleChange}
                 value={formProps.values.uri}
                 onBlur={formProps.handleBlur}
@@ -85,11 +117,11 @@ const NewModelEndpointForm: React.FC<NewModelEndpointFormProps> = (props) => {
                     ? formProps.errors.uri
                     : undefined
                 }
-                placeholder=""
+                placeholder="URI of the remote model endpoint"
               />
               <TextInput
                 name="token"
-                label="Token"
+                label="Token *"
                 onChange={formProps.handleChange}
                 value={formProps.values.token}
                 onBlur={formProps.handleBlur}
@@ -98,27 +130,41 @@ const NewModelEndpointForm: React.FC<NewModelEndpointFormProps> = (props) => {
                     ? formProps.errors.token
                     : undefined
                 }
-                placeholder=""
+                placeholder="Access token for the remote model endpoint"
               />
               <SelectInput
-                label="Max Calls Per Second"
-                name="maxCallsPerSecond"
+                label="Max Calls Per Second *"
+                name="max_calls_per_second"
                 options={maxCallsPerSecondOptions}
                 onSyntheticChange={formProps.handleChange}
-                value={formProps.values.max_concurrency}
+                value={formProps.values.max_calls_per_second}
               />
               <SelectInput
-                label="Max Concurrency"
-                name="maxConcurrency"
+                label="Max Concurrency *"
+                name="max_concurrency"
                 options={maxConcurrencyOptions}
                 onSyntheticChange={formProps.handleChange}
                 value={formProps.values.max_concurrency}
               />
-              <div className="bottom-3 text-right">
+              <TextArea
+                label="Other Parameters"
+                name="params"
+                onChange={formProps.handleChange}
+                value={formProps.values.params}
+                error={
+                  formProps.touched.params && formProps.errors.params
+                    ? formProps.errors.params
+                    : undefined
+                }
+                placeholder='Additional params normally in JSON format. Example: { "param1": "value1", "param2": "value2" }'
+              />
+              <div className="mt-10 flex justify-between">
+                <div className="text-sm">* Required</div>
                 <button
-                  className="btn-primary"
+                  disabled={!submitEnabled}
+                  className="flex btn-primary items-center gap-2 btn-large rounded"
                   type="submit">
-                  Submit
+                  <div>Save Model</div>
                 </button>
               </div>
             </Form>
