@@ -110,7 +110,7 @@ function BenchmarksResult(props: cookbooksExplorerProps) {
                         {rec.models.map((model) => (
                           <div
                             key={model.id}
-                            className="basis-[50%] min-w-[530px]">
+                            className="basis-[50%] min-w-[530px] grow">
                             <div className="flex flex-col h-full">
                               {model.datasets.map((dat, idx) => (
                                 <div

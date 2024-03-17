@@ -35,6 +35,7 @@ const sessionApi = createApi({
     }),
     getSession: builder.query<Session, Session>({
       query: ({ session_id }) => ({ url: `api/v1/sessions/${session_id}` }),
+      keepUnusedDataFor: 0,
       transformResponse: (response: { session: Session }) => response.session,
     }),
     sendPrompt: builder.mutation<ChatHistory, SendPromptQueryParams>({

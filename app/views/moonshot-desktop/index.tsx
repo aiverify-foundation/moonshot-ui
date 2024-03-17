@@ -235,19 +235,19 @@ export default function MoonshotDesktop() {
             />
             <DesktopIcon
               name={IconName.Folder}
-              label="test"
+              label="Status"
               onClick={() =>
                 dispatch(addOpenedWindowId(getWindowId(WindowIds.STATUS)))
               }
             />
-            <DesktopIcon
+            {/* <DesktopIcon
               name={IconName.Folder}
               label="test"
               onClick={() => {
                 dispatch(setActiveResult('cookbook-test1'));
                 dispatch(addOpenedWindowId(getWindowId(WindowIds.RESULT)));
               }}
-            />
+            /> */}
           </div>
         </div>
       ) : null}
