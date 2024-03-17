@@ -36,9 +36,6 @@ function TopButtonsBar(props: TopButtonsBarProps) {
                   ? '#425d85'
                   : ''
               }
-              disabled={
-                activeButton === CookbooksExplorerButtonAction.VIEW_COOKBOOKS
-              }
               iconName={IconName.List}
               onClick={() =>
                 onButtonClick(CookbooksExplorerButtonAction.VIEW_COOKBOOKS)
@@ -59,9 +56,6 @@ function TopButtonsBar(props: TopButtonsBarProps) {
                 activeButton === CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK
                   ? '#425d85'
                   : ''
-              }
-              disabled={
-                activeButton === CookbooksExplorerButtonAction.ADD_NEW_COOKBOOK
               }
               iconName={IconName.Plus}
               onClick={() =>

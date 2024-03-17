@@ -36,7 +36,6 @@ function TopButtonsBar(props: TopButtonsBarProps) {
                   ? '#425d85'
                   : ''
               }
-              disabled={activeButton === ModelsExplorerButtonAction.VIEW_MODELS}
               iconName={IconName.List}
               onClick={() =>
                 onButtonClick(ModelsExplorerButtonAction.VIEW_MODELS)
@@ -58,9 +57,6 @@ function TopButtonsBar(props: TopButtonsBarProps) {
                   ? '#425d85'
                   : ''
               }
-              disabled={
-                activeButton === ModelsExplorerButtonAction.ADD_NEW_MODEL
-              }
               iconName={IconName.Plus}
               onClick={() =>
                 onButtonClick(ModelsExplorerButtonAction.ADD_NEW_MODEL)
@@ -81,9 +77,6 @@ function TopButtonsBar(props: TopButtonsBarProps) {
                 activeButton === ModelsExplorerButtonAction.SELECT_MODELS
                   ? '#425d85'
                   : ''
-              }
-              disabled={
-                activeButton === ModelsExplorerButtonAction.SELECT_MODELS
               }
               iconName={IconName.CheckedSquare}
               onClick={() =>

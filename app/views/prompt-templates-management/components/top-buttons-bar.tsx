@@ -34,10 +34,6 @@ function TopButtonsBar(props: TopButtonsBarProps) {
                   ? '#425d85'
                   : 'transparent'
               }
-              disabled={
-                activeButton ===
-                PromptTemplatesExplorerButtonAction.VIEW_TEMPLATES
-              }
               iconName={IconName.List}
               onClick={() =>
                 onButtonClick(

@@ -35,9 +35,6 @@ function TopButtonsBar(props: TopButtonsBarProps) {
                   ? '#425d85'
                   : 'transparent'
               }
-              disabled={
-                activeButton === RecipesExplorerButtonAction.VIEW_RECIPES
-              }
               iconName={IconName.List}
               onClick={() =>
                 onButtonClick(RecipesExplorerButtonAction.VIEW_RECIPES)
@@ -78,9 +75,6 @@ function TopButtonsBar(props: TopButtonsBarProps) {
                 activeButton === RecipesExplorerButtonAction.SELECT_RECIPES
                   ? '#425d85'
                   : 'transparent'
-              }
-              disabled={
-                activeButton === RecipesExplorerButtonAction.SELECT_RECIPES
               }
               iconName={IconName.CheckedSquare}
               label="Select Recipes for Testing"

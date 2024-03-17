@@ -36,7 +36,6 @@ function TopButtonsBar(props: TopButtonsBarProps) {
                     : ''
                 }
                 label="List Sessions"
-                disabled={activeButton === SessionExplorerButtonAction.VIEW}
                 iconName={IconName.List}
                 onClick={() => onButtonClick(SessionExplorerButtonAction.VIEW)}
               />
@@ -57,7 +56,6 @@ function TopButtonsBar(props: TopButtonsBarProps) {
                     ? '#425d85'
                     : ''
                 }
-                disabled={activeButton === SessionExplorerButtonAction.ADD}
                 iconName={IconName.Plus}
                 label="New Session"
                 onClick={() => onButtonClick(SessionExplorerButtonAction.ADD)}

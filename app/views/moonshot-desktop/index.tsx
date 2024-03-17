@@ -17,13 +17,13 @@ import {
   removeOpenedWindowId,
   resetBenchmarkModels,
   setActiveResult,
+  updateFocusedWindowId,
   updateWindows,
   useAppDispatch,
   useAppSelector,
 } from '@/lib/redux';
 import { removeActiveSession } from '@/lib/redux/slices/activeSessionSlice';
 import { toggleDarkMode } from '@/lib/redux/slices/darkModeSlice';
-import { BenchmarksResult } from '../benchmarking/benchmark-report';
 import {
   WindowIds,
   Z_Index,
@@ -35,6 +35,7 @@ import { DesktopIcon } from '@components/desktop-icon';
 import Menu from '@components/menu';
 import TaskBar from '@components/taskbar';
 import { BenchmarkFlowWindow } from '@views/benchmarking/benchmark-flow';
+import { BenchmarksResult } from '@views/benchmarking/benchmark-report';
 import { CookbooksExplorer } from '@views/cookbook-management/cookbooks-explorer';
 import { SessionExplorerButtonAction } from '@views/manual-redteaming/components/explorer/top-buttons-bar';
 import { SessionsExplorer } from '@views/manual-redteaming/sessions-explorer';
@@ -76,6 +77,7 @@ export default function MoonshotDesktop() {
 
   function handleModelEndpointIconClick() {
     dispatch(addOpenedWindowId(getWindowId(WindowIds.LLM_ENDPOINTS)));
+    dispatch(updateFocusedWindowId(getWindowId(WindowIds.LLM_ENDPOINTS)));
   }
 
   function handleBenchmarkFlowCloseClick() {
@@ -207,12 +209,20 @@ export default function MoonshotDesktop() {
             <DesktopIcon
               name={IconName.Folder}
               label="Cookbooks"
-              onClick={() => setIsCookbooksExplorerOpen(true)}
+              onClick={() => {
+                setIsCookbooksExplorerOpen(true);
+                dispatch(
+                  updateFocusedWindowId(getWindowId(WindowIds.COOKBOOKS))
+                );
+              }}
             />
             <DesktopIcon
               name={IconName.Folder}
               label="Recipes"
-              onClick={() => setIsRecipesExplorerOpen(true)}
+              onClick={() => {
+                setIsRecipesExplorerOpen(true);
+                dispatch(updateFocusedWindowId(getWindowId(WindowIds.RECIPES)));
+              }}
             />
             <DesktopIcon
               name={IconName.Folder}
@@ -222,23 +232,32 @@ export default function MoonshotDesktop() {
             <DesktopIcon
               name={IconName.Folder}
               label="Prompt Templates"
-              onClick={() =>
+              onClick={() => {
                 dispatch(
                   addOpenedWindowId(getWindowId(WindowIds.PROMPT_TEMPLATES))
-                )
-              }
+                );
+                dispatch(
+                  updateFocusedWindowId(getWindowId(WindowIds.PROMPT_TEMPLATES))
+                );
+              }}
             />
             <DesktopIcon
               name={IconName.FolderForChatSessions}
               label="Saved Sessions"
-              onClick={() => setIsShowWindowSavedSession(true)}
+              onClick={() => {
+                setIsShowWindowSavedSession(true);
+                dispatch(
+                  updateFocusedWindowId(getWindowId(WindowIds.SAVED_SESSIONS))
+                );
+              }}
             />
             <DesktopIcon
               name={IconName.Folder}
               label="Status"
-              onClick={() =>
-                dispatch(addOpenedWindowId(getWindowId(WindowIds.STATUS)))
-              }
+              onClick={() => {
+                dispatch(addOpenedWindowId(getWindowId(WindowIds.STATUS)));
+                dispatch(updateFocusedWindowId(getWindowId(WindowIds.STATUS)));
+              }}
             />
             {/* <DesktopIcon
               name={IconName.Folder}

@@ -9,6 +9,7 @@ import { AppEventTypes, TestStatusProgress } from '@/app/types/enums';
 import {
   addOpenedWindowId,
   setActiveResult,
+  updateFocusedWindowId,
   useAppDispatch,
 } from '@/lib/redux';
 import { getWindowId } from '@/app/lib/window-utils';
@@ -76,6 +77,7 @@ function StatusPanel(props: StatusPanelProps) {
   function handleResultsClick(execId: string) {
     return () => {
       dispatch(setActiveResult(execId));
+      dispatch(updateFocusedWindowId(getWindowId(WindowIds.RESULT)));
       dispatch(addOpenedWindowId(getWindowId(WindowIds.RESULT)));
     };
   }
