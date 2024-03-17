@@ -34,6 +34,10 @@ export const windowsSlice = createSlice({
         (id) => id !== action.payload
       );
     },
+    clearWindows: (state) => {
+      state.focusedWindowId = null;
+      state.openedWindowIds = [];
+    },
   },
 });
 
@@ -42,4 +46,5 @@ export const {
   updateFocusedWindowId,
   addOpenedWindowId,
   removeOpenedWindowId,
+  clearWindows,
 } = windowsSlice.actions;

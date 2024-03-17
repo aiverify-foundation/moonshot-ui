@@ -14,6 +14,7 @@ import { ManualRedTeaming } from '@/app/views/manual-redteaming/red-teaming-sess
 import { EndpointsExplorer } from '@/app/views/models-management/endpoints-explorer';
 import {
   addOpenedWindowId,
+  clearWindows,
   removeOpenedWindowId,
   resetBenchmarkModels,
   setActiveResult,
@@ -72,6 +73,7 @@ export default function MoonshotDesktop() {
       };
 
   function handleResumeSessionClick() {
+    dispatch(clearWindows());
     dispatch(addOpenedWindowId(getWindowId(WindowIds.RED_TEAMING_SESSION)));
   }
 
