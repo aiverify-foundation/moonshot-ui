@@ -78,9 +78,6 @@ function TopButtonsBar(props: TopButtonsBarProps) {
                   ? '#425d85'
                   : ''
               }
-              disabled={
-                activeButton === CookbooksExplorerButtonAction.SELECT_COOKBOOK
-              }
               iconName={IconName.CheckedSquare}
               onClick={() =>
                 onButtonClick(CookbooksExplorerButtonAction.SELECT_COOKBOOK)
