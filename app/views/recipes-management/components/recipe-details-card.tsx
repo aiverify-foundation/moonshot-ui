@@ -17,6 +17,10 @@ function RecipeDetailsCard(props: RecipeDetailsCardProps) {
         value={recipe.name}
       />
       <KeyValueDisplay
+        label="Tags"
+        value={recipe.tags.map((dt) => dt).join(', ')}
+      />
+      <KeyValueDisplay
         label="Description"
         value={recipe.description}
       />

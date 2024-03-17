@@ -244,7 +244,7 @@ export default function MoonshotDesktop() {
               }}
             />
             <DesktopIcon
-              name={IconName.FolderForChatSessions}
+              name={IconName.Folder}
               label="Saved Sessions"
               onClick={() => {
                 setIsShowWindowSavedSession(true);

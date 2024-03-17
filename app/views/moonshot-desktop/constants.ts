@@ -30,7 +30,7 @@ export const defaultWindowWidthHeight: {
   [WindowIds.LLM_ENDPOINTS]: [1050, 825],
   [WindowIds.COOKBOOKS]: [1050, 650],
   [WindowIds.PROMPT_TEMPLATES]: [1050, 650],
-  [WindowIds.RECIPES]: [1050, 650],
+  [WindowIds.RECIPES]: [1050, 660],
   [WindowIds.SAVED_SESSIONS]: [1550, 800],
   [WindowIds.BENCHMARKING]: [1550, 800],
   [WindowIds.RECIPES_PICKER]: [500, 460],

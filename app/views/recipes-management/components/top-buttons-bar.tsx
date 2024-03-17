@@ -63,7 +63,7 @@ function TopButtonsBar(props: TopButtonsBarProps) {
               iconSize={11}
             />
           </Tooltip> */}
-          <Tooltip
+          {/* <Tooltip
             delay={100}
             position={TooltipPosition.top}
             offsetTop={-10}
@@ -82,7 +82,7 @@ function TopButtonsBar(props: TopButtonsBarProps) {
                 onButtonClick(RecipesExplorerButtonAction.SELECT_RECIPES)
               }
             />
-          </Tooltip>
+          </Tooltip> */}
         </div>
       </div>
     </WindowTopBarButtonGroup>
