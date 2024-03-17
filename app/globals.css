@@ -113,7 +113,7 @@ button:disabled {
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  @apply w-2 rounded-md;
+  @apply w-2 h-2 rounded-md;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {

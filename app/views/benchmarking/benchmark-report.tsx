@@ -38,11 +38,17 @@ function BenchmarksResult(props: cookbooksExplorerProps) {
     benchmarkId: benchmarkId,
   });
 
+  let dedupedEndpoints: string[] = [];
+  if (data) {
+    dedupedEndpoints = Array.from(new Set(data.metadata.endpoints));
+  }
+
   return isLoading || !data ? null : (
     <Window
       id={windowId}
       resizeable={true}
       initialXY={initialXY}
+      name={`Results for ${benchmarkId}`}
       zIndex={zIndex}
       initialWindowSize={initialSize}
       onCloseClick={onCloseClick}
@@ -77,10 +83,10 @@ function BenchmarksResult(props: cookbooksExplorerProps) {
           <div
             className="grow flex items-center divide-x 
             divide-neutral-400 bg-fuchsia-1000/80 text-white">
-            {data.metadata.endpoints.map((ep) => (
+            {dedupedEndpoints.map((ep, idx) => (
               <div
-                key={ep}
-                className="w-[49.7%] h-full text-sm flex flex-col">
+                key={`${ep}-${idx}`}
+                className="grow h-full text-sm flex flex-col min-w-[530px]">
                 {' '}
                 {/* need the weird percentage value to align with the bottom of the table having scrollbar */}
                 <div className="text-lg pl-2 underline pb-1">
@@ -110,7 +116,7 @@ function BenchmarksResult(props: cookbooksExplorerProps) {
             ))}
           </div>
         </div>
-        <div className="overflow-x-hidden overflow-y-auto custom-scrollbar divide-y divide-neutral-400">
+        <div className="overflow-x-auto overflow-y-auto custom-scrollbar divide-y divide-neutral-400">
           {data.results.cookbooks.map((book, idx) => (
             <div
               key={book.id}
@@ -122,7 +128,7 @@ function BenchmarksResult(props: cookbooksExplorerProps) {
                   {book.id}
                 </div>
                 <div
-                  className="grow basis-[85%] flex flex-col"
+                  className="grow basis-[85%] m-w-[555px] flex flex-col"
                   style={{ width: `${Col2Pixel}px`, minWidth: 150 }}>
                   {book.recipes.map((rec, idx) => (
                     <div
