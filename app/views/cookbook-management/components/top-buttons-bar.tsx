@@ -63,7 +63,7 @@ function TopButtonsBar(props: TopButtonsBarProps) {
               }
             />
           </Tooltip>
-          <Tooltip
+          {/* <Tooltip
             delay={100}
             position={TooltipPosition.top}
             offsetTop={-10}
@@ -82,8 +82,8 @@ function TopButtonsBar(props: TopButtonsBarProps) {
               onClick={() =>
                 onButtonClick(CookbooksExplorerButtonAction.SELECT_COOKBOOK)
               }
-            />
-          </Tooltip>
+            /> 
+          </Tooltip>*/}
         </div>
       </div>
     </WindowTopBarButtonGroup>
