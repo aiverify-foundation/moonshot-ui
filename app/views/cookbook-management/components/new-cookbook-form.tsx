@@ -1,10 +1,8 @@
-import { Form, Formik } from 'formik';
-import { SelectInput, SelectOption } from '@/app/components/selectInput';
+import { Form, Formik, FormikHelpers } from 'formik';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
-import { useCreateCookbookMutation } from '@/app/services/cookbook-api-service';
-import { useAppDispatch } from '@/lib/redux';
-import { useRecipeList } from '@views/recipes-management/hooks/useRecipeList';
+import { useEffect } from 'react';
+import { useFormik } from 'formik';
 
 const initialFormValues: CookbookFormValues = {
   name: '',
@@ -12,73 +10,82 @@ const initialFormValues: CookbookFormValues = {
   recipes: [],
 };
 
-type NewCookbookFormProps = {
+const requiredFields = ['name', 'description', 'recipes'];
+
+function areRequiredFieldsFilled(values: CookbookFormValues): boolean {
+  if (values.recipes.length === 0) return false;
+  return requiredFields.every((field) =>
+    Boolean(values[field as keyof CookbookFormValues])
+  );
+}
+
+type NewCookbookformik = {
   selectedRecipes: Recipe[];
   className?: string;
   onFormSubmit: (data: CookbookFormValues) => void;
 };
 
-const NewCookbookForm: React.FC<NewCookbookFormProps> = (props) => {
+const NewCookbookForm: React.FC<NewCookbookformik> = (props) => {
   const { selectedRecipes, className, onFormSubmit } = props;
+  const formik = useFormik({
+    initialValues: initialFormValues,
+    onSubmit: (values) => {
+      handleFormSubmit(values);
+    },
+  });
+  const submitEnabled =
+    areRequiredFieldsFilled(formik.values) && selectedRecipes.length;
 
   async function handleFormSubmit(values: CookbookFormValues) {
-    values.recipes = selectedRecipes.map((recipe) => recipe.id);
     if (onFormSubmit) onFormSubmit(values);
   }
 
+  useEffect(() => {
+    formik.setFieldValue(
+      'recipes',
+      selectedRecipes.map((recipe) => recipe.id)
+    );
+  }, [selectedRecipes]);
+
   return (
     <div className={`pl-4 w-full h-full ${className}`}>
-      <Formik<CookbookFormValues>
-        initialValues={initialFormValues}
-        onSubmit={handleFormSubmit}>
-        {(formProps) => {
-          return (
-            <Form>
-              <TextInput
-                name="name"
-                label="Name"
-                onChange={formProps.handleChange}
-                value={formProps.values.name}
-                onBlur={formProps.handleBlur}
-                error={
-                  formProps.touched.name && formProps.errors.name
-                    ? formProps.errors.name
-                    : undefined
-                }
-                placeholder=""
-              />
+      <TextInput
+        name="name"
+        label="Name *"
+        onChange={formik.handleChange}
+        value={formik.values.name}
+        onBlur={formik.handleBlur}
+        error={
+          formik.touched.name && formik.errors.name
+            ? formik.errors.name
+            : undefined
+        }
+        placeholder=""
+      />
 
-              <TextArea
-                name="description"
-                label="Description"
-                onChange={formProps.handleChange}
-                value={formProps.values.description}
-                error={
-                  formProps.touched.description && formProps.errors.description
-                    ? formProps.errors.description
-                    : undefined
-                }
-                placeholder=""
-              />
+      <TextArea
+        name="description"
+        label="Description *"
+        onChange={formik.handleChange}
+        value={formik.values.description}
+        error={
+          formik.touched.description && formik.errors.description
+            ? formik.errors.description
+            : undefined
+        }
+        placeholder=""
+      />
 
-              {/* <SelectInput
-                label="Max Calls Per Second"
-                name="maxCallsPerSecond"
-                options={maxCallsPerSecondOptions}
-                onSyntheticChange={formProps.handleChange}
-                value={formProps.values.maxCallsPerSecond}
-              /> */}
-              <div className="bottom-3 text-right">
-                <button
-                  className="btn-primary btn-large rounded"
-                  type="submit">
-                  Save Cookbook
-                </button>
-              </div>
-            </Form>
-          );
-        }}
-      </Formik>
+      <div className="mt-10 flex justify-between">
+        <div className="text-sm">* Required</div>
+        <button
+          disabled={!submitEnabled}
+          className="flex btn-primary items-center gap-2 btn-large rounded"
+          type="button"
+          onClick={() => formik.handleSubmit()}>
+          <div>Save Cookbook</div>
+        </button>
+      </div>
     </div>
   );
 };
