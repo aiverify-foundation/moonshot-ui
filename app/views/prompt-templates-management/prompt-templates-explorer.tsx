@@ -152,56 +152,65 @@ function PromptTemplatesExplorer(props: PromptTemplatesExplorerProps) {
           />
         )
       }>
-      {isTwoPanel ? (
-        <TwoPanel initialDividerPosition={initialDividerPosition}>
-          <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
-            {displayedTemplateList
-              ? displayedTemplateList.map((template) => (
-                  <WindowList.Item
-                    key={template.name}
-                    id={template.name}
-                    className="justify-start"
-                    onClick={handleListItemClick(template.name)}
-                    selected={
-                      selectedTemplate
-                        ? selectedTemplate.name === template.name
-                        : false
-                    }>
-                    <TemplateItemCard template={template} />
-                  </WindowList.Item>
-                ))
-              : null}
-          </WindowList>
-          {selectedBtnAction ===
-          PromptTemplatesExplorerButtonAction.VIEW_TEMPLATES ? (
-            <div className="flex flex-col h-full">
-              <div className="h-full bg-white">
-                <WindowInfoPanel title="PromptTemplate Details">
-                  <div className="h-full">
-                    {selectedTemplate ? (
-                      <div className="flex flex-col gap-6">
-                        <TemplateDetailsCard template={selectedTemplate} />
-                      </div>
-                    ) : null}
-                  </div>
-                </WindowInfoPanel>
-              </div>
-            </div>
-          ) : null}
-        </TwoPanel>
+      {isLoading ? (
+        <div className="ring">
+          Loading
+          <span />
+        </div>
       ) : (
-        <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
-          {displayedTemplateList
-            ? displayedTemplateList.map((template) => (
-                <WindowList.Item
-                  key={template.name}
-                  id={template.name}
-                  onClick={handleListItemClick(template.name)}>
-                  <TemplateItemCard template={template} />
-                </WindowList.Item>
-              ))
-            : null}
-        </WindowList>
+        <>
+          {isTwoPanel ? (
+            <TwoPanel initialDividerPosition={initialDividerPosition}>
+              <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
+                {displayedTemplateList
+                  ? displayedTemplateList.map((template) => (
+                      <WindowList.Item
+                        key={template.name}
+                        id={template.name}
+                        className="justify-start"
+                        onClick={handleListItemClick(template.name)}
+                        selected={
+                          selectedTemplate
+                            ? selectedTemplate.name === template.name
+                            : false
+                        }>
+                        <TemplateItemCard template={template} />
+                      </WindowList.Item>
+                    ))
+                  : null}
+              </WindowList>
+              {selectedBtnAction ===
+              PromptTemplatesExplorerButtonAction.VIEW_TEMPLATES ? (
+                <div className="flex flex-col h-full">
+                  <div className="h-full bg-white">
+                    <WindowInfoPanel title="PromptTemplate Details">
+                      <div className="h-full">
+                        {selectedTemplate ? (
+                          <div className="flex flex-col gap-6">
+                            <TemplateDetailsCard template={selectedTemplate} />
+                          </div>
+                        ) : null}
+                      </div>
+                    </WindowInfoPanel>
+                  </div>
+                </div>
+              ) : null}
+            </TwoPanel>
+          ) : (
+            <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
+              {displayedTemplateList
+                ? displayedTemplateList.map((template) => (
+                    <WindowList.Item
+                      key={template.name}
+                      id={template.name}
+                      onClick={handleListItemClick(template.name)}>
+                      <TemplateItemCard template={template} />
+                    </WindowList.Item>
+                  ))
+                : null}
+            </WindowList>
+          )}
+        </>
       )}
     </Window>
   );

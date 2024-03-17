@@ -113,7 +113,7 @@ function StatusPanel(props: StatusPanelProps) {
     };
   }, []);
 
-  return isLoading || !statuses ? null : (
+  return (
     <Window
       id={windowId}
       resizeable={true}
@@ -130,52 +130,61 @@ function StatusPanel(props: StatusPanelProps) {
         paddingLeft: 0,
         paddingRight: 0,
       }}>
-      <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
-        {statusTuples.map(([id, status]) => (
-          <WindowList.Item
-            key={id}
-            id={id}
-            className="justify-start">
-            <div className="w-full flex flex-col">
-              <div className="flex w-full justify-between my-2">
-                <h4 className="mb-1">{status.exec_name}</h4>
-                {status.curr_status == TestStatusProgress.RUNNING ? (
-                  <IconButton
-                    label="Cancel"
-                    labelSize={11}
-                    iconSize={12}
-                    iconName={IconName.Close}
-                  />
-                ) : (
-                  <IconButton
-                    label="Results"
-                    labelSize={11}
-                    iconSize={12}
-                    iconName={IconName.Table}
-                    onClick={handleResultsClick(status.exec_id)}
-                  />
-                )}
-              </div>
-              <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
-                <div
-                  className={`${
-                    status.curr_status == TestStatusProgress.ERRORS
-                      ? 'bg-red-700'
-                      : 'bg-blue-600'
-                  } leading-none h-1 rounded-full`}
-                  style={{
-                    width: `${Math.max(status.curr_progress, 10)}%`,
-                    animation:
-                      status.curr_status == TestStatusProgress.RUNNING
-                        ? 'pulse 1.5s infinite ease-out'
-                        : 'none',
-                  }}
-                />
-              </div>
-            </div>
-          </WindowList.Item>
-        ))}
-      </WindowList>
+      {isLoading ? (
+        <div className="ring">
+          Loading
+          <span />
+        </div>
+      ) : (
+        <>
+          <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
+            {statusTuples.map(([id, status]) => (
+              <WindowList.Item
+                key={id}
+                id={id}
+                className="justify-start">
+                <div className="w-full flex flex-col">
+                  <div className="flex w-full justify-between my-2">
+                    <h4 className="mb-1">{status.exec_name}</h4>
+                    {status.curr_status == TestStatusProgress.RUNNING ? (
+                      <IconButton
+                        label="Cancel"
+                        labelSize={11}
+                        iconSize={12}
+                        iconName={IconName.Close}
+                      />
+                    ) : (
+                      <IconButton
+                        label="Results"
+                        labelSize={11}
+                        iconSize={12}
+                        iconName={IconName.Table}
+                        onClick={handleResultsClick(status.exec_id)}
+                      />
+                    )}
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                    <div
+                      className={`${
+                        status.curr_status == TestStatusProgress.ERRORS
+                          ? 'bg-red-700'
+                          : 'bg-blue-600'
+                      } leading-none h-1 rounded-full`}
+                      style={{
+                        width: `${Math.max(status.curr_progress, 10)}%`,
+                        animation:
+                          status.curr_status == TestStatusProgress.RUNNING
+                            ? 'pulse 1.5s infinite ease-out'
+                            : 'none',
+                      }}
+                    />
+                  </div>
+                </div>
+              </WindowList.Item>
+            ))}
+          </WindowList>
+        </>
+      )}
     </Window>
   );
 }

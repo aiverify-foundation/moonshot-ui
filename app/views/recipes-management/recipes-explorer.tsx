@@ -3,8 +3,6 @@ import TwoPanel from '@/app/components/two-panel';
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
-import { useCreateRecipeMutation } from '@/app/services/recipe-api-service';
-import { NewRecipeForm, RecipeFormValues } from './components/new-recipe-form';
 import { RecipeDetailsCard } from './components/recipe-details-card';
 import { RecipeItemCard } from './components/recipe-item-card';
 import { TaglabelsBox } from './components/tag-labels-box';
@@ -170,7 +168,7 @@ function RecipesExplorer(props: RecipesExplorerProps) {
     }
   }, [returnedRecipe]);
 
-  return isLoading ? null : (
+  return (
     <Window
       id={windowId}
       resizeable={true}
@@ -191,91 +189,101 @@ function RecipesExplorer(props: RecipesExplorerProps) {
           />
         )
       }>
-      {isTwoPanel ? (
-        <TwoPanel initialDividerPosition={initialDividerPosition}>
-          <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
-            {displayedRecipesList
-              ? displayedRecipesList.map((recipe) => (
-                  <WindowList.Item
-                    key={recipe.id}
-                    id={recipe.name}
-                    className="justify-start"
-                    enableCheckbox={
-                      selectedBtnAction ===
-                      RecipesExplorerButtonAction.SELECT_RECIPES
-                    }
-                    checked={
-                      selectedRecipeList.findIndex(
-                        (epoint) => epoint.name === recipe.name
-                      ) > -1
-                    }
-                    onClick={handleListItemClick(recipe.name)}
-                    onHover={
-                      selectedBtnAction ===
-                      RecipesExplorerButtonAction.SELECT_RECIPES
-                        ? handleListItemHover(recipe.name)
-                        : undefined
-                    }
-                    selected={
-                      selectedRecipe
-                        ? selectedRecipe.name === recipe.name
-                        : false
-                    }>
-                    <RecipeItemCard
-                      recipe={recipe}
-                      className="w-[94%]"
-                    />
-                  </WindowList.Item>
-                ))
-              : null}
-          </WindowList>
-          {selectedBtnAction === RecipesExplorerButtonAction.SELECT_RECIPES ||
-          selectedBtnAction === RecipesExplorerButtonAction.VIEW_RECIPES ? (
-            <div className="flex flex-col h-full">
-              <div
-                className={`${
-                  selectedBtnAction ===
-                    RecipesExplorerButtonAction.SELECT_RECIPES &&
-                  selectedRecipeList.length
-                    ? 'h-[60%]'
-                    : 'h-full'
-                } bg-white`}>
-                <WindowInfoPanel title="Recipe Details">
-                  <div className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar mr-[2px]">
-                    {selectedRecipe ? (
-                      <div className="flex flex-col gap-6">
-                        <RecipeDetailsCard recipe={selectedRecipe} />
-                      </div>
-                    ) : null}
-                  </div>
-                </WindowInfoPanel>
-              </div>
+      {isLoading ? (
+        <div className="ring">
+          Loading
+          <span />
+        </div>
+      ) : (
+        <>
+          {isTwoPanel ? (
+            <TwoPanel initialDividerPosition={initialDividerPosition}>
+              <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
+                {displayedRecipesList
+                  ? displayedRecipesList.map((recipe) => (
+                      <WindowList.Item
+                        key={recipe.id}
+                        id={recipe.name}
+                        className="justify-start"
+                        enableCheckbox={
+                          selectedBtnAction ===
+                          RecipesExplorerButtonAction.SELECT_RECIPES
+                        }
+                        checked={
+                          selectedRecipeList.findIndex(
+                            (epoint) => epoint.name === recipe.name
+                          ) > -1
+                        }
+                        onClick={handleListItemClick(recipe.name)}
+                        onHover={
+                          selectedBtnAction ===
+                          RecipesExplorerButtonAction.SELECT_RECIPES
+                            ? handleListItemHover(recipe.name)
+                            : undefined
+                        }
+                        selected={
+                          selectedRecipe
+                            ? selectedRecipe.name === recipe.name
+                            : false
+                        }>
+                        <RecipeItemCard
+                          recipe={recipe}
+                          className="w-[94%]"
+                        />
+                      </WindowList.Item>
+                    ))
+                  : null}
+              </WindowList>
               {selectedBtnAction ===
-                RecipesExplorerButtonAction.SELECT_RECIPES &&
-              selectedRecipeList.length ? (
-                <div className="h-[60%] flex items-center pt-4">
-                  <TaglabelsBox
-                    recipes={selectedRecipeList}
-                    onTaglabelIconClick={handleListItemClick}
-                  />
+                RecipesExplorerButtonAction.SELECT_RECIPES ||
+              selectedBtnAction === RecipesExplorerButtonAction.VIEW_RECIPES ? (
+                <div className="flex flex-col h-full">
+                  <div
+                    className={`${
+                      selectedBtnAction ===
+                        RecipesExplorerButtonAction.SELECT_RECIPES &&
+                      selectedRecipeList.length
+                        ? 'h-[60%]'
+                        : 'h-full'
+                    } bg-white`}>
+                    <WindowInfoPanel title="Recipe Details">
+                      <div className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar mr-[2px]">
+                        {selectedRecipe ? (
+                          <div className="flex flex-col gap-6">
+                            <RecipeDetailsCard recipe={selectedRecipe} />
+                          </div>
+                        ) : null}
+                      </div>
+                    </WindowInfoPanel>
+                  </div>
+                  {selectedBtnAction ===
+                    RecipesExplorerButtonAction.SELECT_RECIPES &&
+                  selectedRecipeList.length ? (
+                    <div className="h-[60%] flex items-center pt-4">
+                      <TaglabelsBox
+                        recipes={selectedRecipeList}
+                        onTaglabelIconClick={handleListItemClick}
+                      />
+                    </div>
+                  ) : null}
                 </div>
               ) : null}
-            </div>
-          ) : null}
-        </TwoPanel>
-      ) : (
-        <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
-          {displayedRecipesList
-            ? displayedRecipesList.map((recipe) => (
-                <WindowList.Item
-                  key={recipe.id}
-                  id={recipe.name}
-                  onClick={handleListItemClick(recipe.name)}>
-                  <RecipeItemCard recipe={recipe} />
-                </WindowList.Item>
-              ))
-            : null}
-        </WindowList>
+            </TwoPanel>
+          ) : (
+            <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
+              {displayedRecipesList
+                ? displayedRecipesList.map((recipe) => (
+                    <WindowList.Item
+                      key={recipe.id}
+                      id={recipe.name}
+                      onClick={handleListItemClick(recipe.name)}>
+                      <RecipeItemCard recipe={recipe} />
+                    </WindowList.Item>
+                  ))
+                : null}
+            </WindowList>
+          )}
+        </>
       )}
     </Window>
   );

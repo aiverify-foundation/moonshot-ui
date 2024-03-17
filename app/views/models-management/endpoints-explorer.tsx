@@ -252,7 +252,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     }
   }, [removedEndpoints, isLoading]);
 
-  return isLoading ? null : (
+  return (
     <Window
       id={windowId}
       resizeable={true}
@@ -273,125 +273,137 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
           />
         )
       }>
-      {isTwoPanel ? (
-        <TwoPanel initialDividerPosition={initialDividerPosition}>
-          <WindowList
-            disableMouseInteraction={
-              selectedBtnAction === ModelsExplorerButtonAction.ADD_NEW_MODEL
-                ? true
-                : false
-            }
-            styles={{ backgroundColor: '#FFFFFF' }}>
-            {displayedEndpointsList
-              ? displayedEndpointsList.map((endpoint) => (
-                  <WindowList.Item
-                    key={endpoint.name}
-                    id={endpoint.name}
-                    className="justify-start"
-                    enableCheckbox={
+      {isLoading ? (
+        <div className="ring">
+          Loading
+          <span />
+        </div>
+      ) : (
+        <>
+          {isTwoPanel ? (
+            <TwoPanel initialDividerPosition={initialDividerPosition}>
+              <WindowList
+                disableMouseInteraction={
+                  selectedBtnAction === ModelsExplorerButtonAction.ADD_NEW_MODEL
+                    ? true
+                    : false
+                }
+                styles={{ backgroundColor: '#FFFFFF' }}>
+                {displayedEndpointsList
+                  ? displayedEndpointsList.map((endpoint) => (
+                      <WindowList.Item
+                        key={endpoint.name}
+                        id={endpoint.name}
+                        className="justify-start"
+                        enableCheckbox={
+                          selectedBtnAction ===
+                          ModelsExplorerButtonAction.SELECT_MODELS
+                        }
+                        checked={
+                          selectedEndpointsList.findIndex(
+                            (epoint) => epoint.name === endpoint.name
+                          ) > -1
+                        }
+                        onClick={handleListItemClick(endpoint.name)}
+                        onHover={
+                          selectedBtnAction ===
+                          ModelsExplorerButtonAction.SELECT_MODELS
+                            ? handleListItemHover(endpoint.name)
+                            : undefined
+                        }
+                        selected={
+                          selectedEndpoint
+                            ? selectedEndpoint.name === endpoint.name
+                            : false
+                        }>
+                        <LLMItemCard endpoint={endpoint} />
+                      </WindowList.Item>
+                    ))
+                  : null}
+              </WindowList>
+              {selectedBtnAction ===
+              ModelsExplorerButtonAction.ADD_NEW_MODEL ? (
+                <div className="flex flex-1 justify-center h-full">
+                  <NewModelEndpointForm
+                    onFormSubmit={submitNewModel}
+                    className="pt-5"
+                  />
+                </div>
+              ) : selectedBtnAction ===
+                  ModelsExplorerButtonAction.SELECT_MODELS ||
+                selectedBtnAction === ModelsExplorerButtonAction.VIEW_MODELS ? (
+                <div className="flex flex-col h-full">
+                  <div
+                    className={`${
                       selectedBtnAction ===
-                      ModelsExplorerButtonAction.SELECT_MODELS
-                    }
-                    checked={
-                      selectedEndpointsList.findIndex(
-                        (epoint) => epoint.name === endpoint.name
-                      ) > -1
-                    }
-                    onClick={handleListItemClick(endpoint.name)}
-                    onHover={
-                      selectedBtnAction ===
-                      ModelsExplorerButtonAction.SELECT_MODELS
-                        ? handleListItemHover(endpoint.name)
-                        : undefined
-                    }
-                    selected={
-                      selectedEndpoint
-                        ? selectedEndpoint.name === endpoint.name
-                        : false
-                    }>
-                    <LLMItemCard endpoint={endpoint} />
-                  </WindowList.Item>
-                ))
-              : null}
-          </WindowList>
-          {selectedBtnAction === ModelsExplorerButtonAction.ADD_NEW_MODEL ? (
-            <div className="flex flex-1 justify-center h-full">
-              <NewModelEndpointForm
-                onFormSubmit={submitNewModel}
-                className="pt-5"
-              />
-            </div>
-          ) : selectedBtnAction === ModelsExplorerButtonAction.SELECT_MODELS ||
-            selectedBtnAction === ModelsExplorerButtonAction.VIEW_MODELS ? (
-            <div className="flex flex-col h-full">
-              <div
-                className={`${
-                  selectedBtnAction ===
-                    ModelsExplorerButtonAction.SELECT_MODELS &&
-                  selectedEndpointsList.length
-                    ? 'h-[60%]'
-                    : 'h-full'
-                } bg-white`}>
-                <WindowInfoPanel title="Model Details">
-                  <div className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar mr-[2px]">
-                    {selectedEndpoint ? (
-                      <div className="flex flex-col gap-6">
-                        <LLMDetailsCard endpoint={selectedEndpoint} />
+                        ModelsExplorerButtonAction.SELECT_MODELS &&
+                      selectedEndpointsList.length
+                        ? 'h-[60%]'
+                        : 'h-full'
+                    } bg-white`}>
+                    <WindowInfoPanel title="Model Details">
+                      <div className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar mr-[2px]">
+                        {selectedEndpoint ? (
+                          <div className="flex flex-col gap-6">
+                            <LLMDetailsCard endpoint={selectedEndpoint} />
+                          </div>
+                        ) : null}
                       </div>
-                    ) : null}
+                    </WindowInfoPanel>
                   </div>
-                </WindowInfoPanel>
-              </div>
-              {selectedBtnAction === ModelsExplorerButtonAction.SELECT_MODELS &&
-              selectedEndpointsList.length ? (
-                <div className="h-[60%] flex flex-col items-center pt-4">
-                  <>
-                    <TaglabelsBox
-                      models={selectedEndpointsList}
-                      onTaglabelIconClick={handleListItemClick}
-                    />
-                    <div className="flex gap-4 bottom-3 text-right">
-                      <button
-                        className="flex btn-primary items-center gap-2 btn-large rounded"
-                        type="button"
-                        onClick={handleBenchmarkBtnClick}>
-                        <div>Benchmark</div>
-                        <Icon
-                          name={IconName.ArrowRight}
-                          lightModeColor="#FFFFFF"
-                          size={14}
+                  {selectedBtnAction ===
+                    ModelsExplorerButtonAction.SELECT_MODELS &&
+                  selectedEndpointsList.length ? (
+                    <div className="h-[60%] flex flex-col items-center pt-4">
+                      <>
+                        <TaglabelsBox
+                          models={selectedEndpointsList}
+                          onTaglabelIconClick={handleListItemClick}
                         />
-                      </button>
-                      <button
-                        className="flex btn-primary items-center gap-2 btn-large rounded"
-                        type="button">
-                        <div>Red Team</div>
-                        <Icon
-                          name={IconName.ArrowRight}
-                          lightModeColor="#FFFFFF"
-                          size={14}
-                        />
-                      </button>
+                        <div className="flex gap-4 bottom-3 text-right">
+                          <button
+                            className="flex btn-primary items-center gap-2 btn-large rounded"
+                            type="button"
+                            onClick={handleBenchmarkBtnClick}>
+                            <div>Benchmark</div>
+                            <Icon
+                              name={IconName.ArrowRight}
+                              lightModeColor="#FFFFFF"
+                              size={14}
+                            />
+                          </button>
+                          <button
+                            className="flex btn-primary items-center gap-2 btn-large rounded"
+                            type="button">
+                            <div>Red Team</div>
+                            <Icon
+                              name={IconName.ArrowRight}
+                              lightModeColor="#FFFFFF"
+                              size={14}
+                            />
+                          </button>
+                        </div>
+                      </>
                     </div>
-                  </>
+                  ) : null}
                 </div>
               ) : null}
-            </div>
-          ) : null}
-        </TwoPanel>
-      ) : (
-        <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
-          {displayedEndpointsList
-            ? displayedEndpointsList.map((endpoint) => (
-                <WindowList.Item
-                  key={endpoint.name}
-                  id={endpoint.name}
-                  onClick={handleListItemClick(endpoint.name)}>
-                  <LLMItemCard endpoint={endpoint} />
-                </WindowList.Item>
-              ))
-            : null}
-        </WindowList>
+            </TwoPanel>
+          ) : (
+            <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
+              {displayedEndpointsList
+                ? displayedEndpointsList.map((endpoint) => (
+                    <WindowList.Item
+                      key={endpoint.name}
+                      id={endpoint.name}
+                      onClick={handleListItemClick(endpoint.name)}>
+                      <LLMItemCard endpoint={endpoint} />
+                    </WindowList.Item>
+                  ))
+                : null}
+            </WindowList>
+          )}
+        </>
       )}
     </Window>
   );

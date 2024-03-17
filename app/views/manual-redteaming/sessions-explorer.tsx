@@ -115,7 +115,7 @@ function SessionsExplorer(props: SessionsExplorerProps) {
     setInitialWindowXY(initialXY);
   }, [initialXY]);
 
-  return isLoading ? null : (
+  return (
     <Window
       id={windowId}
       resizeable
@@ -140,67 +140,76 @@ function SessionsExplorer(props: SessionsExplorerProps) {
           />
         )
       }>
-      {selectedBtnAction === SessionExplorerButtonAction.ADD ? (
-        <NewSessionFlow
-          initialDividerPosition={initialDividerPosition}
-          onNewSession={() => null}
-        />
-      ) : null}
-      {selectedBtnAction === SessionExplorerButtonAction.VIEW ? (
+      {isLoading ? (
+        <div className="ring">
+          Loading
+          <span />
+        </div>
+      ) : (
         <>
-          {isTwoPanel ? (
-            <TwoPanel initialDividerPosition={initialDividerPosition}>
-              <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
-                {sessions
-                  ? sessions.map((session) => (
-                      <WindowList.Item
-                        key={session.session_id}
-                        id={session.session_id}
-                        onClick={handleListItemClick(session.session_id)}
-                        selected={
-                          selectedSession?.session_id === session.session_id
-                        }>
-                        <SessionItemCard session={session} />
-                      </WindowList.Item>
-                    ))
-                  : null}
-              </WindowList>
-              <div className="flex flex-col gap-6 bg-white h-full">
-                <WindowInfoPanel
-                  title="Session Info"
-                  description={selectedSession.description}>
-                  <div className="h-full">
-                    {selectedSession ? (
-                      <div className="flex flex-col gap-6">
-                        <SessionDetailsCard
-                          session={selectedSession}
-                          onResumeSessionClick={handleResumeSessionClick}
-                        />
+          {selectedBtnAction === SessionExplorerButtonAction.ADD ? (
+            <NewSessionFlow
+              initialDividerPosition={initialDividerPosition}
+              onNewSession={() => null}
+            />
+          ) : null}
+          {selectedBtnAction === SessionExplorerButtonAction.VIEW ? (
+            <>
+              {isTwoPanel ? (
+                <TwoPanel initialDividerPosition={initialDividerPosition}>
+                  <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
+                    {sessions
+                      ? sessions.map((session) => (
+                          <WindowList.Item
+                            key={session.session_id}
+                            id={session.session_id}
+                            onClick={handleListItemClick(session.session_id)}
+                            selected={
+                              selectedSession?.session_id === session.session_id
+                            }>
+                            <SessionItemCard session={session} />
+                          </WindowList.Item>
+                        ))
+                      : null}
+                  </WindowList>
+                  <div className="flex flex-col gap-6 bg-white h-full">
+                    <WindowInfoPanel
+                      title="Session Info"
+                      description={selectedSession.description}>
+                      <div className="h-full">
+                        {selectedSession ? (
+                          <div className="flex flex-col gap-6">
+                            <SessionDetailsCard
+                              session={selectedSession}
+                              onResumeSessionClick={handleResumeSessionClick}
+                            />
+                          </div>
+                        ) : null}
                       </div>
-                    ) : null}
+                    </WindowInfoPanel>
                   </div>
-                </WindowInfoPanel>
-              </div>
-            </TwoPanel>
-          ) : (
-            <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
-              {sessions
-                ? sessions.map((session) => (
-                    <WindowList.Item
-                      key={session.session_id}
-                      id={session.session_id}
-                      onClick={handleListItemClick(session.session_id)}
-                      selected={
-                        selectedSession?.session_id === session.session_id
-                      }>
-                      <SessionItemCard session={session} />
-                    </WindowList.Item>
-                  ))
-                : null}
-            </WindowList>
-          )}
+                </TwoPanel>
+              ) : (
+                <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
+                  {sessions
+                    ? sessions.map((session) => (
+                        <WindowList.Item
+                          key={session.session_id}
+                          id={session.session_id}
+                          onClick={handleListItemClick(session.session_id)}
+                          selected={
+                            selectedSession?.session_id === session.session_id
+                          }>
+                          <SessionItemCard session={session} />
+                        </WindowList.Item>
+                      ))
+                    : null}
+                </WindowList>
+              )}
+            </>
+          ) : null}
         </>
-      ) : null}
+      )}
     </Window>
   );
 }
