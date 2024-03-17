@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { Window } from '@/app/components/window';
 import { useGetBenchmarksResultQuery } from '@/app/services/benchmark-api-service';
+import { Icon, IconName } from '@/app/components/IconSVG';
 
 type cookbooksExplorerProps = {
   windowId: string;
@@ -79,14 +80,29 @@ function BenchmarksResult(props: cookbooksExplorerProps) {
             {data.metadata.endpoints.map((ep) => (
               <div
                 key={ep}
-                className="grow h-full text-sm flex flex-col">
-                <div className="text-lg">{ep}</div>
-                <div className="flex flex-1 divide-x divide-gray-400 text-xs">
-                  <div className="basis-[150px] COL-3">Dataset</div>
+                className="w-[49.7%] h-full text-sm flex flex-col">
+                {' '}
+                {/* need the weird percentage value to align with the bottom of the table having scrollbar */}
+                <div className="text-lg pl-2 underline pb-1">
+                  <div className="flex gap-2">
+                    <Icon
+                      name={IconName.SolidBox}
+                      size={12}
+                      lightModeColor="white"
+                    />
+                    <div>{ep}</div>
+                  </div>
+                </div>
+                <div className="flex flex-1 divide-x divide-gray-400 text-xs bg-fuchsia-1000/30">
+                  <div className="shrink-0 basis-[150px] pl-2 pt-1 COL-3">
+                    Dataset
+                  </div>
                   <div className="grow h-full flex flex-col divide-y divide-gray-400">
-                    <div className="grow flex divide-x divide-gray-400">
-                      <div className="basis-[50%]">Prompt Template</div>
-                      <div className="basis-[50%]">Metrics</div>
+                    <div className="grow flex divide-x divide-gray-400 justify-center">
+                      <div className="basis-[50%] pl-2 pt-1">
+                        Prompt Template
+                      </div>
+                      <div className="grow pl-2 pt-1">Metrics</div>
                     </div>
                   </div>
                 </div>
@@ -98,7 +114,7 @@ function BenchmarksResult(props: cookbooksExplorerProps) {
           {data.results.cookbooks.map((book, idx) => (
             <div
               key={book.id}
-              className={`text-gray-950 ${idx % 2 === 0 ? 'bg-slate-400' : 'bg-slate-300'}`}>
+              className={`text-gray-950 border-b-2 border-black ${idx % 2 === 0 ? 'bg-slate-400' : 'bg-slate-300'}`}>
               <div className="flex divide-x divide-gray-400">
                 <div
                   className={`COL-1 shrink-0 px-3`}
@@ -139,7 +155,7 @@ function BenchmarksResult(props: cookbooksExplorerProps) {
                                         : 'bg-slate-100/80'
                                       : ''
                                   }`}>
-                                  <div className="basis-[150px] COL-3">
+                                  <div className="basis-[150px] pl-2 COL-3">
                                     {dat.id}
                                   </div>
                                   <div className="grow h-full flex flex-col divide-y divide-gray-400">
@@ -147,7 +163,7 @@ function BenchmarksResult(props: cookbooksExplorerProps) {
                                       <div
                                         key={pt.id}
                                         className="grow flex divide-x divide-gray-400">
-                                        <div className="basis-[50%]">
+                                        <div className="basis-[50%] pl-2">
                                           {pt.id}
                                         </div>
                                         <div className="grow">
@@ -159,7 +175,7 @@ function BenchmarksResult(props: cookbooksExplorerProps) {
                                                 ([metricName, metricValue]) => (
                                                   <div
                                                     key={metricName}
-                                                    className="flex gap-2">
+                                                    className="flex gap-2 pl-2">
                                                     <div>{metricName}:</div>
                                                     <div className="text-blue-700 font-bold">
                                                       {metricValue}
