@@ -46,63 +46,67 @@ function BenchmarksResult(props: cookbooksExplorerProps) {
       footerHeight={30}
       contentAreaStyles={{ backgroundColor: 'transparent' }}>
       <div className="flex flex-col bg-white w-full h-full">
-        <div className="flex bg-fuchsia-1000 divide-x divide-neutral-400 py-2">
-          <div className="flex items-center basis-[15%] COL-1">Cookbook</div>
-          <div className="flex items-center basis-[15%] COL-1">Recipe</div>
-          <div className="flex items-center flex-1 min-w-[600px]">
-            Benchmarking
+        <div className="flex bg-fuchsia-1000 divide-x divide-neutral-400 pt-2 h-20 ">
+          <div className="flex items-center basis-[15%] pl-2 text-lg COL-1">
+            Cookbook
           </div>
+          <div className="flex items-center basis-[180px] pl-2 text-lg COL-1">
+            Recipe
+          </div>
+          <div className="flex items-center text-lg pl-2">Benchmarking</div>
         </div>
         <div
-          id="resultTableHeader"
-          className="flex gap-1 text-gray-950 w-full bg-white h-[40px]">
-          <div className="basis-[15%] COL-1" />
-          <div className="basis-[15%] COL-1" />
-          <div className="flex flex-1 min-w-[600px] items-center bg-fuchsia-900">
+          id="endpointNameHeader"
+          className="flex text-gray-950 w-full bg-white h-[40px] divide-x divide-neutral-400">
+          <div className="basis-[15%] COL-1 bg-fuchsia-1000" />
+          <div className="basis-[180px] COL-1 bg-fuchsia-1000" />
+          <div
+            className="grow flex items-center divide-x 
+            divide-neutral-400 bg-fuchsia-1000 text-white">
             {data.metadata.endpoints.map((ep) => (
               <div
                 key={ep}
-                className="grow">
+                className="grow pl-2 h-full text-sm">
                 {ep}
               </div>
             ))}
           </div>
         </div>
-        <div
-          className="overflow-x-hidden overflow-y-auto
-      custom-scrollbar mr-[2px]">
-          {data.results.cookbooks.map((book) => (
+        <div className="overflow-x-hidden overflow-y-auto custom-scrollbar divide-y divide-neutral-400">
+          {data.results.cookbooks.map((book, idx) => (
             <div
               key={book.id}
-              className="m-1 py-6 text-gray-950">
+              className={`text-gray-950 ${idx % 2 === 0 ? 'bg-slate-300' : 'bg-slate-200'}`}>
               <div className="flex divide-x divide-gray-400">
-                <div className="flex px-3 shrink-0 basis-[15%] COL-1">
+                <div className="shrink-0 px-3 basis-[15%] min-w-[200px] COL-1">
                   {book.id}
                 </div>
-                <div className="flex flex-col flex-1">
-                  {book.recipes.map((rec) => (
+                <div className="grow basis-[85%] flex flex-col">
+                  {book.recipes.map((rec, idx) => (
                     <div
                       key={rec.id}
-                      className="flex px-3 py-4">
-                      <div className="flex-initial basis-[15%] COL-2">
+                      className={`flex min-h-[75px] divide-x divide-gray-400 ${idx % 2 === 0 ? 'bg-gray-200' : 'bg-gray-100'}`}>
+                      <div className="flex-initial basis-[180px] px-2 COL-2">
                         {rec.id}
                       </div>
-                      <div className="flex-1 flex min-w-[600px] COL-3">
+                      <div className="grow flex divide-x divide-gray-400">
                         {rec.models.map((model) => (
                           <div
                             key={model.id}
-                            className="grow flex flex-col px-3">
-                            <div className="flex flex-col">
+                            className="grow px-3">
+                            <div className="flex flex-col h-full">
                               {model.datasets.map((dat) => (
                                 <div
                                   key={dat.id}
-                                  className="flex flex-initial gap-2 divide-x divide-gray-400">
-                                  <div className="basis-[50%]">{dat.id}</div>
-                                  <div className="grow flex flex-col gap-3 pl-3">
+                                  className="flex flex-1 divide-x divide-gray-400">
+                                  <div className="basis-[150px] COL-3">
+                                    {dat.id}
+                                  </div>
+                                  <div className="grow flex flex-col COL-4">
                                     {dat.prompt_templates.map((pt) => (
                                       <div
                                         key={pt.id}
-                                        className="flex flex-col gap-1">
+                                        className="flex flex-col">
                                         <div>{pt.id}</div>
                                         {pt.metrics.map((mt, idx) => (
                                           <div
