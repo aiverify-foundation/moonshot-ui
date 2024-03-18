@@ -9,6 +9,7 @@ const promptTemplateApi = createApi({
   endpoints: (builder) => ({
     getPromptTemplates: builder.query<PromptTemplate[], void>({
       query: () => 'api/v1/prompt_templates',
+      keepUnusedDataFor: 0
     }),
   }),
 });
