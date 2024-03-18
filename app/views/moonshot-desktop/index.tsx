@@ -265,7 +265,7 @@ export default function MoonshotDesktop() {
             />
             <DesktopIcon
               name={IconName.Folder}
-              label="Saved Sessions"
+              label="Red Teaming Sessions"
               onClick={() => {
                 dispatch(
                   addOpenedWindowId(getWindowId(WindowIds.SAVED_SESSIONS))
@@ -276,8 +276,8 @@ export default function MoonshotDesktop() {
               }}
             />
             <DesktopIcon
-              name={IconName.Folder}
-              label="Status"
+              name={IconName.List}
+              label="Benchmark Status"
               onClick={() => {
                 dispatch(addOpenedWindowId(getWindowId(WindowIds.STATUS)));
                 dispatch(updateFocusedWindowId(getWindowId(WindowIds.STATUS)));

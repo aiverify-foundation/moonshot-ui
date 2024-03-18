@@ -8,6 +8,7 @@ import {
   RunCookbookIcon,
 } from './IconSVG';
 import { SolidBoxIcon } from './IconSVG/icons/box-icon';
+import { ListIcon } from './IconSVG/icons/list-icon';
 
 type DesktopIconProps = {
   name: IconName;
@@ -67,6 +68,15 @@ function DesktopIcon(props: DesktopIconProps) {
       iconToRender = (
         <SolidBoxIcon
           fillColor={isDarkMode ? '#FFFFFF' : '#702f8a'}
+          width={40}
+          height={40}
+        />
+      );
+      break;
+    case IconName.List:
+      iconToRender = (
+        <ListIcon
+          outlineColor={isDarkMode ? '#FFFFFF' : '#702f8a'}
           width={40}
           height={40}
         />
