@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { basePathCookbooks, hostURL } from '@/app/api/constants';
+export const dynamic = 'force-dynamic';
 
 export async function PUT(request: NextRequest) {
   let cookbook_id: string;

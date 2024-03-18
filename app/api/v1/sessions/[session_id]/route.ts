@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 
 const hostURL = process.env.MOONSHOT_API_URL || 'http://localhost:5000';
 const basePath = '/v1/sessions';
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   let session_id: string;
