@@ -16,6 +16,7 @@ import {
   addOpenedWindowId,
   clearWindows,
   removeOpenedWindowId,
+  resetBenchmarkCookbooks,
   resetBenchmarkModels,
   setActiveResult,
   updateFocusedWindowId,
@@ -85,6 +86,7 @@ export default function MoonshotDesktop() {
   function handleBenchmarkFlowCloseClick() {
     dispatch(removeOpenedWindowId(getWindowId(WindowIds.BENCHMARKING)));
     dispatch(resetBenchmarkModels());
+    dispatch(resetBenchmarkCookbooks());
   }
 
   function handleModelsExplorerCloseClick() {
