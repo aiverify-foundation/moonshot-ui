@@ -10,32 +10,14 @@ const promptTemplateApi = createApi({
     getPromptTemplates: builder.query<PromptTemplate[], void>({
       query: () => 'api/v1/prompt_templates',
     }),
-    usePromptTemplate: builder.mutation<PromptTemplate, string>({
-      query: (templateName) => ({
-        url: `api/v1/prompt_templates/${templateName}`,
-        method: 'PUT',
-      }),
-    }),
-    unusePromptTemplate: builder.mutation<void, string>({
-      query: (templateName) => ({
-        url: `api/v1/prompt_templates/${templateName}`,
-        method: 'DELETE',
-      }),
-    }),
   }),
 });
 
-const {
-  useUsePromptTemplateMutation,
-  useLazyGetPromptTemplatesQuery,
-  useGetPromptTemplatesQuery,
-  useUnusePromptTemplateMutation,
-} = promptTemplateApi;
+const { useLazyGetPromptTemplatesQuery, useGetPromptTemplatesQuery } =
+  promptTemplateApi;
 
 export {
   promptTemplateApi,
   useLazyGetPromptTemplatesQuery,
-  useUsePromptTemplateMutation,
   useGetPromptTemplatesQuery,
-  useUnusePromptTemplateMutation,
 };

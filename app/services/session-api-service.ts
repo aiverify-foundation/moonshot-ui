@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { proxyPathSessions } from './constants';
 
 const host = process.env.MOONSHOT_API_URL || 'http://localhost';
 const port = parseInt(process.env.PORT || '3000', 10);
@@ -28,7 +29,7 @@ const sessionApi = createApi({
         prompt_template,
         context_strategy,
       }) => ({
-        url: 'api/v1/sessions',
+        url: proxyPathSessions,
         method: 'POST',
         body: {
           name,
@@ -41,12 +42,32 @@ const sessionApi = createApi({
       transformResponse: (response: { session: Session }) => response.session,
     }),
     getAllSessions: builder.query<Session[], void>({
-      query: () => ({ url: 'api/v1/sessions' }),
+      query: () => ({ url: proxyPathSessions }),
     }),
     getSession: builder.query<Session, Session>({
-      query: ({ session_id }) => ({ url: `api/v1/sessions/${session_id}` }),
+      query: ({ session_id }) => ({
+        url: `${proxyPathSessions}/${session_id}`,
+      }),
       keepUnusedDataFor: 0,
       transformResponse: (response: { session: Session }) => response.session,
+    }),
+    usePromptTemplate: builder.mutation<
+      string,
+      { session_id: string; templateName: string }
+    >({
+      query: ({ session_id, templateName }) => ({
+        url: `${proxyPathSessions}/${session_id}/prompt_templates/${templateName}`,
+        method: 'PUT',
+      }),
+    }),
+    unsetPromptTemplate: builder.mutation<
+      void,
+      { session_id: string; templateName: string }
+    >({
+      query: ({ session_id, templateName }) => ({
+        url: `${proxyPathSessions}/${session_id}/prompt_templates/${templateName}`,
+        method: 'DELETE',
+      }),
     }),
     sendPrompt: builder.mutation<ChatHistory, SendPromptQueryParams>({
       query: ({ session_id, prompt }) => ({
@@ -64,6 +85,8 @@ const {
   useGetAllSessionsQuery,
   useGetSessionQuery,
   useLazyGetSessionQuery,
+  useUsePromptTemplateMutation,
+  useUnsetPromptTemplateMutation,
   useSendPromptMutation,
   useCreateSessionMutation,
 } = sessionApi;
@@ -75,4 +98,6 @@ export {
   useLazyGetSessionQuery,
   useSendPromptMutation,
   useCreateSessionMutation,
+  useUsePromptTemplateMutation,
+  useUnsetPromptTemplateMutation,
 };
