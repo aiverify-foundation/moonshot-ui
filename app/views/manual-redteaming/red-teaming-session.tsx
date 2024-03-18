@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import {
-  useUnusePromptTemplateMutation,
-  useUsePromptTemplateMutation,
-} from '@/app/services/prompt-template-api-service';
-import { useSendPromptMutation } from '@/app/services/session-api-service';
+  useSendPromptMutation,
+  useSetPromptTemplateMutation,
+  useUnsetPromptTemplateMutation,
+} from '@/app/services/session-api-service';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 import { ChatboxFreeLayout } from './components/chatbox-free-layout';
@@ -53,7 +53,7 @@ function ManualRedTeaming(props: ActiveSessionProps) {
       isLoading: promptTemplateResultIsLoding,
       error: promptTemplateResultError,
     },
-  ] = useUsePromptTemplateMutation();
+  ] = useSetPromptTemplateMutation();
   const [
     triggerUnSetPromptTemplate,
     {
@@ -61,7 +61,7 @@ function ManualRedTeaming(props: ActiveSessionProps) {
       isLoading: unusePromptTemplateResultIsLoding,
       error: unusePromptTemplateResultError,
     },
-  ] = useUnusePromptTemplateMutation();
+  ] = useUnsetPromptTemplateMutation();
   const dispatch = useAppDispatch();
   const chatBoxRefs = useRef<HTMLDivElement[]>([]);
   const isZKeyPressed = useRef(false);
@@ -127,12 +127,19 @@ function ManualRedTeaming(props: ActiveSessionProps) {
     template: PromptTemplate | undefined
   ) {
     if (!template && activeSession && selectedPromptTemplate) {
-      triggerUnSetPromptTemplate(selectedPromptTemplate.name);
+      triggerUnSetPromptTemplate({
+        session_id: activeSession.session_id,
+        templateName: selectedPromptTemplate.name,
+      });
       setSelectedPromptTemplate(undefined);
       return;
     }
     setSelectedPromptTemplate(template);
-    await triggerSetPromptTemplate(template ? template.name : '');
+    if (activeSession && template)
+      await triggerSetPromptTemplate({
+        session_id: activeSession.session_id,
+        templateName: template.name,
+      });
   }
 
   function calcPromptBoxDefaults(): WindowData {

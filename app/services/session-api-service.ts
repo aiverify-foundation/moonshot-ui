@@ -51,7 +51,7 @@ const sessionApi = createApi({
       keepUnusedDataFor: 0,
       transformResponse: (response: { session: Session }) => response.session,
     }),
-    usePromptTemplate: builder.mutation<
+    setPromptTemplate: builder.mutation<
       string,
       { session_id: string; templateName: string }
     >({
@@ -85,7 +85,7 @@ const {
   useGetAllSessionsQuery,
   useGetSessionQuery,
   useLazyGetSessionQuery,
-  useUsePromptTemplateMutation,
+  useSetPromptTemplateMutation,
   useUnsetPromptTemplateMutation,
   useSendPromptMutation,
   useCreateSessionMutation,
@@ -98,6 +98,6 @@ export {
   useLazyGetSessionQuery,
   useSendPromptMutation,
   useCreateSessionMutation,
-  useUsePromptTemplateMutation,
+  useSetPromptTemplateMutation,
   useUnsetPromptTemplateMutation,
 };
