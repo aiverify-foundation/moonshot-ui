@@ -43,6 +43,7 @@ const sessionApi = createApi({
     }),
     getAllSessions: builder.query<Session[], void>({
       query: () => ({ url: proxyPathSessions }),
+      keepUnusedDataFor: 0,
     }),
     getSession: builder.query<Session, Session>({
       query: ({ session_id }) => ({

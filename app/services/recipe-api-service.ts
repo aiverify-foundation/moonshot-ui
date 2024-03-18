@@ -9,6 +9,7 @@ const recipeApi = createApi({
   endpoints: (builder) => ({
     getAllRecipes: builder.query<Recipe[], void>({
       query: () => 'api/v1/recipes',
+      keepUnusedDataFor: 0
     }),
     createRecipe: builder.mutation<Recipe, Recipe>({
       query: (recipeInputData) => ({

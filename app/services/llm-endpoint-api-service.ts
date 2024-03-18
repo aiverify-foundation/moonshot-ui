@@ -9,6 +9,7 @@ const llmEndpointApi = createApi({
   endpoints: (builder) => ({
     getLLMEndpoints: builder.query<LLMEndpoint[], void>({
       query: () => 'api/v1/llm_endpoints',
+      keepUnusedDataFor: 0
     }),
     createLLMEndpoint: builder.mutation<
       LLMEndpointFormValues,

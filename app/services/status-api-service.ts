@@ -10,6 +10,7 @@ const statusApi = createApi({
   endpoints: (builder) => ({
     getAllStatus: builder.query<TestStatuses, void>({
       query: () => proxyPathBenchmarksGetStatus,
+      keepUnusedDataFor: 0
     }),
   }),
 });

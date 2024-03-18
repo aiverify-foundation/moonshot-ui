@@ -10,6 +10,7 @@ const connectorApi = createApi({
   endpoints: (builder) => ({
     getAllConnectors: builder.query<string[], void>({
       query: () => proxyPathConnectors,
+      keepUnusedDataFor: 0
     }),
   }),
 });

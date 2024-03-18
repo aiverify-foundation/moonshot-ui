@@ -9,6 +9,7 @@ const cookbookApi = createApi({
   endpoints: (builder) => ({
     getAllCookbooks: builder.query<Cookbook[], void>({
       query: () => 'api/v1/cookbooks',
+      keepUnusedDataFor: 0
     }),
     createCookbook: builder.mutation<CookbookFormValues, CookbookFormValues>({
       query: (cookbookInputData) => ({
