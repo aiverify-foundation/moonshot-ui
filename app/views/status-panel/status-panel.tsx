@@ -4,16 +4,16 @@ import { IconButton } from '@/app/components/icon-button';
 import { Window } from '@/app/components/window';
 import { WindowList } from '@/app/components/window-list';
 import { useEventSource } from '@/app/hooks/use-eventsource';
+import { getWindowId } from '@/app/lib/window-utils';
 import { useGetAllStatusQuery } from '@/app/services/status-api-service';
 import { AppEventTypes, TestStatusProgress } from '@/app/types/enums';
+import { WindowIds } from '@/app/views/moonshot-desktop/constants';
 import {
   addOpenedWindowId,
   setActiveResult,
   updateFocusedWindowId,
   useAppDispatch,
 } from '@/lib/redux';
-import { getWindowId } from '@/app/lib/window-utils';
-import { WindowIds } from '../moonshot-desktop/constants';
 
 type StatusPanelProps = {
   windowId: string;

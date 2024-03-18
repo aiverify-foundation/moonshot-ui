@@ -41,10 +41,10 @@ import { BenchmarksResult } from '@views/benchmarking/benchmark-report';
 import { CookbooksExplorer } from '@views/cookbook-management/cookbooks-explorer';
 import { SessionExplorerButtonAction } from '@views/manual-redteaming/components/explorer/top-buttons-bar';
 import { SessionsExplorer } from '@views/manual-redteaming/sessions-explorer';
+import { ModelsExplorerButtonAction } from '@views/models-management/components/top-buttons-bar';
 import { PromptTemplatesExplorer } from '@views/prompt-templates-management/prompt-templates-explorer';
 import { RecipesExplorer } from '@views/recipes-management/recipes-explorer';
 import { StatusPanel } from '@views/status-panel/status-panel';
-import { ModelsExplorerButtonAction } from '../models-management/components/top-buttons-bar';
 
 export default function MoonshotDesktop() {
   const [isCookbooksExplorerOpen, setIsCookbooksExplorerOpen] = useState(false);
