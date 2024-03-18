@@ -6,8 +6,8 @@ const port = parseInt(process.env.PORT || '3000', 10);
 type CreateSessionParams = {
   name: string;
   description: string;
-  promptTemplate?: string;
-  contextStrategy?: string;
+  prompt_template?: string;
+  context_strategy?: string;
   endpoints: string[];
 };
 
@@ -23,10 +23,22 @@ const sessionApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
     createSession: builder.mutation<Session, CreateSessionParams>({
-      query: ({ name, description, endpoints }) => ({
+      query: ({
+        name,
+        description,
+        endpoints,
+        prompt_template,
+        context_strategy,
+      }) => ({
         url: 'api/v1/sessions',
         method: 'POST',
-        body: { name, description, endpoints },
+        body: {
+          name,
+          description,
+          endpoints,
+          prompt_template,
+          context_strategy,
+        },
       }),
       transformResponse: (response: { session: Session }) => response.session,
     }),

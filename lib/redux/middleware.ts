@@ -2,6 +2,7 @@
 import { createLogger } from 'redux-logger';
 import { benchmarkRunApi } from '@/app/services/benchmark-api-service';
 import { connectorApi } from '@/app/services/connector-api-service';
+import { contextStratApi } from '@/app/services/contextstrat-api-service';
 import { cookbookApi } from '@/app/services/cookbook-api-service';
 import { llmEndpointApi } from '@/app/services/llm-endpoint-api-service';
 import { promptTemplateApi } from '@/app/services/prompt-template-api-service';
@@ -18,6 +19,7 @@ const middleware = [
   benchmarkRunApi.middleware,
   statusApi.middleware,
   connectorApi.middleware,
+  contextStratApi.middleware,
   createLogger({
     duration: true,
     timestamp: false,
