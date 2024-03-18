@@ -101,11 +101,11 @@ function SessionsExplorer(props: SessionsExplorerProps) {
     setSelectedBtnAction(action);
   }
 
-  useEffect(() => {
-    if (buttonAction && hideMenuButtons) {
-      setSelectedBtnAction(buttonAction);
-    }
-  }, [buttonAction, hideMenuButtons]);
+  // useEffect(() => {
+  //   if (buttonAction && hideMenuButtons) {
+  //     setSelectedBtnAction(buttonAction);
+  //   }
+  // }, [buttonAction, hideMenuButtons]);
 
   useEffect(() => {
     setInitialWindowSize(initialSize);
@@ -114,6 +114,10 @@ function SessionsExplorer(props: SessionsExplorerProps) {
   useEffect(() => {
     setInitialWindowXY(initialXY);
   }, [initialXY]);
+
+  useEffect(() => {
+    setSelectedBtnAction(buttonAction);
+  }, [buttonAction]);
 
   return (
     <Window

@@ -93,6 +93,16 @@ export default function MoonshotDesktop() {
     dispatch(removeOpenedWindowId(getWindowId(WindowIds.LLM_ENDPOINTS)));
   }
 
+  function handleSavedSessionsCloseClick() {
+    dispatch(removeOpenedWindowId(getWindowId(WindowIds.SAVED_SESSIONS)));
+    dispatch(resetBenchmarkModels());
+  }
+
+  function handleSessionFormCloseClick() {
+    dispatch(removeOpenedWindowId(getWindowId(WindowIds.SESSION_FORM)));
+    dispatch(resetBenchmarkModels());
+  }
+
   function handlePromptTemplatesExplorerCloseClick() {
     dispatch(removeOpenedWindowId(getWindowId(WindowIds.PROMPT_TEMPLATES)));
   }
@@ -151,7 +161,7 @@ export default function MoonshotDesktop() {
     );
 
     //position will be centralized without any offsets
-    resetWindowsCentered(WindowIds.RESULT);
+    resetWindowsCentered(WindowIds.RESULT, WindowIds.SESSION_FORM);
 
     //custom position for status panel
     const [statusPanelX, statusPanelY] = calcTopRightWindowXY(
@@ -249,7 +259,9 @@ export default function MoonshotDesktop() {
               name={IconName.Folder}
               label="Saved Sessions"
               onClick={() => {
-                setIsShowWindowSavedSession(true);
+                dispatch(
+                  addOpenedWindowId(getWindowId(WindowIds.SAVED_SESSIONS))
+                );
                 dispatch(
                   updateFocusedWindowId(getWindowId(WindowIds.SAVED_SESSIONS))
                 );
@@ -329,14 +341,27 @@ export default function MoonshotDesktop() {
         />
       ) : null}
 
-      {isShowWindowSavedSession ? (
+      {openedWindowIds.includes(getWindowId(WindowIds.SAVED_SESSIONS)) ? (
         <SessionsExplorer
           zIndex={Z_Index.Level_2}
           buttonAction={SessionExplorerButtonAction.VIEW}
           windowId={getWindowId(WindowIds.SAVED_SESSIONS)}
           initialXY={getWindowXYById(windowsMap, WindowIds.SAVED_SESSIONS)}
           initialSize={getWindowSizeById(windowsMap, WindowIds.SAVED_SESSIONS)}
-          onCloseClick={() => setIsShowWindowSavedSession(false)}
+          onCloseClick={handleSavedSessionsCloseClick}
+          onResumeSessionClick={handleResumeSessionClick}
+          onWindowChange={handleOnWindowChange}
+        />
+      ) : null}
+
+      {openedWindowIds.includes(getWindowId(WindowIds.SESSION_FORM)) ? (
+        <SessionsExplorer
+          zIndex={Z_Index.Level_2}
+          buttonAction={SessionExplorerButtonAction.ADD}
+          windowId={getWindowId(WindowIds.SESSION_FORM)}
+          initialXY={getWindowXYById(windowsMap, WindowIds.SESSION_FORM)}
+          initialSize={getWindowSizeById(windowsMap, WindowIds.SESSION_FORM)}
+          onCloseClick={handleSessionFormCloseClick}
           onResumeSessionClick={handleResumeSessionClick}
           onWindowChange={handleOnWindowChange}
         />

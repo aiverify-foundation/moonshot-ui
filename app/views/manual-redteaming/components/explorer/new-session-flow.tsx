@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useWindowChange } from '@/app/hooks/use-window-change';
-import { useAppSelector } from '@/lib/redux';
+import {
+  addBenchmarkModels,
+  removeBenchmarkModels,
+  useAppDispatch,
+  useAppSelector,
+} from '@/lib/redux';
 import { NewSessionForm } from './new-session-form';
 import {
   getWindowId,
@@ -38,9 +43,15 @@ function NewSessionFlow(props: NewSessionFormProps) {
   const [unselectedEndpoint, setUnselectedEndpoint] = useState<LLMEndpoint>();
   const windowsMap = useAppSelector((state) => state.windows.map);
   const handleOnWindowChange = useWindowChange();
+  const dispatch = useAppDispatch();
+
+  const benchmarkModelsFromState = useAppSelector(
+    (state) => state.benchmarkModels.entities
+  );
 
   function handleEndpointPickerClick(endpoint: LLMEndpoint) {
     setLlmEndpoints([...llmEndpoints, endpoint]);
+    dispatch(addBenchmarkModels([endpoint]));
   }
 
   function handleCloseEndpointPickerClick() {
@@ -53,8 +64,15 @@ function NewSessionFlow(props: NewSessionFormProps) {
     if (isEndpointsExplorerOpen) {
       setUnselectedEndpoint(clickedEndpoint);
     }
+    if (clickedEndpoint) {
+      dispatch(removeBenchmarkModels([clickedEndpoint]));
+    }
     setLlmEndpoints(llmEndpoints.filter((epoint) => epoint.name !== name));
   }
+
+  useEffect(() => {
+    setLlmEndpoints(benchmarkModelsFromState);
+  }, [benchmarkModelsFromState]);
 
   return (
     <div className="h-full flex flex-col">

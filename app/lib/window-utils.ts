@@ -39,8 +39,10 @@ export function calcCentralizedWindowXY(
     offsetX += Math.random() * 140 - 70;
     offsetY += Math.random() * 140 - 70;
   }
-  const top = (viewportHeight - height) / 2 + offsetY;
+  let top = (viewportHeight - height) / 2 + offsetY;
   const left = (viewportWidth - width) / 2 + offsetX;
+  // Ensure 'top' is at least 50px from the viewport top
+  top = Math.max(top, 50);
   return [left, top];
 }
 

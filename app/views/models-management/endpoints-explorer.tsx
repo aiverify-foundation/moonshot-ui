@@ -205,6 +205,13 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     dispatch(updateFocusedWindowId(getWindowId(WindowIds.BENCHMARKING)));
   }
 
+  function handleRedteamBtnClick() {
+    dispatch(addBenchmarkModels(selectedEndpointsList));
+    dispatch(addOpenedWindowId(getWindowId(WindowIds.SESSION_FORM)));
+    dispatch(removeOpenedWindowId(getWindowId(WindowIds.LLM_ENDPOINTS)));
+    dispatch(updateFocusedWindowId(getWindowId(WindowIds.SESSION_FORM)));
+  }
+
   useEffect(() => {
     if (!isLoading && llmEndpoints) {
       setDisplayedEndpointsList(sortDisplayedEndpointsByName(llmEndpoints));
@@ -374,7 +381,8 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                           </button>
                           <button
                             className="flex btn-primary items-center gap-2 btn-large rounded"
-                            type="button">
+                            type="button"
+                            onClick={handleRedteamBtnClick}>
                             <div>Red Team</div>
                             <Icon
                               name={IconName.ArrowRight}
