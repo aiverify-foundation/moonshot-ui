@@ -11,6 +11,7 @@ import usePromptTemplateList from '@/app/views/moonshot-desktop/hooks/usePromptT
 import {
   addOpenedWindowId,
   removeOpenedWindowId,
+  resetBenchmarkModels,
   setActiveSession,
   useAppDispatch,
 } from '@/lib/redux';
@@ -98,6 +99,7 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
     );
     dispatch(removeOpenedWindowId(getWindowId(WindowIds.SESSION_FORM)));
     dispatch(removeOpenedWindowId(getWindowId(WindowIds.SAVED_SESSIONS)));
+    dispatch(resetBenchmarkModels());
     if (onFormSubmit) onFormSubmit(values);
   }
 
