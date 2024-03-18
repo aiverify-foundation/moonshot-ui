@@ -44,6 +44,7 @@ import { SessionsExplorer } from '@views/manual-redteaming/sessions-explorer';
 import { PromptTemplatesExplorer } from '@views/prompt-templates-management/prompt-templates-explorer';
 import { RecipesExplorer } from '@views/recipes-management/recipes-explorer';
 import { StatusPanel } from '@views/status-panel/status-panel';
+import { ModelsExplorerButtonAction } from '../models-management/components/top-buttons-bar';
 
 export default function MoonshotDesktop() {
   const [isCookbooksExplorerOpen, setIsCookbooksExplorerOpen] = useState(false);
@@ -152,7 +153,6 @@ export default function MoonshotDesktop() {
       WindowIds.COOKBOOKS_PICKER,
       WindowIds.RECIPES,
       WindowIds.RECIPES_PICKER,
-      WindowIds.LLM_ENDPOINTS,
       WindowIds.LLM_ENDPOINTS_PICKER,
       WindowIds.SAVED_SESSIONS,
       WindowIds.BENCHMARKING,
@@ -161,7 +161,11 @@ export default function MoonshotDesktop() {
     );
 
     //position will be centralized without any offsets
-    resetWindowsCentered(WindowIds.RESULT, WindowIds.SESSION_FORM);
+    resetWindowsCentered(
+      WindowIds.RESULT,
+      WindowIds.SESSION_FORM,
+      WindowIds.LLM_ENDPOINTS
+    );
 
     //custom position for status panel
     const [statusPanelX, statusPanelY] = calcTopRightWindowXY(
@@ -181,6 +185,10 @@ export default function MoonshotDesktop() {
         ],
       })
     );
+  }, []);
+
+  useEffect(() => {
+    handleModelEndpointIconClick();
   }, []);
 
   return (
@@ -221,6 +229,11 @@ export default function MoonshotDesktop() {
           style={{ zIndex: Z_Index.Level_1 }}>
           <div className="grid grid-rows-6 grid-cols-10 grid-flow-col p-10 gap-y-12 gap-x-4">
             <DesktopIcon
+              name={IconName.SolidBox}
+              label="Models"
+              onClick={handleModelEndpointIconClick}
+            />
+            <DesktopIcon
               name={IconName.Folder}
               label="Cookbooks"
               onClick={() => {
@@ -237,11 +250,6 @@ export default function MoonshotDesktop() {
                 setIsRecipesExplorerOpen(true);
                 dispatch(updateFocusedWindowId(getWindowId(WindowIds.RECIPES)));
               }}
-            />
-            <DesktopIcon
-              name={IconName.Folder}
-              label="Model Endpoints"
-              onClick={handleModelEndpointIconClick}
             />
             <DesktopIcon
               name={IconName.Folder}
@@ -275,14 +283,6 @@ export default function MoonshotDesktop() {
                 dispatch(updateFocusedWindowId(getWindowId(WindowIds.STATUS)));
               }}
             />
-            {/* <DesktopIcon
-              name={IconName.Folder}
-              label="test"
-              onClick={() => {
-                dispatch(setActiveResult('cookbook-test1'));
-                dispatch(addOpenedWindowId(getWindowId(WindowIds.RESULT)));
-              }}
-            /> */}
           </div>
         </div>
       ) : null}
@@ -319,6 +319,7 @@ export default function MoonshotDesktop() {
       {openedWindowIds.includes(getWindowId(WindowIds.LLM_ENDPOINTS)) ? (
         <EndpointsExplorer
           zIndex={Z_Index.Level_2}
+          buttonAction={ModelsExplorerButtonAction.SELECT_MODELS}
           windowId={getWindowId(WindowIds.LLM_ENDPOINTS)}
           initialXY={getWindowXYById(windowsMap, WindowIds.LLM_ENDPOINTS)}
           initialSize={getWindowSizeById(windowsMap, WindowIds.LLM_ENDPOINTS)}

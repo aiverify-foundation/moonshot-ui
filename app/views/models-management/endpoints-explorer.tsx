@@ -218,11 +218,15 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
     }
   }, [isLoading, llmEndpoints]);
 
+  // useEffect(() => {
+  //   if (buttonAction && hideMenuButtons) {
+  //     setSelectedBtnAction(buttonAction);
+  //   }
+  // }, [buttonAction, hideMenuButtons]);
+
   useEffect(() => {
-    if (buttonAction && hideMenuButtons) {
-      setSelectedBtnAction(buttonAction);
-    }
-  }, [buttonAction, hideMenuButtons]);
+    setSelectedBtnAction(buttonAction);
+  }, [buttonAction]);
 
   useEffect(() => {
     if (returnedEndpoint) {

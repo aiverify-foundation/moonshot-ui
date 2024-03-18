@@ -7,6 +7,7 @@ import {
   ChatBubblesIcon,
   RunCookbookIcon,
 } from './IconSVG';
+import { SolidBoxIcon } from './IconSVG/icons/box-icon';
 
 type DesktopIconProps = {
   name: IconName;
@@ -57,6 +58,15 @@ function DesktopIcon(props: DesktopIconProps) {
       iconToRender = (
         <RunCookbookIcon
           outlineColor={isDarkMode ? '#FFFFFF' : '#702f8a'}
+          width={40}
+          height={40}
+        />
+      );
+      break;
+    case IconName.SolidBox:
+      iconToRender = (
+        <SolidBoxIcon
+          fillColor={isDarkMode ? '#FFFFFF' : '#702f8a'}
           width={40}
           height={40}
         />
