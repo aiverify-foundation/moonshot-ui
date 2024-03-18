@@ -88,7 +88,7 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
   }
 
   async function handleFormSubmit(values: FormValues) {
-    values.llmEndpoints = selectedEndpoints.map((endpoint) => endpoint.name);
+    values.llmEndpoints = selectedEndpoints.map((endpoint) => endpoint.id);
     submitNewSessionForm(
       values.sessionName,
       values.description,

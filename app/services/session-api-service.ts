@@ -14,8 +14,6 @@ type CreateSessionParams = {
 type SendPromptQueryParams = {
   session_id: string;
   prompt: string;
-  include_history?: boolean;
-  history_length?: number;
 };
 
 const sessionApi = createApi({
@@ -51,15 +49,11 @@ const sessionApi = createApi({
       transformResponse: (response: { session: Session }) => response.session,
     }),
     sendPrompt: builder.mutation<ChatHistory, SendPromptQueryParams>({
-      query: ({
-        session_id,
-        prompt,
-        include_history = true,
-        history_length = 50,
-      }) => ({
-        url: `api/v1/sessions/${session_id}/prompt?include_history=${include_history}&length=${history_length}`,
+      query: ({ session_id, prompt }) => ({
+        url: `api/v1/sessions/${session_id}/prompt`,
         method: 'POST',
         body: { prompt },
+        keepUnusedDataFor: 0,
       }),
       transformResponse: (response: ChatHistory) => response,
     }),
