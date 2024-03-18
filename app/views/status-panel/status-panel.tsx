@@ -63,16 +63,19 @@ function StatusPanel(props: StatusPanelProps) {
   const windowTitle = title || 'Test Status';
   let countRunning = 0;
   let countCompleted = 0;
+  let countError=0;
 
   statusTuples.forEach(([_, status]) => {
-    if (status.curr_status === 'completed') {
+    if (status.curr_status === TestStatusProgress.COMPLETED) {
       countCompleted++;
-    } else {
+    } else if (status.curr_status === TestStatusProgress.RUNNING) {
       countRunning++;
+    } else if (status.curr_status === TestStatusProgress.ERRORS) {
+      countError++;
     }
   });
 
-  const footerText = `${countRunning} running, ${countCompleted} completed / ${statusTuples.length} total`;
+  const footerText = `${countRunning} running, ${countCompleted} completed, ${countError} errors / ${statusTuples.length} total`;
 
   function handleResultsClick(execId: string) {
     return () => {
