@@ -12,7 +12,7 @@ This is the Web UI for [moonshot](https://github.com/moonshot-admin/moonshot).
 
 - Follow the instructions in https://pypi.org/project/projectmoonshot-imda to install the module but do not run it.
 
-> If a .env file is not created in the next step, the module will use these default values: HOST_ADDRESS=127.0.0.1, HOST_PORT=5000, MOONSHOT_UI_CALLBACK_URL=http://localhost:3000/api/v1/benchmarks/status 
+> If a .env file is not created in the next step, the module will use these default values: HOST_ADDRESS=`127.0.0.1`, HOST_PORT=`5000`, MOONSHOT_UI_CALLBACK_URL=`http://localhost:3000/api/v1/benchmarks/status`
 - Before running the module, a `.env` file containing these variables can be created if the hostnames and ports need to be updated:
 
 ```
