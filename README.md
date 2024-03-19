@@ -1,4 +1,4 @@
-This is the Web UI for moonshot.
+This is the Web UI for [moonshot](https://github.com/moonshot-admin/moonshot).
 
 ## Getting Started
 
