@@ -35,7 +35,7 @@ MOONSHOT_UI_CALLBACK_URL=http://localhost:3000/api/v1/benchmarks/status
 
 `git clone git@github.com:moonshot-admin/moonshot-ui.git`
 
-- In the cloned project root directly (/moonshot-ui), create `.env` file containing this variable:
+- In the cloned project root directory (/moonshot-ui), create `.env` file containing this variable:
 
 ```
 # This should be the URL of the Moonshot Web Api module which was started in the previous section.
