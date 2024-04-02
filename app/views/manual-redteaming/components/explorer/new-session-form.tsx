@@ -10,7 +10,7 @@ import { WindowIds } from '@/app/views/moonshot-desktop/constants';
 import usePromptTemplateList from '@/app/views/moonshot-desktop/hooks/usePromptTemplateList';
 import {
   addOpenedWindowId,
-  removeOpenedWindowId,
+  clearWindows,
   resetBenchmarkModels,
   setActiveSession,
   useAppDispatch,
@@ -97,8 +97,7 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
       values.promptTemplate,
       values.context_strategy
     );
-    dispatch(removeOpenedWindowId(getWindowId(WindowIds.SESSION_FORM)));
-    dispatch(removeOpenedWindowId(getWindowId(WindowIds.SAVED_SESSIONS)));
+    dispatch(clearWindows());
     dispatch(resetBenchmarkModels());
     if (onFormSubmit) onFormSubmit(values);
   }

@@ -47,11 +47,7 @@ import { RecipesExplorer } from '@views/recipes-management/recipes-explorer';
 import { StatusPanel } from '@views/status-panel/status-panel';
 
 export default function MoonshotDesktop() {
-  const [isCookbooksExplorerOpen, setIsCookbooksExplorerOpen] = useState(false);
-  const [isChatSessionOpen, setIsChatSessionOpen] = useState(false);
   const [isRecipesExplorerOpen, setIsRecipesExplorerOpen] = useState(false);
-  const [isShowWindowSavedSession, setIsShowWindowSavedSession] =
-    useState(false);
   const [isDesktopIconsHidden, setIsDesktopIconsHidden] = useState(false);
   const dispatch = useAppDispatch();
   const resetWindows = useResetWindows();
@@ -90,6 +86,10 @@ export default function MoonshotDesktop() {
     dispatch(resetBenchmarkCookbooks());
   }
 
+  function handleCookbooksExplorerCloseClick() {
+    dispatch(removeOpenedWindowId(getWindowId(WindowIds.COOKBOOKS)));
+  }
+
   function handleModelsExplorerCloseClick() {
     dispatch(removeOpenedWindowId(getWindowId(WindowIds.LLM_ENDPOINTS)));
   }
@@ -117,7 +117,6 @@ export default function MoonshotDesktop() {
   }
 
   function handleManualRedteamingSessionCloseClick() {
-    setIsChatSessionOpen(false);
     dispatch(removeActiveSession());
     dispatch(removeOpenedWindowId(getWindowId(WindowIds.RED_TEAMING_SESSION)));
     setIsDesktopIconsHidden(false);
@@ -131,9 +130,7 @@ export default function MoonshotDesktop() {
   useEffect(() => {
     if (!openedWindowIds.length) return;
     if (openedWindowIds.includes(getWindowId(WindowIds.RED_TEAMING_SESSION))) {
-      setIsShowWindowSavedSession(false);
       setIsDesktopIconsHidden(true);
-      setIsChatSessionOpen(true);
     }
   }, [openedWindowIds]);
 
@@ -237,7 +234,7 @@ export default function MoonshotDesktop() {
               name={IconName.Folder}
               label="Cookbooks"
               onClick={() => {
-                setIsCookbooksExplorerOpen(true);
+                dispatch(addOpenedWindowId(getWindowId(WindowIds.COOKBOOKS)));
                 dispatch(
                   updateFocusedWindowId(getWindowId(WindowIds.COOKBOOKS))
                 );
@@ -287,14 +284,14 @@ export default function MoonshotDesktop() {
         </div>
       ) : null}
 
-      {isCookbooksExplorerOpen ? (
+      {openedWindowIds.includes(getWindowId(WindowIds.COOKBOOKS)) ? (
         <CookbooksExplorer
           zIndex={Z_Index.Level_2}
           windowId={getWindowId(WindowIds.COOKBOOKS)}
           initialXY={getWindowXYById(windowsMap, WindowIds.COOKBOOKS)}
           initialSize={getWindowSizeById(windowsMap, WindowIds.COOKBOOKS)}
           onWindowChange={handleOnWindowChange}
-          onCloseClick={() => setIsCookbooksExplorerOpen(false)}
+          onCloseClick={() => handleCookbooksExplorerCloseClick()}
         />
       ) : null}
 
@@ -309,7 +306,7 @@ export default function MoonshotDesktop() {
         />
       ) : null}
 
-      {isChatSessionOpen ? (
+      {openedWindowIds.includes(getWindowId(WindowIds.RED_TEAMING_SESSION)) ? (
         <ManualRedTeaming
           zIndex={Z_Index.Level_2}
           onCloseBtnClick={handleManualRedteamingSessionCloseClick}
