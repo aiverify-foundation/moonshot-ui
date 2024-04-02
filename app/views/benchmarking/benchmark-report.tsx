@@ -1,7 +1,7 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import { Window } from '@/app/components/window';
 import { useGetBenchmarksResultQuery } from '@/app/services/benchmark-api-service';
-import { Icon, IconName } from '@/app/components/IconSVG';
+import { MetricCell } from './components/metric-cell';
 
 type cookbooksExplorerProps = {
   windowId: string;
@@ -186,14 +186,11 @@ function BenchmarksResult(props: cookbooksExplorerProps) {
                                                     metricName,
                                                     metricValue,
                                                   ]) => (
-                                                    <div
+                                                    <MetricCell
                                                       key={metricName}
-                                                      className="flex gap-2 pl-2">
-                                                      <div>{metricName}:</div>
-                                                      <div className="text-blue-700 font-bold">
-                                                        {metricValue}
-                                                      </div>
-                                                    </div>
+                                                      metricName={metricName}
+                                                      metricValue={metricValue}
+                                                    />
                                                   )
                                                 )}
                                               </div>

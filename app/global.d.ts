@@ -122,10 +122,9 @@ type ZIndex = {
 /*
  * Result format specific type below
  */
-type ResultMetric = {
-  exact_str_match: number;
-  relax_str_match: number;
-};
+type ResultMetricBreakdown = Record<string, number | Record<string | number>>;
+
+type ResultMetric = Record<string, number | ResultMetricBreakdown>;
 
 type ResultPromptTemplate = {
   id: string;
