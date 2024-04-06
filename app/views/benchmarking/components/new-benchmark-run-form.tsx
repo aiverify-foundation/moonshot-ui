@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
+import { object, string, number, array } from 'yup';
 
 const initialFormValues: BenchmarkRunFormValues = {
   name: '',
@@ -12,21 +13,18 @@ const initialFormValues: BenchmarkRunFormValues = {
   num_of_prompts: '0',
 };
 
-const requiredFields = [
-  'name',
-  'description',
-  'cookbooks',
-  'endpoints',
-  'num_of_prompts',
-];
-
-function areRequiredFieldsFilled(values: BenchmarkRunFormValues): boolean {
-  if (values.cookbooks.length === 0 || values.endpoints.length === 0)
-    return false;
-  return requiredFields.every((field) =>
-    Boolean(values[field as keyof BenchmarkRunFormValues])
-  );
-}
+const validationSchema = object().shape({
+  name: string().required('Name is required'),
+  description: string().required('Description is required'),
+  num_of_prompts: number()
+  .required('Number of Prompts is required')
+  .typeError('Number of Prompts must be a number')
+  .min(0, 'Number of Prompts cannot be a negative number'),
+  cookbooks: array()
+    .min(1, 'At least one cookbook is required'),
+  endpoints: array()
+    .min(1, 'At least one endpoint is required'),
+});
 
 type NewBenchmarkRunformik = {
   addedCookbooks: Cookbook[];
@@ -35,17 +33,18 @@ type NewBenchmarkRunformik = {
   onFormSubmit: (data: BenchmarkRunFormValues) => void;
 };
 
-const NewBenchMmarkRunForm: React.FC<NewBenchmarkRunformik> = (props) => {
+const NewBenchMarkRunForm: React.FC<NewBenchmarkRunformik> = (props) => {
   const { addedCookbooks, addedEndpoints, className, onFormSubmit } = props;
   const formik = useFormik({
     initialValues: initialFormValues,
+    validationSchema: validationSchema,
     onSubmit: (values) => {
       handleFormSubmit(values);
     },
   });
 
   const submitEnabled =
-    areRequiredFieldsFilled(formik.values) &&
+    formik.isValid &&
     addedCookbooks.length &&
     addedEndpoints.length;
 
@@ -89,7 +88,7 @@ const NewBenchMmarkRunForm: React.FC<NewBenchmarkRunformik> = (props) => {
         onChange={formik.handleChange}
         value={formik.values.description}
         error={
-          formik.touched.description && formik.errors.description
+          formik.touched.name && formik.errors.description
             ? formik.errors.description
             : undefined
         }
@@ -128,4 +127,4 @@ const NewBenchMmarkRunForm: React.FC<NewBenchmarkRunformik> = (props) => {
   );
 };
 
-export { NewBenchMmarkRunForm };
+export { NewBenchMarkRunForm };

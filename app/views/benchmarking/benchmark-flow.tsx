@@ -23,7 +23,7 @@ import {
   removeOpenedWindowId,
   useAppSelector,
 } from '@/lib/redux';
-import { NewBenchMmarkRunForm } from './components/new-benchmark-run-form';
+import { NewBenchMarkRunForm } from './components/new-benchmark-run-form';
 import { CookbookItemCard } from '@views/cookbook-management/components/cookbook-item-card';
 import { CookbooksExplorerButtonAction } from '@views/cookbook-management/components/top-buttons-bar';
 import { CookbooksExplorer } from '@views/cookbook-management/cookbooks-explorer';
@@ -246,7 +246,7 @@ function BenchmarkFlowWindow(props: BenchmarkFlowProps) {
             </WindowList>
           </div>
           <div className="flex flex-col justify-end">
-            <NewBenchMmarkRunForm
+            <NewBenchMarkRunForm
               className="mt-6"
               addedCookbooks={addedCookbooks}
               addedEndpoints={addedModels}

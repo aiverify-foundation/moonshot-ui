@@ -2,6 +2,7 @@ import { useFormik } from 'formik';
 import { useEffect } from 'react';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
+import { object, string, array } from 'yup';
 
 const initialFormValues: CookbookFormValues = {
   name: '',
@@ -9,14 +10,12 @@ const initialFormValues: CookbookFormValues = {
   recipes: [],
 };
 
-const requiredFields = ['name', 'description', 'recipes'];
-
-function areRequiredFieldsFilled(values: CookbookFormValues): boolean {
-  if (values.recipes.length === 0) return false;
-  return requiredFields.every((field) =>
-    Boolean(values[field as keyof CookbookFormValues])
-  );
-}
+const validationSchema = object().shape({
+  name: string().required('Name is required'),
+  description: string().required('Description is required'),
+  recipes: array()
+    .min(1, 'At least one recipe is required'),
+});
 
 type NewCookbookformik = {
   selectedRecipes: Recipe[];
@@ -28,12 +27,14 @@ const NewCookbookForm: React.FC<NewCookbookformik> = (props) => {
   const { selectedRecipes, className, onFormSubmit } = props;
   const formik = useFormik({
     initialValues: initialFormValues,
+    validationSchema: validationSchema,
     onSubmit: (values) => {
       handleFormSubmit(values);
     },
   });
   const submitEnabled =
-    areRequiredFieldsFilled(formik.values) && selectedRecipes.length;
+  formik.isValid &&
+  selectedRecipes.length;
 
   async function handleFormSubmit(values: CookbookFormValues) {
     if (onFormSubmit) onFormSubmit(values);
@@ -68,7 +69,7 @@ const NewCookbookForm: React.FC<NewCookbookformik> = (props) => {
         onChange={formik.handleChange}
         value={formik.values.description}
         error={
-          formik.touched.description && formik.errors.description
+          formik.touched.name && formik.errors.description
             ? formik.errors.description
             : undefined
         }
