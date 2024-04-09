@@ -1,5 +1,5 @@
 
-import { Form, Formik, FormikHelpers, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { TextArea } from '@/app/components/textArea';
@@ -41,12 +41,12 @@ const maxCallsPerSecondOptions: SelectOption[] = Array.from(
   })
 );
 
-type NewModelEndpointformik = {
+type NewModelEndpointFormProps = {
   className?: string;
   onFormSubmit: (data: LLMEndpointFormValues) => void;
 };
 
-const NewModelEndpointForm: React.FC<NewModelEndpointformik> = (props) => {
+const NewModelEndpointForm: React.FC<NewModelEndpointFormProps> = (props) => {
   const { className, onFormSubmit } = props;
   const formik = useFormik({
     initialValues: initialFormValues,
