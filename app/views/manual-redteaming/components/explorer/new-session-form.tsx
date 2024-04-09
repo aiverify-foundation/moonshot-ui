@@ -15,6 +15,7 @@ import {
   setActiveSession,
   useAppDispatch,
 } from '@/lib/redux';
+import { object, string, array } from 'yup';
 
 type FormValues = {
   sessionName: string;
@@ -23,6 +24,11 @@ type FormValues = {
   llmEndpoints: string[];
   context_strategy: string;
 };
+
+const validationSchema = object().shape({
+  sessionName: string().required('Session Name is required'),
+  description: string().required('Description is required'),
+});
 
 const initialFormValues: FormValues = {
   sessionName: '',
@@ -106,6 +112,8 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
     <div className="pl-4 pt-8 w-full h-full">
       <Formik<FormValues>
         initialValues={initialFormValues}
+        validationSchema={validationSchema} 
+
         onSubmit={handleFormSubmit}>
         {(formProps) => {
           return (
@@ -156,7 +164,7 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
                     label="Description"
                     onChange={formProps.handleChange}
                     error={
-                      formProps.touched.description &&
+                      formProps.touched.sessionName &&
                       formProps.errors.description
                         ? formProps.errors.description
                         : undefined
@@ -167,6 +175,7 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
                   <div className="flex justify-end mt-6">
                     <button
                       className="flex btn-primary items-center gap-2 btn-large rounded"
+                      disabled={!formProps.isValid} // Disable button if form is not valid
                       type="submit">
                       <div>Start Red Teaming Session</div>
                       <Icon
