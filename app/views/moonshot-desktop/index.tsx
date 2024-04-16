@@ -1,8 +1,7 @@
 'use client';
 
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { Icon, IconName } from '@/app/components/IconSVG';
+import { IconName } from '@/app/components/IconSVG';
 import { useWindowChange } from '@/app/hooks/use-window-change';
 import {
   calcTopRightWindowXY,
@@ -18,7 +17,6 @@ import {
   removeOpenedWindowId,
   resetBenchmarkCookbooks,
   resetBenchmarkModels,
-  setActiveResult,
   updateFocusedWindowId,
   updateWindows,
   useAppDispatch,
@@ -34,7 +32,6 @@ import {
 } from './constants';
 import { useResetWindows } from './hooks/useResetWindows';
 import { DesktopIcon } from '@components/desktop-icon';
-import Menu from '@components/menu';
 import TaskBar from '@components/taskbar';
 import { BenchmarkFlowWindow } from '@views/benchmarking/benchmark-flow';
 import { BenchmarksResult } from '@views/benchmarking/benchmark-report';
@@ -67,7 +64,7 @@ export default function MoonshotDesktop() {
       }
     : {
         backgroundImage:
-          'url("https://www.transparenttextures.com/patterns/dark-denim-3.png"), linear-gradient(to right bottom, rgb(113 112 112), rgb(34 34 34))',
+          'linear-gradient(to right bottom, rgb(113 112 112), rgb(34 34 34))',
       };
 
   function handleResumeSessionClick() {
@@ -184,10 +181,6 @@ export default function MoonshotDesktop() {
     );
   }, []);
 
-  useEffect(() => {
-    handleModelEndpointIconClick();
-  }, []);
-
   return (
     <div
       id={moonshotDesktopDivID}
@@ -205,20 +198,11 @@ export default function MoonshotDesktop() {
       style={{
         ...backgroundImageStyle,
       }}>
-      <TaskBar zIndex={Z_Index.Top}>
-        <div className="flex w-full">
-          <div className="flex-1">
-            <Menu />
-          </div>
-          <div className="flex flex-1 justify-end items-center pr-4">
-            <Icon
-              name={isDarkMode ? IconName.LightSun : IconName.DarkMoon}
-              size={isDarkMode ? 20 : 22}
-              onClick={handleToggleDarkMode}
-            />
-          </div>
-        </div>
-      </TaskBar>
+      {/* <Icon
+          name={isDarkMode ? IconName.LightSun : IconName.DarkMoon}
+          size={isDarkMode ? 20 : 22}
+          onClick={handleToggleDarkMode}
+        /> */}
       {!isDesktopIconsHidden ? (
         <div
           id="desktopIcons"
@@ -397,21 +381,6 @@ export default function MoonshotDesktop() {
           initialSize={getWindowSizeById(windowsMap, WindowIds.RESULT)}
           onWindowChange={handleOnWindowChange}
           onCloseClick={handleResultCloseClick}
-        />
-      ) : null}
-
-      {!isDesktopIconsHidden ? (
-        <Image
-          src="/moonshot_glow.png"
-          alt="Moonshot"
-          width={400}
-          height={80}
-          style={{
-            position: 'absolute',
-            bottom: 50,
-            right: -40,
-            zIndex: Z_Index.Base,
-          }}
         />
       ) : null}
     </div>

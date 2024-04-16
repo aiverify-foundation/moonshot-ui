@@ -144,6 +144,7 @@ button:disabled {
 
 .ring
 {
+  @apply text-imdalight-600 dark:text-blue-500;
   position:absolute;
   top:50%;
   left:50%;
@@ -157,12 +158,11 @@ button:disabled {
   line-height:80px;
   font-family:sans-serif;
   font-size:10px;
-  color:#ff02ff;
   letter-spacing:2px;
   text-transform:uppercase;
-  text-shadow:0 0 10px #ff02ff;
   box-shadow:0 0 20px rgba(0,0,0,.5);
 }
+
 .ring:before
 {
   content:'';
@@ -172,11 +172,11 @@ button:disabled {
   width:80px;
   height:80px;
   border:3px solid transparent;
-  border-top:3px solid #ff02ff;
-  border-right:3px solid #ff02ff;
   border-radius:50%;
   animation:animateC 2s linear infinite;
+  @apply border-t-imdalight-600 border-r-imdalight-600 dark:border-t-blue-500 dark:border-r-blue-500;
 }
+
 .ring span
 {
   display:block;
@@ -189,18 +189,19 @@ button:disabled {
   transform-origin:left;
   animation:animate 2s linear infinite;
 }
+
 .ring span:before
 {
+  @apply bg-imdalight-600 dark:bg-blue-500;
   content:'';
   position:absolute;
   width:16px;
   height:16px;
   border-radius:50%;
-  background:#ff02ff;
   top:-6px;
   right:-8px;
-  box-shadow:0 0 20px #ff02ff;
 }
+
 @keyframes animateC
 {
   0%
