@@ -1,9 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { proxyPathContextStrats } from './constants';
+import { getHostAndPort } from './host';
 
-const host = process.env.MOONSHOT_API_URL || 'http://localhost';
-const port = parseInt(process.env.PORT || '3000', 10);
-
+const [host, port] = getHostAndPort();
 const contextStratApi = createApi({
   reducerPath: 'contextStratApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),

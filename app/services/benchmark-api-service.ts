@@ -3,15 +3,15 @@ import {
   proxyPathBenchmarksExec,
   proxyPathBenchmarksGetResults,
 } from './constants';
+import { getHostAndPort } from './host';
 import { BenchmarkCollectionType } from '@apptypes/enums';
-
-const host = process.env.MOONSHOT_API_URL || 'http://localhost';
-const port = parseInt(process.env.PORT || '3000', 10);
 
 interface ExtendedBenchmarkRunFormValues {
   benchmarkRunInputData: BenchmarkRunFormValues;
   collectionType: BenchmarkCollectionType;
 }
+
+const [host, port] = getHostAndPort();
 
 const benchmarkRunApi = createApi({
   reducerPath: 'benchmarkRunApi',
