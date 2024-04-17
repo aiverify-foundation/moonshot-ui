@@ -41,28 +41,27 @@ function TopButtonsBar(props: TopButtonsBarProps) {
               }
             />
           </Tooltip>
-          {/* <Tooltip
+          <Tooltip
             delay={100}
             position={TooltipPosition.bottom}
             offsetTop={10}
             content="Add New Recipe">
             <IconButton
               label="Add New Recipe"
-              backgroundColor={
+              labelSize={14}
+              iconName={IconName.Plus}
+              iconSize={14}
+              className="bg-transparent hover:bg-fuchsia-900/40 transition-colors duration-100 ease-in"
+              activeColor={
                 activeButton === RecipesExplorerButtonAction.ADD_NEW_RECIPE
                   ? '#425d85'
-                  : 'transparent'
+                  : ''
               }
-              disabled={
-                activeButton === RecipesExplorerButtonAction.ADD_NEW_RECIPE
-              }
-              iconName={IconName.Plus}
               onClick={() =>
                 onButtonClick(RecipesExplorerButtonAction.ADD_NEW_RECIPE)
               }
-              iconSize={11}
             />
-          </Tooltip> */}
+          </Tooltip>
           {/* <Tooltip
             delay={100}
             position={TooltipPosition.top}

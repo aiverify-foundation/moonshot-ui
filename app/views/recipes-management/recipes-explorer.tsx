@@ -1,16 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import TwoPanel from '@/app/components/two-panel';
 import { Window } from '@/app/components/window';
 import { WindowInfoPanel } from '@/app/components/window-info-panel';
 import { WindowList } from '@/app/components/window-list';
+import { useCreateRecipeMutation } from '@/app/services/recipe-api-service';
 import { RecipeDetailsCard } from './components/recipe-details-card';
 import { RecipeItemCard } from './components/recipe-item-card';
+// import { NewRecipeFlow } from ./components/new-recipe-flow'; to be added
 import { TaglabelsBox } from './components/tag-labels-box';
 import {
   RecipesExplorerButtonAction,
   TopButtonsBar,
 } from './components/top-buttons-bar';
 import { useRecipeList } from './hooks/useRecipeList';
+import { NewRecipeForm } from './components/new-recipe-form';
 
 type RecipesExplorerProps = {
   windowId: string;
@@ -67,6 +70,15 @@ function RecipesExplorer(props: RecipesExplorerProps) {
     isLoading,
     refetch: refetchRecipes,
   } = useRecipeList();
+  const [
+    createRecipe,
+    {
+      data: newRecipe,
+      isLoading: createRecipeIsLoding,
+      error: createCookbookError,
+    },
+  ] = useCreateRecipeMutation();
+
   const [selectedBtnAction, setSelectedBtnAction] =
     useState<RecipesExplorerButtonAction>(
       RecipesExplorerButtonAction.VIEW_RECIPES
@@ -76,6 +88,9 @@ function RecipesExplorer(props: RecipesExplorerProps) {
     []
   );
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | undefined>();
+  const [newlyAddedRecipeName, setNewlyAddedRecipeName] = useState<
+    string | undefined
+  >();
 
   const isTwoPanel =
     !mini &&
@@ -126,7 +141,7 @@ function RecipesExplorer(props: RecipesExplorerProps) {
           onListItemClick(clickedrecipe);
           // Hide the clicked item from the list by filtering it out
           const updatedrecipes = displayedRecipesList.filter(
-            (epoint) => epoint.name !== clickedrecipe.name
+            (recipe) => recipe.id !== clickedrecipe.id
           );
           setDisplayedRecipesList(updatedrecipes);
         }
@@ -144,6 +159,30 @@ function RecipesExplorer(props: RecipesExplorerProps) {
 
   function sortDisplayedrecipesByName(list: Recipe[]): Recipe[] {
     return [...list].sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  async function submitNewRecipe(data: RecipeFormValues) {
+    console.log(data);
+    const newRecipe = {
+      name: data.name,
+      tags: data.tags,
+      description: data.description,
+      datasets: data.datasets,
+      prompt_templates: data.prompt_templates,
+      metrics: data.metrics,
+      attack_strategies: data.attack_strategies,
+      type: data.type
+    };
+    const response = await createRecipe(newRecipe);
+    if ('error' in response) {
+      console.error(response.error);
+      //TODO - create error visuals
+      return;
+    }
+    setSelectedBtnAction(RecipesExplorerButtonAction.VIEW_RECIPES);
+    //@ts-ignore
+    refetchRecipes();
+
   }
 
   useEffect(() => {
@@ -198,7 +237,13 @@ function RecipesExplorer(props: RecipesExplorerProps) {
         <>
           {isTwoPanel ? (
             <TwoPanel initialDividerPosition={initialDividerPosition}>
-              <WindowList styles={{ backgroundColor: '#FFFFFF' }}>
+              <WindowList
+                disableMouseInteraction={
+                  selectedBtnAction === RecipesExplorerButtonAction.ADD_NEW_RECIPE
+                    ? true
+                    : false
+                }
+                styles={{ backgroundColor: '#FFFFFF' }}>
                 {displayedRecipesList
                   ? displayedRecipesList.map((recipe) => (
                       <WindowList.Item
@@ -235,6 +280,13 @@ function RecipesExplorer(props: RecipesExplorerProps) {
                   : null}
               </WindowList>
               {selectedBtnAction ===
+              RecipesExplorerButtonAction.ADD_NEW_RECIPE ? (
+                <div className="flex flex-1 justify-center h-full">
+                  <NewRecipeForm
+                    onFormSubmit={submitNewRecipe}
+                  />
+                </div>
+              ) : selectedBtnAction ===
                 RecipesExplorerButtonAction.SELECT_RECIPES ||
               selectedBtnAction === RecipesExplorerButtonAction.VIEW_RECIPES ? (
                 <div className="flex flex-col h-full">
@@ -260,10 +312,12 @@ function RecipesExplorer(props: RecipesExplorerProps) {
                     RecipesExplorerButtonAction.SELECT_RECIPES &&
                   selectedRecipeList.length ? (
                     <div className="h-[60%] flex items-center pt-4">
-                      <TaglabelsBox
-                        recipes={selectedRecipeList}
-                        onTaglabelIconClick={handleListItemClick}
-                      />
+                      <>
+                        <TaglabelsBox
+                          recipes={selectedRecipeList}
+                          onTaglabelIconClick={handleListItemClick}
+                        />
+                      </>
                     </div>
                   ) : null}
                 </div>

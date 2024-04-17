@@ -79,6 +79,25 @@ type Recipe = {
   metrics: string[];
 };
 
+type RecipeFormValues = {
+  name: string;
+  description: string;
+  type: string;
+  tags: string[];
+  datasets: string[];
+  prompt_templates: string[];
+  metrics: string[];
+  attack_strategies: string[];
+};
+
+type Dataset = {
+  id: string;
+  name: string;
+  description: string;
+  keywords: string[];
+  examples: string[];
+};
+
 type BenchmarkRunFormValues = {
   name: string;
   description: string;

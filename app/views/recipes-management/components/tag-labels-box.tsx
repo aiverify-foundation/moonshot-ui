@@ -15,7 +15,7 @@ const TaglabelsBox = ({
       <div
         className="flex h-7 p-1 w-full text-white
     text-md font-bold items-center px-4">
-        Selected cookbooks
+        Selected Dataset
       </div>
       <div className="p-6 flex flex-wrap gap-3 content-start">
         {recipes.map((recipe) => (

@@ -7,3 +7,6 @@ export const basePathCookbooks = '/v1/cookbooks';
 export const basePathContextStrategies = '/v1/context_strategies';
 export const basePathRecipes = '/v1/recipes';
 export const basePathBenchmarks = '/v1/benchmarks';
+export const basePathDatasets = '/v1/datasets';
+export const basePathMetric = '/v1/metrics';
+export const basePathAttackStrategies = '/v1/attack_strategies';
