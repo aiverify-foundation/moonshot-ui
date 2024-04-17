@@ -1,15 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getHostAndPort } from './host';
 
-const host = process.env.MOONSHOT_API_URL || 'http://localhost';
-const port = parseInt(process.env.PORT || '3000', 10);
-
+const [host, port] = getHostAndPort();
 const recipeApi = createApi({
   reducerPath: 'recipeApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
     getAllRecipes: builder.query<Recipe[], void>({
       query: () => 'api/v1/recipes',
-      keepUnusedDataFor: 0
+      keepUnusedDataFor: 0,
     }),
     createRecipe: builder.mutation<Recipe, Recipe>({
       query: (recipeInputData) => ({
