@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getHostAndPort } from './host';
 import { proxyPathAttackStrategies } from './constants';
 
-const host = process.env.MOONSHOT_API_URL || 'http://localhost';
-const port = parseInt(process.env.PORT || '3000', 10);
+const [host, port] = getHostAndPort();
 
 const attackStrategiesApi = createApi({
   reducerPath: 'attackStrategiesApi',
