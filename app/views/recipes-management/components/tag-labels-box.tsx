@@ -1,30 +1,25 @@
 import { IconName } from '@/app/components/IconSVG';
 import { TagLabel } from '@/app/components/tag-label';
 
-type TagLabelsBoxProps = {
-  recipes: Recipe[];
-  onTaglabelIconClick: (name: string) => () => void;
+type TaglabelsBoxProps = {
+  tags: string[];
+  onTagRemove: (tag: string) => void;
 };
 
-const TaglabelsBox = ({
-  recipes,
-  onTaglabelIconClick,
-}: TagLabelsBoxProps) => {
+const TaglabelsBox = ({ tags, onTagRemove }: TaglabelsBoxProps) => {
   return (
-    <div className="h-full w-full flex flex-col">
-      <div
-        className="flex h-7 p-1 w-full text-white
-    text-md font-bold items-center px-4">
-        Selected Dataset
+    <div className="h-30 w-full flex flex-col">
+      <div className="flex h-7 p-1 w-full text-white text-md font-bold items-center px-4">
+        Added Tags
       </div>
       <div className="p-6 flex flex-wrap gap-3 content-start">
-        {recipes.map((recipe) => (
+        {tags.map((tag) => (
           <TagLabel
-            key={recipe.name}
+            key={tag}
             className="bg-slate-400 border dark:bg-sky-70"
             iconName={IconName.Close}
-            text={recipe.name}
-            onIconClick={onTaglabelIconClick(recipe.name)}
+            text={tag}
+            onIconClick={() => onTagRemove(tag)}
           />
         ))}
       </div>
