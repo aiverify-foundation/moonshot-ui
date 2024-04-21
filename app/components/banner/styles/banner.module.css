@@ -2,7 +2,7 @@
   display: flex;
   position: relative;
   flex-flow: column nowrap;
-  align-items: start;
+  align-items: flex-start;
   border-radius: 1rem;
   padding: 3rem;
   padding-left: 3.5rem;

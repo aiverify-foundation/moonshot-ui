@@ -9,7 +9,7 @@ function WindowTopBarButtonGroup(props: PropsWithChildren<WindowTopBarProps>) {
   return (
     <div
       style={{ height }}
-      className="shrink-0 bg-fuchsia-950/60 dark:bg-moondark-900 rounded px-1">
+      className="shrink-0 bg-fuchsia-950/60 dark:bg-moongray-900 rounded px-1">
       {children}
     </div>
   );

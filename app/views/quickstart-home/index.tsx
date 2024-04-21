@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { ActionCard } from '@/app/components/actionCard/actionCard';
 import { Banner } from '@/app/components/banner/banner';
 import tailwindConfig from '@/tailwind.config';
 import { MicroLayout } from './components/microLayout';
-import { ActionCard } from '@/app/components/actionCard/actionCard';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 

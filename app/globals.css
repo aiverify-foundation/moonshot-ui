@@ -209,10 +209,7 @@ button:disabled {
   bottom: 0;
   left: 0;
   background-image: url('/texture.png');
-  /* Ensure the texture covers the area and is centered */
-  /* background-size: cover; */
   background-repeat: repeat;
-  background-position: center;
 }
 
 @keyframes animateC
