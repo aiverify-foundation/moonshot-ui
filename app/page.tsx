@@ -1,7 +1,10 @@
 import MoonshotDesktop from './views/moonshot-desktop';
-
-console.log('\x1b[36m%s\x1b[0m', 'Page loaded');
+import QuickstartHome from './views/quickstart-home';
 
 export default function Page() {
-  return <MoonshotDesktop />;
+  return (
+    <div className="w-full h-full bg-gradient-to-r from-moonwine-950 to-moonwine-800">
+      <QuickstartHome />
+    </div>
+  );
 }

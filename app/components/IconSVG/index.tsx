@@ -1,6 +1,8 @@
 import { ReactElement } from 'react';
 
 import { useAppSelector } from '@/lib/redux';
+import { ArrowLeftIcon } from './icons/arrow-left-icon';
+import { ArrowRightIcon } from './icons/arrow-right-icon';
 import { BookIcon } from './icons/book-icon';
 import { SolidBoxIcon } from './icons/box-icon';
 import { BurgerMenuIcon } from './icons/burger-menu-icon';
@@ -24,9 +26,8 @@ import { PlusIcon } from './icons/plus-icon';
 import { ResetIcon } from './icons/reset-icon';
 import { RunCookbookIcon } from './icons/run-cookbook-icon';
 import { SquareIcon } from './icons/square-icon';
-import { ArrowLeftIcon } from './icons/arrow-left-icon';
-import { ArrowRightIcon } from './icons/arrow-right-icon';
 import { TableIcon } from './icons/table-icon';
+import { BellIcon } from './icons/bell-icon';
 
 enum IconName {
   Folder,
@@ -55,6 +56,7 @@ enum IconName {
   File,
   Book,
   Table,
+  Bell,
 }
 
 type IconProps = {
@@ -407,6 +409,19 @@ function Icon(props: IconProps) {
     case IconName.Table:
       iconToRender = (
         <TableIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Bell:
+      iconToRender = (
+        <BellIcon
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
