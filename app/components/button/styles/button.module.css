@@ -1,0 +1,17 @@
+.btn {
+  display: flex;
+  gap: 0.4rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2rem;
+  padding: 1rem 2rem;
+  height: max-content;
+  box-shadow: 0px 4px 6px -1px rgb(0 0 0 / 0.4);
+}
+
+.btn_primary {
+  border: 1px solid #FFFFFF;
+  color: #FFFFFF;
+  background-color: #000000;
+}

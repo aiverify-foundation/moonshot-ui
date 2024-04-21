@@ -19,6 +19,7 @@ const config: Config = {
           980: '#702f8a',
           1000: '#4c2b5d',
         },
+        logocolor: '#d5aaea',
         moonwine: {
           50: '#f7f7f8',
           100: '#f0eef0',

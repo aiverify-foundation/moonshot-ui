@@ -22,12 +22,12 @@ function MicroLayout({
         <div className="basis-[90%] grid grid-cols-2 grid-rows-[4rem, 1fr] gap-2">
           <div
             id="headerContainer"
-            className="col-span-3 border border-red-500">
+            className="col-span-3">
             {children[1]}
           </div>
           <div
             id="mainContainer"
-            className="col-span-3 border border-blue-500">
+            className="col-span-3">
             {children[2]}
           </div>
         </div>

@@ -28,6 +28,7 @@ import { RunCookbookIcon } from './icons/run-cookbook-icon';
 import { SquareIcon } from './icons/square-icon';
 import { TableIcon } from './icons/table-icon';
 import { BellIcon } from './icons/bell-icon';
+import { AsteriskIcon } from './icons/asterisk-icon';
 
 enum IconName {
   Folder,
@@ -57,6 +58,7 @@ enum IconName {
   Book,
   Table,
   Bell,
+  Asterisk,
 }
 
 type IconProps = {
@@ -422,6 +424,19 @@ function Icon(props: IconProps) {
     case IconName.Bell:
       iconToRender = (
         <BellIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Asterisk:
+      iconToRender = (
+        <AsteriskIcon
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
