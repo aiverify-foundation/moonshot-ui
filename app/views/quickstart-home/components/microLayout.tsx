@@ -16,7 +16,7 @@ function MicroLayout({
         style={{ maxWidth, minWidth }}>
         <div
           id="navContainer"
-          className="after:absolute after:top-0 after:left-0 after:bg-slate-500 border border-fuchsia-700 basis-[9.5%]">
+          className="after:absolute after:top-0 after:left-0 after:bg-slate-500 basis-[9.5%]">
           {children[0]}
         </div>
         <div className="basis-[90%] grid grid-cols-2 grid-rows-[4rem, 1fr] gap-2">

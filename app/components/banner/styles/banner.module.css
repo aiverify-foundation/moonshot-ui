@@ -11,6 +11,7 @@
 }
 
 .caption_container {
+  width: 100%;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
@@ -18,9 +19,8 @@
   gap: 1rem;
 }
 
-.caption_container p {
+.caption_container .caption_text {
   font-size: 2rem;
   font-weight: 300;
-  color: #702f8a;
 }
 

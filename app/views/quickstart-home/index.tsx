@@ -8,11 +8,38 @@ import { MicroLayout } from './components/microLayout';
 export default function QuickstartHome() {
   return (
     <MicroLayout>
-      <nav>
-        <ul>
-          <li>Home</li>
-          <li>About</li>
-          <li>Contact</li>
+      <nav className="pt-[5rem]">
+        <ul className="flex flex-col gap-10">
+          <li>
+            <Icon
+              name={IconName.OutlineBox}
+              size={50}
+            />
+          </li>
+          <li>
+            <Icon
+              name={IconName.CheckList}
+              size={50}
+            />
+          </li>
+          <li>
+            <Icon
+              name={IconName.Spacesuit}
+              size={50}
+            />
+          </li>
+          <li>
+            <Icon
+              name={IconName.HistoryClock}
+              size={50}
+            />
+          </li>
+          <li>
+            <Icon
+              name={IconName.Tools}
+              size={50}
+            />
+          </li>
         </ul>
       </nav>
       <header className="flex justify-between items-center px-4">
@@ -27,7 +54,7 @@ export default function QuickstartHome() {
       <main>
         <section className="mb-[10px]">
           <Banner
-            bannerColor="#554F59"
+            bannerColor="#504F59"
             textColor="#FFFFFF"
             buttonColor="#000000"
             buttonTextColor="#FFFFFF"

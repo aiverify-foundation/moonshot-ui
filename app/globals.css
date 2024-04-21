@@ -202,6 +202,19 @@ button:disabled {
   right:-8px;
 }
 
+.dust-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url('/texture.png');
+  /* Ensure the texture covers the area and is centered */
+  /* background-size: cover; */
+  background-repeat: repeat;
+  background-position: center;
+}
+
 @keyframes animateC
 {
   0%

@@ -29,6 +29,11 @@ import { SquareIcon } from './icons/square-icon';
 import { TableIcon } from './icons/table-icon';
 import { BellIcon } from './icons/bell-icon';
 import { AsteriskIcon } from './icons/asterisk-icon';
+import { OutlineBoxIcon } from './icons/box-outline-icon';
+import { CheckListIcon } from './icons/checklist-icon';
+import { SpacesuitIcon } from './icons/spacesuit-icon';
+import { HistoryClockIcon } from './icons/history-clock-icon';
+import { ToolsIcon } from './icons/tools-icon';
 
 enum IconName {
   Folder,
@@ -50,6 +55,7 @@ enum IconName {
   LayoutColumns,
   Reset,
   SolidBox,
+  OutlineBox,
   Plus,
   Square,
   CheckedSquare,
@@ -59,6 +65,10 @@ enum IconName {
   Table,
   Bell,
   Asterisk,
+  CheckList,
+  Spacesuit,
+  HistoryClock,
+  Tools,
 }
 
 type IconProps = {
@@ -304,6 +314,19 @@ function Icon(props: IconProps) {
         />
       );
       break;
+    case IconName.OutlineBox:
+      iconToRender = (
+        <OutlineBoxIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
     case IconName.Plus:
       iconToRender = (
         <PlusIcon
@@ -438,6 +461,58 @@ function Icon(props: IconProps) {
       iconToRender = (
         <AsteriskIcon
           outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.CheckList:
+      iconToRender = (
+        <CheckListIcon
+          fillColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Spacesuit:
+      iconToRender = (
+        <SpacesuitIcon
+          fillColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.HistoryClock:
+      iconToRender = (
+        <HistoryClockIcon
+          fillColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Tools:
+      iconToRender = (
+        <ToolsIcon
+          fillColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
               : lightModeColor || '#702f8a'
