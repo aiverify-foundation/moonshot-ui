@@ -3,7 +3,11 @@
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Banner } from '@/app/components/banner/banner';
+import tailwindConfig from '@/tailwind.config';
 import { MicroLayout } from './components/microLayout';
+import { ActionCard } from '@/app/components/actionCard/actionCard';
+
+const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
 export default function QuickstartHome() {
   return (
@@ -12,30 +16,35 @@ export default function QuickstartHome() {
         <ul className="flex flex-col gap-10">
           <li>
             <Icon
+              darkModeColor={colors.moongray[300]}
               name={IconName.OutlineBox}
               size={50}
             />
           </li>
           <li>
             <Icon
+              darkModeColor={colors.moongray[300]}
               name={IconName.CheckList}
               size={50}
             />
           </li>
           <li>
             <Icon
+              darkModeColor={colors.moongray[300]}
               name={IconName.Spacesuit}
               size={50}
             />
           </li>
           <li>
             <Icon
+              darkModeColor={colors.moongray[300]}
               name={IconName.HistoryClock}
               size={50}
             />
           </li>
           <li>
             <Icon
+              darkModeColor={colors.moongray[300]}
               name={IconName.Tools}
               size={50}
             />
@@ -47,17 +56,18 @@ export default function QuickstartHome() {
           moonshot.
         </h1>
         <Icon
+          darkModeColor={colors.moongray[300]}
           name={IconName.Bell}
           size={30}
         />
       </header>
       <main>
-        <section className="mb-[10px]">
+        <section className="mb-[1%]">
           <Banner
-            bannerColor="#504F59"
-            textColor="#FFFFFF"
-            buttonColor="#000000"
-            buttonTextColor="#FFFFFF"
+            bannerColor={colors.moongray[700]}
+            textColor={colors.white}
+            buttonColor={colors.moongray[950]}
+            buttonTextColor={colors.white}
             bannerText={
               <span>
                 Focus on what&apos;s important, <br /> Run only the best and
@@ -75,10 +85,40 @@ export default function QuickstartHome() {
         </section>
         <section>
           <div className="grid grid-cols-3 gap-2">
-            <div className="col-span-3 border border-yellow-500 grid grid-cols-3 gap-[0.5%]">
-              <div className="border border-green-500 h-[100px]">col 1</div>
-              <div className="border border-green-500 h-[100px]">col 2</div>
-              <div className="border border-green-500 h-[100px]">col 2</div>
+            <div className="col-span-3 grid grid-cols-3 gap-[1%]">
+              <ActionCard
+                title="Discover"
+                description="new vulnerabilities"
+                descriptionColor={colors.moongray[300]}
+                cardColor={colors.moongray[950]}
+                iconName={IconName.Spacesuit}
+                actionText="Start Red Teaming"
+                onClick={() => {
+                  console.log('clicked');
+                }}
+              />
+              <ActionCard
+                title="Evaluate"
+                description="against standard tests"
+                descriptionColor={colors.moongray[300]}
+                cardColor={colors.moongray[950]}
+                iconName={IconName.CheckList}
+                actionText="Run Benchmarks"
+                onClick={() => {
+                  console.log('clicked');
+                }}
+              />
+              <ActionCard
+                title="Create"
+                description="custom tests"
+                descriptionColor={colors.moongray[300]}
+                cardColor={colors.moongray[950]}
+                iconName={IconName.Lightning}
+                actionText="Start Red Teaming"
+                onClick={() => {
+                  console.log('clicked');
+                }}
+              />
             </div>
           </div>
         </section>

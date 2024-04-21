@@ -3,12 +3,16 @@ import { ReactElement } from 'react';
 import { useAppSelector } from '@/lib/redux';
 import { ArrowLeftIcon } from './icons/arrow-left-icon';
 import { ArrowRightIcon } from './icons/arrow-right-icon';
+import { AsteriskIcon } from './icons/asterisk-icon';
+import { BellIcon } from './icons/bell-icon';
 import { BookIcon } from './icons/book-icon';
 import { SolidBoxIcon } from './icons/box-icon';
+import { OutlineBoxIcon } from './icons/box-outline-icon';
 import { BurgerMenuIcon } from './icons/burger-menu-icon';
 import { ChatBubbleWideIcon } from './icons/chat-bubble-wide-icon';
 import { ChatBubblesIcon } from './icons/chat-bubbles-icon';
 import { CheckedSquareIcon } from './icons/checked-square-icon';
+import { CheckListIcon } from './icons/checklist-icon';
 import { CircleArrowLeftIcon } from './icons/circle-arrow-left-icon';
 import { CircleArrowRightIcon } from './icons/circle-arrow-right-icon';
 import { CloseIcon } from './icons/close-x-icon';
@@ -16,23 +20,20 @@ import { DarkMoonIcon } from './icons/dark-moon-icon';
 import { FileIcon } from './icons/file-icon';
 import { FolderForChatSessionsIcon } from './icons/folder-chat-icon';
 import { FolderIcon } from './icons/folder-icon';
+import { HistoryClockIcon } from './icons/history-clock-icon';
 import { LayoutColumnsIcon } from './icons/layout-columns-icon';
 import { LayoutWtfIcon } from './icons/layout-wtf-icon';
 import { LightSunIcon } from './icons/light-sun-icon';
+import { LightningIcon } from './icons/lightning-icon';
 import { ListIcon } from './icons/list-icon';
 import { MaximizeIcon } from './icons/maximize-icon';
 import { MinimizeIcon } from './icons/minimize-icon';
 import { PlusIcon } from './icons/plus-icon';
 import { ResetIcon } from './icons/reset-icon';
 import { RunCookbookIcon } from './icons/run-cookbook-icon';
+import { SpacesuitIcon } from './icons/spacesuit-icon';
 import { SquareIcon } from './icons/square-icon';
 import { TableIcon } from './icons/table-icon';
-import { BellIcon } from './icons/bell-icon';
-import { AsteriskIcon } from './icons/asterisk-icon';
-import { OutlineBoxIcon } from './icons/box-outline-icon';
-import { CheckListIcon } from './icons/checklist-icon';
-import { SpacesuitIcon } from './icons/spacesuit-icon';
-import { HistoryClockIcon } from './icons/history-clock-icon';
 import { ToolsIcon } from './icons/tools-icon';
 
 enum IconName {
@@ -69,6 +70,7 @@ enum IconName {
   Spacesuit,
   HistoryClock,
   Tools,
+  Lightning,
 }
 
 type IconProps = {
@@ -452,6 +454,11 @@ function Icon(props: IconProps) {
               ? darkModeColor || '#FFFFFF'
               : lightModeColor || '#702f8a'
           }
+          fillColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
           width={size}
           height={size}
         />
@@ -512,6 +519,19 @@ function Icon(props: IconProps) {
     case IconName.Tools:
       iconToRender = (
         <ToolsIcon
+          fillColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Lightning:
+      iconToRender = (
+        <LightningIcon
           fillColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'

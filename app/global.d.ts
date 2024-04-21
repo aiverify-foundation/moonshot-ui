@@ -172,6 +172,14 @@ type BenchmarkResultsFormat = {
   metadata: ResultMetadata;
   results: Results;
 };
+
+type CustomColors = {
+  moongray: Record<string, string>;
+  moonwine: Record<string, string>;
+  imdalight: Record<string, string>;
+  white: string;
+  black: string;
+};
 /*
  * End of Result format specific types
  */
