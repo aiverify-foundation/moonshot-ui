@@ -31,14 +31,14 @@ function EntryBanners(props: EntryBannersProps) {
           <div style={{ paddingLeft: '0.5rem' }}>
             <Icon
               name={IconName.Asterisk}
-              size={65}
+              size={50}
             />
           </div>
         </Banner>
       </section>
       <section>
         <div className="grid grid-cols-3 gap-2">
-          <div className="col-span-3 grid grid-cols-3 gap-[1%]">
+          <div className="col-span-3 grid grid-cols-3 gap-[1.7%]">
             <ActionCard
               title="Discover"
               description="new vulnerabilities"

@@ -27,7 +27,7 @@ function SelectListItem<T>(props: Props<T>) {
       onClick={handleClick}>
       <div className="flex flex-row gap-2 text-white justify-center items-center">
         <Icon name={iconName} />
-        <h4 className="text-[1.3rem]">{label}</h4>
+        <h4 className="text-[1rem]">{label}</h4>
       </div>
       <input
         type="checkbox"

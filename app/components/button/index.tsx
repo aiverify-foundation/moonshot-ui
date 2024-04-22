@@ -10,18 +10,20 @@ enum ButtonType {
 }
 
 type ButtonProps = {
-  type: ButtonType;
+  type: 'button' | 'submit';
+  mode: ButtonType;
   text: string;
   btnColor?: string;
   textColor?: string;
   iconName?: IconName;
+  disabled?: boolean;
 };
 
 function Button(props: ButtonProps) {
-  const { type, btnColor, textColor, iconName, text } = props;
+  const { mode, btnColor, textColor, iconName, text, disabled = false } = props;
   let cssClass = '';
 
-  switch (type) {
+  switch (mode) {
     case ButtonType.PRIMARY:
       cssClass = clsx(styles.btn, styles.btn_primary);
       break;
@@ -38,6 +40,7 @@ function Button(props: ButtonProps) {
 
   return (
     <button
+      disabled={disabled}
       className={cssClass}
       style={{ backgroundColor: btnColor, color: textColor }}>
       <span>{text}</span>

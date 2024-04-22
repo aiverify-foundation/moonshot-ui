@@ -44,19 +44,21 @@ function NewRedTeamSession(props: Props) {
 
   return (
     <MainSectionSurface onCloseIconClick={handleCloseView}>
-      {currentStep === RedTeamingViewSteps.SELECT_MODEL && (
+      {currentStep == RedTeamingViewSteps.SELECT_MODEL && (
         <ModelSelectView onModelSelectClick={handleModelSelectClick} />
       )}
-      {currentStep === RedTeamingViewSteps.SESSION_DETAILS && (
+      {currentStep == RedTeamingViewSteps.SESSION_DETAILS && (
         <SessionDetailsForm selectedEndpoints={selectedModels} />
       )}
-      <div className="flex flex-col gap-2 w-full">
-        <Icon
-          name={IconName.WideArrowDown}
-          size={40}
-          onClick={handleNextStep}
-        />
-      </div>
+      {currentStep != RedTeamingViewSteps.SESSION_DETAILS && (
+        <div className="flex flex-col gap-2 w-full">
+          <Icon
+            name={IconName.WideArrowDown}
+            size={40}
+            onClick={handleNextStep}
+          />
+        </div>
+      )}
     </MainSectionSurface>
   );
 }

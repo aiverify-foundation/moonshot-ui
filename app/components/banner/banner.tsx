@@ -36,9 +36,10 @@ function Banner(props: PropsWithChildren<BannerProps>) {
           {bannerText}
         </p>
         <Button
+          type="button"
           btnColor={buttonColor}
           textColor={buttonTextColor}
-          type={ButtonType.PRIMARY}
+          mode={ButtonType.PRIMARY}
           text={buttonText}
           iconName={IconName.ArrowRight}
         />

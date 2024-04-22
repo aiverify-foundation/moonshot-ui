@@ -11,7 +11,6 @@ import { ChatboxFreeLayout } from './components/chatbox-free-layout';
 import { ChatboxSlideLayout } from './components/chatbox-slide-layout';
 import { PromptBox } from './components/prompt-box';
 import { getWindowId, getWindowXYById } from '@app/lib/window-utils';
-import { ScreenOverlay } from '@components/screen-overlay';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
 import { updateChatHistory } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
@@ -24,8 +23,37 @@ type ActiveSessionProps = {
 
 const promptBoxId = 'prompt-box';
 
+// const mockActiveSession = {
+//   session_id: 'test06_20240422-103836',
+//   name: 'test06',
+//   description: 'test06',
+//   created_epoch: 1713753516.791978,
+//   created_datetime: '20240422-103836',
+//   chat_ids: ['openaigpt35demo1_20240422_103836'],
+//   endpoints: ['openaigpt35demo1'],
+//   prompt_template: null,
+//   context_strategy: null,
+//   chat_history: {
+//     openaigpt35demo1_20240422_103836: [
+//       {
+//         chat_record_id: 1,
+//         conn_id: '',
+//         context_strategy: '',
+//         prompt_template: '',
+//         prompt: 'who are you',
+//         prepared_prompt: 'who are you',
+//         predicted_result:
+//           'I am a language model AI created by OpenAI. I am here to assist you with any questions or tasks you may have. How can I help you today?',
+//         duration: '1.25122444600129',
+//         prompt_time: '04/22/2024, 10:38:41',
+//       },
+//     ],
+//   },
+// };
+
 function ManualRedTeaming(props: ActiveSessionProps) {
   const { zIndex, onCloseBtnClick } = props;
+  // const [activeSession, setActiveSession] = useState(mockActiveSession);
   const activeSession = useAppSelector((state) => state.activeSession.entity);
   const { promptTemplates, error, isLoading } = usePromptTemplateList();
   const [promptText, setPromptText] = useState('');

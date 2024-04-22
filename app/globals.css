@@ -46,8 +46,8 @@
 
 @media (min-width: 1180px) {
   :root {
-    --chatwindow-width: 500px;
-    --gap-width: 20px;
+    --chatwindow-width: 400px;
+    --gap-width: 16px;
   }
 }
 
@@ -133,7 +133,7 @@ button:disabled {
 }
 
 .chat-window-container {
-  @apply absolute flex overflow-hidden h-[550px] top-[150px] left-[50%] transform-gpu;
+  @apply absolute flex overflow-hidden h-[500px] top-[80px] left-[50%] transform-gpu;
   transform: translate(-50%);
   width: calc(3 * var(--chatwindow-width) + 2 * var(--gap-width));
 }

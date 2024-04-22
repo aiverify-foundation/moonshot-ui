@@ -6,7 +6,7 @@ import { TextInput } from '@/app/components/textInput';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import useOutsideClick from '@/app/hooks/use-outside-click';
 import { debounce } from '@/app/lib/throttle';
-import useChatboxesPositionsUtils from '@/app/views/manual-redteaming/hooks/useChatboxesPositionsUtils';
+import useChatboxesPositionsUtils from '@/app/views/redteaming/hooks/useChatboxesPositionsUtils';
 import { toggleDarkMode, useAppDispatch } from '@/lib/redux';
 import {
   LayoutMode,

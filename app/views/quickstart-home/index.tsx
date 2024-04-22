@@ -14,9 +14,9 @@ import { EntryBanners } from './components/entryBanners';
 import { MicroLayout } from './components/microLayout';
 import { NewRedTeamSession } from './components/newRedteamSession';
 import { MainSectionViews } from './enums';
-import { ManualRedTeaming } from '@views/manual-redteaming/red-teaming-session';
 import { WindowIds, Z_Index } from '@views/moonshot-desktop/constants';
 import { useResetWindows } from '@views/moonshot-desktop/hooks/useResetWindows';
+import { ManualRedTeamingV2 } from '@views/redteaming/red-teaming-session-v2';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -62,76 +62,77 @@ export default function QuickstartHome() {
   return (
     <>
       {openedWindowIds.includes(getWindowId(WindowIds.RED_TEAMING_SESSION)) ? (
-        <ManualRedTeaming
+        <ManualRedTeamingV2
           zIndex={Z_Index.Level_2}
           onCloseBtnClick={handleRedteamingSessionCloseClick}
         />
-      ) : null}
-      <MicroLayout>
-        <nav className="pt-[5rem]">
-          <ul className="flex flex-col gap-10">
-            <li>
-              <Icon
-                darkModeColor={colors.moongray[300]}
-                name={IconName.OutlineBox}
-                size={50}
-              />
-            </li>
-            <li>
-              <Icon
-                darkModeColor={colors.moongray[300]}
-                name={IconName.CheckList}
-                size={50}
-              />
-            </li>
-            <li>
-              <Icon
-                darkModeColor={colors.moongray[300]}
-                name={IconName.Spacesuit}
-                size={50}
-              />
-            </li>
-            <li>
-              <Icon
-                darkModeColor={colors.moongray[300]}
-                name={IconName.HistoryClock}
-                size={50}
-              />
-            </li>
-            <li>
-              <Icon
-                darkModeColor={colors.moongray[300]}
-                name={IconName.Tools}
-                size={50}
-              />
-            </li>
-          </ul>
-        </nav>
-        <header className="flex justify-between items-center px-4">
-          <h1
-            className="text-logocolor tracking-[0.7rem] font-extralight text-[2.7rem] cursor-pointer"
-            onClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}>
-            moonshot.
-          </h1>
-          <Icon
-            darkModeColor={colors.moongray[300]}
-            name={IconName.Bell}
-            size={30}
-          />
-        </header>
-        <main>
-          {activeView === MainSectionViews.QUICKSTART_HOME && (
-            <EntryBanners changeView={changeView} />
-          )}
-          {activeView === MainSectionViews.REDTEAMING && (
-            <NewRedTeamSession
-              onCloseIconClick={() =>
-                changeView(MainSectionViews.QUICKSTART_HOME)
-              }
+      ) : (
+        <MicroLayout>
+          <nav className="pt-[5rem]">
+            <ul className="flex flex-col gap-10">
+              <li>
+                <Icon
+                  darkModeColor={colors.moongray[300]}
+                  name={IconName.OutlineBox}
+                  size={40}
+                />
+              </li>
+              <li>
+                <Icon
+                  darkModeColor={colors.moongray[300]}
+                  name={IconName.CheckList}
+                  size={40}
+                />
+              </li>
+              <li>
+                <Icon
+                  darkModeColor={colors.moongray[300]}
+                  name={IconName.Spacesuit}
+                  size={40}
+                />
+              </li>
+              <li>
+                <Icon
+                  darkModeColor={colors.moongray[300]}
+                  name={IconName.HistoryClock}
+                  size={40}
+                />
+              </li>
+              <li>
+                <Icon
+                  darkModeColor={colors.moongray[300]}
+                  name={IconName.Tools}
+                  size={40}
+                />
+              </li>
+            </ul>
+          </nav>
+          <header className="flex justify-between items-center px-4">
+            <h1
+              className="text-logocolor tracking-[0.7rem] font-extralight text-[2.7rem] cursor-pointer"
+              onClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}>
+              moonshot.
+            </h1>
+            <Icon
+              darkModeColor={colors.moongray[300]}
+              name={IconName.Bell}
+              size={30}
             />
-          )}
-        </main>
-      </MicroLayout>
+          </header>
+          <main>
+            {activeView === MainSectionViews.QUICKSTART_HOME && (
+              <EntryBanners changeView={changeView} />
+            )}
+            {activeView === MainSectionViews.REDTEAMING && (
+              <NewRedTeamSession
+                onCloseIconClick={() =>
+                  changeView(MainSectionViews.QUICKSTART_HOME)
+                }
+              />
+            )}
+          </main>
+        </MicroLayout>
+      )}
     </>
   );
 }

@@ -9,7 +9,8 @@ import {
 import { useAppSelector } from '@/lib/redux';
 import { ChatBox } from './chatbox';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
-import useChatboxesPositionsUtils from '@views/manual-redteaming/hooks/useChatboxesPositionsUtils';
+import useChatboxesPositionsUtils from '@views/redteaming/hooks/useChatboxesPositionsUtils';
+import { ChatBoxVirtualized } from './chatboxVirtualized';
 
 const minimizedStyle = {
   transform: 'scale(0.1)', // Scale down the chatbox

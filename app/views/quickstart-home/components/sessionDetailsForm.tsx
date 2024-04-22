@@ -16,6 +16,10 @@ import {
   setActiveSession,
   useAppDispatch,
 } from '@/lib/redux';
+import { Button, ButtonType } from '@/app/components/button';
+import tailwindConfig from '@/tailwind.config';
+
+const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
 type FormValues = {
   sessionName: string;
@@ -45,13 +49,17 @@ type NewSessonFormProps = {
 
 const SessionDetailsForm: React.FC<NewSessonFormProps> = (props) => {
   const { selectedEndpoints, onFormSubmit } = props;
-  const { promptTemplates, error, isLoading } = usePromptTemplateList();
+  const {
+    promptTemplates,
+    error,
+    isLoading: isPrompTemplatesLoading,
+  } = usePromptTemplateList();
   const dispatch = useAppDispatch();
 
   const {
     data: contextStrategies,
     error: ctxErrors,
-    isLoading: ctxIsLoading,
+    isLoading: isCtxLoading,
     refetch: ctxRefetch,
   } = useGetAllContextStrategiesQuery();
 
@@ -108,16 +116,21 @@ const SessionDetailsForm: React.FC<NewSessonFormProps> = (props) => {
     if (onFormSubmit) onFormSubmit(values);
   }
 
-  return isLoading ? null : (
-    <div className="pl-4 pt-8 w-full h-full">
-      <Formik<FormValues>
-        initialValues={initialFormValues}
-        validationSchema={validationSchema}
-        onSubmit={handleFormSubmit}>
-        {(formProps) => {
-          return (
-            <Form className="w-full h-full flex flex-col">
-              <div className="flex divide-x divide-fuchsia-100/40 w-full h-full gap-6">
+  return (
+    <div className="relative pl-4 pt-8 pb-8 w-full h-full min-h-[300px]">
+      {isPrompTemplatesLoading || isCtxLoading ? (
+        <div className="ring">
+          Loading
+          <span />
+        </div>
+      ) : (
+        <Formik<FormValues>
+          initialValues={initialFormValues}
+          validationSchema={validationSchema}
+          onSubmit={handleFormSubmit}>
+          {(formProps) => {
+            return (
+              <Form className="w-full h-full flex flex-col px-[20%] justify-center items-center">
                 <div className="flex-0 basis-[55%] h-full">
                   <SelectInput
                     label="Prompt Template"
@@ -131,7 +144,6 @@ const SessionDetailsForm: React.FC<NewSessonFormProps> = (props) => {
                     }))}
                     onSyntheticChange={formProps.handleChange}
                   />
-
                   <SelectInput
                     label="Context Strategy"
                     name="context_strategy"
@@ -142,8 +154,6 @@ const SessionDetailsForm: React.FC<NewSessonFormProps> = (props) => {
                     options={contextStrategySelectOptions}
                     onSyntheticChange={formProps.handleChange}
                   />
-                </div>
-                <div className="flex-1 pl-4 h-full flex flex-col justify-end">
                   <TextInput
                     name="sessionName"
                     label="Session Name"
@@ -172,24 +182,21 @@ const SessionDetailsForm: React.FC<NewSessonFormProps> = (props) => {
                     placeholder="Provide a description of this session"
                   />
                   <div className="flex justify-end mt-6">
-                    <button
-                      className="flex btn-primary items-center gap-2 btn-large rounded"
-                      disabled={!formProps.isValid} // Disable button if form is not valid
-                      type="submit">
-                      <div>Start Red Teaming Session</div>
-                      <Icon
-                        name={IconName.ArrowRight}
-                        lightModeColor="#FFFFFF"
-                        size={14}
-                      />
-                    </button>
+                    <Button
+                      type="submit"
+                      btnColor={colors.moongray[900]}
+                      textColor={colors.white}
+                      mode={ButtonType.PRIMARY}
+                      text="Start Red Teaming Session"
+                      iconName={IconName.ArrowRight}
+                    />
                   </div>
                 </div>
-              </div>
-            </Form>
-          );
-        }}
-      </Formik>
+              </Form>
+            );
+          }}
+        </Formik>
+      )}
     </div>
   );
 };
