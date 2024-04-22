@@ -1,4 +1,5 @@
 import { Form, Formik } from 'formik';
+import { object, string, array } from 'yup';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { TextArea } from '@/app/components/textArea';
@@ -15,7 +16,6 @@ import {
   setActiveSession,
   useAppDispatch,
 } from '@/lib/redux';
-import { object, string, array } from 'yup';
 
 type FormValues = {
   sessionName: string;
@@ -43,7 +43,7 @@ type NewSessonFormProps = {
   onFormSubmit?: (data: FormValues) => void;
 };
 
-const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
+const SessionDetailsForm: React.FC<NewSessonFormProps> = (props) => {
   const { selectedEndpoints, onFormSubmit } = props;
   const { promptTemplates, error, isLoading } = usePromptTemplateList();
   const dispatch = useAppDispatch();
@@ -112,8 +112,7 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
     <div className="pl-4 pt-8 w-full h-full">
       <Formik<FormValues>
         initialValues={initialFormValues}
-        validationSchema={validationSchema} 
-
+        validationSchema={validationSchema}
         onSubmit={handleFormSubmit}>
         {(formProps) => {
           return (
@@ -195,4 +194,4 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
   );
 };
 
-export { NewSessionForm };
+export { SessionDetailsForm };

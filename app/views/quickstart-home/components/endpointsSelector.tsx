@@ -3,14 +3,16 @@ import useModelsList from '@/app/hooks/useLLMEndpointList';
 import { SelectListItem } from './selectListItem';
 
 type EndpointSelectViewProps = {
-  onSelect: (model: LLMEndpoint) => void;
+  onModelSelectClick: (model: LLMEndpoint) => void;
 };
 
-function ModelSelectView() {
+function ModelSelectView(props: EndpointSelectViewProps) {
+  const { onModelSelectClick } = props;
   const { models, error, isLoading, refetch } = useModelsList();
 
   function handleModelClick(model: LLMEndpoint) {
     console.log(model);
+    onModelSelectClick(model);
   }
 
   function handleCreateNewEndpoint() {

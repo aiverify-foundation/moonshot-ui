@@ -191,110 +191,108 @@ function ManualRedTeaming(props: ActiveSessionProps) {
   if (activeSession === undefined) return null;
 
   return (
-    <ScreenOverlay zIndex={zIndex}>
-      <div
-        style={{ zIndex: zIndex + 1 }}
-        className="w-full h-full">
-        <div className="absolute h-10 w-full top-11">
-          <div className="absolute flex flex-col top-3 left-6">
-            <h2 className="capitalize text-lg dark:text-red-500 text-fuchsia-900">
-              Red Teaming -
-              <span className="font-bold text-fuchsia-980 dark:text-white ml-2 text-lg">
-                {activeSession.name}
-              </span>
-            </h2>
-            <div className="w-80 text-slate-800 dark:text-white text-sm">
-              {activeSession.description}
-            </div>
-          </div>
-          {activeSession && activeSession.chat_ids.length > 3 ? (
-            <div className="flex gap-6 absolute top-4 left-[50%] transform -translate-x-1/2">
-              <Tooltip
-                disabled={layoutMode === LayoutMode.SLIDE}
-                content="Switch to slide layout"
-                position={TooltipPosition.left}
-                offsetLeft={-18}
-                offsetTop={5}>
-                <Icon
-                  size={25}
-                  name={IconName.LayoutColumns}
-                  disabled={layoutMode === LayoutMode.SLIDE}
-                  onClick={() => dispatch(setChatLayoutMode(LayoutMode.SLIDE))}
-                />
-              </Tooltip>
-              <Tooltip
-                disabled={layoutMode === LayoutMode.FREE}
-                content="Switch to free layout"
-                position={TooltipPosition.right}
-                offsetLeft={18}
-                offsetTop={5}>
-                <Icon
-                  size={26}
-                  name={IconName.LayoutWtf}
-                  disabled={layoutMode === LayoutMode.FREE}
-                  onClick={() => dispatch(setChatLayoutMode(LayoutMode.FREE))}
-                />
-              </Tooltip>
-            </div>
-          ) : null}
-          <div className="absolute top-3 right-4 flex items-center gap-2">
-            <div className="dark:text-white text-sm font-normal">
-              Close Session
-            </div>
-            <Icon
-              size={30}
-              name={IconName.Close}
-              onClick={onCloseBtnClick}
-            />
+    <div
+      style={{ zIndex: zIndex + 1 }}
+      className="w-full h-full">
+      <div className="absolute h-10 w-full top-11">
+        <div className="absolute flex flex-col top-3 left-6">
+          <h2 className="capitalize text-lg dark:text-red-500 text-fuchsia-900">
+            Red Teaming -
+            <span className="font-bold text-fuchsia-980 dark:text-white ml-2 text-lg">
+              {activeSession.name}
+            </span>
+          </h2>
+          <div className="w-80 text-slate-800 dark:text-white text-sm">
+            {activeSession.description}
           </div>
         </div>
-
-        {layoutMode === LayoutMode.FREE ? (
-          <ChatboxFreeLayout
-            chatSession={activeSession}
-            boxRefs={chatBoxRefs}
-            chatCompletionInProgress={sendPromptIsLoading}
-            promptTemplates={promptTemplates}
-            selectedPromptTemplate={selectedPromptTemplate}
-            promptText={promptText}
-            handleOnWindowChange={handleOnWindowChange}
-            handleOnWheel={handleOnWheel}
-          />
+        {activeSession && activeSession.chat_ids.length > 3 ? (
+          <div className="flex gap-6 absolute top-4 left-[50%] transform -translate-x-1/2">
+            <Tooltip
+              disabled={layoutMode === LayoutMode.SLIDE}
+              content="Switch to slide layout"
+              position={TooltipPosition.left}
+              offsetLeft={-18}
+              offsetTop={5}>
+              <Icon
+                size={25}
+                name={IconName.LayoutColumns}
+                disabled={layoutMode === LayoutMode.SLIDE}
+                onClick={() => dispatch(setChatLayoutMode(LayoutMode.SLIDE))}
+              />
+            </Tooltip>
+            <Tooltip
+              disabled={layoutMode === LayoutMode.FREE}
+              content="Switch to free layout"
+              position={TooltipPosition.right}
+              offsetLeft={18}
+              offsetTop={5}>
+              <Icon
+                size={26}
+                name={IconName.LayoutWtf}
+                disabled={layoutMode === LayoutMode.FREE}
+                onClick={() => dispatch(setChatLayoutMode(LayoutMode.FREE))}
+              />
+            </Tooltip>
+          </div>
         ) : null}
-
-        {layoutMode === LayoutMode.SLIDE ? (
-          <ChatboxSlideLayout
-            chatSession={activeSession}
-            boxRefs={chatBoxRefs}
-            chatCompletionInProgress={sendPromptIsLoading}
-            promptTemplates={promptTemplates}
-            selectedPromptTemplate={selectedPromptTemplate}
-            promptText={promptText}
-            handleOnWindowChange={handleOnWindowChange}
-            handleOnWheel={handleOnWheel}
+        <div className="absolute top-3 right-4 flex items-center gap-2">
+          <div className="dark:text-white text-sm font-normal">
+            Close Session
+          </div>
+          <Icon
+            size={30}
+            name={IconName.Close}
+            onClick={onCloseBtnClick}
           />
-        ) : null}
-
-        <PromptBox
-          windowId={getWindowId(promptBoxId)}
-          name={promptBoxId}
-          draggable={layoutMode === LayoutMode.FREE}
-          initialXY={
-            windowsMap[getWindowId(promptBoxId)]
-              ? getWindowXYById(windowsMap, promptBoxId)
-              : [710, 760]
-          }
-          chatSession={activeSession}
-          promptTemplates={promptTemplates}
-          activePromptTemplate={selectedPromptTemplate}
-          onCloseClick={onCloseBtnClick}
-          onSendClick={handleSendPromptClick}
-          onSelectPromptTemplate={handleSelectPromptTemplate}
-          onWindowChange={handleOnWindowChange}
-          onCloseSessionCommand={onCloseBtnClick}
-        />
+        </div>
       </div>
-    </ScreenOverlay>
+
+      {layoutMode === LayoutMode.FREE ? (
+        <ChatboxFreeLayout
+          chatSession={activeSession}
+          boxRefs={chatBoxRefs}
+          chatCompletionInProgress={sendPromptIsLoading}
+          promptTemplates={promptTemplates}
+          selectedPromptTemplate={selectedPromptTemplate}
+          promptText={promptText}
+          handleOnWindowChange={handleOnWindowChange}
+          handleOnWheel={handleOnWheel}
+        />
+      ) : null}
+
+      {layoutMode === LayoutMode.SLIDE ? (
+        <ChatboxSlideLayout
+          chatSession={activeSession}
+          boxRefs={chatBoxRefs}
+          chatCompletionInProgress={sendPromptIsLoading}
+          promptTemplates={promptTemplates}
+          selectedPromptTemplate={selectedPromptTemplate}
+          promptText={promptText}
+          handleOnWindowChange={handleOnWindowChange}
+          handleOnWheel={handleOnWheel}
+        />
+      ) : null}
+
+      <PromptBox
+        windowId={getWindowId(promptBoxId)}
+        name={promptBoxId}
+        draggable={layoutMode === LayoutMode.FREE}
+        initialXY={
+          windowsMap[getWindowId(promptBoxId)]
+            ? getWindowXYById(windowsMap, promptBoxId)
+            : [710, 760]
+        }
+        chatSession={activeSession}
+        promptTemplates={promptTemplates}
+        activePromptTemplate={selectedPromptTemplate}
+        onCloseClick={onCloseBtnClick}
+        onSendClick={handleSendPromptClick}
+        onSelectPromptTemplate={handleSelectPromptTemplate}
+        onWindowChange={handleOnWindowChange}
+        onCloseSessionCommand={onCloseBtnClick}
+      />
+    </div>
   );
 }
 
