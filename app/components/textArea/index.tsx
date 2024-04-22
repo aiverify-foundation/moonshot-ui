@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import React, {
+  ChangeEvent,
   ChangeEventHandler,
   KeyboardEventHandler,
   useEffect,
@@ -19,7 +20,7 @@ type TextInputProps = {
   labelSibling?: React.ReactElement;
   containerStyles?: React.CSSProperties;
   inputStyles?: React.CSSProperties;
-  onChange?: ChangeEventHandler<HTMLTextAreaElement>;
+  onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   onKeyDown?: KeyboardEventHandler<HTMLTextAreaElement>;
 };
 

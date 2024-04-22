@@ -1,6 +1,7 @@
 import { Form, Formik } from 'formik';
-import { object, string, array } from 'yup';
-import { Icon, IconName } from '@/app/components/IconSVG';
+import { object, string } from 'yup';
+import { IconName } from '@/app/components/IconSVG';
+import { Button, ButtonType } from '@/app/components/button';
 import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
@@ -16,7 +17,6 @@ import {
   setActiveSession,
   useAppDispatch,
 } from '@/lib/redux';
-import { Button, ButtonType } from '@/app/components/button';
 import tailwindConfig from '@/tailwind.config';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;

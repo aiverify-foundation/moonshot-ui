@@ -5,14 +5,30 @@
   align-items: center;
   justify-content: center;
   border-radius: 2rem;
-  padding: 0.8rem 1.5rem;
+  padding: 0.5rem 0.8rem;
   height: max-content;
-  font-size: 1rem;
+  font-size: 0.8rem;
   box-shadow: 0px 4px 6px -1px rgb(0 0 0 / 0.4);
 }
 
 .btn_primary {
   border: 1px solid #FFFFFF;
   color: #FFFFFF;
-  background-color: #000000;
+  background: #000000;
+  transition: background-color 0.2s ease;
 }
+
+.btn:active {
+  box-shadow: none;
+}
+
+.btn_lg {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+}
+
+.btn_md {
+  padding: 0.5rem 0.8rem;
+  font-size: 0.8rem;
+}
+

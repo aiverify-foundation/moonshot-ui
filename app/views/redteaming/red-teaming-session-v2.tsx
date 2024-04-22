@@ -7,6 +7,8 @@ import {
 } from '@/app/services/session-api-service';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
+import { AutoRedTeamingForm } from './components/autoRedTeamingForm';
+import { BookmarksList } from './components/bookmarksList';
 import { ChatboxFreeLayout } from './components/chatbox-free-layout';
 import { ChatboxSlideLayout } from './components/chatbox-slide-layout';
 import { PromptBox } from './components/prompt-box';
@@ -14,8 +16,8 @@ import { getWindowId, getWindowXYById } from '@app/lib/window-utils';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
 import { updateChatHistory } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
+import { Z_Index } from '@views/moonshot-desktop/constants';
 import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTemplateList';
-import { MainSectionSurface } from '../quickstart-home/components/mainSectionSurface';
 
 type ActiveSessionProps = {
   zIndex: number;
@@ -24,49 +26,37 @@ type ActiveSessionProps = {
 
 const promptBoxId = 'prompt-box';
 
-// const mockActiveSession = {
-//   session_id: 'test06_20240422-103836',
-//   name: 'test06',
-//   description: 'test06',
-//   created_epoch: 1713753516.791978,
-//   created_datetime: '20240422-103836',
-//   chat_ids: ['openaigpt35demo1_20240422_103836'],
-//   endpoints: ['openaigpt35demo1'],
-//   prompt_template: null,
-//   context_strategy: null,
-//   chat_history: {
-//     openaigpt35demo1_20240422_103836: [
-//       {
-//         chat_record_id: 1,
-//         conn_id: '',
-//         context_strategy: '',
-//         prompt_template: '',
-//         prompt: 'who are you',
-//         prepared_prompt: 'who are you',
-//         predicted_result:
-//           'I am a language model AI created by OpenAI. I am here to assist you with any questions or tasks you may have. How can I help you today?',
-//         duration: '1.25122444600129',
-//         prompt_time: '04/22/2024, 10:38:41',
-//       },
-//     ],
-//   },
-// };
-
 function ManualRedTeamingV2(props: ActiveSessionProps) {
   const { zIndex, onCloseBtnClick } = props;
-  // const [activeSession, setActiveSession] = useState(mockActiveSession);
-  const activeSession = useAppSelector((state) => state.activeSession.entity);
-  const { promptTemplates, error, isLoading } = usePromptTemplateList();
+  const dispatch = useAppDispatch();
   const [promptText, setPromptText] = useState('');
+  const activeSession = useAppSelector((state) => state.activeSession.entity);
+  const windowsMap = useAppSelector((state) => state.windows.map);
   const [selectedPromptTemplate, setSelectedPromptTemplate] = useState<
     PromptTemplate | undefined
   >(undefined);
 
   let layoutMode = useAppSelector((state) => state.chatLayoutMode.value);
+
   if (activeSession && activeSession.chat_ids.length < 4) {
     layoutMode = LayoutMode.FREE;
   }
-  const windowsMap = useAppSelector((state) => state.windows.map);
+
+  let promptBoxInitialXY: [number, number] = [880, 720];
+
+  if (layoutMode === LayoutMode.FREE) {
+    if (windowsMap[getWindowId(promptBoxId)]) {
+      promptBoxInitialXY = getWindowXYById(windowsMap, promptBoxId);
+    }
+  }
+
+  const {
+    promptTemplates,
+    error: promptTemplatesError,
+    isLoading: promptTemplatesIsLoading,
+    refetch: refetchPromptTemplates,
+  } = usePromptTemplateList();
+
   const [
     sendPrompt,
     {
@@ -75,6 +65,7 @@ function ManualRedTeamingV2(props: ActiveSessionProps) {
       error: sendPromptError,
     },
   ] = useSendPromptMutation();
+
   const [
     triggerSetPromptTemplate,
     {
@@ -83,6 +74,7 @@ function ManualRedTeamingV2(props: ActiveSessionProps) {
       error: promptTemplateResultError,
     },
   ] = useSetPromptTemplateMutation();
+
   const [
     triggerUnSetPromptTemplate,
     {
@@ -91,7 +83,7 @@ function ManualRedTeamingV2(props: ActiveSessionProps) {
       error: unusePromptTemplateResultError,
     },
   ] = useUnsetPromptTemplateMutation();
-  const dispatch = useAppDispatch();
+
   const chatBoxRefs = useRef<HTMLDivElement[]>([]);
   const isZKeyPressed = useRef(false);
 
@@ -220,27 +212,18 @@ function ManualRedTeamingV2(props: ActiveSessionProps) {
   if (activeSession === undefined) return null;
 
   return (
-    <div
-      className="absolute dark:bg-moongray-800 rounded-2xl p-6 m-[10px] shadow-lg opacity-95"
-      style={{
-        zIndex: zIndex + 1,
-        width: 'calc(100vw - 20px)',
-        height: 'calc(100vh - 20px)',
-      }}>
-      <header className="flex flex-col relative h-8">
-        <div className="absolute top-0 right-0">
-          <Icon
-            name={IconName.Close}
-            size={32}
-            onClick={onCloseBtnClick}
-          />
-        </div>
-      </header>
-      <div className="w-full h-full">
-        <div className="absolute h-10 w-full top-5">
-          <div className="absolute flex flex-col top-3 left-6">
-            <h2 className="capitalize text-lg dark:text-white text-fuchsia-900">
-              <span className="font-bold text-fuchsia-980 dark:text-white text-lg">
+    <>
+      <div
+        className="absolute dark:bg-moongray-800 rounded-2xl p-6 m-[10px] shadow-lg opacity-95"
+        style={{
+          zIndex: zIndex + 1,
+          width: 'calc(100vw - 20px)',
+          height: 'calc(100vh - 20px)',
+        }}>
+        <header className="flex relative justify-between">
+          <div className="flex flex-col left-6 pl-5">
+            <h2 className="capitalize text-lg dark:text-white">
+              <span className="font-bold dark:text-white text-lg">
                 {activeSession.name}
               </span>
             </h2>
@@ -249,7 +232,8 @@ function ManualRedTeamingV2(props: ActiveSessionProps) {
             </div>
           </div>
           {activeSession && activeSession.chat_ids.length > 3 ? (
-            <div className="flex gap-6 absolute top-4 left-[50%] transform -translate-x-1/2">
+            <div className="flex gap-6 top-10 left-[58%] dark:bg-moongray-600 rounded p-1 px-4 shadow-lg items-center">
+              <p className="text-sm text-white">Layout: </p>
               <Tooltip
                 disabled={layoutMode === LayoutMode.SLIDE}
                 content="Switch to slide layout"
@@ -278,64 +262,77 @@ function ManualRedTeamingV2(props: ActiveSessionProps) {
               </Tooltip>
             </div>
           ) : null}
-          {/* <div className="absolute top-3 right-4 flex items-center gap-2">
-            <div className="dark:text-white text-sm font-normal">
-              Close Session
-            </div>
+          <div>
             <Icon
-              size={30}
               name={IconName.Close}
+              size={32}
               onClick={onCloseBtnClick}
             />
-          </div> */}
+          </div>
+        </header>
+        <div
+          className="flex flex-col w-full relative"
+          style={{ height: 'calc(100% - 40px)' }}>
+          <div className="flex h-full">
+            <div className="relative">
+              <div className="h-full w-[350px] pt-10 flex flex-col gap-2">
+                <section className="dark:bg-moongray-600 rounded p-4 m-[10px] shadow-lg">
+                  <AutoRedTeamingForm />
+                </section>
+                <section className="dark:bg-moongray-600 rounded p-4 m-[10px] shadow-lg">
+                  <BookmarksList />
+                </section>
+              </div>
+            </div>
+            <div
+              className=" h-full"
+              style={{ width: 'calc(100% - 200px)' }}>
+              {layoutMode === LayoutMode.FREE ? (
+                <ChatboxFreeLayout
+                  chatSession={activeSession}
+                  boxRefs={chatBoxRefs}
+                  chatCompletionInProgress={sendPromptIsLoading}
+                  promptTemplates={promptTemplates}
+                  selectedPromptTemplate={selectedPromptTemplate}
+                  promptText={promptText}
+                  handleOnWindowChange={handleOnWindowChange}
+                  handleOnWheel={handleOnWheel}
+                />
+              ) : null}
+
+              {layoutMode === LayoutMode.SLIDE ? (
+                <ChatboxSlideLayout
+                  chatSession={activeSession}
+                  boxRefs={chatBoxRefs}
+                  chatCompletionInProgress={sendPromptIsLoading}
+                  promptTemplates={promptTemplates}
+                  selectedPromptTemplate={selectedPromptTemplate}
+                  promptText={promptText}
+                  handleOnWindowChange={handleOnWindowChange}
+                  handleOnWheel={handleOnWheel}
+                />
+              ) : null}
+            </div>
+          </div>
         </div>
-
-        {layoutMode === LayoutMode.FREE ? (
-          <ChatboxFreeLayout
-            chatSession={activeSession}
-            boxRefs={chatBoxRefs}
-            chatCompletionInProgress={sendPromptIsLoading}
-            promptTemplates={promptTemplates}
-            selectedPromptTemplate={selectedPromptTemplate}
-            promptText={promptText}
-            handleOnWindowChange={handleOnWindowChange}
-            handleOnWheel={handleOnWheel}
-          />
-        ) : null}
-
-        {layoutMode === LayoutMode.SLIDE ? (
-          <ChatboxSlideLayout
-            chatSession={activeSession}
-            boxRefs={chatBoxRefs}
-            chatCompletionInProgress={sendPromptIsLoading}
-            promptTemplates={promptTemplates}
-            selectedPromptTemplate={selectedPromptTemplate}
-            promptText={promptText}
-            handleOnWindowChange={handleOnWindowChange}
-            handleOnWheel={handleOnWheel}
-          />
-        ) : null}
-
-        <PromptBox
-          windowId={getWindowId(promptBoxId)}
-          name={promptBoxId}
-          draggable={layoutMode === LayoutMode.FREE}
-          initialXY={
-            windowsMap[getWindowId(promptBoxId)]
-              ? getWindowXYById(windowsMap, promptBoxId)
-              : [710, 760]
-          }
-          chatSession={activeSession}
-          promptTemplates={promptTemplates}
-          activePromptTemplate={selectedPromptTemplate}
-          onCloseClick={onCloseBtnClick}
-          onSendClick={handleSendPromptClick}
-          onSelectPromptTemplate={handleSelectPromptTemplate}
-          onWindowChange={handleOnWindowChange}
-          onCloseSessionCommand={onCloseBtnClick}
-        />
       </div>
-    </div>
+      {/* Prompt box must NOT be within any positioned container because it is positioned relative to viewport */}
+      <PromptBox
+        zIndex={Z_Index.Top}
+        windowId={getWindowId(promptBoxId)}
+        name={promptBoxId}
+        draggable={layoutMode === LayoutMode.FREE}
+        initialXY={promptBoxInitialXY}
+        chatSession={activeSession}
+        promptTemplates={promptTemplates}
+        activePromptTemplate={selectedPromptTemplate}
+        onCloseClick={onCloseBtnClick}
+        onSendClick={handleSendPromptClick}
+        onSelectPromptTemplate={handleSelectPromptTemplate}
+        onWindowChange={handleOnWindowChange}
+        onCloseSessionCommand={onCloseBtnClick}
+      />
+    </>
   );
 }
 

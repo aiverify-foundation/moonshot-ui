@@ -37,6 +37,7 @@ function Banner(props: PropsWithChildren<BannerProps>) {
         </p>
         <Button
           type="button"
+          size="lg"
           btnColor={buttonColor}
           textColor={buttonTextColor}
           mode={ButtonType.PRIMARY}

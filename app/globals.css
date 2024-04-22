@@ -132,16 +132,6 @@ button:disabled {
   animation: fadeScaleIn 0.2s ease-out forwards;
 }
 
-.chat-window-container {
-  @apply absolute flex overflow-hidden h-[500px] top-[80px] left-[50%] transform-gpu;
-  transform: translate(-50%);
-  width: calc(3 * var(--chatwindow-width) + 2 * var(--gap-width));
-}
-
-.chat-window-slide {
-  @apply flex w-full h-full gap-x-[50px] transition-transform duration-300 ease-in-out;
-}
-
 .ring
 {
   @apply text-imdalight-600 dark:text-blue-500;

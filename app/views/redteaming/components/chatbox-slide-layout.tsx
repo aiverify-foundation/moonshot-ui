@@ -55,7 +55,7 @@ function SlidesIndexBtns(props: SlidesIndexBtnsProps) {
   return (
     <div
       id="slidesIndexBtns"
-      className="absolute left-[50%] translate-x-[-50%] flex justify-center items-center z-[100] bottom-1">
+      className="flex justify-center items-center ">
       {chats.map((name, btnIndex) => {
         let targetBoxIndex = btnIndex;
         if (btnIndex === 0 || btnIndex === 1) {
@@ -124,102 +124,91 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
 
   function SlidesNavBtns() {
     return (
-      <div
-        id="chatboxSlideNavBtns"
-        className="absolute w-screen flex justify-center
-          top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
-        <div className="flex items-center justify-between gap-4 select-none w-[70%]">
-          <Icon
-            size={40}
-            name={IconName.CircleArrowLeft}
-            onClick={() => {
-              setCurrentBoxIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-            }}
-            disabled={currentBoxIndex === 0}
-          />
-          <Icon
-            size={40}
-            name={IconName.CircleArrowRight}
-            onClick={() => {
-              setCurrentBoxIndex((prevIndex) =>
-                Math.min(prevIndex + 1, chatSession.chat_ids.length - 1)
-              );
-            }}
-            disabled={currentBoxIndex === chatSession.chat_ids.length - 3}
-          />
-        </div>
+      <div className="flex items-center justify-between w-full">
+        <Icon
+          size={40}
+          name={IconName.CircleArrowLeft}
+          onClick={() => {
+            setCurrentBoxIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+          }}
+          disabled={currentBoxIndex === 0}
+        />
+        <Icon
+          size={40}
+          name={IconName.CircleArrowRight}
+          onClick={() => {
+            setCurrentBoxIndex((prevIndex) =>
+              Math.min(prevIndex + 1, chatSession.chat_ids.length - 1)
+            );
+          }}
+          disabled={currentBoxIndex === chatSession.chat_ids.length - 3}
+        />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-row">
-      <div className="relative w-[400px]">
-        <div className="absolute h-full border border-white-100 w-[350px] top-[50px]">
-          Auto redteam panel
-        </div>
-      </div>
-      <div
-        className="relative"
-        style={{
-          width: 'calc(100% - 200px)',
-          height: 640,
-        }}>
+    <div
+      className="relative w-full h-full gap-6
+      flex flex-col items-center pt-[80px]">
+      <section className="absolute w-full px-12 top-[45%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
         <SlidesNavBtns />
-        <div className="chat-window-container">
-          {/* chat-window-container must contain only 1 child (.chat-window-slide) */}
-          <div
-            className="chat-window-slide"
-            style={{
-              transform: `translateX(-${currentBoxIndex * (width + gap)}px)`,
-            }}>
-            {chatSession.chat_ids.map((id: string, index: number) => {
-              if (
-                (currentBoxIndex > 0 && index === currentBoxIndex - 1) ||
-                (currentBoxIndex <= index && currentBoxIndex + 4 > index)
-              ) {
-                const xpos = index === 0 ? 0 : (width + gap) * index;
-                const scrollPosition = boxRefs.current[index]
-                  ? boxRefs.current[index].scrollHeight -
-                    boxRefs.current[index].clientHeight
-                  : 0;
-                return (
-                  <ChatBox
-                    key={id}
-                    ref={(el) =>
-                      (boxRefs.current[index] = el as HTMLDivElement)
-                    }
-                    windowId={getWindowId(id)}
-                    // styles={{
-                    //   border:
-                    //     index === hoveredIndex
-                    //       ? '3px solid #3498db'
-                    //       : '3px solid transparent',
-                    // }}
-                    chatHistory={
-                      chatSession.chat_history
-                        ? chatSession.chat_history[id]
-                        : []
-                    }
-                    promptTemplates={promptTemplates}
-                    currentPromptTemplate={selectedPromptTemplate}
-                    currentPromptText={promptText}
-                    title={id}
-                    initialXY={[xpos, 0]}
-                    initialSize={[width, height]}
-                    initialScrollTop={scrollPosition}
-                    resizable={false}
-                    draggable={false}
-                    disableOnScroll
-                    onWindowChange={handleOnWindowChange}
-                    onWheel={handleOnWheel}
-                    isChatCompletionInProgress={chatCompletionInProgress}
-                  />
-                );
-              }
-            })}
-          </div>
+      </section>
+      <section
+        className="flex overflow-hidden h-[500px] transform-gpu"
+        style={{
+          width: 'calc(3 * var(--chatwindow-width) + 2 * var(--gap-width))',
+        }}>
+        {/* IMPORTANT - must contain only 1 child which is the carouself of chatboxes */}
+        <div
+          className="flex w-full h-full gap-x-[50px] transition-transform duration-300 ease-in-out"
+          style={{
+            transform: `translateX(-${currentBoxIndex * (width + gap)}px)`,
+          }}>
+          {chatSession.chat_ids.map((id: string, index: number) => {
+            if (
+              (currentBoxIndex > 0 && index === currentBoxIndex - 1) ||
+              (currentBoxIndex <= index && currentBoxIndex + 4 > index)
+            ) {
+              const xpos = index === 0 ? 0 : (width + gap) * index;
+              const scrollPosition = boxRefs.current[index]
+                ? boxRefs.current[index].scrollHeight -
+                  boxRefs.current[index].clientHeight
+                : 0;
+              return (
+                <ChatBox
+                  key={id}
+                  ref={(el) => (boxRefs.current[index] = el as HTMLDivElement)}
+                  windowId={getWindowId(id)}
+                  // styles={{
+                  //   border:
+                  //     index === hoveredIndex
+                  //       ? '3px solid #3498db'
+                  //       : '3px solid transparent',
+                  // }}
+                  chatHistory={
+                    chatSession.chat_history ? chatSession.chat_history[id] : []
+                  }
+                  promptTemplates={promptTemplates}
+                  currentPromptTemplate={selectedPromptTemplate}
+                  currentPromptText={promptText}
+                  title={id}
+                  initialXY={[xpos, 0]}
+                  initialSize={[width, height]}
+                  initialScrollTop={scrollPosition}
+                  resizable={false}
+                  draggable={false}
+                  disableOnScroll
+                  onWindowChange={handleOnWindowChange}
+                  onWheel={handleOnWheel}
+                  isChatCompletionInProgress={chatCompletionInProgress}
+                />
+              );
+            }
+          })}
         </div>
+      </section>
+      <section>
         <SlidesIndexBtns
           chats={chatSession.chat_ids}
           currentIndex={currentBoxIndex}
@@ -227,7 +216,7 @@ function ChatboxSlideLayout(props: ChatSlideLayoutProps) {
           onIndexMouseOver={handleIndexBtnMouseOver}
           onIndexMouseOut={handleIndexBtnMouseOut}
         />
-      </div>
+      </section>
     </div>
   );
 }

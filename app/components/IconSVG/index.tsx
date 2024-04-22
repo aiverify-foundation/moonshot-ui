@@ -23,6 +23,7 @@ import { FolderIcon } from './icons/folder-icon';
 import { HistoryClockIcon } from './icons/history-clock-icon';
 import { LayoutColumnsIcon } from './icons/layout-columns-icon';
 import { LayoutWtfIcon } from './icons/layout-wtf-icon';
+import { LightBulb } from './icons/light-bulb-icon';
 import { LightSunIcon } from './icons/light-sun-icon';
 import { LightningIcon } from './icons/lightning-icon';
 import { ListIcon } from './icons/list-icon';
@@ -73,6 +74,7 @@ enum IconName {
   HistoryClock,
   Tools,
   Lightning,
+  LightBulb,
 }
 
 type IconProps = {
@@ -548,6 +550,19 @@ function Icon(props: IconProps) {
       iconToRender = (
         <WideArrowDownIcon
           outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.LightBulb:
+      iconToRender = (
+        <LightBulb
+          fillColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
               : lightModeColor || '#702f8a'
