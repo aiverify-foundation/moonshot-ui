@@ -19,17 +19,9 @@ function MicroLayout({
           className="after:absolute after:top-0 after:left-0 after:bg-slate-500 basis-[9.5%]">
           {children[0]}
         </div>
-        <div className="basis-[90%] grid grid-cols-2 grid-rows-[4rem, 1fr] gap-2">
-          <div
-            id="headerContainer"
-            className="col-span-3">
-            {children[1]}
-          </div>
-          <div
-            id="mainContainer"
-            className="col-span-3">
-            {children[2]}
-          </div>
+        <div className="basis-[90%]">
+          <div className="col-span-3">{children[1]}</div>
+          <div className="col-span-3">{children[2]}</div>
         </div>
       </div>
     </div>

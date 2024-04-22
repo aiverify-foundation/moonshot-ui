@@ -1,6 +1,6 @@
 'use client';
-import { Z_Index } from '@views/moonshot-desktop/constants';
 import { ManualRedTeaming } from './red-teaming-session';
+import { Z_Index } from '@views/moonshot-desktop/constants';
 
 export default function Page() {
   return (

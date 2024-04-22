@@ -24,6 +24,7 @@ export default function RootLayout({
           className={`${inter.className} w-screen h-screen bg-gradient-to-br from-moonwine-950 to-moonwine-800`}>
           <div className="dust-overlay" />
           {children}
+          <div id="moonshotDesktop" />
         </body>
       </html>
     </Providers>

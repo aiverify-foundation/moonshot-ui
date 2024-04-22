@@ -1,15 +1,48 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
-import { ActionCard } from '@/app/components/actionCard/actionCard';
-import { Banner } from '@/app/components/banner/banner';
+import { useAppSelector } from '@/lib/redux';
 import tailwindConfig from '@/tailwind.config';
+import { EntryBanners } from './components/entryBanners';
 import { MicroLayout } from './components/microLayout';
+import { NewRedTeamSession } from './components/newRedteamSession';
+import { MainSectionViews } from './enums';
+import { WindowIds } from '@views/moonshot-desktop/constants';
+import { useResetWindows } from '@views/moonshot-desktop/hooks/useResetWindows';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
 export default function QuickstartHome() {
+  const [activeView, setActiveView] = React.useState<MainSectionViews>(
+    MainSectionViews.QUICKSTART_HOME
+  );
+
+  const isDarkMode = useAppSelector((state) => state.darkMode.value);
+  const resetWindows = useResetWindows();
+
+  function changeView(view: MainSectionViews) {
+    setActiveView(view);
+  }
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
+  useEffect(() => {
+    //set default window dimensions
+    //position will be centralized with small random offsets to left/top positions on screen
+    resetWindows(
+      WindowIds.COOKBOOKS_PICKER,
+      WindowIds.RECIPES_PICKER,
+      WindowIds.LLM_ENDPOINTS_PICKER
+    );
+  }, []);
+
   return (
     <MicroLayout>
       <nav className="pt-[5rem]">
@@ -52,7 +85,9 @@ export default function QuickstartHome() {
         </ul>
       </nav>
       <header className="flex justify-between items-center px-4">
-        <h1 className="text-logocolor tracking-[0.7rem] font-extralight text-[2.7rem]">
+        <h1
+          className="text-logocolor tracking-[0.7rem] font-extralight text-[2.7rem] cursor-pointer"
+          onClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}>
           moonshot.
         </h1>
         <Icon
@@ -62,66 +97,16 @@ export default function QuickstartHome() {
         />
       </header>
       <main>
-        <section className="mb-[1%]">
-          <Banner
-            bannerColor={colors.moongray[700]}
-            textColor={colors.white}
-            buttonColor={colors.moongray[950]}
-            buttonTextColor={colors.white}
-            bannerText={
-              <span>
-                Focus on what&apos;s important, <br /> Run only the best and
-                most relevant tests.
-              </span>
+        {activeView === MainSectionViews.QUICKSTART_HOME && (
+          <EntryBanners changeView={changeView} />
+        )}
+        {activeView === MainSectionViews.REDTEAMING && (
+          <NewRedTeamSession
+            onCloseIconClick={() =>
+              changeView(MainSectionViews.QUICKSTART_HOME)
             }
-            buttonText="Get Started">
-            <div style={{ paddingLeft: '0.5rem' }}>
-              <Icon
-                name={IconName.Asterisk}
-                size={65}
-              />
-            </div>
-          </Banner>
-        </section>
-        <section>
-          <div className="grid grid-cols-3 gap-2">
-            <div className="col-span-3 grid grid-cols-3 gap-[1%]">
-              <ActionCard
-                title="Discover"
-                description="new vulnerabilities"
-                descriptionColor={colors.moongray[300]}
-                cardColor={colors.moongray[950]}
-                iconName={IconName.Spacesuit}
-                actionText="Start Red Teaming"
-                onClick={() => {
-                  console.log('clicked');
-                }}
-              />
-              <ActionCard
-                title="Evaluate"
-                description="against standard tests"
-                descriptionColor={colors.moongray[300]}
-                cardColor={colors.moongray[950]}
-                iconName={IconName.CheckList}
-                actionText="Run Benchmarks"
-                onClick={() => {
-                  console.log('clicked');
-                }}
-              />
-              <ActionCard
-                title="Create"
-                description="custom tests"
-                descriptionColor={colors.moongray[300]}
-                cardColor={colors.moongray[950]}
-                iconName={IconName.Lightning}
-                actionText="Start Red Teaming"
-                onClick={() => {
-                  console.log('clicked');
-                }}
-              />
-            </div>
-          </div>
-        </section>
+          />
+        )}
       </main>
     </MicroLayout>
   );
