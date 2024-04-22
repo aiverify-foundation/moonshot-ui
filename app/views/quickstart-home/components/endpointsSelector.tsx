@@ -2,11 +2,19 @@ import { IconName } from '@/app/components/IconSVG';
 import useModelsList from '@/app/hooks/useLLMEndpointList';
 import { SelectListItem } from './selectListItem';
 
+type EndpointSelectViewProps = {
+  onSelect: (model: LLMEndpoint) => void;
+};
+
 function ModelSelectView() {
   const { models, error, isLoading, refetch } = useModelsList();
 
-  function handleSelect(model: LLMEndpoint) {
+  function handleModelClick(model: LLMEndpoint) {
     console.log(model);
+  }
+
+  function handleCreateNewEndpoint() {
+    console.log('New Endpoint');
   }
 
   return (
@@ -28,7 +36,7 @@ function ModelSelectView() {
                 key={model.id}
                 height={120}
                 label={model.name}
-                onClick={handleSelect}
+                onClick={handleModelClick}
                 iconName={IconName.OutlineBox}
                 item={model}
               />
@@ -38,7 +46,7 @@ function ModelSelectView() {
                 bg-moongray-950 rounded-xl p-8 items-center cursor-pointer
                 dark:hover:bg-moongray-900 mb-[15px] justify-between"
               style={{ flexBasis: '49%' }}
-              onClick={() => {}}>
+              onClick={handleCreateNewEndpoint}>
               <div className="flex flex-col w-full">
                 <h4 className="text-white text-center text-[1.3rem]">
                   Testing a new Endpoint?

@@ -35,6 +35,7 @@ import { SpacesuitIcon } from './icons/spacesuit-icon';
 import { SquareIcon } from './icons/square-icon';
 import { TableIcon } from './icons/table-icon';
 import { ToolsIcon } from './icons/tools-icon';
+import { WideArrowDownIcon } from './icons/wide-arrow-down';
 
 enum IconName {
   Folder,
@@ -50,6 +51,7 @@ enum IconName {
   CircleArrowLeft,
   ArrowLeft,
   ArrowRight,
+  WideArrowDown,
   Maximize,
   Minimize,
   LayoutWtf,
@@ -533,6 +535,19 @@ function Icon(props: IconProps) {
       iconToRender = (
         <LightningIcon
           fillColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.WideArrowDown:
+      iconToRender = (
+        <WideArrowDownIcon
+          outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
               : lightModeColor || '#702f8a'
