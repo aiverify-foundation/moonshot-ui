@@ -6,7 +6,7 @@ import { TextInput } from '@/app/components/textInput';
 import { useGetAllDatasetQuery } from '@/app/services/dataset-api-service';
 import { useGetPromptTemplatesQuery } from '@/app/services/prompt-template-api-service';
 import { useGetAllMetricsQuery } from '@/app/services/metric-api-service';
-import { useGetAllAttackStrategiesQuery } from '@/app/services/attack-strategies-api-service';
+import { useGetAllAttackModulesQuery } from '@/app/services/attack-modules-api-service';
 import { TaglabelsBox } from './tag-labels-box';
 
 import { object, string, array } from 'yup';
@@ -14,18 +14,16 @@ import { object, string, array } from 'yup';
 const initialFormValues: RecipeFormValues = {
   name: '',
   description: '',
-  type: 'benchmark',
   tags: [],
   datasets: [],
   prompt_templates: [],
   metrics: [],
-  attack_strategies: [],
+  attack_modules: [],
 };
 
 const validationSchema = object().shape({
   name: string().required('Name is required'),
   description: string().required('Description is required'),
-  type: string().required('Type is required'),
   datasets: array().min(1, 'At least one dataset is required'),
   metrics: array().min(1, 'At least one metric is required'),
 });
@@ -50,12 +48,6 @@ const NewRecipeForm: React.FC<NewRecipeFormProps> = (props) => {
   async function handleFormSubmit(values: RecipeFormValues) {
     if (onFormSubmit) onFormSubmit(values);
   }
-
-  // Type Options
-  const typeOptions: SelectOption[] = [
-    { value: "benchmark", label: "benchmark" },
-    { value: "redteam", label: "redteam" }
-  ];
 
   //  Getting Dataset Options
   const [datasetOption, setDatasetOptions] = useState<SelectOption[]>([]);
@@ -100,18 +92,18 @@ const NewRecipeForm: React.FC<NewRecipeFormProps> = (props) => {
   }, [metricData]);
 
   // Getting Attack Strategy Options
-  const [attackStrategiesOption, setAttackStrategiesOption] = useState<SelectOption[]>([]);
-  const { data: attackStrategiesData, isLoading: attackStrategiesIsLoading, error: attackStrategiesError, refetch: attackStrategiesRefetch } = useGetAllAttackStrategiesQuery();
+  const [attackModulesOptions, setAttackModulesOptions] = useState<SelectOption[]>([]);
+  const { data: attackModulesData, isLoading: attackModuleIsLoading, error: attackModuleError, refetch: attackModuleReFetch } = useGetAllAttackModulesQuery();
 
   useEffect(() => {
-    if (attackStrategiesData) {
-      const options: SelectOption[] = attackStrategiesData.map((attackStrategies) => ({
-        value: attackStrategies,
-        label: attackStrategies,
+    if (attackModulesData) {
+      const options: SelectOption[] = attackModulesData.map((attackModule) => ({
+        value: attackModule,
+        label: attackModule,
       }));
-      setAttackStrategiesOption(options);
+      setAttackModulesOptions(options);
     }
-  }, [attackStrategiesData]);
+  }, [attackModulesData]);
 
   const [tags, setTags] = useState<string[]>([]);
   const [currentTag, setCurrentTag] = useState<string>('');
@@ -158,8 +150,8 @@ const NewRecipeForm: React.FC<NewRecipeFormProps> = (props) => {
         name="Tags"
         label="Tags"
         onChange={handleChange}
-        onKeyDown={handleKeyDown} // Handle Enter key press
-        onBlur={formik.handleBlur} // Handle Formik blur event
+        onKeyDown={handleKeyDown} 
+        onBlur={formik.handleBlur}
         placeholder="Type a tag and press Enter"
         error={
           formik.touched.tags && formik.errors.tags
@@ -179,14 +171,6 @@ const NewRecipeForm: React.FC<NewRecipeFormProps> = (props) => {
             : undefined
         }
         placeholder=""
-      />
-
-      <SelectInput
-        label="Type"
-        name="type"
-        options={typeOptions}
-        onSyntheticChange={formik.handleChange}
-        value={formik.values.type}
       />
 
       <SelectInput
@@ -217,11 +201,11 @@ const NewRecipeForm: React.FC<NewRecipeFormProps> = (props) => {
       />
 
       <SelectInput
-        label="Attack Strategies"
-        name="attack_strategies"
-        options={attackStrategiesOption}
+        label="Attack Modules"
+        name="attack_modules"
+        options={attackModulesOptions}
         onSyntheticChange={formik.handleChange}
-        value={formik.values.attack_strategies}
+        value={formik.values.attack_modules}
         isMulti={true}
       />
 

@@ -82,12 +82,11 @@ type Recipe = {
 type RecipeFormValues = {
   name: string;
   description: string;
-  type: string;
   tags: string[];
   datasets: string[];
   prompt_templates: string[];
   metrics: string[];
-  attack_strategies: string[];
+  attack_modules: string[];
 };
 
 type Dataset = {

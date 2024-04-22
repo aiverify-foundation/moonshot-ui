@@ -6,4 +6,4 @@ export const proxyPathContextStrats = 'api/v1/context_strategies';
 export const proxyPathSessions = 'api/v1/sessions';
 export const proxyPathDatasets = 'api/v1/datasets';
 export const proxyPathMetrics = 'api/v1/metrics';
-export const proxyPathAttackStrategies = 'api/v1/attack_strategies';
+export const proxyPathAttackModules = 'api/v1/attack_modules';

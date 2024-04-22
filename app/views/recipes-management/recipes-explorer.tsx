@@ -170,8 +170,7 @@ function RecipesExplorer(props: RecipesExplorerProps) {
       datasets: data.datasets,
       prompt_templates: data.prompt_templates,
       metrics: data.metrics,
-      attack_strategies: data.attack_strategies,
-      type: data.type
+      attack_modules: data.attack_modules,
     };
     const response = await createRecipe(newRecipe);
     if ('error' in response) {
