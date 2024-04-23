@@ -4,8 +4,9 @@ import { Icon, IconName } from '@components/IconSVG';
 
 type ActionCardProps = {
   title: string;
+  titleSize?: number;
   description: string;
-  actionText: string;
+  actionText?: string;
   cardColor?: string;
   textColor?: string;
   descriptionColor?: string;
@@ -19,6 +20,7 @@ type ActionCardProps = {
 function ActionCard(props: ActionCardProps) {
   const {
     title,
+    titleSize,
     description,
     iconName,
     iconSize = 50,
@@ -42,11 +44,11 @@ function ActionCard(props: ActionCardProps) {
         size={iconSize}
       />
       <section>
-        <h2 style={{ color: textColor }}>{title}</h2>
+        <h2 style={{ color: textColor, fontSize: titleSize }}>{title}</h2>
         <p style={{ color: descriptionColor || textColor }}>{description}</p>
       </section>
       <figcaption>
-        <p style={{ color: textColor }}>{actionText}</p>
+        {actionText && <p style={{ color: textColor }}>{actionText}</p>}
         <Icon name={IconName.ArrowRight} />
       </figcaption>
     </figure>

@@ -17,9 +17,11 @@ import { NewRedTeamSession } from './components/newRedteamSession';
 import { RedteamSubmenu } from './components/redteamSubmenu';
 import { UtilsSubmenu } from './components/utilsSubmenu';
 import { MainSectionViews } from './enums';
+import { BenchMarkPrimaryUseCaseView } from '@views/benchmarking/benchmarkPrimaryUseCaseView';
 import { WindowIds, Z_Index } from '@views/moonshot-desktop/constants';
 import { useResetWindows } from '@views/moonshot-desktop/hooks/useResetWindows';
 import { ManualRedTeamingV2 } from '@views/redteaming/red-teaming-session-v2';
+import { MainSectionSurface } from './components/mainSectionSurface';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -132,7 +134,7 @@ export default function QuickstartHome() {
             )}
             {activeView === MainSectionViews.BENCHMARK_SUBMENU && (
               <BenchmarkSubmenu
-                onClick={() => changeView(MainSectionViews.BENCHMARK_SUBMENU)}
+                changeView={changeView}
                 onBackClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}
               />
             )}
@@ -147,6 +149,9 @@ export default function QuickstartHome() {
                 onClick={() => changeView(MainSectionViews.UTILS_SUBMENU)}
                 onBackClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}
               />
+            )}
+            {activeView === MainSectionViews.BENCHMARKING_PRIMARY_USE_CASE && (
+              <BenchMarkPrimaryUseCaseView changeView={changeView} />
             )}
             {activeView === MainSectionViews.REDTEAMING && (
               <NewRedTeamSession

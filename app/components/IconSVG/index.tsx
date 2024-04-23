@@ -17,6 +17,7 @@ import { CircleArrowLeftIcon } from './icons/circle-arrow-left-icon';
 import { CircleArrowRightIcon } from './icons/circle-arrow-right-icon';
 import { CloseIcon } from './icons/close-x-icon';
 import { DarkMoonIcon } from './icons/dark-moon-icon';
+import { DocumentIcon } from './icons/document-icon';
 import { FileIcon } from './icons/file-icon';
 import { FolderForChatSessionsIcon } from './icons/folder-chat-icon';
 import { FolderIcon } from './icons/folder-icon';
@@ -36,6 +37,7 @@ import { RunCookbookIcon } from './icons/run-cookbook-icon';
 import { SpacesuitIcon } from './icons/spacesuit-icon';
 import { SquareIcon } from './icons/square-icon';
 import { TableIcon } from './icons/table-icon';
+import { TalkBubblesIcon } from './icons/talkbubbles-icon';
 import { ToolsIcon } from './icons/tools-icon';
 import { WideArrowDownIcon } from './icons/wide-arrow-down';
 
@@ -77,6 +79,8 @@ enum IconName {
   Lightning,
   LightBulb,
   Ribbon,
+  TalkBubbles,
+  Document,
 }
 
 type IconProps = {
@@ -577,6 +581,32 @@ function Icon(props: IconProps) {
     case IconName.Ribbon:
       iconToRender = (
         <RibbonIcon
+          fillColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.TalkBubbles:
+      iconToRender = (
+        <TalkBubblesIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Document:
+      iconToRender = (
+        <DocumentIcon
           fillColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'
