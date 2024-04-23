@@ -39,7 +39,7 @@ function AutoRedTeamingForm() {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="relative flex flex-col min-h-[300px]">
       <h3 className="mb-5 text-white">Automated Red Teaming</h3>
       {recipesIsLoading ? (
         <div className="ring">
