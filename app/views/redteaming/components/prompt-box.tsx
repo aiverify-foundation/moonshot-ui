@@ -440,8 +440,7 @@ function PromptBox(props: PromptBoxProps) {
               />
               <div className="flex items-center text-xs">
                 <span className="hover:opacity-60">Context Strategy</span>
-                {activePromptTemplate && (
-                  <div className="flex items-center">
+                {/* <div className="flex items-center">
                     <div className="text-white ml-1">--</div>
                     <div className="text-white ml-1">
                       <div className="text-blue-400 text-sm flex items-center">
@@ -449,7 +448,7 @@ function PromptBox(props: PromptBoxProps) {
                           className="mr-1 max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap"
                           onMouseOver={() => null}
                           onMouseOut={() => null}>
-                          placholder
+                          not selected
                         </div>
                         <Icon
                           name={IconName.Close}
@@ -459,8 +458,7 @@ function PromptBox(props: PromptBoxProps) {
                         />
                       </div>
                     </div>
-                  </div>
-                )}
+                  </div> */}
               </div>
             </div>
           </div>

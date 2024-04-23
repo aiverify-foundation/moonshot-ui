@@ -87,7 +87,7 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
             )
           : undefined;
         return (
-          <div
+          <li
             className="flex flex-col p-2"
             key={index}
             onMouseEnter={() => setDialoguePairHovered(index)}
@@ -96,39 +96,53 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
               You
             </div>
             <div className="self-end snap-top max-w-[90%]">
-              <Tooltip
-                disabled={disableBubbleTooltips}
-                position={TooltipPosition.top}
-                contentMaxWidth={500}
-                contentMinWidth={300}
-                backgroundColor={isDarkMode ? '#0f172a' : '#4c2b5d'}
-                fontColor={isDarkMode ? '#FFFFFF' : '#000000'}
-                offsetTop={-10}
-                content={
-                  <PromptBubbleInfo
-                    duration={dialogue.duration}
-                    prompt={dialogue.prepared_prompt}
-                    prompt_template={dialogue.prompt_template}
-                    templateString={
-                      appliedPromptTemplate
-                        ? appliedPromptTemplate.template
-                        : undefined
-                    }
+              <div className="flex items-center">
+                <Tooltip
+                  content="Select to bookmark"
+                  position={TooltipPosition.left}
+                  offsetLeft={-5}
+                  offsetTop={5}>
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 mr-5 ml-2 shrink-0"
+                    onChange={() => null}
                   />
-                }>
-                <Chat.TalkBubble
-                  backgroundColor="#475569"
-                  fontColor="#FFF"
-                  styles={{
-                    fontSize: 14,
-                    border:
-                      dialoguePairHovered === index
-                        ? '2px solid #2563eb'
-                        : '2px solid transparent',
-                  }}>
-                  {dialogue.prepared_prompt}
-                </Chat.TalkBubble>
-              </Tooltip>
+                </Tooltip>
+                <Tooltip
+                  disabled={disableBubbleTooltips}
+                  position={TooltipPosition.top}
+                  contentMaxWidth={500}
+                  contentMinWidth={300}
+                  backgroundColor={isDarkMode ? '#0f172a' : '#4c2b5d'}
+                  fontColor={isDarkMode ? '#FFFFFF' : '#000000'}
+                  offsetTop={-10}
+                  content={
+                    <PromptBubbleInfo
+                      duration={dialogue.duration}
+                      prompt={dialogue.prepared_prompt}
+                      prompt_template={dialogue.prompt_template}
+                      templateString={
+                        appliedPromptTemplate
+                          ? appliedPromptTemplate.template
+                          : undefined
+                      }
+                    />
+                  }>
+                  <Chat.TalkBubble
+                    backgroundColor="#475569"
+                    fontColor="#FFF"
+                    styles={{
+                      marginBottom: 0,
+                      fontSize: 14,
+                      border:
+                        dialoguePairHovered === index
+                          ? '2px solid #2563eb'
+                          : '2px solid transparent',
+                    }}>
+                    {dialogue.prepared_prompt}
+                  </Chat.TalkBubble>
+                </Tooltip>
+              </div>
             </div>
             <div className="max-w-[90%] flex flex-col text-left pl-2 text-sm text-black">
               AI
@@ -146,7 +160,7 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
               }}>
               {dialogue.predicted_result}
             </Chat.TalkBubble>
-          </div>
+          </li>
         );
       })}
       {isChatCompletionInProgress ? (

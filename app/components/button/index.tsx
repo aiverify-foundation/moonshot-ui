@@ -18,8 +18,10 @@ type ButtonProps = {
   hoverBtnColor?: string;
   textColor?: string;
   iconName?: IconName;
+  iconSize?: number;
   disabled?: boolean;
   size?: 'sm' | 'md' | 'lg';
+  onClick?: () => void;
 };
 
 function Button(props: ButtonProps) {
@@ -29,9 +31,11 @@ function Button(props: ButtonProps) {
     hoverBtnColor,
     textColor,
     iconName,
+    iconSize,
     text,
     disabled = false,
     size = 'md',
+    onClick = () => null,
   } = props;
   const [isHovered, setIsHovered] = useState(false);
   let cssClass = '';
@@ -60,9 +64,13 @@ function Button(props: ButtonProps) {
         color: textColor,
       }}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}>
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}>
       <span>{text}</span>
-      <Icon name={iconName || IconName.ArrowRight} />
+      <Icon
+        name={iconName || IconName.ArrowRight}
+        size={iconSize}
+      />
     </button>
   );
 }

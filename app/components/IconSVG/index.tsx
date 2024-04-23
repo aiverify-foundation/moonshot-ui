@@ -31,6 +31,7 @@ import { MaximizeIcon } from './icons/maximize-icon';
 import { MinimizeIcon } from './icons/minimize-icon';
 import { PlusIcon } from './icons/plus-icon';
 import { ResetIcon } from './icons/reset-icon';
+import { RibbonIcon } from './icons/ribbon-icon';
 import { RunCookbookIcon } from './icons/run-cookbook-icon';
 import { SpacesuitIcon } from './icons/spacesuit-icon';
 import { SquareIcon } from './icons/square-icon';
@@ -75,6 +76,7 @@ enum IconName {
   Tools,
   Lightning,
   LightBulb,
+  Ribbon,
 }
 
 type IconProps = {
@@ -562,6 +564,19 @@ function Icon(props: IconProps) {
     case IconName.LightBulb:
       iconToRender = (
         <LightBulb
+          fillColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Ribbon:
+      iconToRender = (
+        <RibbonIcon
           fillColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'

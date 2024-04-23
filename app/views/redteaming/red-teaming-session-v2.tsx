@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { Button, ButtonType } from '@/app/components/button';
 import {
   useSendPromptMutation,
   useSetPromptTemplateMutation,
@@ -7,6 +8,7 @@ import {
 } from '@/app/services/session-api-service';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
+import tailwindConfig from '@/tailwind.config';
 import { AutoRedTeamingForm } from './components/autoRedTeamingForm';
 import { BookmarksList } from './components/bookmarksList';
 import { ChatboxFreeLayout } from './components/chatbox-free-layout';
@@ -18,6 +20,8 @@ import { updateChatHistory } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { Z_Index } from '@views/moonshot-desktop/constants';
 import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTemplateList';
+
+const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
 type ActiveSessionProps = {
   zIndex: number;
@@ -312,6 +316,21 @@ function ManualRedTeamingV2(props: ActiveSessionProps) {
                   handleOnWheel={handleOnWheel}
                 />
               ) : null}
+
+              <div className="absolute bottom-[200px] right-[130px]">
+                <Button
+                  size="sm"
+                  type="button"
+                  mode={ButtonType.PRIMARY}
+                  iconName={IconName.Ribbon}
+                  iconSize={16}
+                  text="Save as Bookmark"
+                  btnColor={colors.moongray[950]}
+                  hoverBtnColor={colors.moongray[900]}
+                  textColor={colors.white}
+                  onClick={() => null}
+                />
+              </div>
             </div>
           </div>
         </div>
