@@ -20,6 +20,7 @@ function EntryBanners(props: EntryBannersProps) {
           bannerColor={colors.moongray[700]}
           textColor={colors.white}
           buttonColor={colors.moongray[950]}
+          buttonHoverColor={colors.moongray[900]}
           buttonTextColor={colors.white}
           bannerText={
             <span>
@@ -57,9 +58,7 @@ function EntryBanners(props: EntryBannersProps) {
               cardColor={colors.moongray[950]}
               iconName={IconName.CheckList}
               actionText="Run Benchmarks"
-              onClick={() => {
-                changeView(MainSectionViews.REDTEAMING);
-              }}
+              onClick={() => console.log('clicked')}
             />
             <ActionCard
               title="Create"
@@ -69,7 +68,7 @@ function EntryBanners(props: EntryBannersProps) {
               iconName={IconName.Lightning}
               actionText="Start Red Teaming"
               onClick={() => {
-                console.log('clicked');
+                changeView(MainSectionViews.REDTEAMING);
               }}
             />
           </div>

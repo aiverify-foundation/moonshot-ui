@@ -110,6 +110,7 @@ export default function QuickstartHome() {
           <header className="flex justify-between items-center px-4">
             <h1
               className="text-logocolor tracking-[0.7rem] font-extralight text-[2.7rem] cursor-pointer"
+              style={{ textShadow: '2px 2px 3px rgba(0,0,0,0.5)' }}
               onClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}>
               moonshot.
             </h1>

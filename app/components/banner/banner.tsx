@@ -10,6 +10,7 @@ type BannerProps = {
   textColor?: string;
   buttonText: string;
   buttonColor?: string;
+  buttonHoverColor?: string;
   buttonTextColor?: string;
 };
 
@@ -20,6 +21,7 @@ function Banner(props: PropsWithChildren<BannerProps>) {
     textColor = '#000000',
     buttonText,
     buttonColor = '#000000',
+    buttonHoverColor = '#EEEEEE',
     buttonTextColor = '#FFFFFF',
     children,
   } = props;
@@ -39,6 +41,7 @@ function Banner(props: PropsWithChildren<BannerProps>) {
           type="button"
           size="lg"
           btnColor={buttonColor}
+          hoverBtnColor={buttonHoverColor}
           textColor={buttonTextColor}
           mode={ButtonType.PRIMARY}
           text={buttonText}
