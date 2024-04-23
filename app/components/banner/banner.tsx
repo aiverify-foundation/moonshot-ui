@@ -1,7 +1,6 @@
-import clsx from 'clsx';
 import { PropsWithChildren, ReactNode } from 'react';
 import styles from './styles/banner.module.css';
-import { Icon, IconName } from '@components/IconSVG';
+import { IconName } from '@components/IconSVG';
 import { Button, ButtonType } from '@components/button';
 
 type BannerProps = {

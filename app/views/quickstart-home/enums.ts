@@ -1,4 +1,7 @@
 export enum MainSectionViews {
+  BENCHMARK_SUBMENU,
+  REDTEAM_SUBMENU,
+  UTILS_SUBMENU,
   QUICKSTART_HOME,
   REDTEAMING,
 }

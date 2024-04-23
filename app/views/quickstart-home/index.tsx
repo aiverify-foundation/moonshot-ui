@@ -10,9 +10,12 @@ import {
   useAppSelector,
 } from '@/lib/redux';
 import tailwindConfig from '@/tailwind.config';
+import { BenchmarkSubmenu } from './components/benchmarkSubmenu';
 import { EntryBanners } from './components/entryBanners';
 import { MicroLayout } from './components/microLayout';
 import { NewRedTeamSession } from './components/newRedteamSession';
+import { RedteamSubmenu } from './components/redteamSubmenu';
+import { UtilsSubmenu } from './components/utilsSubmenu';
 import { MainSectionViews } from './enums';
 import { WindowIds, Z_Index } from '@views/moonshot-desktop/constants';
 import { useResetWindows } from '@views/moonshot-desktop/hooks/useResetWindows';
@@ -82,6 +85,7 @@ export default function QuickstartHome() {
                   darkModeColor={colors.moongray[300]}
                   name={IconName.CheckList}
                   size={40}
+                  onClick={() => changeView(MainSectionViews.BENCHMARK_SUBMENU)}
                 />
               </li>
               <li>
@@ -89,6 +93,7 @@ export default function QuickstartHome() {
                   darkModeColor={colors.moongray[300]}
                   name={IconName.Spacesuit}
                   size={40}
+                  onClick={() => changeView(MainSectionViews.REDTEAM_SUBMENU)}
                 />
               </li>
               <li>
@@ -103,6 +108,7 @@ export default function QuickstartHome() {
                   darkModeColor={colors.moongray[300]}
                   name={IconName.Tools}
                   size={40}
+                  onClick={() => changeView(MainSectionViews.UTILS_SUBMENU)}
                 />
               </li>
             </ul>
@@ -123,6 +129,24 @@ export default function QuickstartHome() {
           <main>
             {activeView === MainSectionViews.QUICKSTART_HOME && (
               <EntryBanners changeView={changeView} />
+            )}
+            {activeView === MainSectionViews.BENCHMARK_SUBMENU && (
+              <BenchmarkSubmenu
+                onClick={() => changeView(MainSectionViews.BENCHMARK_SUBMENU)}
+                onBackClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}
+              />
+            )}
+            {activeView === MainSectionViews.REDTEAM_SUBMENU && (
+              <RedteamSubmenu
+                onClick={() => changeView(MainSectionViews.REDTEAM_SUBMENU)}
+                onBackClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}
+              />
+            )}
+            {activeView === MainSectionViews.UTILS_SUBMENU && (
+              <UtilsSubmenu
+                onClick={() => changeView(MainSectionViews.UTILS_SUBMENU)}
+                onBackClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}
+              />
             )}
             {activeView === MainSectionViews.REDTEAMING && (
               <NewRedTeamSession
