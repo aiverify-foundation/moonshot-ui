@@ -9,6 +9,9 @@ import { promptTemplateApi } from '@/app/services/prompt-template-api-service';
 import { recipeApi } from '@/app/services/recipe-api-service';
 import { sessionApi } from '@/app/services/session-api-service';
 import { statusApi } from '@/app/services/status-api-service';
+import { datasetApi } from '@/app/services/dataset-api-service';
+import { metricApi } from '@/app/services/metric-api-service';
+import { attackModulesApi } from '@/app/services/attack-modules-api-service';
 
 const middleware = [
   sessionApi.middleware,
@@ -20,6 +23,9 @@ const middleware = [
   statusApi.middleware,
   connectorApi.middleware,
   contextStratApi.middleware,
+  datasetApi.middleware,
+  metricApi.middleware,
+  attackModulesApi.middleware,
   createLogger({
     duration: true,
     timestamp: false,

@@ -8,6 +8,9 @@ import { promptTemplateApi } from '@/app/services/prompt-template-api-service';
 import { recipeApi } from '@/app/services/recipe-api-service';
 import { sessionApi } from '@/app/services/session-api-service';
 import { statusApi } from '@/app/services/status-api-service';
+import { datasetApi } from '@/app/services/dataset-api-service';
+import { metricApi } from '@/app/services/metric-api-service';
+import { attackModulesApi } from '@/app/services/attack-modules-api-service';
 import {
   activeResultSlice,
   activeSessionSlice,
@@ -37,4 +40,7 @@ export const reducer = {
   [statusApi.reducerPath]: statusApi.reducer,
   [connectorApi.reducerPath]: connectorApi.reducer,
   [contextStratApi.reducerPath]: contextStratApi.reducer,
+  [datasetApi.reducerPath]: datasetApi.reducer,
+  [metricApi.reducerPath]: metricApi.reducer,
+  [attackModulesApi.reducerPath]: attackModulesApi.reducer,
 };

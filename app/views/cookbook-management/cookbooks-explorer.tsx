@@ -73,7 +73,7 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
     createCookbook,
     {
       data: newCookbook,
-      isLoading: createCookbookIsLoding,
+      isLoading: createCookbookIsLoading,
       error: createCookbookError,
     },
   ] = useCreateCookbookMutation();
@@ -146,7 +146,6 @@ function CookbooksExplorer(props: cookbooksExplorerProps) {
           const updatedcookbooks = displayedCookbooksList.filter(
             (cb) => cb.id !== clickedcookbook.id
           );
-          console.log(updatedcookbooks);
           setDisplayedCookbooksList(updatedcookbooks);
         }
       }

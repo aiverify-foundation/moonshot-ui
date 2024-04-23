@@ -5,7 +5,7 @@ import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
 import { useGetAllConnectorsQuery } from '@/app/services/connector-api-service';
-import { object, string, array } from 'yup';
+import { object, string } from 'yup';
 
 const initialFormValues: LLMEndpointFormValues = {
   connector_type: '',
