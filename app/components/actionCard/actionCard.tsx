@@ -5,7 +5,7 @@ import { Icon, IconName } from '@components/IconSVG';
 type ActionCardProps = {
   title: string;
   titleSize?: number;
-  description: string;
+  description?: string;
   actionText?: string;
   cardColor?: string;
   textColor?: string;
@@ -14,6 +14,7 @@ type ActionCardProps = {
   iconColor?: string;
   iconSize?: number;
   height?: number;
+  style?: React.CSSProperties;
   onClick?: () => void;
 };
 
@@ -30,12 +31,13 @@ function ActionCard(props: ActionCardProps) {
     descriptionColor = '#FFFFFF',
     height,
     actionText,
+    style,
     onClick,
   } = props;
   return (
     <figure
       className={styles.card}
-      style={{ backgroundColor: cardColor, height }}
+      style={{ backgroundColor: cardColor, height, ...style }}
       onClick={onClick}>
       <Icon
         darkModeColor={iconColor}
@@ -48,8 +50,8 @@ function ActionCard(props: ActionCardProps) {
         <p style={{ color: descriptionColor || textColor }}>{description}</p>
       </section>
       <figcaption>
-        {actionText && <p style={{ color: textColor }}>{actionText}</p>}
-        <Icon name={IconName.ArrowRight} />
+        {actionText && <><p style={{ color: textColor }}>{actionText}</p>
+        <Icon name={IconName.ArrowRight} /></>}
       </figcaption>
     </figure>
   );

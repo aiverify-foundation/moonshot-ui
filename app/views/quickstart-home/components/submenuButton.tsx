@@ -36,8 +36,8 @@ function SubmenuButton(props: SubmenuButtonProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}>
       <div className="flex gap-2.5">
-        {menuIconName ? <Icon name={menuIconName} /> : null}
-        <span>{text}</span>
+        {menuIconName ? <Icon name={menuIconName} size={27}/> : null}
+        <span className="text-[1.2rem]">{text}</span>
       </div>
       <Icon name={IconName.ArrowRight} />
     </button>

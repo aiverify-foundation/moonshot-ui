@@ -1,16 +1,17 @@
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { MainSectionViews } from '@/app/views/quickstart-home/enums';
 import tailwindConfig from '@/tailwind.config';
 import { SubmenuButton } from './submenuButton';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
 type BenchmarkSubmenuProps = {
-  onClick: () => void;
+  changeView: (view: MainSectionViews) => void;
   onBackClick: () => void;
 };
 
 function RedteamSubmenu(props: BenchmarkSubmenuProps) {
-  const { onClick, onBackClick } = props;
+  const { changeView, onBackClick } = props;
   return (
     <div className="flex flex-col p-8 gap-6">
       <header>
@@ -35,7 +36,7 @@ function RedteamSubmenu(props: BenchmarkSubmenuProps) {
           btnColor={colors.moongray[950]}
           hoverBtnColor={colors.moongray[800]}
           textColor={colors.white}
-          onClick={onClick}
+          onClick={() => changeView(MainSectionViews.REDTEAMING)}
         />
         <SubmenuButton
           width="40%"
@@ -44,7 +45,7 @@ function RedteamSubmenu(props: BenchmarkSubmenuProps) {
           btnColor={colors.moongray[950]}
           hoverBtnColor={colors.moongray[800]}
           textColor={colors.white}
-          onClick={onClick}
+          onClick={() => null}
         />
         <SubmenuButton
           width="40%"
@@ -53,7 +54,7 @@ function RedteamSubmenu(props: BenchmarkSubmenuProps) {
           btnColor={colors.moongray[950]}
           hoverBtnColor={colors.moongray[800]}
           textColor={colors.white}
-          onClick={onClick}
+          onClick={() => null}
         />
       </section>
     </div>

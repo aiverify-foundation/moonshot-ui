@@ -22,6 +22,7 @@ import { WindowIds, Z_Index } from '@views/moonshot-desktop/constants';
 import { useResetWindows } from '@views/moonshot-desktop/hooks/useResetWindows';
 import { ManualRedTeamingV2 } from '@views/redteaming/red-teaming-session-v2';
 import { MainSectionSurface } from './components/mainSectionSurface';
+import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -82,21 +83,33 @@ export default function QuickstartHome() {
                   size={40}
                 />
               </li>
-              <li>
+              <li className="flex justify-center">
+              <Tooltip
+                content="Benchmarking"
+                position={TooltipPosition.left}
+                offsetTop={4}
+                offsetLeft={-15}>
                 <Icon
                   darkModeColor={colors.moongray[300]}
                   name={IconName.CheckList}
                   size={40}
                   onClick={() => changeView(MainSectionViews.BENCHMARK_SUBMENU)}
                 />
+                </Tooltip>
               </li>
-              <li>
+              <li className="flex justify-center">
+              <Tooltip
+                content="Red Teaming"
+                position={TooltipPosition.left}
+                offsetTop={4}
+                offsetLeft={-15}>
                 <Icon
                   darkModeColor={colors.moongray[300]}
                   name={IconName.Spacesuit}
                   size={40}
                   onClick={() => changeView(MainSectionViews.REDTEAM_SUBMENU)}
                 />
+                </Tooltip>
               </li>
               <li>
                 <Icon
@@ -105,13 +118,19 @@ export default function QuickstartHome() {
                   size={40}
                 />
               </li>
-              <li>
+              <li className="flex justify-center">
+              <Tooltip
+                content="Utilities"
+                position={TooltipPosition.left}
+                offsetTop={4}
+                offsetLeft={-15}>
                 <Icon
                   darkModeColor={colors.moongray[300]}
                   name={IconName.Tools}
                   size={40}
                   onClick={() => changeView(MainSectionViews.UTILS_SUBMENU)}
                 />
+                </Tooltip>
               </li>
             </ul>
           </nav>
@@ -140,7 +159,7 @@ export default function QuickstartHome() {
             )}
             {activeView === MainSectionViews.REDTEAM_SUBMENU && (
               <RedteamSubmenu
-                onClick={() => changeView(MainSectionViews.REDTEAM_SUBMENU)}
+                changeView={changeView}
                 onBackClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}
               />
             )}
