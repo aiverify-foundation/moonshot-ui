@@ -1,6 +1,6 @@
 import { IconName } from '@/app/components/IconSVG';
 import { ActionCard } from '@/app/components/actionCard/actionCard';
-import SimpleStepIndicator from '@/app/components/simpleStepIndicator';
+import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { MainSectionSurface } from '@/app/views/quickstart-home/components/mainSectionSurface';
 import { MainSectionViews } from '@/app/views/quickstart-home/enums';
 import tailwindConfig from '@/tailwind.config';
@@ -15,8 +15,15 @@ function BenchMarkPrimaryUseCaseView({ changeView }: Props) {
   return (
     <MainSectionSurface
       onCloseIconClick={() => changeView(MainSectionViews.BENCHMARK_SUBMENU)}>
-      <div className="flex flex-col pt-4 gap-10 pb-10">
-        <SimpleStepIndicator steps={['Summarisation', 'QnA', 'General']} currentStepIndex={0} />
+      <div className="flex flex-col items-center pt-4 gap-10 pb-10">
+        <div className="w-[700px] flex justify-center">
+          <SimpleStepsIndicator
+            textColor={colors.moongray[300]}
+            stepColor={colors.logocolor}
+            steps={['Summarisation', 'QnA', 'General']}
+            currentStepIndex={0}
+          />
+        </div>
         <h2 className="text-[1.6rem] font-medium tracking-wide text-white w-full text-center">
           What is your Primary Use Case?
         </h2>

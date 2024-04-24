@@ -179,6 +179,7 @@ type CustomColors = {
   imdalight: Record<string, string>;
   white: string;
   black: string;
+  logocolor: string;
 };
 /*
  * End of Result format specific types
