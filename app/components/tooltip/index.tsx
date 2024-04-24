@@ -24,6 +24,7 @@ type TooltipProps = {
   delay?: number;
   disabled?: boolean;
   backgroundColor?: string;
+  transparent?: boolean;
   fontColor?: string;
   position?: TooltipPosition;
   content: ReactElement | string;
@@ -111,6 +112,7 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
     contentMinWidth,
     position = TooltipPosition.left,
     backgroundColor = '#FFFFFF',
+    transparent = false,
     fontColor = '#676767',
     offsetLeft = 0,
     offsetTop = 0,
@@ -204,19 +206,27 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
       {ReactDOM.createPortal(
         <div
           ref={tooltipRef}
-          className={styles.tooltip}
-          style={{ ...placement, backgroundColor, color: fontColor }}
+          className={clsx(styles.tooltip)}
+          style={{
+            ...placement,
+            backgroundColor: transparent ? 'transparent' : backgroundColor,
+            boxShadow: transparent ? 'none' : '0 2px 8px rgba(0, 0, 0, 0.3)',
+            color: fontColor,
+          }}
           onMouseOver={handleMouseOver} // Added onMouseOver event to the tooltip
           onMouseOut={handleMouseOut} // Added onMouseOut event to the tooltip
         >
           <div
             className={clsx(styles.pointer, styles[positionClassname])}
-            style={{ borderColor }}
+            style={{
+              borderColor: transparent ? 'transparent' : backgroundColor,
+              boxShadow: transparent ? 'none' : '0 2px 8px rgba(0, 0, 0, 0.4)',
+            }}
           />
           <div
             className={styles.content}
             style={{
-              backgroundColor,
+              backgroundColor: transparent ? 'transparent' : backgroundColor,
               maxWidth: contentMaxWidth,
               minWidth: contentMinWidth,
             }}>

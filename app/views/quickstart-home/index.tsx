@@ -84,31 +84,37 @@ export default function QuickstartHome() {
                 />
               </li>
               <li className="flex justify-center">
-              <Tooltip
-                content="Benchmarking"
-                position={TooltipPosition.left}
-                offsetTop={4}
-                offsetLeft={-15}>
-                <Icon
-                  darkModeColor={colors.moongray[300]}
-                  name={IconName.CheckList}
-                  size={40}
-                  onClick={() => changeView(MainSectionViews.BENCHMARK_SUBMENU)}
-                />
+                <Tooltip
+                  content={
+                    <span className="tracking-widest">benchmarking</span>
+                  }
+                  fontColor={colors.logocolor}
+                  transparent
+                  position={TooltipPosition.left}
+                  offsetTop={10}>
+                  <Icon
+                    darkModeColor={colors.moongray[300]}
+                    name={IconName.CheckList}
+                    size={40}
+                    onClick={() =>
+                      changeView(MainSectionViews.BENCHMARK_SUBMENU)
+                    }
+                  />
                 </Tooltip>
               </li>
               <li className="flex justify-center">
-              <Tooltip
-                content="Red Teaming"
-                position={TooltipPosition.left}
-                offsetTop={4}
-                offsetLeft={-15}>
-                <Icon
-                  darkModeColor={colors.moongray[300]}
-                  name={IconName.Spacesuit}
-                  size={40}
-                  onClick={() => changeView(MainSectionViews.REDTEAM_SUBMENU)}
-                />
+                <Tooltip
+                  content={<span className="tracking-widest">red teaming</span>}
+                  fontColor={colors.logocolor}
+                  transparent
+                  position={TooltipPosition.left}
+                  offsetTop={10}>
+                  <Icon
+                    darkModeColor={colors.moongray[300]}
+                    name={IconName.Spacesuit}
+                    size={40}
+                    onClick={() => changeView(MainSectionViews.REDTEAM_SUBMENU)}
+                  />
                 </Tooltip>
               </li>
               <li>
@@ -119,17 +125,18 @@ export default function QuickstartHome() {
                 />
               </li>
               <li className="flex justify-center">
-              <Tooltip
-                content="Utilities"
-                position={TooltipPosition.left}
-                offsetTop={4}
-                offsetLeft={-15}>
-                <Icon
-                  darkModeColor={colors.moongray[300]}
-                  name={IconName.Tools}
-                  size={40}
-                  onClick={() => changeView(MainSectionViews.UTILS_SUBMENU)}
-                />
+                <Tooltip
+                  content={<span className="tracking-widest">utilities</span>}
+                  fontColor={colors.logocolor}
+                  position={TooltipPosition.left}
+                  transparent
+                  offsetTop={10}>
+                  <Icon
+                    darkModeColor={colors.moongray[300]}
+                    name={IconName.Tools}
+                    size={40}
+                    onClick={() => changeView(MainSectionViews.UTILS_SUBMENU)}
+                  />
                 </Tooltip>
               </li>
             </ul>

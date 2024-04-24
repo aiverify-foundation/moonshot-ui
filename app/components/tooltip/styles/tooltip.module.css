@@ -4,7 +4,6 @@
   box-sizing: border-box;
   position: fixed;
   background-color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   z-index: 9999;
   color: #333333;
   border-radius: 4px;
