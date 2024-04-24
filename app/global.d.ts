@@ -181,6 +181,12 @@ type CustomColors = {
   black: string;
   logocolor: string;
 };
+
+type BenchmarkTopic = {
+  id: number;
+  name: string;
+};
+
 /*
  * End of Result format specific types
  */

@@ -4,7 +4,6 @@ export enum MainSectionViews {
   UTILS_SUBMENU,
   QUICKSTART_HOME,
   REDTEAMING,
-  BENCHMARKING_PRIMARY_USE_CASE,
 }
 
 export enum RedTeamingViewSteps {

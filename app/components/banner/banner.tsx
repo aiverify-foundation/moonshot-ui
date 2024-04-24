@@ -44,7 +44,7 @@ function Banner(props: PropsWithChildren<BannerProps>) {
           textColor={buttonTextColor}
           mode={ButtonType.PRIMARY}
           text={buttonText}
-          iconName={IconName.ArrowRight}
+          rightIconName={IconName.ArrowRight}
         />
       </figcaption>
     </figure>

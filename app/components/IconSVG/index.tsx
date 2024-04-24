@@ -40,6 +40,7 @@ import { TableIcon } from './icons/table-icon';
 import { TalkBubblesIcon } from './icons/talkbubbles-icon';
 import { ToolsIcon } from './icons/tools-icon';
 import { WideArrowDownIcon } from './icons/wide-arrow-down';
+import { WideArrowUpIcon } from './icons/wide-arrow-up';
 
 enum IconName {
   Folder,
@@ -56,6 +57,7 @@ enum IconName {
   ArrowLeft,
   ArrowRight,
   WideArrowDown,
+  WideArrowUp,
   Maximize,
   Minimize,
   LayoutWtf,
@@ -555,6 +557,19 @@ function Icon(props: IconProps) {
     case IconName.WideArrowDown:
       iconToRender = (
         <WideArrowDownIcon
+          outlineColor={
+            isDarkMode
+              ? darkModeColor || '#FFFFFF'
+              : lightModeColor || '#702f8a'
+          }
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.WideArrowUp:
+      iconToRender = (
+        <WideArrowUpIcon
           outlineColor={
             isDarkMode
               ? darkModeColor || '#FFFFFF'

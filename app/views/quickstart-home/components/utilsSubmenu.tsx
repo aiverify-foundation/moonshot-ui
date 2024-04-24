@@ -1,6 +1,6 @@
 import { Icon, IconName } from '@/app/components/IconSVG';
 import tailwindConfig from '@/tailwind.config';
-import { SubmenuButton } from './submenuButton';
+import { SubmenuButton } from '../../shared-components/submenuButton/submenuButton';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 

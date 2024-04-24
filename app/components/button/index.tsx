@@ -1,7 +1,7 @@
 import clsx from 'clsx';
+import { useState } from 'react';
 import styles from './styles/button.module.css';
 import { Icon, IconName } from '@components/IconSVG';
-import { useState } from 'react';
 
 enum ButtonType {
   PRIMARY,
@@ -11,13 +11,16 @@ enum ButtonType {
 }
 
 type ButtonProps = {
-  type: 'button' | 'submit';
+  type?: 'button' | 'submit';
   mode: ButtonType;
   text: string;
   btnColor?: string;
   hoverBtnColor?: string;
   textColor?: string;
-  iconName?: IconName;
+  textSize?: string;
+  textWeight?: string;
+  leftIconName?: IconName;
+  rightIconName?: IconName;
   iconSize?: number;
   disabled?: boolean;
   size?: 'sm' | 'md' | 'lg';
@@ -26,13 +29,17 @@ type ButtonProps = {
 
 function Button(props: ButtonProps) {
   const {
+    type = 'button',
     mode,
     btnColor,
     hoverBtnColor,
     textColor,
-    iconName,
+    leftIconName,
+    rightIconName,
     iconSize,
     text,
+    textSize,
+    textWeight,
     disabled = false,
     size = 'md',
     onClick = () => null,
@@ -57,6 +64,7 @@ function Button(props: ButtonProps) {
 
   return (
     <button
+      type={type}
       disabled={disabled}
       className={cssClass}
       style={{
@@ -66,11 +74,19 @@ function Button(props: ButtonProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}>
-      <span>{text}</span>
-      <Icon
-        name={iconName || IconName.ArrowRight}
-        size={iconSize}
-      />
+      {leftIconName && (
+        <Icon
+          name={leftIconName || IconName.ArrowLeft}
+          size={iconSize}
+        />
+      )}
+      <span style={{ fontSize: textSize, fontWeight: textWeight }}>{text}</span>
+      {rightIconName && (
+        <Icon
+          name={rightIconName || IconName.ArrowRight}
+          size={iconSize}
+        />
+      )}
     </button>
   );
 }

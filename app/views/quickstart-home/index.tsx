@@ -2,7 +2,9 @@
 
 import React, { useEffect } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { getWindowId } from '@/app/lib/window-utils';
+import { BenchmarkHome } from '@/app/views/benchmarking/benchmarkHome';
 import {
   removeActiveSession,
   removeOpenedWindowId,
@@ -10,7 +12,6 @@ import {
   useAppSelector,
 } from '@/lib/redux';
 import tailwindConfig from '@/tailwind.config';
-import { BenchmarkSubmenu } from './components/benchmarkSubmenu';
 import { EntryBanners } from './components/entryBanners';
 import { MicroLayout } from './components/microLayout';
 import { NewRedTeamSession } from './components/newRedteamSession';
@@ -21,8 +22,6 @@ import { BenchMarkPrimaryUseCaseView } from '@views/benchmarking/benchmarkPrimar
 import { WindowIds, Z_Index } from '@views/moonshot-desktop/constants';
 import { useResetWindows } from '@views/moonshot-desktop/hooks/useResetWindows';
 import { ManualRedTeamingV2 } from '@views/redteaming/red-teaming-session-v2';
-import { MainSectionSurface } from './components/mainSectionSurface';
-import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -159,8 +158,7 @@ export default function QuickstartHome() {
               <EntryBanners changeView={changeView} />
             )}
             {activeView === MainSectionViews.BENCHMARK_SUBMENU && (
-              <BenchmarkSubmenu
-                changeView={changeView}
+              <BenchmarkHome
                 onBackClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}
               />
             )}
@@ -175,9 +173,6 @@ export default function QuickstartHome() {
                 onClick={() => changeView(MainSectionViews.UTILS_SUBMENU)}
                 onBackClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}
               />
-            )}
-            {activeView === MainSectionViews.BENCHMARKING_PRIMARY_USE_CASE && (
-              <BenchMarkPrimaryUseCaseView changeView={changeView} />
             )}
             {activeView === MainSectionViews.REDTEAMING && (
               <NewRedTeamSession

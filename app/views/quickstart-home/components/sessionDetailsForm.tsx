@@ -188,7 +188,7 @@ const SessionDetailsForm: React.FC<NewSessonFormProps> = (props) => {
                       textColor={colors.white}
                       mode={ButtonType.PRIMARY}
                       text="Start Red Teaming Session"
-                      iconName={IconName.ArrowRight}
+                      rightIconName={IconName.ArrowRight}
                     />
                   </div>
                 </div>

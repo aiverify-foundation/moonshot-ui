@@ -25,7 +25,7 @@ function SubmenuButton(props: SubmenuButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
   return (
     <button
-      className={`flex justify-between rounded-xl ${styles.submenuButton}`}
+      className={`flex justify-between items-center rounded-xl ${styles.submenuButton}`}
       onClick={onClick}
       style={{
         backgroundColor: isHovered ? hoverBtnColor : btnColor,
@@ -36,7 +36,12 @@ function SubmenuButton(props: SubmenuButtonProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}>
       <div className="flex gap-2.5">
-        {menuIconName ? <Icon name={menuIconName} size={27}/> : null}
+        {menuIconName ? (
+          <Icon
+            name={menuIconName}
+            size={27}
+          />
+        ) : null}
         <span className="text-[1.2rem]">{text}</span>
       </div>
       <Icon name={IconName.ArrowRight} />

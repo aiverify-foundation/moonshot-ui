@@ -1,7 +1,7 @@
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { MainSectionViews } from '@/app/views/quickstart-home/enums';
+import { SubmenuButton } from '@/app/views/shared-components/submenuButton/submenuButton';
 import tailwindConfig from '@/tailwind.config';
-import { SubmenuButton } from './submenuButton';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -26,8 +26,8 @@ function RedteamSubmenu(props: BenchmarkSubmenuProps) {
         </button>
       </header>
       <section className="flex flex-col items-center gap-2.5">
-        <h3 className="text-logocolor tracking-widest text-[1.2rem]">
-          benchmark with moonshot
+        <h3 className="text-logocolor tracking-widest text-[1.4rem]">
+          moonshot utilities
         </h3>
         <SubmenuButton
           width="40%"
