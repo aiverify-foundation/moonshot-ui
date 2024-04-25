@@ -187,6 +187,11 @@ type BenchmarkTopic = {
   name: string;
 };
 
+type CookbookMetadata = {
+  totalPrompts: number;
+  estTotalPromptResponseTime: number;
+};
+
 /*
  * End of Result format specific types
  */

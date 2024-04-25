@@ -9,7 +9,7 @@ const cookbookApi = createApi({
   endpoints: (builder) => ({
     getAllCookbooks: builder.query<Cookbook[], void>({
       query: () => 'api/v1/cookbooks',
-      keepUnusedDataFor: 0
+      keepUnusedDataFor: 0,
     }),
     createCookbook: builder.mutation<CookbookFormValues, CookbookFormValues>({
       query: (cookbookInputData) => ({
@@ -21,6 +21,10 @@ const cookbookApi = createApi({
   }),
 });
 
-const { useGetAllCookbooksQuery, useCreateCookbookMutation } = cookbookApi;
+const {
+  useGetAllCookbooksQuery,
+  useGetSelectedCookbooksMetadataQuery,
+  useCreateCookbookMutation,
+} = cookbookApi;
 
 export { cookbookApi, useCreateCookbookMutation, useGetAllCookbooksQuery };

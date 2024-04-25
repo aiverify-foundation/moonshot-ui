@@ -29,9 +29,10 @@ function BenchmarkHome(props: BenchmarkHomeProps) {
           <div className="flex gap-3">
             <Icon
               name={IconName.ArrowLeft}
-              darkModeColor={colors.moongray[300]}
+              darkModeColor={colors.moongray[200]}
+              onClick={onBackClick}
             />
-            <p className="text-moongray-300">Back to Home</p>
+            <p className="text-moongray-200">Back to Home</p>
           </div>
         </button>
       </header>

@@ -7,6 +7,7 @@ import { BenchMarkPrimaryUseCaseView } from './benchmarkPrimaryUseCaseView';
 import { BenchmarkTopicsSelection } from './benchmarkTopicsSelection';
 import { benchmarkTopics } from './constants';
 import { BenchmarkNewSessionViews } from './enums';
+import { BenchmarkRecommendedTests } from './benchmarkRecommendedTests';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -40,12 +41,22 @@ function BenchmarkNewSessionFlow(props: Props) {
   function nextViewHandler() {
     if (activeView === BenchmarkNewSessionViews.PRIMARY_USE_CASE) {
       setActiveView(BenchmarkNewSessionViews.TOPICS_SELECTION);
+      return;
+    }
+    if (activeView === BenchmarkNewSessionViews.TOPICS_SELECTION) {
+      setActiveView(BenchmarkNewSessionViews.RECOMMENDED_TESTS);
+      return;
     }
   }
 
   function previousViewHandler() {
     if (activeView === BenchmarkNewSessionViews.TOPICS_SELECTION) {
       setActiveView(BenchmarkNewSessionViews.PRIMARY_USE_CASE);
+      return;
+    }
+    if (activeView === BenchmarkNewSessionViews.RECOMMENDED_TESTS) {
+      setActiveView(BenchmarkNewSessionViews.TOPICS_SELECTION);
+      return;
     }
   }
 
@@ -82,6 +93,9 @@ function BenchmarkNewSessionFlow(props: Props) {
             selectedTopics={selectedTopics}
             onTopicClick={handleTopicClick}
           />
+        )}
+        {activeView === BenchmarkNewSessionViews.RECOMMENDED_TESTS && (
+          <BenchmarkRecommendedTests />
         )}
         <div className="flex justify-center">
           <Icon
