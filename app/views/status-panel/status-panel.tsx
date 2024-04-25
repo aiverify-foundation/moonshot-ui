@@ -66,11 +66,11 @@ function StatusPanel(props: StatusPanelProps) {
   let countError=0;
 
   statusTuples.forEach(([_, status]) => {
-    if (status.curr_status === TestStatusProgress.COMPLETED) {
+    if (status.current_status === TestStatusProgress.COMPLETED) {
       countCompleted++;
-    } else if (status.curr_status === TestStatusProgress.RUNNING) {
+    } else if (status.current_status === TestStatusProgress.RUNNING) {
       countRunning++;
-    } else if (status.curr_status === TestStatusProgress.ERRORS) {
+    } else if (status.current_status === TestStatusProgress.ERRORS) {
       countError++;
     }
   });
@@ -88,12 +88,12 @@ function StatusPanel(props: StatusPanelProps) {
   useEffect(() => {
     if (!statuses) return;
     if (eventData) {
-      if (!eventData.exec_id) return;
-      const id = eventData.exec_id;
+      if (!eventData.current_runner_id) return;
+      const id = eventData.current_runner_id;
       if (
         statuses[id] &&
-        statuses[id].curr_progress == eventData.curr_progress &&
-        statuses[id].curr_status == eventData.curr_status
+        statuses[id].current_progress == eventData.current_progress &&
+        statuses[id].current_status == eventData.current_status
       )
         return; // if the progress percentage and status is the same, don't update
       console.log(eventData);
@@ -148,8 +148,8 @@ function StatusPanel(props: StatusPanelProps) {
                 className="justify-start">
                 <div className="w-full flex flex-col">
                   <div className="flex w-full justify-between my-2">
-                    <h4 className="mb-1">{status.exec_name}</h4>
-                    {status.curr_status == TestStatusProgress.RUNNING ? (
+                    <h4 className="mb-1">{status.current_runner_id}</h4>
+                    {status.current_status == TestStatusProgress.RUNNING ? (
                       <IconButton
                         label="Cancel"
                         labelSize={11}
@@ -162,21 +162,21 @@ function StatusPanel(props: StatusPanelProps) {
                         labelSize={11}
                         iconSize={12}
                         iconName={IconName.Table}
-                        onClick={handleResultsClick(status.exec_id)}
+                        onClick={handleResultsClick(status.current_runner_id)}
                       />
                     )}
                   </div>
                   <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
                     <div
                       className={`${
-                        status.curr_status == TestStatusProgress.ERRORS
+                        status.current_status == TestStatusProgress.ERRORS
                           ? 'bg-red-700'
                           : 'bg-blue-600'
                       } leading-none h-1 rounded-full`}
                       style={{
-                        width: `${Math.max(status.curr_progress, 10)}%`,
+                        width: `${Math.max(status.current_progress, 10)}%`,
                         animation:
-                          status.curr_status == TestStatusProgress.RUNNING
+                          status.current_status == TestStatusProgress.RUNNING
                             ? 'pulse 1.5s infinite ease-out'
                             : 'none',
                       }}

@@ -111,19 +111,19 @@ type PushEvent = {
 };
 
 type TestStatus = {
-  exec_id: string;
-  exec_name: string;
-  exec_type: string;
-  curr_duration: number;
-  curr_status: string;
-  curr_cookbook_index: number;
-  curr_cookbook_name: string;
-  curr_cookbook_total: number;
-  curr_recipe_index: number;
-  curr_recipe_name: string;
-  curr_recipe_total: number;
-  curr_progress: number;
-  curr_error_messages: string[];
+  current_runner_id: string;
+  // current_runner_name: string;
+  current_runner_type: string;
+  current_duration: number;
+  current_status: string;
+  current_cookbook_index: number;
+  current_cookbook_name: string;
+  current_cookbook_total: number;
+  current_recipe_index: number;
+  current_recipe_name: string;
+  current_recipe_total: number;
+  current_progress: number;
+  current_error_messages: string[];
 };
 
 type TestStatuses = Record<string, TestStatus>;

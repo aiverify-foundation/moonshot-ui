@@ -15,13 +15,13 @@ export async function GET() {
 
   appEventBus.on(AppEventTypes.BENCHMARK_UPDATE, (data: TestStatus) => {
     console.log('Data received from webhook', {
-      exec_id: data.exec_id,
-      exec_name: data.exec_name,
-      curr_progress: data.curr_progress,
-      curr_status: data.curr_status,
+      current_runner_id: data.current_runner_id,
+      current_runner_name: data.current_runner_id,
+      current_progress: data.current_progress,
+      current_status: data.current_status,
     });
     try {
-      if ('exec_id' in data) {
+      if ('current_runner_id' in data) {
         (sseWriter as BenchMarkEvents).update({
           data,
           event: AppEventTypes.BENCHMARK_UPDATE,
