@@ -6,7 +6,7 @@ This is the Web UI for [moonshot](https://github.com/moonshot-admin/moonshot).
 
 - Node.js verion 20.11.1 LTS and above
 - Python version 3.11 and above
-- Moonshot Web API Python module - [projectmoonshot-imda version 0.2.2](https://pypi.org/project/projectmoonshot-imda/)
+- Moonshot Web API Python module - [projectmoonshot-imda version 0.3.4(https://pypi.org/project/projectmoonshot-imda/)
 
 ## Install and run Moonshot Web Api
 
@@ -27,7 +27,7 @@ MOONSHOT_UI_CALLBACK_URL=http://localhost:3000/api/v1/benchmarks/status
 ```
 - Place the .env file in the directory where the following command will be executed from
 
-`python -m moonshot web_api`
+`python -m moonshot web-api`
 
 ## Install Web UI
 
