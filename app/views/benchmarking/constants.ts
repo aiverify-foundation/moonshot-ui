@@ -1,9 +1,11 @@
 export const benchmarkTopics = [
-  { id: 1, name: 'Tamil' },
-  { id: 2, name: 'Bahasa Melayu' },
-  { id: 3, name: 'Mandarin Chinese (Traditional)' },
-  { id: 4, name: 'Singapore Culture' },
-  { id: 5, name: 'Law (Singapore)' },
-  { id: 6, name: 'Medicine' },
-  { id: 7, name: 'Math (Grade School)' },
+  { id: 'chinese-cookbook', name: 'Benchmarks for Chinese Language' },
+  { id: 'truthful-cookbook', name: 'Truthful Cookbook' },
+  {
+    id: 'evaluation-catalogue-cookbook',
+    name: "IMDA's LLM Evaluation Catalogue",
+  },
+  { id: 'singapore-culture-cookbook', name: 'Singapore Culture' },
+  { id: 'tamil-language-cookbook', name: 'Tamil Language' },
+  { id: 'leaderboard-cookbook', name: 'Leaderboard Cookbook' },
 ];

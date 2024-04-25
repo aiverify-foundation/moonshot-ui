@@ -640,7 +640,7 @@ function Icon(props: IconProps) {
     <div
       className={`
         flex items-center justify-center 
-        cursor-pointer
+        ${onClick ? 'cursor-pointer' : 'default'}
         ${onClick ? 'hover:opacity-50 active:opacity-25' : ''}
         ${disabled ? 'opacity-20 pointer-events-none' : ''}
       `}

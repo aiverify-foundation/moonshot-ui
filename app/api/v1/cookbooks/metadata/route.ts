@@ -1,23 +1,20 @@
-import { NextApiRequest } from 'next';
+import { NextRequest } from 'next/server';
 export const dynamic = 'force-dynamic';
 
 const mockResponse = {
-  totalPrompts: 425192,
-  estTotalPromptResponseTime: 49680,
+  totalPrompts: 425196,
+  estTotalPromptResponseTime: 39688,
 };
 
-export async function GET(request: NextApiRequest) {
-  const idsParam = request.query.ids as string;
+export async function GET(request: NextRequest) {
+  const idsParam = request.nextUrl.searchParams.get('ids');
   if (!idsParam) {
     return new Response('Missing required query parameter: ids', {
       status: 400,
     });
   }
 
-  const ids = idsParam
-    .split(',')
-    .map((id) => parseInt(id.trim()))
-    .filter((id) => !isNaN(id));
+  const ids = idsParam.split(',').map((id) => parseInt(id.trim()));
   if (ids.length === 0) {
     return new Response('Missing required query parameters: ids', {
       status: 400,

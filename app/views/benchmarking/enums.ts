@@ -7,4 +7,5 @@ export enum BenchmarkNewSessionViews {
   PRIMARY_USE_CASE,
   TOPICS_SELECTION,
   RECOMMENDED_TESTS,
+  ENDPOINTS_SELECTION,
 }

@@ -20,19 +20,19 @@ function ModelSelectView(props: EndpointSelectViewProps) {
   }
 
   return (
-    <div className="flex flex-col pt-4 gap-10 pb-10">
+    <div className="flex flex-col pt-4 gap-10 pb-10 max-h-[350px]">
       <h2 className="text-[1.6rem] font-medium tracking-wide text-white w-full text-center">
         Select the Endpoint(s) to be tested
       </h2>
 
-      <div className="relative flex flex-row min-h-[400px] px-[10%] w-[100%]">
+      <div className="relative flex flex-row min-h-[300px] px-[10%] w-[100%] h-full">
         {isLoading ? (
           <div className="ring">
             Loading
             <span />
           </div>
         ) : (
-          <ul className="flex flex-row flex-wrap gap-[2%] w-[100%] h-[70%] overflow-y-auto">
+          <ul className="flex flex-row flex-wrap gap-[2%] w-[100%] h-[250px] overflow-y-auto custom-scrollbar px-4">
             {models.map((model) => (
               <SelectListItem<LLMEndpoint>
                 key={model.id}

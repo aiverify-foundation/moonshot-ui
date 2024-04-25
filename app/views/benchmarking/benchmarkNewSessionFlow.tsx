@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
+import { ModelSelectView } from '@/app/views/quickstart-home/components/endpointsSelector';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 import tailwindConfig from '@/tailwind.config';
 import { BenchMarkPrimaryUseCaseView } from './benchmarkPrimaryUseCaseView';
+import { BenchmarkRecommendedTests } from './benchmarkRecommendedTests';
 import { BenchmarkTopicsSelection } from './benchmarkTopicsSelection';
 import { benchmarkTopics } from './constants';
 import { BenchmarkNewSessionViews } from './enums';
-import { BenchmarkRecommendedTests } from './benchmarkRecommendedTests';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -43,8 +44,14 @@ function BenchmarkNewSessionFlow(props: Props) {
       setActiveView(BenchmarkNewSessionViews.TOPICS_SELECTION);
       return;
     }
+    if (activeView === BenchmarkNewSessionViews.RECOMMENDED_TESTS) {
+      setActiveView(BenchmarkNewSessionViews.ENDPOINTS_SELECTION);
+      return;
+    }
     if (activeView === BenchmarkNewSessionViews.TOPICS_SELECTION) {
-      setActiveView(BenchmarkNewSessionViews.RECOMMENDED_TESTS);
+      if (selectedTopics.length > 0) {
+        setActiveView(BenchmarkNewSessionViews.RECOMMENDED_TESTS);
+      }
       return;
     }
   }
@@ -56,6 +63,10 @@ function BenchmarkNewSessionFlow(props: Props) {
     }
     if (activeView === BenchmarkNewSessionViews.RECOMMENDED_TESTS) {
       setActiveView(BenchmarkNewSessionViews.TOPICS_SELECTION);
+      return;
+    }
+    if (activeView === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
+      setActiveView(BenchmarkNewSessionViews.RECOMMENDED_TESTS);
       return;
     }
   }
@@ -95,13 +106,22 @@ function BenchmarkNewSessionFlow(props: Props) {
           />
         )}
         {activeView === BenchmarkNewSessionViews.RECOMMENDED_TESTS && (
-          <BenchmarkRecommendedTests />
+          <BenchmarkRecommendedTests
+            cookbookIds={selectedTopics.map((t) => t.id)}
+          />
         )}
-        <div className="flex justify-center">
+        {activeView === BenchmarkNewSessionViews.ENDPOINTS_SELECTION && (
+          <ModelSelectView onModelSelectClick={(model) => console.dir(model)} />
+        )}
+        <div
+          className="flex justify-center"
+          style={{
+            opacity: selectedTopics.length > 0 ? 1 : 0.1,
+          }}>
           <Icon
             name={IconName.WideArrowDown}
             size={28}
-            onClick={nextViewHandler}
+            onClick={selectedTopics.length > 0 ? nextViewHandler : undefined}
           />
         </div>
       </div>
