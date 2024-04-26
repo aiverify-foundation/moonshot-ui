@@ -6,35 +6,36 @@ import { TextInput } from '@/app/components/textInput';
 import { object, string, number, array } from 'yup';
 
 const initialFormValues: BenchmarkRunFormValues = {
-  name: '',
-  description: '',
-  cookbooks: [],
+  run_name: '',
   endpoints: [],
+  inputs: [],
   num_of_prompts: '0',
+  random_seed: '0',
+  system_prompt: '',
+  runner_processing_module: 'benchmark'
 };
 
 const validationSchema = object().shape({
-  name: string().required('Name is required'),
-  description: string().required('Description is required'),
+  run_name: string().required('Name is required'),
   num_of_prompts: number()
   .required('Number of Prompts is required')
   .typeError('Number of Prompts must be a number')
   .min(0, 'Number of Prompts cannot be a negative number'),
-  cookbooks: array()
-    .min(1, 'At least one cookbook is required'),
+  inputs: array()
+    .min(1, 'At least one data is required'),
   endpoints: array()
     .min(1, 'At least one endpoint is required'),
 });
 
 type NewBenchmarkRunformik = {
-  addedCookbooks: Cookbook[];
+  addedInputs: Cookbook[];
   addedEndpoints: LLMEndpoint[];
   className?: string;
   onFormSubmit: (data: BenchmarkRunFormValues) => void;
 };
 
 const NewBenchMarkRunForm: React.FC<NewBenchmarkRunformik> = (props) => {
-  const { addedCookbooks, addedEndpoints, className, onFormSubmit } = props;
+  const { addedInputs, addedEndpoints, className, onFormSubmit } = props;
   const formik = useFormik({
     initialValues: initialFormValues,
     validationSchema: validationSchema,
@@ -44,9 +45,7 @@ const NewBenchMarkRunForm: React.FC<NewBenchmarkRunformik> = (props) => {
   });
 
   const submitEnabled =
-    formik.isValid &&
-    addedCookbooks.length &&
-    addedEndpoints.length;
+    formik.isValid;
 
   async function handleFormSubmit(values: BenchmarkRunFormValues) {
     if (onFormSubmit) onFormSubmit(values);
@@ -54,10 +53,10 @@ const NewBenchMarkRunForm: React.FC<NewBenchmarkRunformik> = (props) => {
 
   useEffect(() => {
     formik.setFieldValue(
-      'cookbooks',
-      addedCookbooks.map((cb) => cb.id)
+      'inputs',
+      addedInputs.map((input) => input.id)
     );
-  }, [addedCookbooks]);
+  }, [addedInputs]);
 
   useEffect(() => {
     formik.setFieldValue(
@@ -69,30 +68,17 @@ const NewBenchMarkRunForm: React.FC<NewBenchmarkRunformik> = (props) => {
   return (
     <div className={`pl-4 w-full h-full ${className}`}>
       <TextInput
-        name="name"
+        name="run_name"
         label="Name"
         onChange={formik.handleChange}
-        value={formik.values.name}
+        value={formik.values.run_name}
         onBlur={formik.handleBlur}
         error={
-          formik.touched.name && formik.errors.name
-            ? formik.errors.name
+          formik.touched.run_name && formik.errors.run_name
+            ? formik.errors.run_name
             : undefined
         }
         placeholder="Name of this benchmark run"
-      />
-
-      <TextArea
-        name="description"
-        label="Description"
-        onChange={formik.handleChange}
-        value={formik.values.description}
-        error={
-          formik.touched.name && formik.errors.description
-            ? formik.errors.description
-            : undefined
-        }
-        placeholder="Description of this benchmark run"
       />
 
       <TextInput
@@ -102,7 +88,7 @@ const NewBenchMarkRunForm: React.FC<NewBenchmarkRunformik> = (props) => {
         value={formik.values.num_of_prompts}
         onBlur={formik.handleBlur}
         error={
-          formik.touched.name && formik.errors.num_of_prompts
+          formik.touched.num_of_prompts && formik.errors.num_of_prompts
             ? formik.errors.num_of_prompts
             : undefined
         }

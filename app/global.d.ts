@@ -98,11 +98,13 @@ type Dataset = {
 };
 
 type BenchmarkRunFormValues = {
-  name: string;
-  description: string;
-  num_of_prompts: string;
-  cookbooks: string[];
+  run_name: string;
   endpoints: string[];
+  inputs: string[];
+  num_of_prompts: string;
+  random_seed: string;
+  system_prompt: string;
+  runner_processing_module: string;
 };
 
 type PushEvent = {

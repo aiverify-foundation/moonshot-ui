@@ -248,7 +248,7 @@ function BenchmarkFlowWindow(props: BenchmarkFlowProps) {
           <div className="flex flex-col justify-end">
             <NewBenchMarkRunForm
               className="mt-6"
-              addedCookbooks={addedCookbooks}
+              addedInputs={addedCookbooks}
               addedEndpoints={addedModels}
               onFormSubmit={createBenchmarkRun}
             />
