@@ -1,5 +1,6 @@
-import { Icon, IconName } from '@/app/components/IconSVG';
+import { IconName } from '@/app/components/IconSVG';
 import { MainSectionViews } from '@/app/views/quickstart-home/enums';
+import BackToHomeButton from '@/app/views/shared-components/backToHomeButton/backToHomeButton';
 import { SubmenuButton } from '@/app/views/shared-components/submenuButton/submenuButton';
 import tailwindConfig from '@/tailwind.config';
 
@@ -12,18 +13,14 @@ type BenchmarkSubmenuProps = {
 
 function RedteamSubmenu(props: BenchmarkSubmenuProps) {
   const { changeView, onBackClick } = props;
+
   return (
     <div className="flex flex-col p-8 gap-6">
       <header>
-        <button onClick={onBackClick}>
-          <div className="flex gap-3">
-            <Icon
-              name={IconName.ArrowLeft}
-              darkModeColor={colors.moongray[300]}
-            />
-            <p className="dark:text-moongray-300">Back to Home</p>
-          </div>
-        </button>
+        <BackToHomeButton
+          onBackClick={onBackClick}
+          colors={colors}
+        />
       </header>
       <section className="flex flex-col items-center gap-2.5">
         <h3 className="text-logocolor tracking-widest text-[1.4rem]">

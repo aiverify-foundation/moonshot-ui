@@ -13,6 +13,26 @@ function BenchmarkTopicsSelection({
   selectedTopics,
   onTopicClick,
 }: Props) {
+  const topicsBtns = topics.map((topic) => {
+    const isSelected = selectedTopics.some((t) => t.id === topic.id);
+    return (
+      <Button
+        key={topic.id}
+        size="sm"
+        text={topic.name}
+        textSize="1.1rem"
+        textWeight="600"
+        textColor={colors.white}
+        mode={ButtonType.OUTLINE}
+        type="button"
+        leftIconName={IconName.Plus}
+        btnColor={isSelected ? colors.moongray[700] : undefined}
+        hoverBtnColor={colors.moongray[800]}
+        onClick={() => onTopicClick(topic)}
+      />
+    );
+  });
+
   return (
     <section className="flex flex-col items-center min-h-[300px]">
       <h2 className="text-[1.6rem] font-medium tracking-wide text-white w-full text-center">
@@ -23,25 +43,7 @@ function BenchmarkTopicsSelection({
         model&apos;s performance in specific topics or languages
       </p>
       <div className="flex flex-wrap gap-4 mt-10 w-[80%] justify-center">
-        {topics.map((topic) => {
-          const isSelected = selectedTopics.some((t) => t.id === topic.id);
-          return (
-            <Button
-              key={topic.id}
-              size="sm"
-              text={topic.name}
-              textSize="1.1rem"
-              textWeight="600"
-              textColor={colors.white}
-              mode={ButtonType.OUTLINE}
-              type="button"
-              leftIconName={IconName.Plus}
-              btnColor={isSelected ? colors.moongray[700] : undefined}
-              hoverBtnColor={colors.moongray[800]}
-              onClick={() => onTopicClick(topic)}
-            />
-          );
-        })}
+        {topicsBtns}
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { ModelSelectView } from '@/app/views/quickstart-home/components/endpointsSelector';
@@ -20,13 +20,13 @@ const flowSteps = ['Your LLM', 'Recommended Tests', 'Connect Endpoint', 'Run'];
 
 function BenchmarkNewSessionFlow(props: Props) {
   const { onCloseIconClick } = props;
-  const [activeView, setActiveView] = useState<BenchmarkNewSessionViews>(
+  const [currentView, setCurrentView] = useState<BenchmarkNewSessionViews>(
     BenchmarkNewSessionViews.PRIMARY_USE_CASE
   );
   const [selectedTopics, setSelectedTopics] = useState<BenchmarkTopic[]>([]);
 
   function changeView(view: BenchmarkNewSessionViews) {
-    setActiveView(view);
+    setCurrentView(view);
   }
 
   function handleTopicClick(topic: BenchmarkTopic) {
@@ -40,44 +40,71 @@ function BenchmarkNewSessionFlow(props: Props) {
   }
 
   function nextViewHandler() {
-    if (activeView === BenchmarkNewSessionViews.PRIMARY_USE_CASE) {
-      setActiveView(BenchmarkNewSessionViews.TOPICS_SELECTION);
+    if (currentView === BenchmarkNewSessionViews.PRIMARY_USE_CASE) {
+      setCurrentView(BenchmarkNewSessionViews.TOPICS_SELECTION);
       return;
     }
-    if (activeView === BenchmarkNewSessionViews.RECOMMENDED_TESTS) {
-      setActiveView(BenchmarkNewSessionViews.ENDPOINTS_SELECTION);
+    if (currentView === BenchmarkNewSessionViews.RECOMMENDED_TESTS) {
+      setCurrentView(BenchmarkNewSessionViews.ENDPOINTS_SELECTION);
       return;
     }
-    if (activeView === BenchmarkNewSessionViews.TOPICS_SELECTION) {
+    if (currentView === BenchmarkNewSessionViews.TOPICS_SELECTION) {
       if (selectedTopics.length > 0) {
-        setActiveView(BenchmarkNewSessionViews.RECOMMENDED_TESTS);
+        setCurrentView(BenchmarkNewSessionViews.RECOMMENDED_TESTS);
       }
       return;
     }
   }
 
   function previousViewHandler() {
-    if (activeView === BenchmarkNewSessionViews.TOPICS_SELECTION) {
-      setActiveView(BenchmarkNewSessionViews.PRIMARY_USE_CASE);
+    if (currentView === BenchmarkNewSessionViews.TOPICS_SELECTION) {
+      setCurrentView(BenchmarkNewSessionViews.PRIMARY_USE_CASE);
       return;
     }
-    if (activeView === BenchmarkNewSessionViews.RECOMMENDED_TESTS) {
-      setActiveView(BenchmarkNewSessionViews.TOPICS_SELECTION);
+    if (currentView === BenchmarkNewSessionViews.RECOMMENDED_TESTS) {
+      setCurrentView(BenchmarkNewSessionViews.TOPICS_SELECTION);
       return;
     }
-    if (activeView === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
-      setActiveView(BenchmarkNewSessionViews.RECOMMENDED_TESTS);
+    if (currentView === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
+      setCurrentView(BenchmarkNewSessionViews.RECOMMENDED_TESTS);
       return;
     }
   }
 
-  useEffect(() => {
-    console.dir(selectedTopics);
-  }, [selectedTopics]);
+  let view: React.ReactElement | undefined;
+
+  switch (currentView) {
+    case BenchmarkNewSessionViews.PRIMARY_USE_CASE:
+      view = <BenchMarkPrimaryUseCaseView changeView={changeView} />;
+      break;
+    case BenchmarkNewSessionViews.TOPICS_SELECTION:
+      view = (
+        <BenchmarkTopicsSelection
+          topics={benchmarkTopics}
+          selectedTopics={selectedTopics}
+          onTopicClick={handleTopicClick}
+        />
+      );
+      break;
+    case BenchmarkNewSessionViews.RECOMMENDED_TESTS:
+      view = (
+        <BenchmarkRecommendedTests
+          cookbookIds={selectedTopics.map((t) => t.id)}
+        />
+      );
+      break;
+    case BenchmarkNewSessionViews.ENDPOINTS_SELECTION:
+      view = (
+        <ModelSelectView onModelSelectClick={(model) => console.dir(model)} />
+      );
+      break;
+  }
 
   return (
-    <MainSectionSurface onCloseIconClick={onCloseIconClick}>
-      <div className="flex flex-col items-center pt-4 gap-10 pb-10">
+    <MainSectionSurface
+      onCloseIconClick={onCloseIconClick}
+      height={'100%'}>
+      <div className="flex flex-col items-center pt-4 gap-5 pb-10">
         <div className="w-[700px] flex justify-center">
           <SimpleStepsIndicator
             textColor={colors.moongray[300]}
@@ -87,7 +114,7 @@ function BenchmarkNewSessionFlow(props: Props) {
           />
         </div>
         <div className="flex justify-center">
-          {activeView !== BenchmarkNewSessionViews.PRIMARY_USE_CASE && (
+          {currentView !== BenchmarkNewSessionViews.PRIMARY_USE_CASE && (
             <Icon
               name={IconName.WideArrowUp}
               size={28}
@@ -95,24 +122,7 @@ function BenchmarkNewSessionFlow(props: Props) {
             />
           )}
         </div>
-        {activeView === BenchmarkNewSessionViews.PRIMARY_USE_CASE && (
-          <BenchMarkPrimaryUseCaseView changeView={changeView} />
-        )}
-        {activeView === BenchmarkNewSessionViews.TOPICS_SELECTION && (
-          <BenchmarkTopicsSelection
-            topics={benchmarkTopics}
-            selectedTopics={selectedTopics}
-            onTopicClick={handleTopicClick}
-          />
-        )}
-        {activeView === BenchmarkNewSessionViews.RECOMMENDED_TESTS && (
-          <BenchmarkRecommendedTests
-            cookbookIds={selectedTopics.map((t) => t.id)}
-          />
-        )}
-        {activeView === BenchmarkNewSessionViews.ENDPOINTS_SELECTION && (
-          <ModelSelectView onModelSelectClick={(model) => console.dir(model)} />
-        )}
+        {view}
         <div
           className="flex justify-center"
           style={{

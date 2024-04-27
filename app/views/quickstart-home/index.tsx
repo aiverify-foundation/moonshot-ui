@@ -26,7 +26,7 @@ import { ManualRedTeamingV2 } from '@views/redteaming/red-teaming-session-v2';
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
 export default function QuickstartHome() {
-  const [activeView, setActiveView] = React.useState<MainSectionViews>(
+  const [currentView, setCurrentView] = React.useState<MainSectionViews>(
     MainSectionViews.QUICKSTART_HOME
   );
   const dispatch = useAppDispatch();
@@ -37,12 +37,16 @@ export default function QuickstartHome() {
   );
 
   function changeView(view: MainSectionViews) {
-    setActiveView(view);
+    setCurrentView(view);
   }
 
   function handleRedteamingSessionCloseClick() {
     dispatch(removeActiveSession());
     dispatch(removeOpenedWindowId(getWindowId(WindowIds.RED_TEAMING_SESSION)));
+    changeView(MainSectionViews.QUICKSTART_HOME);
+  }
+
+  function goToHomeScreen() {
     changeView(MainSectionViews.QUICKSTART_HOME);
   }
 
@@ -54,15 +58,95 @@ export default function QuickstartHome() {
     }
   }, [isDarkMode]);
 
-  useEffect(() => {
-    //set default window dimensions
-    //position will be centralized with small random offsets to left/top positions on screen
-    resetWindows(
-      WindowIds.COOKBOOKS_PICKER,
-      WindowIds.RECIPES_PICKER,
-      WindowIds.LLM_ENDPOINTS_PICKER
-    );
-  }, []);
+  const leftNavMenuItems = (
+    <ul className="flex flex-col gap-10">
+      <li>
+        <Icon
+          darkModeColor={colors.moongray[300]}
+          name={IconName.OutlineBox}
+          size={40}
+        />
+      </li>
+      <li className="flex justify-center">
+        <Tooltip
+          content={<span className="tracking-widest">benchmarking</span>}
+          fontColor={colors.logocolor}
+          transparent
+          position={TooltipPosition.left}
+          offsetTop={10}>
+          <Icon
+            darkModeColor={colors.moongray[300]}
+            name={IconName.CheckList}
+            size={40}
+            onClick={() => changeView(MainSectionViews.BENCHMARK_SUBMENU)}
+          />
+        </Tooltip>
+      </li>
+      <li className="flex justify-center">
+        <Tooltip
+          content={<span className="tracking-widest">red teaming</span>}
+          fontColor={colors.logocolor}
+          transparent
+          position={TooltipPosition.left}
+          offsetTop={10}>
+          <Icon
+            darkModeColor={colors.moongray[300]}
+            name={IconName.Spacesuit}
+            size={40}
+            onClick={() => changeView(MainSectionViews.REDTEAM_SUBMENU)}
+          />
+        </Tooltip>
+      </li>
+      <li>
+        <Icon
+          darkModeColor={colors.moongray[300]}
+          name={IconName.HistoryClock}
+          size={40}
+        />
+      </li>
+      <li className="flex justify-center">
+        <Tooltip
+          content={<span className="tracking-widest">utilities</span>}
+          fontColor={colors.logocolor}
+          position={TooltipPosition.left}
+          transparent
+          offsetTop={10}>
+          <Icon
+            darkModeColor={colors.moongray[300]}
+            name={IconName.Tools}
+            size={40}
+            onClick={() => changeView(MainSectionViews.UTILS_SUBMENU)}
+          />
+        </Tooltip>
+      </li>
+    </ul>
+  );
+
+  let view: React.ReactNode = <EntryBanners changeView={changeView} />;
+  switch (currentView) {
+    case MainSectionViews.BENCHMARK_SUBMENU:
+      view = <BenchmarkHome onBackClick={goToHomeScreen} />;
+      break;
+    case MainSectionViews.REDTEAM_SUBMENU:
+      view = (
+        <RedteamSubmenu
+          onBackClick={goToHomeScreen}
+          changeView={changeView}
+        />
+      );
+      break;
+    case MainSectionViews.UTILS_SUBMENU:
+      view = (
+        <UtilsSubmenu
+          onClick={() => changeView(MainSectionViews.UTILS_SUBMENU)}
+          onBackClick={goToHomeScreen}
+        />
+      );
+      break;
+    case MainSectionViews.REDTEAMING:
+      view = <NewRedTeamSession onCloseIconClick={goToHomeScreen} />;
+      break;
+  }
 
   return (
     <>
@@ -73,78 +157,12 @@ export default function QuickstartHome() {
         />
       ) : (
         <MicroLayout>
-          <nav className="pt-[5rem]">
-            <ul className="flex flex-col gap-10">
-              <li>
-                <Icon
-                  darkModeColor={colors.moongray[300]}
-                  name={IconName.OutlineBox}
-                  size={40}
-                />
-              </li>
-              <li className="flex justify-center">
-                <Tooltip
-                  content={
-                    <span className="tracking-widest">benchmarking</span>
-                  }
-                  fontColor={colors.logocolor}
-                  transparent
-                  position={TooltipPosition.left}
-                  offsetTop={10}>
-                  <Icon
-                    darkModeColor={colors.moongray[300]}
-                    name={IconName.CheckList}
-                    size={40}
-                    onClick={() =>
-                      changeView(MainSectionViews.BENCHMARK_SUBMENU)
-                    }
-                  />
-                </Tooltip>
-              </li>
-              <li className="flex justify-center">
-                <Tooltip
-                  content={<span className="tracking-widest">red teaming</span>}
-                  fontColor={colors.logocolor}
-                  transparent
-                  position={TooltipPosition.left}
-                  offsetTop={10}>
-                  <Icon
-                    darkModeColor={colors.moongray[300]}
-                    name={IconName.Spacesuit}
-                    size={40}
-                    onClick={() => changeView(MainSectionViews.REDTEAM_SUBMENU)}
-                  />
-                </Tooltip>
-              </li>
-              <li>
-                <Icon
-                  darkModeColor={colors.moongray[300]}
-                  name={IconName.HistoryClock}
-                  size={40}
-                />
-              </li>
-              <li className="flex justify-center">
-                <Tooltip
-                  content={<span className="tracking-widest">utilities</span>}
-                  fontColor={colors.logocolor}
-                  position={TooltipPosition.left}
-                  transparent
-                  offsetTop={10}>
-                  <Icon
-                    darkModeColor={colors.moongray[300]}
-                    name={IconName.Tools}
-                    size={40}
-                    onClick={() => changeView(MainSectionViews.UTILS_SUBMENU)}
-                  />
-                </Tooltip>
-              </li>
-            </ul>
-          </nav>
+          <nav className="pt-[5rem]">{leftNavMenuItems}</nav>
           <header className="flex justify-between items-center px-4">
             <h1
               className="text-logocolor tracking-[0.7rem] font-extralight text-[2.7rem] cursor-pointer"
               style={{ textShadow: '2px 2px 3px rgba(0,0,0,0.5)' }}
-              onClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}>
+              onClick={goToHomeScreen}>
               moonshot.
             </h1>
             <Icon
@@ -153,35 +171,7 @@ export default function QuickstartHome() {
               size={30}
             />
           </header>
-          <main>
-            {activeView === MainSectionViews.QUICKSTART_HOME && (
-              <EntryBanners changeView={changeView} />
-            )}
-            {activeView === MainSectionViews.BENCHMARK_SUBMENU && (
-              <BenchmarkHome
-                onBackClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}
-              />
-            )}
-            {activeView === MainSectionViews.REDTEAM_SUBMENU && (
-              <RedteamSubmenu
-                changeView={changeView}
-                onBackClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}
-              />
-            )}
-            {activeView === MainSectionViews.UTILS_SUBMENU && (
-              <UtilsSubmenu
-                onClick={() => changeView(MainSectionViews.UTILS_SUBMENU)}
-                onBackClick={() => changeView(MainSectionViews.QUICKSTART_HOME)}
-              />
-            )}
-            {activeView === MainSectionViews.REDTEAMING && (
-              <NewRedTeamSession
-                onCloseIconClick={() =>
-                  changeView(MainSectionViews.QUICKSTART_HOME)
-                }
-              />
-            )}
-          </main>
+          <main className="h-full">{view}</main>
         </MicroLayout>
       )}
     </>

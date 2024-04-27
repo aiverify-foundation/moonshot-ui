@@ -1,6 +1,9 @@
 import { IconName } from '@/app/components/IconSVG';
+import { Button, ButtonType } from '@/app/components/button';
 import useModelsList from '@/app/hooks/useLLMEndpointList';
+import tailwindConfig from '@/tailwind.config';
 import { SelectListItem } from './selectListItem';
+const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
 type EndpointSelectViewProps = {
   onModelSelectClick: (model: LLMEndpoint) => void;
@@ -20,19 +23,32 @@ function ModelSelectView(props: EndpointSelectViewProps) {
   }
 
   return (
-    <div className="flex flex-col pt-4 gap-10 pb-10 max-h-[350px]">
-      <h2 className="text-[1.6rem] font-medium tracking-wide text-white w-full text-center">
-        Select the Endpoint(s) to be tested
-      </h2>
-
-      <div className="relative flex flex-row min-h-[300px] px-[10%] w-[100%] h-full">
+    <div className="flex flex-col pt-4 gap-8 pb-10 max-h-[350px]">
+      <section className="flex flex-col items-center gap-3">
+        <h2 className="text-[1.6rem] font-medium tracking-wide text-white w-full text-center">
+          Select the Endpoint(s) to be tested
+        </h2>
+        <Button
+          size="sm"
+          text="Create New Endpoint"
+          textSize="1.1rem"
+          textWeight="500"
+          textColor={colors.white}
+          mode={ButtonType.OUTLINE}
+          type="button"
+          leftIconName={IconName.Plus}
+          hoverBtnColor={colors.moongray[800]}
+          onClick={() => null}
+        />
+      </section>
+      <div className="relative flex flex-col min-h-[300px] px-[10%] w-[100%] h-full items-center">
         {isLoading ? (
           <div className="ring">
             Loading
             <span />
           </div>
         ) : (
-          <ul className="flex flex-row flex-wrap gap-[2%] w-[100%] h-[250px] overflow-y-auto custom-scrollbar px-4">
+          <ul className="flex flex-row flex-wrap gap-[2%] w-[100%] h-[200px] overflow-y-auto custom-scrollbar px-4">
             {models.map((model) => (
               <SelectListItem<LLMEndpoint>
                 key={model.id}
