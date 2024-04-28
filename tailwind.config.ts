@@ -22,7 +22,8 @@ const config: Config = {
         },
         white: '#FFFFFF',
         black: '#000000',
-        logocolor: '#d5aaea',
+        moonpurplelight: '#d5aaea',
+        moonpurple: '#392348',
         moonwine: {
           50: '#f9f8fb',
           100: '#f4f1f6',

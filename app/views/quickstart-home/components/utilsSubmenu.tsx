@@ -25,7 +25,7 @@ function UtilsSubmenu(props: UtilsSubmenuProps) {
         </button>
       </header>
       <section className="flex flex-col items-center gap-2.5">
-        <h3 className="text-logocolor tracking-widest text-[1.2rem]">
+        <h3 className="text-moonpurplelight tracking-widest text-[1.2rem]">
           benchmark with moonshot
         </h3>
         <SubmenuButton

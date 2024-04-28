@@ -23,7 +23,7 @@ function ModelSelectView(props: EndpointSelectViewProps) {
   }
 
   return (
-    <div className="flex flex-col pt-4 gap-8 pb-10 max-h-[350px]">
+    <div className="flex flex-col pt-4 gap-8 pb-4 h-[80%]">
       <section className="flex flex-col items-center gap-3">
         <h2 className="text-[1.6rem] font-medium tracking-wide text-white w-full text-center">
           Select the Endpoint(s) to be tested
@@ -48,7 +48,9 @@ function ModelSelectView(props: EndpointSelectViewProps) {
             <span />
           </div>
         ) : (
-          <ul className="flex flex-row flex-wrap gap-[2%] w-[100%] h-[200px] overflow-y-auto custom-scrollbar px-4">
+          <ul
+            className="flex flex-row flex-wrap gap-[2%] w-[100%] overflow-y-auto custom-scrollbar px-4"
+            style={{ height: 'calc(100% - 50px)' }}>
             {models.map((model) => (
               <SelectListItem<LLMEndpoint>
                 key={model.id}

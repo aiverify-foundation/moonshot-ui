@@ -179,7 +179,7 @@ type CustomColors = {
   imdalight: Record<string, string>;
   white: string;
   black: string;
-  logocolor: string;
+  moonpurplelight: string;
 };
 
 type BenchmarkTopic = {

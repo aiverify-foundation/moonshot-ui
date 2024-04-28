@@ -23,7 +23,7 @@ function RedteamSubmenu(props: BenchmarkSubmenuProps) {
         />
       </header>
       <section className="flex flex-col items-center gap-2.5">
-        <h3 className="text-logocolor tracking-widest text-[1.4rem]">
+        <h3 className="text-moonpurplelight tracking-widest text-[1.4rem]">
           moonshot utilities
         </h3>
         <SubmenuButton

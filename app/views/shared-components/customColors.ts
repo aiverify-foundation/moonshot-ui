@@ -6,7 +6,8 @@ type CustomColors = {
   imdalight: Record<string, string>;
   white: string;
   black: string;
-  logocolor: string;
+  moonpurplelight: string;
+  moonpurple: string;
 };
 
 export const colors = tailwindConfig.theme?.extend?.colors as CustomColors;

@@ -12,7 +12,7 @@ type Props = {
 function BenchmarkHomeMenu({ changeView }: Props) {
   return (
     <section className="flex flex-col items-center gap-2.5">
-      <h3 className="text-logocolor tracking-widest text-[1.4rem]">
+      <h3 className="text-moonpurplelight tracking-widest text-[1.4rem]">
         benchmark with moonshot
       </h3>
       <SubmenuButton

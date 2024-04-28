@@ -70,7 +70,7 @@ export default function QuickstartHome() {
       <li className="flex justify-center">
         <Tooltip
           content={<span className="tracking-widest">benchmarking</span>}
-          fontColor={colors.logocolor}
+          fontColor={colors.moonpurplelight}
           transparent
           position={TooltipPosition.left}
           offsetTop={10}>
@@ -85,7 +85,7 @@ export default function QuickstartHome() {
       <li className="flex justify-center">
         <Tooltip
           content={<span className="tracking-widest">red teaming</span>}
-          fontColor={colors.logocolor}
+          fontColor={colors.moonpurplelight}
           transparent
           position={TooltipPosition.left}
           offsetTop={10}>
@@ -107,7 +107,7 @@ export default function QuickstartHome() {
       <li className="flex justify-center">
         <Tooltip
           content={<span className="tracking-widest">utilities</span>}
-          fontColor={colors.logocolor}
+          fontColor={colors.moonpurplelight}
           position={TooltipPosition.left}
           transparent
           offsetTop={10}>
@@ -160,7 +160,7 @@ export default function QuickstartHome() {
           <nav className="pt-[5rem]">{leftNavMenuItems}</nav>
           <header className="flex justify-between items-center px-4">
             <h1
-              className="text-logocolor tracking-[0.7rem] font-extralight text-[2.7rem] cursor-pointer"
+              className="text-moonpurplelight tracking-[0.7rem] font-extralight text-[2.7rem] cursor-pointer"
               style={{ textShadow: '2px 2px 3px rgba(0,0,0,0.5)' }}
               onClick={goToHomeScreen}>
               moonshot.
