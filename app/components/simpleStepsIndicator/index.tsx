@@ -21,7 +21,8 @@ function SimpleStepsIndicator({
           key={step}
           className={clsx(
             styles.step,
-            currentStepIndex === index ? styles.active : ''
+            currentStepIndex === index ? styles.active : '',
+            currentStepIndex > index ? styles.done : ''
           )}
           style={{
             borderColor: stepColor,

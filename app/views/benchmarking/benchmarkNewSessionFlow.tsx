@@ -74,15 +74,18 @@ function BenchmarkNewSessionFlow(props: Props) {
 
   let hidePrevNavButton = false;
   let hideNextNavButton = false;
+  let stepIndex = 0;
   let surfaceColor = colors.moongray['950'];
   let view: React.ReactElement | undefined;
 
   switch (currentView) {
     case BenchmarkNewSessionViews.PRIMARY_USE_CASE:
       hidePrevNavButton = true;
+      stepIndex = 0;
       view = <BenchMarkPrimaryUseCaseView changeView={changeView} />;
       break;
     case BenchmarkNewSessionViews.TOPICS_SELECTION:
+      stepIndex = 0;
       view = (
         <BenchmarkTopicsSelection
           topics={benchmarkTopics}
@@ -92,6 +95,7 @@ function BenchmarkNewSessionFlow(props: Props) {
       );
       break;
     case BenchmarkNewSessionViews.RECOMMENDED_TESTS:
+      stepIndex = 1;
       view = (
         <BenchmarkRecommendedTests
           cookbookIds={selectedTopics.map((t) => t.id)}
@@ -100,11 +104,13 @@ function BenchmarkNewSessionFlow(props: Props) {
       );
       break;
     case BenchmarkNewSessionViews.ENDPOINTS_SELECTION:
+      stepIndex = 2;
       view = (
         <ModelSelectView onModelSelectClick={(model) => console.dir(model)} />
       );
       break;
     case BenchmarkNewSessionViews.COOKBOOKS_SELECTION:
+      stepIndex = 1;
       hidePrevNavButton = true;
       hideNextNavButton = true;
       surfaceColor = colors.moongray['800'];
@@ -128,7 +134,7 @@ function BenchmarkNewSessionFlow(props: Props) {
             textColor={colors.moongray[300]}
             stepColor={colors.moonpurplelight}
             steps={flowSteps}
-            currentStepIndex={0}
+            currentStepIndex={stepIndex}
           />
         </div>
         {!hidePrevNavButton && (

@@ -11,6 +11,10 @@
   opacity: 0.3;
 }
 
+.done {
+  opacity: 1;
+}
+
 .active {
   opacity: 1;
 }
