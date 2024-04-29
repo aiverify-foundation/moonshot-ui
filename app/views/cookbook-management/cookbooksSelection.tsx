@@ -2,11 +2,11 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { colors } from '@/app/views/shared-components/customColors';
 import { PopupSurface } from '@/app/views/shared-components/popupSurface.tsx/popupSurface';
-import { TabsBar, TabItem } from '@/app/views/shared-components/tabsBar';
+import { TabsMenu, MenuItem } from '@/app/views/shared-components/tabsMenu';
 import { useState } from 'react';
 import { CookbookAbout } from './cookbookAbout';
 
-const tabItems: TabItem[] = [
+const tabItems: MenuItem[] = [
   { id: 'quality', label: 'Quality' },
   { id: 'capability', label: 'Capability' },
   { id: 'trustsafety', label: 'Trust & Safety' },
@@ -211,10 +211,12 @@ function CookbooksSelection(props: Props) {
           onCloseIconClick={onClose}
           headerContent={
             <section className="flex items-center justify-flex-start gap-5">
-              <TabsBar
+              <TabsMenu
                 tabItems={tabItems}
                 barColor={colors.moongray['800']}
+                tabHoverColor={colors.moongray['700']}
                 selectedTabColor={colors.moonpurple}
+                textColor={colors.white}
                 activeTabId={activeTab}
                 onTabClick={handleTabClick}
               />
