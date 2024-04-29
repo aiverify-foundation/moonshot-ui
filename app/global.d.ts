@@ -63,6 +63,13 @@ type Cookbook = {
   recipes: string[];
 };
 
+type CookbookWithRecipe = {
+  id: string;
+  name: string;
+  description: string;
+  recipes: Recipe[];
+};
+
 type CookbookFormValues = {
   name: string;
   description: string;
