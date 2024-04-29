@@ -22,7 +22,7 @@ const flowSteps = ['Your LLM', 'Recommended Tests', 'Connect Endpoint', 'Run'];
 function BenchmarkNewSessionFlow(props: Props) {
   const { onCloseIconClick } = props;
   const [currentView, setCurrentView] = useState<BenchmarkNewSessionViews>(
-    BenchmarkNewSessionViews.PRIMARY_USE_CASE
+    BenchmarkNewSessionViews.TOPICS_SELECTION
   );
   const [selectedTopics, setSelectedTopics] = useState<BenchmarkTopic[]>([]);
 
@@ -41,10 +41,6 @@ function BenchmarkNewSessionFlow(props: Props) {
   }
 
   function nextViewHandler() {
-    if (currentView === BenchmarkNewSessionViews.PRIMARY_USE_CASE) {
-      setCurrentView(BenchmarkNewSessionViews.TOPICS_SELECTION);
-      return;
-    }
     if (currentView === BenchmarkNewSessionViews.RECOMMENDED_TESTS) {
       setCurrentView(BenchmarkNewSessionViews.ENDPOINTS_SELECTION);
       return;
@@ -58,10 +54,6 @@ function BenchmarkNewSessionFlow(props: Props) {
   }
 
   function previousViewHandler() {
-    if (currentView === BenchmarkNewSessionViews.TOPICS_SELECTION) {
-      setCurrentView(BenchmarkNewSessionViews.PRIMARY_USE_CASE);
-      return;
-    }
     if (currentView === BenchmarkNewSessionViews.RECOMMENDED_TESTS) {
       setCurrentView(BenchmarkNewSessionViews.TOPICS_SELECTION);
       return;
@@ -128,8 +120,8 @@ function BenchmarkNewSessionFlow(props: Props) {
       height="100%"
       minHeight={750}
       bgColor={surfaceColor}>
-      <div className="flex flex-col items-center pt-4 gap-5 h-full">
-        <div className="w-[700px] flex justify-center">
+      <div className="flex flex-col items-center h-full">
+        <div className="w-[700px] flex shrink-0 justify-center">
           <SimpleStepsIndicator
             textColor={colors.moongray[300]}
             stepColor={colors.moonpurplelight}
@@ -137,29 +129,35 @@ function BenchmarkNewSessionFlow(props: Props) {
             currentStepIndex={stepIndex}
           />
         </div>
-        {!hidePrevNavButton && (
-          <div className="flex justify-center">
-            <Icon
-              name={IconName.WideArrowUp}
-              size={28}
-              onClick={previousViewHandler}
-            />
-          </div>
-        )}
-        {view}
-        {!hideNextNavButton && (
-          <div
-            className="flex justify-center"
-            style={{
-              opacity: selectedTopics.length > 0 ? 1 : 0.1,
-            }}>
-            <Icon
-              name={IconName.WideArrowDown}
-              size={28}
-              onClick={selectedTopics.length > 0 ? nextViewHandler : undefined}
-            />
-          </div>
-        )}
+        <div
+          className="flex flex-col gap-5 justify-center"
+          style={{ height: 'calc(100% - 33px)' }}>
+          {!hidePrevNavButton && (
+            <div className="flex justify-center">
+              <Icon
+                name={IconName.WideArrowUp}
+                size={28}
+                onClick={previousViewHandler}
+              />
+            </div>
+          )}
+          {view}
+          {!hideNextNavButton && (
+            <div
+              className="flex justify-center"
+              style={{
+                opacity: selectedTopics.length > 0 ? 1 : 0.1,
+              }}>
+              <Icon
+                name={IconName.WideArrowDown}
+                size={28}
+                onClick={
+                  selectedTopics.length > 0 ? nextViewHandler : undefined
+                }
+              />
+            </div>
+          )}
+        </div>
       </div>
     </MainSectionSurface>
   );

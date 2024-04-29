@@ -15,7 +15,9 @@ function MainSectionSurface(props: MainSectionSurfaceProps) {
     <div
       className="flex flex-col w-full dark:bg-moongray-950 rounded-2xl p-6"
       style={{ height, minHeight, backgroundColor: bgColor }}>
-      <header className="flex flex-col relative h-8">
+      <header
+        className="flex flex-col shrink-0 relative"
+        style={{ height: 32 }}>
         <div className="absolute top-0 right-0">
           <Icon
             name={IconName.Close}
@@ -24,7 +26,7 @@ function MainSectionSurface(props: MainSectionSurfaceProps) {
           />
         </div>
       </header>
-      {children}
+      <section style={{ height: 'calc(100% - 32px)' }}>{children}</section>
     </div>
   );
 }

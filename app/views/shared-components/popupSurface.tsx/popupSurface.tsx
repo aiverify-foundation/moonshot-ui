@@ -21,12 +21,12 @@ function PopupSurface(props: PopupSurfaceProps) {
   } = props;
   return (
     <div
-      className="relative flex flex-col w-full dark:bg-moongray-950 rounded-2xl py-6 border border-moonpurple"
+      className="relative flex flex-col w-full dark:bg-moongray-950 rounded-2xl border border-moonpurple"
       style={{ height, minHeight, padding }}>
       <header className="flex flex-col items-center relative">
         {headerContent}
         <div
-          className="absolute top-0 right-4"
+          className="absolute top-4 right-4"
           style={{
             ...(padding !== undefined && { top: '1rem' }),
           }}>
