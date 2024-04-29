@@ -20,6 +20,15 @@
   background: #000000;
 }
 
+.btn_link {
+  border: none;
+  color: #FFFFFF;
+  background: transparent;
+  box-shadow: none;
+  text-decoration: underline;
+  padding: 0 0 0 0;
+}
+
 .btn_outline {
   border: 1px solid #FFFFFF;
   color: #FFFFFF;

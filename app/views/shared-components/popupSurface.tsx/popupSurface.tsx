@@ -14,11 +14,11 @@ function PopupSurface(props: PopupSurfaceProps) {
     props;
   return (
     <div
-      className="flex flex-col w-full dark:bg-moongray-950 rounded-2xl p-6"
+      className="relative flex flex-col w-full dark:bg-moongray-950 rounded-2xl py-6 border border-moonpurple"
       style={{ height, minHeight }}>
-      <header className="flex flex-col items-center relative h-8">
+      <header className="flex flex-col items-center relative">
         {headerContent}
-        <div className="absolute top-0 right-0">
+        <div className="absolute top-0 right-4">
           <Icon
             name={IconName.Close}
             size={32}

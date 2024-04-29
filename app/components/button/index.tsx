@@ -70,6 +70,7 @@ function Button(props: ButtonProps) {
       style={{
         background: isHovered ? hoverBtnColor : btnColor,
         color: textColor,
+        ...(mode == ButtonType.LINK ? { padding: 0 } : {}),
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
