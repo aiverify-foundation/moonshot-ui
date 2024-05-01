@@ -61,6 +61,7 @@ type Cookbook = {
   name: string;
   description: string;
   recipes: string[];
+  total_prompt_in_cookbook: number;
 };
 
 type CookbookWithRecipe = {

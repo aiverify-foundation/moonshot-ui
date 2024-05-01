@@ -1,11 +1,29 @@
-import { basePathCookbooks, hostURL } from '@api/constants';
+import { NextRequest } from 'next/server';
+import config from '@/moonshot.config';
+
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
-  const response = await fetch(`${hostURL}${basePathCookbooks}`, {
-    method: 'GET',
+export async function GET(request: NextRequest): Promise<Response> {
+  const idsParam = request.nextUrl.searchParams.get('ids');
+  const response = await fetch(
+    `${config.webAPIPaths.hostURL}${config.webAPIPaths.basePathCookbooks}`,
+    {
+      method: 'GET',
+    }
+  );
+
+  if (!idsParam) {
+    return response;
+  }
+  const data = (await response.json()) as Cookbook[];
+  const ids = idsParam.split(',').map((id) => id.trim());
+  const filteredData = data.filter((cookbook) => ids.includes(cookbook.id));
+  return new Response(JSON.stringify(filteredData), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
-  return response;
 }
 
 export async function POST(request: Request) {
