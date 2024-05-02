@@ -14,6 +14,12 @@
   transition: background-color 0.2s ease;
 }
 
+.btn.btn_primary:disabled {
+  background: #000000;
+  opacity: 0.5;
+}
+
+
 .btn_primary {
   border: 1px solid #FFFFFF;
   color: #FFFFFF;

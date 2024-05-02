@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, {
   ChangeEventHandler,
   KeyboardEventHandler,
@@ -5,7 +6,6 @@ import React, {
   useRef,
 } from 'react';
 import styles from './styles/textInput.module.css';
-import clsx from 'clsx';
 
 type TextInputProps = {
   id?: string;
@@ -21,6 +21,7 @@ type TextInputProps = {
   labelSibling?: React.ReactElement;
   style?: React.CSSProperties;
   inputStyles?: React.CSSProperties;
+  labelStyles?: React.CSSProperties;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onBlur?: ChangeEventHandler<HTMLInputElement>;
   onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
@@ -41,6 +42,7 @@ function TextInput(props: TextInputProps) {
     labelSibling,
     style,
     inputStyles,
+    labelStyles,
     onChange,
     onBlur,
     onKeyDown,
@@ -64,7 +66,9 @@ function TextInput(props: TextInputProps) {
       style={style}>
       <label>
         {label !== '' && label !== undefined ? (
-          <div className={styles.label}>
+          <div
+            className={styles.label}
+            style={labelStyles}>
             <div>{label}</div>
             {labelSibling}
           </div>

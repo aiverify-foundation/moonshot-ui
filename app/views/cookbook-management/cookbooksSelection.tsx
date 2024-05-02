@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { colors } from '@/app/views/shared-components/customColors';
-import { PopupSurface } from '@/app/views/shared-components/popupSurface.tsx/popupSurface';
+import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
 import { TabsMenu, TabItem } from '@/app/views/shared-components/tabsMenu';
 import { CookbookAbout } from './cookbookAbout';
 import { CookbookSelectionItem } from './cookbookSelectionItem';

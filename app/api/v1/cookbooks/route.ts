@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest): Promise<Response> {
   const idsParam = request.nextUrl.searchParams.get('ids');
   const response = await fetch(
-    `${config.webAPIPaths.hostURL}${config.webAPIPaths.basePathCookbooks}`,
+    `${config.webAPI.hostURL}${config.webAPI.basePathCookbooks}`,
     {
       method: 'GET',
     }

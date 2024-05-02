@@ -1,21 +1,27 @@
-import { basePathLLMEndpoints, hostURL } from '@api/constants';
+import config from '@/moonshot.config';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const response = await fetch(`${hostURL}${basePathLLMEndpoints}`, {
-    method: 'GET',
-  });
+  const response = await fetch(
+    `${config.webAPI.hostURL}${config.webAPI.basePathLLMEndpoints}`,
+    {
+      method: 'GET',
+    }
+  );
   return response;
 }
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const response = await fetch(`${hostURL}${basePathLLMEndpoints}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  });
+  const response = await fetch(
+    `${config.webAPI.hostURL}${config.webAPI.basePathLLMEndpoints}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    }
+  );
   return response;
 }

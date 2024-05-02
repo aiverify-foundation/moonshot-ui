@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { CookbooksSelection } from '@/app/views/cookbook-management/cookbooksSelection';
+import { NewEndpointForm } from '@/app/views/models-management/newEnpointForm';
 import { ModelSelectView } from '@/app/views/quickstart-home/components/endpointsSelector';
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
@@ -62,11 +63,21 @@ function BenchmarkNewSessionFlow(props: Props) {
   let view: React.ReactElement | undefined;
 
   useLayoutEffect(() => {
-    if (currentView === BenchmarkNewSessionViews.TOPICS_SELECTION) {
+    if (
+      currentView === BenchmarkNewSessionViews.TOPICS_SELECTION ||
+      currentView === BenchmarkNewSessionViews.COOKBOOKS_SELECTION
+    ) {
       setHiddenNavButtons([true, true]);
       return;
     }
-    if (currentView === BenchmarkNewSessionViews.COOKBOOKS_SELECTION) {
+    if (
+      currentView === BenchmarkNewSessionViews.RECOMMENDED_TESTS ||
+      currentView === BenchmarkNewSessionViews.ENDPOINTS_SELECTION
+    ) {
+      setHiddenNavButtons([false, false]);
+      return;
+    }
+    if (currentView === BenchmarkNewSessionViews.NEW_ENDPOINT_FORM) {
       setHiddenNavButtons([true, true]);
       return;
     }
@@ -91,7 +102,21 @@ function BenchmarkNewSessionFlow(props: Props) {
     case BenchmarkNewSessionViews.ENDPOINTS_SELECTION:
       stepIndex = 2;
       view = (
-        <ModelSelectView onModelSelectClick={(model) => console.dir(model)} />
+        <ModelSelectView
+          onModelSelectClick={(model) => console.dir(model)}
+          changeView={changeView}
+        />
+      );
+      break;
+    case BenchmarkNewSessionViews.NEW_ENDPOINT_FORM:
+      stepIndex = 2;
+      surfaceColor = colors.moongray['800'];
+      view = (
+        <NewEndpointForm
+          onClose={() =>
+            changeView(BenchmarkNewSessionViews.ENDPOINTS_SELECTION)
+          }
+        />
       );
       break;
     case BenchmarkNewSessionViews.COOKBOOKS_SELECTION:
@@ -121,7 +146,7 @@ function BenchmarkNewSessionFlow(props: Props) {
           />
         </div>
         <div
-          className="flex flex-col gap-5 justify-center"
+          className="flex flex-col gap-5 justify-center w-full"
           style={{ height: 'calc(100% - 33px)' }}>
           {!hiddenNavButtons[0] && (
             <div className="flex justify-center">

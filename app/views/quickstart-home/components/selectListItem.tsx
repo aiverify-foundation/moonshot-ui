@@ -5,12 +5,13 @@ type Props<T> = {
   item: T;
   label: string;
   height?: number;
+  bgColor?: string;
   onClick: (item: T) => void;
   iconName: IconName;
 };
 
 function SelectListItem<T>(props: Props<T>) {
-  const { label, item, onClick, iconName, height } = props;
+  const { label, item, onClick, iconName, height, bgColor } = props;
   const [checked, setChecked] = useState(false);
 
   function handleClick() {
@@ -23,7 +24,7 @@ function SelectListItem<T>(props: Props<T>) {
       className="flex flex-row gap-2 border dark:border-moongray-200
         bg-moongray-950 rounded-xl p-8 items-center cursor-pointer
         dark:hover:bg-moongray-900 mb-[15px] justify-between"
-      style={{ flexBasis: '49%', height }}
+      style={{ flexBasis: '49%', height, backgroundColor: bgColor }}
       onClick={handleClick}>
       <div className="flex flex-row gap-2 text-white justify-center items-center">
         <Icon name={iconName} />

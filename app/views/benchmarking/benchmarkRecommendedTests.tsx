@@ -28,7 +28,7 @@ function BenchmarkRecommendedTests({ cookbookIds, changeView }: Props) {
 
   return (
     <section className="flex flex-col items-center justify-center min-h-[300px] gap-5">
-      <h2 className="text-[1.6rem] font-medium tracking-wide text-white w-full text-center flex">
+      <h2 className="text-[1.6rem] font-medium tracking-wide text-white w-full flex justify-center">
         We recommend you run{' '}
         <Tooltip
           position={TooltipPosition.top}
