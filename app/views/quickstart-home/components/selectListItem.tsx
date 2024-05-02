@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IconName, Icon } from '@/app/components/IconSVG';
 
 type Props<T> = {
@@ -6,18 +6,31 @@ type Props<T> = {
   label: string;
   height?: number;
   bgColor?: string;
+  checked?: boolean;
   onClick: (item: T) => void;
   iconName: IconName;
 };
 
 function SelectListItem<T>(props: Props<T>) {
-  const { label, item, onClick, iconName, height, bgColor } = props;
-  const [checked, setChecked] = useState(false);
+  const {
+    label,
+    item,
+    onClick,
+    iconName,
+    height,
+    bgColor,
+    checked = false,
+  } = props;
+  const [isChecked, setIsChecked] = useState(checked);
 
   function handleClick() {
-    setChecked((prev) => !prev);
+    setIsChecked((prev) => !prev);
     onClick(item);
   }
+
+  useEffect(() => {
+    setIsChecked(checked);
+  }, [checked]);
 
   return (
     <li
@@ -33,7 +46,7 @@ function SelectListItem<T>(props: Props<T>) {
       <input
         type="checkbox"
         className="w-4 h-4 mr-5 ml-2 shrink-0"
-        checked={checked}
+        checked={isChecked}
         onChange={handleClick}
       />
     </li>

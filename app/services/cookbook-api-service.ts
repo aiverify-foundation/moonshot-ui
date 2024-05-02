@@ -9,11 +9,11 @@ const cookbookApi = createApi({
   endpoints: (builder) => ({
     getAllCookbooks: builder.query<Cookbook[], void>({
       query: () => path,
-      keepUnusedDataFor: 0,
+      keepUnusedDataFor: 600,
     }),
     getCookbooksByIds: builder.query<Cookbook[], string[]>({
       query: (ids) => `${path}?ids=${ids.join(',')}`,
-      keepUnusedDataFor: 0,
+      keepUnusedDataFor: 600,
     }),
     getSelectedCookbooksMetadata: builder.query<CookbookMetadata, string[]>({
       query: (ids) => `${path}/metadata?ids=${ids.join(',')}`,

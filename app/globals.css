@@ -134,7 +134,7 @@ button:disabled {
 
 .ring
 {
-  @apply text-imdalight-600 dark:text-blue-500;
+  @apply text-moonpurplelight;
   position:absolute;
   top:50%;
   left:50%;
@@ -164,7 +164,7 @@ button:disabled {
   border:3px solid transparent;
   border-radius:50%;
   animation:animateC 2s linear infinite;
-  @apply border-t-imdalight-600 border-r-imdalight-600 dark:border-t-blue-500 dark:border-r-blue-500;
+  @apply border-t-moonpurplelight border-r-moonpurplelight;
 }
 
 .ring span
@@ -182,7 +182,7 @@ button:disabled {
 
 .ring span:before
 {
-  @apply bg-imdalight-600 dark:bg-blue-500;
+  @apply bg-moonpurplelight;
   content:'';
   position:absolute;
   width:16px;

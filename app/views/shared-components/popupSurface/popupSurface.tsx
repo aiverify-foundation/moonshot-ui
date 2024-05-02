@@ -28,6 +28,7 @@ function PopupSurface(props: PopupSurfaceProps) {
         <div
           className="absolute top-4 right-4"
           style={{
+            zIndex: 900,
             ...(padding !== undefined && { top: '1rem' }),
           }}>
           <Icon

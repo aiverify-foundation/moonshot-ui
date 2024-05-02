@@ -80,9 +80,10 @@ function ModelSelectView(props: EndpointSelectViewProps) {
             className="flex flex-row flex-wrap gap-[2%] w-[100%] overflow-y-auto custom-scrollbar px-4"
             style={{ height: 'calc(100% - 50px)' }}>
             {models.map((model) => {
-              const isSelected = selectedEnpointsForBenchmark.find(
-                (endpoint) => endpoint.id === model.id
-              );
+              const isSelected =
+                selectedEnpointsForBenchmark.find(
+                  (endpoint) => endpoint.id === model.id
+                ) !== undefined;
               return (
                 <SelectListItem<LLMEndpoint>
                   key={model.id}
@@ -91,6 +92,7 @@ function ModelSelectView(props: EndpointSelectViewProps) {
                   onClick={handleModelClick}
                   iconName={IconName.OutlineBox}
                   item={model}
+                  checked={isSelected}
                   bgColor={isSelected ? colors.moongray[800] : undefined}
                 />
               );
