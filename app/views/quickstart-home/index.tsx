@@ -18,10 +18,10 @@ import { NewRedTeamSession } from './components/newRedteamSession';
 import { RedteamSubmenu } from './components/redteamSubmenu';
 import { UtilsSubmenu } from './components/utilsSubmenu';
 import { MainSectionViews } from './enums';
-import { BenchMarkPrimaryUseCaseView } from '@views/benchmarking/benchmarkPrimaryUseCaseView';
 import { WindowIds, Z_Index } from '@views/moonshot-desktop/constants';
 import { useResetWindows } from '@views/moonshot-desktop/hooks/useResetWindows';
 import { ManualRedTeamingV2 } from '@views/redteaming/red-teaming-session-v2';
+import LeftNav from '@/app/components/leftNav';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -125,7 +125,7 @@ export default function QuickstartHome() {
   let view: React.ReactNode = <EntryBanners changeView={changeView} />;
   switch (currentView) {
     case MainSectionViews.BENCHMARK_SUBMENU:
-      view = <BenchmarkHome onBackClick={goToHomeScreen} />;
+      view = <BenchmarkHome />;
       break;
     case MainSectionViews.REDTEAM_SUBMENU:
       view = (
@@ -157,7 +157,9 @@ export default function QuickstartHome() {
         />
       ) : (
         <MicroLayout>
-          <nav className="pt-[5rem]">{leftNavMenuItems}</nav>
+          <nav className="pt-[5rem]">
+            <LeftNav />
+          </nav>
           <header className="flex justify-between items-center px-4">
             <h1
               className="text-moonpurplelight tracking-[0.7rem] font-extralight text-[2.7rem] cursor-pointer"

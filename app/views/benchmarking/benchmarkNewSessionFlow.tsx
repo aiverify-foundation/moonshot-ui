@@ -1,4 +1,6 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+'use client';
+import React, { useLayoutEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { CookbooksSelection } from '@/app/views/cookbook-management/cookbooksSelection';
@@ -11,14 +13,10 @@ import { BenchmarkRecommendedTests } from './benchmarkRecommendedTests';
 import { BenchmarkTopicsSelection } from './benchmarkTopicsSelection';
 import { BenchmarkNewSessionViews } from './enums';
 
-type Props = {
-  onCloseIconClick: () => void;
-};
-
 const flowSteps = ['Your LLM', 'Recommended Tests', 'Connect Endpoint', 'Run'];
 
-function BenchmarkNewSessionFlow(props: Props) {
-  const { onCloseIconClick } = props;
+function BenchmarkNewSessionFlow() {
+  const router = useRouter();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
   );
@@ -132,7 +130,7 @@ function BenchmarkNewSessionFlow(props: Props) {
 
   return (
     <MainSectionSurface
-      onCloseIconClick={onCloseIconClick}
+      onCloseIconClick={() => router.push('/benchmarking')}
       height="100%"
       minHeight={750}
       bgColor={surfaceColor}>

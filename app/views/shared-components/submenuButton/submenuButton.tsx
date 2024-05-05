@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import styles from './styles/submenuButton.module.css';
@@ -8,8 +9,8 @@ type SubmenuButtonProps = {
   btnColor: string;
   hoverBtnColor: string;
   textColor: string;
-  width: string;
-  onClick: () => void;
+  width?: string;
+  onClick?: () => void;
 };
 
 function SubmenuButton(props: SubmenuButtonProps) {

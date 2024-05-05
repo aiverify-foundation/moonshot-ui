@@ -107,14 +107,13 @@ function Icon(props: IconProps) {
   } = props;
 
   let iconToRender: ReactElement | null = null;
-  const isDarkMode = useAppSelector((state) => state.darkMode.value);
 
   switch (name) {
     case IconName.Folder:
       iconToRender = (
         <FolderIcon
-          backColor={isDarkMode ? '#2980b9' : '#701a75'}
-          frontColor={isDarkMode ? '#3498db' : '#86198f'}
+          backColor="#2980b9"
+          frontColor="#3498db"
           midColor="#bdc3c7"
           width={size}
           height={size}
@@ -124,10 +123,10 @@ function Icon(props: IconProps) {
     case IconName.FolderForChatSessions:
       iconToRender = (
         <FolderForChatSessionsIcon
-          backColor={isDarkMode ? '#2980b9' : '#701a75'}
-          frontColor={isDarkMode ? '#3498db' : '#86198f'}
+          backColor="#2980b9"
+          frontColor="#3498db"
           midColor="#bdc3c7"
-          chatIconColor={isDarkMode ? '#2980b9' : '#f5d0fe'}
+          chatIconColor="#2980b9"
           width={size}
           height={size}
         />
@@ -136,11 +135,7 @@ function Icon(props: IconProps) {
     case IconName.ChatBubbles:
       iconToRender = (
         <ChatBubblesIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -149,11 +144,7 @@ function Icon(props: IconProps) {
     case IconName.RunCookbook:
       iconToRender = (
         <RunCookbookIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -162,11 +153,7 @@ function Icon(props: IconProps) {
     case IconName.BurgerMenu:
       iconToRender = (
         <BurgerMenuIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -175,11 +162,7 @@ function Icon(props: IconProps) {
     case IconName.DarkMoon:
       iconToRender = (
         <DarkMoonIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -188,11 +171,7 @@ function Icon(props: IconProps) {
     case IconName.LightSun:
       iconToRender = (
         <LightSunIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -201,11 +180,7 @@ function Icon(props: IconProps) {
     case IconName.Close:
       iconToRender = (
         <CloseIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -214,11 +189,7 @@ function Icon(props: IconProps) {
     case IconName.CircleArrowRight:
       iconToRender = (
         <CircleArrowRightIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -227,11 +198,7 @@ function Icon(props: IconProps) {
     case IconName.CircleArrowLeft:
       iconToRender = (
         <CircleArrowLeftIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -240,11 +207,7 @@ function Icon(props: IconProps) {
     case IconName.Maximize:
       iconToRender = (
         <MaximizeIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -253,11 +216,7 @@ function Icon(props: IconProps) {
     case IconName.Minimize:
       iconToRender = (
         <MinimizeIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -266,11 +225,7 @@ function Icon(props: IconProps) {
     case IconName.LayoutWtf:
       iconToRender = (
         <LayoutWtfIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -279,11 +234,7 @@ function Icon(props: IconProps) {
     case IconName.LayoutColumns:
       iconToRender = (
         <LayoutColumnsIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -292,11 +243,7 @@ function Icon(props: IconProps) {
     case IconName.ChatBubbleWide:
       iconToRender = (
         <ChatBubbleWideIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -305,11 +252,7 @@ function Icon(props: IconProps) {
     case IconName.Reset:
       iconToRender = (
         <ResetIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -318,11 +261,7 @@ function Icon(props: IconProps) {
     case IconName.SolidBox:
       iconToRender = (
         <SolidBoxIcon
-          fillColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          fillColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -331,11 +270,7 @@ function Icon(props: IconProps) {
     case IconName.OutlineBox:
       iconToRender = (
         <OutlineBoxIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -344,11 +279,7 @@ function Icon(props: IconProps) {
     case IconName.Plus:
       iconToRender = (
         <PlusIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -357,11 +288,7 @@ function Icon(props: IconProps) {
     case IconName.Square:
       iconToRender = (
         <SquareIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -370,11 +297,7 @@ function Icon(props: IconProps) {
     case IconName.CheckedSquare:
       iconToRender = (
         <CheckedSquareIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -383,11 +306,7 @@ function Icon(props: IconProps) {
     case IconName.List:
       iconToRender = (
         <ListIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -396,11 +315,7 @@ function Icon(props: IconProps) {
     case IconName.File:
       iconToRender = (
         <FileIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -409,11 +324,7 @@ function Icon(props: IconProps) {
     case IconName.Book:
       iconToRender = (
         <BookIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -422,11 +333,7 @@ function Icon(props: IconProps) {
     case IconName.ArrowLeft:
       iconToRender = (
         <ArrowLeftIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -435,11 +342,7 @@ function Icon(props: IconProps) {
     case IconName.ArrowRight:
       iconToRender = (
         <ArrowRightIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -448,11 +351,7 @@ function Icon(props: IconProps) {
     case IconName.Table:
       iconToRender = (
         <TableIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -461,16 +360,8 @@ function Icon(props: IconProps) {
     case IconName.Bell:
       iconToRender = (
         <BellIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
-          fillColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
+          fillColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -479,11 +370,7 @@ function Icon(props: IconProps) {
     case IconName.Asterisk:
       iconToRender = (
         <AsteriskIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -492,11 +379,7 @@ function Icon(props: IconProps) {
     case IconName.CheckList:
       iconToRender = (
         <CheckListIcon
-          fillColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          fillColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -505,11 +388,7 @@ function Icon(props: IconProps) {
     case IconName.Spacesuit:
       iconToRender = (
         <SpacesuitIcon
-          fillColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          fillColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -518,11 +397,7 @@ function Icon(props: IconProps) {
     case IconName.HistoryClock:
       iconToRender = (
         <HistoryClockIcon
-          fillColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          fillColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -531,11 +406,7 @@ function Icon(props: IconProps) {
     case IconName.Tools:
       iconToRender = (
         <ToolsIcon
-          fillColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          fillColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -544,11 +415,7 @@ function Icon(props: IconProps) {
     case IconName.Lightning:
       iconToRender = (
         <LightningIcon
-          fillColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          fillColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -557,11 +424,7 @@ function Icon(props: IconProps) {
     case IconName.WideArrowDown:
       iconToRender = (
         <WideArrowDownIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -570,11 +433,7 @@ function Icon(props: IconProps) {
     case IconName.WideArrowUp:
       iconToRender = (
         <WideArrowUpIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -583,11 +442,7 @@ function Icon(props: IconProps) {
     case IconName.LightBulb:
       iconToRender = (
         <LightBulb
-          fillColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          fillColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -596,11 +451,7 @@ function Icon(props: IconProps) {
     case IconName.Ribbon:
       iconToRender = (
         <RibbonIcon
-          fillColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          fillColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -609,11 +460,7 @@ function Icon(props: IconProps) {
     case IconName.TalkBubbles:
       iconToRender = (
         <TalkBubblesIcon
-          outlineColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          outlineColor="#FFFFFF"
           width={size}
           height={size}
         />
@@ -622,11 +469,7 @@ function Icon(props: IconProps) {
     case IconName.Document:
       iconToRender = (
         <DocumentIcon
-          fillColor={
-            isDarkMode
-              ? darkModeColor || '#FFFFFF'
-              : lightModeColor || '#702f8a'
-          }
+          fillColor="#FFFFFF"
           width={size}
           height={size}
         />
