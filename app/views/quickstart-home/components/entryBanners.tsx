@@ -2,17 +2,10 @@ import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { ActionCard } from '@/app/components/actionCard/actionCard';
 import { Banner } from '@/app/components/banner/banner';
-import tailwindConfig from '@/tailwind.config';
-import { MainSectionViews } from '@views/quickstart-home/enums';
+import { colors } from '@/app/views/shared-components/customColors';
+import Link from 'next/link';
 
-const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
-
-type EntryBannersProps = {
-  changeView: (view: MainSectionViews) => void;
-};
-
-function EntryBanners(props: EntryBannersProps) {
-  const { changeView } = props;
+function EntryBanners() {
   return (
     <div className="grid grid-cols-1 grid-rows-[1rem, 1fr] gap-2">
       <section className="mb-[1%]">
@@ -47,19 +40,17 @@ function EntryBanners(props: EntryBannersProps) {
               cardColor={colors.moongray[950]}
               iconName={IconName.Spacesuit}
               actionText="Start Red Teaming"
-              onClick={() => {
-                console.log('clicked');
-              }}
             />
-            <ActionCard
-              title="Evaluate"
-              description="against standard tests"
-              descriptionColor={colors.moongray[300]}
-              cardColor={colors.moongray[950]}
-              iconName={IconName.CheckList}
-              actionText="Run Benchmarks"
-              onClick={() => console.log('clicked')}
-            />
+            <Link href="/benchmarking/session/new">
+              <ActionCard
+                title="Evaluate"
+                description="against standard tests"
+                descriptionColor={colors.moongray[300]}
+                cardColor={colors.moongray[950]}
+                iconName={IconName.CheckList}
+                actionText="Run Benchmarks"
+              />
+            </Link>
             <ActionCard
               title="Create"
               description="custom tests"
@@ -67,9 +58,6 @@ function EntryBanners(props: EntryBannersProps) {
               cardColor={colors.moongray[950]}
               iconName={IconName.Lightning}
               actionText="Start Red Teaming"
-              onClick={() => {
-                changeView(MainSectionViews.REDTEAMING);
-              }}
             />
           </div>
         </div>

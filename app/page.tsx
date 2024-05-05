@@ -1,5 +1,5 @@
-import QuickstartHome from './views/quickstart-home';
+import { HomePageView } from './views/quickstart-home';
 
-export default function Page() {
-  return <QuickstartHome />;
+export default function HomePage() {
+  return <HomePageView />;
 }

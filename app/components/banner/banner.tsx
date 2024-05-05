@@ -1,3 +1,5 @@
+'use client';
+import Link from 'next/link';
 import { PropsWithChildren, ReactNode } from 'react';
 import styles from './styles/banner.module.css';
 import { IconName } from '@components/IconSVG';
@@ -36,16 +38,18 @@ function Banner(props: PropsWithChildren<BannerProps>) {
           style={{ color: textColor }}>
           {bannerText}
         </p>
-        <Button
-          type="button"
-          size="lg"
-          btnColor={buttonColor}
-          hoverBtnColor={buttonHoverColor}
-          textColor={buttonTextColor}
-          mode={ButtonType.PRIMARY}
-          text={buttonText}
-          rightIconName={IconName.ArrowRight}
-        />
+        <Link href="/benchmarking/session/new">
+          <Button
+            type="button"
+            size="lg"
+            btnColor={buttonColor}
+            hoverBtnColor={buttonHoverColor}
+            textColor={buttonTextColor}
+            mode={ButtonType.PRIMARY}
+            text={buttonText}
+            rightIconName={IconName.ArrowRight}
+          />
+        </Link>
       </figcaption>
     </figure>
   );

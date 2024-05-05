@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styles from './styles/button.module.css';
 import { Icon, IconName } from '@components/IconSVG';
 
-enum ButtonType {
+export enum ButtonType {
   PRIMARY,
   SECONDARY,
   OUTLINE,
@@ -92,4 +92,4 @@ function Button(props: ButtonProps) {
   );
 }
 
-export { Button, ButtonType };
+export { Button };
