@@ -1,4 +1,5 @@
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
+import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
 import { useCookbooks } from './contexts/cookbooksContext';
 import { BenchmarkNewSessionViews } from './enums';
 
@@ -8,23 +9,8 @@ type Props = {
 
 function BenchmarkRecommendedTests({ changeView }: Props) {
   const [allCookbooks, _] = useCookbooks();
-
-  let totalHours = undefined;
-  let totalMinutes = undefined;
-  let totalPrompts = undefined;
-  let estTotalPromptResponseTime = undefined;
-  const estTimePerPromptInSeconds = 10;
-  if (allCookbooks && allCookbooks.length) {
-    totalPrompts = allCookbooks.reduce((acc, curr) => {
-      return acc + curr.total_prompt_in_cookbook || 0;
-    }, 0);
-    estTotalPromptResponseTime = totalPrompts * estTimePerPromptInSeconds;
-    if (estTotalPromptResponseTime) {
-      totalHours = Math.floor(estTotalPromptResponseTime / 3600);
-      totalMinutes = Math.floor((estTotalPromptResponseTime % 3600) / 60);
-    }
-    totalPrompts = totalPrompts.toLocaleString();
-  }
+  const { totalHours, totalMinutes, totalPrompts } =
+    calcTotalPromptsAndEstimatedTime(allCookbooks);
 
   return (
     <section className="flex flex-col items-center justify-center min-h-[300px] gap-5">

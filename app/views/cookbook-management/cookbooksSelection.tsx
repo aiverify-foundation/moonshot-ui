@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
 import {
   useGetAllCookbooksQuery,
   useLazyGetAllCookbooksQuery,
@@ -9,14 +10,15 @@ import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
 import { TabsMenu, TabItem } from '@/app/views/shared-components/tabsMenu';
-import { CookbookAbout } from './cookbookAbout';
-import { CookbookSelectionItem } from './cookbookSelectionItem';
 import {
   addBenchmarkCookbooks,
   removeBenchmarkCookbooks,
+  updateBenchmarkCookbooks,
   useAppDispatch,
   useAppSelector,
 } from '@/lib/redux';
+import { CookbookAbout } from './cookbookAbout';
+import { CookbookSelectionItem } from './cookbookSelectionItem';
 
 const tabItems: TabItem[] = [
   { id: 'quality', label: 'Quality' },
@@ -60,6 +62,9 @@ function CookbooksSelection(props: Props) {
     }
   );
 
+  const { totalHours, totalMinutes } =
+    calcTotalPromptsAndEstimatedTime(selectedCookbooks);
+
   function handleTabClick(id: string) {
     setActiveTab(id);
   }
@@ -81,6 +86,16 @@ function CookbooksSelection(props: Props) {
     activeTab === 'quality'
       ? "Quality evaluates the model's ability to consistently produce content that meets general correctness and application-specific standards."
       : "Capability assesses the AI model's ability to perform within the context of the unique requirements and challenges of a particular domain or task.";
+
+  useEffect(() => {
+    if (!cookbooks) return;
+    const selectedCookbooksWithCounts = cookbooks.filter((cb) =>
+      selectedCookbooks.some((scb) => scb.id === cb.id)
+    );
+    if (selectedCookbooksWithCounts.length) {
+      dispatch(updateBenchmarkCookbooks(selectedCookbooksWithCounts));
+    }
+  }, [cookbooks]);
 
   return (
     <div className="flex flex-col pt-4 w-full h-full">
@@ -148,11 +163,11 @@ function CookbooksSelection(props: Props) {
                 </div>
                 <div className="flex">
                   <h3 className="text-[2.4rem] font-bolder tracking-wide leading-[3rem] text-white mb-0">
-                    13
-                    <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300">
+                    {totalHours}
+                    <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300 mr-2">
                       hrs
                     </span>
-                    48
+                    {totalMinutes}
                     <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300">
                       mins
                     </span>
