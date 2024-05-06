@@ -1,6 +1,4 @@
-import { basePathBenchmarks } from '@/app/api/constants';
-
-const hostURL = process.env.MOONSHOT_API_URL || 'http://localhost:5000';
+import config from '@/moonshot.config';
 
 export async function POST(request: Request) {
   const url = new URL(request.url);
@@ -18,7 +16,7 @@ export async function POST(request: Request) {
   }
   const body = await request.json();
   const response = await fetch(
-    `${hostURL}${basePathBenchmarks}?type=${queryParams.type}`,
+    `${config.webAPI.hostURL}${config.webAPI.basePathBenchmarks}?type=${queryParams.type}`,
     {
       method: 'POST',
       headers: {

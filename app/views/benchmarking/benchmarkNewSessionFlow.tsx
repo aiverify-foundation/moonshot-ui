@@ -13,6 +13,7 @@ import { BenchmarkRecommendedTests } from './benchmarkRecommendedTests';
 import { BenchmarkTopicsSelection } from './benchmarkTopicsSelection';
 import { BenchmarkNewSessionViews } from './enums';
 import { CookbooksProvider } from './contexts/cookbooksContext';
+import BenchmarkRunForm from './benchmarkRunForm';
 
 const flowSteps = ['Your LLM', 'Recommended Tests', 'Connect Endpoint', 'Run'];
 
@@ -44,6 +45,10 @@ function BenchmarkNewSessionFlow() {
       }
       return;
     }
+    if (currentView === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
+      setCurrentView(BenchmarkNewSessionViews.BENCHMARK_RUN_FORM);
+      return;
+    }
   }
 
   function previousViewHandler() {
@@ -53,6 +58,10 @@ function BenchmarkNewSessionFlow() {
     }
     if (currentView === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
       setCurrentView(BenchmarkNewSessionViews.RECOMMENDED_TESTS);
+      return;
+    }
+    if (currentView === BenchmarkNewSessionViews.BENCHMARK_RUN_FORM) {
+      setCurrentView(BenchmarkNewSessionViews.ENDPOINTS_SELECTION);
       return;
     }
   }
@@ -78,6 +87,10 @@ function BenchmarkNewSessionFlow() {
     }
     if (currentView === BenchmarkNewSessionViews.NEW_ENDPOINT_FORM) {
       setHiddenNavButtons([true, true]);
+      return;
+    }
+    if (currentView === BenchmarkNewSessionViews.BENCHMARK_RUN_FORM) {
+      setHiddenNavButtons([false, true]);
       return;
     }
   }, [currentView]);
@@ -121,6 +134,11 @@ function BenchmarkNewSessionFlow() {
           onClose={() => changeView(BenchmarkNewSessionViews.RECOMMENDED_TESTS)}
         />
       );
+      break;
+    case BenchmarkNewSessionViews.BENCHMARK_RUN_FORM:
+      stepIndex = 3;
+      surfaceColor = colors.moongray['800'];
+      view = <BenchmarkRunForm />;
       break;
   }
 

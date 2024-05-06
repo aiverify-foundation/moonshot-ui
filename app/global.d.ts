@@ -88,11 +88,14 @@ type Recipe = {
 };
 
 type BenchmarkRunFormValues = {
-  name: string;
+  run_name: string;
   description: string;
   num_of_prompts: string;
-  cookbooks: string[];
+  system_prompt: string;
+  runner_processing_module: 'benchmarking';
+  inputs: string[];
   endpoints: string[];
+  random_seed: string;
 };
 
 type PushEvent = {
