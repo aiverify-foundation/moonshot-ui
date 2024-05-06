@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { IconName } from '@/app/components/IconSVG';
 import { IconButton } from '@/app/components/icon-button';
@@ -63,7 +64,7 @@ function StatusPanel(props: StatusPanelProps) {
   const windowTitle = title || 'Test Status';
   let countRunning = 0;
   let countCompleted = 0;
-  let countError=0;
+  let countError = 0;
 
   statusTuples.forEach(([_, status]) => {
     if (status.curr_status === TestStatusProgress.COMPLETED) {

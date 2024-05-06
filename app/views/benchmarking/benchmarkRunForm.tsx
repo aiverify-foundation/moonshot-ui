@@ -1,4 +1,5 @@
 import { useFormik } from 'formik';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { object, string, number, array } from 'yup';
 import { Button, ButtonType } from '@/app/components/button';
@@ -7,7 +8,7 @@ import { TextInput } from '@/app/components/textInput';
 import { useRunBenchmarkMutation } from '@/app/services/benchmark-api-service';
 import { BenchmarkCollectionType } from '@/app/types/enums';
 import { colors } from '@/app/views/shared-components/customColors';
-import { useAppDispatch, useAppSelector } from '@/lib/redux';
+import { useAppSelector } from '@/lib/redux';
 
 const initialFormValues: BenchmarkRunFormValues = {
   run_name: '',
@@ -27,7 +28,7 @@ const validationSchema = object().shape({
     .required('Number of Prompts is required')
     .typeError('Number of Prompts must be a number')
     .min(0, 'Number of Prompts cannot be a negative number'),
-  cookbooks: array().min(1, 'At least one cookbook is required'),
+  inputs: array().min(1, 'At least one cookbook is required'),
   endpoints: array().min(1, 'At least one endpoint is required'),
 });
 
@@ -46,6 +47,7 @@ function BenchmarkRunForm() {
     },
   });
   const [runBenchmark, { data, error, isLoading }] = useRunBenchmarkMutation();
+  const router = useRouter();
 
   async function createBenchmarkRun(data: BenchmarkRunFormValues) {
     console.log(data);
@@ -57,11 +59,12 @@ function BenchmarkRunForm() {
       console.error(response.error);
       return;
     }
+    router.push(`/benchmarking/session/run?runner_id=${response.data.id}`);
   }
 
   useEffect(() => {
     formik.setFieldValue(
-      'cookbooks',
+      'inputs',
       selectedCookbooks.map((cb) => cb.id)
     );
   }, [selectedCookbooks]);
@@ -92,7 +95,7 @@ function BenchmarkRunForm() {
             color: colors.moonpurplelight,
           }}
           inputStyles={{ height: 38 }}
-          placeholder="Give this sessio a unique name"
+          placeholder="Give this session a unique name"
         />
 
         <TextArea

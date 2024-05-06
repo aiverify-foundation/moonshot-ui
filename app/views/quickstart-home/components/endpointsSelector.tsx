@@ -1,9 +1,6 @@
-import { useState } from 'react';
 import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import useModelsList from '@/app/hooks/useLLMEndpointList';
-import tailwindConfig from '@/tailwind.config';
-import { SelectListItem } from './selectListItem';
 import { BenchmarkNewSessionViews } from '@/app/views/benchmarking/enums';
 import {
   addBenchmarkModels,
@@ -11,6 +8,8 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '@/lib/redux';
+import tailwindConfig from '@/tailwind.config';
+import { SelectListItem } from './selectListItem';
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
 type EndpointSelectViewProps = {

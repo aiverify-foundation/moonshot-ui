@@ -57,7 +57,7 @@ function EntryBanners() {
               descriptionColor={colors.moongray[300]}
               cardColor={colors.moongray[950]}
               iconName={IconName.Lightning}
-              actionText="Start Red Teaming"
+              actionText="Upload Datasets"
             />
           </div>
         </div>

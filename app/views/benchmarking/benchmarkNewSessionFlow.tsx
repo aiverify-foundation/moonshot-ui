@@ -10,10 +10,10 @@ import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 import { useAppSelector } from '@/lib/redux';
 import { BenchmarkRecommendedTests } from './benchmarkRecommendedTests';
-import { BenchmarkTopicsSelection } from './benchmarkTopicsSelection';
-import { BenchmarkNewSessionViews } from './enums';
-import { CookbooksProvider } from './contexts/cookbooksContext';
 import BenchmarkRunForm from './benchmarkRunForm';
+import { BenchmarkTopicsSelection } from './benchmarkTopicsSelection';
+import { CookbooksProvider } from './contexts/cookbooksContext';
+import { BenchmarkNewSessionViews } from './enums';
 
 const flowSteps = ['Your LLM', 'Recommended Tests', 'Connect Endpoint', 'Run'];
 
@@ -137,7 +137,7 @@ function BenchmarkNewSessionFlow() {
       break;
     case BenchmarkNewSessionViews.BENCHMARK_RUN_FORM:
       stepIndex = 3;
-      surfaceColor = colors.moongray['800'];
+      surfaceColor = colors.moongray['950'];
       view = <BenchmarkRunForm />;
       break;
   }
