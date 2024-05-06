@@ -106,15 +106,15 @@ type PushEvent = {
 type TestStatus = {
   current_runner_id: string;
   current_runner_type: string;
-  current_duration: string;
+  current_duration: number;
   current_status: string;
-  current_cookbook_index: string;
+  current_cookbook_index: number;
   current_cookbook_name: string;
-  current_cookbook_total: string;
-  current_recipe_index: string;
+  current_cookbook_total: number;
+  current_recipe_index: number;
   current_recipe_name: string;
-  current_recipe_total: string;
-  current_progress: string;
+  current_recipe_total: number;
+  current_progress: number;
   current_error_messages: string[];
 };
 

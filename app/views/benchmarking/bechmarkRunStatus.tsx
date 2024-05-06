@@ -117,10 +117,20 @@ function BenchmarkRunStatus() {
                     />
                   </div>
                   <Button
-                    mode={ButtonType.OUTLINE}
+                    mode={
+                      statuses[runner_id].current_status ==
+                      TestStatusProgress.COMPLETED
+                        ? ButtonType.PRIMARY
+                        : ButtonType.OUTLINE
+                    }
                     size="lg"
                     type="button"
-                    text="Cancel"
+                    text={
+                      statuses[runner_id].current_status ==
+                      TestStatusProgress.COMPLETED
+                        ? 'Report'
+                        : 'Cancel'
+                    }
                     onClick={() => null}
                   />
                 </div>
