@@ -1,29 +1,29 @@
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
-import { useGetSelectedCookbooksMetadataQuery } from '@/app/services/cookbook-api-service';
+import { useCookbooks } from './contexts/cookbooksContext';
 import { BenchmarkNewSessionViews } from './enums';
 
 type Props = {
-  cookbookIds: string[];
   changeView: (view: BenchmarkNewSessionViews) => void;
 };
 
-function BenchmarkRecommendedTests({ cookbookIds, changeView }: Props) {
-  const { data, isLoading } = useGetSelectedCookbooksMetadataQuery(
-    cookbookIds,
-    {
-      skip: cookbookIds.length === 0,
-    }
-  );
+function BenchmarkRecommendedTests({ changeView }: Props) {
+  const [allCookbooks, _] = useCookbooks();
 
   let totalHours = undefined;
   let totalMinutes = undefined;
   let totalPrompts = undefined;
-  if (data && data.estTotalPromptResponseTime != undefined) {
-    totalHours = Math.floor(data?.estTotalPromptResponseTime / 3600);
-    totalMinutes = Math.floor((data?.estTotalPromptResponseTime % 3600) / 60);
-  }
-  if (data && data.totalPrompts != undefined) {
-    totalPrompts = data?.totalPrompts.toLocaleString();
+  let estTotalPromptResponseTime = undefined;
+  const estTimePerPromptInSeconds = 10;
+  if (allCookbooks && allCookbooks.length) {
+    totalPrompts = allCookbooks.reduce((acc, curr) => {
+      return acc + curr.total_prompt_in_cookbook || 0;
+    }, 0);
+    estTotalPromptResponseTime = totalPrompts * estTimePerPromptInSeconds;
+    if (estTotalPromptResponseTime) {
+      totalHours = Math.floor(estTotalPromptResponseTime / 3600);
+      totalMinutes = Math.floor((estTotalPromptResponseTime % 3600) / 60);
+    }
+    totalPrompts = totalPrompts.toLocaleString();
   }
 
   return (
@@ -43,8 +43,8 @@ function BenchmarkRecommendedTests({ cookbookIds, changeView }: Props) {
         </Tooltip>{' '}
         containing:
       </h2>
-      <section className="relative flex flex-nowrap gap-[100px] py-7">
-        {isLoading ? (
+      <section className="relative flex flex-nowrap h-full gap-[100px] py-7">
+        {!allCookbooks.length ? (
           <div className="ring">
             Loading
             <span />

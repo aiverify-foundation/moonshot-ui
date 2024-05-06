@@ -1,23 +1,27 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getHostAndPort } from './host';
 
+type urlParams = {
+  ids?: string[];
+  categories?: string;
+  count?: boolean;
+};
+
 const [host, port] = getHostAndPort();
 const path = 'api/v1/cookbooks';
 const cookbookApi = createApi({
   reducerPath: 'cookbookApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
-    getAllCookbooks: builder.query<Cookbook[], void>({
-      query: () => path,
+    getAllCookbooks: builder.query<Cookbook[], urlParams>({
+      query: ({ categories, count = false }) =>
+        `${path}?${categories ? `categories=${categories}` : ''}&count=${count}`,
       keepUnusedDataFor: 600,
     }),
-    getCookbooksByIds: builder.query<Cookbook[], string[]>({
-      query: (ids) => `${path}?ids=${ids.join(',')}`,
+    getCookbooksByIds: builder.query<Cookbook[], urlParams>({
+      query: ({ ids, count = false }) =>
+        `${path}?${ids ? `ids=${ids.join(',')}` : ''}&count=${count}`,
       keepUnusedDataFor: 600,
-    }),
-    getSelectedCookbooksMetadata: builder.query<CookbookMetadata, string[]>({
-      query: (ids) => `${path}/metadata?ids=${ids.join(',')}`,
-      keepUnusedDataFor: 0,
     }),
     createCookbook: builder.mutation<CookbookFormValues, CookbookFormValues>({
       query: (cookbookInputData) => ({
@@ -32,8 +36,9 @@ const cookbookApi = createApi({
 const {
   useGetAllCookbooksQuery,
   useGetCookbooksByIdsQuery,
-  useGetSelectedCookbooksMetadataQuery,
   useCreateCookbookMutation,
+  useLazyGetAllCookbooksQuery,
+  useLazyGetCookbooksByIdsQuery,
 } = cookbookApi;
 
 export {
@@ -41,5 +46,6 @@ export {
   useCreateCookbookMutation,
   useGetAllCookbooksQuery,
   useGetCookbooksByIdsQuery,
-  useGetSelectedCookbooksMetadataQuery,
+  useLazyGetAllCookbooksQuery,
+  useLazyGetCookbooksByIdsQuery,
 };

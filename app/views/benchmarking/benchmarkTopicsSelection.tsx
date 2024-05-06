@@ -1,6 +1,10 @@
+import React, { useEffect } from 'react';
 import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
-import { useGetCookbooksByIdsQuery } from '@/app/services/cookbook-api-service';
+import {
+  useLazyGetAllCookbooksQuery,
+  useLazyGetCookbooksByIdsQuery,
+} from '@/app/services/cookbook-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import {
@@ -10,7 +14,7 @@ import {
   useAppSelector,
 } from '@/lib/redux';
 import config from '@/moonshot.config';
-import { useEffect } from 'react';
+import { updateAllCookbooks, useCookbooks } from './contexts/cookbooksContext';
 
 type Props = {
   setHiddenNavButtons: React.Dispatch<React.SetStateAction<[boolean, boolean]>>;
@@ -18,12 +22,15 @@ type Props = {
 
 function BenchmarkTopicsSelection({ setHiddenNavButtons }: Props) {
   const dispatch = useAppDispatch();
+  const [_, setAllCookbooks] = useCookbooks();
+  const [defaultCookbooks, setDefaultCookbooks] = React.useState<
+    Cookbook[] | undefined
+  >();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
   );
-  const { data: topics, isLoading } = useGetCookbooksByIdsQuery(
-    config.initialCookbooks
-  );
+  const [fetchCookbooksByIds] = useLazyGetCookbooksByIdsQuery();
+  const [fetchAllCookbooks] = useLazyGetAllCookbooksQuery();
 
   function handleTopicClick(topic: Cookbook) {
     if (selectedCookbooks.some((t) => t.id === topic.id)) {
@@ -33,8 +40,8 @@ function BenchmarkTopicsSelection({ setHiddenNavButtons }: Props) {
     }
   }
 
-  const topicsBtns = topics
-    ? topics.map((topic) => {
+  const topicsBtns = defaultCookbooks
+    ? defaultCookbooks.map((topic) => {
         const isSelected = selectedCookbooks.some((t) => t.id === topic.id);
         return (
           <Button
@@ -56,14 +63,32 @@ function BenchmarkTopicsSelection({ setHiddenNavButtons }: Props) {
     : undefined;
 
   useEffect(() => {
-    if (!isLoading && topics) {
+    async function fetchDefaultCookbooksWithoutCount() {
+      const result = await fetchCookbooksByIds({
+        ids: config.initialCookbooks,
+        count: false,
+      });
+      console.dir(result);
+      setDefaultCookbooks(result.data || []);
+    }
+    fetchDefaultCookbooksWithoutCount();
+  }, [fetchCookbooksByIds]);
+
+  useEffect(() => {
+    if (!defaultCookbooks) return;
+    async function fetchAllCookbooksWithCount() {
+      const result = await fetchAllCookbooks({ count: true });
+      updateAllCookbooks(setAllCookbooks, result.data || []);
+    }
+    if (defaultCookbooks.length > 0) {
       setHiddenNavButtons([true, false]);
     }
-  }, [isLoading, topics, setHiddenNavButtons]);
+    fetchAllCookbooksWithCount();
+  }, [defaultCookbooks, setHiddenNavButtons]);
 
   return (
     <section className="relative flex flex-col items-center min-h-[300px]">
-      {isLoading ? (
+      {!defaultCookbooks ? (
         <LoadingAnimation />
       ) : (
         <>
@@ -72,7 +97,7 @@ function BenchmarkTopicsSelection({ setHiddenNavButtons }: Props) {
           </h2>
           <p className="text-[1.1rem] text-moongray-300 w-full text-center py-0">
             <span className="font-bold">Optional tests</span> to evaluate a
-            model&apos;s performance in specific topics or languages
+            model&apos;s performance in specific defaultCookbooks or languages
           </p>
           <div className="flex flex-wrap gap-4 mt-10 w-[80%] justify-center">
             {topicsBtns}

@@ -81,7 +81,7 @@ input[type="checkbox"]::before {
 }
 
 input[type="checkbox"]:checked::before {
-  @apply absolute w-5 h-5 left-[2px] top-[-1px] rotate-[-15deg] bg-gray-600 dark:bg-moongray-300
+  @apply absolute w-5 h-5 left-[2px] top-[-1px] rotate-[-15deg] bg-moongray-300
 }
 
 .btn-primary {

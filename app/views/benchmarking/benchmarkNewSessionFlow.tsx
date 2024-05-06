@@ -1,6 +1,6 @@
 'use client';
-import React, { useLayoutEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import React, { useLayoutEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { CookbooksSelection } from '@/app/views/cookbook-management/cookbooksSelection';
@@ -12,6 +12,7 @@ import { useAppSelector } from '@/lib/redux';
 import { BenchmarkRecommendedTests } from './benchmarkRecommendedTests';
 import { BenchmarkTopicsSelection } from './benchmarkTopicsSelection';
 import { BenchmarkNewSessionViews } from './enums';
+import { CookbooksProvider } from './contexts/cookbooksContext';
 
 const flowSteps = ['Your LLM', 'Recommended Tests', 'Connect Endpoint', 'Run'];
 
@@ -90,12 +91,7 @@ function BenchmarkNewSessionFlow() {
       break;
     case BenchmarkNewSessionViews.RECOMMENDED_TESTS:
       stepIndex = 1;
-      view = (
-        <BenchmarkRecommendedTests
-          cookbookIds={selectedCookbooks.map((t) => t.id)}
-          changeView={changeView}
-        />
-      );
+      view = <BenchmarkRecommendedTests changeView={changeView} />;
       break;
     case BenchmarkNewSessionViews.ENDPOINTS_SELECTION:
       stepIndex = 2;
@@ -129,51 +125,53 @@ function BenchmarkNewSessionFlow() {
   }
 
   return (
-    <MainSectionSurface
-      onCloseIconClick={() => router.push('/benchmarking')}
-      height="100%"
-      minHeight={750}
-      bgColor={surfaceColor}>
-      <div className="flex flex-col items-center h-full">
-        <div className="w-[700px] flex shrink-0 justify-center">
-          <SimpleStepsIndicator
-            textColor={colors.moongray[300]}
-            stepColor={colors.moonpurplelight}
-            steps={flowSteps}
-            currentStepIndex={stepIndex}
-          />
+    <CookbooksProvider>
+      <MainSectionSurface
+        onCloseIconClick={() => router.push('/benchmarking')}
+        height="100%"
+        minHeight={750}
+        bgColor={surfaceColor}>
+        <div className="flex flex-col items-center h-full">
+          <div className="w-[700px] flex shrink-0 justify-center">
+            <SimpleStepsIndicator
+              textColor={colors.moongray[300]}
+              stepColor={colors.moonpurplelight}
+              steps={flowSteps}
+              currentStepIndex={stepIndex}
+            />
+          </div>
+          <div
+            className="flex flex-col gap-5 justify-center w-full"
+            style={{ height: 'calc(100% - 33px)' }}>
+            {!hiddenNavButtons[0] && (
+              <div className="flex justify-center">
+                <Icon
+                  name={IconName.WideArrowUp}
+                  size={28}
+                  onClick={previousViewHandler}
+                />
+              </div>
+            )}
+            {view}
+            {!hiddenNavButtons[1] && (
+              <div
+                className="flex justify-center"
+                style={{
+                  opacity: selectedCookbooks.length > 0 ? 1 : 0.1,
+                }}>
+                <Icon
+                  name={IconName.WideArrowDown}
+                  size={28}
+                  onClick={
+                    selectedCookbooks.length > 0 ? nextViewHandler : undefined
+                  }
+                />
+              </div>
+            )}
+          </div>
         </div>
-        <div
-          className="flex flex-col gap-5 justify-center w-full"
-          style={{ height: 'calc(100% - 33px)' }}>
-          {!hiddenNavButtons[0] && (
-            <div className="flex justify-center">
-              <Icon
-                name={IconName.WideArrowUp}
-                size={28}
-                onClick={previousViewHandler}
-              />
-            </div>
-          )}
-          {view}
-          {!hiddenNavButtons[1] && (
-            <div
-              className="flex justify-center"
-              style={{
-                opacity: selectedCookbooks.length > 0 ? 1 : 0.1,
-              }}>
-              <Icon
-                name={IconName.WideArrowDown}
-                size={28}
-                onClick={
-                  selectedCookbooks.length > 0 ? nextViewHandler : undefined
-                }
-              />
-            </div>
-          )}
-        </div>
-      </div>
-    </MainSectionSurface>
+      </MainSectionSurface>
+    </CookbooksProvider>
   );
 }
 

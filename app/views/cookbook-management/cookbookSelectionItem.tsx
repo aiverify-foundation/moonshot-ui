@@ -3,10 +3,10 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/views/shared-components/customColors';
 
 type CookbookSelectionItemProps = {
-  cookbook: CookbookWithRecipe;
+  cookbook: Cookbook;
   selected: boolean;
-  onSelect: (cookbook: CookbookWithRecipe) => void;
-  onAboutClick: (cookbook: CookbookWithRecipe) => void;
+  onSelect: (cookbook: Cookbook) => void;
+  onAboutClick: (cookbook: Cookbook) => void;
 };
 
 function CookbookSelectionItem(props: CookbookSelectionItemProps) {
@@ -46,7 +46,7 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
       </header>
       <p>{cookbook.description}</p>
       <footer className="flex justify-between">
-        <p>7,900 prompts</p>
+        <p>{cookbook.total_prompt_in_cookbook} prompts</p>
         <span
           className="decoration-1 underline cursor-pointer"
           onClick={() => onAboutClick(cookbook)}>

@@ -1,12 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import {
+  useGetAllCookbooksQuery,
+  useLazyGetAllCookbooksQuery,
+} from '@/app/services/cookbook-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
+import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
 import { TabsMenu, TabItem } from '@/app/views/shared-components/tabsMenu';
 import { CookbookAbout } from './cookbookAbout';
 import { CookbookSelectionItem } from './cookbookSelectionItem';
-import { mockCookbooksCapability, mockCookbooksQuality } from './mockData';
+import {
+  addBenchmarkCookbooks,
+  removeBenchmarkCookbooks,
+  useAppDispatch,
+  useAppSelector,
+} from '@/lib/redux';
 
 const tabItems: TabItem[] = [
   { id: 'quality', label: 'Quality' },
@@ -21,26 +31,51 @@ type Props = {
 
 function CookbooksSelection(props: Props) {
   const { onClose } = props;
+  const dispatch = useAppDispatch();
+  const selectedCookbooks = useAppSelector(
+    (state) => state.benchmarkCookbooks.entities
+  );
   const [activeTab, setActiveTab] = useState('quality');
   const [cookbookDetails, setCookbookDetails] = useState<
-    CookbookWithRecipe | undefined
+    Cookbook | undefined
   >();
+
+  // Determine the category
+  const category =
+    activeTab === 'quality'
+      ? 'robustness'
+      : activeTab === 'capability'
+        ? 'capability'
+        : activeTab === 'trustsafety'
+          ? 'safety'
+          : undefined;
+
+  const { data: cookbooks, isFetching } = useGetAllCookbooksQuery(
+    {
+      categories: category,
+      count: true,
+    },
+    {
+      skip: !category,
+    }
+  );
 
   function handleTabClick(id: string) {
     setActiveTab(id);
   }
 
-  function handleCookbookSelect(cb: CookbookWithRecipe) {
-    console.log(cb);
+  function handleCookbookSelect(cb: Cookbook) {
+    if (selectedCookbooks.some((t) => t.id === cb.id)) {
+      dispatch(removeBenchmarkCookbooks([cb]));
+    } else {
+      dispatch(addBenchmarkCookbooks([cb]));
+    }
   }
 
-  function handleAboutClick(cb: CookbookWithRecipe) {
+  function handleAboutClick(cb: Cookbook) {
     console.log(cb);
     setCookbookDetails(cb);
   }
-
-  const cookbooks =
-    activeTab === 'quality' ? mockCookbooksQuality : mockCookbooksCapability;
 
   const categoryDesc =
     activeTab === 'quality'
@@ -77,19 +112,28 @@ function CookbooksSelection(props: Props) {
             </section>
           }>
           <section
-            className="flex flex-col gap-7 pt-6 h-full"
+            className="relative flex flex-col gap-7 pt-6 h-full"
             style={{ height: 'calc(100% - 50px)' }}>
             <p className="text-white px-8">{categoryDesc}</p>
             <ul className="flex flex-row flex-wrap grow gap-[2%] w-[100%] overflow-y-auto custom-scrollbar px-8">
-              {cookbooks.map((cookbook) => (
-                <CookbookSelectionItem
-                  key={cookbook.id}
-                  cookbook={cookbook}
-                  selected={false}
-                  onSelect={handleCookbookSelect}
-                  onAboutClick={handleAboutClick}
-                />
-              ))}
+              {isFetching || !cookbooks ? (
+                <LoadingAnimation />
+              ) : (
+                cookbooks.map((cookbook) => {
+                  const selected = selectedCookbooks.some(
+                    (t) => t.id === cookbook.id
+                  );
+                  return (
+                    <CookbookSelectionItem
+                      key={cookbook.id}
+                      cookbook={cookbook}
+                      selected={selected}
+                      onSelect={handleCookbookSelect}
+                      onAboutClick={handleAboutClick}
+                    />
+                  );
+                })
+              )}
             </ul>
             <footer className="flex justify-between items-center bg-moonpurple p-2 px-5 rounded-b-2xl w-full text-white">
               <div className="flex gap-5">

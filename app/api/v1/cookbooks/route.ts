@@ -5,8 +5,10 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest): Promise<Response> {
   const idsParam = request.nextUrl.searchParams.get('ids');
+  const categoriesParam = request.nextUrl.searchParams.get('categories');
+  const countParam = request.nextUrl.searchParams.get('count');
   const response = await fetch(
-    `${config.webAPI.hostURL}${config.webAPI.basePathCookbooks}`,
+    `${config.webAPI.hostURL}${config.webAPI.basePathCookbooks}?${categoriesParam ? `categories=${categoriesParam}` : ''}&count=${countParam ? countParam : false}`,
     {
       method: 'GET',
     }

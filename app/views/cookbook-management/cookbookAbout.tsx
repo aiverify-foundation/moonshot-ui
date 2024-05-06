@@ -1,7 +1,7 @@
 import { Icon, IconName } from '@/app/components/IconSVG';
 
 type Props = {
-  cookbook: CookbookWithRecipe;
+  cookbook: Cookbook;
   checked: boolean;
 };
 
