@@ -30,12 +30,15 @@ export async function GET(request: NextRequest): Promise<Response> {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const response = await fetch(`${hostURL}${basePathCookbooks}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  });
+  const response = await fetch(
+    `${config.webAPI.hostURL}${config.webAPI.basePathCookbooks}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    }
+  );
   return response;
 }

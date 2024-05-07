@@ -18,7 +18,7 @@ const benchmarkRunApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
     runBenchmark: builder.mutation<
-      BenchmarkRunFormValues,
+      { id: string },
       ExtendedBenchmarkRunFormValues
     >({
       query: ({ benchmarkRunInputData, collectionType }) => ({

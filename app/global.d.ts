@@ -60,15 +60,8 @@ type Cookbook = {
   id: string;
   name: string;
   description: string;
-  recipes: string[];
+  recipes: string[] | Recipes[];
   total_prompt_in_cookbook: number;
-};
-
-type CookbookWithRecipe = {
-  id: string;
-  name: string;
-  description: string;
-  recipes: Recipe[];
 };
 
 type CookbookFormValues = {
