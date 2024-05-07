@@ -5,6 +5,7 @@ import { IconName } from '@/app/components/IconSVG';
 import { ActionCard } from '@/app/components/actionCard/actionCard';
 import { Button, ButtonType } from '@/app/components/button';
 import { useEventSource } from '@/app/hooks/use-eventsource';
+import { useCancelBenchmarkMutation } from '@/app/services/benchmark-api-service';
 import { useGetAllStatusQuery } from '@/app/services/status-api-service';
 import { AppEventTypes, TestStatusProgress } from '@/app/types/enums';
 import { colors } from '@/app/views/shared-components/customColors';
@@ -22,6 +23,7 @@ function BenchmarkRunStatus() {
     error,
     isLoading,
   } = useGetAllStatusQuery(undefined, { refetchOnMountOrArgChange: true });
+  const [triggerCancelBenchmark] = useCancelBenchmarkMutation();
   const router = useRouter();
   const searchParams = useSearchParams();
   const runner_id = searchParams.get('runner_id');
@@ -131,7 +133,7 @@ function BenchmarkRunStatus() {
                         ? 'Report'
                         : 'Cancel'
                     }
-                    onClick={() => null}
+                    onClick={() => triggerCancelBenchmark(runner_id)}
                   />
                 </div>
               </div>
