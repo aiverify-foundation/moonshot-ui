@@ -33,7 +33,6 @@ import {
 import { useResetWindows } from './hooks/useResetWindows';
 import { DesktopIcon } from '@components/desktop-icon';
 import TaskBar from '@components/taskbar';
-import { BenchmarkFlowWindow } from '@views/benchmarking/benchmark-flow';
 import { BenchmarksResult } from '@views/benchmarking/benchmark-report';
 import { CookbooksExplorer } from '@views/cookbook-management/cookbooks-explorer';
 import { SessionExplorerButtonAction } from '@views/redteaming/components/explorer/top-buttons-bar';
@@ -349,16 +348,6 @@ export default function MoonshotDesktop() {
         />
       ) : null}
 
-      {openedWindowIds.includes(getWindowId(WindowIds.BENCHMARKING)) ? (
-        <BenchmarkFlowWindow
-          zIndex={Z_Index.Level_2}
-          windowId={getWindowId(WindowIds.BENCHMARKING)}
-          initialXY={getWindowXYById(windowsMap, WindowIds.BENCHMARKING)}
-          initialSize={getWindowSizeById(windowsMap, WindowIds.BENCHMARKING)}
-          onWindowChange={handleOnWindowChange}
-          onCloseClick={handleBenchmarkFlowCloseClick}
-        />
-      ) : null}
 
       {openedWindowIds.includes(getWindowId(WindowIds.STATUS)) ? (
         <StatusPanel

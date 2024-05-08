@@ -303,6 +303,7 @@ function ManualRedTeaming(props: ActiveSessionProps) {
       ) : null}
 
       <PromptBox
+        zIndex={999}
         windowId={getWindowId(promptBoxId)}
         name={promptBoxId}
         draggable={layoutMode === LayoutMode.FREE}

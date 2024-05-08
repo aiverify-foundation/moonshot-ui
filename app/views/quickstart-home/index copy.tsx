@@ -122,7 +122,7 @@ export default function QuickstartHome() {
     </ul>
   );
 
-  let view: React.ReactNode = <EntryBanners changeView={changeView} />;
+  let view: React.ReactNode = <EntryBanners />;
   switch (currentView) {
     case MainSectionViews.BENCHMARK_SUBMENU:
       view = <BenchmarkHome />;

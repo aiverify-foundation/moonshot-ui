@@ -76,7 +76,7 @@ const ChatBoxVirtualized = forwardRef<HTMLDivElement, ChatBoxProps>(
     >();
     const isDarkMode = useAppSelector((state) => state.darkMode.value);
     const getSize = (index: number) => (index % 2 === 0 ? 50 : 100);
-    const Row = ({ index, style }) => (
+    const Row = ({ index, style }: { index: number; style: React.CSSProperties }) => (
       <div style={{ color: 'red', ...style }}>Row {index}</div>
     );
 
@@ -162,6 +162,7 @@ const ChatBoxVirtualized = forwardRef<HTMLDivElement, ChatBoxProps>(
                 itemCount={100}
                 itemSize={getSize}
                 itemData={chatHistory}>
+                  {/* @ts-ignore */}
                 {PromptAndResponseBubble}
               </List>
             )}

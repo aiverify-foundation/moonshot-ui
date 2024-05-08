@@ -10,6 +10,12 @@ const recipeApi = createApi({
       query: () => 'api/v1/recipes',
       keepUnusedDataFor: 0,
     }),
+    getRecipesByIds: builder.query<Recipe[], number[]>({
+      query: (ids) => ({
+        url: `api/v1/recipes`,
+        params: { ids: ids.join(',') },
+      }),
+    }),
     createRecipe: builder.mutation<Recipe, Recipe>({
       query: (recipeInputData) => ({
         url: 'api/v1/recipes',

@@ -322,7 +322,7 @@ function ManualRedTeamingV2(props: ActiveSessionProps) {
                   size="sm"
                   type="button"
                   mode={ButtonType.PRIMARY}
-                  iconName={IconName.Ribbon}
+                  rightIconName={IconName.Ribbon}
                   iconSize={16}
                   text="Save as Bookmark"
                   btnColor={colors.moongray[950]}

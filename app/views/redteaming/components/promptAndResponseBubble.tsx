@@ -9,8 +9,8 @@ type PromptAndResponseBubbleProps = {
   style: React.CSSProperties;
   hoveredIndex: number;
   data: DialoguePairInfo[];
-  onMouseEnter?: (index: number) => void;
-  onMouseLeave?: () => void;
+  onMouseEnter: (index: number) => void;
+  onMouseLeave: () => void;
 };
 
 function PromptAndResponseBubble(props: PromptAndResponseBubbleProps) {

@@ -27,8 +27,8 @@ function useCookbooks() {
 }
 
 const updateAllCookbooks = (
-  setState: (cookbooks: Cookbook[] | undefined) => void,
-  cookbooks: Cookbook[] | undefined
+  setState: React.Dispatch<React.SetStateAction<Cookbook[]>>,
+  cookbooks: Cookbook[]
 ) => {
   setState(cookbooks);
 };

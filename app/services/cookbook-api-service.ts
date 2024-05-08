@@ -13,10 +13,14 @@ const cookbookApi = createApi({
   reducerPath: 'cookbookApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
-    getAllCookbooks: builder.query<Cookbook[], urlParams>({
-      query: ({ categories, count = false }) =>
-        `${path}?${categories ? `categories=${categories}` : ''}&count=${count}`,
-      keepUnusedDataFor: 600,
+    getAllCookbooks: builder.query<Cookbook[], urlParams | undefined>({
+      query: (params) => {
+        return {
+          url: params ? `${path}?${params.categories ? `categories=${params.categories}` : ''}&count=${params.count}` :
+          path,
+          keepUnusedDataFor: 600,
+        }
+      },
     }),
     getCookbooksByIds: builder.query<Cookbook[], urlParams>({
       query: ({ ids, count = false }) =>
