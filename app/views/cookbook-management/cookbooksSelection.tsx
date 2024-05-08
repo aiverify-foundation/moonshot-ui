@@ -2,10 +2,7 @@ import { useEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
-import {
-  useGetAllCookbooksQuery,
-  useLazyGetAllCookbooksQuery,
-} from '@/app/services/cookbook-api-service';
+import { useGetAllCookbooksQuery } from '@/app/services/cookbook-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
@@ -54,7 +51,7 @@ function CookbooksSelection(props: Props) {
 
   const { data: cookbooks, isFetching } = useGetAllCookbooksQuery(
     {
-      categories: category,
+      categories: category ? [category] : undefined,
       count: true,
     },
     {
@@ -102,7 +99,7 @@ function CookbooksSelection(props: Props) {
       {cookbookDetails ? (
         <PopupSurface
           height="100%"
-          padding="0px"
+          padding="10px"
           onCloseIconClick={() => setCookbookDetails(undefined)}>
           <CookbookAbout
             cookbook={cookbookDetails}

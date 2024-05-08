@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
 import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
-import {
-  useLazyGetAllCookbooksQuery,
-  useLazyGetCookbooksByIdsQuery,
-} from '@/app/services/cookbook-api-service';
+import { useLazyGetAllCookbooksQuery } from '@/app/services/cookbook-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import {
@@ -29,7 +26,6 @@ function BenchmarkTopicsSelection({ setHiddenNavButtons }: Props) {
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
   );
-  const [fetchCookbooksByIds] = useLazyGetCookbooksByIdsQuery();
   const [fetchAllCookbooks] = useLazyGetAllCookbooksQuery();
 
   function handleTopicClick(topic: Cookbook) {
@@ -64,7 +60,7 @@ function BenchmarkTopicsSelection({ setHiddenNavButtons }: Props) {
 
   useEffect(() => {
     async function fetchDefaultCookbooksWithoutCount() {
-      const result = await fetchCookbooksByIds({
+      const result = await fetchAllCookbooks({
         ids: config.initialCookbooks,
         count: false,
       });
@@ -72,7 +68,7 @@ function BenchmarkTopicsSelection({ setHiddenNavButtons }: Props) {
       setDefaultCookbooks(result.data || []);
     }
     fetchDefaultCookbooksWithoutCount();
-  }, [fetchCookbooksByIds]);
+  }, [fetchAllCookbooks]);
 
   useEffect(() => {
     if (!defaultCookbooks) return;

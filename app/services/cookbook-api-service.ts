@@ -1,11 +1,21 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getHostAndPort } from './host';
 
-type urlParams = {
+type inputParams = {
   ids?: string[];
-  categories?: string;
+  categories?: string[];
+  tags?: string[];
   count?: boolean;
 };
+
+type urlQueryParams =
+  | {
+      ids?: string;
+      categories?: string;
+      tags?: string;
+      count?: string;
+    }
+  | undefined;
 
 const [host, port] = getHostAndPort();
 const path = 'api/v1/cookbooks';
@@ -13,19 +23,27 @@ const cookbookApi = createApi({
   reducerPath: 'cookbookApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
-    getAllCookbooks: builder.query<Cookbook[], urlParams | undefined>({
+    getAllCookbooks: builder.query<Cookbook[], inputParams | undefined>({
       query: (params) => {
+        const { ids, categories, tags, count } = params || {};
+        const stringifiedParams: urlQueryParams = params
+          ? {
+              ...(ids ? { ids: ids.join(',') } : {}),
+              ...(categories ? { categories: categories.join(',') } : {}),
+              ...(tags ? { tags: tags.join(',') } : {}),
+              ...(count !== undefined
+                ? { count: count ? 'true' : 'false' }
+                : {}),
+            }
+          : undefined;
+        const urlQueryParams = params
+          ? new URLSearchParams(stringifiedParams).toString()
+          : undefined;
         return {
-          url: params ? `${path}?${params.categories ? `categories=${params.categories}` : ''}&count=${params.count}` :
-          path,
+          url: urlQueryParams ? `${path}?${urlQueryParams}` : path,
           keepUnusedDataFor: 600,
-        }
+        };
       },
-    }),
-    getCookbooksByIds: builder.query<Cookbook[], urlParams>({
-      query: ({ ids, count = false }) =>
-        `${path}?${ids ? `ids=${ids.join(',')}` : ''}&count=${count}`,
-      keepUnusedDataFor: 600,
     }),
     createCookbook: builder.mutation<CookbookFormValues, CookbookFormValues>({
       query: (cookbookInputData) => ({
@@ -39,17 +57,13 @@ const cookbookApi = createApi({
 
 const {
   useGetAllCookbooksQuery,
-  useGetCookbooksByIdsQuery,
   useCreateCookbookMutation,
   useLazyGetAllCookbooksQuery,
-  useLazyGetCookbooksByIdsQuery,
 } = cookbookApi;
 
 export {
   cookbookApi,
   useCreateCookbookMutation,
   useGetAllCookbooksQuery,
-  useGetCookbooksByIdsQuery,
   useLazyGetAllCookbooksQuery,
-  useLazyGetCookbooksByIdsQuery,
 };

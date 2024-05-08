@@ -60,7 +60,7 @@ type Cookbook = {
   id: string;
   name: string;
   description: string;
-  recipes: string[] | Recipes[];
+  recipes: string[];
   total_prompt_in_cookbook: number;
 };
 
@@ -71,13 +71,22 @@ type CookbookFormValues = {
 };
 
 type Recipe = {
-  id: string;
-  name: string;
-  description: string;
-  tags: string[];
+  attack_modules: any[];
+  categories: string[];
   datasets: string[];
-  prompt_templates: string[];
+  description: string;
+  grading_scale: Record<string, any>;
+  id: string;
   metrics: string[];
+  name: string;
+  prompt_templates: string[];
+  stats: {
+    num_of_tags: number;
+    num_of_datasets: number;
+    num_of_datasets_prompts: Record<string, number>;
+  };
+  tags: string[];
+  total_prompt_in_recipe: number;
 };
 
 type BenchmarkRunFormValues = {
