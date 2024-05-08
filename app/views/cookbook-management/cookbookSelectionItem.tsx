@@ -49,7 +49,10 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
         <p>{cookbook.total_prompt_in_cookbook} prompts</p>
         <span
           className="decoration-1 underline cursor-pointer"
-          onClick={() => onAboutClick(cookbook)}>
+          onClick={(e) => {
+            e.stopPropagation();
+            onAboutClick(cookbook);
+          }}>
           About
         </span>
       </footer>

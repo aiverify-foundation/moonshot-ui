@@ -1,6 +1,6 @@
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
-import { LoadingAnimation } from '../shared-components/loadingAnimation';
+import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 
 type Props = {
   cookbook: Cookbook;
@@ -44,8 +44,10 @@ function CookbookAbout({ cookbook, checked }: Props) {
       </div>
       <div className="flex-1 flex flex-col gap-3">
         <h4 className="">{cookbook.recipes.length} Recipes in this cookbook</h4>
-        <div className="w-full rounded-xl h-full bg-moongray-950 py-3 pr-1">
-          <ul className="relative flex flex-col h-full overflow-y-auto custom-scrollbar px-4 ">
+        <div
+          className="w-full rounded-xl bg-moongray-950 py-3 pr-1"
+          style={{ height: 'calc(100% - 25px)' }}>
+          <ul className="relative flex flex-col h-full overflow-y-auto custom-scrollbar pl-3 pr-5">
             {isFetching && <LoadingAnimation />}
             {!isFetching &&
               recipes &&
