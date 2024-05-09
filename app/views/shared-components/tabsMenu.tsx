@@ -1,18 +1,19 @@
 import { useState } from 'react';
 
-type TabItem = {
+type TabItem<T> = {
   id: string;
   label: string;
+  data?: T;
 };
 
 type TabsMenuProps = {
-  tabItems: TabItem[];
+  tabItems: TabItem<string[]>[];
   activeTabId: string;
   barColor: string;
   textColor: string;
   tabHoverColor: string;
   selectedTabColor: string;
-  onTabClick: (id: string) => void;
+  onTabClick: (tab: TabItem<string[]>) => void;
 };
 
 function TabsMenu(props: TabsMenuProps) {
@@ -33,9 +34,9 @@ function TabsMenu(props: TabsMenuProps) {
       style={{
         backgroundColor: barColor,
       }}>
-      {tabItems.map((tabItem) => {
-        const isActive = activeTabId === tabItem.id;
-        const isHovered = hoveredTabId === tabItem.id;
+      {tabItems.map((tab) => {
+        const isActive = activeTabId === tab.id;
+        const isHovered = hoveredTabId === tab.id;
         let tabColor = '';
         if (isActive) {
           tabColor = selectedTabColor || '';
@@ -44,17 +45,15 @@ function TabsMenu(props: TabsMenuProps) {
         }
         return (
           <li
-            key={tabItem.id}
+            key={tab.id}
             className="rounded px-5 py-1 transition-all duration-300"
-            onMouseEnter={() => setHoveredTabId(tabItem.id)}
+            onMouseEnter={() => setHoveredTabId(tab.id)}
             onMouseLeave={() => setHoveredTabId(undefined)}
             style={{
               color: textColor,
               backgroundColor: tabColor,
             }}>
-            <button onClick={() => onTabClick(tabItem.id)}>
-              {tabItem.label}
-            </button>
+            <button onClick={() => onTabClick(tab)}>{tab.label}</button>
           </li>
         );
       })}

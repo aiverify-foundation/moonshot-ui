@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
-import { useLazyGetAllCookbooksQuery } from '@/app/services/cookbook-api-service';
+import {
+  useGetCookbooksQuery,
+  useLazyGetCookbooksQuery,
+} from '@/app/services/cookbook-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import {
@@ -17,74 +20,77 @@ type Props = {
   setHiddenNavButtons: React.Dispatch<React.SetStateAction<[boolean, boolean]>>;
 };
 
-function BenchmarkTopicsSelection({ setHiddenNavButtons }: Props) {
+function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
   const dispatch = useAppDispatch();
   const [_, setAllCookbooks] = useCookbooks();
-  const [defaultCookbooks, setDefaultCookbooks] = React.useState<
-    Cookbook[] | undefined
-  >();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
   );
-  const [fetchAllCookbooks] = useLazyGetAllCookbooksQuery();
+  const {
+    data: defaultCookbooksForSelection,
+    isFetching: isFetchingDefaultCookbooksForSelection,
+  } = useGetCookbooksQuery(
+    { ids: config.defaultCookbooksForSelection },
+    {
+      skip:
+        !config.defaultCookbooksForSelection ||
+        config.defaultCookbooksForSelection.length === 0,
+    }
+  );
+  const [fetchCookbooks] = useLazyGetCookbooksQuery();
 
-  function handleTopicClick(topic: Cookbook) {
-    if (selectedCookbooks.some((t) => t.id === topic.id)) {
-      dispatch(removeBenchmarkCookbooks([topic]));
+  function handleCookbookBtnClick(cb: Cookbook) {
+    if (selectedCookbooks.some((t) => t.id === cb.id)) {
+      dispatch(removeBenchmarkCookbooks([cb]));
     } else {
-      dispatch(addBenchmarkCookbooks([topic]));
+      dispatch(addBenchmarkCookbooks([cb]));
     }
   }
 
-  const topicsBtns = defaultCookbooks
-    ? defaultCookbooks.map((topic) => {
-        const isSelected = selectedCookbooks.some((t) => t.id === topic.id);
+  const defaultCookbookBtns = defaultCookbooksForSelection
+    ? defaultCookbooksForSelection.map((cb) => {
+        const isSelected = selectedCookbooks.some((t) => t.id === cb.id);
         return (
           <Button
-            key={topic.id}
+            key={cb.id}
             size="sm"
-            text={topic.name}
+            text={cb.name}
             textSize="1.1rem"
             textWeight="600"
             textColor={colors.white}
             mode={ButtonType.OUTLINE}
             type="button"
             leftIconName={IconName.Plus}
-            btnColor={isSelected ? colors.moongray[700] : undefined}
+            btnColor={isSelected ? colors.moonwine[700] : undefined}
             hoverBtnColor={colors.moongray[800]}
-            onClick={() => handleTopicClick(topic)}
+            onClick={() => handleCookbookBtnClick(cb)}
           />
         );
       })
     : undefined;
 
   useEffect(() => {
-    async function fetchDefaultCookbooksWithoutCount() {
-      const result = await fetchAllCookbooks({
-        ids: config.initialCookbooks,
-        count: false,
-      });
-      console.dir(result);
-      setDefaultCookbooks(result.data || []);
-    }
-    fetchDefaultCookbooksWithoutCount();
-  }, [fetchAllCookbooks]);
-
-  useEffect(() => {
-    if (!defaultCookbooks) return;
+    if (!defaultCookbooksForSelection) return;
+    // After the default cookbooks for selection is updated, fetch all cookbooks in the background to store them in Context.
+    // No need to handle situation where this component is unmounted while the fetch is in progress.
     async function fetchAllCookbooksWithCount() {
-      const result = await fetchAllCookbooks({ count: true });
+      const result = await fetchCookbooks({ count: true });
       updateAllCookbooks(setAllCookbooks, result.data || []);
+      if (!result.data) return;
+      const baselineRecommendedCookbooks = result.data.filter((cookbook) =>
+        config.baselineSelectedCookbooks.includes(cookbook.id)
+      );
+      dispatch(addBenchmarkCookbooks(baselineRecommendedCookbooks));
     }
-    if (defaultCookbooks.length > 0) {
+    if (defaultCookbooksForSelection.length > 0) {
       setHiddenNavButtons([true, false]);
     }
     fetchAllCookbooksWithCount();
-  }, [defaultCookbooks, setHiddenNavButtons]);
+  }, [defaultCookbooksForSelection, setHiddenNavButtons]);
 
   return (
     <section className="relative flex flex-col items-center min-h-[300px]">
-      {!defaultCookbooks ? (
+      {isFetchingDefaultCookbooksForSelection ? (
         <LoadingAnimation />
       ) : (
         <>
@@ -96,7 +102,7 @@ function BenchmarkTopicsSelection({ setHiddenNavButtons }: Props) {
             model&apos;s performance in specific defaultCookbooks or languages
           </p>
           <div className="flex flex-wrap gap-4 mt-10 w-[80%] justify-center">
-            {topicsBtns}
+            {defaultCookbookBtns}
           </div>
         </>
       )}
@@ -104,4 +110,4 @@ function BenchmarkTopicsSelection({ setHiddenNavButtons }: Props) {
   );
 }
 
-export { BenchmarkTopicsSelection };
+export { BenchmarkDefaultSelection };

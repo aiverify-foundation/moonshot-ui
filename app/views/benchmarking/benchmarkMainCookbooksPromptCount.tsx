@@ -1,5 +1,7 @@
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
+import { useAppSelector } from '@/lib/redux';
+import config from '@/moonshot.config';
 import { useCookbooks } from './contexts/cookbooksContext';
 import { BenchmarkNewSessionViews } from './enums';
 
@@ -7,10 +9,16 @@ type Props = {
   changeView: (view: BenchmarkNewSessionViews) => void;
 };
 
-function BenchmarkRecommendedTests({ changeView }: Props) {
+function BenchmarkMainCookbooksPromptCount({ changeView }: Props) {
   const [allCookbooks, _] = useCookbooks();
+  const selectedCookbooks = useAppSelector(
+    (state) => state.benchmarkCookbooks.entities
+  );
   const { totalHours, totalMinutes, totalPrompts } =
-    calcTotalPromptsAndEstimatedTime(allCookbooks);
+    calcTotalPromptsAndEstimatedTime(
+      selectedCookbooks,
+      config.estimatedPromptResponseTime
+    );
 
   return (
     <section className="flex flex-col items-center justify-center min-h-[300px] gap-5">
@@ -60,7 +68,10 @@ function BenchmarkRecommendedTests({ changeView }: Props) {
                 <span className="text-moonpurplelight">Estimated Time</span>{' '}
                 <br />{' '}
                 <span className="text-[0.9rem]">
-                  assuming <span className="decoration-1 underline">10s</span>{' '}
+                  assuming{' '}
+                  <span className="decoration-1 underline">
+                    {config.estimatedPromptResponseTime}s
+                  </span>{' '}
                   per prompt
                 </span>
               </p>
@@ -72,4 +83,4 @@ function BenchmarkRecommendedTests({ changeView }: Props) {
   );
 }
 
-export { BenchmarkRecommendedTests };
+export { BenchmarkMainCookbooksPromptCount };

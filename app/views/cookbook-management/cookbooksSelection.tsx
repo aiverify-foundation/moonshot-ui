@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
-import { useGetAllCookbooksQuery } from '@/app/services/cookbook-api-service';
+import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
@@ -14,15 +14,17 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '@/lib/redux';
+import config from '@/moonshot.config';
 import { CookbookAbout } from './cookbookAbout';
 import { CookbookSelectionItem } from './cookbookSelectionItem';
 
-const tabItems: TabItem[] = [
-  { id: 'quality', label: 'Quality' },
-  { id: 'capability', label: 'Capability' },
-  { id: 'trustsafety', label: 'Trust & Safety' },
-  { id: 'others', label: 'Others' },
-];
+const tabItems: TabItem<string[]>[] = config.cookbookCategoriesTabs.map(
+  (item) => ({
+    id: item.id,
+    label: item.label,
+    data: item.categoryNames,
+  })
+);
 
 type Props = {
   onClose: () => void;
@@ -34,36 +36,28 @@ function CookbooksSelection(props: Props) {
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
   );
-  const [activeTab, setActiveTab] = useState('quality');
+  const [activeTab, setActiveTab] = useState(tabItems[0]);
   const [cookbookDetails, setCookbookDetails] = useState<
     Cookbook | undefined
   >();
 
-  // Determine the category
-  const category =
-    activeTab === 'quality'
-      ? 'robustness'
-      : activeTab === 'capability'
-        ? 'capability'
-        : activeTab === 'trustsafety'
-          ? 'safety'
-          : undefined;
+  const selectedCategories = activeTab.data;
 
-  const { data: cookbooks, isFetching } = useGetAllCookbooksQuery(
+  const { data: cookbooks, isFetching } = useGetCookbooksQuery(
     {
-      categories: category ? [category] : undefined,
+      categories: selectedCategories ? selectedCategories : undefined,
       count: true,
     },
     {
-      skip: !category,
+      skip: !selectedCategories || selectedCategories.length === 0,
     }
   );
 
   const { totalHours, totalMinutes } =
     calcTotalPromptsAndEstimatedTime(selectedCookbooks);
 
-  function handleTabClick(id: string) {
-    setActiveTab(id);
+  function handleTabClick(tab: TabItem<string[]>) {
+    setActiveTab(tab);
   }
 
   function handleCookbookSelect(cb: Cookbook) {
@@ -80,7 +74,7 @@ function CookbooksSelection(props: Props) {
   }
 
   const categoryDesc =
-    activeTab === 'quality'
+    activeTab.id === 'quality'
       ? "Quality evaluates the model's ability to consistently produce content that meets general correctness and application-specific standards."
       : "Capability assesses the AI model's ability to perform within the context of the unique requirements and challenges of a particular domain or task.";
 
@@ -118,7 +112,7 @@ function CookbooksSelection(props: Props) {
                 tabHoverColor={colors.moongray['700']}
                 selectedTabColor={colors.moonpurple}
                 textColor={colors.white}
-                activeTabId={activeTab}
+                activeTabId={activeTab.id}
                 onTabClick={handleTabClick}
               />
             </section>
@@ -154,7 +148,10 @@ function CookbooksSelection(props: Props) {
                     Estimated time
                   </div>
                   <div className="text-[0.8rem] leading-[1.1rem] text-moongray-300 text-end">
-                    assuming <span className="decoration-1 underline">10s</span>{' '}
+                    assuming{' '}
+                    <span className="decoration-1 underline">
+                      {config.estimatedPromptResponseTime}s
+                    </span>{' '}
                     per prompt
                   </div>
                 </div>

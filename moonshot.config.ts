@@ -1,5 +1,12 @@
 type MoonshotConfig = {
-  initialCookbooks: string[];
+  baselineSelectedCookbooks: string[];
+  defaultCookbooksForSelection: string[];
+  estimatedPromptResponseTime: number;
+  cookbookCategoriesTabs: {
+    id: string;
+    label: string;
+    categoryNames: string[];
+  }[];
   webAPI: {
     hostURL: string;
     basePathSessions: string;
@@ -14,13 +21,29 @@ type MoonshotConfig = {
 };
 
 const config: MoonshotConfig = {
-  initialCookbooks: [
+  baselineSelectedCookbooks: [
+    'legal-summarisation',
+    'cbbq-amb-cookbook',
+    'cbbq-disamb-cookbook',
+  ],
+  defaultCookbooksForSelection: [
     'evaluation-catalogue-cookbook',
     'chinese-cookbook',
     'tamil-language-cookbook',
     'leaderboard-cookbook',
     'truthful-cookbook',
   ],
+  cookbookCategoriesTabs: [
+    { id: 'quality', label: 'Quality', categoryNames: ['quality'] },
+    { id: 'capability', label: 'Capability', categoryNames: ['capability'] },
+    {
+      id: 'trustAndSafety',
+      label: 'Trust & Safety',
+      categoryNames: ['Trust & Safety'],
+    },
+    { id: 'others', label: 'Others', categoryNames: ['others'] },
+  ],
+  estimatedPromptResponseTime: 10, // seconds
   webAPI: {
     hostURL: process.env.MOONSHOT_API_URL || 'http://localhost:5000',
     basePathSessions: '/api/v1/sessions',

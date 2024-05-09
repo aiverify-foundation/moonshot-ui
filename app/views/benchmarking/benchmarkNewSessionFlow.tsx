@@ -9,9 +9,9 @@ import { ModelSelectView } from '@/app/views/quickstart-home/components/endpoint
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 import { useAppSelector } from '@/lib/redux';
-import { BenchmarkRecommendedTests } from './benchmarkRecommendedTests';
+import { BenchmarkDefaultSelection } from './benchmarkDefaultSelection';
+import { BenchmarkMainCookbooksPromptCount } from './benchmarkMainCookbooksPromptCount';
 import BenchmarkRunForm from './benchmarkRunForm';
-import { BenchmarkTopicsSelection } from './benchmarkTopicsSelection';
 import { CookbooksProvider } from './contexts/cookbooksContext';
 import { BenchmarkNewSessionViews } from './enums';
 
@@ -99,12 +99,12 @@ function BenchmarkNewSessionFlow() {
     case BenchmarkNewSessionViews.TOPICS_SELECTION:
       stepIndex = 0;
       view = (
-        <BenchmarkTopicsSelection setHiddenNavButtons={setHiddenNavButtons} />
+        <BenchmarkDefaultSelection setHiddenNavButtons={setHiddenNavButtons} />
       );
       break;
     case BenchmarkNewSessionViews.RECOMMENDED_TESTS:
       stepIndex = 1;
-      view = <BenchmarkRecommendedTests changeView={changeView} />;
+      view = <BenchmarkMainCookbooksPromptCount changeView={changeView} />;
       break;
     case BenchmarkNewSessionViews.ENDPOINTS_SELECTION:
       stepIndex = 2;

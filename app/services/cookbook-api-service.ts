@@ -23,13 +23,15 @@ const cookbookApi = createApi({
   reducerPath: 'cookbookApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
-    getAllCookbooks: builder.query<Cookbook[], inputParams | undefined>({
+    getCookbooks: builder.query<Cookbook[], inputParams | undefined>({
       query: (params) => {
         const { ids, categories, tags, count } = params || {};
         const stringifiedParams: urlQueryParams = params
           ? {
               ...(ids ? { ids: ids.join(',') } : {}),
-              ...(categories ? { categories: categories.join(',') } : {}),
+              ...(categories && categories.length
+                ? { categories: categories.join(',') }
+                : {}),
               ...(tags ? { tags: tags.join(',') } : {}),
               ...(count !== undefined
                 ? { count: count ? 'true' : 'false' }
@@ -56,14 +58,14 @@ const cookbookApi = createApi({
 });
 
 const {
-  useGetAllCookbooksQuery,
+  useGetCookbooksQuery,
   useCreateCookbookMutation,
-  useLazyGetAllCookbooksQuery,
+  useLazyGetCookbooksQuery,
 } = cookbookApi;
 
 export {
   cookbookApi,
   useCreateCookbookMutation,
-  useGetAllCookbooksQuery,
-  useLazyGetAllCookbooksQuery,
+  useGetCookbooksQuery,
+  useLazyGetCookbooksQuery,
 };
