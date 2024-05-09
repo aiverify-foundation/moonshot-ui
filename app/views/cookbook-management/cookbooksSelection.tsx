@@ -123,7 +123,7 @@ function CookbooksSelection(props: Props) {
       ) : (
         <PopupSurface
           height="100%"
-          onCloseIconClick={onClose}
+          onCloseIconClick={selectedCookbooks.length > 0 ? onClose : undefined}
           headerContent={
             <section className="flex items-center justify-flex-start gap-5 pt-4">
               <TabsMenu
@@ -188,11 +188,13 @@ function CookbooksSelection(props: Props) {
                   </h3>
                 </div>
               </div>
-              <span
-                className="text-[1.5rem] decoration-1 underline text-white cursor-pointer"
-                onClick={onClose}>
-                OK
-              </span>
+              {selectedCookbooks.length > 0 && (
+                <span
+                  className="text-[1.5rem] decoration-1 underline text-white cursor-pointer"
+                  onClick={onClose}>
+                  OK
+                </span>
+              )}
             </footer>
           </section>
         </PopupSurface>
