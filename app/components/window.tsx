@@ -251,8 +251,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         ref={windowRef}
         onClick={onWholeWindowClick}
         className={`absolute pt-0 text-white 
-          shadow-lg select-none min-w-96 shadow-neutral-800/40 bg-fuchsia-1000/90 
-          dark:shadow-neutral-900/30 dark:bg-neutral-900/70 backdrop-blur-sm 
+          shadow-lg select-none min-w-96 shadow-moongray-800/40 bg-fuchsia-1000/90 
+          dark:shadow-moongray-900/30 dark:bg-moongray-950 backdrop-blur-sm 
           ${disableFadeIn ? '' : 'fadeScaleInAnimation'}
         `}
         style={{
@@ -267,7 +267,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         onMouseDown={handleMouseDown}>
         <div className="flex flex-col w-full h-full">
           <div
-            className="flex flex-col w-full mb-6 bg-fuchsia-950/40"
+            className="flex flex-col w-full mb-6 bg-fuchsia-950/40 dark:bg-moongray-950"
             style={headerAreaStyles}>
             <div className="flex px-3 justify-between w-full">
               {header || (

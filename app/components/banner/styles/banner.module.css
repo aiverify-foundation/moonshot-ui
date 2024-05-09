@@ -1,0 +1,26 @@
+.banner {
+  display: flex;
+  position: relative;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  border-radius: 1rem;
+  padding: 3rem;
+  padding-left: 3.5rem;
+  gap: 2rem;
+  box-shadow: 2px 4px 6px -1px rgb(0 0 0 / 0.4);
+}
+
+.caption_container {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.caption_container .caption_text {
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+

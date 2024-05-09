@@ -61,6 +61,7 @@ type Cookbook = {
   name: string;
   description: string;
   recipes: string[];
+  total_prompt_in_cookbook: number;
 };
 
 type CookbookFormValues = {
@@ -70,13 +71,22 @@ type CookbookFormValues = {
 };
 
 type Recipe = {
-  id: string;
-  name: string;
-  description: string;
-  tags: string[];
+  attack_modules: any[];
+  categories: string[];
   datasets: string[];
-  prompt_templates: string[];
+  description: string;
+  grading_scale: Record<string, any>;
+  id: string;
   metrics: string[];
+  name: string;
+  prompt_templates: string[];
+  stats: {
+    num_of_tags: number;
+    num_of_datasets: number;
+    num_of_datasets_prompts: Record<string, number>;
+  };
+  tags: string[];
+  total_prompt_in_recipe: number;
 };
 
 type RecipeFormValues = {
@@ -98,11 +108,14 @@ type Dataset = {
 };
 
 type BenchmarkRunFormValues = {
-  name: string;
+  run_name: string;
   description: string;
   num_of_prompts: string;
-  cookbooks: string[];
+  system_prompt: string;
+  runner_processing_module: 'benchmarking';
+  inputs: string[];
   endpoints: string[];
+  random_seed: string;
 };
 
 type PushEvent = {
@@ -111,19 +124,18 @@ type PushEvent = {
 };
 
 type TestStatus = {
-  exec_id: string;
-  exec_name: string;
-  exec_type: string;
-  curr_duration: number;
-  curr_status: string;
-  curr_cookbook_index: number;
-  curr_cookbook_name: string;
-  curr_cookbook_total: number;
-  curr_recipe_index: number;
-  curr_recipe_name: string;
-  curr_recipe_total: number;
-  curr_progress: number;
-  curr_error_messages: string[];
+  current_runner_id: string;
+  current_runner_type: string;
+  current_duration: number;
+  current_status: string;
+  current_cookbook_index: number;
+  current_cookbook_name: string;
+  current_cookbook_total: number;
+  current_recipe_index: number;
+  current_recipe_name: string;
+  current_recipe_total: number;
+  current_progress: number;
+  current_error_messages: string[];
 };
 
 type TestStatuses = Record<string, TestStatus>;
@@ -190,6 +202,26 @@ type BenchmarkResultsFormat = {
   metadata: ResultMetadata;
   results: Results;
 };
+
+type CustomColors = {
+  moongray: Record<string, string>;
+  moonwine: Record<string, string>;
+  imdalight: Record<string, string>;
+  white: string;
+  black: string;
+  moonpurplelight: string;
+};
+
+type BenchmarkTopic = {
+  id: string;
+  name: string;
+};
+
+type CookbookMetadata = {
+  totalPrompts: number;
+  estTotalPromptResponseTime: number;
+};
+
 /*
  * End of Result format specific types
  */

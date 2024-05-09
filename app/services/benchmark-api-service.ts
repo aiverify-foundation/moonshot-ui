@@ -18,7 +18,7 @@ const benchmarkRunApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
     runBenchmark: builder.mutation<
-      BenchmarkRunFormValues,
+      { id: string },
       ExtendedBenchmarkRunFormValues
     >({
       query: ({ benchmarkRunInputData, collectionType }) => ({
@@ -27,7 +27,12 @@ const benchmarkRunApi = createApi({
         body: benchmarkRunInputData,
       }),
     }),
-
+    cancelBenchmark: builder.mutation<void, string>({
+      query: (runnerId) => ({
+        url: `${proxyPathBenchmarksExec}/cancel/${runnerId}`,
+        method: 'POST',
+      }),
+    }),
     getBenchmarksResult: builder.query<
       BenchmarkResultsFormat,
       { benchmarkId: string }
@@ -40,11 +45,15 @@ const benchmarkRunApi = createApi({
   }),
 });
 
-const { useRunBenchmarkMutation, useGetBenchmarksResultQuery } =
-  benchmarkRunApi;
+const {
+  useRunBenchmarkMutation,
+  useGetBenchmarksResultQuery,
+  useCancelBenchmarkMutation,
+} = benchmarkRunApi;
 
 export {
   benchmarkRunApi,
   useRunBenchmarkMutation,
   useGetBenchmarksResultQuery,
+  useCancelBenchmarkMutation,
 };

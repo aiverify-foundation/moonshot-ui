@@ -24,6 +24,7 @@ type TooltipProps = {
   delay?: number;
   disabled?: boolean;
   backgroundColor?: string;
+  transparent?: boolean;
   fontColor?: string;
   position?: TooltipPosition;
   content: ReactElement | string;
@@ -111,6 +112,7 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
     contentMinWidth,
     position = TooltipPosition.left,
     backgroundColor = '#FFFFFF',
+    transparent = false,
     fontColor = '#676767',
     offsetLeft = 0,
     offsetTop = 0,
@@ -119,6 +121,7 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
   const [placement, setPlacement] =
     useState<TooltipPlacementStyle>(defaultPlacement);
   const [isHovering, setIsHovering] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const positionClassname = `pos__${position}`;
@@ -199,32 +202,48 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
     };
   }, []);
 
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
   return (
     <>
-      {ReactDOM.createPortal(
-        <div
-          ref={tooltipRef}
-          className={styles.tooltip}
-          style={{ ...placement, backgroundColor, color: fontColor }}
-          onMouseOver={handleMouseOver} // Added onMouseOver event to the tooltip
-          onMouseOut={handleMouseOut} // Added onMouseOut event to the tooltip
-        >
+      {isMounted &&
+        ReactDOM.createPortal(
           <div
-            className={clsx(styles.pointer, styles[positionClassname])}
-            style={{ borderColor }}
-          />
-          <div
-            className={styles.content}
+            ref={tooltipRef}
+            className={clsx(styles.tooltip)}
             style={{
-              backgroundColor,
-              maxWidth: contentMaxWidth,
-              minWidth: contentMinWidth,
-            }}>
-            {content}
-          </div>
-        </div>,
-        document.body // This is where the portal will render
-      )}
+              ...placement,
+              backgroundColor: transparent ? 'transparent' : backgroundColor,
+              boxShadow: transparent ? 'none' : '0 2px 8px rgba(0, 0, 0, 0.3)',
+              color: fontColor,
+            }}
+            onMouseOver={handleMouseOver} // Added onMouseOver event to the tooltip
+            onMouseOut={handleMouseOut} // Added onMouseOut event to the tooltip
+          >
+            <div
+              className={clsx(styles.pointer, styles[positionClassname])}
+              style={{
+                borderColor: transparent ? 'transparent' : backgroundColor,
+                boxShadow: transparent
+                  ? 'none'
+                  : '0 2px 8px rgba(0, 0, 0, 0.4)',
+              }}
+            />
+            <div
+              className={styles.content}
+              style={{
+                backgroundColor: transparent ? 'transparent' : backgroundColor,
+                maxWidth: contentMaxWidth,
+                minWidth: contentMinWidth,
+              }}>
+              {content}
+            </div>
+          </div>,
+          document.body // This is where the portal will render
+        )}
       <div
         className={styles.childWrapper}
         ref={triggerRef}

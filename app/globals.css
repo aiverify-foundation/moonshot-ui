@@ -46,8 +46,8 @@
 
 @media (min-width: 1180px) {
   :root {
-    --chatwindow-width: 500px;
-    --gap-width: 20px;
+    --chatwindow-width: 400px;
+    --gap-width: 16px;
   }
 }
 
@@ -68,20 +68,20 @@
 }
 
 input[type="checkbox"] {
-  @apply appearance-none relative border border-slate-400
+  @apply appearance-none relative border border-slate-400 w-6 h-6
 }
 
 input[type="checkbox"]:checked {
-  @apply bg-fuchsia-200 dark:bg-sky-200
+  /* @apply bg-fuchsia-200 dark:bg-sky-200 */
 }
 
 input[type="checkbox"]::before {
   content: "";
-  clip-path: polygon(0 18%, 18% 10%, 28% 35%, 87% 2%, 96% 21%, 19% 63%);
+  clip-path: polygon(0px 42.5%, 30.24% 26.33%, 36.16% 59.49%, 91.08% 22.41%, 100.08% 53.65%, 19% 91.57%);
 }
 
 input[type="checkbox"]:checked::before {
-  @apply absolute w-5 h-5 left-[2px] top-[-1px] rotate-[-15deg] bg-gray-600 dark:bg-slate-800
+  @apply absolute w-5 h-5 left-[2px] top-[-1px] rotate-[-15deg] bg-moongray-300
 }
 
 .btn-primary {
@@ -132,18 +132,9 @@ button:disabled {
   animation: fadeScaleIn 0.2s ease-out forwards;
 }
 
-.chat-window-container {
-  @apply absolute flex overflow-hidden h-[550px] top-[150px] left-[50%] transform-gpu;
-  transform: translate(-50%);
-  width: calc(3 * var(--chatwindow-width) + 2 * var(--gap-width));
-}
-
-.chat-window-slide {
-  @apply flex w-full h-full gap-x-[50px] transition-transform duration-300 ease-in-out;
-}
-
 .ring
 {
+  @apply text-moonpurplelight;
   position:absolute;
   top:50%;
   left:50%;
@@ -157,12 +148,11 @@ button:disabled {
   line-height:80px;
   font-family:sans-serif;
   font-size:10px;
-  color:#ff02ff;
   letter-spacing:2px;
   text-transform:uppercase;
-  text-shadow:0 0 10px #ff02ff;
   box-shadow:0 0 20px rgba(0,0,0,.5);
 }
+
 .ring:before
 {
   content:'';
@@ -172,11 +162,11 @@ button:disabled {
   width:80px;
   height:80px;
   border:3px solid transparent;
-  border-top:3px solid #ff02ff;
-  border-right:3px solid #ff02ff;
   border-radius:50%;
   animation:animateC 2s linear infinite;
+  @apply border-t-moonpurplelight border-r-moonpurplelight;
 }
+
 .ring span
 {
   display:block;
@@ -189,18 +179,29 @@ button:disabled {
   transform-origin:left;
   animation:animate 2s linear infinite;
 }
+
 .ring span:before
 {
+  @apply bg-moonpurplelight;
   content:'';
   position:absolute;
   width:16px;
   height:16px;
   border-radius:50%;
-  background:#ff02ff;
   top:-6px;
   right:-8px;
-  box-shadow:0 0 20px #ff02ff;
 }
+
+.dust-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url('/texture.png');
+  background-repeat: repeat;
+}
+
 @keyframes animateC
 {
   0%

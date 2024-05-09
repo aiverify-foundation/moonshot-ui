@@ -1,0 +1,63 @@
+.btn {
+  display: flex;
+  gap: 0.4rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2rem;
+  padding: 0.5rem 0.8rem;
+  height: max-content;
+  font-size: 0.8rem;
+  box-shadow: 0px 4px 6px -1px rgb(0 0 0 / 0.4);
+  width: fit-content;
+  min-width: 100px;
+  transition: background-color 0.2s ease;
+}
+
+.btn.btn_primary:disabled {
+  background: #000000;
+  opacity: 0.5;
+}
+
+
+.btn_primary {
+  border: 1px solid #FFFFFF;
+  color: #FFFFFF;
+  background: #000000;
+}
+
+.btn_link {
+  border: none;
+  color: #FFFFFF;
+  background: transparent;
+  box-shadow: none;
+  text-decoration: underline;
+  padding: 0 0 0 0;
+}
+
+.btn_outline {
+  border: 1px solid #FFFFFF;
+  color: #FFFFFF;
+  background: transparent;
+  box-shadow: none;
+}
+
+.btn:active {
+  box-shadow: none;
+}
+
+.btn_lg {
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+}
+
+.btn_md {
+  padding: 0.5rem 0.8rem;
+  font-size: 0.8rem;
+}
+
+.btn_sm {
+  padding: 0.25rem 1rem;
+  font-size: 0.7rem;
+}
+

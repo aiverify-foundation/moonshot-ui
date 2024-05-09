@@ -1,7 +1,5 @@
-import MoonshotDesktop from './views/moonshot-desktop';
+import { HomePageView } from './views/quickstart-home';
 
-console.log('\x1b[36m%s\x1b[0m', 'Page loaded');
-
-export default function Page() {
-  return <MoonshotDesktop />;
+export default function HomePage() {
+  return <HomePageView />;
 }

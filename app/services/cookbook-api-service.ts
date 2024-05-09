@@ -1,18 +1,55 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getHostAndPort } from './host';
 
+type inputParams = {
+  ids?: string[];
+  categories?: string[];
+  tags?: string[];
+  count?: boolean;
+};
+
+type urlQueryParams =
+  | {
+      ids?: string;
+      categories?: string;
+      tags?: string;
+      count?: string;
+    }
+  | undefined;
+
 const [host, port] = getHostAndPort();
+const path = 'api/v1/cookbooks';
 const cookbookApi = createApi({
   reducerPath: 'cookbookApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
-    getAllCookbooks: builder.query<Cookbook[], void>({
-      query: () => 'api/v1/cookbooks',
-      keepUnusedDataFor: 0,
+    getCookbooks: builder.query<Cookbook[], inputParams | undefined>({
+      query: (params) => {
+        const { ids, categories, tags, count } = params || {};
+        const stringifiedParams: urlQueryParams = params
+          ? {
+              ...(ids ? { ids: ids.join(',') } : {}),
+              ...(categories && categories.length
+                ? { categories: categories.join(',') }
+                : {}),
+              ...(tags ? { tags: tags.join(',') } : {}),
+              ...(count !== undefined
+                ? { count: count ? 'true' : 'false' }
+                : {}),
+            }
+          : undefined;
+        const urlQueryParams = params
+          ? new URLSearchParams(stringifiedParams).toString()
+          : undefined;
+        return {
+          url: urlQueryParams ? `${path}?${urlQueryParams}` : path,
+          keepUnusedDataFor: 600,
+        };
+      },
     }),
     createCookbook: builder.mutation<CookbookFormValues, CookbookFormValues>({
       query: (cookbookInputData) => ({
-        url: 'api/v1/cookbooks',
+        url: path,
         method: 'POST',
         body: cookbookInputData,
       }),
@@ -20,6 +57,15 @@ const cookbookApi = createApi({
   }),
 });
 
-const { useGetAllCookbooksQuery, useCreateCookbookMutation } = cookbookApi;
+const {
+  useGetCookbooksQuery,
+  useCreateCookbookMutation,
+  useLazyGetCookbooksQuery,
+} = cookbookApi;
 
-export { cookbookApi, useCreateCookbookMutation, useGetAllCookbooksQuery };
+export {
+  cookbookApi,
+  useCreateCookbookMutation,
+  useGetCookbooksQuery,
+  useLazyGetCookbooksQuery,
+};

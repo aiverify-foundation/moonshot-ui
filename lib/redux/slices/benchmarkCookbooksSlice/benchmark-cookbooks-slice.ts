@@ -23,6 +23,16 @@ export const benchmarkCookbooksStateSlice = createSlice({
           )
       );
     },
+    updateBenchmarkCookbooks: (state, action: PayloadAction<Cookbook[]>) => {
+      action.payload.forEach((payloadCookbook) => {
+        const index = state.entities.findIndex(
+          (stateCookbook) => stateCookbook.id === payloadCookbook.id
+        );
+        if (index !== -1) {
+          state.entities[index] = payloadCookbook;
+        }
+      });
+    },
     resetBenchmarkCookbooks: (state) => {
       state.entities = [];
     },
@@ -33,4 +43,5 @@ export const {
   addBenchmarkCookbooks,
   removeBenchmarkCookbooks,
   resetBenchmarkCookbooks,
+  updateBenchmarkCookbooks,
 } = benchmarkCookbooksStateSlice.actions;

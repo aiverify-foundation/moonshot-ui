@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import React, {
+  ChangeEvent,
   ChangeEventHandler,
   KeyboardEventHandler,
   useEffect,
@@ -19,7 +20,8 @@ type TextInputProps = {
   labelSibling?: React.ReactElement;
   containerStyles?: React.CSSProperties;
   inputStyles?: React.CSSProperties;
-  onChange?: ChangeEventHandler<HTMLTextAreaElement>;
+  labelStyles?: React.CSSProperties;
+  onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   onKeyDown?: KeyboardEventHandler<HTMLTextAreaElement>;
 };
 
@@ -36,6 +38,7 @@ function TextArea(props: TextInputProps) {
     labelSibling,
     containerStyles,
     inputStyles,
+    labelStyles,
     onChange,
     onKeyDown,
   } = props;
@@ -58,7 +61,9 @@ function TextArea(props: TextInputProps) {
       style={containerStyles}>
       <label>
         {label !== undefined ? (
-          <div className={styles.label}>
+          <div
+            className={styles.label}
+            style={labelStyles}>
             <div>{label}</div>
             {labelSibling}
           </div>
