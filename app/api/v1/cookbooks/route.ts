@@ -4,28 +4,10 @@ import config from '@/moonshot.config';
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest): Promise<Response> {
-  const idsParam = request.nextUrl.searchParams.get('ids');
-  const categoriesParam = request.nextUrl.searchParams.get('categories');
-  const countParam = request.nextUrl.searchParams.get('count');
   const response = await fetch(
-    `${config.webAPI.hostURL}${config.webAPI.basePathCookbooks}?${categoriesParam ? `categories=${categoriesParam}` : ''}&count=${countParam ? countParam : false}`,
-    {
-      method: 'GET',
-    }
+    `${config.webAPI.hostURL}${config.webAPI.basePathCookbooks}?${request.nextUrl.searchParams}`
   );
-
-  if (!idsParam) {
-    return response;
-  }
-  const data = (await response.json()) as Cookbook[];
-  const ids = idsParam.split(',').map((id) => id.trim());
-  const filteredData = data.filter((cookbook) => ids.includes(cookbook.id));
-  return new Response(JSON.stringify(filteredData), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  return response;
 }
 
 export async function POST(request: Request) {

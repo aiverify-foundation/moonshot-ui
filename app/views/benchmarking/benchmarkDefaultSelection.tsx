@@ -22,7 +22,7 @@ type Props = {
 
 function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
   const dispatch = useAppDispatch();
-  const [_, setAllCookbooks] = useCookbooks();
+  const [allCookbooks, setAllCookbooks] = useCookbooks();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
   );
@@ -30,7 +30,7 @@ function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
     data: defaultCookbooksForSelection,
     isFetching: isFetchingDefaultCookbooksForSelection,
   } = useGetCookbooksQuery(
-    { ids: config.defaultCookbooksForSelection },
+    { ids: config.defaultCookbooksForSelection, count: true },
     {
       skip:
         !config.defaultCookbooksForSelection ||
@@ -62,7 +62,10 @@ function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
             type="button"
             leftIconName={IconName.Plus}
             btnColor={isSelected ? colors.moonwine[700] : undefined}
-            hoverBtnColor={colors.moongray[800]}
+            pressedBtnColor={colors.moonwine[700]}
+            hoverBtnColor={
+              isSelected ? colors.moonwine[600] : colors.moongray[800]
+            }
             onClick={() => handleCookbookBtnClick(cb)}
           />
         );
@@ -85,7 +88,9 @@ function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
     if (defaultCookbooksForSelection.length > 0) {
       setHiddenNavButtons([true, false]);
     }
-    fetchAllCookbooksWithCount();
+    if (!allCookbooks.length) {
+      fetchAllCookbooksWithCount();
+    }
   }, [defaultCookbooksForSelection, setHiddenNavButtons]);
 
   return (
@@ -99,7 +104,7 @@ function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
           </h2>
           <p className="text-[1.1rem] text-moongray-300 w-full text-center py-0">
             <span className="font-bold">Optional tests</span> to evaluate a
-            model&apos;s performance in specific defaultCookbooks or languages
+            model&apos;s performance in specific topics or languages
           </p>
           <div className="flex flex-wrap gap-4 mt-10 w-[80%] justify-center">
             {defaultCookbookBtns}

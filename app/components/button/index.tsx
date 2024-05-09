@@ -16,6 +16,7 @@ type ButtonProps = {
   text: string;
   btnColor?: string;
   hoverBtnColor?: string;
+  pressedBtnColor?: string;
   textColor?: string;
   textSize?: string;
   textWeight?: string;
@@ -33,6 +34,7 @@ function Button(props: ButtonProps) {
     mode,
     btnColor,
     hoverBtnColor,
+    pressedBtnColor,
     textColor,
     leftIconName,
     rightIconName,
@@ -45,7 +47,16 @@ function Button(props: ButtonProps) {
     onClick = () => null,
   } = props;
   const [isHovered, setIsHovered] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
   let cssClass = '';
+
+  let btnBgColor = btnColor;
+  if (isHovered) {
+    btnBgColor = hoverBtnColor;
+  }
+  if (isPressed) {
+    btnBgColor = pressedBtnColor;
+  }
 
   switch (mode) {
     case ButtonType.PRIMARY:
@@ -68,12 +79,14 @@ function Button(props: ButtonProps) {
       disabled={disabled}
       className={cssClass}
       style={{
-        background: isHovered ? hoverBtnColor : btnColor,
+        background: btnBgColor,
         color: textColor,
         ...(mode == ButtonType.LINK ? { padding: 0 } : {}),
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onMouseDown={() => setIsPressed(true)}
+      onMouseUp={() => setIsPressed(false)}
       onClick={onClick}>
       {leftIconName && (
         <Icon

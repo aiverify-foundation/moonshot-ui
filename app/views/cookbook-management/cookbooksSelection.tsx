@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Icon, IconName } from '@/app/components/IconSVG';
-import { Button, ButtonType } from '@/app/components/button';
 import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
@@ -41,15 +39,38 @@ function CookbooksSelection(props: Props) {
     Cookbook | undefined
   >();
 
-  const selectedCategories = activeTab.data;
+  const excludedCategories = activeTab.data
+    ? activeTab.data.reduce<string[]>((acc, cat) => {
+        if (cat.startsWith('exclude:')) {
+          acc.push(cat.split(':')[1]);
+        }
+        return acc;
+      }, [])
+    : undefined;
+  const selectedCategories =
+    activeTab.data && excludedCategories
+      ? activeTab.data.filter(
+          (cat) =>
+            !excludedCategories.includes(cat) && !cat.startsWith('exclude:')
+        )
+      : activeTab.data;
 
   const { data: cookbooks, isFetching } = useGetCookbooksQuery(
     {
-      categories: selectedCategories ? selectedCategories : undefined,
+      categories:
+        selectedCategories && selectedCategories.length > 0
+          ? selectedCategories
+          : undefined,
+      categories_excluded:
+        excludedCategories && excludedCategories.length > 0
+          ? excludedCategories
+          : undefined,
       count: true,
     },
     {
-      skip: !selectedCategories || selectedCategories.length === 0,
+      skip:
+        (!selectedCategories || selectedCategories.length === 0) &&
+        (!excludedCategories || excludedCategories.length === 0),
     }
   );
 
@@ -69,7 +90,6 @@ function CookbooksSelection(props: Props) {
   }
 
   function handleAboutClick(cb: Cookbook) {
-    console.log(cb);
     setCookbookDetails(cb);
   }
 

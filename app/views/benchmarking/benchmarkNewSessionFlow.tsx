@@ -172,11 +172,7 @@ function BenchmarkNewSessionFlow() {
             )}
             {view}
             {!hiddenNavButtons[1] && (
-              <div
-                className="flex justify-center"
-                style={{
-                  opacity: selectedCookbooks.length > 0 ? 1 : 0.1,
-                }}>
+              <div className="flex justify-center">
                 <Icon
                   name={IconName.WideArrowDown}
                   size={28}
