@@ -68,11 +68,14 @@
 }
 
 input[type="checkbox"] {
-  @apply appearance-none relative border border-slate-400 w-6 h-6
+  @apply appearance-none relative border border-slate-400 w-6 h-6 cursor-pointer
+}
+
+input[type="checkbox"]:hover {
+  @apply border-slate-500
 }
 
 input[type="checkbox"]:checked {
-  /* @apply bg-fuchsia-200 dark:bg-sky-200 */
 }
 
 input[type="checkbox"]::before {

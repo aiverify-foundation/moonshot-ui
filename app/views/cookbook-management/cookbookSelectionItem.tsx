@@ -23,6 +23,7 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
       className="flex flex-col gap-2 border rounded-lg p-6 cursor-pointer border-moongray-800
       text-white hover:bg-moongray-800 hover:border-moonpurple text-[0.9rem] mb-[15px]"
       style={{
+        transition: 'background-color 0.3s ease-in-out',
         flexBasis: '49%',
         ...(isSelected
           ? {
@@ -48,7 +49,7 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
       <footer className="flex justify-between">
         <p>{cookbook.total_prompt_in_cookbook} prompts</p>
         <span
-          className="decoration-1 underline cursor-pointer"
+          className="decoration-1 underline cursor-pointer hover:text-moonwine-500"
           onClick={(e) => {
             e.stopPropagation();
             onAboutClick(cookbook);

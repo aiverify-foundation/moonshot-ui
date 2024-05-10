@@ -117,7 +117,10 @@ function CookbooksSelection(props: Props) {
           onCloseIconClick={() => setCookbookDetails(undefined)}>
           <CookbookAbout
             cookbook={cookbookDetails}
-            checked
+            onSelectChange={handleCookbookSelect}
+            checked={selectedCookbooks.some(
+              (cb) => cb.id === cookbookDetails.id
+            )}
           />
         </PopupSurface>
       ) : (

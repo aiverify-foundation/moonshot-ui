@@ -5,9 +5,10 @@ import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation
 type Props = {
   cookbook: Cookbook;
   checked: boolean;
+  onSelectChange: (cb: Cookbook) => void;
 };
 
-function CookbookAbout({ cookbook, checked }: Props) {
+function CookbookAbout({ cookbook, checked, onSelectChange }: Props) {
   const {
     data: recipes,
     isFetching,
@@ -31,7 +32,7 @@ function CookbookAbout({ cookbook, checked }: Props) {
           <input
             type="checkbox"
             checked={checked}
-            onChange={() => null}
+            onChange={() => onSelectChange(cookbook)}
           />
           <p className="text-[0.9rem]">Run this cookbook</p>
         </div>
