@@ -35,9 +35,15 @@ function SelectListItem<T>(props: Props<T>) {
   return (
     <li
       className="flex flex-row gap-2 border dark:border-moongray-200
-        bg-moongray-950 rounded-xl p-8 items-center cursor-pointer
+        bg-moongray-950 rounded-xl p-4 px-6 items-center cursor-pointer
+        hover:bg-moongray-800 hover:border-moonwine-700
         dark:hover:bg-moongray-900 mb-[15px] justify-between"
-      style={{ flexBasis: '49%', height, backgroundColor: bgColor }}
+      style={{
+        flexBasis: '49%',
+        height,
+        backgroundColor: bgColor,
+        transition: 'background-color 0.2s ease-in-out',
+      }}
       onClick={handleClick}>
       <div className="flex flex-row gap-2 text-white justify-center items-center">
         <Icon name={iconName} />
@@ -45,7 +51,7 @@ function SelectListItem<T>(props: Props<T>) {
       </div>
       <input
         type="checkbox"
-        className="w-4 h-4 mr-5 ml-2 shrink-0"
+        className="w-4 h-4 shrink-0"
         checked={isChecked}
         onChange={handleClick}
       />

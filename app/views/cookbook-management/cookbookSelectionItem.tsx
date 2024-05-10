@@ -21,9 +21,9 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
   return (
     <li
       className="flex flex-col gap-2 border rounded-lg p-6 cursor-pointer border-moongray-800
-      text-white hover:bg-moongray-800 hover:border-moonpurple text-[0.9rem] mb-[15px]"
+      text-white hover:bg-moongray-800 hover:border-moonwine-700 text-[0.9rem] mb-[15px]"
       style={{
-        transition: 'background-color 0.3s ease-in-out',
+        transition: 'background-color 0.2s ease-in-out',
         flexBasis: '49%',
         ...(isSelected
           ? {

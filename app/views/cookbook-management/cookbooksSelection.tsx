@@ -93,10 +93,15 @@ function CookbooksSelection(props: Props) {
     setCookbookDetails(cb);
   }
 
-  const categoryDesc =
-    activeTab.id === 'quality'
-      ? "Quality evaluates the model's ability to consistently produce content that meets general correctness and application-specific standards."
-      : "Capability assesses the AI model's ability to perform within the context of the unique requirements and challenges of a particular domain or task.";
+  let categoryDesc =
+    'LLorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse placerat, est ut convallis dictum, ligula metus vestibulum metus, sit amet rutrum leo odio pulvinar augueo.';
+  if (activeTab.id === 'quality') {
+    categoryDesc =
+      "Quality evaluates the model's ability to consistently produce content that meets general correctness and application-specific standards.";
+  } else if (activeTab.id === 'capability') {
+    categoryDesc =
+      "Capability assesses the AI model's ability to perform within the context of the unique requirements and challenges of a particular domain or task.";
+  }
 
   useEffect(() => {
     if (!cookbooks) return;
