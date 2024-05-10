@@ -18,7 +18,7 @@ function AutoRedTeamingForm() {
     error: recipesError,
     isLoading: recipesIsLoading,
     refetch: refetchRecipes,
-  } = useGetAllRecipesQuery();
+  } = useGetAllRecipesQuery(undefined);
 
   let recipesSelectionOptions: SelectOption[] = [];
   if (recipes && recipes.length) {

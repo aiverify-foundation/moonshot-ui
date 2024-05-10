@@ -13,7 +13,6 @@ import {
   TopButtonsBar,
 } from './components/top-buttons-bar';
 import { useRecipeList } from './hooks/useRecipeList';
-import { NewRecipeForm } from './components/new-recipe-form';
 
 type RecipesExplorerProps = {
   windowId: string;
@@ -171,6 +170,11 @@ function RecipesExplorer(props: RecipesExplorerProps) {
       prompt_templates: data.prompt_templates,
       metrics: data.metrics,
       attack_modules: data.attack_modules,
+      categories: data.categories,
+      grading_scale: data.grading_scale,
+      id: data.id,
+      stats: data.stats,
+      total_prompt_in_recipe: data.total_prompt_in_recipe,
     };
     const response = await createRecipe(newRecipe);
     if ('error' in response) {
@@ -181,7 +185,6 @@ function RecipesExplorer(props: RecipesExplorerProps) {
     setSelectedBtnAction(RecipesExplorerButtonAction.VIEW_RECIPES);
     //@ts-ignore
     refetchRecipes();
-
   }
 
   useEffect(() => {
@@ -238,7 +241,8 @@ function RecipesExplorer(props: RecipesExplorerProps) {
             <TwoPanel initialDividerPosition={initialDividerPosition}>
               <WindowList
                 disableMouseInteraction={
-                  selectedBtnAction === RecipesExplorerButtonAction.ADD_NEW_RECIPE
+                  selectedBtnAction ===
+                  RecipesExplorerButtonAction.ADD_NEW_RECIPE
                     ? true
                     : false
                 }
@@ -281,13 +285,12 @@ function RecipesExplorer(props: RecipesExplorerProps) {
               {selectedBtnAction ===
               RecipesExplorerButtonAction.ADD_NEW_RECIPE ? (
                 <div className="flex flex-1 justify-center h-full">
-                  <NewRecipeForm
-                    onFormSubmit={submitNewRecipe}
-                  />
+                  {/* <NewRecipeForm onFormSubmit={submitNewRecipe} /> */}
                 </div>
               ) : selectedBtnAction ===
-                RecipesExplorerButtonAction.SELECT_RECIPES ||
-              selectedBtnAction === RecipesExplorerButtonAction.VIEW_RECIPES ? (
+                  RecipesExplorerButtonAction.SELECT_RECIPES ||
+                selectedBtnAction ===
+                  RecipesExplorerButtonAction.VIEW_RECIPES ? (
                 <div className="flex flex-col h-full">
                   <div
                     className={`${
@@ -313,8 +316,8 @@ function RecipesExplorer(props: RecipesExplorerProps) {
                     <div className="h-[60%] flex items-center pt-4">
                       <>
                         <TaglabelsBox
-                          recipes={selectedRecipeList}
-                          onTaglabelIconClick={handleListItemClick}
+                          tags={[]}
+                          onTagRemove={() => null}
                         />
                       </>
                     </div>

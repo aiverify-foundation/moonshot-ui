@@ -97,7 +97,7 @@ type RecipeFormValues = {
   prompt_templates: string[];
   metrics: string[];
   attack_modules: string[];
-};
+} & Recipe;
 
 type Dataset = {
   id: string;
