@@ -1,4 +1,6 @@
 import React from 'react';
+import { Button, ButtonType } from '@/app/components/button';
+import { colors } from '@/app/views/shared-components/customColors';
 import { BenchmarkReportSectionOne } from './benchmarkReportSectionOne';
 import { BenchmarkReportSectionTwo } from './benchmarkReportSectionTwo';
 import { CookbooksBenchmarkResult } from './types/benchmarkReportTypes';
@@ -11,6 +13,7 @@ type BenchmarkReportProps = {
 
 function BenchmarkReport(props: BenchmarkReportProps) {
   const { benchmarkResult, endpointId, runnerInfo } = props;
+  const downloadUrl = `/api/v1/benchmarks/results/${benchmarkResult.metadata.id}?download=true`;
   return (
     <div className="flex flex-col gap-8 bg-moongray-800">
       <BenchmarkReportSectionOne
@@ -22,6 +25,18 @@ function BenchmarkReport(props: BenchmarkReportProps) {
         benchmarkResult={benchmarkResult}
         endpointId={endpointId}
       />
+      <footer className="flex justify-center pb-10">
+        <a
+          href={downloadUrl}
+          download>
+          <Button
+            mode={ButtonType.OUTLINE}
+            size="lg"
+            text="Download Detailed Scoring JSON"
+            hoverBtnColor={colors.moongray['700']}
+          />
+        </a>
+      </footer>
     </div>
   );
 }

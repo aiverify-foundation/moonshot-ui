@@ -10,6 +10,9 @@ export async function GET(request: NextRequest) {
       status: 500,
     });
   }
+
+  const download = request.nextUrl.searchParams.get('download') === 'true';
+
   const response = await fetch(
     `${config.webAPI.hostURL}${config.webAPI.basePathBenchmarks}/results/${result_id}`,
     {
@@ -19,5 +22,22 @@ export async function GET(request: NextRequest) {
       },
     }
   );
-  return response;
+
+  if (!response.ok) {
+    return new Response('Failed to fetch data', { status: response.status });
+  }
+
+  if (!download) {
+    return response;
+  }
+
+  const data = await response.json();
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: 'application/json',
+  });
+  const headers = new Headers({
+    'Content-Type': 'application/json',
+    'Content-Disposition': 'attachment; filename="result.json"',
+  });
+  return new Response(blob, { headers });
 }

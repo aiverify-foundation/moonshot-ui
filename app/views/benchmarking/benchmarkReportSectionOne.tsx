@@ -106,8 +106,13 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
 
         <p className="p-6">
           This report summarises the results for the benchmark tests ran on the
-          System Under Test (SUT). For the full detailed test results,
-          <a className="text-fuchsia-400"> Download the JSON file here</a>.
+          System Under Test (SUT). For the full detailed test results, &nbsp;
+          <a
+            className="text-fuchsia-400"
+            href="/api/v1/benchmarks/results/test-report-1?download=true">
+            Download the JSON file here
+          </a>
+          .
         </p>
       </section>
 
