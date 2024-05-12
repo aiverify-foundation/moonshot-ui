@@ -39,6 +39,7 @@ import { SquareIcon } from './icons/square-icon';
 import { TableIcon } from './icons/table-icon';
 import { TalkBubblesIcon } from './icons/talkbubbles-icon';
 import { ToolsIcon } from './icons/tools-icon';
+import { WarningIcon } from './icons/warning-icon';
 import { WideArrowDownIcon } from './icons/wide-arrow-down';
 import { WideArrowUpIcon } from './icons/wide-arrow-up';
 
@@ -83,14 +84,14 @@ enum IconName {
   Ribbon,
   TalkBubbles,
   Document,
+  Warning,
 }
 
 type IconProps = {
   name: IconName;
   size?: number;
-  lightModeColor?: string;
-  darkModeColor?: string;
   disabled?: boolean;
+  color?: string;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onMouseDown?: (e: React.MouseEvent) => void;
 };
@@ -98,12 +99,11 @@ type IconProps = {
 function Icon(props: IconProps) {
   const {
     name,
+    color = '#FFFFFF',
     onClick,
     onMouseDown,
     disabled = false,
     size = 20,
-    lightModeColor,
-    darkModeColor,
   } = props;
 
   let iconToRender: ReactElement | null = null;
@@ -135,7 +135,7 @@ function Icon(props: IconProps) {
     case IconName.ChatBubbles:
       iconToRender = (
         <ChatBubblesIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -144,7 +144,7 @@ function Icon(props: IconProps) {
     case IconName.RunCookbook:
       iconToRender = (
         <RunCookbookIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -153,7 +153,7 @@ function Icon(props: IconProps) {
     case IconName.BurgerMenu:
       iconToRender = (
         <BurgerMenuIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -162,7 +162,7 @@ function Icon(props: IconProps) {
     case IconName.DarkMoon:
       iconToRender = (
         <DarkMoonIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -171,7 +171,7 @@ function Icon(props: IconProps) {
     case IconName.LightSun:
       iconToRender = (
         <LightSunIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -180,7 +180,7 @@ function Icon(props: IconProps) {
     case IconName.Close:
       iconToRender = (
         <CloseIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -189,7 +189,7 @@ function Icon(props: IconProps) {
     case IconName.CircleArrowRight:
       iconToRender = (
         <CircleArrowRightIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -198,7 +198,7 @@ function Icon(props: IconProps) {
     case IconName.CircleArrowLeft:
       iconToRender = (
         <CircleArrowLeftIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -207,7 +207,7 @@ function Icon(props: IconProps) {
     case IconName.Maximize:
       iconToRender = (
         <MaximizeIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -216,7 +216,7 @@ function Icon(props: IconProps) {
     case IconName.Minimize:
       iconToRender = (
         <MinimizeIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -225,7 +225,7 @@ function Icon(props: IconProps) {
     case IconName.LayoutWtf:
       iconToRender = (
         <LayoutWtfIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -234,7 +234,7 @@ function Icon(props: IconProps) {
     case IconName.LayoutColumns:
       iconToRender = (
         <LayoutColumnsIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -243,7 +243,7 @@ function Icon(props: IconProps) {
     case IconName.ChatBubbleWide:
       iconToRender = (
         <ChatBubbleWideIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -252,7 +252,7 @@ function Icon(props: IconProps) {
     case IconName.Reset:
       iconToRender = (
         <ResetIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -261,7 +261,7 @@ function Icon(props: IconProps) {
     case IconName.SolidBox:
       iconToRender = (
         <SolidBoxIcon
-          fillColor="#FFFFFF"
+          fillColor={color}
           width={size}
           height={size}
         />
@@ -270,7 +270,7 @@ function Icon(props: IconProps) {
     case IconName.OutlineBox:
       iconToRender = (
         <OutlineBoxIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -279,7 +279,7 @@ function Icon(props: IconProps) {
     case IconName.Plus:
       iconToRender = (
         <PlusIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -288,7 +288,7 @@ function Icon(props: IconProps) {
     case IconName.Square:
       iconToRender = (
         <SquareIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -297,7 +297,7 @@ function Icon(props: IconProps) {
     case IconName.CheckedSquare:
       iconToRender = (
         <CheckedSquareIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -306,7 +306,7 @@ function Icon(props: IconProps) {
     case IconName.List:
       iconToRender = (
         <ListIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -315,7 +315,7 @@ function Icon(props: IconProps) {
     case IconName.File:
       iconToRender = (
         <FileIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -324,7 +324,7 @@ function Icon(props: IconProps) {
     case IconName.Book:
       iconToRender = (
         <BookIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -333,7 +333,7 @@ function Icon(props: IconProps) {
     case IconName.ArrowLeft:
       iconToRender = (
         <ArrowLeftIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -342,7 +342,7 @@ function Icon(props: IconProps) {
     case IconName.ArrowRight:
       iconToRender = (
         <ArrowRightIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -351,7 +351,7 @@ function Icon(props: IconProps) {
     case IconName.Table:
       iconToRender = (
         <TableIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -360,8 +360,8 @@ function Icon(props: IconProps) {
     case IconName.Bell:
       iconToRender = (
         <BellIcon
-          outlineColor="#FFFFFF"
-          fillColor="#FFFFFF"
+          outlineColor={color}
+          fillColor={color}
           width={size}
           height={size}
         />
@@ -370,7 +370,7 @@ function Icon(props: IconProps) {
     case IconName.Asterisk:
       iconToRender = (
         <AsteriskIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -379,7 +379,7 @@ function Icon(props: IconProps) {
     case IconName.CheckList:
       iconToRender = (
         <CheckListIcon
-          fillColor="#FFFFFF"
+          fillColor={color}
           width={size}
           height={size}
         />
@@ -388,7 +388,7 @@ function Icon(props: IconProps) {
     case IconName.Spacesuit:
       iconToRender = (
         <SpacesuitIcon
-          fillColor="#FFFFFF"
+          fillColor={color}
           width={size}
           height={size}
         />
@@ -397,7 +397,7 @@ function Icon(props: IconProps) {
     case IconName.HistoryClock:
       iconToRender = (
         <HistoryClockIcon
-          fillColor="#FFFFFF"
+          fillColor={color}
           width={size}
           height={size}
         />
@@ -406,7 +406,7 @@ function Icon(props: IconProps) {
     case IconName.Tools:
       iconToRender = (
         <ToolsIcon
-          fillColor="#FFFFFF"
+          fillColor={color}
           width={size}
           height={size}
         />
@@ -415,7 +415,7 @@ function Icon(props: IconProps) {
     case IconName.Lightning:
       iconToRender = (
         <LightningIcon
-          fillColor="#FFFFFF"
+          fillColor={color}
           width={size}
           height={size}
         />
@@ -424,7 +424,7 @@ function Icon(props: IconProps) {
     case IconName.WideArrowDown:
       iconToRender = (
         <WideArrowDownIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -433,7 +433,7 @@ function Icon(props: IconProps) {
     case IconName.WideArrowUp:
       iconToRender = (
         <WideArrowUpIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -442,7 +442,7 @@ function Icon(props: IconProps) {
     case IconName.LightBulb:
       iconToRender = (
         <LightBulb
-          fillColor="#FFFFFF"
+          fillColor={color}
           width={size}
           height={size}
         />
@@ -451,7 +451,7 @@ function Icon(props: IconProps) {
     case IconName.Ribbon:
       iconToRender = (
         <RibbonIcon
-          fillColor="#FFFFFF"
+          fillColor={color}
           width={size}
           height={size}
         />
@@ -460,7 +460,7 @@ function Icon(props: IconProps) {
     case IconName.TalkBubbles:
       iconToRender = (
         <TalkBubblesIcon
-          outlineColor="#FFFFFF"
+          outlineColor={color}
           width={size}
           height={size}
         />
@@ -469,7 +469,16 @@ function Icon(props: IconProps) {
     case IconName.Document:
       iconToRender = (
         <DocumentIcon
-          fillColor="#FFFFFF"
+          fillColor={color}
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Warning:
+      iconToRender = (
+        <WarningIcon
+          outlineColor={color}
           width={size}
           height={size}
         />

@@ -220,7 +220,9 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
           options={options}
           classNamePrefix="aiv"
           isDisabled={disabled}
-          menuPortalTarget={document.body}
+          menuPortalTarget={
+            typeof document !== 'undefined' ? document.body : undefined
+          }
           onChange={handleChange}
         />
         {Boolean(error) ? (
