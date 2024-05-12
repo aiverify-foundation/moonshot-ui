@@ -80,7 +80,7 @@ function BenchmarkReportViewer() {
       onCloseIconClick={() => router.push('/benchmarking')}
       height="100%"
       minHeight={750}
-      bgColor={colors.moongray['950']}>
+      bgColor="#2d2b2f">
       <div className="relative flex flex-col items-center h-full">
         {benchmarkResultIsFetching || !id ? (
           <LoadingAnimation />

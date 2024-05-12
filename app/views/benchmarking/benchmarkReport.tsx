@@ -15,7 +15,9 @@ function BenchmarkReport(props: BenchmarkReportProps) {
   const { benchmarkResult, endpointId, runnerInfo } = props;
   const downloadUrl = `/api/v1/benchmarks/results/${benchmarkResult.metadata.id}?download=true`;
   return (
-    <div className="flex flex-col gap-8 bg-moongray-800">
+    <div
+      className="flex flex-col gap-8 bg-moongray-800"
+      style={{ backgroundColor: '#464349' }}>
       <BenchmarkReportSectionOne
         benchmarkReport={benchmarkResult}
         runnerInfo={runnerInfo}
@@ -33,7 +35,7 @@ function BenchmarkReport(props: BenchmarkReportProps) {
             mode={ButtonType.OUTLINE}
             size="lg"
             text="Download Detailed Scoring JSON"
-            hoverBtnColor={colors.moongray['700']}
+            hoverBtnColor="#524e56"
           />
         </a>
       </footer>

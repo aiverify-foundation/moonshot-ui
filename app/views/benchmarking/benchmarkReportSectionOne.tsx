@@ -17,9 +17,12 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
   return (
     <article
       className="h-full w-full text-moongray-300 text-[0.9rem] bg-moongray-9400
-      rounded-lg ">
+      rounded-lg "
+      style={{ color: '#bcb9c0' }}>
       <header className="p-6">
-        <p className="text-[1rem] text-moonwine-400 mb-8">
+        <p
+          className="text-[1rem] text-moonwine-400 mb-8"
+          style={{ color: '#bcadc5' }}>
           moonshot x MLCommons
         </p>
         <h1 className="text-[2.3rem] text-white mb-2">Benchmark Report</h1>
@@ -27,19 +30,35 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
         <p className="mb-5">{runnerInfo.description}</p>
         <div className="grid grid-cols-2 grid-rows-2 gap-4">
           <div>
-            <h5 className="font-bold text-white">System Under Test (SUT)</h5>
+            <h5
+              className="font-bold text-white"
+              style={{ color: '#ffffff' }}>
+              System Under Test (SUT)
+            </h5>
             <p>{endpointId}</p>
           </div>
           <div>
-            <h5 className="font-bold text-white">Number of prompts ran</h5>
+            <h5
+              className="font-bold text-white"
+              style={{ color: '#ffffff' }}>
+              Number of prompts ran
+            </h5>
             <p>1{totalPrompts}</p>
           </div>
           <div>
-            <h5 className="font-bold text-white">Started on</h5>
+            <h5
+              className="font-bold text-white"
+              style={{ color: '#ffffff' }}>
+              Started on
+            </h5>
             <p>{benchmarkReport.metadata.start_time}</p>
           </div>
           <div>
-            <h5 className="font-bold text-white">Completed on</h5>
+            <h5
+              className="font-bold text-white"
+              style={{ color: '#ffffff' }}>
+              Completed on
+            </h5>
             <p>{benchmarkReport.metadata.end_time}</p>
           </div>
         </div>
@@ -47,10 +66,15 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
 
       <section
         id="areasTested"
-        className="p-6 bg-moongray-800">
+        className="p-6 bg-moongray-800"
+        style={{ backgroundColor: '#464349' }}>
         <section className="grid grid-cols-2 py-6 gap-5">
           <hgroup>
-            <h2 className="text-[1.8rem] text-white">Areas Tested</h2>
+            <h2
+              className="text-[1.8rem] text-white"
+              style={{ color: '#ffffff' }}>
+              Areas Tested
+            </h2>
             <div className="flex items-start gap-2">
               <Icon name={IconName.Book} />
               <p className="w-[80%]">
@@ -61,7 +85,9 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
             </div>
           </hgroup>
 
-          <ol className="list-decimal list-inside text-white font-semi-bold text-[1rem]">
+          <ol
+            className="list-decimal list-inside text-white font-semi-bold text-[1rem]"
+            style={{ color: '#ffffff' }}>
             <li className="mb-1">
               <span className="mr-3">Safety Baseline v0.5</span>
               <Badge label="T" />
@@ -81,8 +107,14 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           </ol>
         </section>
 
-        <section className="bg-moongray-1000 rounded-lg py-6 px-6 flex flex-col gap-6">
-          <h3 className="text-white text-[0.75rem]">Legend</h3>
+        <section
+          className="bg-moongray-1000 rounded-lg py-6 px-6 flex flex-col gap-6"
+          style={{ backgroundColor: '#202020' }}>
+          <h3
+            className="text-white text-[0.75rem]"
+            style={{ color: '#ffffff' }}>
+            Legend
+          </h3>
           <p>
             <span className="font-bold text-fuchsia-400 ">Q - Quality</span>
             evaluates the model&apos;s ability to consistently produce content
@@ -116,7 +148,9 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
         </p>
       </section>
 
-      <header className="bg-moongray-1000 px-6 py-8">
+      <header
+        className="bg-moongray-1000 px-6 py-8"
+        style={{ backgroundColor: '#202020' }}>
         <hgroup>
           <p className="text-fuchsia-400">Section 1</p>
           <h2 className="text-[1.8rem] text-white flex">
@@ -131,13 +165,14 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
 
       <section
         id="resultsSafetyBaseline"
-        className="bg-moongray-800 p-6">
+        className="bg-moongray-800 p-6"
+        style={{ backgroundColor: '#464349' }}>
         <section className="p-6">
           <div
             className="flex gap-2 text-[0.9rem] text-moongray-300 p-5 rounded-lg"
-            style={{ backgroundColor: '#6B544E' }}>
+            style={{ backgroundColor: '#6B544E', color: '#bcb9c0' }}>
             <Icon
-              color={colors.moongray[300]}
+              color="#bcb9c0"
               name={IconName.Warning}
               size={40}
             />
