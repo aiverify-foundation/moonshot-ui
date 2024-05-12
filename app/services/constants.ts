@@ -7,3 +7,4 @@ export const proxyPathSessions = 'api/v1/sessions';
 export const proxyPathDatasets = 'api/v1/datasets';
 export const proxyPathMetrics = 'api/v1/metrics';
 export const proxyPathAttackModules = 'api/v1/attack_modules';
+export const proxyPathRunners = 'api/v1/runners';

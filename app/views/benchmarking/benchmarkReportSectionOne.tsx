@@ -3,15 +3,17 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/views/shared-components/customColors';
 import { Badge, SquareBadge } from './components/badge';
 import { CookbooksBenchmarkResult } from './types/benchmarkReportTypes';
-import { formatDateTime } from './utils/formatDateTime';
+import { calcTotalPromptsByEndpoint } from './utils/calcTotalPromptsByEndpoint';
 
 type BenchmarkReportProps = {
   benchmarkReport: CookbooksBenchmarkResult;
+  runnerInfo: Runner;
   endpointId: string;
 };
 
 function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
-  const { benchmarkReport, endpointId } = props;
+  const { benchmarkReport, runnerInfo, endpointId } = props;
+  const totalPrompts = calcTotalPromptsByEndpoint(benchmarkReport, endpointId); // very expensive calculation
   return (
     <article
       className="h-full w-full text-moongray-300 text-[0.9rem] bg-moongray-9400
@@ -21,12 +23,8 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           moonshot x MLCommons
         </p>
         <h1 className="text-[2.3rem] text-white mb-2">Benchmark Report</h1>
-        <p className="mb-3">Session Name</p>
-        <p className="mb-5">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim.
-        </p>
+        <p className="mb-3">{runnerInfo.name}</p>
+        <p className="mb-5">{runnerInfo.description}</p>
         <div className="grid grid-cols-2 grid-rows-2 gap-4">
           <div>
             <h5 className="font-bold text-white">System Under Test (SUT)</h5>
@@ -34,15 +32,15 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           </div>
           <div>
             <h5 className="font-bold text-white">Number of prompts ran</h5>
-            <p>12,000</p>
+            <p>1{totalPrompts}</p>
           </div>
           <div>
             <h5 className="font-bold text-white">Started on</h5>
-            <p>{formatDateTime(benchmarkReport.metadata.start_time)}</p>
+            <p>{benchmarkReport.metadata.start_time}</p>
           </div>
           <div>
             <h5 className="font-bold text-white">Completed on</h5>
-            <p>{formatDateTime(benchmarkReport.metadata.end_time)}</p>
+            <p>{benchmarkReport.metadata.end_time}</p>
           </div>
         </div>
       </header>

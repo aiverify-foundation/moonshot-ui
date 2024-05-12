@@ -222,6 +222,14 @@ type CookbookMetadata = {
   estTotalPromptResponseTime: number;
 };
 
+type Runner = {
+  id: string;
+  name: string;
+  database_file: string;
+  endpoints: string[];
+  description: string;
+};
+
 /*
  * End of Result format specific types
  */

@@ -17,6 +17,7 @@ type MoonshotConfig = {
     basePathContextStrategies: string;
     basePathRecipes: string;
     basePathBenchmarks: string;
+    basePathRunners: string;
   };
 };
 
@@ -62,6 +63,7 @@ const config: MoonshotConfig = {
     basePathContextStrategies: '/api/v1/context_strategies',
     basePathRecipes: '/api/v1/recipes',
     basePathBenchmarks: '/api/v1/benchmarks',
+    basePathRunners: '/api/v1/runners',
   },
 };
 

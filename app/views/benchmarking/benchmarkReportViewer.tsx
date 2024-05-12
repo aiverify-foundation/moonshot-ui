@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Button, ButtonType } from '@/app/components/button';
 import { SelectInput } from '@/app/components/selectInput';
 import { useGetBenchmarksResultQuery } from '@/app/services/benchmark-api-service';
+import { useGetRunnerByIdQuery } from '@/app/services/runner-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
@@ -14,26 +15,27 @@ import { BenchmarkReport } from './benchmarkReport';
 function BenchmarkReportViewer() {
   const router = useRouter();
   const [selectedEndpointId, setSelectedEndpointId] = useState('');
-  const [id, setId] = useState<string | null>(null);
-  const { data, isFetching } = useGetBenchmarksResultQuery(
-    { id: !id ? undefined : id },
-    { skip: !id }
-  );
+  const [id, setId] = useState<string | undefined>(undefined);
+  const { data: benchmarkResultData, isFetching: benchmarkResultIsFetching } =
+    useGetBenchmarksResultQuery({ id: !id ? undefined : id }, { skip: !id });
+  const { data: runnerData, isFetching: runnerIsFetching } =
+    useGetRunnerByIdQuery({ id: id }, { skip: !id });
 
-  const endpointOptions = data
-    ? data.metadata.endpoints.map((endpoint) => ({
+  const endpointOptions = benchmarkResultData
+    ? benchmarkResultData.metadata.endpoints.map((endpoint) => ({
         label: endpoint,
         value: endpoint,
       }))
     : [];
 
   const handleDownloadHtmlReport = () => {
-    if (data) {
+    if (benchmarkResultData) {
       const htmlString = ReactDom.renderToStaticMarkup(
         <Providers>
           <BenchmarkReport
-            benchmarkResult={data}
+            benchmarkResult={benchmarkResultData}
             endpointId={selectedEndpointId}
+            runnerInfo={runnerData as Runner}
           />
         </Providers>
       );
@@ -56,11 +58,11 @@ function BenchmarkReportViewer() {
   }, []);
 
   useEffect(() => {
-    if (isFetching) return;
-    if (data) {
-      setSelectedEndpointId(data.metadata.endpoints[0]);
+    if (benchmarkResultIsFetching) return;
+    if (benchmarkResultData) {
+      setSelectedEndpointId(benchmarkResultData.metadata.endpoints[0]);
     }
-  }, [data, isFetching]);
+  }, [benchmarkResultData, benchmarkResultIsFetching]);
 
   return !id ? (
     <p>No benchmark result id</p>
@@ -71,7 +73,7 @@ function BenchmarkReportViewer() {
       minHeight={750}
       bgColor={colors.moongray['950']}>
       <div className="relative flex flex-col items-center h-full">
-        {isFetching ? (
+        {benchmarkResultIsFetching ? (
           <LoadingAnimation />
         ) : (
           <div className="flex flex-col gap-5 w-full h-full">
@@ -95,10 +97,11 @@ function BenchmarkReportViewer() {
             </section>
             <section className="flex-1 h-full border border-white rounded-lg overflow-hidden pr-[2px] py-[2px]">
               <div className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar">
-                {data && (
+                {benchmarkResultData && runnerData && (
                   <BenchmarkReport
-                    benchmarkResult={data}
+                    benchmarkResult={benchmarkResultData}
                     endpointId={selectedEndpointId}
+                    runnerInfo={runnerData}
                   />
                 )}
               </div>

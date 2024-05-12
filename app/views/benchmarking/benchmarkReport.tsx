@@ -5,15 +5,17 @@ import { CookbooksBenchmarkResult } from './types/benchmarkReportTypes';
 
 type BenchmarkReportProps = {
   benchmarkResult: CookbooksBenchmarkResult;
+  runnerInfo: Runner;
   endpointId: string;
 };
 
 function BenchmarkReport(props: BenchmarkReportProps) {
-  const { benchmarkResult, endpointId } = props;
+  const { benchmarkResult, endpointId, runnerInfo } = props;
   return (
     <div className="flex flex-col gap-8 bg-moongray-800">
       <BenchmarkReportSectionOne
         benchmarkReport={benchmarkResult}
+        runnerInfo={runnerInfo}
         endpointId={endpointId}
       />
       <BenchmarkReportSectionTwo
