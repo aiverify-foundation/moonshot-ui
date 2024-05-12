@@ -3,12 +3,15 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/views/shared-components/customColors';
 import { Badge, SquareBadge } from './components/badge';
 import { CookbooksBenchmarkResult } from './types/benchmarkReportTypes';
+import { formatDateTime } from './utils/formatDateTime';
 
 type BenchmarkReportProps = {
-  benchmarkReport?: CookbooksBenchmarkResult;
+  benchmarkReport: CookbooksBenchmarkResult;
+  endpointId: string;
 };
 
-function BenchmarkReportSectionOne() {
+function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
+  const { benchmarkReport, endpointId } = props;
   return (
     <article
       className="h-full w-full text-moongray-300 text-[0.9rem] bg-moongray-9400
@@ -27,7 +30,7 @@ function BenchmarkReportSectionOne() {
         <div className="grid grid-cols-2 grid-rows-2 gap-4">
           <div>
             <h5 className="font-bold text-white">System Under Test (SUT)</h5>
-            <p>My Llama2 13B (Version 12.3)</p>
+            <p>{endpointId}</p>
           </div>
           <div>
             <h5 className="font-bold text-white">Number of prompts ran</h5>
@@ -35,11 +38,11 @@ function BenchmarkReportSectionOne() {
           </div>
           <div>
             <h5 className="font-bold text-white">Started on</h5>
-            <p>2024-4-25 00:48:21 UTC</p>
+            <p>{formatDateTime(benchmarkReport.metadata.start_time)}</p>
           </div>
           <div>
             <h5 className="font-bold text-white">Completed on</h5>
-            <p>2024-4-25 00:48:21 UTC</p>
+            <p>{formatDateTime(benchmarkReport.metadata.end_time)}</p>
           </div>
         </div>
       </header>

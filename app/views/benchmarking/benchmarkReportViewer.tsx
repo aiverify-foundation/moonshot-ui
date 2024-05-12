@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Button, ButtonType } from '@/app/components/button';
 import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { colors } from '@/app/views/shared-components/customColors';
@@ -7,7 +8,6 @@ import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSur
 import { BenchmarkReport } from './benchmarkReport';
 import { mockBenchmarkResults } from './mockData/mockBenchmarkResults';
 import { CookbooksBenchmarkResult } from './types/benchmarkReportTypes';
-import { useState } from 'react';
 
 const options: SelectOption[] = [
   { label: 'Benchmark 1', value: 'openai-gpt35-turbo-16k' },
@@ -17,8 +17,14 @@ const options: SelectOption[] = [
 
 function BenchmarkReportViewer() {
   const router = useRouter();
+  const selectOptions = mockBenchmarkResults.metadata.endpoints.map(
+    (endpoint) => ({
+      label: endpoint,
+      value: endpoint,
+    })
+  );
   const [selectedEndpointId, setSelectedEndpointId] = useState(
-    'openai-gpt35-turbo-16k'
+    () => selectOptions[0].value
   );
 
   return (
@@ -34,8 +40,10 @@ function BenchmarkReportViewer() {
               <h3 className="text-white text-[1rem]">Showing results for</h3>
               <SelectInput
                 name="endpoint"
-                options={options}
-                style={{ marginBottom: 0, width: 200 }}
+                options={selectOptions}
+                value={selectedEndpointId}
+                onChange={(value) => setSelectedEndpointId(value)}
+                style={{ marginBottom: 0, width: 400 }}
               />
             </div>
 
