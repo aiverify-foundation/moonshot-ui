@@ -26,6 +26,7 @@ function BenchmarkReportCookbookResult(
     ids: recipeIdsInResult,
     count: true,
   });
+  const [showSection, setShowSection] = React.useState(false);
 
   if (!evaluationSummary) {
     console.error('BenchmarkReportCookbookResult:: No evaluation summary');
@@ -39,10 +40,14 @@ function BenchmarkReportCookbookResult(
   ) : (
     <section className="bg-moongray-1000 rounded-lg">
       <header
-        className="flex justify-between items-center bg-moongray-800 p-4 rounded-t-lg"
+        className={`flex justify-between items-center bg-moongray-800 p-4 
+        rounded-t-lg cursor-pointer hover:bg-moongray-700
+        ${showSection ? 'rounded-b-none' : 'rounded-b-lg'}`}
         style={{
+          transition: 'background-color 0.3s ease-in-out',
           border: `1px solid ${gradeColors[evaluationSummary.overall_grade]}`,
-        }}>
+        }}
+        onClick={() => setShowSection(!showSection)}>
         <div className="flex items-center gap-2">
           <Icon name={IconName.Book} />
           <h3 className="font-semibold text-white text-[1.2rem]">
@@ -61,25 +66,29 @@ function BenchmarkReportCookbookResult(
           )}
         </div>
       </header>
-      <main className="p-4">
-        <p className="mt-6 mb-10">{cookbook.description}</p>
-        <section className="grid grid-cols-1 gap-[50px]">
-          {data &&
-            result.recipes.map((recipeResult) => {
-              const recipeDetails = data?.find((r) => r.id === recipeResult.id);
-              return !recipeDetails ? (
-                <p>recipeDetails: No recipe details</p>
-              ) : (
-                <BenchmarkReportRecipeResult
-                  key={recipeResult.id}
-                  result={recipeResult}
-                  recipe={recipeDetails}
-                  endpointId={endpointId}
-                />
-              );
-            })}
-        </section>
-      </main>
+      {showSection && (
+        <main className="p-4">
+          <p className="mt-6 mb-10">{cookbook.description}</p>
+          <section className="grid grid-cols-1 gap-[50px]">
+            {data &&
+              result.recipes.map((recipeResult) => {
+                const recipeDetails = data?.find(
+                  (r) => r.id === recipeResult.id
+                );
+                return !recipeDetails ? (
+                  <p>recipeDetails: No recipe details</p>
+                ) : (
+                  <BenchmarkReportRecipeResult
+                    key={recipeResult.id}
+                    result={recipeResult}
+                    recipe={recipeDetails}
+                    endpointId={endpointId}
+                  />
+                );
+              })}
+          </section>
+        </main>
+      )}
     </section>
   );
 }
