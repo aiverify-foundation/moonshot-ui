@@ -1,3 +1,4 @@
+// @ts-ignore
 import { RougeDetailCell } from './rouge-detail-cell';
 
 type MetricCellProps = {

@@ -33,7 +33,6 @@ import {
 import { useResetWindows } from './hooks/useResetWindows';
 import { DesktopIcon } from '@components/desktop-icon';
 import TaskBar from '@components/taskbar';
-import { BenchmarksResult } from '@views/benchmarking/benchmark-report';
 import { CookbooksExplorer } from '@views/cookbook-management/cookbooks-explorer';
 import { SessionExplorerButtonAction } from '@views/redteaming/components/explorer/top-buttons-bar';
 import { SessionsExplorer } from '@views/redteaming/sessions-explorer';
@@ -348,7 +347,6 @@ export default function MoonshotDesktop() {
         />
       ) : null}
 
-
       {openedWindowIds.includes(getWindowId(WindowIds.STATUS)) ? (
         <StatusPanel
           zIndex={Z_Index.Level_2}
@@ -357,19 +355,6 @@ export default function MoonshotDesktop() {
           initialSize={getWindowSizeById(windowsMap, WindowIds.STATUS)}
           onWindowChange={handleOnWindowChange}
           onCloseClick={handleStatusPanelCloseClick}
-        />
-      ) : null}
-
-      {openedWindowIds.includes(getWindowId(WindowIds.RESULT)) &&
-      activeResult != undefined ? (
-        <BenchmarksResult
-          zIndex={Z_Index.Level_2}
-          benchmarkId={activeResult}
-          windowId={getWindowId(WindowIds.RESULT)}
-          initialXY={getWindowXYById(windowsMap, WindowIds.RESULT)}
-          initialSize={getWindowSizeById(windowsMap, WindowIds.RESULT)}
-          onWindowChange={handleOnWindowChange}
-          onCloseClick={handleResultCloseClick}
         />
       ) : null}
     </div>
