@@ -49,6 +49,7 @@ const config: Config = {
           800: '#464349',
           900: '#3d3a40',
           950: '#2d2b2f',
+          1000: '#202020',
         },
         imdalight: {
           50: '#fdf4ff',

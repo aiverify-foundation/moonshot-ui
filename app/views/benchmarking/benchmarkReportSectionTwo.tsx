@@ -17,10 +17,8 @@ function BenchmarkReportSectionTwo(props: BenchmarkReportProps) {
   const { data, isFetching } = useGetCookbooksQuery({ ids: cookbooks });
 
   return (
-    <article
-      className="h-full w-full text-moongray-300 text-[0.9rem] bg-moongray-9400
-      rounded-lg ">
-      <header className="bg-moongray-950 px-6 py-8">
+    <article className="h-full w-full text-moongray-300 text-[0.9rem] bg-moongray-800 rounded-lg ">
+      <header className="bg-moongray-1000 px-6 py-8">
         <hgroup>
           <p className="text-fuchsia-400">Section 2</p>
           <h2 className="text-[1.8rem] text-white flex">Full Results</h2>

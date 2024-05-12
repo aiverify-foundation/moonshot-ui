@@ -37,7 +37,7 @@ function BenchmarkReportCookbookResult(
       <LoadingAnimation />
     </div>
   ) : (
-    <section className="bg-moongray-950 rounded-lg">
+    <section className="bg-moongray-1000 rounded-lg">
       <header
         className="flex justify-between items-center bg-moongray-800 p-4 rounded-t-lg"
         style={{
@@ -45,7 +45,9 @@ function BenchmarkReportCookbookResult(
         }}>
         <div className="flex items-center gap-2">
           <Icon name={IconName.Book} />
-          <h3 className="font-bold text-white text-[1rem]">{cookbook.name}</h3>
+          <h3 className="font-semibold text-white text-[1.2rem]">
+            {cookbook.name}
+          </h3>
         </div>
         <div className="flex items-center gap-4">
           <span className="text-[0.8rem]">Overall rating:</span>
@@ -60,21 +62,22 @@ function BenchmarkReportCookbookResult(
         </div>
       </header>
       <main className="p-4">
-        <p>{cookbook.description}</p>
+        <p className="mt-6 mb-10">{cookbook.description}</p>
         <section className="grid grid-cols-1 gap-[50px]">
-          {result.recipes.map((recipeResult, idx) => {
-            const recipeDetails = data?.find((r) => r.id === recipeResult.id);
-            return !recipeDetails ? (
-              <p>recipeDetails: No recipe details</p>
-            ) : (
-              <BenchmarkReportRecipeResult
-                key={recipeResult.id}
-                result={recipeResult}
-                recipe={recipeDetails}
-                endpointId={endpointId}
-              />
-            );
-          })}
+          {data &&
+            result.recipes.map((recipeResult) => {
+              const recipeDetails = data?.find((r) => r.id === recipeResult.id);
+              return !recipeDetails ? (
+                <p>recipeDetails: No recipe details</p>
+              ) : (
+                <BenchmarkReportRecipeResult
+                  key={recipeResult.id}
+                  result={recipeResult}
+                  recipe={recipeDetails}
+                  endpointId={endpointId}
+                />
+              );
+            })}
         </section>
       </main>
     </section>

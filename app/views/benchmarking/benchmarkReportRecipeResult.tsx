@@ -19,18 +19,18 @@ function BenchmarkReportRecipeResult(props: BenchmarkReportRecipeResultProps) {
   const promptsCount = recipeEvaluationSummary
     ? recipeEvaluationSummary.num_of_prompts
     : '-';
-  const gradingScale = recipe.grading_scale;
+  const gradingScale = result.grading_scale;
 
   return (
-    <section className="bg-moongray-950 rounded-lg flex flex-col gap-4">
+    <section className="flex flex-col gap-2">
       <header className="flex items-center">
         <Icon name={IconName.File} />
-        <h3 className="ml-2 text-white font-bold">{recipe.name}</h3>
+        <h3 className="ml-2 text-white font-bold text-[1rem]">{recipe.name}</h3>
       </header>
       <main className="p-4 grid grid-cols-3 items-start justify-items-end">
         <div className="col-span-2">
-          <p>{recipe.description}</p>
-          <p>
+          <p className="mb-3">{recipe.description}</p>
+          <p className="text-[0.8rem]">
             {promptsCount} out of {recipe.total_prompt_in_recipe} tested
           </p>
         </div>
