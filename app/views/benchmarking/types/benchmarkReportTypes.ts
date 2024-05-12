@@ -20,7 +20,7 @@ type CookbooksBenchmarkResult = {
 type CookbookResult = {
   id: string;
   recipes: RecipeResult[];
-  overall_evaluation_summary: EvaluationSummary[];
+  overall_evaluation_summary: OverallEvaluationSummary[];
   total_num_of_prompts: number;
 };
 
@@ -61,6 +61,11 @@ type EvaluationSummary = {
   num_of_prompts: number;
   avg_grade_value: number;
   grade: 'A' | 'B' | 'C' | 'D' | 'E';
+};
+
+type OverallEvaluationSummary = {
+  model_id: string;
+  overall_grade: 'A' | 'B' | 'C' | 'D' | 'E';
 };
 
 type GradingScale = {

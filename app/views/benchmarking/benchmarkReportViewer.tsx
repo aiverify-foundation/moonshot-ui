@@ -10,15 +10,16 @@ import { CookbooksBenchmarkResult } from './types/benchmarkReportTypes';
 import { useState } from 'react';
 
 const options: SelectOption[] = [
-  { label: 'Benchmark 1', value: 'common-risk-easy' },
+  { label: 'Benchmark 1', value: 'openai-gpt35-turbo-16k' },
   { label: 'Benchmark 2', value: 'benchmark2' },
   { label: 'Benchmark 3', value: 'benchmark3' },
 ];
 
 function BenchmarkReportViewer() {
   const router = useRouter();
-  const [selectedEndpointId, setSelectedEndpointId] =
-    useState('common-risk-easy');
+  const [selectedEndpointId, setSelectedEndpointId] = useState(
+    'openai-gpt35-turbo-16k'
+  );
 
   return (
     <MainSectionSurface

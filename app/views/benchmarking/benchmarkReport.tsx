@@ -12,7 +12,7 @@ function BenchmarkReport(props: BenchmarkReportProps) {
   const { benchmarkResult, endpointId } = props;
   return (
     <div className="flex flex-col gap-8 bg-moongray-800">
-      <BenchmarkReportSectionOne benchmarkReport={benchmarkResult} />
+      <BenchmarkReportSectionOne />
       <BenchmarkReportSectionTwo
         benchmarkResult={benchmarkResult}
         endpointId={endpointId}

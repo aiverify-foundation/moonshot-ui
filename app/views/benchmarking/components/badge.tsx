@@ -1,4 +1,5 @@
 import React from 'react';
+import { gradeColors } from './gradeColors';
 
 function Badge(props: { label: string; style?: React.CSSProperties }) {
   return (
@@ -41,13 +42,6 @@ function RecipeGradeBadge(props: {
   textColor: React.CSSProperties['color'];
   size: React.CSSProperties['width'];
 }) {
-  const gradeColors = {
-    A: '#25A167',
-    B: '#669C44',
-    C: '#7B94BD',
-    D: '#A19227',
-    E: '#C4805E',
-  };
   return (
     <SquareBadge
       label={props.grade}

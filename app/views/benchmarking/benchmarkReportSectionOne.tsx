@@ -8,8 +8,7 @@ type BenchmarkReportProps = {
   benchmarkReport?: CookbooksBenchmarkResult;
 };
 
-function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
-  const { benchmarkReport } = props;
+function BenchmarkReportSectionOne() {
   return (
     <article
       className="h-full w-full text-moongray-300 text-[0.9rem] bg-moongray-9400
@@ -81,7 +80,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           </ol>
         </section>
 
-        <section className="bg-moongray-950 rounded-lg py-6 px-6 flex flex-col gap-6">
+        <section className="bg-moongray-1000 rounded-lg py-6 px-6 flex flex-col gap-6">
           <h3 className="text-white text-[0.75rem]">Legend</h3>
           <p>
             <span className="font-bold text-fuchsia-400 ">Q - Quality</span>
@@ -107,11 +106,11 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
         <p className="p-6">
           This report summarises the results for the benchmark tests ran on the
           System Under Test (SUT). For the full detailed test results,
-          <a className="text-fuchsia-400">Download the JSON file here</a>.
+          <a className="text-fuchsia-400"> Download the JSON file here</a>.
         </p>
       </section>
 
-      <header className="bg-moongray-950 px-6 py-8">
+      <header className="bg-moongray-1000 px-6 py-8">
         <hgroup>
           <p className="text-fuchsia-400">Section 1</p>
           <h2 className="text-[1.8rem] text-white flex">
@@ -296,7 +295,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           </section>
         </section>
 
-        <section className="bg-moongray-950 rounded-lg p-6 flex flex-col gap-6 mt-6">
+        <section className="bg-moongray-1000 rounded-lg p-6 flex flex-col gap-6 mt-6">
           <hgroup>
             <h2 className="text-white text-[1.5rem]">
               How to Interpret Safety Ratings?
@@ -402,7 +401,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           </section>
         </section>
 
-        <section className="bg-moongray-950 rounded-lg p-6 flex flex-col gap-4 mt-6">
+        <section className="bg-moongray-1000 rounded-lg p-6 flex flex-col gap-4 mt-6">
           <h2 className="text-white text-[1.5rem]">Limitations</h2>
           <p>
             <span className="font-bold">Negative Predictive Power:</span> The

@@ -1,4 +1,6 @@
 import React from 'react';
+import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
+import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { BenchmarkReportCookbookResult } from './benchmarkReportCookbookResult';
 import { CookbooksBenchmarkResult } from './types/benchmarkReportTypes';
 
@@ -11,6 +13,9 @@ function BenchmarkReportSectionTwo(props: BenchmarkReportProps) {
   const { benchmarkResult, endpointId } = props;
   const { cookbooks } = benchmarkResult.metadata;
   const cookbookResultList = benchmarkResult.results.cookbooks;
+
+  const { data, isFetching } = useGetCookbooksQuery({ ids: cookbooks });
+
   return (
     <article
       className="h-full w-full text-moongray-300 text-[0.9rem] bg-moongray-9400
@@ -25,7 +30,7 @@ function BenchmarkReportSectionTwo(props: BenchmarkReportProps) {
       <section
         id="resultsSafetyBaseline"
         className="bg-moongray-800 p-6">
-        <p>
+        <p className="mb-10">
           Each cookbook dedicated to testing a specific area can contain
           multiple recipes, each testing different subsets of that area. The
           overall rating for the tested area is determined by considering the
@@ -33,15 +38,26 @@ function BenchmarkReportSectionTwo(props: BenchmarkReportProps) {
           tiered grading system will not be assigned a grade.
         </p>
 
-        {cookbooks.map((cookbook, idx) => {
-          return (
-            <BenchmarkReportCookbookResult
-              result={cookbookResultList[idx]}
-              key={cookbook}
-              endpointId={endpointId}
-            />
-          );
-        })}
+        {isFetching && (
+          <div className="w-full relative">
+            <LoadingAnimation />
+          </div>
+        )}
+        {!isFetching &&
+          data &&
+          cookbooks.map((cookbook, idx) => {
+            const cookbookDetails = data.find((c) => c.id === cookbook);
+            return !cookbookDetails ? (
+              <p>No cookbook data</p>
+            ) : (
+              <BenchmarkReportCookbookResult
+                result={cookbookResultList[idx]}
+                key={cookbook}
+                cookbook={cookbookDetails}
+                endpointId={endpointId}
+              />
+            );
+          })}
       </section>
     </article>
   );
