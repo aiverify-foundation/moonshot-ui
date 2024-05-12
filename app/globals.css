@@ -227,3 +227,16 @@ button:disabled {
     transform:rotate(405deg);
   }
 }
+
+/* Add this CSS to your stylesheet */
+.main-transition {
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  max-height: 0; /* Start with max-height 0 */
+  opacity: 0; /* Start with opacity 0 */
+}
+
+.main-visible {
+  max-height: 2000px; /* Adjust max-height to fit content or set to a large number */
+  opacity: 1;
+}

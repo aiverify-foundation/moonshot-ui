@@ -64,16 +64,14 @@ function BenchmarkReportViewer() {
     }
   }, [benchmarkResultData, benchmarkResultIsFetching]);
 
-  return !id ? (
-    <p>No benchmark result id</p>
-  ) : (
+  return (
     <MainSectionSurface
       onCloseIconClick={() => router.push('/benchmarking')}
       height="100%"
       minHeight={750}
       bgColor={colors.moongray['950']}>
       <div className="relative flex flex-col items-center h-full">
-        {benchmarkResultIsFetching ? (
+        {benchmarkResultIsFetching || !id ? (
           <LoadingAnimation />
         ) : (
           <div className="flex flex-col gap-5 w-full h-full">

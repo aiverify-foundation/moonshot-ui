@@ -53,6 +53,9 @@ function BenchmarkReportCookbookResult(
           <h3 className="font-semibold text-white text-[1.2rem]">
             {cookbook.name}
           </h3>
+          <Icon
+            name={showSection ? IconName.WideArrowUp : IconName.WideArrowDown}
+          />
         </div>
         <div className="flex items-center gap-4">
           <span className="text-[0.8rem]">Overall rating:</span>
@@ -66,29 +69,28 @@ function BenchmarkReportCookbookResult(
           )}
         </div>
       </header>
-      {showSection && (
-        <main className="p-4">
-          <p className="mt-6 mb-10">{cookbook.description}</p>
-          <section className="grid grid-cols-1 gap-[50px]">
-            {data &&
-              result.recipes.map((recipeResult) => {
-                const recipeDetails = data?.find(
-                  (r) => r.id === recipeResult.id
-                );
-                return !recipeDetails ? (
-                  <p>recipeDetails: No recipe details</p>
-                ) : (
-                  <BenchmarkReportRecipeResult
-                    key={recipeResult.id}
-                    result={recipeResult}
-                    recipe={recipeDetails}
-                    endpointId={endpointId}
-                  />
-                );
-              })}
-          </section>
-        </main>
-      )}
+      {/* {showSection && ( */}
+      <main
+        className={`px-4 main-transition ${showSection ? 'main-visible' : ''}`}>
+        <p className="mt-6 mb-10">{cookbook.description}</p>
+        <section className="grid grid-cols-1 gap-[50px]">
+          {data &&
+            result.recipes.map((recipeResult) => {
+              const recipeDetails = data?.find((r) => r.id === recipeResult.id);
+              return !recipeDetails ? (
+                <p>recipeDetails: No recipe details</p>
+              ) : (
+                <BenchmarkReportRecipeResult
+                  key={recipeResult.id}
+                  result={recipeResult}
+                  recipe={recipeDetails}
+                  endpointId={endpointId}
+                />
+              );
+            })}
+        </section>
+      </main>
+      {/* )} */}
     </section>
   );
 }
