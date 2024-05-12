@@ -39,7 +39,18 @@ function BenchmarkReportViewer() {
           />
         </Providers>
       );
-      const blob = new Blob([htmlString], { type: 'text/html' });
+      const completeHtml = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+        </head>
+        <body>
+          ${htmlString}
+        </body>
+        </html>
+      `;
+      const blob = new Blob([completeHtml], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
