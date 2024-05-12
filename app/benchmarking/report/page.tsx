@@ -18,7 +18,7 @@ export default function BenchmarkingReportPage() {
           moonshot.
         </h1>
         <Icon
-          darkModeColor={colors.moongray[300]}
+          color={colors.moongray[300]}
           name={IconName.Bell}
           size={30}
         />
