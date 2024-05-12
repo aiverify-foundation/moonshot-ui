@@ -41,21 +41,23 @@ function BenchmarkReportSectionTwo(props: BenchmarkReportProps) {
             <LoadingAnimation />
           </div>
         )}
-        {!isFetching &&
-          data &&
-          cookbooks.map((cookbook, idx) => {
-            const cookbookDetails = data.find((c) => c.id === cookbook);
-            return !cookbookDetails ? (
-              <p>No cookbook data</p>
-            ) : (
-              <BenchmarkReportCookbookResult
-                result={cookbookResultList[idx]}
-                key={cookbook}
-                cookbook={cookbookDetails}
-                endpointId={endpointId}
-              />
-            );
-          })}
+        <div className="flex flex-col gap-4">
+          {!isFetching &&
+            data &&
+            cookbooks.map((cookbook, idx) => {
+              const cookbookDetails = data.find((c) => c.id === cookbook);
+              return !cookbookDetails ? (
+                <p>No cookbook data</p>
+              ) : (
+                <BenchmarkReportCookbookResult
+                  result={cookbookResultList[idx]}
+                  key={cookbook}
+                  cookbook={cookbookDetails}
+                  endpointId={endpointId}
+                />
+              );
+            })}
+        </div>
       </section>
     </article>
   );

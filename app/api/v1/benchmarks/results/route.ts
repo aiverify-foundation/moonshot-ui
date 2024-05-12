@@ -1,15 +1,16 @@
-import { basePathBenchmarks } from '@/app/api/constants';
-
-const hostURL = process.env.MOONSHOT_API_URL || 'http://localhost:5000';
+import config from '@/moonshot.config';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const response = await fetch(`${hostURL}${basePathBenchmarks}/results`, {
-    method: 'GET',
-    headers: {
-      'Cache-Control': 'no-cache',
-    },
-  });
+  const response = await fetch(
+    `${config.webAPI.hostURL}${config.webAPI.basePathBenchmarks}/results`,
+    {
+      method: 'GET',
+      headers: {
+        'Cache-Control': 'no-cache',
+      },
+    }
+  );
   return response;
 }

@@ -23,7 +23,7 @@ const initialFormValues: LLMEndpointFormValues = {
 
 const validationSchema = object().shape({
   name: string().required('Name is required'),
-  token: string().required('Token is required'),
+  token: string(),
   connector_type: string().required('Connector Type is required'),
   max_calls_per_second: string().required('Max calls Per Second is required'),
   max_concurrency: string().required('Max Concurrency is required'),

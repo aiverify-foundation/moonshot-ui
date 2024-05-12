@@ -1,17 +1,17 @@
 import { NextRequest } from 'next/server';
-import { basePathBenchmarks, hostURL } from '@/app/api/constants';
+import config from '@/moonshot.config';
 
 export async function GET(request: NextRequest) {
-  let executor_id: string;
+  let result_id: string;
   try {
-    executor_id = request.nextUrl.pathname.split('/')[5];
+    result_id = request.nextUrl.pathname.split('/')[5];
   } catch (error) {
-    return new Response('Unable to get executor id from url path', {
+    return new Response('Unable to get result id from url path', {
       status: 500,
     });
   }
   const response = await fetch(
-    `${hostURL}${basePathBenchmarks}/results/${executor_id}`,
+    `${config.webAPI.hostURL}${config.webAPI.basePathBenchmarks}/results/${result_id}`,
     {
       method: 'GET',
       headers: {
