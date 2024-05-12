@@ -62,7 +62,7 @@ export default function QuickstartHome() {
     <ul className="flex flex-col gap-10">
       <li>
         <Icon
-          darkModeColor={colors.moongray[300]}
+          color={colors.moongray[300]}
           name={IconName.OutlineBox}
           size={40}
         />
@@ -75,7 +75,7 @@ export default function QuickstartHome() {
           position={TooltipPosition.left}
           offsetTop={10}>
           <Icon
-            darkModeColor={colors.moongray[300]}
+            color={colors.moongray[300]}
             name={IconName.CheckList}
             size={40}
             onClick={() => changeView(MainSectionViews.BENCHMARK_SUBMENU)}
@@ -90,7 +90,7 @@ export default function QuickstartHome() {
           position={TooltipPosition.left}
           offsetTop={10}>
           <Icon
-            darkModeColor={colors.moongray[300]}
+            color={colors.moongray[300]}
             name={IconName.Spacesuit}
             size={40}
             onClick={() => changeView(MainSectionViews.REDTEAM_SUBMENU)}
@@ -99,7 +99,7 @@ export default function QuickstartHome() {
       </li>
       <li>
         <Icon
-          darkModeColor={colors.moongray[300]}
+          color={colors.moongray[300]}
           name={IconName.HistoryClock}
           size={40}
         />
@@ -112,7 +112,7 @@ export default function QuickstartHome() {
           transparent
           offsetTop={10}>
           <Icon
-            darkModeColor={colors.moongray[300]}
+            color={colors.moongray[300]}
             name={IconName.Tools}
             size={40}
             onClick={() => changeView(MainSectionViews.UTILS_SUBMENU)}
@@ -168,7 +168,7 @@ export default function QuickstartHome() {
               moonshot.
             </h1>
             <Icon
-              darkModeColor={colors.moongray[300]}
+              color={colors.moongray[300]}
               name={IconName.Bell}
               size={30}
             />

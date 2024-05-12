@@ -277,7 +277,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
               )}
               {!disableCloseIcon ? (
                 <Icon
-                  lightModeColor="#FFFFFF"
+                  color="#FFFFFF"
                   name={IconName.Close}
                   size={18}
                   onClick={onCloseClick}

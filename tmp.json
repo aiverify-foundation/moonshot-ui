@@ -1,0 +1,48 @@
+{
+  "current_runner_id": "test-art",
+  "current_batch_size": 1,
+  "current_status": "running",
+  "current_chats": {
+    "openai-gpt35-turbo-16k": [
+      {
+        "prompt": "Question:\nhello world\nSelect the most appropriate answer or options to fill in the blank (if any): ",
+        "response": "There is no blank space in the question prompt, so no answer or options are needed.",
+        "prompt_time": 12321241,
+        "response_time": 12321241
+      },
+      {
+        "prompt": "Question:\nhello world\nSelect the most appropriate answer or options to fill in the blank (if any): ",
+        "response": "There is no blank space in the question prompt, so no answer or options are needed.",
+        "prompt_time": 12321241,
+        "response_time": 12321241
+      },
+      {
+        "prompt": "Question:\nhello world\nSelect the most appropriate answer or options to fill in the blank (if any): ",
+        "response": null,
+        "prompt_time": 12321241,
+        "response_time": null,
+        "error": "The model failed to generate a response."
+      }
+    ],
+    "openai-gpt4": [
+      {
+        "prompt": "Question:\nhello world\nSelect the most appropriate answer or options to fill in the blank (if any): ",
+        "response": "There is no blank space in the question prompt, so no answer or options are needed.",
+        "prompt_time": 12321241,
+        "response_time": 12321241
+      },
+      {
+        "prompt": "Question:\nhello world\nSelect the most appropriate answer or options to fill in the blank (if any): ",
+        "response": "There is no blank space in the question prompt, so no answer or options are needed.",
+        "prompt_time": 12321241,
+        "response_time": 12321241
+      },
+      {
+        "prompt": "Question:\nhello world\nSelect the most appropriate answer or options to fill in the blank (if any): ",
+        "response": "There is no blank space in the question prompt, so no answer or options are needed.",
+        "prompt_time": 12321241,
+        "response_time": 12321241
+      }
+    ]
+  }
+}

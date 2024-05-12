@@ -18,7 +18,7 @@ function UtilsSubmenu(props: UtilsSubmenuProps) {
           <div className="flex gap-3">
             <Icon
               name={IconName.ArrowLeft}
-              darkModeColor={colors.moongray[300]}
+              color={colors.moongray[300]}
             />
             <p className="dark:text-moongray-300">Back to Home</p>
           </div>

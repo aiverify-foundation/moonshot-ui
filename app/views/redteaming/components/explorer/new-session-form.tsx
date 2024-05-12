@@ -112,8 +112,7 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
     <div className="pl-4 pt-8 w-full h-full">
       <Formik<FormValues>
         initialValues={initialFormValues}
-        validationSchema={validationSchema} 
-
+        validationSchema={validationSchema}
         onSubmit={handleFormSubmit}>
         {(formProps) => {
           return (
@@ -180,7 +179,7 @@ const NewSessionForm: React.FC<NewSessonFormProps> = (props) => {
                       <div>Start Red Teaming Session</div>
                       <Icon
                         name={IconName.ArrowRight}
-                        lightModeColor="#FFFFFF"
+                        color="#FFFFFF"
                         size={14}
                       />
                     </button>

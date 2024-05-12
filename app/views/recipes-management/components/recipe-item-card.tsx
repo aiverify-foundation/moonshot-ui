@@ -13,8 +13,7 @@ function RecipeItemCard(props: RecipeItemCardProps) {
         <Icon
           name={IconName.File}
           size={16}
-          lightModeColor="#475569"
-          darkModeColor="#475569"
+          color="#475569"
         />
         <div className="font-bold">{recipe.name}</div>
       </div>

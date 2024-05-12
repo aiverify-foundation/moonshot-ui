@@ -12,8 +12,7 @@ function LLMItemCard(props: LLMItemCardProps) {
         <Icon
           name={IconName.SolidBox}
           size={16}
-          lightModeColor="#475569"
-          darkModeColor="#475569"
+          color="#475569"
         />
         <div className="font-bold">{endpoint.name}</div>
       </div>

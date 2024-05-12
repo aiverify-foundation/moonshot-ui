@@ -30,7 +30,7 @@ const TagLabel: React.FC<TagLabelProps> = ({
         onClick={onIconClick}>
         <Icon
           name={iconName}
-          lightModeColor="#111827"
+          color="#111827"
           size={iconSize}
         />
       </div>

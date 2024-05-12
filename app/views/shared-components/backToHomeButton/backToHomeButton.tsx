@@ -11,7 +11,7 @@ function BackToHomeButton({ onBackClick, colors }: Props) {
       <div className="flex gap-3">
         <Icon
           name={IconName.ArrowLeft}
-          darkModeColor={colors.moongray[200]}
+          color={colors.moongray[200]}
           onClick={onBackClick}
         />
         <p className="text-moongray-200">Back to Home</p>

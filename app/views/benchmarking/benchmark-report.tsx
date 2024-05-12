@@ -99,7 +99,7 @@ function BenchmarksResult(props: cookbooksExplorerProps) {
                         <Icon
                           name={IconName.SolidBox}
                           size={12}
-                          lightModeColor="white"
+                          color="white"
                         />
                         <div>{ep}</div>
                       </div>

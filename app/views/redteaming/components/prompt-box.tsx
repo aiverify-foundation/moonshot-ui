@@ -334,7 +334,7 @@ function PromptBox(props: PromptBoxProps) {
         <Icon
           name={size === Size.LARGE ? IconName.Minimize : IconName.Maximize}
           size={14}
-          lightModeColor="white"
+          color="white"
           onClick={handleResizeClick}
         />
       </div>
@@ -400,7 +400,7 @@ function PromptBox(props: PromptBoxProps) {
               <Icon
                 name={IconName.ChatBubbleWide}
                 size={24}
-                lightModeColor="white"
+                color="white"
               />
               <div className="flex items-center text-xs">
                 <span className="hover:opacity-60">Prompt Template</span>
@@ -420,7 +420,7 @@ function PromptBox(props: PromptBoxProps) {
                         <Icon
                           name={IconName.Close}
                           size={14}
-                          lightModeColor="white"
+                          color="white"
                           onClick={handleRemoveActivePromptTemplate}
                         />
                       </div>
@@ -436,7 +436,7 @@ function PromptBox(props: PromptBoxProps) {
               <Icon
                 name={IconName.LightBulb}
                 size={20}
-                lightModeColor="white"
+                color="white"
               />
               <div className="flex items-center text-xs">
                 <span className="hover:opacity-60">Context Strategy</span>
@@ -453,7 +453,7 @@ function PromptBox(props: PromptBoxProps) {
                         <Icon
                           name={IconName.Close}
                           size={14}
-                          lightModeColor="white"
+                          color="white"
                           onClick={handleRemoveActivePromptTemplate}
                         />
                       </div>

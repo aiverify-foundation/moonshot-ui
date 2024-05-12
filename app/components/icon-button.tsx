@@ -38,7 +38,7 @@ function IconButton(props: IconButtonProps) {
       onClick={onClick}>
       <Icon
         name={iconName}
-        lightModeColor="#FFFFFF"
+        color="#FFFFFF"
         size={iconSize}
       />
       {label !== undefined ? (

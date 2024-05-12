@@ -9,7 +9,7 @@ function LeftNav() {
     <ul className="flex flex-col gap-10">
       <li>
         <Icon
-          darkModeColor={colors.moongray[300]}
+          color={colors.moongray[300]}
           name={IconName.OutlineBox}
           size={40}
         />
@@ -23,7 +23,7 @@ function LeftNav() {
           offsetTop={10}>
           <Link href="/benchmarking">
             <Icon
-              darkModeColor={colors.moongray[300]}
+              color={colors.moongray[300]}
               name={IconName.CheckList}
               size={40}
             />
@@ -38,7 +38,7 @@ function LeftNav() {
           position={TooltipPosition.left}
           offsetTop={10}>
           <Icon
-            darkModeColor={colors.moongray[300]}
+            color={colors.moongray[300]}
             name={IconName.Spacesuit}
             size={40}
           />
@@ -46,7 +46,7 @@ function LeftNav() {
       </li>
       <li>
         <Icon
-          darkModeColor={colors.moongray[300]}
+          color={colors.moongray[300]}
           name={IconName.HistoryClock}
           size={40}
         />
@@ -59,7 +59,7 @@ function LeftNav() {
           transparent
           offsetTop={10}>
           <Icon
-            darkModeColor={colors.moongray[300]}
+            color={colors.moongray[300]}
             name={IconName.Tools}
             size={40}
           />

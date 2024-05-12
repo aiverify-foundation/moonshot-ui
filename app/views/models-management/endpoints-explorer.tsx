@@ -379,7 +379,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                             <div>Benchmark</div>
                             <Icon
                               name={IconName.ArrowRight}
-                              lightModeColor="#FFFFFF"
+                              color="#FFFFFF"
                               size={14}
                             />
                           </button>
@@ -390,7 +390,7 @@ function EndpointsExplorer(props: EndpointsExplorerProps) {
                             <div>Red Team</div>
                             <Icon
                               name={IconName.ArrowRight}
-                              lightModeColor="#FFFFFF"
+                              color="#FFFFFF"
                               size={14}
                             />
                           </button>

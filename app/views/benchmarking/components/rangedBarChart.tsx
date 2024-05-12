@@ -17,7 +17,7 @@ function RangedBarChart(props: RangedBarChartProps) {
     b[0].localeCompare(a[0])
   );
 
-  for (const [grade, range] of sortedGrades) {
+  for (const [_, range] of sortedGrades) {
     const widthPercentage = ((range[1] - range[0] + 1) / 100) * 100;
     if (gradeValue >= range[0] && gradeValue <= range[1]) {
       const positionInBar = (gradeValue - range[0]) / (range[1] - range[0] + 1);
@@ -26,7 +26,17 @@ function RangedBarChart(props: RangedBarChartProps) {
     cumulativeWidth += widthPercentage;
   }
 
-  return (
+  return !sortedGrades.length ? (
+    <div className="flex flex-col justify-center w-full">
+      <div
+        className="rounded-sm h-4 w-full"
+        style={{
+          backgroundColor: '#9A9A9A',
+        }}
+      />
+      <p className="text-center">No tiered grading defined for this recipe</p>
+    </div>
+  ) : (
     <div className="relative flex w-full gap-2">
       <div
         className="absolute"

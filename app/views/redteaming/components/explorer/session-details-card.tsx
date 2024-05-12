@@ -50,7 +50,7 @@ function SessionDetailsCard(props: SessionDetailsCardProps) {
           <div>Resume Session</div>
           <Icon
             name={IconName.ArrowRight}
-            lightModeColor="#FFFFFF"
+            color="#FFFFFF"
             size={14}
           />
         </button>

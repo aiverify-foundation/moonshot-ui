@@ -13,8 +13,7 @@ function TemplateItemCard(props: TemplateItemCardProps) {
         <Icon
           name={IconName.ChatBubbleWide}
           size={16}
-          lightModeColor="#475569"
-          darkModeColor="#475569"
+          color="#475569"
         />
         <div className="font-bold">{template.name}</div>
       </div>

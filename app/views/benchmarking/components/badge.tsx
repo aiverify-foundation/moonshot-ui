@@ -37,15 +37,15 @@ function SquareBadge(props: {
 }
 
 function RecipeGradeBadge(props: {
-  grade: 'A' | 'B' | 'C' | 'D' | 'E';
+  grade: 'A' | 'B' | 'C' | 'D' | 'E' | null;
   textSize: React.CSSProperties['fontSize'];
   textColor: React.CSSProperties['color'];
   size: React.CSSProperties['width'];
 }) {
   return (
     <SquareBadge
-      label={props.grade}
-      color={gradeColors[props.grade]}
+      label={props.grade === null ? '-' : props.grade}
+      color={props.grade === null ? '#9A9A9A' : gradeColors[props.grade]}
       size={props.size}
       textColor={props.textColor}
       textSize={props.textSize}

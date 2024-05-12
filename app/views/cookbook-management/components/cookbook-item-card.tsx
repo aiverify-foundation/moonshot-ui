@@ -13,8 +13,7 @@ function CookbookItemCard(props: CookbookItemCardProps) {
         <Icon
           name={IconName.Book}
           size={16}
-          lightModeColor="#475569"
-          darkModeColor="#475569"
+          color="#475569"
         />
         <div className="font-bold">{cookbook.name}</div>
       </div>

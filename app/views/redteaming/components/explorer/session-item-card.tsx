@@ -13,8 +13,7 @@ function SessionItemCard(props: SessionItemCardProps) {
         <Icon
           name={IconName.SolidBox}
           size={16}
-          lightModeColor="#475569"
-          darkModeColor="#475569"
+          color="#475569"
         />
         <div className="font-bold">{session.name}</div>
       </div>

@@ -40,8 +40,7 @@ function ActionCard(props: ActionCardProps) {
       style={{ backgroundColor: cardColor, height, ...style }}
       onClick={onClick}>
       <Icon
-        darkModeColor={iconColor}
-        lightModeColor={iconColor}
+        color={iconColor}
         name={iconName}
         size={iconSize}
       />
@@ -50,8 +49,12 @@ function ActionCard(props: ActionCardProps) {
         <p style={{ color: descriptionColor || textColor }}>{description}</p>
       </section>
       <figcaption>
-        {actionText && <><p style={{ color: textColor }}>{actionText}</p>
-        <Icon name={IconName.ArrowRight} /></>}
+        {actionText && (
+          <>
+            <p style={{ color: textColor }}>{actionText}</p>
+            <Icon name={IconName.ArrowRight} />
+          </>
+        )}
       </figcaption>
     </figure>
   );
