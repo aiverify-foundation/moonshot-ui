@@ -60,7 +60,7 @@ function BenchmarkReportRecipeResult(props: BenchmarkReportRecipeResultProps) {
       )}
 
       {showRawScores && (
-        <section>
+        <section className="mb-4">
           <p className="text-[0.8rem]">Raw Scores</p>
           <div className="border border-moongray-700 rounded-lg">
             <table className="w-full text-sm text-left text-moongray-300">
@@ -89,26 +89,40 @@ function BenchmarkReportRecipeResult(props: BenchmarkReportRecipeResultProps) {
                 </tr>
               </thead>
               <tbody>
-                {recipeDetails.map((detail) => (
-                  <tr key={detail.dataset_id}>
-                    <td className="py-3 px-6 border-r border-moongray-700">
-                      {detail.dataset_id}
-                    </td>
-                    <td className="py-3 px-6 border-r border-moongray-700">
-                      {detail.prompt_template_id}
-                    </td>
-                    <td className="py-3 px-6 border-r border-moongray-700">
-                      tbd
-                    </td>
-                    <td className="py-3 px-6">
-                      {detail.metrics.map((m, idx) => (
-                        <div key={`${detail.dataset_id}-metric-${idx}`}>
-                          {m.accuracy}
-                        </div>
-                      ))}
-                    </td>
-                  </tr>
-                ))}
+                {recipeDetails.map((detail) => {
+                  let stringifiedMetrics = '';
+                  try {
+                    stringifiedMetrics = JSON.stringify(
+                      detail.metrics,
+                      null,
+                      2
+                    );
+                  } catch (error) {
+                    console.log(error);
+                  }
+                  return (
+                    <tr key={detail.dataset_id}>
+                      <td className="py-3 px-6 border-r border-moongray-700 align-top">
+                        {detail.dataset_id}
+                      </td>
+                      <td className="py-3 px-6 border-r border-moongray-700 align-top">
+                        {detail.prompt_template_id}
+                      </td>
+                      <td className="py-3 px-6 border-r border-moongray-700 align-top">
+                        {recipe.metrics.map((metricName, idx) => {
+                          const name =
+                            idx < recipe.metrics.length - 1
+                              ? `${metricName}, `
+                              : metricName;
+                          return <span key={metricName}>{name}</span>;
+                        })}
+                      </td>
+                      <td className="py-3 px-6">
+                        <pre>{stringifiedMetrics}</pre>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

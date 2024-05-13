@@ -37,7 +37,7 @@ type RecipeDetail = {
   dataset_id: string;
   prompt_template_id: string;
   data: RecipePromptData[];
-  metrics: Metric[];
+  metrics: Metric[] | MetricRouge[];
 };
 
 type RecipePromptData = {
@@ -53,6 +53,25 @@ type Metric = {
     accuracy?: number;
     attack_success_rate?: number;
     toxicity_rate?: number;
+  };
+};
+
+type RougeScore = {
+  r: number;
+  p: number;
+  f: number;
+};
+
+type MetricRouge = {
+  rouge: {
+    rouge_scores: {
+      rouge1: RougeScore;
+      rouge2: RougeScore;
+      rougeLsum: RougeScore;
+    }[];
+    avg_rouge1: RougeScore;
+    avg_rouge2: RougeScore;
+    avg_rougeLsum: RougeScore;
   };
 };
 

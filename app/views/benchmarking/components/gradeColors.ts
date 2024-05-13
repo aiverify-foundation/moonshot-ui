@@ -4,4 +4,5 @@ export const gradeColors = {
   C: '#7B94BD',
   D: '#A19227',
   E: '#C4805E',
+  '-': '#2d2b2f',
 };
