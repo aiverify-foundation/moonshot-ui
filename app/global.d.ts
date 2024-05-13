@@ -224,15 +224,22 @@ type CookbookMetadata = {
 
 type Runner = {
   id: string;
+  run_id?: number;
+  runner_id?: string;
   name: string;
   database_file: string;
   endpoints: string[];
   description: string;
+  runner_args?: {
+    cookbooks: string[];
+    num_of_prompts: number;
+    random_seed: number;
+    system_prompt: string;
+    runner_processing_module: string;
+    result_processing_module: string;
+  };
+  start_time?: number;
 };
-
-/*
- * End of Result format specific types
- */
 
 declare module 'next/dist/compiled/react-dom/cjs/react-dom-server-legacy.browser.development' {
   import ReactDOMServer from 'react-dom/server';

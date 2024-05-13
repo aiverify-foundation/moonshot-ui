@@ -8,8 +8,12 @@ const runnerApi = createApi({
   reducerPath: 'runnerApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
-    getRunnerById: builder.query<Runner, { id?: string | null }>({
-      query: ({ id }) => `${proxyPathRunners}/${id}`,
+    getRunnerById: builder.query<
+      Runner,
+      { id?: string | null; additionalDetails?: boolean }
+    >({
+      query: ({ id, additionalDetails }) =>
+        `${proxyPathRunners}/${id}${additionalDetails ? '?rundata=true' : ''}`,
       keepUnusedDataFor: 600,
     }),
   }),

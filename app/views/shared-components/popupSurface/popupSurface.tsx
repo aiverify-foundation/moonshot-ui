@@ -7,6 +7,7 @@ type PopupSurfaceProps = {
   height?: React.CSSProperties['height'];
   minHeight?: React.CSSProperties['minHeight'];
   padding?: React.CSSProperties['padding'];
+  style?: React.CSSProperties;
   onCloseIconClick?: () => void;
 };
 
@@ -17,12 +18,13 @@ function PopupSurface(props: PopupSurfaceProps) {
     headerContent,
     onCloseIconClick,
     padding,
+    style,
     children,
   } = props;
   return (
     <div
       className="relative flex flex-col w-full bg-moongray-950 rounded-2xl border border-moonpurple"
-      style={{ height, minHeight, padding }}>
+      style={{ height, minHeight, padding, ...style }}>
       <header className="flex flex-col items-center relative">
         {headerContent}
         {onCloseIconClick && (
