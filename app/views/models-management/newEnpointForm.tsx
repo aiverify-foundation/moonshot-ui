@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
-import { object, string } from 'yup';
+import { object, string, number, boolean } from 'yup';
 import { Button, ButtonType } from '@/app/components/button';
 import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { TextArea } from '@/app/components/textArea';
@@ -10,6 +10,7 @@ import { useCreateLLMEndpointMutation } from '@/app/services/llm-endpoint-api-se
 import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
+import { toErrorWithMessage } from '@/app/lib/error-utils';
 
 const initialFormValues: LLMEndpointFormValues = {
   connector_type: '',
@@ -18,8 +19,22 @@ const initialFormValues: LLMEndpointFormValues = {
   token: '',
   max_calls_per_second: '10',
   max_concurrency: '1',
-  params: '{}',
+  params: `{
+      "timeout": 300,
+      "allow_retries": true,
+      "num_of_retries": 3,
+      "temperature": 0.5,
+      "model": ""
+  }`,
 };
+
+const paramsSchema = object().shape({
+  timeout: number().positive('Timeout must be a positive number'),
+  allow_retries: boolean(),
+  num_of_retries: number(),
+  temperature: number(),
+  model: string().required('Parameter "Model" is required'),
+});
 
 const validationSchema = object().shape({
   name: string().required('Name is required'),
@@ -74,6 +89,31 @@ function NewEndpointForm(props: NewEndpointFormProps) {
   });
 
   const submitEnabled = formik.isValid;
+
+  function handleConfigOkClick() {
+    if (formik.values.params) {
+      if (validateParams(formik.values.params)) {
+        setShowMoreConfig(false);
+      }
+    }
+  }
+
+  function handleParamsChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    formik.setFieldValue('params', e.target.value);
+  }
+
+  function validateParams(value: string): boolean {
+    try {
+      const parsed = JSON.parse(value);
+      paramsSchema.validateSync(parsed, { strict: true });
+      formik.setFieldValue('params', value);
+      return true;
+    } catch (error) {
+      const errorWithMessage = toErrorWithMessage(error);
+      formik.setErrors({ params: errorWithMessage.message });
+      return false;
+    }
+  }
 
   async function submitNewEndpoint(data: LLMEndpointFormValues) {
     const newModelEndpoint = {
@@ -252,18 +292,17 @@ function NewEndpointForm(props: NewEndpointFormProps) {
                   <TextArea
                     label="Other Parameters"
                     name="params"
-                    onChange={formik.handleChange}
+                    onChange={handleParamsChange}
                     value={formik.values.params}
                     error={
-                      formik.touched.params && formik.errors.params
-                        ? formik.errors.params
-                        : undefined
+                      formik.errors.params ? formik.errors.params : undefined
                     }
                     placeholder="Additional parameters normally in JSON format"
                     labelStyles={{
                       fontSize: '1rem',
                       color: colors.moonpurplelight,
                     }}
+                    inputStyles={{ height: 200 }}
                   />
                 </div>
                 <div className="flex grow gap-2 justify-end items-end">
@@ -272,7 +311,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
                     size="lg"
                     type="button"
                     text="OK"
-                    onClick={() => setShowMoreConfig(false)}
+                    onClick={handleConfigOkClick}
                   />
                 </div>
               </div>
