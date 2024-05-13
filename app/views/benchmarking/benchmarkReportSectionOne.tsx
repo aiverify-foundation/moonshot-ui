@@ -117,22 +117,23 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           </h3>
           <p>
             <span className="font-bold text-fuchsia-400 ">Q - Quality</span>
-            evaluates the model&apos;s ability to consistently produce content
-            that meets general correctness and application-specific standards.
+            &nbsp;evaluates the model&apos;s ability to consistently produce
+            content that meets general correctness and application-specific
+            standards.
           </p>
           <p>
             <span className="font-bold text-fuchsia-400 ">C - Capability</span>
-            assesses the AI model&apos;s ability to perform within the context
-            of the unique requirements and challenges of a particular domain or
-            task.
+            &nbsp;assesses the AI model&apos;s ability to perform within the
+            context of the unique requirements and challenges of a particular
+            domain or task.
           </p>
           <p>
             <span className="font-bold text-fuchsia-400 ">
               T - Trust & Safety
             </span>
-            addresses the reliability, ethical considerations, and inherent
-            risks of the AI model. It also examines potential scenarios where
-            the AI system could be used maliciously or unethically.
+            &nbsp;addresses the reliability, ethical considerations, and
+            inherent risks of the AI model. It also examines potential scenarios
+            where the AI system could be used maliciously or unethically.
           </p>
         </section>
 
