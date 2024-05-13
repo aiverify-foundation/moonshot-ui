@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styles from './styles/button.module.css';
 import { Icon, IconName } from '@components/IconSVG';
 
@@ -25,6 +25,7 @@ type ButtonProps = {
   iconSize?: number;
   disabled?: boolean;
   size?: 'sm' | 'md' | 'lg';
+  width?: React.CSSProperties['width'];
   onClick?: () => void;
 };
 
@@ -44,6 +45,7 @@ function Button(props: ButtonProps) {
     textWeight,
     disabled = false,
     size = 'md',
+    width,
     onClick = () => null,
   } = props;
   const [isHovered, setIsHovered] = useState(false);
@@ -82,6 +84,7 @@ function Button(props: ButtonProps) {
         background: btnBgColor,
         color: textColor,
         ...(mode == ButtonType.LINK ? { padding: 0 } : {}),
+        width,
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 import { IconName } from '@/app/components/IconSVG';
@@ -6,6 +7,7 @@ import { ActionCard } from '@/app/components/actionCard/actionCard';
 import { Button, ButtonType } from '@/app/components/button';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { useCancelBenchmarkMutation } from '@/app/services/benchmark-api-service';
+import { useGetRunnerByIdQuery } from '@/app/services/runner-api-service';
 import { useGetAllStatusQuery } from '@/app/services/status-api-service';
 import { AppEventTypes, TestStatusProgress } from '@/app/types/enums';
 import { colors } from '@/app/views/shared-components/customColors';
@@ -27,6 +29,19 @@ function BenchmarkRunStatus() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const runner_id = searchParams.get('runner_id');
+  const { data: runnerData, isLoading: runnerDataIsLoading } =
+    useGetRunnerByIdQuery({ id: runner_id }, { skip: !runner_id });
+
+  let headingText = 'Running Tests...';
+  if (statuses && runner_id !== null && statuses[runner_id]) {
+    if (statuses[runner_id].current_status == TestStatusProgress.COMPLETED) {
+      headingText = 'Tests Completed';
+    }
+
+    if (statuses[runner_id].current_status == TestStatusProgress.CANCELLED) {
+      headingText = 'Tests Cancelled';
+    }
+  }
 
   React.useEffect(() => {
     if (!statuses) return;
@@ -72,7 +87,7 @@ function BenchmarkRunStatus() {
       bgColor={colors.moongray['950']}>
       <div className="flex flex-col items-center h-full gap-4">
         <h2 className="text-[1.6rem] font-medium tracking-wide text-white w-full text-center">
-          Running Tests...
+          {headingText}
         </h2>
 
         <Button
@@ -94,19 +109,25 @@ function BenchmarkRunStatus() {
             runner_id && (
               <div className="w-full flex flex-col items-center gap-2 mt-5">
                 <p className="text-white text-[0.9rem] w-[90%]">
-                  Test recommeded set for chatbot
+                  {runnerData && runnerData.name}
                 </p>
                 <div className="w-[90%] h-[140px] items-center flex gap-4 border border-moongray-700 px-4 rounded-lg">
                   <div className="w-full flex flex-col gap-2">
                     <p className="text-white text-[1.1rem] w-[90%]">
-                      {Math.max(statuses[runner_id].current_progress, 10)}%
+                      {statuses[runner_id].current_status ==
+                      TestStatusProgress.CANCELLED
+                        ? 'Cancelled'
+                        : `${Math.max(statuses[runner_id].current_progress, 10)}%`}
                     </p>
                     <div
                       className={`${
                         statuses[runner_id].current_status ==
                         TestStatusProgress.ERRORS
                           ? 'bg-red-700'
-                          : 'bg-blue-600'
+                          : statuses[runner_id].current_status ==
+                              TestStatusProgress.CANCELLED
+                            ? 'bg-moongray-700'
+                            : 'bg-blue-600'
                       } leading-none h-1 rounded-full`}
                       style={{
                         width: `${Math.max(statuses[runner_id].current_progress, 10)}%`,
@@ -118,23 +139,32 @@ function BenchmarkRunStatus() {
                       }}
                     />
                   </div>
-                  <Button
-                    mode={
-                      statuses[runner_id].current_status ==
-                      TestStatusProgress.COMPLETED
-                        ? ButtonType.PRIMARY
-                        : ButtonType.OUTLINE
-                    }
-                    size="lg"
-                    type="button"
-                    text={
-                      statuses[runner_id].current_status ==
-                      TestStatusProgress.COMPLETED
-                        ? 'Report'
-                        : 'Cancel'
-                    }
-                    onClick={() => triggerCancelBenchmark(runner_id)}
-                  />
+                  {statuses[runner_id].current_status ===
+                    TestStatusProgress.RUNNING && (
+                    <Button
+                      mode={ButtonType.OUTLINE}
+                      size="lg"
+                      type="button"
+                      hoverBtnColor={colors.moongray[700]}
+                      pressedBtnColor={colors.moongray[900]}
+                      text="Cancel"
+                      onClick={() => triggerCancelBenchmark(runner_id)}
+                    />
+                  )}
+                  {statuses[runner_id].current_status ===
+                    TestStatusProgress.COMPLETED && (
+                    <Link href={`/benchmarking/report?id=${runner_id}`}>
+                      <Button
+                        width={150}
+                        mode={ButtonType.OUTLINE}
+                        size="lg"
+                        type="button"
+                        hoverBtnColor={colors.moongray[700]}
+                        pressedBtnColor={colors.moongray[900]}
+                        text="View Report"
+                      />
+                    </Link>
+                  )}
                 </div>
               </div>
             )

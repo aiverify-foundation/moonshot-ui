@@ -13,4 +13,5 @@ export enum TestStatusProgress {
   COMPLETED = 'completed',
   RUNNING = 'running',
   ERRORS = 'completed_with_errors',
+  CANCELLED = 'cancelled',
 }
