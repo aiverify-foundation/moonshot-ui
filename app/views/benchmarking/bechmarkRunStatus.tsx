@@ -106,7 +106,8 @@ function BenchmarkRunStatus() {
             </div>
           ) : (
             statuses &&
-            runner_id && (
+            runner_id &&
+            statuses[runner_id] && (
               <div className="w-full flex flex-col items-center gap-2 mt-5">
                 <p className="text-white text-[0.9rem] w-[90%]">
                   {runnerData && runnerData.name}
