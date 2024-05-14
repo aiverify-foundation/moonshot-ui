@@ -76,8 +76,8 @@ enum TokenInputMode {
 function NewEndpointForm(props: NewEndpointFormProps) {
   const { onClose, endpointToEdit } = props;
   const [showMoreConfig, setShowMoreConfig] = useState(false);
-  const [tokenInputMode, setTokenInputMode] = useState<TokenInputMode>(
-    TokenInputMode.MASKED
+  const [tokenInputMode, setTokenInputMode] = useState<TokenInputMode>(() =>
+    endpointToEdit ? TokenInputMode.MASKED : TokenInputMode.TEXT
   );
 
   const [createModelEndpoint, { isLoading: createModelEndpointIsLoding }] =
@@ -125,11 +125,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
   const submitEnabled = formik.isValid;
 
   function handleTokenInputFocus(_: React.FocusEvent<HTMLInputElement>) {
-    if (endpointToEdit) {
-      setTokenInputMode(TokenInputMode.TEXT);
-    } else {
-      setTokenInputMode(TokenInputMode.MASKED);
-    }
+    setTokenInputMode(TokenInputMode.TEXT);
   }
 
   function handleTokenInputBlur(e: React.FocusEvent<HTMLInputElement>) {
