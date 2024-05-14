@@ -29,10 +29,10 @@ const config: MoonshotConfig = {
   ],
   defaultCookbooksForSelection: [
     'evaluation-catalogue-cookbook',
-    'chinese-cookbook',
+    'chinese-safety-cookbook',
     'tamil-language-cookbook',
     'leaderboard-cookbook',
-    'truthful-cookbook',
+    // 'truthful-cookbook',
   ],
   cookbookCategoriesTabs: [
     { id: 'quality', label: 'Quality', categoryNames: ['quality'] },
