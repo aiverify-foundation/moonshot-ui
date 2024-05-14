@@ -8,6 +8,7 @@ import { NewEndpointForm } from '@/app/views/models-management/newEnpointForm';
 import { ModelSelectView } from '@/app/views/quickstart-home/components/endpointsSelector';
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
+import { Modal } from '@/app/views/shared-components/modal/modal';
 import { useAppSelector } from '@/lib/redux';
 import { BenchmarkDefaultSelection } from './benchmarkDefaultSelection';
 import { BenchmarkMainCookbooksPromptCount } from './benchmarkMainCookbooksPromptCount';
@@ -29,6 +30,7 @@ function BenchmarkNewSessionFlow() {
     true,
     true,
   ]);
+  const [showExitModal, setShowExitModal] = useState(false);
 
   function changeView(view: BenchmarkNewSessionViews) {
     setCurrentView(view);
@@ -64,6 +66,10 @@ function BenchmarkNewSessionFlow() {
       setCurrentView(BenchmarkNewSessionViews.ENDPOINTS_SELECTION);
       return;
     }
+  }
+
+  function handleOnCloseIconClick() {
+    setShowExitModal(true);
   }
 
   let stepIndex = 0;
@@ -143,49 +149,69 @@ function BenchmarkNewSessionFlow() {
   }
 
   return (
-    <CookbooksProvider>
-      <MainSectionSurface
-        onCloseIconClick={() => router.push('/benchmarking')}
-        height="100%"
-        minHeight={750}
-        bgColor={surfaceColor}>
-        <div className="flex flex-col items-center h-full">
-          <div className="w-[700px] flex shrink-0 justify-center">
-            <SimpleStepsIndicator
-              textColor={colors.moongray[300]}
-              stepColor={colors.moonpurplelight}
-              steps={flowSteps}
-              currentStepIndex={stepIndex}
-            />
+    <>
+      {showExitModal && (
+        <Modal
+          heading="Exit this workflow?"
+          bgColor={colors.moongray['800']}
+          textColor="#FFFFFF"
+          primaryBtnLabel="Exit Workflow"
+          secondaryBtnLabel="Cancel"
+          enableScreenOverlay
+          onCloseIconClick={() => setShowExitModal(false)}
+          onPrimaryBtnClick={() => router.push('/benchmarking')}
+          onSecondaryBtnClick={() => setShowExitModal(false)}>
+          <p className="text-[0.9rem] pt-3">
+            If you exit this workflow now, your progress will not be saved.{' '}
+            <br />
+            You should complete this workflow before exiting.
+          </p>
+        </Modal>
+      )}
+      <CookbooksProvider>
+        <MainSectionSurface
+          onCloseIconClick={handleOnCloseIconClick}
+          height="100%"
+          minHeight={750}
+          bgColor={surfaceColor}>
+          <div className="flex flex-col items-center h-full">
+            <div className="w-[700px] flex shrink-0 justify-center">
+              <SimpleStepsIndicator
+                textColor={colors.moongray[300]}
+                stepColor={colors.moonpurplelight}
+                steps={flowSteps}
+                currentStepIndex={stepIndex}
+              />
+            </div>
+            <div
+              className="flex flex-col gap-5 justify-center w-full"
+              style={{ height: 'calc(100% - 33px)' }}>
+              {!hiddenNavButtons[0] && (
+                <div className="flex justify-center">
+                  <Icon
+                    name={IconName.WideArrowUp}
+                    size={28}
+                    onClick={previousViewHandler}
+                  />
+                </div>
+              )}
+              {view}
+              {!hiddenNavButtons[1] && (
+                <div className="flex justify-center">
+                  <Icon
+                    name={IconName.WideArrowDown}
+                    size={28}
+                    onClick={
+                      selectedCookbooks.length > 0 ? nextViewHandler : undefined
+                    }
+                  />
+                </div>
+              )}
+            </div>
           </div>
-          <div
-            className="flex flex-col gap-5 justify-center w-full"
-            style={{ height: 'calc(100% - 33px)' }}>
-            {!hiddenNavButtons[0] && (
-              <div className="flex justify-center">
-                <Icon
-                  name={IconName.WideArrowUp}
-                  size={28}
-                  onClick={previousViewHandler}
-                />
-              </div>
-            )}
-            {view}
-            {!hiddenNavButtons[1] && (
-              <div className="flex justify-center">
-                <Icon
-                  name={IconName.WideArrowDown}
-                  size={28}
-                  onClick={
-                    selectedCookbooks.length > 0 ? nextViewHandler : undefined
-                  }
-                />
-              </div>
-            )}
-          </div>
-        </div>
-      </MainSectionSurface>
-    </CookbooksProvider>
+        </MainSectionSurface>
+      </CookbooksProvider>
+    </>
   );
 }
 
