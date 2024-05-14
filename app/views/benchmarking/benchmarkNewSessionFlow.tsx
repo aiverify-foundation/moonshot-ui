@@ -4,8 +4,8 @@ import React, { useLayoutEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { CookbooksSelection } from '@/app/views/cookbook-management/cookbooksSelection';
+import { EndpointSelectVew } from '@/app/views/models-management/endpointsSelector';
 import { NewEndpointForm } from '@/app/views/models-management/newEnpointForm';
-import { ModelSelectView } from '@/app/views/quickstart-home/components/endpointsSelector';
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 import { Modal } from '@/app/views/shared-components/modal/modal';
@@ -32,13 +32,19 @@ function BenchmarkNewSessionFlow() {
   const [currentView, setCurrentView] = useState<BenchmarkNewSessionViews>(
     BenchmarkNewSessionViews.TOPICS_SELECTION
   );
+  const [endpointToEdit, setEndpointToEdit] = useState<
+    LLMEndpoint | undefined
+  >();
   const [hiddenNavButtons, setHiddenNavButtons] = useState<[boolean, boolean]>([
     true,
     true,
   ]);
   const [showExitModal, setShowExitModal] = useState(false);
 
-  function changeView(view: BenchmarkNewSessionViews) {
+  function changeView<T = undefined>(view: BenchmarkNewSessionViews, data?: T) {
+    if (view === BenchmarkNewSessionViews.EDIT_ENDPOINT_FORM) {
+      setEndpointToEdit(data as LLMEndpoint);
+    }
     setCurrentView(view);
   }
 
@@ -103,7 +109,10 @@ function BenchmarkNewSessionFlow() {
       setHiddenNavButtons([false, false]);
       return;
     }
-    if (currentView === BenchmarkNewSessionViews.NEW_ENDPOINT_FORM) {
+    if (
+      currentView === BenchmarkNewSessionViews.NEW_ENDPOINT_FORM ||
+      currentView === BenchmarkNewSessionViews.EDIT_ENDPOINT_FORM
+    ) {
       setHiddenNavButtons([true, true]);
       return;
     }
@@ -127,9 +136,9 @@ function BenchmarkNewSessionFlow() {
     case BenchmarkNewSessionViews.ENDPOINTS_SELECTION:
       stepIndex = 2;
       view = (
-        <ModelSelectView
+        <EndpointSelectVew
           onModelSelectClick={(model) => console.dir(model)}
-          changeView={changeView}
+          changeView={changeView<LLMEndpoint>}
         />
       );
       break;
@@ -138,6 +147,18 @@ function BenchmarkNewSessionFlow() {
       surfaceColor = colors.moongray['800'];
       view = (
         <NewEndpointForm
+          onClose={() =>
+            changeView(BenchmarkNewSessionViews.ENDPOINTS_SELECTION)
+          }
+        />
+      );
+      break;
+    case BenchmarkNewSessionViews.EDIT_ENDPOINT_FORM:
+      stepIndex = 2;
+      surfaceColor = colors.moongray['800'];
+      view = (
+        <NewEndpointForm
+          endpointToEdit={endpointToEdit}
           onClose={() =>
             changeView(BenchmarkNewSessionViews.ENDPOINTS_SELECTION)
           }

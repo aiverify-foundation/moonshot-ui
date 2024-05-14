@@ -1,7 +1,9 @@
 import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import useModelsList from '@/app/hooks/useLLMEndpointList';
+import { formatDate } from '@/app/lib/date-utils';
 import { BenchmarkNewSessionViews } from '@/app/views/benchmarking/enums';
+import { SelectListItem } from '@/app/views/shared-components/selectListItem';
 import {
   addBenchmarkModels,
   removeBenchmarkModels,
@@ -9,17 +11,16 @@ import {
   useAppSelector,
 } from '@/lib/redux';
 import tailwindConfig from '@/tailwind.config';
-import { SelectListItem } from './selectListItem';
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
 type EndpointSelectViewProps = {
   onModelSelectClick: (model: LLMEndpoint) => void;
-  changeView: (view: BenchmarkNewSessionViews) => void;
+  changeView: (view: BenchmarkNewSessionViews, data?: LLMEndpoint) => void;
 };
 
-function ModelSelectView(props: EndpointSelectViewProps) {
+function EndpointSelectVew(props: EndpointSelectViewProps) {
   const { changeView, onModelSelectClick } = props;
-  const { models, error, isLoading, refetch } = useModelsList();
+  const { models, isLoading } = useModelsList();
   const dispatch = useAppDispatch();
 
   const selectedEnpointsForBenchmark = useAppSelector(
@@ -27,7 +28,6 @@ function ModelSelectView(props: EndpointSelectViewProps) {
   );
 
   function handleModelClick(model: LLMEndpoint) {
-    console.log(model);
     if (
       selectedEnpointsForBenchmark.find((endpoint) => endpoint.id === model.id)
     ) {
@@ -36,6 +36,10 @@ function ModelSelectView(props: EndpointSelectViewProps) {
       dispatch(addBenchmarkModels([model]));
     }
     onModelSelectClick(model);
+  }
+
+  function handleEditEndpointClick(model: LLMEndpoint) {
+    changeView(BenchmarkNewSessionViews.EDIT_ENDPOINT_FORM, model);
   }
 
   return (
@@ -86,14 +90,33 @@ function ModelSelectView(props: EndpointSelectViewProps) {
               return (
                 <SelectListItem<LLMEndpoint>
                   key={model.id}
-                  height={80}
                   label={model.name}
                   onClick={handleModelClick}
                   iconName={IconName.OutlineBox}
                   item={model}
                   checked={isSelected}
-                  bgColor={isSelected ? colors.moongray[800] : undefined}
-                />
+                  bgColor={isSelected ? colors.moongray[800] : undefined}>
+                  <div className="flex flex-col gap-4 w-full">
+                    <p className="text-[0.8rem] text-moongray-400">
+                      Added on {formatDate(model.created_date)}
+                    </p>
+                    <Button
+                      text="Edit"
+                      width={70}
+                      mode={ButtonType.OUTLINE}
+                      size="sm"
+                      leftIconName={IconName.Pencil}
+                      iconSize={16}
+                      textColor={colors.white}
+                      hoverBtnColor={colors.moongray[950]}
+                      pressedBtnColor={colors.moongray[900]}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEditEndpointClick(model);
+                      }}
+                    />
+                  </div>
+                </SelectListItem>
               );
             })}
             <li
@@ -122,4 +145,4 @@ function ModelSelectView(props: EndpointSelectViewProps) {
   );
 }
 
-export { ModelSelectView };
+export { EndpointSelectVew };

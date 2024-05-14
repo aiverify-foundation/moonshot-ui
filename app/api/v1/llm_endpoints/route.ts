@@ -25,3 +25,18 @@ export async function POST(request: Request) {
   );
   return response;
 }
+
+export async function PUT(request: Request) {
+  const body = await request.json();
+  const response = await fetch(
+    `${config.webAPI.hostURL}${config.webAPI.basePathLLMEndpoints}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    }
+  );
+  return response;
+}

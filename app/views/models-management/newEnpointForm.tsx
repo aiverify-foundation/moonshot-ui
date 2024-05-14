@@ -5,12 +5,15 @@ import { Button, ButtonType } from '@/app/components/button';
 import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
+import { toErrorWithMessage } from '@/app/lib/error-utils';
 import { useGetAllConnectorsQuery } from '@/app/services/connector-api-service';
-import { useCreateLLMEndpointMutation } from '@/app/services/llm-endpoint-api-service';
+import {
+  useCreateLLMEndpointMutation,
+  useUpdateLLMEndpointMutation,
+} from '@/app/services/llm-endpoint-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
-import { toErrorWithMessage } from '@/app/lib/error-utils';
 
 const initialFormValues: LLMEndpointFormValues = {
   connector_type: '',
@@ -61,34 +64,82 @@ const maxCallsPerSecondOptions: SelectOption[] = Array.from(
 );
 
 type NewEndpointFormProps = {
+  endpointToEdit?: LLMEndpoint;
   onClose: () => void;
 };
 
-function NewEndpointForm(props: NewEndpointFormProps) {
-  const { onClose } = props;
-  const [showMoreConfig, setShowMoreConfig] = useState(false);
+enum TokenInputMode {
+  MASKED = 'password',
+  TEXT = 'text',
+}
 
-  const [
-    createModelEndpoint,
-    {
-      data: newModelEndpoint,
-      isLoading: createModelEndpointIsLoding,
-      error: createModelEndpointError,
-    },
-  ] = useCreateLLMEndpointMutation();
+function NewEndpointForm(props: NewEndpointFormProps) {
+  const { onClose, endpointToEdit } = props;
+  const [showMoreConfig, setShowMoreConfig] = useState(false);
+  const [tokenInputMode, setTokenInputMode] = useState<TokenInputMode>(
+    TokenInputMode.MASKED
+  );
+
+  const [createModelEndpoint, { isLoading: createModelEndpointIsLoding }] =
+    useCreateLLMEndpointMutation();
+
+  const [updateModelEndpoint, { isLoading: updateModelEndpointIsLoding }] =
+    useUpdateLLMEndpointMutation();
+
+  let editModeFormValues: LLMEndpointFormValues = initialFormValues;
+  try {
+    editModeFormValues = endpointToEdit
+      ? {
+          connector_type: endpointToEdit.connector_type,
+          name: endpointToEdit.name,
+          uri: endpointToEdit.uri,
+          token: '', //Not providing existing sensitive token DOM
+          max_calls_per_second: endpointToEdit.max_calls_per_second.toString(),
+          max_concurrency: endpointToEdit.max_concurrency.toString(),
+          params: JSON.stringify(endpointToEdit.params, null, 2),
+        }
+      : initialFormValues;
+  } catch (error) {
+    toErrorWithMessage(error);
+    console.error(error);
+  }
 
   const formik = useFormik({
-    initialValues: initialFormValues,
+    initialValues: endpointToEdit ? editModeFormValues : initialFormValues,
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.dir(values);
-      const result = await submitNewEndpoint(values);
+      let result;
+      if (endpointToEdit) {
+        result = await updateModelEndpoint({
+          id: endpointToEdit.id,
+          endpointDetails: values,
+        });
+      } else {
+        result = await submitNewEndpoint(values);
+      }
       console.dir(result);
       onClose();
     },
   });
 
   const submitEnabled = formik.isValid;
+
+  function handleTokenInputFocus(_: React.FocusEvent<HTMLInputElement>) {
+    if (endpointToEdit) {
+      setTokenInputMode(TokenInputMode.TEXT);
+    } else {
+      setTokenInputMode(TokenInputMode.MASKED);
+    }
+  }
+
+  function handleTokenInputBlur(e: React.FocusEvent<HTMLInputElement>) {
+    if (endpointToEdit) {
+      setTokenInputMode(TokenInputMode.MASKED);
+    } else {
+      setTokenInputMode(TokenInputMode.TEXT);
+    }
+    formik.handleBlur(e);
+  }
 
   function handleConfigOkClick() {
     if (formik.values.params) {
@@ -158,7 +209,9 @@ function NewEndpointForm(props: NewEndpointFormProps) {
         ) : (
           <section className="relative flex flex-col p-10 pt-[7%] h-full items-start gap-2">
             <h2 className="text-[1.8rem] font-light text-white mb-4">
-              Create New Endpoint
+              {endpointToEdit
+                ? `Update ${endpointToEdit.name}`
+                : 'Create New Endpoint'}
             </h2>
             {!showMoreConfig ? (
               <div className="w-[100%] flex justify-between">
@@ -225,17 +278,24 @@ function NewEndpointForm(props: NewEndpointFormProps) {
                     }}
                     inputStyles={{ height: 38 }}
                     onChange={formik.handleChange}
-                    value={formik.values.token}
-                    onBlur={formik.handleBlur}
+                    value={
+                      tokenInputMode === TokenInputMode.MASKED
+                        ? '**********************************************'
+                        : formik.values.token
+                    }
+                    onBlur={handleTokenInputBlur}
+                    onFocus={handleTokenInputFocus}
                     error={
                       formik.touched.token && formik.errors.token
                         ? formik.errors.token
                         : undefined
                     }
                     placeholder="Access token for the remote model endpoint"
+                    type={tokenInputMode}
                   />
                   <p
                     className="text-[0.95rem] text-white underline cursor-pointer pt-4"
+                    style={{ width: 'fit-content' }}
                     onClick={() => setShowMoreConfig(true)}>
                     More Configs
                   </p>
@@ -247,6 +307,8 @@ function NewEndpointForm(props: NewEndpointFormProps) {
                     type="button"
                     text="Cancel"
                     onClick={onClose}
+                    hoverBtnColor={colors.moongray[800]}
+                    pressedBtnColor={colors.moongray[700]}
                   />
                   <Button
                     mode={ButtonType.PRIMARY}
@@ -255,6 +317,8 @@ function NewEndpointForm(props: NewEndpointFormProps) {
                     type="submit"
                     text="Save"
                     onClick={() => formik.handleSubmit()}
+                    hoverBtnColor={colors.moongray[1000]}
+                    pressedBtnColor={colors.moongray[900]}
                   />
                 </div>
               </div>
@@ -312,6 +376,8 @@ function NewEndpointForm(props: NewEndpointFormProps) {
                     type="button"
                     text="OK"
                     onClick={handleConfigOkClick}
+                    hoverBtnColor={colors.moongray[800]}
+                    pressedBtnColor={colors.moongray[700]}
                   />
                 </div>
               </div>

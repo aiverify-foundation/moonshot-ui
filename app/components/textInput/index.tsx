@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React, {
   ChangeEventHandler,
+  FocusEventHandler,
   KeyboardEventHandler,
   useEffect,
   useRef,
@@ -13,6 +14,7 @@ type TextInputProps = {
   label?: string;
   description?: string;
   placeholder?: string;
+  type?: 'text' | 'password';
   disabled?: boolean;
   error?: string;
   value?: string;
@@ -23,8 +25,9 @@ type TextInputProps = {
   inputStyles?: React.CSSProperties;
   labelStyles?: React.CSSProperties;
   onChange?: ChangeEventHandler<HTMLInputElement>;
-  onBlur?: ChangeEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
   onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
+  onFocus?: FocusEventHandler<HTMLInputElement>;
 };
 
 function TextInput(props: TextInputProps) {
@@ -34,6 +37,7 @@ function TextInput(props: TextInputProps) {
     label,
     description,
     placeholder,
+    type = 'text',
     disabled,
     error,
     maxLength,
@@ -46,6 +50,7 @@ function TextInput(props: TextInputProps) {
     onChange,
     onBlur,
     onKeyDown,
+    onFocus,
   } = props;
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -79,7 +84,7 @@ function TextInput(props: TextInputProps) {
         <input
           ref={inputRef}
           disabled={disabled}
-          type="text"
+          type={type}
           name={name}
           placeholder={placeholder}
           value={value}
@@ -87,6 +92,7 @@ function TextInput(props: TextInputProps) {
           onChange={onChange}
           onBlur={onBlur}
           onKeyDown={onKeyDown}
+          onFocus={onFocus}
           style={inputStyles}
           autoComplete="off"
         />

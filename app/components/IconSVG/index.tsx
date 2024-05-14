@@ -1,6 +1,5 @@
 import { ReactElement } from 'react';
 
-import { useAppSelector } from '@/lib/redux';
 import { ArrowLeftIcon } from './icons/arrow-left-icon';
 import { ArrowRightIcon } from './icons/arrow-right-icon';
 import { AsteriskIcon } from './icons/asterisk-icon';
@@ -30,6 +29,7 @@ import { LightningIcon } from './icons/lightning-icon';
 import { ListIcon } from './icons/list-icon';
 import { MaximizeIcon } from './icons/maximize-icon';
 import { MinimizeIcon } from './icons/minimize-icon';
+import { PencilIcon } from './icons/pencil-icon';
 import { PlusIcon } from './icons/plus-icon';
 import { ResetIcon } from './icons/reset-icon';
 import { RibbonIcon } from './icons/ribbon-icon';
@@ -85,6 +85,7 @@ enum IconName {
   TalkBubbles,
   Document,
   Warning,
+  Pencil,
 }
 
 type IconProps = {
@@ -478,6 +479,15 @@ function Icon(props: IconProps) {
     case IconName.Warning:
       iconToRender = (
         <WarningIcon
+          outlineColor={color}
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Pencil:
+      iconToRender = (
+        <PencilIcon
           outlineColor={color}
           width={size}
           height={size}

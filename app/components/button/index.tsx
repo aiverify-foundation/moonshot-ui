@@ -26,7 +26,7 @@ type ButtonProps = {
   disabled?: boolean;
   size?: 'sm' | 'md' | 'lg';
   width?: React.CSSProperties['width'];
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 function Button(props: ButtonProps) {

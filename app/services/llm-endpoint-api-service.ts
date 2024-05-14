@@ -35,14 +35,43 @@ const llmEndpointApi = createApi({
         };
       },
     }),
+    updateLLMEndpoint: builder.mutation<
+      LLMEndpointFormValues,
+      { id: string; endpointDetails: LLMEndpointFormValues }
+    >({
+      query: ({ id, endpointDetails }) => {
+        let body: LLMEndpointFormValues;
+        try {
+          body =
+            endpointDetails.params != undefined
+              ? {
+                  ...endpointDetails,
+                  params: JSON.parse(endpointDetails.params),
+                }
+              : endpointDetails;
+        } catch (e) {
+          console.error(e);
+          body = endpointDetails;
+        }
+        return {
+          url: `api/v1/llm_endpoints/${id}`,
+          method: 'PUT',
+          body,
+        };
+      },
+    }),
   }),
 });
 
-const { useGetLLMEndpointsQuery, useCreateLLMEndpointMutation } =
-  llmEndpointApi;
+const {
+  useGetLLMEndpointsQuery,
+  useCreateLLMEndpointMutation,
+  useUpdateLLMEndpointMutation,
+} = llmEndpointApi;
 
 export {
   llmEndpointApi,
   useGetLLMEndpointsQuery,
   useCreateLLMEndpointMutation,
+  useUpdateLLMEndpointMutation,
 };

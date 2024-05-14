@@ -43,6 +43,7 @@ type LLMEndpoint = {
   token: string;
   max_calls_per_second: number;
   max_concurrency: number;
+  created_date: string;
   params?: Record<string, string | number>;
 };
 

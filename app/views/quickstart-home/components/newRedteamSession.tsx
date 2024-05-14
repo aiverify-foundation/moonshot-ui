@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { RedTeamingViewSteps } from '@/app/views/quickstart-home/enums';
-import { ModelSelectView } from './endpointsSelector';
+import { EndpointSelectVew } from '@/app/views/models-management/endpointsSelector';
 import { MainSectionSurface } from './mainSectionSurface';
 import { SessionDetailsForm } from './sessionDetailsForm';
 
@@ -45,7 +45,10 @@ function NewRedTeamSession(props: Props) {
   return (
     <MainSectionSurface onCloseIconClick={handleCloseView}>
       {currentStep == RedTeamingViewSteps.SELECT_MODEL && (
-        <ModelSelectView onModelSelectClick={handleModelSelectClick} changeView={() => null}/>
+        <EndpointSelectVew
+          onModelSelectClick={handleModelSelectClick}
+          changeView={() => null}
+        />
       )}
       {currentStep == RedTeamingViewSteps.SESSION_DETAILS && (
         <SessionDetailsForm selectedEndpoints={selectedModels} />

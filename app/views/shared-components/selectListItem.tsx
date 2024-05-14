@@ -9,6 +9,7 @@ type Props<T> = {
   checked?: boolean;
   onClick: (item: T) => void;
   iconName: IconName;
+  children?: React.ReactNode;
 };
 
 function SelectListItem<T>(props: Props<T>) {
@@ -20,6 +21,7 @@ function SelectListItem<T>(props: Props<T>) {
     height,
     bgColor,
     checked = false,
+    children,
   } = props;
   const [isChecked, setIsChecked] = useState(checked);
 
@@ -34,10 +36,9 @@ function SelectListItem<T>(props: Props<T>) {
 
   return (
     <li
-      className="flex flex-row gap-2 border dark:border-moongray-200
-        bg-moongray-950 rounded-xl p-4 px-6 items-center cursor-pointer
-        hover:bg-moongray-800 hover:border-moonwine-700
-        dark:hover:bg-moongray-900 mb-[15px] justify-between"
+      className="flex gap-2 border bg-moongray-950 rounded-xl
+          p-4 px-6 items-center cursor-pointer
+        hover:bg-moongray-800 hover:border-moonwine-700 mb-[15px]"
       style={{
         flexBasis: '49%',
         height,
@@ -45,10 +46,13 @@ function SelectListItem<T>(props: Props<T>) {
         transition: 'background-color 0.2s ease-in-out',
       }}
       onClick={handleClick}>
-      <div className="flex flex-row gap-2 text-white justify-center items-center">
-        <Icon name={iconName} />
-        <h4 className="text-[1rem]">{label}</h4>
-      </div>
+      <section className="flex flex-col w-full justify-start gap-3">
+        <div className="flex flex-row gap-2 text-white">
+          <Icon name={iconName} />
+          <h4 className="text-[1rem]">{label}</h4>
+        </div>
+        {children}
+      </section>
       <input
         type="checkbox"
         className="w-4 h-4 shrink-0"
