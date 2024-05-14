@@ -1,6 +1,6 @@
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
-import { colors } from '../customColors';
+import { colors } from '@/app/views/shared-components/customColors';
 
 type ModalProps = {
   width?: React.CSSProperties['width'];
