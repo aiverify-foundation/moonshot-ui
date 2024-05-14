@@ -9,7 +9,12 @@ import { ModelSelectView } from '@/app/views/quickstart-home/components/endpoint
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 import { Modal } from '@/app/views/shared-components/modal/modal';
-import { useAppSelector } from '@/lib/redux';
+import {
+  resetBenchmarkCookbooks,
+  resetBenchmarkModels,
+  useAppDispatch,
+  useAppSelector,
+} from '@/lib/redux';
 import { BenchmarkDefaultSelection } from './benchmarkDefaultSelection';
 import { BenchmarkMainCookbooksPromptCount } from './benchmarkMainCookbooksPromptCount';
 import BenchmarkRunForm from './benchmarkRunForm';
@@ -20,6 +25,7 @@ const flowSteps = ['Your LLM', 'Recommended Tests', 'Connect Endpoint', 'Run'];
 
 function BenchmarkNewSessionFlow() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
   );
@@ -70,6 +76,12 @@ function BenchmarkNewSessionFlow() {
 
   function handleOnCloseIconClick() {
     setShowExitModal(true);
+  }
+
+  function handleExitWorkflow() {
+    dispatch(resetBenchmarkCookbooks());
+    dispatch(resetBenchmarkModels());
+    router.push('/benchmarking');
   }
 
   let stepIndex = 0;
@@ -159,7 +171,7 @@ function BenchmarkNewSessionFlow() {
           secondaryBtnLabel="Cancel"
           enableScreenOverlay
           onCloseIconClick={() => setShowExitModal(false)}
-          onPrimaryBtnClick={() => router.push('/benchmarking')}
+          onPrimaryBtnClick={handleExitWorkflow}
           onSecondaryBtnClick={() => setShowExitModal(false)}>
           <p className="text-[0.9rem] pt-3">
             If you exit this workflow now, your progress will not be saved.{' '}
