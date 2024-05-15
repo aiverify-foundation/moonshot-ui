@@ -23,16 +23,17 @@ type MoonshotConfig = {
 
 const config: MoonshotConfig = {
   baselineSelectedCookbooks: [
-    'legal-summarisation',
-    'cbbq-amb-cookbook',
-    'cbbq-disamb-cookbook',
+    'mlc-ai-safety',
+    'common-risk-easy',
+    'common-risk-hard',
   ],
   defaultCookbooksForSelection: [
     'evaluation-catalogue-cookbook',
     'chinese-safety-cookbook',
     'tamil-language-cookbook',
     'leaderboard-cookbook',
-    // 'truthful-cookbook',
+    'legal-summarisation',
+    'medical-llm-leaderboard',
   ],
   cookbookCategoriesTabs: [
     { id: 'quality', label: 'Quality', categoryNames: ['quality'] },
