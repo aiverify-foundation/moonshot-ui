@@ -58,6 +58,7 @@ function SelectListItem<T>(props: Props<T>) {
         type="checkbox"
         className="w-4 h-4 shrink-0"
         checked={isChecked}
+        readOnly
       />
     </li>
   );
