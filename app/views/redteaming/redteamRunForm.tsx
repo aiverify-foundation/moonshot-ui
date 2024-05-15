@@ -5,9 +5,9 @@ import { object, string, array } from 'yup';
 import { Button, ButtonType } from '@/app/components/button';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
+import { useCreateSessionMutation } from '@/app/services/session-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
 import { useAppSelector } from '@/lib/redux';
-import { useCreateSessionMutation } from '@/app/services/session-api-service';
 
 const initialFormValues: RedteamRunFormValues = {
   name: '',
