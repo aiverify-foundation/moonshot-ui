@@ -93,6 +93,7 @@ function RedteamNewSessionFlow() {
 
   function handleExitWorkflow() {
     dispatch(resetRedteamModels());
+    dispatch(resetAttackModule());
     router.push('/');
   }
 
