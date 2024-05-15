@@ -2,57 +2,39 @@ import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import useModelsList from '@/app/hooks/useLLMEndpointList';
 import { formatDate } from '@/app/lib/date-utils';
-import { BenchmarkNewSessionViews } from '@/app/views/benchmarking/enums';
 import { SelectListItem } from '@/app/views/shared-components/selectListItem';
-import {
-  addBenchmarkModels,
-  removeBenchmarkModels,
-  useAppDispatch,
-  useAppSelector,
-} from '@/lib/redux';
 import tailwindConfig from '@/tailwind.config';
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
 type EndpointSelectViewProps = {
-  onModelSelectClick: (model: LLMEndpoint) => void;
-  changeView: (view: BenchmarkNewSessionViews, data?: LLMEndpoint) => void;
+  totalSelected: number;
+  selectedModels: LLMEndpoint[];
+  onModelClick: (model: LLMEndpoint) => void;
+  onEditClick: (model: LLMEndpoint) => void;
+  onCreateClick: () => void;
 };
 
 function EndpointSelectVew(props: EndpointSelectViewProps) {
-  const { changeView, onModelSelectClick } = props;
+  const {
+    totalSelected,
+    selectedModels,
+    onModelClick,
+    onEditClick,
+    onCreateClick,
+  } = props;
   const { models, isLoading } = useModelsList();
-  const dispatch = useAppDispatch();
-
-  const selectedEnpointsForBenchmark = useAppSelector(
-    (state) => state.benchmarkModels.entities
-  );
-
-  function handleModelClick(model: LLMEndpoint) {
-    if (
-      selectedEnpointsForBenchmark.find((endpoint) => endpoint.id === model.id)
-    ) {
-      dispatch(removeBenchmarkModels([model]));
-    } else {
-      dispatch(addBenchmarkModels([model]));
-    }
-    onModelSelectClick(model);
-  }
-
-  function handleEditEndpointClick(model: LLMEndpoint) {
-    changeView(BenchmarkNewSessionViews.EDIT_ENDPOINT_FORM, model);
-  }
 
   return (
     <div className="flex flex-col pt-4 gap-8 pb-4 h-[80%]">
       <section className="flex flex-col items-center gap-3">
         <h2 className="text-[1.6rem] font-medium tracking-wide text-white w-full text-center">
-          {selectedEnpointsForBenchmark.length > 0 ? (
+          {totalSelected > 0 ? (
             <>
               <span
                 className="text-[2rem] pr-2"
                 style={{ color: colors.moonpurplelight }}>
-                {selectedEnpointsForBenchmark.length}
-              </span>{' '}
+                {totalSelected}
+              </span>
               Endpoint(s) to be tested
             </>
           ) : (
@@ -69,7 +51,7 @@ function EndpointSelectVew(props: EndpointSelectViewProps) {
           type="button"
           leftIconName={IconName.Plus}
           hoverBtnColor={colors.moongray[800]}
-          onClick={() => changeView(BenchmarkNewSessionViews.NEW_ENDPOINT_FORM)}
+          onClick={onCreateClick}
         />
       </section>
       <div className="relative flex flex-col min-h-[300px] px-[10%] w-[100%] h-full items-center">
@@ -84,14 +66,13 @@ function EndpointSelectVew(props: EndpointSelectViewProps) {
             style={{ height: 'calc(100% - 50px)' }}>
             {models.map((model) => {
               const isSelected =
-                selectedEnpointsForBenchmark.find(
-                  (endpoint) => endpoint.id === model.id
-                ) !== undefined;
+                selectedModels.find((endpoint) => endpoint.id === model.id) !==
+                undefined;
               return (
                 <SelectListItem<LLMEndpoint>
                   key={model.id}
                   label={model.name}
-                  onClick={handleModelClick}
+                  onClick={() => onModelClick(model)}
                   iconName={IconName.OutlineBox}
                   item={model}
                   checked={isSelected}
@@ -112,7 +93,7 @@ function EndpointSelectVew(props: EndpointSelectViewProps) {
                       pressedBtnColor={colors.moongray[900]}
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleEditEndpointClick(model);
+                        onEditClick(model);
                       }}
                     />
                   </div>
@@ -120,13 +101,11 @@ function EndpointSelectVew(props: EndpointSelectViewProps) {
               );
             })}
             <li
-              className="flex flex-row gap-2 border border-dashed dark:border-moongray-200
+              className="flex flex-row gap-2 border border-dashed 
                 bg-moongray-950 rounded-xl p-8 items-center cursor-pointer
-                dark:hover:bg-moongray-900 mb-[15px] justify-between h-[100px]"
+                mb-[15px] justify-between h-[100px]"
               style={{ flexBasis: '49%' }}
-              onClick={() =>
-                changeView(BenchmarkNewSessionViews.NEW_ENDPOINT_FORM)
-              }>
+              onClick={onCreateClick}>
               <div className="flex flex-col w-full">
                 <h4 className="text-white text-center text-[1rem]">
                   Testing a new Endpoint?

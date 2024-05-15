@@ -10,6 +10,8 @@ import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 import { Modal } from '@/app/views/shared-components/modal/modal';
 import {
+  addBenchmarkModels,
+  removeBenchmarkModels,
   resetBenchmarkCookbooks,
   resetBenchmarkModels,
   useAppDispatch,
@@ -28,6 +30,9 @@ function BenchmarkNewSessionFlow() {
   const dispatch = useAppDispatch();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
+  );
+  const selectedModels = useAppSelector(
+    (state) => state.benchmarkModels.entities
   );
   const [currentView, setCurrentView] = useState<BenchmarkNewSessionViews>(
     BenchmarkNewSessionViews.TOPICS_SELECTION
@@ -90,6 +95,14 @@ function BenchmarkNewSessionFlow() {
     router.push('/benchmarking');
   }
 
+  function handleModelClick(model: LLMEndpoint) {
+    if (selectedModels.find((endpoint) => endpoint.id === model.id)) {
+      dispatch(removeBenchmarkModels([model]));
+    } else {
+      dispatch(addBenchmarkModels([model]));
+    }
+  }
+
   let stepIndex = 0;
   let surfaceColor = colors.moongray['950'];
   let view: React.ReactElement | undefined;
@@ -137,8 +150,15 @@ function BenchmarkNewSessionFlow() {
       stepIndex = 2;
       view = (
         <EndpointSelectVew
-          onModelSelectClick={(model) => console.dir(model)}
-          changeView={changeView<LLMEndpoint>}
+          selectedModels={selectedModels}
+          totalSelected={selectedModels.length}
+          onModelClick={handleModelClick}
+          onEditClick={(model) =>
+            changeView(BenchmarkNewSessionViews.EDIT_ENDPOINT_FORM, model)
+          }
+          onCreateClick={() =>
+            changeView(BenchmarkNewSessionViews.NEW_ENDPOINT_FORM)
+          }
         />
       );
       break;
