@@ -30,7 +30,8 @@ function SelectListItem<T>(props: Props<T>) {
   } = props;
   const [isChecked, setIsChecked] = useState(checked);
 
-  function handleClick() {
+  function handleClick(e: React.MouseEvent<HTMLElement>) {
+    e.stopPropagation();
     setIsChecked((prev) => !prev);
     onClick(item);
   }
@@ -64,7 +65,6 @@ function SelectListItem<T>(props: Props<T>) {
           type="checkbox"
           className="w-4 h-4 shrink-0"
           checked={isChecked}
-          onChange={handleClick}
         />
       )}
     </li>
