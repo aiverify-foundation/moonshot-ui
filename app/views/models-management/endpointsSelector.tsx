@@ -27,7 +27,7 @@ function EndpointSelectVew(props: EndpointSelectViewProps) {
   return (
     <div className="flex flex-col pt-4 gap-8 pb-4 h-[80%]">
       <section className="flex flex-col items-center gap-3">
-        <h2 className="text-[1.6rem] font-medium tracking-wide text-white w-full text-center">
+        <h2 className="text-[1.6rem] leading-[2rem] height-[2rem] font-medium tracking-wide text-white w-full text-center">
           {totalSelected > 0 ? (
             <>
               <span
@@ -63,7 +63,7 @@ function EndpointSelectVew(props: EndpointSelectViewProps) {
         ) : (
           <ul
             className="flex flex-row flex-wrap gap-[2%] w-[100%] overflow-y-auto custom-scrollbar px-4"
-            style={{ height: 'calc(100% - 50px)' }}>
+            style={{ height: '100%' }}>
             {models.map((model) => {
               const isSelected =
                 selectedModels.find((endpoint) => endpoint.id === model.id) !==

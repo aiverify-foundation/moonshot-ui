@@ -108,6 +108,13 @@ type Dataset = {
   examples: string[];
 };
 
+type AttackModule = {
+  id: string;
+  name: string;
+  description: string;
+  hash: string[];
+};
+
 type BenchmarkRunFormValues = {
   run_name: string;
   description: string;
@@ -117,6 +124,18 @@ type BenchmarkRunFormValues = {
   inputs: string[];
   endpoints: string[];
   random_seed: string;
+};
+
+type RedteamRunFormValues = {
+  name: string;
+  description: string;
+  endpoints: string[];
+  prompt_template?: string;
+  context_strategy?: string;
+  cs_num_of_prev_prompts?: number;
+  attack_module?: string;
+  metric?: string;
+  system_prompt?: string;
 };
 
 type PushEvent = {

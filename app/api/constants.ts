@@ -9,5 +9,5 @@ export const basePathRecipes = '/v1/recipes';
 export const basePathBenchmarks = '/v1/benchmarks';
 export const basePathDatasets = '/v1/datasets';
 export const basePathMetric = '/v1/metrics';
-export const basePathAttackModules = '/v1/attack_modules';
+export const basePathAttackModules = '/v1/attack_modules/metadata';
 export const basePathRunners = '/v1/runners';

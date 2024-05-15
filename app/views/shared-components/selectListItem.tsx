@@ -1,15 +1,18 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IconName, Icon } from '@/app/components/IconSVG';
+import { Tooltip } from '@/app/components/tooltip';
 
 type Props<T> = {
   item: T;
   label: string;
   height?: number;
-  bgColor?: string;
+  bgColor?: React.CSSProperties['backgroundColor'];
+  hideCheckbox?: boolean;
   checked?: boolean;
   onClick: (item: T) => void;
   iconName: IconName;
   children?: React.ReactNode;
+  style?: React.CSSProperties;
 };
 
 function SelectListItem<T>(props: Props<T>) {
@@ -20,8 +23,10 @@ function SelectListItem<T>(props: Props<T>) {
     iconName,
     height,
     bgColor,
+    hideCheckbox = false,
     checked = false,
     children,
+    style,
   } = props;
   const [isChecked, setIsChecked] = useState(checked);
 
@@ -44,6 +49,7 @@ function SelectListItem<T>(props: Props<T>) {
         height,
         backgroundColor: bgColor,
         transition: 'background-color 0.2s ease-in-out',
+        ...style,
       }}
       onClick={handleClick}>
       <section className="flex flex-col w-full justify-start gap-3">
@@ -53,12 +59,14 @@ function SelectListItem<T>(props: Props<T>) {
         </div>
         {children}
       </section>
-      <input
-        type="checkbox"
-        className="w-4 h-4 shrink-0"
-        checked={isChecked}
-        onChange={handleClick}
-      />
+      {!hideCheckbox && (
+        <input
+          type="checkbox"
+          className="w-4 h-4 shrink-0"
+          checked={isChecked}
+          onChange={handleClick}
+        />
+      )}
     </li>
   );
 }

@@ -3,13 +3,6 @@ import { proxyPathSessions } from './constants';
 import { getHostAndPort } from './host';
 
 const [host, port] = getHostAndPort();
-type CreateSessionParams = {
-  name: string;
-  description: string;
-  prompt_template?: string;
-  context_strategy?: string;
-  endpoints: string[];
-};
 
 type SendPromptQueryParams = {
   session_id: string;
@@ -20,7 +13,7 @@ const sessionApi = createApi({
   reducerPath: 'sessionApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
-    createSession: builder.mutation<Session, CreateSessionParams>({
+    createSession: builder.mutation<Session, RedteamRunFormValues>({
       query: ({
         name,
         description,

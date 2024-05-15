@@ -46,8 +46,11 @@ function NewRedTeamSession(props: Props) {
     <MainSectionSurface onCloseIconClick={handleCloseView}>
       {currentStep == RedTeamingViewSteps.SELECT_MODEL && (
         <EndpointSelectVew
-          onModelSelectClick={handleModelSelectClick}
-          changeView={() => null}
+          onModelClick={handleModelSelectClick}
+          totalSelected={selectedModels.length}
+          selectedModels={selectedModels}
+          onEditClick={() => null}
+          onCreateClick={() => null}
         />
       )}
       {currentStep == RedTeamingViewSteps.SESSION_DETAILS && (
