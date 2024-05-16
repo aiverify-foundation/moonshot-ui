@@ -1,7 +1,7 @@
 import { MutableRefObject, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
-import { calcCentralizedWindowXY, getWindowId } from '@/app/lib/window-utils';
+import { getWindowId } from '@/app/lib/window-utils';
 import { ChatBox } from './chatbox';
 import { getDefaultChatBoxSizes } from './chatbox-slide-box-sizes';
 
@@ -20,7 +20,7 @@ type ChatSlideLayoutProps = {
     scrollPosition: number,
     windowId: string
   ) => void;
-  handleOnWheel: (e: React.WheelEvent<HTMLDivElement>) => void;
+  handleOnWheel?: (e: React.WheelEvent<HTMLDivElement>) => void;
 };
 
 type SlidesIndexBtnsProps = {

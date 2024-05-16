@@ -33,7 +33,7 @@ type ChatFreeLayoutProps = {
     scrollPosition: number,
     windowId: string
   ) => void;
-  handleOnWheel: (e: React.WheelEvent<HTMLDivElement>) => void;
+  handleOnWheel?: (e: React.WheelEvent<HTMLDivElement>) => void;
 };
 
 function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
