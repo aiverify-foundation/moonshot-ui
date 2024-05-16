@@ -91,6 +91,7 @@ function SessionsExplorer(props: SessionsExplorerProps) {
     if (selectedSession) {
       const result = await triggerGetSession(selectedSession);
       if (result.data) {
+        // @ts-ignore
         dispatch(setActiveSession(result.data));
         onResumeSessionClick();
       }

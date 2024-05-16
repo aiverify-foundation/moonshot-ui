@@ -1,9 +1,9 @@
 import { forwardRef, useState } from 'react';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
+import { colors } from '@/app/views/shared-components/customColors';
 import { useAppSelector } from '@/lib/redux';
 import { PromptBubbleInfo } from './prompt-bubble-info';
 import { Chat } from '@components/chat';
-import { colors } from '../../shared-components/customColors';
 
 type ChatBoxProps = {
   windowId: string;

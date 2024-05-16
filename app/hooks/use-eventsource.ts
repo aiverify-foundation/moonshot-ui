@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { AppEventTypes } from '@/app/types/enums';
 
 function initSSE() {
   fetch('/api/v1/status', {

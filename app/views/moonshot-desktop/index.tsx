@@ -9,7 +9,6 @@ import {
   getWindowSizeById,
   getWindowXYById,
 } from '@/app/lib/window-utils';
-import { ManualRedTeaming } from '@/app/views/redteaming/red-teaming-session';
 import { EndpointsExplorer } from '@/app/views/models-management/endpoints-explorer';
 import {
   addOpenedWindowId,
@@ -285,13 +284,6 @@ export default function MoonshotDesktop() {
           initialSize={getWindowSizeById(windowsMap, WindowIds.RECIPES)}
           onWindowChange={handleOnWindowChange}
           onCloseClick={() => setIsRecipesExplorerOpen(false)}
-        />
-      ) : null}
-
-      {openedWindowIds.includes(getWindowId(WindowIds.RED_TEAMING_SESSION)) ? (
-        <ManualRedTeaming
-          zIndex={Z_Index.Level_2}
-          onCloseBtnClick={handleManualRedteamingSessionCloseClick}
         />
       ) : null}
 

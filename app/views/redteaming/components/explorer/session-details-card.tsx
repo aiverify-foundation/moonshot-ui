@@ -23,10 +23,6 @@ function SessionDetailsCard(props: SessionDetailsCardProps) {
         value={session.endpoints.map((endpoint) => endpoint).join(', ')}
       />
       <KeyValueDisplay
-        label="Metadata File"
-        value={session.metadata_file}
-      />
-      <KeyValueDisplay
         label="Created At"
         value={new Date(session.created_epoch * 1000).toLocaleString()}
       />

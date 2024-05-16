@@ -1,8 +1,8 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
-import { Button, ButtonType } from '@/app/components/button';
+import { useEventSource } from '@/app/hooks/use-eventsource';
 import {
   useSendPromptMutation,
   useSetPromptTemplateMutation,
@@ -21,6 +21,7 @@ import { updateChatHistory } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { Z_Index } from '@views/moonshot-desktop/constants';
 import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTemplateList';
+import { AppEventTypes } from '@/app/types/enums';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -41,6 +42,10 @@ function ManualRedTeamingV2(props: ActiveSessionProps) {
   const [selectedPromptTemplate, setSelectedPromptTemplate] = useState<
     PromptTemplate | undefined
   >(undefined);
+  const [eventData, closeEventSource] = useEventSource<
+    ArtStatus,
+    AppEventTypes
+  >('/api/v1/redteaming/stream', AppEventTypes.REDTEAM_UPDATE);
 
   let layoutMode = useAppSelector((state) => state.chatLayoutMode.value);
 
@@ -212,6 +217,21 @@ function ManualRedTeamingV2(props: ActiveSessionProps) {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (eventData) {
+      if (!eventData.current_runner_id) return;
+      const id = eventData.current_runner_id;
+      console.log('eventData', eventData);
+    }
+  }, [eventData]);
+
+  React.useEffect(() => {
+    return () => {
+      console.debug('Unmount status. Closing event source');
+      closeEventSource();
     };
   }, []);
 

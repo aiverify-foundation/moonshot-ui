@@ -24,13 +24,12 @@ const sessionApi = createApi({
           attack_module,
         },
       }),
-      transformResponse: (response: { session: Session }) => response.session,
     }),
     getAllSessions: builder.query<Session[], void>({
       query: () => ({ url: proxyPathSessions }),
       keepUnusedDataFor: 0,
     }),
-    getSession: builder.query<Session, Session>({
+    getSession: builder.query<Session, { session_id: string }>({
       query: ({ session_id }) => ({
         url: `${proxyPathSessions}/${session_id}`,
       }),

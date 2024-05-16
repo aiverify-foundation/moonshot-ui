@@ -7,7 +7,13 @@ import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
 import { useCreateSessionMutation } from '@/app/services/session-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
-import { setActiveSession, useAppDispatch, useAppSelector } from '@/lib/redux';
+import {
+  resetAttackModule,
+  resetRedteamModels,
+  setActiveSession,
+  useAppDispatch,
+  useAppSelector,
+} from '@/lib/redux';
 
 const initialFormValues: RedteamRunFormValues = {
   name: '',
@@ -50,8 +56,9 @@ function RedteamRunForm() {
       console.error(response.error);
       return;
     }
-    dispatch(setActiveSession(response.data));
-    router.push(`/`);
+    dispatch(resetRedteamModels());
+    dispatch(resetAttackModule());
+    router.push(`/redteaming/session/${response.data.session_id}`);
   }
 
   useEffect(() => {

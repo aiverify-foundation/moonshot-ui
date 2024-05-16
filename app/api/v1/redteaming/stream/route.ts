@@ -1,40 +1,20 @@
 import { NextResponse } from 'next/server';
-import { getSSEWriter } from './sse_writer';
-import { appEventBus } from '@api/eventbus';
-import { BenchMarkEvents, RedTeamEvents, SystemEvents } from '@api/types';
+import { encoder, sseWriter, stream, writer } from './util';
+import { RedTeamEvents, SystemEvents } from '@api/types';
 import { AppEventTypes } from '@apptypes/enums';
-
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
-  const stream = new TransformStream();
-  const writer = stream.writable.getWriter();
-  const encoder = new TextEncoder();
-  const sseWriter = getSSEWriter(writer, encoder);
-  let isConnectionClosed = false;
+let isConnectionClosed = false;
+let heartbeatInterval: NodeJS.Timeout;
 
-  appEventBus.on(AppEventTypes.REDTEAM_UPDATE, (data: ArtStatus) => {
-    console.log('ART Data received from webhook', {
-      runner_id: data.current_runner_id,
-      current_status: data.current_status,
-    });
-    try {
-      if ('current_runner_id' in data) {
-        (sseWriter as RedTeamEvents).update({
-          data,
-          event: AppEventTypes.REDTEAM_UPDATE,
-        });
-      }
-    } catch (error) {
-      console.error('Error writing to SSE ART stream', error);
-    }
-  });
+export async function GET() {
   // Heartbeat mechanism
-  const heartbeatInterval = setInterval(() => {
-    console.log('Sending SSE RT heartbeat');
+  isConnectionClosed = true;
+  clearInterval(heartbeatInterval);
+  heartbeatInterval = setInterval(() => {
+    console.log('Sending ART SSE heartbeat');
     writer.write(encoder.encode(': \n\n')).catch(() => {
       isConnectionClosed = true;
-      appEventBus.removeAllListeners(AppEventTypes.REDTEAM_UPDATE);
       clearInterval(heartbeatInterval);
       console.error(
         'Error writing heartbeat to SSE ART stream. This is expected if SSE connection was closed. Cleaning up SSE ART resources.'
@@ -42,8 +22,8 @@ export async function GET() {
     });
   }, 10000);
 
-  const eventStream = async (notifier: BenchMarkEvents | SystemEvents) => {
-    if (isConnectionClosed) {
+  const eventStream = async (notifier: RedTeamEvents | SystemEvents) => {
+    if (!isConnectionClosed) {
       return;
     }
     (notifier as SystemEvents).update({
