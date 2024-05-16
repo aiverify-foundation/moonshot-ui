@@ -19,16 +19,6 @@ type SessionData = {
   chat_records: Record<string, DialoguePairInfo[]>;
 };
 
-// type DialoguePairInfo = {
-//   chat_id: number;
-//   connection_id: string;
-//   context_strategy: number;
-//   prompt_template: string;
-//   prompt: string;
-//   prepared_prompt: string;
-//   predicted_result: string;
-//   duration: string;
-// };
 type DialoguePairInfo = {
   chat_record_id: number;
   conn_id: string;
@@ -183,7 +173,7 @@ type ArtStatus = {
   current_am_id: string;
   current_pt_id: string;
   current_cs_id: string;
-  current_chats: Array<Record<string, unknown>>;
+  current_chats: Record<string, DialoguePairInfo[]>;
   current_batch_size: string;
   current_status: string;
 };

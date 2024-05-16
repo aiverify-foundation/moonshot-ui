@@ -1,6 +1,5 @@
-import { handleRedTeamUpdate } from '@/app/api/v1/redteaming/stream/util';
-
-export const dynamic = 'force-dynamic';
+import { appEventBus } from '@/app/api/eventbus';
+import { AppEventTypes } from '@/app/types/enums';
 
 export async function POST(request: Request) {
   const body = (await request.json()) as ArtStatus;
@@ -9,7 +8,7 @@ export async function POST(request: Request) {
     current_status: body.current_status,
   });
 
-  handleRedTeamUpdate(body);
+  appEventBus.emit(AppEventTypes.REDTEAM_UPDATE, body);
   return new Response(
     JSON.stringify({ msg: 'Updates sent to ART SSE writer' })
   );
