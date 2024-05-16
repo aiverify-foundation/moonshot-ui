@@ -8,6 +8,7 @@ import {
   useSetPromptTemplateMutation,
   useUnsetPromptTemplateMutation,
 } from '@/app/services/session-api-service';
+import { AppEventTypes } from '@/app/types/enums';
 import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
@@ -21,7 +22,6 @@ import { updateChatHistory } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { Z_Index } from '@views/moonshot-desktop/constants';
 import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTemplateList';
-import { AppEventTypes } from '@/app/types/enums';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -31,7 +31,7 @@ type ActiveSessionProps = {
 
 const promptBoxId = 'prompt-box';
 
-function ManualRedTeamingV2(props: ActiveSessionProps) {
+function RedteamSessionChats(props: ActiveSessionProps) {
   const { sessionData } = props;
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -96,39 +96,6 @@ function ManualRedTeamingV2(props: ActiveSessionProps) {
   ] = useUnsetPromptTemplateMutation();
 
   const chatBoxRefs = useRef<HTMLDivElement[]>([]);
-  const isZKeyPressed = useRef(false);
-
-  const syncScroll = (deltaY: number) => {
-    chatBoxRefs.current.forEach((ref) => {
-      if (ref) {
-        ref.scrollTop += deltaY * 0.2;
-      }
-    });
-  };
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key.toLowerCase() === 'z') {
-      if (!(e.target instanceof HTMLInputElement)) {
-        e.preventDefault();
-        isZKeyPressed.current = true;
-      }
-    }
-  };
-
-  const handleKeyUp = (e: KeyboardEvent) => {
-    if (e.key.toLowerCase() === 'z') {
-      if (!(e.target instanceof HTMLInputElement)) {
-        e.preventDefault();
-        isZKeyPressed.current = true;
-      }
-    }
-  };
-
-  const handleOnWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    if (isZKeyPressed.current !== undefined && isZKeyPressed.current === true) {
-      syncScroll(e.deltaY);
-    }
-  };
 
   function handleOnWindowChange(
     x: number,
@@ -212,23 +179,15 @@ function ManualRedTeamingV2(props: ActiveSessionProps) {
   }, [sendPromptIsLoading]);
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-    };
-  }, []);
-
-  React.useEffect(() => {
     if (eventData) {
       if (!eventData.current_runner_id) return;
       const id = eventData.current_runner_id;
       console.log('eventData', eventData);
+      dispatch(updateChatHistory(eventData.current_chats));
     }
   }, [eventData]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     return () => {
       console.debug('Unmount status. Closing event source');
       closeEventSource();
@@ -304,7 +263,6 @@ function ManualRedTeamingV2(props: ActiveSessionProps) {
               selectedPromptTemplate={selectedPromptTemplate}
               promptText={promptText}
               handleOnWindowChange={handleOnWindowChange}
-              handleOnWheel={handleOnWheel}
             />
           ) : null}
 
@@ -317,7 +275,6 @@ function ManualRedTeamingV2(props: ActiveSessionProps) {
               selectedPromptTemplate={selectedPromptTemplate}
               promptText={promptText}
               handleOnWindowChange={handleOnWindowChange}
-              handleOnWheel={handleOnWheel}
             />
           ) : null}
         </div>
@@ -342,4 +299,4 @@ function ManualRedTeamingV2(props: ActiveSessionProps) {
   );
 }
 
-export { ManualRedTeamingV2 };
+export { RedteamSessionChats };
