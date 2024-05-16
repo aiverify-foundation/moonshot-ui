@@ -6,22 +6,42 @@ type Session = {
   created_datetime: string;
   chat_ids: string[];
   endpoints: string[];
-  metadata_file: string;
-  prompt_template: string;
-  context_strategy: number;
-  filename: string;
-  chat_history: Record<string, DialoguePairInfo[]>;
+  prompt_template?: string;
+  context_strategy?: string;
+  cs_num_of_prev_prompts?: number;
+  attack_module?: string;
+  metric?: string;
+  system_prompt?: string;
 };
 
+type SessionData = {
+  session: Session;
+  chat_records: Record<string, DialoguePairInfo[]>;
+};
+
+// type DialoguePairInfo = {
+//   chat_id: number;
+//   connection_id: string;
+//   context_strategy: number;
+//   prompt_template: string;
+//   prompt: string;
+//   prepared_prompt: string;
+//   predicted_result: string;
+//   duration: string;
+// };
 type DialoguePairInfo = {
-  chat_id: number;
-  connection_id: string;
-  context_strategy: number;
+  chat_record_id: number;
+  conn_id: string;
+  context_strategy: string;
   prompt_template: string;
+  attack_module: string;
+  metric: string;
   prompt: string;
   prepared_prompt: string;
+  system_prompt: string;
   predicted_result: string;
-  duration: string;
+  duration: number;
+  prompt_time: string;
 };
 
 //[x, y, w, h, scrollTop]
@@ -156,6 +176,16 @@ type TestStatus = {
   current_recipe_total: number;
   current_progress: number;
   current_error_messages: string[];
+};
+
+type ArtStatus = {
+  current_runner_id: string;
+  current_am_id: string;
+  current_pt_id: string;
+  current_cs_id: string;
+  current_chats: Array<Record<string, unknown>>;
+  current_batch_size: string;
+  current_status: string;
 };
 
 type TestStatuses = Record<string, TestStatus>;

@@ -1,9 +1,9 @@
-import { basePathPromptTemplates, hostURL } from '@api/constants';
+import config from '@/moonshot.config';
 
 export const dynamic = 'force-dynamic';
 export async function GET() {
   const response = await fetch(
-    `${hostURL}${basePathPromptTemplates}`,
+    `${config.webAPI.hostURL}${config.webAPI.basePathPromptTemplates}`,
     {
       method: 'GET',
     }

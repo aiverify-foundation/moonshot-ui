@@ -1,7 +1,8 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { Button, ButtonType } from '@/app/components/button';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { AttackModuleSelectView } from '@/app/views/attackmodules/attackModuleSelector';
 import { EndpointSelectVew } from '@/app/views/models-management/endpointsSelector';
@@ -19,7 +20,6 @@ import {
   useAppSelector,
 } from '@/lib/redux';
 import { RedteamingNewSessionViews } from './enums';
-import { Button, ButtonType } from '@/app/components/button';
 import { RedteamRunForm } from './redteamRunForm';
 
 const flowSteps = [

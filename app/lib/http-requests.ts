@@ -5,7 +5,9 @@ type ApiResult<T> = {
   data: T;
 };
 
-async function handleResponseBody<T>(response: Response): Promise<ApiResult<T> | ErrorWithMessage> {
+async function processResponse<T>(
+  response: Response
+): Promise<ApiResult<T> | ErrorWithMessage> {
   let result;
   try {
     const data = await response.json();
@@ -26,5 +28,5 @@ async function handleResponseBody<T>(response: Response): Promise<ApiResult<T> |
   }
 }
 
-export { handleResponseBody };
+export { processResponse };
 export type { ApiResult };

@@ -1,5 +1,6 @@
 import { PropsWithChildren, forwardRef } from 'react';
 import { Window } from '@/app/components/window';
+import { colors } from '../views/shared-components/customColors';
 
 type ChatboxProps = {
   windowId: string;
@@ -66,6 +67,7 @@ const Container = forwardRef(
         onWholeWindowClick={onWholeWindowClick}
         disableCloseIcon={disableCloseIcon}
         footerHeight={17}
+        backgroundColor={colors.moongray[950]}
         styles={{
           zIndex: 100,
           ...styles,

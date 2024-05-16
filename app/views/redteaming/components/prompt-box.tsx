@@ -36,7 +36,7 @@ type PromptBoxProps = {
   styles?: React.CSSProperties;
   promptTemplates: PromptTemplate[];
   activePromptTemplate?: PromptTemplate;
-  chatSession: Session;
+  chatSession: SessionData;
   onWindowChange?: (
     x: number,
     y: number,
@@ -306,7 +306,7 @@ function PromptBox(props: PromptBoxProps) {
       zIndex={zIndex}
       id={windowId}
       initialXY={initialXY}
-      initialWindowSize={[500, size === Size.LARGE ? 200 : 140]}
+      initialWindowSize={[500, size === Size.LARGE ? 190 : 130]}
       resizeable={false}
       draggable={draggable}
       disableCloseIcon
@@ -429,7 +429,7 @@ function PromptBox(props: PromptBoxProps) {
                 )}
               </div>
             </div>
-            <div
+            {/* <div
               className="flex items-center cursor-pointer gap-1"
               id="prompt-template-trigger"
               onClick={handleShowPromptTemplateList}>
@@ -440,27 +440,8 @@ function PromptBox(props: PromptBoxProps) {
               />
               <div className="flex items-center text-xs">
                 <span className="hover:opacity-60">Context Strategy</span>
-                {/* <div className="flex items-center">
-                    <div className="text-white ml-1">--</div>
-                    <div className="text-white ml-1">
-                      <div className="text-blue-400 text-sm flex items-center">
-                        <div
-                          className="mr-1 max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap"
-                          onMouseOver={() => null}
-                          onMouseOut={() => null}>
-                          not selected
-                        </div>
-                        <Icon
-                          name={IconName.Close}
-                          size={14}
-                          color="white"
-                          onClick={handleRemoveActivePromptTemplate}
-                        />
-                      </div>
-                    </div>
-                  </div> */}
               </div>
-            </div>
+            </div> */}
           </div>
 
           <button

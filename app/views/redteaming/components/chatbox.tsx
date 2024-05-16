@@ -3,6 +3,7 @@ import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { useAppSelector } from '@/lib/redux';
 import { PromptBubbleInfo } from './prompt-bubble-info';
 import { Chat } from '@components/chat';
+import { colors } from '../../shared-components/customColors';
 
 type ChatBoxProps = {
   windowId: string;
@@ -98,23 +99,12 @@ const ChatBox = forwardRef<HTMLDivElement, ChatBoxProps>((props, ref) => {
             <div className="self-end snap-top max-w-[90%]">
               <div className="flex items-center">
                 <Tooltip
-                  content="Select to bookmark"
-                  position={TooltipPosition.left}
-                  offsetLeft={-5}
-                  offsetTop={5}>
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4 mr-5 ml-2 shrink-0"
-                    onChange={() => null}
-                  />
-                </Tooltip>
-                <Tooltip
                   disabled={disableBubbleTooltips}
                   position={TooltipPosition.top}
                   contentMaxWidth={500}
                   contentMinWidth={300}
-                  backgroundColor={isDarkMode ? '#0f172a' : '#4c2b5d'}
-                  fontColor={isDarkMode ? '#FFFFFF' : '#000000'}
+                  backgroundColor={colors.moongray[700]}
+                  fontColor={colors.white}
                   offsetTop={-10}
                   content={
                     <PromptBubbleInfo

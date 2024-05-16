@@ -58,7 +58,7 @@ const config: MoonshotConfig = {
   webAPI: {
     hostURL: process.env.MOONSHOT_API_URL || 'http://localhost:5000',
     basePathSessions: '/api/v1/sessions',
-    basePathPromptTemplates: '/api/v1/prompt_templates',
+    basePathPromptTemplates: '/api/v1/prompt-templates',
     basePathConnectors: '/api/v1/connectors',
     basePathLLMEndpoints: '/api/v1/llm-endpoints',
     basePathCookbooks: '/api/v1/cookbooks',

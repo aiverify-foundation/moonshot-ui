@@ -31,6 +31,17 @@ export type BenchMarkEvents = EventNotifier<{
   };
 }>;
 
+export type RedTeamEvents = EventNotifier<{
+  update: {
+    data: ArtStatus;
+    event: AppEventTypes;
+  };
+  complete: {
+    data: ArtStatus;
+    event: AppEventTypes;
+  };
+}>;
+
 export type SystemEvents = EventNotifier<{
   update: {
     data: Record<string, string>;

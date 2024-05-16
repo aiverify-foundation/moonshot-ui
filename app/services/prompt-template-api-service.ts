@@ -7,8 +7,8 @@ const promptTemplateApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
     getPromptTemplates: builder.query<PromptTemplate[], void>({
-      query: () => 'api/v1/prompt_templates',
-      keepUnusedDataFor: 0,
+      query: () => 'api/v1/prompt-templates',
+      keepUnusedDataFor: 600,
     }),
   }),
 });

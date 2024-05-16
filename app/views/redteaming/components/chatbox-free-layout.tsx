@@ -10,7 +10,6 @@ import { useAppSelector } from '@/lib/redux';
 import { ChatBox } from './chatbox';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
 import useChatboxesPositionsUtils from '@views/redteaming/hooks/useChatboxesPositionsUtils';
-import { ChatBoxVirtualized } from './chatboxVirtualized';
 
 const minimizedStyle = {
   transform: 'scale(0.1)', // Scale down the chatbox
@@ -20,7 +19,7 @@ const minimizedStyle = {
 };
 
 type ChatFreeLayoutProps = {
-  chatSession: Session;
+  chatSession: SessionData;
   boxRefs: MutableRefObject<HTMLDivElement[]>;
   chatCompletionInProgress: boolean;
   promptTemplates: PromptTemplate[];
@@ -81,7 +80,7 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
   }, [isMaximizing]);
 
   return (
-    <div>
+    <>
       <div className="absolute top-[56px] w-full">
         <div
           className="absolute flex items-center 
@@ -101,15 +100,15 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
           </Tooltip>
         </div>
       </div>
-      {chatSession.chat_ids.map((id: string, index: number) => {
+      {chatSession.session.endpoints.map((id: string, index: number) => {
         const isMinimized = minizedChats.includes(getWindowId(id));
         const left = index * 20;
         return windowsMap[getWindowId(id)] ? (
           <ChatBox
             key={id}
             disableCloseIcon={
-              chatSession.chat_ids.length === 1 ||
-              chatSession.chat_ids.length - minizedChats.length === 1
+              chatSession.session.endpoints.length === 1 ||
+              chatSession.session.endpoints.length - minizedChats.length === 1
             }
             resizable
             draggable
@@ -122,7 +121,7 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
             initialSize={getWindowSizeById(windowsMap, id)}
             initialScrollTop={getWindowScrollTopById(windowsMap, id)}
             chatHistory={
-              chatSession.chat_history ? chatSession.chat_history[id] || [] : []
+              chatSession.chat_records ? chatSession.chat_records[id] || [] : []
             }
             promptTemplates={promptTemplates}
             currentPromptTemplate={selectedPromptTemplate}
@@ -147,7 +146,7 @@ function ChatboxFreeLayout(props: ChatFreeLayoutProps) {
           />
         ) : null;
       })}
-    </div>
+    </>
   );
 }
 

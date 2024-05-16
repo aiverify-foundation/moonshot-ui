@@ -3,7 +3,7 @@ export type ErrorWithMessage = Error & {
 };
 
 // utils to handle try-catch error in a typed manner, because caught error is always unknown
-function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
+export function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
   return (
     typeof error === 'object' &&
     error !== null &&

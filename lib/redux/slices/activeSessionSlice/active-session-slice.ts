@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 type ActiveSessionState = {
-  entity: Session | undefined;
+  entity: SessionData | undefined;
 };
 
 const initialState: ActiveSessionState = {
@@ -12,15 +12,18 @@ export const activeSessionSlice = createSlice({
   name: 'activeSession',
   initialState,
   reducers: {
-    setActiveSession: (state, action: PayloadAction<Session>) => {
+    setActiveSession: (state, action: PayloadAction<SessionData>) => {
       state.entity = action.payload;
     },
     removeActiveSession: (state) => {
       state.entity = undefined;
     },
-    updateChatHistory: (state, action: PayloadAction<Record<string, DialoguePairInfo[]>>) => {
+    updateChatHistory: (
+      state,
+      action: PayloadAction<Record<string, DialoguePairInfo[]>>
+    ) => {
       if (state.entity) {
-        state.entity.chat_history = action.payload;
+        state.entity.chat_records = action.payload;
       }
     },
   },

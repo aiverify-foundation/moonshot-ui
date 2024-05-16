@@ -7,7 +7,7 @@ import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
 import { useCreateSessionMutation } from '@/app/services/session-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
-import { useAppSelector } from '@/lib/redux';
+import { setActiveSession, useAppDispatch, useAppSelector } from '@/lib/redux';
 
 const initialFormValues: RedteamRunFormValues = {
   name: '',
@@ -24,6 +24,7 @@ const validationSchema = object().shape({
 
 function RedteamRunForm() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const attackModule = useAppSelector((state) => state.attackModule.entity);
   const selectedEndpoints = useAppSelector(
     (state) => state.redteamModels.entities
@@ -49,6 +50,7 @@ function RedteamRunForm() {
       console.error(response.error);
       return;
     }
+    dispatch(setActiveSession(response.data));
     router.push(`/`);
   }
 
