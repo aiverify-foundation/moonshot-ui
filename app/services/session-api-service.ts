@@ -14,21 +14,14 @@ const sessionApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
     createSession: builder.mutation<Session, RedteamRunFormValues>({
-      query: ({
-        name,
-        description,
-        endpoints,
-        prompt_template,
-        context_strategy,
-      }) => ({
+      query: ({ name, description, endpoints, attack_module }) => ({
         url: proxyPathSessions,
         method: 'POST',
         body: {
           name,
           description,
           endpoints,
-          prompt_template,
-          context_strategy,
+          attack_module,
         },
       }),
       transformResponse: (response: { session: Session }) => response.session,
