@@ -188,7 +188,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       if (!eventData.current_runner_id) return;
       const id = eventData.current_runner_id;
       console.log('eventData', eventData);
-      dispatch(updateChatHistory(eventData.current_chats));
+      dispatch(appendChatHistory(eventData.current_chats));
     }
   }, [eventData]);
 
@@ -273,8 +273,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
           {layoutMode === LayoutMode.SLIDE ? (
             <ChatboxSlideLayout
+              ref={chatboxControlsRef}
               chatSession={activeSession}
-              boxRefs={chatBoxRefs}
               chatCompletionInProgress={sendPromptIsLoading}
               promptTemplates={promptTemplates}
               selectedPromptTemplate={selectedPromptTemplate}

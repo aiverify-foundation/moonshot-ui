@@ -52,12 +52,7 @@ const ChatboxFreeLayout = React.forwardRef(
     const [minizedChats, setMinizedChats] = useState<string[]>([]);
     const [isMaximizing, setIsMazimizing] = useState(false);
     const chatBoxControlsMap = new Map<string, ChatBoxControls>();
-    const innerRef = useRef(chatBoxControlsMap);
     React.useImperativeHandle(ref, () => chatBoxControlsMap);
-
-    function getMap() {
-      return innerRef.current;
-    }
 
     function handleResetClick() {
       resetChatboxPositions(true);
