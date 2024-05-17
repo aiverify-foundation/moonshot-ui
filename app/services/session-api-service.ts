@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { RedteamMode } from '@/app/types/enums';
 import { proxyPathSessions } from './constants';
 import { getHostAndPort } from './host';
 
@@ -64,6 +65,14 @@ const sessionApi = createApi({
       transformResponse: (response: unknown) =>
         transformSimplePromptResponse(response as ManualPromptResponseData[]),
     }),
+    sendArtPrompt: builder.mutation<string, SendPromptQueryParams>({
+      query: ({ session_id, prompt }) => ({
+        url: `${proxyPathSessions}/${session_id}/prompt`,
+        method: 'POST',
+        body: { user_prompt: prompt },
+        keepUnusedDataFor: 0,
+      }),
+    }),
   }),
 });
 
@@ -101,6 +110,7 @@ const {
   useSetPromptTemplateMutation,
   useUnsetPromptTemplateMutation,
   useSendPromptMutation,
+  useSendArtPromptMutation,
   useCreateSessionMutation,
 } = sessionApi;
 
@@ -113,4 +123,5 @@ export {
   useCreateSessionMutation,
   useSetPromptTemplateMutation,
   useUnsetPromptTemplateMutation,
+  useSendArtPromptMutation,
 };

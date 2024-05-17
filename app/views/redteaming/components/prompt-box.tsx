@@ -46,6 +46,7 @@ type PromptBoxProps = {
     windowId: string
   ) => void;
   draggable?: boolean;
+  disabled?: boolean;
   onCloseClick?: () => void;
   onSelectPromptTemplate: (item: PromptTemplate | undefined) => void;
   onSendClick: (message: string) => void;
@@ -59,6 +60,7 @@ function PromptBox(props: PromptBoxProps) {
     promptTemplates,
     initialXY,
     draggable,
+    disabled,
     onCloseClick,
     activePromptTemplate,
     chatSession,
@@ -68,7 +70,7 @@ function PromptBox(props: PromptBoxProps) {
     onCloseSessionCommand,
     styles,
   } = props;
-  const [size, setSize] = useState<Size>(Size.SMALL);
+  const [size, setSize] = useState<Size>(Size.LARGE);
   const [promptMessage, setPromptMessage] = useState('');
   const [showPromptTemplateList, setShowPromptTemplateList] = useState(false);
   const [hoveredPromptTemplate, setHoveredPromptTemplate] =
@@ -153,12 +155,6 @@ function PromptBox(props: PromptBoxProps) {
         break;
       case SlashCommand.RESET_LAYOUT_MODE:
         resetChatboxPositions(true);
-        break;
-      case SlashCommand.MAXIMIZE_PROMPT:
-        setSize(Size.LARGE);
-        break;
-      case SlashCommand.MINIMIZE_PROMPT:
-        setSize(Size.SMALL);
         break;
       case SlashCommand.CLOSE_SESSION:
         onCloseSessionCommand();
@@ -270,10 +266,6 @@ function PromptBox(props: PromptBoxProps) {
     removeActivePromptTemplate();
   }
 
-  function handleResizeClick() {
-    setSize((prevSize) => (prevSize === Size.LARGE ? Size.SMALL : Size.LARGE));
-  }
-
   function handleCommandListItemSelected(item: ListItem) {
     const selected = slashCommandList.find((cmd) => cmd.id === item.id);
     if (selected) {
@@ -301,12 +293,53 @@ function PromptBox(props: PromptBoxProps) {
     }
   }, [showPromptTemplateList, showSlashCommands]);
 
+  const promptTemplateTrigger = (
+    <div className="flex flex-col gap-2">
+      <div
+        className="flex items-center cursor-pointer gap-1"
+        id="prompt-template-trigger"
+        onClick={handleShowPromptTemplateList}>
+        <Icon
+          name={IconName.ChatBubbleWide}
+          size={24}
+          color="white"
+        />
+        <div className="flex items-center text-xs">
+          <span className="hover:opacity-60">Prompt Template</span>
+          {activePromptTemplate && (
+            <div className="flex items-center">
+              <div className="text-white ml-1">--</div>
+              <div className="text-white ml-1">
+                <div className="text-blue-400 text-sm flex items-center">
+                  <div
+                    className="mr-1 max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap"
+                    onMouseOver={handleSelectedPromptTemplateMouseOver(
+                      activePromptTemplate.name
+                    )}
+                    onMouseOut={handleSelectedPromptTemplateMouseout}>
+                    {activePromptTemplate.name}
+                  </div>
+                  <Icon
+                    name={IconName.Close}
+                    size={14}
+                    color="white"
+                    onClick={handleRemoveActivePromptTemplate}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <Window
       zIndex={zIndex}
       id={windowId}
       initialXY={initialXY}
-      initialWindowSize={[500, size === Size.LARGE ? 190 : 130]}
+      initialWindowSize={[500, size === Size.LARGE ? 185 : 130]}
       resizeable={false}
       draggable={draggable}
       disableCloseIcon
@@ -327,18 +360,17 @@ function PromptBox(props: PromptBoxProps) {
         backgroundColor: 'transparent',
         marginBottom: 0,
       }}>
+      {disabled && (
+        <div
+          className="absolute gap-2 bg-moongray-950/50 w-full h-full z-10 flex justify-center items-center"
+          style={{ top: 0, left: 0 }}>
+          <div className="waitspinner" />
+        </div>
+      )}
       <div className="absolute top-2 right-8 text-xs text-white/90">
         (Enter &apos;/ &apos; for commands)
       </div>
-      <div className="absolute top-2 right-2">
-        <Icon
-          name={size === Size.LARGE ? IconName.Minimize : IconName.Maximize}
-          size={14}
-          color="white"
-          onClick={handleResizeClick}
-        />
-      </div>
-      <div className="relative flex flex-col">
+      <div className="relative flex flex-col gap-1">
         <div className="flex gap-2">
           <div className="flex-1">
             {showPromptTemplateList ? (
@@ -391,59 +423,8 @@ function PromptBox(props: PromptBoxProps) {
             )}
           </div>
         </div>
-        <div className="flex gap-2 w-full justify-between">
-          <div className="flex flex-col gap-2">
-            <div
-              className="flex items-center cursor-pointer gap-1"
-              id="prompt-template-trigger"
-              onClick={handleShowPromptTemplateList}>
-              <Icon
-                name={IconName.ChatBubbleWide}
-                size={24}
-                color="white"
-              />
-              <div className="flex items-center text-xs">
-                <span className="hover:opacity-60">Prompt Template</span>
-                {activePromptTemplate && (
-                  <div className="flex items-center">
-                    <div className="text-white ml-1">--</div>
-                    <div className="text-white ml-1">
-                      <div className="text-blue-400 text-sm flex items-center">
-                        <div
-                          className="mr-1 max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap"
-                          onMouseOver={handleSelectedPromptTemplateMouseOver(
-                            activePromptTemplate.name
-                          )}
-                          onMouseOut={handleSelectedPromptTemplateMouseout}>
-                          {activePromptTemplate.name}
-                        </div>
-                        <Icon
-                          name={IconName.Close}
-                          size={14}
-                          color="white"
-                          onClick={handleRemoveActivePromptTemplate}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-            {/* <div
-              className="flex items-center cursor-pointer gap-1"
-              id="prompt-template-trigger"
-              onClick={handleShowPromptTemplateList}>
-              <Icon
-                name={IconName.LightBulb}
-                size={20}
-                color="white"
-              />
-              <div className="flex items-center text-xs">
-                <span className="hover:opacity-60">Context Strategy</span>
-              </div>
-            </div> */}
-          </div>
-
+        <div className="flex gap-2 w-full justify-end">
+          {/* {promptTemplateTrigger} */}
           <button
             className="btn-primary w-20 rounded h-[32px]"
             type="button"

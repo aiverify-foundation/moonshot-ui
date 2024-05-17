@@ -16,3 +16,8 @@ export enum TestStatusProgress {
   ERRORS = 'completed_with_errors',
   CANCELLED = 'cancelled',
 }
+
+export enum RedteamMode {
+  MANUAL,
+  AUTO,
+}

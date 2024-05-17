@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import {
+  useSendArtPromptMutation,
   useSendPromptMutation,
   useSetPromptTemplateMutation,
   useUnsetPromptTemplateMutation,
@@ -19,11 +20,7 @@ import { ChatboxSlideLayout } from './components/chatbox-slide-layout';
 import { PromptBox } from './components/prompt-box';
 import { getWindowId, getWindowXYById } from '@app/lib/window-utils';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
-import {
-  appendChatHistory,
-  setActiveSession,
-  updateChatHistory,
-} from '@redux/slices';
+import { appendChatHistory, setActiveSession } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { Z_Index } from '@views/moonshot-desktop/constants';
 import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTemplateList';
@@ -38,9 +35,11 @@ const promptBoxId = 'prompt-box';
 
 function RedteamSessionChats(props: ActiveSessionProps) {
   const { sessionData } = props;
+  const isAttackMode = Boolean(sessionData.session.attack_module);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [promptText, setPromptText] = useState('');
+  const [artInProgress, setArtInProgress] = useState(false);
   const activeSession =
     useAppSelector((state) => state.activeSession.entity) || sessionData;
   const windowsMap = useAppSelector((state) => state.windows.map);
@@ -75,6 +74,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
   const [sendPrompt, { isLoading: sendPromptIsLoading }] =
     useSendPromptMutation();
+  const [sendArtPrompt, { isLoading: sendArtPromptIsLoading }] =
+    useSendArtPromptMutation();
 
   const [
     triggerSetPromptTemplate,
@@ -110,12 +111,28 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   async function handleSendPromptClick(message: string) {
     if (!activeSession) return;
     setPromptText(message);
-    const result = await sendPrompt({
-      prompt: message,
-      session_id: activeSession.session.session_id,
-    });
+    let result;
+
+    if (isAttackMode) {
+      setArtInProgress(true);
+      result = await sendArtPrompt({
+        prompt: message,
+        session_id: activeSession.session.session_id,
+      });
+    } else {
+      result = await sendPrompt({
+        prompt: message,
+        session_id: activeSession.session.session_id,
+      });
+    }
     if ('data' in result && result.data) {
-      dispatch(appendChatHistory(result.data));
+      if (isAttackMode) {
+        if (result.data === activeSession.session.session_id) {
+          return;
+        }
+        // todo - handle error
+      }
+      dispatch(appendChatHistory(result.data as ChatHistory));
     } else if ('error' in result) {
       console.error('Error fetching data:', result.error);
     }
@@ -263,7 +280,9 @@ function RedteamSessionChats(props: ActiveSessionProps) {
             <ChatboxFreeLayout
               ref={chatboxControlsRef}
               chatSession={activeSession}
-              chatCompletionInProgress={sendPromptIsLoading}
+              chatCompletionInProgress={
+                isAttackMode ? artInProgress : sendPromptIsLoading
+              }
               promptTemplates={promptTemplates}
               selectedPromptTemplate={selectedPromptTemplate}
               promptText={promptText}
@@ -275,7 +294,9 @@ function RedteamSessionChats(props: ActiveSessionProps) {
             <ChatboxSlideLayout
               ref={chatboxControlsRef}
               chatSession={activeSession}
-              chatCompletionInProgress={sendPromptIsLoading}
+              chatCompletionInProgress={
+                isAttackMode ? artInProgress : sendPromptIsLoading
+              }
               promptTemplates={promptTemplates}
               selectedPromptTemplate={selectedPromptTemplate}
               promptText={promptText}
@@ -287,6 +308,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       {/* Prompt box must NOT be within any positioned container because it is positioned relative to viewport */}
       <PromptBox
         zIndex={Z_Index.Top}
+        disabled={isAttackMode ? artInProgress : sendPromptIsLoading}
         windowId={getWindowId(promptBoxId)}
         name={promptBoxId}
         draggable={layoutMode === LayoutMode.FREE}
