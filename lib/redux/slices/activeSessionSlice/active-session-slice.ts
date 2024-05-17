@@ -26,8 +26,27 @@ export const activeSessionSlice = createSlice({
         state.entity.chat_records = action.payload;
       }
     },
+    appendChatHistory: (
+      state,
+      action: PayloadAction<Record<string, DialoguePairInfo[]>>
+    ) => {
+      if (state.entity) {
+        Object.keys(action.payload).forEach((key) => {
+          if (state.entity && state.entity.chat_records) {
+            state.entity.chat_records[key] = [
+              ...(state.entity.chat_records[key] || []),
+              ...action.payload[key],
+            ];
+          }
+        });
+      }
+    },
   },
 });
 
-export const { setActiveSession, removeActiveSession, updateChatHistory } =
-  activeSessionSlice.actions;
+export const {
+  setActiveSession,
+  removeActiveSession,
+  updateChatHistory,
+  appendChatHistory,
+} = activeSessionSlice.actions;

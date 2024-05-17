@@ -34,6 +34,23 @@ type DialoguePairInfo = {
   prompt_time: string;
 };
 
+type ManualPromptResponse = {
+  prompt: string;
+  response: string;
+  prompt_time: string;
+  response_time: string;
+};
+
+type ManualPromptResponseData = {
+  current_runner_id: string;
+  current_am_id: string;
+  current_cs_id: string;
+  current_pt_id: string;
+  current_chats: Record<string, ManualPromptResponse[]>;
+  current_batch_size: number;
+  current_status: string;
+};
+
 //[x, y, w, h, scrollTop]
 type WindowData = [number, number, number, number, number];
 

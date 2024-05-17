@@ -1,4 +1,4 @@
-import { PropsWithChildren, forwardRef } from 'react';
+import React, { PropsWithChildren, forwardRef } from 'react';
 import { Window } from '@/app/components/window';
 import { colors } from '@/app/views/shared-components/customColors';
 
@@ -14,7 +14,7 @@ type ChatboxProps = {
   disableOnScroll?: boolean;
   styles?: React.CSSProperties;
   onCloseClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
-  onWheel: (e: React.WheelEvent<HTMLDivElement>) => void;
+  onWheel?: (e: React.WheelEvent<HTMLDivElement>) => void;
   onWholeWindowClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onWindowChange?: (
     x: number,
@@ -27,10 +27,7 @@ type ChatboxProps = {
 };
 
 const Container = forwardRef(
-  (
-    props: PropsWithChildren<ChatboxProps>,
-    scrollDivRef: React.Ref<HTMLDivElement>
-  ) => {
+  (props: PropsWithChildren<ChatboxProps>, ref: React.Ref<HTMLDivElement>) => {
     const {
       windowId,
       name,
@@ -51,7 +48,6 @@ const Container = forwardRef(
 
     return (
       <Window
-        ref={scrollDivRef}
         resizeable={resizable}
         draggable={draggable}
         disableFadeIn
@@ -82,6 +78,7 @@ const Container = forwardRef(
           marginBottom: 14,
         }}>
         <div
+          ref={ref}
           id="chatContainer"
           className="h-full overflow-y-auto custom-scrollbar mr-[2px]">
           {children}

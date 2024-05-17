@@ -56,15 +56,43 @@ const sessionApi = createApi({
     }),
     sendPrompt: builder.mutation<ChatHistory, SendPromptQueryParams>({
       query: ({ session_id, prompt }) => ({
-        url: `api/v1/sessions/${session_id}/prompt`,
+        url: `${proxyPathSessions}/${session_id}/prompt`,
         method: 'POST',
-        body: { prompt },
+        body: { user_prompt: prompt },
         keepUnusedDataFor: 0,
       }),
-      transformResponse: (response: ChatHistory) => response,
+      transformResponse: (response: unknown) =>
+        transformSimplePromptResponse(response as ManualPromptResponseData[]),
     }),
   }),
 });
+
+// temp workaroud weird chat response
+function transformSimplePromptResponse(
+  response: ManualPromptResponseData[]
+): ChatHistory {
+  const endpointsCurrentchatsMap = response[0].current_chats;
+  const constructedChathistory: ChatHistory = {};
+  Object.keys(endpointsCurrentchatsMap).forEach((endpointId) => {
+    constructedChathistory[endpointId] = [
+      {
+        chat_record_id: 0,
+        conn_id: endpointId,
+        context_strategy: '',
+        prompt_template: '',
+        attack_module: '',
+        metric: '',
+        prompt: endpointsCurrentchatsMap[endpointId][0].prompt,
+        prepared_prompt: endpointsCurrentchatsMap[endpointId][0].prompt,
+        system_prompt: '',
+        predicted_result: endpointsCurrentchatsMap[endpointId][0].response,
+        duration: 0,
+        prompt_time: endpointsCurrentchatsMap[endpointId][0].prompt_time,
+      },
+    ];
+  });
+  return constructedChathistory;
+}
 
 const {
   useGetAllSessionsQuery,

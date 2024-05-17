@@ -13,12 +13,17 @@ import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSu
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 import tailwindConfig from '@/tailwind.config';
+import { ChatBoxControls } from './components/chatbox';
 import { ChatboxFreeLayout } from './components/chatbox-free-layout';
 import { ChatboxSlideLayout } from './components/chatbox-slide-layout';
 import { PromptBox } from './components/prompt-box';
 import { getWindowId, getWindowXYById } from '@app/lib/window-utils';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
-import { updateChatHistory } from '@redux/slices';
+import {
+  appendChatHistory,
+  setActiveSession,
+  updateChatHistory,
+} from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { Z_Index } from '@views/moonshot-desktop/constants';
 import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTemplateList';
@@ -68,14 +73,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     refetch: __,
   } = usePromptTemplateList();
 
-  const [
-    sendPrompt,
-    {
-      data: updatedChatHistory,
-      isLoading: sendPromptIsLoading,
-      error: sendPromptError,
-    },
-  ] = useSendPromptMutation();
+  const [sendPrompt, { isLoading: sendPromptIsLoading }] =
+    useSendPromptMutation();
 
   const [
     triggerSetPromptTemplate,
@@ -95,7 +94,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     },
   ] = useUnsetPromptTemplateMutation();
 
-  const chatBoxRefs = useRef<HTMLDivElement[]>([]);
+  const chatboxControlsRef = useRef<Map<string, ChatBoxControls> | null>(null);
 
   function handleOnWindowChange(
     x: number,
@@ -116,7 +115,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       session_id: activeSession.session.session_id,
     });
     if ('data' in result && result.data) {
-      dispatch(updateChatHistory(result.data));
+      dispatch(appendChatHistory(result.data));
     } else if ('error' in result) {
       console.error('Error fetching data:', result.error);
     }
@@ -167,10 +166,16 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   }, []);
 
   useEffect(() => {
+    dispatch(setActiveSession(sessionData));
+  }, [sessionData]);
+
+  useEffect(() => {
+    if (!chatboxControlsRef.current) return;
     if (sendPromptIsLoading) {
-      chatBoxRefs.current.forEach((ref) => {
-        if (ref) {
-          ref.scrollTop = ref.scrollHeight;
+      const chatboxesControls = chatboxControlsRef.current;
+      chatboxesControls.forEach((boxControl, key) => {
+        if (boxControl) {
+          boxControl.scrollToBottom();
         }
       });
     } else {
@@ -256,8 +261,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
         <div className="flex h-full">
           {layoutMode === LayoutMode.FREE ? (
             <ChatboxFreeLayout
+              ref={chatboxControlsRef}
               chatSession={activeSession}
-              boxRefs={chatBoxRefs}
               chatCompletionInProgress={sendPromptIsLoading}
               promptTemplates={promptTemplates}
               selectedPromptTemplate={selectedPromptTemplate}
