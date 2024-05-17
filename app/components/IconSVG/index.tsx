@@ -29,6 +29,9 @@ import { LightningIcon } from './icons/lightning-icon';
 import { ListIcon } from './icons/list-icon';
 import { MaximizeIcon } from './icons/maximize-icon';
 import { MinimizeIcon } from './icons/minimize-icon';
+import { MoonshotAttackStrategyIcon } from './icons/ms-attack-icon';
+import { MoonshotContextStrategyIcon } from './icons/ms-context-strategy-icon';
+import { MoonshotPromptTemplateIcon } from './icons/ms-prompt-template-icon';
 import { PencilIcon } from './icons/pencil-icon';
 import { PlusIcon } from './icons/plus-icon';
 import { ResetIcon } from './icons/reset-icon';
@@ -86,6 +89,9 @@ enum IconName {
   Document,
   Warning,
   Pencil,
+  MoonContextStrategy,
+  MoonPromptTemplate,
+  MoonAttackStrategy,
 }
 
 type IconProps = {
@@ -488,6 +494,33 @@ function Icon(props: IconProps) {
     case IconName.Pencil:
       iconToRender = (
         <PencilIcon
+          outlineColor={color}
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.MoonContextStrategy:
+      iconToRender = (
+        <MoonshotContextStrategyIcon
+          fillColor={color}
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.MoonPromptTemplate:
+      iconToRender = (
+        <MoonshotPromptTemplateIcon
+          fillColor={color}
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.MoonAttackStrategy:
+      iconToRender = (
+        <MoonshotAttackStrategyIcon
           outlineColor={color}
           width={size}
           height={size}

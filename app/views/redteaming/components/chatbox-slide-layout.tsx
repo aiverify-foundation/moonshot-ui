@@ -3,7 +3,10 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { getWindowId } from '@/app/lib/window-utils';
 import { ChatBox, ChatBoxControls } from './chatbox';
-import { getDefaultChatBoxSizes } from './chatbox-slide-box-sizes';
+import {
+  SlideChatBoxDimensions,
+  getDefaultChatBoxSizes,
+} from './chatbox-slide-box-sizes';
 
 type ChatSlideLayoutProps = {
   chatSession: SessionData;
@@ -107,7 +110,13 @@ const ChatboxSlideLayout = React.forwardRef(
       handleOnWindowChange,
     } = props;
     const [currentBoxIndex, setCurrentBoxIndex] = useState(0);
-    const { width, height, gap } = getDefaultChatBoxSizes();
+    const [{ width, height, gap }, setSizes] = useState<SlideChatBoxDimensions>(
+      {
+        width: 0,
+        height: 0,
+        gap: 0,
+      }
+    );
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const chatBoxControlsMap = new Map<string, ChatBoxControls>();
     React.useImperativeHandle(ref, () => chatBoxControlsMap);
@@ -154,14 +163,16 @@ const ChatboxSlideLayout = React.forwardRef(
       );
     }
 
+    React.useEffect(() => {
+      setSizes(getDefaultChatBoxSizes());
+    }, []);
+
     return (
-      <div
-        className="relative w-full h-full gap-6
-      flex flex-col items-center">
+      <div className="relative w-full h-full gap-6 flex flex-col items-center">
         <section className="absolute w-full px-12 top-[45%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
           <SlidesNavBtns />
         </section>
-        <section
+        <main
           className="flex overflow-hidden h-[500px] transform-gpu"
           style={{
             width: 'calc(3 * var(--chatwindow-width) + 2 * var(--gap-width))',
@@ -215,7 +226,7 @@ const ChatboxSlideLayout = React.forwardRef(
               }
             })}
           </div>
-        </section>
+        </main>
         <section>
           <SlidesIndexBtns
             chats={chatSession.session.endpoints}

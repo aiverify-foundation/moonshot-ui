@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { Button, ButtonType } from '@/app/components/button';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import {
   useSendArtPromptMutation,
@@ -24,7 +25,6 @@ import { appendChatHistory, setActiveSession } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { Z_Index } from '@views/moonshot-desktop/constants';
 import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTemplateList';
-import { flushAllTraces } from 'next/dist/trace';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -219,6 +219,45 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
   if (activeSession === undefined) return null;
 
+  const optionsPanel = (
+    <div className="bg-moongray-600  w-[300px] absolute left-[115%] top-0 rounded-md p-2  shadow-lg">
+      <div className="flex items-center gap-2">
+        <Button
+          text="Attack Module"
+          type="button"
+          mode={ButtonType.TEXT}
+          hoverBtnColor={colors.moongray[500]}
+          pressedBtnColor={colors.moongray[400]}
+          leftIconName={IconName.MoonAttackStrategy}
+        />
+        <p className="text-[0.9rem] text-moongray-400">None</p>
+      </div>
+      <div className="flex items-center gap-2">
+        <Button
+          text="Prompt Template"
+          type="button"
+          mode={ButtonType.TEXT}
+          hoverBtnColor={colors.moongray[500]}
+          pressedBtnColor={colors.moongray[400]}
+          leftIconName={IconName.MoonPromptTemplate}
+          iconSize={18}
+        />
+        <p className="text-[0.9rem] text-moongray-400">None</p>
+      </div>
+      <div className="flex items-center gap-2">
+        <Button
+          text="Context Strategy"
+          type="button"
+          mode={ButtonType.TEXT}
+          hoverBtnColor={colors.moongray[500]}
+          pressedBtnColor={colors.moongray[400]}
+          leftIconName={IconName.MoonContextStrategy}
+        />
+        <p className="text-[0.9rem] text-moongray-400">None</p>
+      </div>
+    </div>
+  );
+
   return (
     <>
       <PopupSurface
@@ -292,20 +331,23 @@ function RedteamSessionChats(props: ActiveSessionProps) {
               />
             </div>
             <div className="flex justify-center">
-              <PromptBox
-                zIndex={Z_Index.Top}
-                disabled={isAttackMode ? artInProgress : sendPromptIsLoading}
-                windowId={getWindowId(promptBoxId)}
-                name={promptBoxId}
-                draggable={false}
-                chatSession={activeSession}
-                promptTemplates={promptTemplates}
-                activePromptTemplate={selectedPromptTemplate}
-                onSendClick={handleSendPromptClick}
-                onSelectPromptTemplate={handleSelectPromptTemplate}
-                onWindowChange={handleOnWindowChange}
-                styles={{ position: 'relative' }}
-              />
+              <div className="relative">
+                <PromptBox
+                  zIndex={Z_Index.Top}
+                  disabled={isAttackMode ? artInProgress : sendPromptIsLoading}
+                  windowId={getWindowId(promptBoxId)}
+                  name={promptBoxId}
+                  draggable={false}
+                  chatSession={activeSession}
+                  promptTemplates={promptTemplates}
+                  activePromptTemplate={selectedPromptTemplate}
+                  onSendClick={handleSendPromptClick}
+                  onSelectPromptTemplate={handleSelectPromptTemplate}
+                  onWindowChange={handleOnWindowChange}
+                  styles={{ position: 'relative' }}
+                />
+                {optionsPanel}
+              </div>
             </div>
           </section>
         )}

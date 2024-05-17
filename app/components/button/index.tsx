@@ -8,6 +8,7 @@ export enum ButtonType {
   SECONDARY,
   OUTLINE,
   LINK,
+  TEXT,
 }
 
 type ButtonProps = {
@@ -72,6 +73,9 @@ function Button(props: ButtonProps) {
       break;
     case ButtonType.LINK:
       cssClass = clsx(styles.btn, styles.btn_link, styles[`btn_${size}`]);
+      break;
+    case ButtonType.TEXT:
+      cssClass = clsx(styles.btn, styles.btn_text, styles[`btn_${size}`]);
       break;
   }
 

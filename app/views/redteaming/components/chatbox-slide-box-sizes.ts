@@ -1,3 +1,9 @@
+export type SlideChatBoxDimensions = {
+  width: number;
+  height: number;
+  gap: number;
+};
+
 export function getDefaultChatBoxSizes() {
   // IMPORTANT: Also align the values of --chatwindow-width and --gap-width css variables in global.css
 
@@ -6,9 +12,9 @@ export function getDefaultChatBoxSizes() {
   let height = 550;
   let gap = 16;
 
-  // if (typeof window === 'undefined') {
-  //   return { width: 0, height: 0, gap: 0 };
-  // }
+  if (typeof window === 'undefined') {
+    return { width: 0, height: 0, gap: 0 };
+  }
 
   // Media query for large screens (e.g., more than 1180px)
   if (window.matchMedia('(min-width: 1180px)').matches) {

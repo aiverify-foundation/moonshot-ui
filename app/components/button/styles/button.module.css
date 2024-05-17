@@ -35,6 +35,14 @@
   padding: 0 0 0 0;
 }
 
+.btn_text {
+  border: none;
+  color: #FFFFFF;
+  background: transparent;
+  box-shadow: none;
+  padding: 0 0 0 0;
+}
+
 .btn_outline {
   border: 1px solid #FFFFFF;
   color: #FFFFFF;
