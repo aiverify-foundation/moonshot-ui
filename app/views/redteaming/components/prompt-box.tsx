@@ -31,7 +31,7 @@ type PromptBoxProps = {
   windowId: string;
   zIndex: number;
   name: string;
-  initialXY: [number, number];
+  initialXY?: [number, number];
   children?: React.ReactNode;
   styles?: React.CSSProperties;
   promptTemplates: PromptTemplate[];
@@ -50,7 +50,7 @@ type PromptBoxProps = {
   onCloseClick?: () => void;
   onSelectPromptTemplate: (item: PromptTemplate | undefined) => void;
   onSendClick: (message: string) => void;
-  onCloseSessionCommand: () => void;
+  onCloseSessionCommand?: () => void;
 };
 
 function PromptBox(props: PromptBoxProps) {
@@ -70,7 +70,6 @@ function PromptBox(props: PromptBoxProps) {
     onCloseSessionCommand,
     styles,
   } = props;
-  const [size, setSize] = useState<Size>(Size.LARGE);
   const [promptMessage, setPromptMessage] = useState('');
   const [showPromptTemplateList, setShowPromptTemplateList] = useState(false);
   const [hoveredPromptTemplate, setHoveredPromptTemplate] =
@@ -155,9 +154,6 @@ function PromptBox(props: PromptBoxProps) {
         break;
       case SlashCommand.RESET_LAYOUT_MODE:
         resetChatboxPositions(true);
-        break;
-      case SlashCommand.CLOSE_SESSION:
-        onCloseSessionCommand();
         break;
       case SlashCommand.DARK_MODE_ON:
         dispatch(toggleDarkMode());
@@ -339,7 +335,7 @@ function PromptBox(props: PromptBoxProps) {
       zIndex={zIndex}
       id={windowId}
       initialXY={initialXY}
-      initialWindowSize={[500, size === Size.LARGE ? 185 : 130]}
+      initialWindowSize={[500, 190]}
       resizeable={false}
       draggable={draggable}
       disableCloseIcon
@@ -347,7 +343,7 @@ function PromptBox(props: PromptBoxProps) {
       header={<div className="flex items-center h-8 text-sm">Prompt</div>}
       onCloseClick={onCloseClick}
       onWindowChange={onWindowChange}
-      styles={{ overflow: 'show', position: 'absolute', ...styles }}
+      styles={{ overflow: 'show', ...styles }}
       contentAreaStyles={{
         background: 'none',
         padding: 0,
@@ -383,44 +379,25 @@ function PromptBox(props: PromptBoxProps) {
                 <div className="h-full w-0" />
               </Tooltip>
             ) : null}
-            {size === Size.LARGE ? (
-              <TextArea
-                id="box-prompt-text-input"
-                name="sessionName"
-                shouldFocus={showPromptTemplateList}
-                placeholder={
-                  textInputMode === TextInputMode.PROMPT_TEMPLATE
-                    ? 'Search Prompt Templates'
-                    : 'Message'
-                }
-                inputStyles={
-                  showPromptTemplateList ? { backgroundColor: '#f5d0fe' } : {}
-                }
-                onChange={handleTextChange}
-                value={promptMessage}
-                onKeyDown={handleKeyDown}
-                containerStyles={{
-                  marginBottom: 0,
-                }}
-              />
-            ) : (
-              <TextInput
-                id="box-prompt-text-input"
-                name="sessionName"
-                shouldFocus={showPromptTemplateList}
-                placeholder={
-                  textInputMode === TextInputMode.PROMPT_TEMPLATE
-                    ? 'Search Prompt Templates'
-                    : 'Message'
-                }
-                inputStyles={
-                  showPromptTemplateList ? { backgroundColor: '#ffedd5' } : {}
-                }
-                onChange={handleTextChange}
-                value={promptMessage}
-                onKeyDown={handleKeyDown}
-              />
-            )}
+            <TextArea
+              id="box-prompt-text-input"
+              name="sessionName"
+              shouldFocus={showPromptTemplateList}
+              placeholder={
+                textInputMode === TextInputMode.PROMPT_TEMPLATE
+                  ? 'Search Prompt Templates'
+                  : 'Message'
+              }
+              inputStyles={
+                showPromptTemplateList ? { backgroundColor: '#f5d0fe' } : {}
+              }
+              onChange={handleTextChange}
+              value={promptMessage}
+              onKeyDown={handleKeyDown}
+              containerStyles={{
+                marginBottom: 0,
+              }}
+            />
           </div>
         </div>
         <div className="flex gap-2 w-full justify-end">

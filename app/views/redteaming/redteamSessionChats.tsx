@@ -24,6 +24,7 @@ import { appendChatHistory, setActiveSession } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { Z_Index } from '@views/moonshot-desktop/constants';
 import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTemplateList';
+import { flushAllTraces } from 'next/dist/trace';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -219,110 +220,131 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   if (activeSession === undefined) return null;
 
   return (
-    <PopupSurface
-      onCloseIconClick={() => router.push('/')}
-      height="calc(100vh - 20px)"
-      style={{
-        backgroundColor: colors.moongray[800],
-        width: 'calc(100vw - 20px)',
-        border: 'none',
-        margin: '0 auto',
-      }}>
-      <header className="flex relative justify-between pt-4">
-        <hgroup className="flex flex-col left-6 pl-5">
-          <h2 className="capitalize text-lg text-white">
-            <span className="font text-white text-lg">
-              {activeSession.session.name}Red Teaming Session Name Placeholder
-            </span>
-          </h2>
-          <div className="w-80 text-white text-sm">
-            {activeSession.session.description}Lorum ipsum description
-            placeholder
-          </div>
-        </hgroup>
-      </header>
-      <div className="w-full flex justify-center mb-8">
+    <>
+      <PopupSurface
+        onCloseIconClick={() => router.push('/')}
+        height="calc(100vh - 20px)"
+        style={{
+          backgroundColor: colors.moongray[800],
+          width: 'calc(100vw - 20px)',
+          border: 'none',
+          margin: '0 auto',
+        }}>
+        <header className="flex relative justify-between pt-4">
+          <hgroup className="flex flex-col left-6 pl-5">
+            <h2 className="capitalize text-lg text-white">
+              <span className="font text-white text-lg">
+                {activeSession.session.name}Red Teaming Session Name Placeholder
+              </span>
+            </h2>
+            <div className="w-80 text-white text-sm">
+              {activeSession.session.description}Lorum ipsum description
+              placeholder
+            </div>
+          </hgroup>
+        </header>
         {activeSession && activeSession.session.endpoints.length > 3 ? (
-          <div className="flex gap-6 top-10 bg-moongray-600 rounded py-3 px-4 shadow-lg items-center w-[200px]">
-            <p className="text-sm text-white">Layout: </p>
-            <Tooltip
-              disabled={layoutMode === LayoutMode.SLIDE}
-              content="Switch to slide layout"
-              position={TooltipPosition.left}
-              offsetLeft={-18}
-              offsetTop={5}>
-              <Icon
-                size={25}
-                name={IconName.LayoutColumns}
+          <section className="w-full flex justify-center mb-8">
+            <div className="flex gap-6 top-10 bg-moongray-600 rounded py-3 px-4 shadow-lg items-center w-[200px]">
+              <p className="text-sm text-white">Layout: </p>
+              <Tooltip
                 disabled={layoutMode === LayoutMode.SLIDE}
-                onClick={() => dispatch(setChatLayoutMode(LayoutMode.SLIDE))}
-              />
-            </Tooltip>
-            <Tooltip
-              disabled={layoutMode === LayoutMode.FREE}
-              content="Switch to free layout"
-              position={TooltipPosition.right}
-              offsetLeft={18}
-              offsetTop={5}>
-              <Icon
-                size={26}
-                name={IconName.LayoutWtf}
+                content="Switch to slide layout"
+                position={TooltipPosition.left}
+                offsetLeft={-18}
+                offsetTop={5}>
+                <Icon
+                  size={25}
+                  name={IconName.LayoutColumns}
+                  disabled={layoutMode === LayoutMode.SLIDE}
+                  onClick={() => dispatch(setChatLayoutMode(LayoutMode.SLIDE))}
+                />
+              </Tooltip>
+              <Tooltip
                 disabled={layoutMode === LayoutMode.FREE}
-                onClick={() => dispatch(setChatLayoutMode(LayoutMode.FREE))}
-              />
-            </Tooltip>
-          </div>
+                content="Switch to free layout"
+                position={TooltipPosition.right}
+                offsetLeft={18}
+                offsetTop={5}>
+                <Icon
+                  size={26}
+                  name={IconName.LayoutWtf}
+                  disabled={layoutMode === LayoutMode.FREE}
+                  onClick={() => dispatch(setChatLayoutMode(LayoutMode.FREE))}
+                />
+              </Tooltip>
+            </div>
+          </section>
         ) : null}
-      </div>
-      <div className="flex flex-col w-full relative">
-        <div className="flex h-full">
-          {layoutMode === LayoutMode.FREE ? (
-            <ChatboxFreeLayout
-              ref={chatboxControlsRef}
-              chatSession={activeSession}
-              chatCompletionInProgress={
-                isAttackMode ? artInProgress : sendPromptIsLoading
-              }
-              promptTemplates={promptTemplates}
-              selectedPromptTemplate={selectedPromptTemplate}
-              promptText={promptText}
-              handleOnWindowChange={handleOnWindowChange}
-            />
-          ) : null}
-
-          {layoutMode === LayoutMode.SLIDE ? (
-            <ChatboxSlideLayout
-              ref={chatboxControlsRef}
-              chatSession={activeSession}
-              chatCompletionInProgress={
-                isAttackMode ? artInProgress : sendPromptIsLoading
-              }
-              promptTemplates={promptTemplates}
-              selectedPromptTemplate={selectedPromptTemplate}
-              promptText={promptText}
-              handleOnWindowChange={handleOnWindowChange}
-            />
-          ) : null}
-        </div>
-      </div>
-      {/* Prompt box must NOT be within any positioned container because it is positioned relative to viewport */}
-      <PromptBox
-        zIndex={Z_Index.Top}
-        disabled={isAttackMode ? artInProgress : sendPromptIsLoading}
-        windowId={getWindowId(promptBoxId)}
-        name={promptBoxId}
-        draggable={layoutMode === LayoutMode.FREE}
-        initialXY={promptBoxInitialXY}
-        chatSession={activeSession}
-        promptTemplates={promptTemplates}
-        activePromptTemplate={selectedPromptTemplate}
-        onCloseClick={() => null}
-        onSendClick={handleSendPromptClick}
-        onSelectPromptTemplate={handleSelectPromptTemplate}
-        onWindowChange={handleOnWindowChange}
-        onCloseSessionCommand={() => null}
-      />
-    </PopupSurface>
+        <section className="flex flex-col w-full relative gap-4">
+          <div className="flex h-full">
+            {layoutMode === LayoutMode.SLIDE ? (
+              <ChatboxSlideLayout
+                ref={chatboxControlsRef}
+                chatSession={activeSession}
+                chatCompletionInProgress={
+                  isAttackMode ? artInProgress : sendPromptIsLoading
+                }
+                promptTemplates={promptTemplates}
+                selectedPromptTemplate={selectedPromptTemplate}
+                promptText={promptText}
+                handleOnWindowChange={handleOnWindowChange}
+              />
+            ) : null}
+          </div>
+          <div className="flex justify-center">
+            {layoutMode === LayoutMode.SLIDE && (
+              <PromptBox
+                zIndex={Z_Index.Top}
+                disabled={isAttackMode ? artInProgress : sendPromptIsLoading}
+                windowId={getWindowId(promptBoxId)}
+                name={promptBoxId}
+                draggable={false}
+                chatSession={activeSession}
+                promptTemplates={promptTemplates}
+                activePromptTemplate={selectedPromptTemplate}
+                onSendClick={handleSendPromptClick}
+                onSelectPromptTemplate={handleSelectPromptTemplate}
+                onWindowChange={handleOnWindowChange}
+                styles={{ position: 'relative' }}
+              />
+            )}
+          </div>
+        </section>
+      </PopupSurface>
+      {/* Draggable prompt boxes must NOT be within any positioned container because it is positioned relative to viewport */}
+      {layoutMode === LayoutMode.FREE ? (
+        <ChatboxFreeLayout
+          ref={chatboxControlsRef}
+          chatSession={activeSession}
+          chatCompletionInProgress={
+            isAttackMode ? artInProgress : sendPromptIsLoading
+          }
+          promptTemplates={promptTemplates}
+          selectedPromptTemplate={selectedPromptTemplate}
+          promptText={promptText}
+          handleOnWindowChange={handleOnWindowChange}
+        />
+      ) : null}
+      {layoutMode === LayoutMode.FREE && (
+        <PromptBox
+          zIndex={Z_Index.Top}
+          disabled={isAttackMode ? artInProgress : sendPromptIsLoading}
+          windowId={getWindowId(promptBoxId)}
+          name={promptBoxId}
+          draggable={layoutMode === LayoutMode.FREE}
+          initialXY={promptBoxInitialXY}
+          chatSession={activeSession}
+          promptTemplates={promptTemplates}
+          activePromptTemplate={selectedPromptTemplate}
+          onCloseClick={() => null}
+          onSendClick={handleSendPromptClick}
+          onSelectPromptTemplate={handleSelectPromptTemplate}
+          onWindowChange={handleOnWindowChange}
+          onCloseSessionCommand={() => null}
+        />
+      )}
+    </>
   );
 }
 

@@ -59,12 +59,10 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       id,
       name,
       header,
-      initialXY = [180, 140],
+      initialXY,
       initialWindowSize = [640, 470],
       initialScrollTop = 0,
       zIndex,
-      minWidth = 200,
-      minHeight = 200,
       styles,
       contentAreaStyles,
       resizeable = true,
@@ -256,8 +254,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
           ${disableFadeIn ? '' : 'fadeScaleInAnimation'}
         `}
         style={{
-          left: initialPosition[0],
-          top: initialPosition[1],
+          left: initialPosition ? initialPosition[0] : undefined,
+          top: initialPosition ? initialPosition[1] : undefined,
           backgroundColor,
           width: windowSize[0],
           height: windowSize[1],
