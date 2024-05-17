@@ -58,7 +58,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     layoutMode = LayoutMode.FREE;
   }
 
-  let promptBoxInitialXY: [number, number] = [700, 720];
+  let promptBoxInitialXY: [number, number] = [700, 600];
 
   if (layoutMode === LayoutMode.FREE) {
     if (windowsMap[getWindowId(promptBoxId)]) {
@@ -160,9 +160,9 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
   function calcPromptBoxDefaults(): WindowData {
     const width = 500;
-    const height = 180;
+    const height = 190;
     const left = window.innerWidth / 2 - width / 2;
-    const top = window.innerHeight - height - 5;
+    const top = window.innerHeight - height - 25;
     return [left, top, width, height, 0];
   }
 
@@ -276,9 +276,9 @@ function RedteamSessionChats(props: ActiveSessionProps) {
             </div>
           </section>
         ) : null}
-        <section className="flex flex-col w-full relative gap-4">
-          <div className="flex h-full">
-            {layoutMode === LayoutMode.SLIDE ? (
+        {layoutMode === LayoutMode.SLIDE && (
+          <section className="flex flex-col w-full relative gap-4">
+            <div className="flex h-full">
               <ChatboxSlideLayout
                 ref={chatboxControlsRef}
                 chatSession={activeSession}
@@ -290,10 +290,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                 promptText={promptText}
                 handleOnWindowChange={handleOnWindowChange}
               />
-            ) : null}
-          </div>
-          <div className="flex justify-center">
-            {layoutMode === LayoutMode.SLIDE && (
+            </div>
+            <div className="flex justify-center">
               <PromptBox
                 zIndex={Z_Index.Top}
                 disabled={isAttackMode ? artInProgress : sendPromptIsLoading}
@@ -308,9 +306,9 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                 onWindowChange={handleOnWindowChange}
                 styles={{ position: 'relative' }}
               />
-            )}
-          </div>
-        </section>
+            </div>
+          </section>
+        )}
       </PopupSurface>
       {/* Draggable prompt boxes must NOT be within any positioned container because it is positioned relative to viewport */}
       {layoutMode === LayoutMode.FREE ? (
