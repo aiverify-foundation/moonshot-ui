@@ -21,7 +21,7 @@ export function getDefaultChatBoxSizes() {
     console.log('1180px');
     width = 400; // Smaller width for small screens
     height = 500; // Smaller height for small screens
-    gap = 16; // Smaller gap for small screens
+    gap = 50; // Smaller gap for small screens
   }
 
   // Media query for medium screens (e.g., less than 992px)
