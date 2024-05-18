@@ -9,11 +9,11 @@ type ModalProps = {
   textColor: React.CSSProperties['color'];
   heading: string;
   children: React.ReactNode;
-  primaryBtnLabel: string;
-  secondaryBtnLabel: string;
   enableScreenOverlay: boolean;
-  onPrimaryBtnClick: () => void;
-  onSecondaryBtnClick: () => void;
+  primaryBtnLabel?: string;
+  secondaryBtnLabel?: string;
+  onPrimaryBtnClick?: () => void;
+  onSecondaryBtnClick?: () => void;
   onCloseIconClick: () => void;
 };
 
@@ -51,19 +51,23 @@ function Modal(props: ModalProps) {
         </header>
         <main>{children}</main>
         <footer className="absolute bottom-0 left-0 flex justify-end items-center gap-2 p-4 w-full">
-          <Button
-            mode={ButtonType.OUTLINE}
-            onClick={onSecondaryBtnClick}
-            text={secondaryBtnLabel}
-            hoverBtnColor={colors.moongray[700]}
-            pressedBtnColor={colors.moongray[800]}
-          />
-          <Button
-            mode={ButtonType.PRIMARY}
-            onClick={onPrimaryBtnClick}
-            text={primaryBtnLabel}
-            hoverBtnColor={colors.moongray[950]}
-          />
+          {onSecondaryBtnClick && (
+            <Button
+              mode={ButtonType.OUTLINE}
+              onClick={onSecondaryBtnClick}
+              text={secondaryBtnLabel || ''}
+              hoverBtnColor={colors.moongray[700]}
+              pressedBtnColor={colors.moongray[800]}
+            />
+          )}
+          {onPrimaryBtnClick && (
+            <Button
+              mode={ButtonType.PRIMARY}
+              onClick={onPrimaryBtnClick}
+              text={primaryBtnLabel || ''}
+              hoverBtnColor={colors.moongray[950]}
+            />
+          )}
         </footer>
       </div>
     </>

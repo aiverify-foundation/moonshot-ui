@@ -25,6 +25,8 @@ import { appendChatHistory, setActiveSession } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { Z_Index } from '@views/moonshot-desktop/constants';
 import usePromptTemplateList from '@views/moonshot-desktop/hooks/usePromptTemplateList';
+import { Modal } from '../shared-components/modal/modal';
+import { AttackModulesList } from './components/attackModulesList';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -258,8 +260,50 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     </div>
   );
 
+  const layoutSwitch =
+    activeSession.session.endpoints.length > 3 ? (
+      <section className="w-full flex justify-center mb-8">
+        <div className="flex gap-6 top-10 bg-moongray-600 rounded py-3 px-4 shadow-lg items-center w-[200px]">
+          <p className="text-sm text-white">Layout: </p>
+          <Tooltip
+            disabled={layoutMode === LayoutMode.SLIDE}
+            content="Switch to slide layout"
+            position={TooltipPosition.left}
+            offsetLeft={-18}
+            offsetTop={5}>
+            <Icon
+              size={25}
+              name={IconName.LayoutColumns}
+              disabled={layoutMode === LayoutMode.SLIDE}
+              onClick={() => dispatch(setChatLayoutMode(LayoutMode.SLIDE))}
+            />
+          </Tooltip>
+          <Tooltip
+            disabled={layoutMode === LayoutMode.FREE}
+            content="Switch to free layout"
+            position={TooltipPosition.right}
+            offsetLeft={18}
+            offsetTop={5}>
+            <Icon
+              size={26}
+              name={IconName.LayoutWtf}
+              disabled={layoutMode === LayoutMode.FREE}
+              onClick={() => dispatch(setChatLayoutMode(LayoutMode.FREE))}
+            />
+          </Tooltip>
+        </div>
+      </section>
+    ) : null;
+
   return (
     <>
+      <Modal
+        enableScreenOverlay
+        bgColor={colors.moongray[800]}
+        textColor={colors.moongray[400]}
+        heading="Attack Modules">
+        <AttackModulesList />
+      </Modal>
       <PopupSurface
         onCloseIconClick={() => router.push('/')}
         height="calc(100vh - 20px)"
@@ -282,39 +326,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
             </div>
           </hgroup>
         </header>
-        {activeSession && activeSession.session.endpoints.length > 3 ? (
-          <section className="w-full flex justify-center mb-8">
-            <div className="flex gap-6 top-10 bg-moongray-600 rounded py-3 px-4 shadow-lg items-center w-[200px]">
-              <p className="text-sm text-white">Layout: </p>
-              <Tooltip
-                disabled={layoutMode === LayoutMode.SLIDE}
-                content="Switch to slide layout"
-                position={TooltipPosition.left}
-                offsetLeft={-18}
-                offsetTop={5}>
-                <Icon
-                  size={25}
-                  name={IconName.LayoutColumns}
-                  disabled={layoutMode === LayoutMode.SLIDE}
-                  onClick={() => dispatch(setChatLayoutMode(LayoutMode.SLIDE))}
-                />
-              </Tooltip>
-              <Tooltip
-                disabled={layoutMode === LayoutMode.FREE}
-                content="Switch to free layout"
-                position={TooltipPosition.right}
-                offsetLeft={18}
-                offsetTop={5}>
-                <Icon
-                  size={26}
-                  name={IconName.LayoutWtf}
-                  disabled={layoutMode === LayoutMode.FREE}
-                  onClick={() => dispatch(setChatLayoutMode(LayoutMode.FREE))}
-                />
-              </Tooltip>
-            </div>
-          </section>
-        ) : null}
+        {layoutSwitch}
         {layoutMode === LayoutMode.SLIDE && (
           <section className="flex flex-col w-full relative gap-4">
             <div className="flex h-full">
