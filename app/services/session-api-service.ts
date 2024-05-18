@@ -38,20 +38,20 @@ const sessionApi = createApi({
       transformResponse: (response: { session: Session }) => response.session,
     }),
     setPromptTemplate: builder.mutation<
-      string,
+      { success: boolean },
       { session_id: string; templateName: string }
     >({
       query: ({ session_id, templateName }) => ({
-        url: `${proxyPathSessions}/${session_id}/prompt_templates/${templateName}`,
+        url: `${proxyPathSessions}/${session_id}/prompt-template/${templateName}`,
         method: 'PUT',
       }),
     }),
     unsetPromptTemplate: builder.mutation<
-      void,
+      { success: boolean },
       { session_id: string; templateName: string }
     >({
       query: ({ session_id, templateName }) => ({
-        url: `${proxyPathSessions}/${session_id}/prompt_templates/${templateName}`,
+        url: `${proxyPathSessions}/${session_id}/prompt-template/${templateName}`,
         method: 'DELETE',
       }),
     }),

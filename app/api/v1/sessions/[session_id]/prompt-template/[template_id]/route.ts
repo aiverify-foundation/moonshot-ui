@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { basePathSessions, hostURL } from '@/app/api/constants';
+import config from '@/moonshot.config';
 
 export async function PUT(request: NextRequest) {
   let template_name: string;
@@ -18,7 +18,7 @@ export async function PUT(request: NextRequest) {
     );
   }
   const response = await fetch(
-    `${hostURL}${basePathSessions}/${session_id}/prompt_templates/${template_name}`,
+    `${config.webAPI.hostURL}${config.webAPI.basePathSessions}/${session_id}/prompt-template/${template_name}`,
     {
       method: 'PUT',
     }
@@ -43,7 +43,7 @@ export async function DELETE(request: NextRequest) {
     );
   }
   const response = await fetch(
-    `${hostURL}${basePathSessions}/${session_id}/prompt_templates/${template_name}`,
+    `${config.webAPI.hostURL}${config.webAPI.basePathSessions}/${session_id}/prompt-template/${template_name}`,
     {
       method: 'DELETE',
     }

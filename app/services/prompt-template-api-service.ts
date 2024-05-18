@@ -6,18 +6,18 @@ const promptTemplateApi = createApi({
   reducerPath: 'promptTemplateApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
-    getPromptTemplates: builder.query<PromptTemplate[], void>({
+    getAllPromptTemplates: builder.query<PromptTemplate[], void>({
       query: () => 'api/v1/prompt-templates',
       keepUnusedDataFor: 600,
     }),
   }),
 });
 
-const { useLazyGetPromptTemplatesQuery, useGetPromptTemplatesQuery } =
+const { useLazyGetAllPromptTemplatesQuery, useGetAllPromptTemplatesQuery } =
   promptTemplateApi;
 
 export {
   promptTemplateApi,
-  useLazyGetPromptTemplatesQuery,
-  useGetPromptTemplatesQuery,
+  useLazyGetAllPromptTemplatesQuery,
+  useGetAllPromptTemplatesQuery,
 };

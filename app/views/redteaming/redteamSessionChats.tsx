@@ -5,7 +5,7 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { useGetAllAttackModulesQuery } from '@/app/services/attack-modules-api-service';
-import { useGetPromptTemplatesQuery } from '@/app/services/prompt-template-api-service';
+import { useGetAllPromptTemplatesQuery } from '@/app/services/prompt-template-api-service';
 import {
   useSendArtPromptMutation,
   useSendPromptMutation,
@@ -33,6 +33,7 @@ import { appendChatHistory, setActiveSession } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { Z_Index } from '@views/moonshot-desktop/constants';
 import useChatboxesPositionsUtils from './hooks/useChatboxesPositionsUtils';
+import { PromptTemplatesList } from './components/promptTemplatesList';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -74,7 +75,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   let layoutMode = useAppSelector((state) => state.chatLayoutMode.value);
 
   const { data: promptTemplates, isFetching: isFetchingPromptTemplates } =
-    useGetPromptTemplatesQuery();
+    useGetAllPromptTemplatesQuery();
 
   const { data: attackModules, isFetching: isFetchingAttackModules } =
     useGetAllAttackModulesQuery();
@@ -84,10 +85,10 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const [sendArtPrompt, { isLoading: isLoadingArtPromptResponse }] =
     useSendArtPromptMutation();
 
-  const [triggerSetPromptTemplate, { data: promptTemplateResult }] =
+  const [setPromptTemplate, { isLoading: isSettingPromptTemplate }] =
     useSetPromptTemplateMutation();
 
-  const [triggerUnSetPromptTemplate, { data: unusePromptTemplateResult }] =
+  const [unsetPromptTemplate, { isLoading: isUnsettingPromptTemplate }] =
     useUnsetPromptTemplateMutation();
 
   const [setAttackModule, { isLoading: isSettingAttackModule }] =
@@ -206,23 +207,17 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     }
   }
 
-  async function handleSelectPromptTemplate(
-    template: PromptTemplate | undefined
-  ) {
-    if (!template && activeSession && selectedPromptTemplate) {
-      triggerUnSetPromptTemplate({
-        session_id: activeSession.session.session_id,
-        templateName: selectedPromptTemplate.name,
-      });
-      setSelectedPromptTemplate(undefined);
-      return;
+  async function handleSelectPromptTemplate(template: PromptTemplate) {
+    setOptionsModal(undefined);
+    const result = await setPromptTemplate({
+      session_id: activeSession.session.session_id,
+      templateName: template.name,
+    });
+    if ('data' in result && result.data) {
+      if (result.data.success) {
+        setSelectedPromptTemplate(template);
+      }
     }
-    setSelectedPromptTemplate(template);
-    if (activeSession && template)
-      await triggerSetPromptTemplate({
-        session_id: activeSession.session.session_id,
-        templateName: template.name,
-      });
   }
 
   async function handleSelectAttackModule(attackModule: AttackModule) {
@@ -251,6 +246,18 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       if (result.data.success) {
         setSelectedAttackModule(undefined);
         setIsAttackMode(false);
+      }
+    }
+  }
+
+  async function handleRemovePromptTemplateClick(template: PromptTemplate) {
+    const result = await unsetPromptTemplate({
+      session_id: activeSession.session.session_id,
+      templateName: template.name,
+    });
+    if ('data' in result && result.data) {
+      if (result.data.success) {
+        setSelectedPromptTemplate(undefined);
       }
     }
   }
@@ -287,6 +294,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       isFetchingAttackModules ||
       isSettingAttackModule ||
       isUnsettingAttackModule ||
+      isSettingPromptTemplate ||
+      isUnsettingPromptTemplate ||
       isLoadingArtPromptResponse ||
       liveAttackInProgress;
 
@@ -299,6 +308,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       isFetchingAttackModules ||
       isSettingAttackModule ||
       isUnsettingAttackModule ||
+      isSettingPromptTemplate ||
+      isUnsettingPromptTemplate ||
       isLoadingPromptResponse;
 
     isPromptCompletionInProgress = isLoadingPromptResponse;
@@ -341,8 +352,18 @@ function RedteamSessionChats(props: ActiveSessionProps) {
           pressedBtnColor={colors.moongray[400]}
           leftIconName={IconName.MoonPromptTemplate}
           iconSize={18}
+          onClick={() => setOptionsModal('prompt-template')}
         />
-        <p className="text-[0.9rem] text-moongray-400">None</p>
+        {selectedPromptTemplate ? (
+          <SelectedOptionPill
+            label={selectedPromptTemplate.name}
+            onXClick={() =>
+              handleRemovePromptTemplateClick(selectedPromptTemplate)
+            }
+          />
+        ) : (
+          <p className="text-[0.9rem] text-moongray-400">None</p>
+        )}
       </div>
       <div className="flex items-center gap-2">
         <Button
@@ -419,12 +440,19 @@ function RedteamSessionChats(props: ActiveSessionProps) {
           textColor={colors.moongray[400]}
           heading="Attack Modules"
           onCloseIconClick={() => setOptionsModal(undefined)}>
+          {optionsModal === 'prompt-template' && (
+            <PromptTemplatesList
+              onPrimaryBtnClick={handleSelectPromptTemplate}
+              onSecondaryBtnClick={() => setOptionsModal(undefined)}
+            />
+          )}
           {optionsModal === 'attack-module' && (
             <AttackModulesList
               onPrimaryBtnClick={handleSelectAttackModule}
               onSecondaryBtnClick={() => setOptionsModal(undefined)}
             />
           )}
+          {optionsModal === 'attack-module' && <h1>Hello</h1>}
         </Modal>
       )}
 
