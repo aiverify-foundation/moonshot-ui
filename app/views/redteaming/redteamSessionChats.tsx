@@ -4,6 +4,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { useEventSource } from '@/app/hooks/use-eventsource';
+import { toErrorWithMessage } from '@/app/lib/error-utils';
 import { useGetAllAttackModulesQuery } from '@/app/services/attack-modules-api-service';
 import { useGetAllPromptTemplatesQuery } from '@/app/services/prompt-template-api-service';
 import {
@@ -35,10 +36,13 @@ import { SelectedOptionPill } from './components/selectedOptionPill';
 import useChatboxesPositionsUtils from './hooks/useChatboxesPositionsUtils';
 import { getWindowId, getWindowXYById } from '@app/lib/window-utils';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
-import { appendChatHistory, setActiveSession } from '@redux/slices';
+import {
+  appendChatHistory,
+  removeActiveSession,
+  setActiveSession,
+} from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { Z_Index } from '@views/moonshot-desktop/constants';
-import { toErrorWithMessage } from '@/app/lib/error-utils';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -120,16 +124,19 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const [unsetAttackModule, { isLoading: isUnsettingAttackModule }] =
     useUnsetAttackModuleMutation();
 
-  const [closeSession, { isLoading: isClosingSession }] =
-    useCloseSessionMutation();
+  const [closeSession] = useCloseSessionMutation();
 
   const chatboxControlsRef = useRef<Map<string, ChatBoxControls> | null>(null);
+
+  useLayoutEffect(() => {
+    dispatch(removeActiveSession());
+  }, []);
 
   useLayoutEffect(() => {
     setIsFetchingData(isFetchingPromptTemplates || isFetchingAttackModules);
   }, [isFetchingPromptTemplates, isFetchingAttackModules]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     dispatch(setActiveSession(sessionData));
   }, [sessionData]);
 
@@ -365,6 +372,17 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     }
   }
 
+  let optionsModalHeading = '';
+  if (optionsModal === 'prompt-template') {
+    optionsModalHeading = 'Prompt Templates';
+  }
+  if (optionsModal === 'attack-module') {
+    optionsModalHeading = 'Attack Modules';
+  }
+  if (optionsModal === 'context-strategy') {
+    optionsModalHeading = 'Context Strategies';
+  }
+
   if (activeSession === undefined) return null;
 
   let isChatControlsDisabled = false;
@@ -557,7 +575,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
           overlayOpacity={0.8}
           bgColor={colors.moongray[500]}
           textColor={colors.moongray[400]}
-          heading="Attack Modules"
+          heading={optionsModalHeading}
           onCloseIconClick={() => setOptionsModal(undefined)}>
           {optionsModal === 'prompt-template' && (
             <PromptTemplatesList
@@ -593,12 +611,11 @@ function RedteamSessionChats(props: ActiveSessionProps) {
           <hgroup className="flex flex-col left-6 pl-5">
             <h2 className="capitalize text-lg text-white">
               <span className="font text-white text-lg">
-                {activeSession.session.name}Red Teaming Session Name Placeholder
+                {activeSession.session_name}
               </span>
             </h2>
             <div className="w-80 text-white text-sm">
-              {activeSession.session.description}Lorum ipsum description
-              placeholder
+              {activeSession.session_description}
             </div>
           </hgroup>
         </header>

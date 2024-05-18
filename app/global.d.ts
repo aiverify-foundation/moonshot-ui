@@ -1,7 +1,5 @@
 type Session = {
   session_id: string;
-  name: string;
-  description: string;
   created_epoch: number;
   created_datetime: string;
   chat_ids: string[];
@@ -16,6 +14,8 @@ type Session = {
 
 type SessionData = {
   session: Session;
+  session_name: string;
+  session_description: string;
   chat_records: Record<string, DialoguePairInfo[]>;
 };
 
