@@ -15,6 +15,7 @@ import {
   useUnsetPromptTemplateMutation,
 } from '@/app/services/session-api-service';
 import { AppEventTypes } from '@/app/types/enums';
+import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { Modal } from '@/app/views/shared-components/modal/modal';
 import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
@@ -31,7 +32,7 @@ import { Tooltip, TooltipPosition } from '@components/tooltip';
 import { appendChatHistory, setActiveSession } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { Z_Index } from '@views/moonshot-desktop/constants';
-import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
+import useChatboxesPositionsUtils from './hooks/useChatboxesPositionsUtils';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -47,6 +48,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const dispatch = useAppDispatch();
   const windowsMap = useAppSelector((state) => state.windows.map);
   const { sessionData } = props;
+  const { resetChatboxPositions } = useChatboxesPositionsUtils(sessionData);
   const [promptText, setPromptText] = useState('');
   const [isFetchingData, setIsFetchingData] = useState(true);
   const [liveAttackInProgress, setLiveAttackInProgress] = useState(false);
@@ -77,9 +79,9 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const { data: attackModules, isFetching: isFetchingAttackModules } =
     useGetAllAttackModulesQuery();
 
-  const [sendPrompt, { isLoading: sendPromptIsLoading }] =
+  const [sendPrompt, { isLoading: isLoadingPromptResponse }] =
     useSendPromptMutation();
-  const [sendArtPrompt, { isLoading: sendArtPromptIsLoading }] =
+  const [sendArtPrompt, { isLoading: isLoadingArtPromptResponse }] =
     useSendArtPromptMutation();
 
   const [triggerSetPromptTemplate, { data: promptTemplateResult }] =
@@ -88,10 +90,10 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const [triggerUnSetPromptTemplate, { data: unusePromptTemplateResult }] =
     useUnsetPromptTemplateMutation();
 
-  const [setAttackModule, { isLoading: setAttackModuleResultIsLoding }] =
+  const [setAttackModule, { isLoading: isSettingAttackModule }] =
     useSetAttackModuleMutation();
 
-  const [unsetAttackModule, { isLoading: unsetAttackModuleResultIsLoding }] =
+  const [unsetAttackModule, { isLoading: isUnsettingAttackModule }] =
     useUnsetAttackModuleMutation();
 
   const chatboxControlsRef = useRef<Map<string, ChatBoxControls> | null>(null);
@@ -112,7 +114,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
   useEffect(() => {
     if (!chatboxControlsRef.current) return;
-    if (sendPromptIsLoading || sendArtPromptIsLoading) {
+    if (isLoadingPromptResponse || isLoadingArtPromptResponse) {
       const chatboxesControls = chatboxControlsRef.current;
       chatboxesControls.forEach((boxControl) => {
         if (boxControl) {
@@ -122,7 +124,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     } else {
       setPromptText('');
     }
-  }, [sendPromptIsLoading, sendArtPromptIsLoading]);
+  }, [isLoadingPromptResponse, isLoadingArtPromptResponse]);
 
   useEffect(() => {
     if (!Boolean(sessionData.session.attack_module) || !attackModules) return;
@@ -275,8 +277,42 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
   if (activeSession === undefined) return null;
 
+  let isChatControlsDisabled = false;
+  let isPromptCompletionInProgress = false;
+
+  if (isAttackMode) {
+    isChatControlsDisabled =
+      isFetchingData ||
+      isFetchingPromptTemplates ||
+      isFetchingAttackModules ||
+      isSettingAttackModule ||
+      isUnsettingAttackModule ||
+      isLoadingArtPromptResponse ||
+      liveAttackInProgress;
+
+    isPromptCompletionInProgress =
+      isLoadingArtPromptResponse || liveAttackInProgress;
+  } else {
+    isChatControlsDisabled =
+      isFetchingData ||
+      isFetchingPromptTemplates ||
+      isFetchingAttackModules ||
+      isSettingAttackModule ||
+      isUnsettingAttackModule ||
+      isLoadingPromptResponse;
+
+    isPromptCompletionInProgress = isLoadingPromptResponse;
+  }
+
   const optionsPanel = (
-    <div className="bg-moongray-600  w-[370px] absolute left-[115%] top-0 rounded-md p-2  shadow-lg">
+    <div className="bg-moongray-600  w-[370px] absolute left-[115%] top-0 rounded-md p-2 shadow-lg">
+      {isChatControlsDisabled && (
+        <div
+          className="absolute gap-2 bg-moongray-950/50 w-full h-full z-10 flex justify-center items-center rounded-md"
+          style={{ top: 0, left: 0 }}>
+          <div className="waitspinner" />
+        </div>
+      )}
       <div className="flex items-center gap-2">
         <Button
           text="Attack Module"
@@ -325,7 +361,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const layoutSwitch =
     activeSession.session.endpoints.length > 3 ? (
       <section className="w-full flex justify-center mb-8">
-        <div className="flex gap-6 top-10 bg-moongray-600 rounded py-3 px-4 shadow-lg items-center w-[200px]">
+        <div className="flex gap-6 top-10 bg-moongray-600 rounded py-3 px-4 shadow-lg items-center w-auto">
           <p className="text-sm text-white">Layout: </p>
           <Tooltip
             disabled={layoutMode === LayoutMode.SLIDE}
@@ -353,6 +389,19 @@ function RedteamSessionChats(props: ActiveSessionProps) {
               onClick={() => dispatch(setChatLayoutMode(LayoutMode.FREE))}
             />
           </Tooltip>
+          {layoutMode === LayoutMode.FREE && (
+            <Tooltip
+              content="Reset position of chat boxes"
+              position={TooltipPosition.right}
+              offsetLeft={18}
+              offsetTop={5}>
+              <Icon
+                size={26}
+                name={IconName.Reset}
+                onClick={() => resetChatboxPositions(true)}
+              />
+            </Tooltip>
+          )}
         </div>
       </section>
     ) : null;
@@ -412,9 +461,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                   <ChatboxSlideLayout
                     ref={chatboxControlsRef}
                     chatSession={activeSession}
-                    chatCompletionInProgress={
-                      isAttackMode ? liveAttackInProgress : sendPromptIsLoading
-                    }
+                    chatCompletionInProgress={isPromptCompletionInProgress}
                     promptTemplates={promptTemplates}
                     selectedPromptTemplate={selectedPromptTemplate}
                     promptText={promptText}
@@ -425,11 +472,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                   <div className="relative">
                     <PromptBox
                       zIndex={Z_Index.FocusedWindow}
-                      disabled={
-                        setAttackModuleResultIsLoding || isAttackMode
-                          ? liveAttackInProgress
-                          : sendPromptIsLoading
-                      }
+                      disabled={isChatControlsDisabled}
                       windowId={getWindowId(promptBoxId)}
                       name={promptBoxId}
                       draggable={false}
@@ -451,40 +494,37 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       </PopupSurface>
       {/* Draggable prompt boxes must NOT be within any positioned container because it is positioned relative to viewport */}
       {layoutMode === LayoutMode.FREE && promptTemplates ? (
-        <ChatboxFreeLayout
-          ref={chatboxControlsRef}
-          chatSession={activeSession}
-          chatCompletionInProgress={
-            isAttackMode ? liveAttackInProgress : sendPromptIsLoading
-          }
-          promptTemplates={promptTemplates}
-          selectedPromptTemplate={selectedPromptTemplate}
-          promptText={promptText}
-          handleOnWindowChange={handleOnWindowChange}
-        />
+        <>
+          <ChatboxFreeLayout
+            ref={chatboxControlsRef}
+            chatSession={activeSession}
+            chatCompletionInProgress={isPromptCompletionInProgress}
+            promptTemplates={promptTemplates}
+            selectedPromptTemplate={selectedPromptTemplate}
+            promptText={promptText}
+            handleOnWindowChange={handleOnWindowChange}
+          />
+          <PromptBox
+            zIndex={Z_Index.FocusedWindow}
+            disabled={isChatControlsDisabled}
+            windowId={getWindowId(promptBoxId)}
+            name={promptBoxId}
+            draggable={layoutMode === LayoutMode.FREE}
+            initialXY={promptBoxInitialXY}
+            chatSession={activeSession}
+            promptTemplates={promptTemplates}
+            activePromptTemplate={selectedPromptTemplate}
+            onCloseClick={() => null}
+            onSendClick={handleSendPromptClick}
+            onSelectPromptTemplate={handleSelectPromptTemplate}
+            onWindowChange={handleOnWindowChange}
+            onCloseSessionCommand={() => null}
+          />
+          <div className="absolute bottom-[200px] right-[30%]">
+            {optionsPanel}
+          </div>
+        </>
       ) : null}
-      {layoutMode === LayoutMode.FREE && promptTemplates && (
-        <PromptBox
-          zIndex={Z_Index.FocusedWindow}
-          disabled={
-            setAttackModuleResultIsLoding || isAttackMode
-              ? liveAttackInProgress
-              : sendPromptIsLoading
-          }
-          windowId={getWindowId(promptBoxId)}
-          name={promptBoxId}
-          draggable={layoutMode === LayoutMode.FREE}
-          initialXY={promptBoxInitialXY}
-          chatSession={activeSession}
-          promptTemplates={promptTemplates}
-          activePromptTemplate={selectedPromptTemplate}
-          onCloseClick={() => null}
-          onSendClick={handleSendPromptClick}
-          onSelectPromptTemplate={handleSelectPromptTemplate}
-          onWindowChange={handleOnWindowChange}
-          onCloseSessionCommand={() => null}
-        />
-      )}
     </>
   );
 }

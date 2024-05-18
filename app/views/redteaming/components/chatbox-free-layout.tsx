@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Icon, IconName } from '@/app/components/IconSVG';
 import {
   getWindowId,
   getWindowScrollTopById,
@@ -8,7 +7,6 @@ import {
 } from '@/app/lib/window-utils';
 import { useAppSelector } from '@/lib/redux';
 import { ChatBox, ChatBoxControls } from './chatbox';
-import { Tooltip, TooltipPosition } from '@components/tooltip';
 import useChatboxesPositionsUtils from '@views/redteaming/hooks/useChatboxesPositionsUtils';
 
 const minimizedStyle = {
@@ -54,10 +52,6 @@ const ChatboxFreeLayout = React.forwardRef(
     const chatBoxControlsMap = new Map<string, ChatBoxControls>();
     React.useImperativeHandle(ref, () => chatBoxControlsMap);
 
-    function handleResetClick() {
-      resetChatboxPositions(true);
-    }
-
     function handleMinimizeClick(windowId: string) {
       return () => {
         setMinizedChats([...minizedChats, windowId]);
@@ -83,25 +77,6 @@ const ChatboxFreeLayout = React.forwardRef(
 
     return (
       <>
-        <div className="absolute top-[56px] w-full">
-          <div
-            className="absolute flex items-center 
-              justify-center w-8 h-8 
-            bg-white dark:bg-gray-800 
-              rounded-full shadow-md left-[60%]">
-            <Tooltip
-              fontColor="#1e293b"
-              content="Reset chatbox positions"
-              position={TooltipPosition.right}
-              offsetLeft={18}>
-              <Icon
-                name={IconName.Reset}
-                onClick={handleResetClick}
-                size={20}
-              />
-            </Tooltip>
-          </div>
-        </div>
         {chatSession.session.endpoints.map((id: string, index: number) => {
           const isMinimized = minizedChats.includes(getWindowId(id));
           const left = index * 20;
