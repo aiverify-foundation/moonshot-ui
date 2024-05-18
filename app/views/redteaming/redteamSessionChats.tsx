@@ -43,6 +43,9 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const dispatch = useAppDispatch();
   const [promptText, setPromptText] = useState('');
   const [artInProgress, setArtInProgress] = useState(false);
+  const [optionsModal, setOptionsModal] = useState<
+    'attack-module' | 'prompt-template' | 'context-strategy' | undefined
+  >(undefined);
   const activeSession =
     useAppSelector((state) => state.activeSession.entity) || sessionData;
   const windowsMap = useAppSelector((state) => state.windows.map);
@@ -168,6 +171,11 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     return [left, top, width, height, 0];
   }
 
+  function handleSelectAttackModule(attackModule: AttackModule) {
+    console.log('attackModule', attackModule);
+    setOptionsModal(undefined);
+  }
+
   useEffect(() => {
     if (activeSession) {
       const template = promptTemplates.find(
@@ -231,6 +239,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
           hoverBtnColor={colors.moongray[500]}
           pressedBtnColor={colors.moongray[400]}
           leftIconName={IconName.MoonAttackStrategy}
+          onClick={() => setOptionsModal('attack-module')}
         />
         <p className="text-[0.9rem] text-moongray-400">None</p>
       </div>
@@ -297,13 +306,26 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
   return (
     <>
-      <Modal
-        enableScreenOverlay
-        bgColor={colors.moongray[800]}
-        textColor={colors.moongray[400]}
-        heading="Attack Modules">
-        <AttackModulesList />
-      </Modal>
+      {optionsModal != undefined && (
+        <Modal
+          width="auto"
+          height={600}
+          headingColor={colors.moongray[950]}
+          enableScreenOverlay
+          overlayOpacity={0.8}
+          bgColor={colors.moongray[500]}
+          textColor={colors.moongray[400]}
+          heading="Attack Modules"
+          onCloseIconClick={() => setOptionsModal(undefined)}>
+          {optionsModal === 'attack-module' && (
+            <AttackModulesList
+              onPrimaryBtnClick={handleSelectAttackModule}
+              onSecondaryBtnClick={() => setOptionsModal(undefined)}
+            />
+          )}
+        </Modal>
+      )}
+
       <PopupSurface
         onCloseIconClick={() => router.push('/')}
         height="calc(100vh - 20px)"
