@@ -15,14 +15,14 @@ const sessionApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
     createSession: builder.mutation<Session, RedteamRunFormValues>({
-      query: ({ name, description, endpoints, attack_module }) => ({
+      query: ({ name, description, endpoints, attack_id }) => ({
         url: proxyPathSessions,
         method: 'POST',
         body: {
           name,
           description,
           endpoints,
-          attack_module,
+          attack_id,
         },
       }),
     }),
@@ -52,6 +52,24 @@ const sessionApi = createApi({
     >({
       query: ({ session_id, templateName }) => ({
         url: `${proxyPathSessions}/${session_id}/prompt_templates/${templateName}`,
+        method: 'DELETE',
+      }),
+    }),
+    setAttackModule: builder.mutation<
+      { success: boolean },
+      { session_id: string; attack_id: string }
+    >({
+      query: ({ session_id, attack_id }) => ({
+        url: `${proxyPathSessions}/${session_id}/attack-module/${attack_id}`,
+        method: 'PUT',
+      }),
+    }),
+    unsetAttackModule: builder.mutation<
+      { success: boolean },
+      { session_id: string; attack_id: string }
+    >({
+      query: ({ session_id, attack_id }) => ({
+        url: `${proxyPathSessions}/${session_id}/attack-module/${attack_id}`,
         method: 'DELETE',
       }),
     }),
@@ -89,7 +107,7 @@ function transformSimplePromptResponse(
         conn_id: endpointId,
         context_strategy: '',
         prompt_template: '',
-        attack_module: '',
+        attack_id: '',
         metric: '',
         prompt: endpointsCurrentchatsMap[endpointId][0].prompt,
         prepared_prompt: endpointsCurrentchatsMap[endpointId][0].prompt,
@@ -112,6 +130,8 @@ const {
   useSendPromptMutation,
   useSendArtPromptMutation,
   useCreateSessionMutation,
+  useSetAttackModuleMutation,
+  useUnsetAttackModuleMutation,
 } = sessionApi;
 
 export {
@@ -124,4 +144,6 @@ export {
   useSetPromptTemplateMutation,
   useUnsetPromptTemplateMutation,
   useSendArtPromptMutation,
+  useSetAttackModuleMutation,
+  useUnsetAttackModuleMutation,
 };

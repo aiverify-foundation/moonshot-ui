@@ -41,7 +41,7 @@ function Modal(props: ModalProps) {
     <>
       {enableScreenOverlay && (
         <div
-          className="fixed inset-0 flex items-center justify-center bg-black z-[998]"
+          className="fixed inset-0 flex items-center justify-center bg-black z-[999]"
           style={{
             opacity: overlayOpacity,
           }}

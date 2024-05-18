@@ -53,6 +53,8 @@ type PromptBoxProps = {
   onCloseSessionCommand?: () => void;
 };
 
+const ENABLE_FEATURE_COMMAND_LINE = false;
+
 function PromptBox(props: PromptBoxProps) {
   const {
     windowId,
@@ -67,7 +69,6 @@ function PromptBox(props: PromptBoxProps) {
     onWindowChange,
     onSelectPromptTemplate,
     onSendClick,
-    onCloseSessionCommand,
     styles,
   } = props;
   const [promptMessage, setPromptMessage] = useState('');
@@ -118,7 +119,7 @@ function PromptBox(props: PromptBoxProps) {
     const inputValue = e.target.value;
     setPromptMessage(inputValue);
 
-    if (inputValue.startsWith('/')) {
+    if (ENABLE_FEATURE_COMMAND_LINE && inputValue.startsWith('/')) {
       const commandFragment = inputValue.slice(1); // Remove the slash
       setShowPromptTemplateList(false);
       setCommandString(commandFragment);
@@ -363,9 +364,11 @@ function PromptBox(props: PromptBoxProps) {
           <div className="waitspinner" />
         </div>
       )}
-      <div className="absolute top-2 right-8 text-xs text-white/90">
-        (Enter &apos;/ &apos; for commands)
-      </div>
+      {ENABLE_FEATURE_COMMAND_LINE && (
+        <div className="absolute top-2 right-8 text-xs text-white/90">
+          (Enter &apos;/ &apos; for commands)
+        </div>
+      )}
       <div className="relative flex flex-col gap-1">
         <div className="flex gap-2">
           <div className="flex-1">
@@ -403,6 +406,7 @@ function PromptBox(props: PromptBoxProps) {
         <div className="flex gap-2 w-full justify-end">
           {/* {promptTemplateTrigger} */}
           <button
+            disabled={promptMessage.trim().length === 0}
             className="btn-primary w-20 rounded h-[32px]"
             type="button"
             onClick={handleOnSendMessageClick}>
