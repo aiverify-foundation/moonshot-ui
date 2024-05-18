@@ -7,6 +7,7 @@ type PromptBubbleInfoProps = Partial<DialoguePairInfo> & {
 
 function PromptBubbleInfo(props: PromptBubbleInfoProps) {
   const { duration, prompt_template, templateString } = props;
+  const durationInSeconds = duration !== undefined ? parseFloat(duration) : 0;
   const isDarkMode = useAppSelector((state) => state.darkMode.value);
   return (
     <div className="w-full p-2">
@@ -14,7 +15,7 @@ function PromptBubbleInfo(props: PromptBubbleInfoProps) {
       <div>
         <span className="text-sky-400 pr-1">Response Time Taken (secs):</span>
         <span className="text-white">
-          {duration ? duration.toFixed(4) : ''}
+          {duration !== undefined ? durationInSeconds.toFixed(4) : ''}
         </span>
       </div>
       <div>

@@ -19,6 +19,7 @@ const minimizedStyle = {
 type ChatFreeLayoutProps = {
   chatSession: SessionData;
   chatCompletionInProgress: boolean;
+  isAttackMode: boolean;
   promptTemplates: PromptTemplate[];
   selectedPromptTemplate: PromptTemplate | undefined;
   promptText: string;
@@ -40,6 +41,7 @@ const ChatboxFreeLayout = React.forwardRef(
     const {
       chatSession,
       chatCompletionInProgress,
+      isAttackMode,
       promptTemplates,
       selectedPromptTemplate,
       promptText,
@@ -110,6 +112,7 @@ const ChatboxFreeLayout = React.forwardRef(
               }
               promptTemplates={promptTemplates}
               currentPromptTemplate={selectedPromptTemplate}
+              isAttackMode={isAttackMode}
               currentPromptText={promptText}
               isChatCompletionInProgress={chatCompletionInProgress}
               onWindowChange={handleOnWindowChange}

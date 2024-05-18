@@ -30,7 +30,7 @@ type DialoguePairInfo = {
   prepared_prompt: string;
   system_prompt: string;
   predicted_result: string;
-  duration: number;
+  duration: string;
   prompt_time: string;
 };
 

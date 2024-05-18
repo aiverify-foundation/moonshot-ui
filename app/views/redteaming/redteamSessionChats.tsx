@@ -16,7 +16,7 @@ import {
   useUnsetContextStrategyMutation,
   useUnsetPromptTemplateMutation,
 } from '@/app/services/session-api-service';
-import { AppEventTypes } from '@/app/types/enums';
+import { AppEventTypes, RedteamStatusProgress } from '@/app/types/enums';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { Modal } from '@/app/views/shared-components/modal/modal';
 import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
@@ -45,7 +45,7 @@ type ActiveSessionProps = {
 };
 
 const promptBoxId = 'prompt-box';
-const streamPath = '/api/v1/redteaming/stream';
+const streamPath = '/api/v1/redteaming/status';
 const ctxStrategyNumOfPrevPrompts = 5;
 
 function RedteamSessionChats(props: ActiveSessionProps) {
@@ -53,7 +53,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const dispatch = useAppDispatch();
   const windowsMap = useAppSelector((state) => state.windows.map);
   const { sessionData } = props;
-  console.dir(sessionData);
+  // console.dir(sessionData);
   const { resetChatboxPositions } = useChatboxesPositionsUtils(sessionData);
   const [promptText, setPromptText] = useState('');
   const [isFetchingData, setIsFetchingData] = useState(true);
@@ -170,10 +170,18 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   }, [promptTemplates, activeSession]);
 
   useEffect(() => {
-    if (eventData) {
-      if (!eventData.current_runner_id) return;
-      const id = eventData.current_runner_id;
-      console.log('eventData', eventData);
+    if (!eventData || eventData.current_runner_id == undefined) return;
+    if (
+      eventData.current_status.toLowerCase() ==
+      RedteamStatusProgress.COMPLETED.toLowerCase()
+    ) {
+      setLiveAttackInProgress(false);
+      return;
+    }
+    if (
+      eventData.current_status.toLowerCase() ==
+      RedteamStatusProgress.RUNNING.toLowerCase()
+    ) {
       dispatch(appendChatHistory(eventData.current_chats));
     }
   }, [eventData]);
@@ -563,6 +571,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                     ref={chatboxControlsRef}
                     chatSession={activeSession}
                     chatCompletionInProgress={isPromptCompletionInProgress}
+                    isAttackMode={isAttackMode}
                     promptTemplates={promptTemplates}
                     selectedPromptTemplate={selectedPromptTemplate}
                     promptText={promptText}
@@ -600,6 +609,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
             ref={chatboxControlsRef}
             chatSession={activeSession}
             chatCompletionInProgress={isPromptCompletionInProgress}
+            isAttackMode={isAttackMode}
             promptTemplates={promptTemplates}
             selectedPromptTemplate={selectedPromptTemplate}
             promptText={promptText}

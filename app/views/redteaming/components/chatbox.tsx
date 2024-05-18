@@ -19,6 +19,7 @@ type ChatBoxProps = {
   promptTemplates: PromptTemplate[];
   currentPromptTemplate?: PromptTemplate;
   currentPromptText?: string;
+  isAttackMode: boolean;
   isChatCompletionInProgress: boolean;
   styles?: React.CSSProperties;
   onWindowChange: (
@@ -56,6 +57,7 @@ const ChatBox = React.forwardRef(
       promptTemplates,
       currentPromptTemplate,
       currentPromptText,
+      isAttackMode = false,
       isChatCompletionInProgress,
       styles,
       onWindowChange,
@@ -179,7 +181,8 @@ const ChatBox = React.forwardRef(
             </li>
           );
         })}
-        {isChatCompletionInProgress ? (
+
+        {isChatCompletionInProgress && !isAttackMode && (
           <div className="flex flex-col p-2">
             <div className="flex flex-col text-right pr-2 text-xs text-black">
               You
@@ -202,7 +205,13 @@ const ChatBox = React.forwardRef(
               <Chat.LoadingAnimation />
             </div>
           </div>
-        ) : null}
+        )}
+
+        {isChatCompletionInProgress && isAttackMode && (
+          <div className="flex justify-start mr-4 p-2">
+            <Chat.LoadingAnimation />
+          </div>
+        )}
       </Chat.Container>
     );
   }

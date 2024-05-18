@@ -11,6 +11,7 @@ import {
 type ChatSlideLayoutProps = {
   chatSession: SessionData;
   chatCompletionInProgress: boolean;
+  isAttackMode: boolean;
   promptTemplates: PromptTemplate[];
   selectedPromptTemplate: PromptTemplate | undefined;
   promptText: string;
@@ -31,6 +32,7 @@ type SlidesIndexBtnsProps = {
   onIndexMouseOver: (index: number) => void;
   onIndexMouseOut: () => void;
 };
+
 function SlidesIndexBtns(props: SlidesIndexBtnsProps) {
   const {
     chats,
@@ -104,6 +106,7 @@ const ChatboxSlideLayout = React.forwardRef(
     const {
       chatSession,
       chatCompletionInProgress,
+      isAttackMode,
       promptTemplates,
       selectedPromptTemplate,
       promptText,
@@ -189,10 +192,6 @@ const ChatboxSlideLayout = React.forwardRef(
                 (currentBoxIndex <= index && currentBoxIndex + 4 > index)
               ) {
                 const xpos = index === 0 ? 0 : (width + gap) * index;
-                // const scrollPosition = boxRefs.current[index]
-                //   ? boxRefs.current[index].scrollHeight -
-                //     boxRefs.current[index].clientHeight
-                //   : 0;
                 return (
                   <ChatBox
                     key={id}
@@ -211,6 +210,7 @@ const ChatboxSlideLayout = React.forwardRef(
                     }
                     promptTemplates={promptTemplates}
                     currentPromptTemplate={selectedPromptTemplate}
+                    isAttackMode={isAttackMode}
                     currentPromptText={promptText}
                     title={id}
                     initialXY={[xpos, 0]}

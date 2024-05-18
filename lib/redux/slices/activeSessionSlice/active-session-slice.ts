@@ -31,12 +31,11 @@ export const activeSessionSlice = createSlice({
       action: PayloadAction<Record<string, DialoguePairInfo[]>>
     ) => {
       if (state.entity) {
-        Object.keys(action.payload).forEach((key) => {
+        Object.keys(action.payload).forEach((endpointId) => {
           if (state.entity && state.entity.chat_records) {
-            state.entity.chat_records[key] = [
-              ...(state.entity.chat_records[key] || []),
-              ...action.payload[key],
-            ];
+            state.entity.chat_records[endpointId] = (
+              state.entity.chat_records[endpointId] || []
+            ).concat(action.payload[endpointId]);
           }
         });
       }
