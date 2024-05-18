@@ -7,6 +7,7 @@ import { useEventSource } from '@/app/hooks/use-eventsource';
 import { useGetAllAttackModulesQuery } from '@/app/services/attack-modules-api-service';
 import { useGetAllPromptTemplatesQuery } from '@/app/services/prompt-template-api-service';
 import {
+  useCloseSessionMutation,
   useSendArtPromptMutation,
   useSendPromptMutation,
   useSetAttackModuleMutation,
@@ -62,6 +63,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const [isAttackMode, setIsAttackMode] = useState(
     Boolean(sessionData.session.attack_module)
   );
+  const [showCloseSessionConfirmation, setShowCloseSessionConfirmation] =
+    useState(false);
   const [selectedAttackModule, setSelectedAttackModule] = useState<
     AttackModule | undefined
   >();
@@ -116,6 +119,9 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
   const [unsetAttackModule, { isLoading: isUnsettingAttackModule }] =
     useUnsetAttackModuleMutation();
+
+  const [closeSession, { isLoading: isClosingSession }] =
+    useCloseSessionMutation();
 
   const chatboxControlsRef = useRef<Map<string, ChatBoxControls> | null>(null);
 
@@ -325,6 +331,20 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     }
   }
 
+  async function handleCloseSessionClick() {
+    const result = await closeSession({
+      session_id: activeSession.session.session_id,
+    });
+    if ('data' in result && result.data) {
+      if (result.data.success) {
+        router.push('/');
+      }
+    } else if ('error' in result) {
+      const errWithMsg = toErrorWithMessage(result.error);
+      console.error(errWithMsg);
+    }
+  }
+
   function calcPromptBoxDefaults(): WindowData {
     const width = 500;
     const height = 190;
@@ -512,6 +532,22 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
   return (
     <>
+      {showCloseSessionConfirmation && (
+        <Modal
+          heading="Exit this session?"
+          bgColor={colors.moongray['800']}
+          textColor="#FFFFFF"
+          primaryBtnLabel="Exit Session"
+          secondaryBtnLabel="Cancel"
+          enableScreenOverlay
+          onCloseIconClick={() => setShowCloseSessionConfirmation(false)}
+          onPrimaryBtnClick={handleCloseSessionClick}
+          onSecondaryBtnClick={() => setShowCloseSessionConfirmation(false)}>
+          <p className="text-[0.9rem] pt-3">
+            Are you sure you want to exit this session?
+          </p>
+        </Modal>
+      )}
       {optionsModal != undefined && (
         <Modal
           width="auto"
@@ -545,7 +581,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       )}
 
       <PopupSurface
-        onCloseIconClick={() => router.push('/')}
+        onCloseIconClick={() => setShowCloseSessionConfirmation(true)}
         height="calc(100vh - 20px)"
         style={{
           backgroundColor: colors.moongray[800],
