@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { ListItem, SelectList } from '@/app/components/selectList';
 import { TextArea } from '@/app/components/textArea';
-import { TextInput } from '@/app/components/textInput';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import useOutsideClick from '@/app/hooks/use-outside-click';
 import { debounce } from '@/app/lib/throttle';
@@ -48,7 +47,7 @@ type PromptBoxProps = {
   draggable?: boolean;
   disabled?: boolean;
   onCloseClick?: () => void;
-  onSelectPromptTemplate: (item: PromptTemplate | undefined) => void;
+  onSelectPromptTemplate: (item: PromptTemplate) => Promise<void>;
   onSendClick: (message: string) => void;
   onCloseSessionCommand?: () => void;
 };
@@ -145,7 +144,7 @@ function PromptBox(props: PromptBoxProps) {
         setShowPromptTemplateList(true);
         break;
       case SlashCommand.CLEAR_PROMPT_TEMPLATE:
-        removeActivePromptTemplate();
+        removeActivePromptTemplate(activePromptTemplate);
         break;
       case SlashCommand.CHAT_LAYOUT_MODE_FREE:
         dispatch(setChatLayoutMode(LayoutMode.FREE));
@@ -246,21 +245,13 @@ function PromptBox(props: PromptBoxProps) {
     };
   }
 
-  function handleSelectedPromptTemplateMouseout() {
-    setSelectedHoveredPromptTemplate(undefined);
-  }
-
   function handlePromptTemplateMouseOut() {
     setHoveredPromptTemplate(undefined);
   }
 
-  function removeActivePromptTemplate() {
-    onSelectPromptTemplate(undefined);
-  }
-
-  function handleRemoveActivePromptTemplate(e: React.MouseEvent) {
-    e.stopPropagation();
-    removeActivePromptTemplate();
+  function removeActivePromptTemplate(template: PromptTemplate | undefined) {
+    if (!template) return;
+    onSelectPromptTemplate(template);
   }
 
   function handleCommandListItemSelected(item: ListItem) {
@@ -289,47 +280,6 @@ function PromptBox(props: PromptBoxProps) {
       setTextInputMode(TextInputMode.PROMPT_TEXT);
     }
   }, [showPromptTemplateList, showSlashCommands]);
-
-  const promptTemplateTrigger = (
-    <div className="flex flex-col gap-2">
-      <div
-        className="flex items-center cursor-pointer gap-1"
-        id="prompt-template-trigger"
-        onClick={handleShowPromptTemplateList}>
-        <Icon
-          name={IconName.ChatBubbleWide}
-          size={24}
-          color="white"
-        />
-        <div className="flex items-center text-xs">
-          <span className="hover:opacity-60">Prompt Template</span>
-          {activePromptTemplate && (
-            <div className="flex items-center">
-              <div className="text-white ml-1">--</div>
-              <div className="text-white ml-1">
-                <div className="text-blue-400 text-sm flex items-center">
-                  <div
-                    className="mr-1 max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap"
-                    onMouseOver={handleSelectedPromptTemplateMouseOver(
-                      activePromptTemplate.name
-                    )}
-                    onMouseOut={handleSelectedPromptTemplateMouseout}>
-                    {activePromptTemplate.name}
-                  </div>
-                  <Icon
-                    name={IconName.Close}
-                    size={14}
-                    color="white"
-                    onClick={handleRemoveActivePromptTemplate}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <Window

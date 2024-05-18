@@ -15,7 +15,7 @@ function SelectedOptionPill({
           onClick={onXClick}
         />
       </div>
-      <p className="text-[0.9rem] text-moongray-200 whitespace-nowrap overflow-hidden text-ellipsis w-[150px]">
+      <p className="text-[0.9rem] text-moongray-200 whitespace-nowrap overflow-hidden text-ellipsis w-[150px] px-1">
         {label}
       </p>
     </div>

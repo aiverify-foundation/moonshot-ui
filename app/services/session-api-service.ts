@@ -15,14 +15,14 @@ const sessionApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
     createSession: builder.mutation<Session, RedteamRunFormValues>({
-      query: ({ name, description, endpoints, attack_id }) => ({
+      query: ({ name, description, endpoints, attack_module }) => ({
         url: proxyPathSessions,
         method: 'POST',
         body: {
           name,
           description,
           endpoints,
-          attack_id,
+          attack_module,
         },
       }),
     }),
@@ -73,6 +73,24 @@ const sessionApi = createApi({
         method: 'DELETE',
       }),
     }),
+    setContextStrategy: builder.mutation<
+      { success: boolean },
+      { session_id: string; strategyName: string; numOfPrevPrompts: number }
+    >({
+      query: ({ session_id, strategyName, numOfPrevPrompts }) => ({
+        url: `${proxyPathSessions}/${session_id}/context-strategy/${strategyName}/${numOfPrevPrompts}`,
+        method: 'PUT',
+      }),
+    }),
+    unsetContextStrategy: builder.mutation<
+      { success: boolean },
+      { session_id: string; strategyName: string; numOfPrevPrompts: number }
+    >({
+      query: ({ session_id, strategyName, numOfPrevPrompts }) => ({
+        url: `${proxyPathSessions}/${session_id}/context-strategy/${strategyName}/${numOfPrevPrompts}`,
+        method: 'DELETE',
+      }),
+    }),
     sendPrompt: builder.mutation<ChatHistory, SendPromptQueryParams>({
       query: ({ session_id, prompt }) => ({
         url: `${proxyPathSessions}/${session_id}/prompt`,
@@ -107,7 +125,7 @@ function transformSimplePromptResponse(
         conn_id: endpointId,
         context_strategy: '',
         prompt_template: '',
-        attack_id: '',
+        attack_module: '',
         metric: '',
         prompt: endpointsCurrentchatsMap[endpointId][0].prompt,
         prepared_prompt: endpointsCurrentchatsMap[endpointId][0].prompt,
@@ -132,6 +150,8 @@ const {
   useCreateSessionMutation,
   useSetAttackModuleMutation,
   useUnsetAttackModuleMutation,
+  useSetContextStrategyMutation,
+  useUnsetContextStrategyMutation,
 } = sessionApi;
 
 export {
@@ -146,4 +166,6 @@ export {
   useSendArtPromptMutation,
   useSetAttackModuleMutation,
   useUnsetAttackModuleMutation,
+  useSetContextStrategyMutation,
+  useUnsetContextStrategyMutation,
 };

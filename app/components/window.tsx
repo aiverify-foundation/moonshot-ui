@@ -165,7 +165,11 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       if (!windowRef.current || windowState !== WindowState.resize) return;
       document.body.removeEventListener('mousemove', handleResizeMouseMove);
       document.body.removeEventListener('mouseup', handleResizeMouseUp);
-      if (onWindowChange) {
+      if (
+        onWindowChange &&
+        windowPositionRef.current &&
+        windowSizeRef.current
+      ) {
         onWindowChange(
           windowPositionRef.current[0],
           windowPositionRef.current[1],
@@ -187,7 +191,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
 
     const handleScrollStop = (e: React.UIEvent<HTMLDivElement>) => {
       const target = e.target as HTMLDivElement;
-      if (onWindowChange) {
+      if (onWindowChange && initialPosition) {
         onWindowChange(
           initialPosition[0],
           initialPosition[1],

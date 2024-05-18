@@ -1,7 +1,7 @@
-import { useGetPromptTemplatesQuery } from '@/app/services/prompt-template-api-service';
+import { useGetAllPromptTemplatesQuery } from '@/app/services/prompt-template-api-service';
 
 export default function usePromptTemplateList() {
-  const { data, error, isLoading, refetch } = useGetPromptTemplatesQuery();
+  const { data, error, isLoading, refetch } = useGetAllPromptTemplatesQuery();
   let promptTemplates: PromptTemplate[] = [];
   if (data !== undefined) {
     promptTemplates = data;

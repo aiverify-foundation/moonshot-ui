@@ -27,6 +27,7 @@ type ButtonProps = {
   disabled?: boolean;
   size?: 'sm' | 'md' | 'lg';
   width?: React.CSSProperties['width'];
+  alignContent?: 'center' | 'flex-start' | 'flex-end';
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
@@ -47,6 +48,7 @@ function Button(props: ButtonProps) {
     disabled = false,
     size = 'md',
     width,
+    alignContent,
     onClick = () => null,
   } = props;
   const [isHovered, setIsHovered] = useState(false);
@@ -89,6 +91,7 @@ function Button(props: ButtonProps) {
         color: textColor,
         ...(mode == ButtonType.LINK ? { padding: 0 } : {}),
         width,
+        justifyContent: alignContent,
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {

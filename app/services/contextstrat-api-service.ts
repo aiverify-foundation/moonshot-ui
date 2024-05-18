@@ -9,7 +9,7 @@ const contextStratApi = createApi({
   endpoints: (builder) => ({
     getAllContextStrategies: builder.query<string[], void>({
       query: () => proxyPathContextStrats,
-      keepUnusedDataFor: 0,
+      keepUnusedDataFor: 600,
     }),
   }),
 });

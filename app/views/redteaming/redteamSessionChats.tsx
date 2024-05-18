@@ -10,8 +10,10 @@ import {
   useSendArtPromptMutation,
   useSendPromptMutation,
   useSetAttackModuleMutation,
+  useSetContextStrategyMutation,
   useSetPromptTemplateMutation,
   useUnsetAttackModuleMutation,
+  useUnsetContextStrategyMutation,
   useUnsetPromptTemplateMutation,
 } from '@/app/services/session-api-service';
 import { AppEventTypes } from '@/app/types/enums';
@@ -25,15 +27,16 @@ import { AttackModulesList } from './components/attackModulesList';
 import { ChatBoxControls } from './components/chatbox';
 import { ChatboxFreeLayout } from './components/chatbox-free-layout';
 import { ChatboxSlideLayout } from './components/chatbox-slide-layout';
+import { ContextStrategiesList } from './components/contextStrategiesList';
 import { PromptBox } from './components/prompt-box';
+import { PromptTemplatesList } from './components/promptTemplatesList';
 import { SelectedOptionPill } from './components/selectedOptionPill';
+import useChatboxesPositionsUtils from './hooks/useChatboxesPositionsUtils';
 import { getWindowId, getWindowXYById } from '@app/lib/window-utils';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
 import { appendChatHistory, setActiveSession } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { Z_Index } from '@views/moonshot-desktop/constants';
-import useChatboxesPositionsUtils from './hooks/useChatboxesPositionsUtils';
-import { PromptTemplatesList } from './components/promptTemplatesList';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -43,12 +46,14 @@ type ActiveSessionProps = {
 
 const promptBoxId = 'prompt-box';
 const streamPath = '/api/v1/redteaming/stream';
+const ctxStrategyNumOfPrevPrompts = 5;
 
 function RedteamSessionChats(props: ActiveSessionProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const windowsMap = useAppSelector((state) => state.windows.map);
   const { sessionData } = props;
+  console.dir(sessionData);
   const { resetChatboxPositions } = useChatboxesPositionsUtils(sessionData);
   const [promptText, setPromptText] = useState('');
   const [isFetchingData, setIsFetchingData] = useState(true);
@@ -67,6 +72,13 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const [selectedPromptTemplate, setSelectedPromptTemplate] = useState<
     PromptTemplate | undefined
   >();
+  const [selectedContextStrategy, setSelectedContextStrategy] = useState<
+    ContextStrategy | undefined
+  >(() =>
+    Boolean(sessionData.session.context_strategy)
+      ? sessionData.session.context_strategy
+      : undefined
+  );
   const [eventData, closeEventSource] = useEventSource<
     ArtStatus,
     AppEventTypes
@@ -82,6 +94,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
   const [sendPrompt, { isLoading: isLoadingPromptResponse }] =
     useSendPromptMutation();
+
   const [sendArtPrompt, { isLoading: isLoadingArtPromptResponse }] =
     useSendArtPromptMutation();
 
@@ -90,6 +103,12 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
   const [unsetPromptTemplate, { isLoading: isUnsettingPromptTemplate }] =
     useUnsetPromptTemplateMutation();
+
+  const [setContextStrategy, { isLoading: isSettingContextStrategy }] =
+    useSetContextStrategyMutation();
+
+  const [unsetContextStrategy, { isLoading: isUnsettingContextStrategy }] =
+    useUnsetContextStrategyMutation();
 
   const [setAttackModule, { isLoading: isSettingAttackModule }] =
     useSetAttackModuleMutation();
@@ -234,6 +253,20 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     }
   }
 
+  async function handleSelectContextStrategy(contextStrategy: ContextStrategy) {
+    setOptionsModal(undefined);
+    const result = await setContextStrategy({
+      session_id: activeSession.session.session_id,
+      strategyName: contextStrategy,
+      numOfPrevPrompts: ctxStrategyNumOfPrevPrompts,
+    });
+    if ('data' in result && result.data) {
+      if (result.data.success) {
+        setSelectedContextStrategy(contextStrategy);
+      }
+    }
+  }
+
   async function handleRemoveAttackClick(
     attackModule: AttackModule | undefined
   ) {
@@ -258,6 +291,21 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     if ('data' in result && result.data) {
       if (result.data.success) {
         setSelectedPromptTemplate(undefined);
+      }
+    }
+  }
+
+  async function handleRemoveContextStrategyClick(
+    contextStrategy: ContextStrategy
+  ) {
+    const result = await unsetContextStrategy({
+      session_id: activeSession.session.session_id,
+      strategyName: contextStrategy,
+      numOfPrevPrompts: ctxStrategyNumOfPrevPrompts,
+    });
+    if ('data' in result && result.data) {
+      if (result.data.success) {
+        setSelectedContextStrategy(undefined);
       }
     }
   }
@@ -296,6 +344,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       isUnsettingAttackModule ||
       isSettingPromptTemplate ||
       isUnsettingPromptTemplate ||
+      isSettingContextStrategy ||
+      isUnsettingContextStrategy ||
       isLoadingArtPromptResponse ||
       liveAttackInProgress;
 
@@ -310,13 +360,15 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       isUnsettingAttackModule ||
       isSettingPromptTemplate ||
       isUnsettingPromptTemplate ||
+      isSettingContextStrategy ||
+      isUnsettingContextStrategy ||
       isLoadingPromptResponse;
 
     isPromptCompletionInProgress = isLoadingPromptResponse;
   }
 
   const optionsPanel = (
-    <div className="bg-moongray-600  w-[370px] absolute left-[115%] top-0 rounded-md p-2 shadow-lg">
+    <div className="bg-moongray-600  w-[380px] absolute left-[115%] top-0 rounded-md p-2 shadow-lg">
       {isChatControlsDisabled && (
         <div
           className="absolute gap-2 bg-moongray-950/50 w-full h-full z-10 flex justify-center items-center rounded-md"
@@ -326,6 +378,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       )}
       <div className="flex items-center gap-2">
         <Button
+          width={160}
+          alignContent="flex-start"
           text="Attack Module"
           type="button"
           mode={ButtonType.TEXT}
@@ -345,6 +399,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       </div>
       <div className="flex items-center gap-2">
         <Button
+          width={160}
+          alignContent="flex-start"
           text="Prompt Template"
           type="button"
           mode={ButtonType.TEXT}
@@ -367,14 +423,26 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       </div>
       <div className="flex items-center gap-2">
         <Button
+          width={160}
+          alignContent="flex-start"
           text="Context Strategy"
           type="button"
           mode={ButtonType.TEXT}
           hoverBtnColor={colors.moongray[500]}
           pressedBtnColor={colors.moongray[400]}
           leftIconName={IconName.MoonContextStrategy}
+          onClick={() => setOptionsModal('context-strategy')}
         />
-        <p className="text-[0.9rem] text-moongray-400">None</p>
+        {selectedContextStrategy ? (
+          <SelectedOptionPill
+            label={selectedContextStrategy}
+            onXClick={() =>
+              handleRemoveContextStrategyClick(selectedContextStrategy)
+            }
+          />
+        ) : (
+          <p className="text-[0.9rem] text-moongray-400">None</p>
+        )}
       </div>
     </div>
   );
@@ -452,7 +520,12 @@ function RedteamSessionChats(props: ActiveSessionProps) {
               onSecondaryBtnClick={() => setOptionsModal(undefined)}
             />
           )}
-          {optionsModal === 'attack-module' && <h1>Hello</h1>}
+          {optionsModal === 'context-strategy' && (
+            <ContextStrategiesList
+              onPrimaryBtnClick={handleSelectContextStrategy}
+              onSecondaryBtnClick={() => setOptionsModal(undefined)}
+            />
+          )}
         </Modal>
       )}
 

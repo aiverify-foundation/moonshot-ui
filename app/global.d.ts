@@ -62,6 +62,8 @@ type PromptTemplate = {
   template: string;
 };
 
+type ContextStrategy = string;
+
 type LLMEndpoint = {
   id: string;
   connector_type: string;
