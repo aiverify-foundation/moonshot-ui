@@ -37,6 +37,7 @@ import { Tooltip, TooltipPosition } from '@components/tooltip';
 import { appendChatHistory, setActiveSession } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { Z_Index } from '@views/moonshot-desktop/constants';
+import { toErrorWithMessage } from '@/app/lib/error-utils';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -123,12 +124,6 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   }, [isFetchingPromptTemplates, isFetchingAttackModules]);
 
   useEffect(() => {
-    const promptBoxDefaults: Record<string, WindowData> = {};
-    promptBoxDefaults[getWindowId(promptBoxId)] = calcPromptBoxDefaults();
-    dispatch(updateWindows(promptBoxDefaults));
-  }, []);
-
-  useEffect(() => {
     dispatch(setActiveSession(sessionData));
   }, [sessionData]);
 
@@ -182,11 +177,19 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       eventData.current_status.toLowerCase() ==
       RedteamStatusProgress.RUNNING.toLowerCase()
     ) {
-      dispatch(appendChatHistory(eventData.current_chats));
+      try {
+        dispatch(appendChatHistory(eventData.current_chats));
+      } catch (error) {
+        const errWithMsg = toErrorWithMessage(error);
+        console.error(errWithMsg);
+      }
     }
   }, [eventData]);
 
   useEffect(() => {
+    const promptBoxDefaults: Record<string, WindowData> = {};
+    promptBoxDefaults[getWindowId(promptBoxId)] = calcPromptBoxDefaults();
+    dispatch(updateWindows(promptBoxDefaults));
     return () => {
       console.debug('Unmount status. Closing event source');
       closeEventSource();
@@ -215,22 +218,26 @@ function RedteamSessionChats(props: ActiveSessionProps) {
         prompt: message,
         session_id: activeSession.session.session_id,
       });
-    } else {
-      result = await sendPrompt({
-        prompt: message,
-        session_id: activeSession.session.session_id,
-      });
-    }
-    if ('data' in result && result.data) {
-      if (isAttackMode) {
+      if ('data' in result && result.data) {
         if (result.data === activeSession.session.session_id) {
           return;
         }
-        // todo - handle error
+      } else if ('error' in result) {
+        const errWithMsg = toErrorWithMessage(result.error);
+        console.error(errWithMsg);
       }
-      dispatch(appendChatHistory(result.data as ChatHistory));
+      return;
+    }
+
+    result = await sendPrompt({
+      prompt: message,
+      session_id: activeSession.session.session_id,
+    });
+    if ('data' in result && result.data) {
+      dispatch(appendChatHistory(result.data.current_chats));
     } else if ('error' in result) {
-      console.error('Error fetching data:', result.error);
+      const errWithMsg = toErrorWithMessage(result.error);
+      console.error(errWithMsg);
     }
   }
 

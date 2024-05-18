@@ -91,15 +91,16 @@ const sessionApi = createApi({
         method: 'DELETE',
       }),
     }),
-    sendPrompt: builder.mutation<ChatHistory, SendPromptQueryParams>({
+    sendPrompt: builder.mutation<
+      ManualPromptResponseData,
+      SendPromptQueryParams
+    >({
       query: ({ session_id, prompt }) => ({
         url: `${proxyPathSessions}/${session_id}/prompt`,
         method: 'POST',
         body: { user_prompt: prompt },
         keepUnusedDataFor: 0,
       }),
-      transformResponse: (response: unknown) =>
-        transformSimplePromptResponse(response as ManualPromptResponseData[]),
     }),
     sendArtPrompt: builder.mutation<string, SendPromptQueryParams>({
       query: ({ session_id, prompt }) => ({
