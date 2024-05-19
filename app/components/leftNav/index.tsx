@@ -5,20 +5,37 @@ import { Icon, IconName } from '@components/IconSVG';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
 
 type LeftNavProps = {
-  activeItem?: 'benchmarking' | 'redteaming';
+  activeItem?: 'benchmarking' | 'redteaming' | 'endpoints';
 };
 function LeftNav({ activeItem }: LeftNavProps) {
   return (
     <ul className="flex flex-col gap-10">
-      <li>
-        <Icon
-          color={colors.moongray[300]}
-          name={IconName.OutlineBox}
-          size={40}
-        />
+      <li className="flex justify-center">
+        <Tooltip
+          delay={0}
+          disabled={activeItem === 'endpoints'}
+          defaultShow={activeItem === 'endpoints'}
+          content={<span className="tracking-widest">endpoints</span>}
+          fontColor={colors.moonpurplelight}
+          transparent
+          position={TooltipPosition.left}
+          offsetTop={10}>
+          <Link href="/endpoints">
+            <Icon
+              color={
+                activeItem === 'endpoints'
+                  ? colors.moonpurplelight
+                  : colors.moongray[300]
+              }
+              name={IconName.OutlineBox}
+              size={40}
+            />
+          </Link>
+        </Tooltip>
       </li>
       <li className="flex justify-center">
         <Tooltip
+          delay={0}
           disabled={activeItem === 'benchmarking'}
           defaultShow={activeItem === 'benchmarking'}
           content={<span className="tracking-widest">benchmarking</span>}
@@ -41,6 +58,7 @@ function LeftNav({ activeItem }: LeftNavProps) {
       </li>
       <li className="flex justify-center">
         <Tooltip
+          delay={0}
           disabled={activeItem === 'redteaming'}
           defaultShow={activeItem === 'redteaming'}
           content={<span className="tracking-widest">red teaming</span>}
@@ -70,6 +88,7 @@ function LeftNav({ activeItem }: LeftNavProps) {
       </li>
       <li className="flex justify-center">
         <Tooltip
+          delay={0}
           content={<span className="tracking-widest">utilities</span>}
           fontColor={colors.moonpurplelight}
           position={TooltipPosition.left}
