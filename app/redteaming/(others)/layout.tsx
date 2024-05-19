@@ -20,11 +20,11 @@ export default function SessionsLayout({
           style={{ textShadow: '2px 2px 3px rgba(0,0,0,0.5)' }}>
           moonshot.
         </h1>
-        <Icon
+        {/* <Icon
           color={colors.moongray[300]}
           name={IconName.Bell}
           size={30}
-        />
+        /> */}
       </header>
       <main className="h-full">
         <div className="flex flex-col h-full">{children}</div>

@@ -45,7 +45,7 @@ function AttackModulesViewList({ attacks }: { attacks: AttackModule[] }) {
         <main
           className="grid grid-cols-2 gap-5 mb-3"
           style={{ height: 'calc(100% - 58px)' }}>
-          <ul className="divide-y divide-moongray-800 pr-1 overflow-y-auto custom-scrollbar">
+          <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar">
             {attacks.map((attack) => {
               const isSelected = attack.id === selectedAttack.id;
               const description = attack.description
@@ -76,7 +76,7 @@ function AttackModulesViewList({ attacks }: { attacks: AttackModule[] }) {
               );
             })}
           </ul>
-          <section className="text-white border border-moonwine-500 p-4 rounded-md overflow-y-auto custom-scrollbar">
+          <section className="text-white border border-moonwine-500 p-4 rounded-md overflow-y-auto custom-scrollbar bg-moongray-800">
             <div className="flex gap-2 mb-4">
               <Icon
                 name={IconName.MoonAttackStrategy}

@@ -14,7 +14,7 @@ function BackToHomeButton({ onBackClick, colors }: Props) {
           color={colors.moongray[200]}
           onClick={onBackClick}
         />
-        <p className="text-moongray-200">Back to Home</p>
+        <p className="text-moongray-200 hover:font-bold">Back to Home</p>
       </div>
     </button>
   );
