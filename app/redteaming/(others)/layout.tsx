@@ -1,13 +1,14 @@
-import Link from 'next/link';
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import LeftNav from '@/app/components/leftNav';
 import { MicroLayout } from '@/app/views/quickstart-home/components/microLayout';
-import BackToHomeButton from '@/app/views/shared-components/backToHomeButton/backToHomeButton';
 import { colors } from '@/app/views/shared-components/customColors';
-import { RedteamHomeMenu } from './redteamHomeMenu';
 
-function RedteamHomeLayout() {
+export default function SessionsLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <MicroLayout>
       <nav className="pt-[5rem]">
@@ -26,17 +27,8 @@ function RedteamHomeLayout() {
         />
       </header>
       <main className="h-full">
-        <div className="flex flex-col h-full">
-          <header>
-            <Link href="/">
-              <BackToHomeButton colors={colors} />
-            </Link>
-          </header>
-          <RedteamHomeMenu />
-        </div>
+        <div className="flex flex-col h-full">{children}</div>
       </main>
     </MicroLayout>
   );
 }
-
-export { RedteamHomeLayout };

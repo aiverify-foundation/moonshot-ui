@@ -25,11 +25,7 @@ export default async function BenchmarkNewSessionFlowPage(props: {
 }) {
   const result = await fetchSessionData(props.params.id);
   if (isErrorWithMessage(result)) {
-    return <h1>Error</h1>;
+    throw result.message;
   }
-  return (
-    <div className="flex items-center w-[100vw] h-[100vh] min-w-[1440px] min-h-[900px]">
-      <RedteamSessionChats sessionData={result.data} />
-    </div>
-  );
+  return <RedteamSessionChats sessionData={result.data} />;
 }

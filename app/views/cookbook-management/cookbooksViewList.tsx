@@ -33,7 +33,7 @@ function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
       minHeight={750}
       bgColor={colors.moongray['950']}>
       <div className="h-full">
-        <header className="flex flex-col gap-5 w-full">
+        <header className="flex gap-5 w-full">
           <h1 className="text-[1.6rem] text-white">Cookbooks</h1>
         </header>
         <main
