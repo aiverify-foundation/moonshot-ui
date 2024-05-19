@@ -29,14 +29,18 @@ function BenchmarkHomeMenu() {
         hoverBtnColor={colors.moongray[800]}
         textColor={colors.white}
       />
-      <SubmenuButton
-        width="40%"
-        text="View Cookbooks"
-        menuIconName={IconName.Book}
-        btnColor={colors.moongray[950]}
-        hoverBtnColor={colors.moongray[800]}
-        textColor={colors.white}
-      />
+      <Link
+        href="/benchmarking/cookbooks"
+        style={{ width: '40%' }}>
+        <SubmenuButton
+          width="100%"
+          text="View Cookbooks"
+          menuIconName={IconName.Book}
+          btnColor={colors.moongray[950]}
+          hoverBtnColor={colors.moongray[800]}
+          textColor={colors.white}
+        />
+      </Link>
       <SubmenuButton
         width="40%"
         text="View Recipes"

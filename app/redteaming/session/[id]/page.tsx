@@ -4,7 +4,7 @@ import { processResponse } from '@/app/lib/http-requests';
 import { RedteamSessionChats } from '@/app/views/redteaming/redteamSessionChats';
 import config from '@/moonshot.config';
 /*
-IMPORTANT - this page must be dynamic.
+IMPORTANT - this page must be dynamically rendered.
 fetchSessionData must be called every time so thatweb-api `active_runner` gets populated
 */
 export const dynamic = 'force-dynamic';
