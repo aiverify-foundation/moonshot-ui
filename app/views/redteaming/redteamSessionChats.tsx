@@ -191,6 +191,12 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       eventData.current_status.toLowerCase() ==
       RedteamStatusProgress.COMPLETED.toLowerCase()
     ) {
+      try {
+        dispatch(appendChatHistory(eventData.current_chats));
+      } catch (error) {
+        const errWithMsg = toErrorWithMessage(error);
+        console.error(errWithMsg);
+      }
       setLiveAttackInProgress(false);
       return;
     }
