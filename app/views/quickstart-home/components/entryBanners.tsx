@@ -33,7 +33,7 @@ function EntryBanners() {
       <section>
         <div className="grid grid-cols-3 gap-2">
           <div className="col-span-3 grid grid-cols-3 gap-[1.7%]">
-            <Link href="/redteaming/session/new">
+            <Link href="/redteaming/sessions/new">
               <ActionCard
                 title="Discover"
                 description="new vulnerabilities"
