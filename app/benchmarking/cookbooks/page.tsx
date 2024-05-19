@@ -1,6 +1,7 @@
 import { ApiResult, processResponse } from '@/app/lib/http-requests';
 import { CookbooksViewList } from '@/app/views/cookbook-management/cookbooksViewList';
 import config from '@/moonshot.config';
+export const dynamic = 'force-dynamic';
 
 async function fetchCookbooks() {
   const response = await fetch(

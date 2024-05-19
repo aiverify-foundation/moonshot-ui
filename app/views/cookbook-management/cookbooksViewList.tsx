@@ -38,7 +38,7 @@ function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
         </header>
         <main
           className="grid grid-cols-2 gap-5"
-          style={{ height: 'calc(100% - 38px)' }}>
+          style={{ height: 'calc(100% - 50px)' }}>
           <ul className="divide-y divide-moongray-800 pr-1 overflow-y-auto custom-scrollbar">
             {cookbooks.map((cookbook) => {
               const isSelected = cookbook.id === selectedCookbook.id;

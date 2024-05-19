@@ -81,7 +81,7 @@ function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
               );
             })}
           </ul>
-          <section className="text-white border border-moonwine-500 p-4 rounded-md">
+          <section className="text-white border border-moonwine-500 p-4 rounded-md overflow-y-auto custom-scrollbar">
             <div className="flex gap-2 mb-4">
               <Icon
                 name={IconName.Book}
@@ -95,7 +95,7 @@ function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
             <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">
               Endpoints
             </h4>
-            <p className="text-[0.95rem]">
+            <p className="text-[0.95rem] mb-10">
               {selectedSession.endpoints.map((endpoint, idx) => {
                 return (
                   <span key={endpoint}>
@@ -106,22 +106,22 @@ function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
                 );
               })}
             </p>
-            <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">
+            <h4 className="text-[1.1rem] font-semibold mb-2">
               Last Attack Module Used
             </h4>
-            <p className="text-[0.95rem]">
+            <p className="text-[0.95rem] mb-3">
               {selectedSession.attack_module || 'None'}
             </p>
-            <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">
+            <h4 className="text-[1.1rem] font-semibold mb-2">
               Last Prompt Template Used
             </h4>
-            <p className="text-[0.95rem]">
+            <p className="text-[0.95rem] mb-3">
               {selectedSession.prompt_template || 'None'}
             </p>
-            <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">
+            <h4 className="text-[1.1rem] font-semibold mb-2">
               Last Context Strategy Used
             </h4>
-            <p className="text-[0.95rem]">
+            <p className="text-[0.95rem] mb-3">
               {selectedSession.context_strategy || 'None'}
             </p>
           </section>

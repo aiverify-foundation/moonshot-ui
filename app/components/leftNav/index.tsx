@@ -5,7 +5,7 @@ import { Icon, IconName } from '@components/IconSVG';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
 
 type LeftNavProps = {
-  activeItem: 'benchmarking' | 'redteaming';
+  activeItem?: 'benchmarking' | 'redteaming';
 };
 function LeftNav({ activeItem }: LeftNavProps) {
   return (
