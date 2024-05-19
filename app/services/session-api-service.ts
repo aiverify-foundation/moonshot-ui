@@ -14,7 +14,7 @@ const sessionApi = createApi({
   reducerPath: 'sessionApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
-    createSession: builder.mutation<Session, RedteamRunFormValues>({
+    createSession: builder.mutation<SessionData, RedteamRunFormValues>({
       query: ({ name, description, endpoints, attack_module }) => ({
         url: proxyPathSessions,
         method: 'POST',
@@ -26,7 +26,7 @@ const sessionApi = createApi({
         },
       }),
     }),
-    getAllSessions: builder.query<Session[], void>({
+    getAllSessions: builder.query<SessionData[], void>({
       query: () => ({ url: proxyPathSessions }),
       keepUnusedDataFor: 0,
     }),

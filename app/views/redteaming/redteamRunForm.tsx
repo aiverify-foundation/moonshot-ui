@@ -58,7 +58,7 @@ function RedteamRunForm() {
     }
     dispatch(resetRedteamModels());
     dispatch(resetAttackModule());
-    router.push(`/redteaming/session/${response.data.session_id}`);
+    router.push(`/redteaming/session/${response.data.session.session_id}`);
   }
 
   useEffect(() => {
