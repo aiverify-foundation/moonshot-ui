@@ -50,6 +50,13 @@ type ActiveSessionProps = {
   sessionData: SessionData;
 };
 
+type AlertMsg = {
+  heading: string;
+  iconName: IconName;
+  iconColor: string;
+  message: string;
+};
+
 const promptBoxId = 'prompt-box';
 const streamPath = '/api/v1/redteaming/status';
 const ctxStrategyNumOfPrevPrompts = 5;
@@ -64,6 +71,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const [promptText, setPromptText] = useState('');
   const [isFetchingData, setIsFetchingData] = useState(true);
   const [liveAttackInProgress, setLiveAttackInProgress] = useState(false);
+  const [alertMessage, setAlertMessage] = useState<AlertMsg | undefined>();
   const [isAttackMode, setIsAttackMode] = useState(
     Boolean(sessionData.session.attack_module)
   );
@@ -237,7 +245,12 @@ function RedteamSessionChats(props: ActiveSessionProps) {
         }
       } else if ('error' in result) {
         const errWithMsg = toErrorWithMessage(result.error);
-        console.error(errWithMsg);
+        setAlertMessage({
+          heading: 'Error',
+          iconName: IconName.Alert,
+          iconColor: 'red',
+          message: errWithMsg.message,
+        });
       }
       return;
     }
@@ -250,7 +263,12 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       dispatch(appendChatHistory(result.data.current_chats));
     } else if ('error' in result) {
       const errWithMsg = toErrorWithMessage(result.error);
-      console.error(errWithMsg);
+      setAlertMessage({
+        heading: 'Error',
+        iconName: IconName.Alert,
+        iconColor: 'red',
+        message: errWithMsg.message,
+      });
     }
   }
 
@@ -550,6 +568,25 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
   return (
     <>
+      {alertMessage && (
+        <Modal
+          heading={alertMessage.heading}
+          bgColor={colors.moongray['800']}
+          textColor="#FFFFFF"
+          primaryBtnLabel="Ok"
+          enableScreenOverlay
+          onCloseIconClick={() => setAlertMessage(undefined)}
+          onPrimaryBtnClick={() => setAlertMessage(undefined)}>
+          <div className="flex gap-2">
+            <Icon
+              name={alertMessage.iconName}
+              size={24}
+              color={alertMessage.iconColor}
+            />
+            <p className="text-[0.9rem] pt-3">{alertMessage.message}</p>
+          </div>
+        </Modal>
+      )}
       {showCloseSessionConfirmation && (
         <Modal
           heading="Exit this session?"

@@ -1,13 +1,18 @@
+import EventEmitter from 'events';
 import { NextResponse } from 'next/server';
 import { appEventBus } from '@/app/api/eventbus';
+import { toErrorWithMessage } from '@/app/lib/error-utils';
 import { AppEventTypes } from '@/app/types/enums';
 import { Writer, getSSEWriter } from './sse_writer';
 import { RedTeamEvents, SystemEvents } from '@api/types';
+export const dynamic = 'force-dynamic';
 
 /*
-Both the POST and GET endpoints to send updates to the ART SSE writer are defined here in 1 file.
-There was a weird issue in the past where these 2 endpoints were separate and defined in separate files - the eventBus (appEventBus) was not always the same instance.
+artEventBus is instantiated twice instead of sharing the same intsance in dev mode!
+only test this using prod build (npm run build && npm start)
 */
+
+const artEventBus = new EventEmitter();
 
 export async function POST(request: Request) {
   const body = (await request.json()) as ArtStatus;
@@ -16,7 +21,7 @@ export async function POST(request: Request) {
     current_status: body.current_status,
   });
 
-  appEventBus.emit(AppEventTypes.REDTEAM_UPDATE, body);
+  artEventBus.emit(AppEventTypes.REDTEAM_UPDATE, body);
   return new Response(
     JSON.stringify({ msg: 'Updates sent to ART SSE writer' })
   );
@@ -52,7 +57,7 @@ export async function GET() {
     }
   }
 
-  appEventBus.on(AppEventTypes.REDTEAM_UPDATE, (data: ArtStatus) => {
+  artEventBus.on(AppEventTypes.REDTEAM_UPDATE, (data: ArtStatus) => {
     handleRedTeamUpdate(data);
   });
 
@@ -60,15 +65,25 @@ export async function GET() {
   isConnectionClosed = true;
   clearInterval(heartbeatInterval);
   heartbeatInterval = setInterval(() => {
-    console.log('Sending ART SSE heartbeat');
-    writer.write(encoder.encode(': \n\n')).catch(() => {
-      isConnectionClosed = true;
-      appEventBus.removeAllListeners(AppEventTypes.REDTEAM_UPDATE);
-      clearInterval(heartbeatInterval);
-      console.error(
-        'Error writing heartbeat to SSE ART stream. This is expected if SSE connection was closed. Cleaning up SSE ART resources.'
-      );
-    });
+    try {
+      console.log('Sending ART SSE heartbeat');
+      writer.write(encoder.encode(': \n\n')).catch((error) => {
+        if (error.name === 'AbortError') {
+          console.error(
+            'AbortError detected in heartbeat. This is expected if SSE connection was closed. Cleaning up SSE ART resources.'
+          );
+        }
+        isConnectionClosed = true;
+        appEventBus.removeAllListeners(AppEventTypes.REDTEAM_UPDATE);
+        clearInterval(heartbeatInterval);
+        console.error(
+          'Error writing heartbeat to SSE ART stream. This is expected if SSE connection was closed. Cleaning up SSE ART resources.'
+        );
+      });
+    } catch (error) {
+      const errWIthMsg = toErrorWithMessage(error);
+      console.error('Error sending ART SSE heartbeat', errWIthMsg);
+    }
   }, 10000);
 
   const eventStream = async (notifier: RedTeamEvents | SystemEvents) => {

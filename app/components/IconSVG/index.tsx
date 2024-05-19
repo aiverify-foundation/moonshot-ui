@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 
+import { AlertIcon } from './icons/alert-icon';
 import { ArrowLeftIcon } from './icons/arrow-left-icon';
 import { ArrowRightIcon } from './icons/arrow-right-icon';
 import { AsteriskIcon } from './icons/asterisk-icon';
@@ -92,6 +93,7 @@ enum IconName {
   MoonContextStrategy,
   MoonPromptTemplate,
   MoonAttackStrategy,
+  Alert,
 }
 
 type IconProps = {
@@ -116,6 +118,15 @@ function Icon(props: IconProps) {
   let iconToRender: ReactElement | null = null;
 
   switch (name) {
+    case IconName.Alert:
+      iconToRender = (
+        <AlertIcon
+          outlineColor={color}
+          width={size}
+          height={size}
+        />
+      );
+      break;
     case IconName.Folder:
       iconToRender = (
         <FolderIcon
