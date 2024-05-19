@@ -5,13 +5,13 @@ import LeftNav from '@/app/components/leftNav';
 import { MicroLayout } from '@/app/views/quickstart-home/components/microLayout';
 import BackToHomeButton from '@/app/views/shared-components/backToHomeButton/backToHomeButton';
 import { colors } from '@/app/views/shared-components/customColors';
-import { BenchmarkHomeMenu } from './benchmarkHomeMenu';
+import { RedteamHomeMenu } from './redteamHomeMenu';
 
-function BenchmarkHome() {
+function RedteamHomeLayout() {
   return (
     <MicroLayout>
       <nav className="pt-[5rem]">
-        <LeftNav activeItem="benchmarking" />
+        <LeftNav activeItem="redteaming" />
       </nav>
       <header className="flex justify-between items-center px-4">
         <h1
@@ -32,11 +32,11 @@ function BenchmarkHome() {
               <BackToHomeButton colors={colors} />
             </Link>
           </header>
-          <BenchmarkHomeMenu />
+          <RedteamHomeMenu />
         </div>
       </main>
     </MicroLayout>
   );
 }
 
-export { BenchmarkHome };
+export { RedteamHomeLayout };

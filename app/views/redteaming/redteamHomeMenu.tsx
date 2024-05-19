@@ -3,19 +3,19 @@ import { IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/views/shared-components/customColors';
 import { SubmenuButton } from '@/app/views/shared-components/submenuButton/submenuButton';
 
-function BenchmarkHomeMenu() {
+function RedteamHomeMenu() {
   return (
     <section className="flex flex-col items-center gap-2.5">
       <h3 className="text-moonpurplelight tracking-widest text-[1.4rem]">
         benchmark with moonshot
       </h3>
       <Link
-        href="/benchmarking/session/new"
+        href="/redteaming/session/new"
         style={{ width: '40%' }}>
         <SubmenuButton
           width="100%"
-          text="Start New Run"
-          menuIconName={IconName.CheckList}
+          text="Start New Session"
+          menuIconName={IconName.Spacesuit}
           btnColor={colors.moongray[950]}
           hoverBtnColor={colors.moongray[800]}
           textColor={colors.white}
@@ -23,7 +23,7 @@ function BenchmarkHomeMenu() {
       </Link>
       <SubmenuButton
         width="40%"
-        text="View Past Runs"
+        text="View Past Sessions"
         menuIconName={IconName.HistoryClock}
         btnColor={colors.moongray[950]}
         hoverBtnColor={colors.moongray[800]}
@@ -31,16 +31,8 @@ function BenchmarkHomeMenu() {
       />
       <SubmenuButton
         width="40%"
-        text="View Cookbooks"
-        menuIconName={IconName.Book}
-        btnColor={colors.moongray[950]}
-        hoverBtnColor={colors.moongray[800]}
-        textColor={colors.white}
-      />
-      <SubmenuButton
-        width="40%"
-        text="View Recipes"
-        menuIconName={IconName.File}
+        text="View Attack Modules"
+        menuIconName={IconName.MoonAttackStrategy}
         btnColor={colors.moongray[950]}
         hoverBtnColor={colors.moongray[800]}
         textColor={colors.white}
@@ -49,4 +41,4 @@ function BenchmarkHomeMenu() {
   );
 }
 
-export { BenchmarkHomeMenu };
+export { RedteamHomeMenu };

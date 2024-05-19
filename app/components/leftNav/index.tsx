@@ -1,10 +1,13 @@
 'use client';
+import Link from 'next/link';
 import { colors } from '@/app/views/shared-components/customColors';
 import { Icon, IconName } from '@components/IconSVG';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
-import Link from 'next/link';
 
-function LeftNav() {
+type LeftNavProps = {
+  activeItem: 'benchmarking' | 'redteaming';
+};
+function LeftNav({ activeItem }: LeftNavProps) {
   return (
     <ul className="flex flex-col gap-10">
       <li>
@@ -16,6 +19,8 @@ function LeftNav() {
       </li>
       <li className="flex justify-center">
         <Tooltip
+          disabled={activeItem === 'benchmarking'}
+          defaultShow={activeItem === 'benchmarking'}
           content={<span className="tracking-widest">benchmarking</span>}
           fontColor={colors.moonpurplelight}
           transparent
@@ -23,7 +28,11 @@ function LeftNav() {
           offsetTop={10}>
           <Link href="/benchmarking">
             <Icon
-              color={colors.moongray[300]}
+              color={
+                activeItem === 'benchmarking'
+                  ? colors.moonpurplelight
+                  : colors.moongray[300]
+              }
               name={IconName.CheckList}
               size={40}
             />
@@ -32,16 +41,24 @@ function LeftNav() {
       </li>
       <li className="flex justify-center">
         <Tooltip
+          disabled={activeItem === 'redteaming'}
+          defaultShow={activeItem === 'redteaming'}
           content={<span className="tracking-widest">red teaming</span>}
           fontColor={colors.moonpurplelight}
           transparent
           position={TooltipPosition.left}
           offsetTop={10}>
-          <Icon
-            color={colors.moongray[300]}
-            name={IconName.Spacesuit}
-            size={40}
-          />
+          <Link href="/redteaming">
+            <Icon
+              color={
+                activeItem === 'redteaming'
+                  ? colors.moonpurplelight
+                  : colors.moongray[300]
+              }
+              name={IconName.Spacesuit}
+              size={40}
+            />
+          </Link>
         </Tooltip>
       </li>
       <li>
