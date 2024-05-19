@@ -33,14 +33,18 @@ export default function RedteamingHomePage() {
           textColor={colors.white}
         />
       </Link>
-      <SubmenuButton
-        width="40%"
-        text="View Attack Modules"
-        menuIconName={IconName.MoonAttackStrategy}
-        btnColor={colors.moongray[950]}
-        hoverBtnColor={colors.moongray[800]}
-        textColor={colors.white}
-      />
+      <Link
+        href="/redteaming/attackmodules"
+        style={{ width: '40%' }}>
+        <SubmenuButton
+          width="100%"
+          text="View Attack Modules"
+          menuIconName={IconName.MoonAttackStrategy}
+          btnColor={colors.moongray[950]}
+          hoverBtnColor={colors.moongray[800]}
+          textColor={colors.white}
+        />
+      </Link>
     </section>
   );
 }

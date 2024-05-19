@@ -15,16 +15,20 @@ const ellipsisStyle: CustomStyle = {
   webkitBoxOrient: 'vertical',
 };
 
-function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
+function AttackModulesViewList({ attacks }: { attacks: AttackModule[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [selectedCookbook, setSelectedCookbook] = useState<Cookbook>(() => {
+  const [selectedAttack, setSelectedAttack] = useState<AttackModule>(() => {
     const id = searchParams.get('id');
     if (!Boolean(id)) {
-      return cookbooks[0];
+      return attacks[0];
     }
-    return cookbooks.find((cb) => cb.id === id) || cookbooks[0];
+    return attacks.find((att) => att.id === id) || attacks[0];
   });
+
+  const selectedAttackDescription = selectedAttack.description
+    ? selectedAttack.description.replace(/\n/g, '<br /><br/>')
+    : '';
 
   return (
     <MainSectionSurface
@@ -32,19 +36,24 @@ function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
       height="100%"
       minHeight={750}
       bgColor={colors.moongray['950']}>
-      <div className="h-full">
-        <header className="flex gap-5 w-full">
-          <h1 className="text-[1.6rem] text-white">Cookbooks</h1>
+      <div className="relative h-full">
+        <header className="flex gap-5 w-full mb-3 justify-between items-end">
+          <h1 className="text-[1.6rem] text-white mt-3">
+            Past Red Teaming Sessions
+          </h1>
         </header>
         <main
-          className="grid grid-cols-2 gap-5"
-          style={{ height: 'calc(100% - 50px)' }}>
+          className="grid grid-cols-2 gap-5 mb-3"
+          style={{ height: 'calc(100% - 58px)' }}>
           <ul className="divide-y divide-moongray-800 pr-1 overflow-y-auto custom-scrollbar">
-            {cookbooks.map((cookbook) => {
-              const isSelected = cookbook.id === selectedCookbook.id;
+            {attacks.map((attack) => {
+              const isSelected = attack.id === selectedAttack.id;
+              const description = attack.description
+                ? attack.description.split('Parameters')[0]
+                : '';
               return (
                 <li
-                  key={cookbook.id}
+                  key={attack.id}
                   className="p-6 bg-moongray-900 text-white hover:bg-moongray-800 
                   hover:border-moonwine-700 cursor-pointer"
                   style={{
@@ -53,44 +62,36 @@ function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
                       backgroundColor: colors.moongray['700'],
                     }),
                   }}
-                  onClick={() => setSelectedCookbook(cookbook)}>
+                  onClick={() => setSelectedAttack(attack)}>
                   <div className="flex gap-2 mb-2">
-                    <Icon name={IconName.Book} />
-                    <h4 className="text-[1rem] font-semibold">
-                      {cookbook.name}
-                    </h4>
+                    <Icon name={IconName.MoonAttackStrategy} />
+                    <h4 className="text-[1rem] font-semibold">{attack.name}</h4>
                   </div>
                   <p
-                    className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis"
+                    className="text-[0.8rem] h-[40px] overflow-hidden"
                     style={ellipsisStyle}>
-                    {cookbook.description}
+                    {description}
                   </p>
                 </li>
               );
             })}
           </ul>
-          <section className="text-white border border-moonwine-500 p-4 rounded-md">
+          <section className="text-white border border-moonwine-500 p-4 rounded-md overflow-y-auto custom-scrollbar">
             <div className="flex gap-2 mb-4">
               <Icon
-                name={IconName.Book}
+                name={IconName.MoonAttackStrategy}
                 size={24}
               />
               <h3 className="text-[1.2rem] font-semibold">
-                {selectedCookbook.name}
+                {selectedAttack.name}
               </h3>
             </div>
-            <p className="text-[0.95rem]">{selectedCookbook.description}</p>
-            <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">Recipes</h4>
-            <p className="text-[0.95rem]">
-              {selectedCookbook.recipes.map((recipe, idx) => {
-                return (
-                  <span key={recipe}>
-                    {recipe}
-                    {idx === selectedCookbook.recipes.length - 1 ? '' : `,`}
-                    &nbsp;
-                  </span>
-                );
-              })}
+            <p
+              dangerouslySetInnerHTML={{ __html: selectedAttackDescription }}
+              className="text-[0.95rem] mb-4"
+            />
+            <p className="text-[0.8rem] italic text-moongray-400">
+              Parameters cannot be adjusted in this version of the tool.
             </p>
           </section>
         </main>
@@ -99,4 +100,4 @@ function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
   );
 }
 
-export { CookbooksViewList };
+export { AttackModulesViewList };

@@ -141,7 +141,6 @@ type AttackModule = {
   id: string;
   name: string;
   description: string;
-  hash: string[];
 };
 
 type BenchmarkRunFormValues = {

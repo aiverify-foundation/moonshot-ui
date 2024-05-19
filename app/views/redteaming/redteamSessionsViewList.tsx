@@ -2,17 +2,17 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { CSSProperties, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { Button, ButtonType } from '@/app/components/button';
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
-import { Button, ButtonType } from '@/app/components/button';
 
 interface CustomStyle extends CSSProperties {
-  webkitLineClamp?: number;
+  webkitLineClamp?: string;
   webkitBoxOrient?: 'vertical';
 }
 const ellipsisStyle: CustomStyle = {
   display: '-webkit-box',
-  webkitLineClamp: 2,
+  webkitLineClamp: '2',
   webkitBoxOrient: 'vertical',
 };
 
@@ -67,7 +67,7 @@ function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
                   }}
                   onClick={() => setSelectedSession(session)}>
                   <div className="flex gap-2 mb-2">
-                    <Icon name={IconName.Book} />
+                    <Icon name={IconName.HistoryClock} />
                     <h4 className="text-[1rem] font-semibold">
                       {session.session_id}
                     </h4>
@@ -84,7 +84,7 @@ function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
           <section className="text-white border border-moonwine-500 p-4 rounded-md overflow-y-auto custom-scrollbar">
             <div className="flex gap-2 mb-4">
               <Icon
-                name={IconName.Book}
+                name={IconName.HistoryClock}
                 size={24}
               />
               <h3 className="text-[1.2rem] font-semibold">
