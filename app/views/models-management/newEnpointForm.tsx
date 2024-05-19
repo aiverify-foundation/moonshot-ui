@@ -1,4 +1,6 @@
+'use client';
 import { useFormik } from 'formik';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { object, string, number, boolean } from 'yup';
 import { Button, ButtonType } from '@/app/components/button';
@@ -13,7 +15,10 @@ import {
 } from '@/app/services/llm-endpoint-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
+import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
+import { Modal } from '@/app/views/shared-components/modal/modal';
 import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
+import { Icon, IconName } from '@/app/components/IconSVG';
 
 const initialFormValues: LLMEndpointFormValues = {
   connector_type: '',
@@ -65,7 +70,8 @@ const maxCallsPerSecondOptions: SelectOption[] = Array.from(
 
 type NewEndpointFormProps = {
   endpointToEdit?: LLMEndpoint;
-  onClose: () => void;
+  disablePopupLayout?: boolean;
+  onClose?: () => void;
 };
 
 enum TokenInputMode {
@@ -74,17 +80,34 @@ enum TokenInputMode {
 }
 
 function NewEndpointForm(props: NewEndpointFormProps) {
-  const { onClose, endpointToEdit } = props;
+  const router = useRouter();
+  const { onClose, disablePopupLayout, endpointToEdit } = props;
   const [showMoreConfig, setShowMoreConfig] = useState(false);
   const [tokenInputMode, setTokenInputMode] = useState<TokenInputMode>(() =>
     endpointToEdit ? TokenInputMode.MASKED : TokenInputMode.TEXT
   );
+  const [alertMessage, setAlertMessage] = useState<AlertMsg | undefined>();
 
   const [createModelEndpoint, { isLoading: createModelEndpointIsLoding }] =
     useCreateLLMEndpointMutation();
 
   const [updateModelEndpoint, { isLoading: updateModelEndpointIsLoding }] =
     useUpdateLLMEndpointMutation();
+
+  const [connectionTypeOptions, setConnectionTypeOptions] = useState<
+    SelectOption[]
+  >([]);
+  const { data, isLoading } = useGetAllConnectorsQuery();
+
+  useEffect(() => {
+    if (data) {
+      const options: SelectOption[] = data.map((connector) => ({
+        value: connector,
+        label: connector,
+      }));
+      setConnectionTypeOptions(options);
+    }
+  }, [data]);
 
   let editModeFormValues: LLMEndpointFormValues = initialFormValues;
   try {
@@ -118,11 +141,13 @@ function NewEndpointForm(props: NewEndpointFormProps) {
         result = await submitNewEndpoint(values);
       }
       console.dir(result);
-      onClose();
+      if (disablePopupLayout) {
+        router.push('/endpoints');
+      } else if (onClose) {
+        onClose();
+      }
     },
   });
-
-  const submitEnabled = formik.isValid;
 
   function handleTokenInputFocus(_: React.FocusEvent<HTMLInputElement>) {
     setTokenInputMode(TokenInputMode.TEXT);
@@ -174,214 +199,249 @@ function NewEndpointForm(props: NewEndpointFormProps) {
     };
     const response = await createModelEndpoint(newModelEndpoint);
     if ('error' in response) {
-      console.error(response.error);
-      //TODO - create error visuals
+      const errWithMsg = toErrorWithMessage(response.error);
+      setAlertMessage({
+        heading: 'Error',
+        iconName: IconName.Alert,
+        iconColor: 'red',
+        message: errWithMsg.message,
+      });
       return;
     }
   }
 
-  const [connectionTypeOptions, setConnectionTypeOptions] = useState<
-    SelectOption[]
-  >([]);
-  const { data, isLoading, error, refetch } = useGetAllConnectorsQuery();
+  const submitEnabled = formik.isValid;
 
-  useEffect(() => {
-    if (data) {
-      const options: SelectOption[] = data.map((connector) => ({
-        value: connector,
-        label: connector,
-      }));
-      setConnectionTypeOptions(options);
-    }
-  }, [data]);
+  const formSection = (
+    <>
+      <h2 className="text-[1.8rem] font-light text-white mb-4">
+        {endpointToEdit
+          ? `Update ${endpointToEdit.name}`
+          : 'Create New Endpoint'}
+      </h2>
+      {!showMoreConfig ? (
+        <div className="w-[100%] flex justify-between">
+          <div className="flex flex-col w-[50%] gap-2">
+            <TextInput
+              name="name"
+              label="Name*"
+              labelStyles={{
+                fontSize: '1rem',
+                color: colors.moonpurplelight,
+              }}
+              inputStyles={{ height: 38 }}
+              onChange={formik.handleChange}
+              value={formik.values.name}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.name && formik.errors.name
+                  ? formik.errors.name
+                  : undefined
+              }
+              placeholder="Name of the model"
+            />
+
+            <SelectInput
+              label="Connection Type*"
+              name="connector_type"
+              labelStyles={{
+                fontSize: '1rem',
+                color: colors.moonpurplelight,
+              }}
+              inputStyle={{ height: 38 }}
+              options={connectionTypeOptions}
+              onSyntheticChange={formik.handleChange}
+              value={formik.values.connector_type}
+              placeholder="Select the connector type"
+              style={{ width: '100%' }}
+            />
+
+            <TextInput
+              name="uri"
+              label="URI"
+              labelStyles={{
+                fontSize: '1rem',
+                color: colors.moonpurplelight,
+              }}
+              inputStyles={{ height: 38 }}
+              onChange={formik.handleChange}
+              value={formik.values.uri}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.uri && formik.errors.uri
+                  ? formik.errors.uri
+                  : undefined
+              }
+              placeholder="URI of the remote model endpoint"
+            />
+
+            <TextInput
+              name="token"
+              label="Token"
+              labelStyles={{
+                fontSize: '1rem',
+                color: colors.moonpurplelight,
+              }}
+              inputStyles={{ height: 38 }}
+              onChange={formik.handleChange}
+              value={
+                tokenInputMode === TokenInputMode.MASKED
+                  ? '**********************************************'
+                  : formik.values.token
+              }
+              onBlur={handleTokenInputBlur}
+              onFocus={handleTokenInputFocus}
+              error={
+                formik.touched.token && formik.errors.token
+                  ? formik.errors.token
+                  : undefined
+              }
+              placeholder="Access token for the remote model endpoint"
+              type={tokenInputMode}
+            />
+            <p
+              className="text-[0.95rem] text-white underline cursor-pointer pt-4"
+              style={{ width: 'fit-content' }}
+              onClick={() => setShowMoreConfig(true)}>
+              More Configs
+            </p>
+          </div>
+          <div className="flex grow gap-2 justify-end items-end">
+            <Button
+              mode={ButtonType.OUTLINE}
+              size="lg"
+              type="button"
+              text="Cancel"
+              onClick={disablePopupLayout ? () => router.back() : onClose}
+              hoverBtnColor={colors.moongray[800]}
+              pressedBtnColor={colors.moongray[700]}
+            />
+            <Button
+              mode={ButtonType.PRIMARY}
+              disabled={!submitEnabled}
+              size="lg"
+              type="submit"
+              text="Save"
+              onClick={() => formik.handleSubmit()}
+              hoverBtnColor={colors.moongray[1000]}
+              pressedBtnColor={colors.moongray[900]}
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="w-[100%] flex justify-between">
+          <div className="flex flex-col w-[50%] gap-2">
+            <SelectInput
+              label="Max Calls Per Second"
+              name="max_calls_per_second"
+              options={maxCallsPerSecondOptions}
+              onSyntheticChange={formik.handleChange}
+              value={formik.values.max_calls_per_second}
+              style={{ width: '100%' }}
+              labelStyles={{
+                fontSize: '1rem',
+                color: colors.moonpurplelight,
+              }}
+              inputStyle={{ height: 38 }}
+            />
+
+            <SelectInput
+              label="Max Concurrency"
+              name="max_concurrency"
+              options={maxConcurrencyOptions}
+              onSyntheticChange={formik.handleChange}
+              value={formik.values.max_concurrency}
+              style={{ width: '100%' }}
+              labelStyles={{
+                fontSize: '1rem',
+                color: colors.moonpurplelight,
+              }}
+              inputStyle={{ height: 38 }}
+            />
+
+            <TextArea
+              label="Other Parameters"
+              name="params"
+              onChange={handleParamsChange}
+              value={formik.values.params}
+              error={formik.errors.params ? formik.errors.params : undefined}
+              placeholder="Additional parameters normally in JSON format"
+              labelStyles={{
+                fontSize: '1rem',
+                color: colors.moonpurplelight,
+              }}
+              inputStyles={{ height: 200 }}
+            />
+          </div>
+          <div className="flex grow gap-2 justify-end items-end">
+            <Button
+              mode={ButtonType.OUTLINE}
+              size="lg"
+              type="button"
+              text="OK"
+              onClick={handleConfigOkClick}
+              hoverBtnColor={colors.moongray[800]}
+              pressedBtnColor={colors.moongray[700]}
+            />
+          </div>
+        </div>
+      )}
+    </>
+  );
+
+  if (disablePopupLayout) {
+    return (
+      <MainSectionSurface
+        onCloseIconClick={() => router.push('/')}
+        height="100%"
+        minHeight={750}
+        bgColor={colors.moongray['950']}>
+        {createModelEndpointIsLoding || updateModelEndpointIsLoding ? (
+          <div className="relative w-full h-full">
+            <LoadingAnimation />
+          </div>
+        ) : (
+          <div className="relative w-full h-full px-6">{formSection}</div>
+        )}
+      </MainSectionSurface>
+    );
+  }
 
   return (
-    <div className="flex flex-col pt-4 w-full h-full">
-      <PopupSurface
-        height="100%"
-        onCloseIconClick={onClose}>
-        {isLoading || createModelEndpointIsLoding ? (
-          <LoadingAnimation />
-        ) : (
-          <section className="relative flex flex-col p-10 pt-[7%] h-full items-start gap-2">
-            <h2 className="text-[1.8rem] font-light text-white mb-4">
-              {endpointToEdit
-                ? `Update ${endpointToEdit.name}`
-                : 'Create New Endpoint'}
-            </h2>
-            {!showMoreConfig ? (
-              <div className="w-[100%] flex justify-between">
-                <div className="flex flex-col w-[50%] gap-2">
-                  <TextInput
-                    name="name"
-                    label="Name*"
-                    labelStyles={{
-                      fontSize: '1rem',
-                      color: colors.moonpurplelight,
-                    }}
-                    inputStyles={{ height: 38 }}
-                    onChange={formik.handleChange}
-                    value={formik.values.name}
-                    onBlur={formik.handleBlur}
-                    error={
-                      formik.touched.name && formik.errors.name
-                        ? formik.errors.name
-                        : undefined
-                    }
-                    placeholder="Name of the model"
-                  />
-
-                  <SelectInput
-                    label="Connection Type*"
-                    name="connector_type"
-                    labelStyles={{
-                      fontSize: '1rem',
-                      color: colors.moonpurplelight,
-                    }}
-                    inputStyle={{ height: 38 }}
-                    options={connectionTypeOptions}
-                    onSyntheticChange={formik.handleChange}
-                    value={formik.values.connector_type}
-                    placeholder="Select the connector type"
-                    style={{ width: '100%' }}
-                  />
-
-                  <TextInput
-                    name="uri"
-                    label="URI"
-                    labelStyles={{
-                      fontSize: '1rem',
-                      color: colors.moonpurplelight,
-                    }}
-                    inputStyles={{ height: 38 }}
-                    onChange={formik.handleChange}
-                    value={formik.values.uri}
-                    onBlur={formik.handleBlur}
-                    error={
-                      formik.touched.uri && formik.errors.uri
-                        ? formik.errors.uri
-                        : undefined
-                    }
-                    placeholder="URI of the remote model endpoint"
-                  />
-
-                  <TextInput
-                    name="token"
-                    label="Token"
-                    labelStyles={{
-                      fontSize: '1rem',
-                      color: colors.moonpurplelight,
-                    }}
-                    inputStyles={{ height: 38 }}
-                    onChange={formik.handleChange}
-                    value={
-                      tokenInputMode === TokenInputMode.MASKED
-                        ? '**********************************************'
-                        : formik.values.token
-                    }
-                    onBlur={handleTokenInputBlur}
-                    onFocus={handleTokenInputFocus}
-                    error={
-                      formik.touched.token && formik.errors.token
-                        ? formik.errors.token
-                        : undefined
-                    }
-                    placeholder="Access token for the remote model endpoint"
-                    type={tokenInputMode}
-                  />
-                  <p
-                    className="text-[0.95rem] text-white underline cursor-pointer pt-4"
-                    style={{ width: 'fit-content' }}
-                    onClick={() => setShowMoreConfig(true)}>
-                    More Configs
-                  </p>
-                </div>
-                <div className="flex grow gap-2 justify-end items-end">
-                  <Button
-                    mode={ButtonType.OUTLINE}
-                    size="lg"
-                    type="button"
-                    text="Cancel"
-                    onClick={onClose}
-                    hoverBtnColor={colors.moongray[800]}
-                    pressedBtnColor={colors.moongray[700]}
-                  />
-                  <Button
-                    mode={ButtonType.PRIMARY}
-                    disabled={!submitEnabled}
-                    size="lg"
-                    type="submit"
-                    text="Save"
-                    onClick={() => formik.handleSubmit()}
-                    hoverBtnColor={colors.moongray[1000]}
-                    pressedBtnColor={colors.moongray[900]}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="w-[100%] flex justify-between">
-                <div className="flex flex-col w-[50%] gap-2">
-                  <SelectInput
-                    label="Max Calls Per Second"
-                    name="max_calls_per_second"
-                    options={maxCallsPerSecondOptions}
-                    onSyntheticChange={formik.handleChange}
-                    value={formik.values.max_calls_per_second}
-                    style={{ width: '100%' }}
-                    labelStyles={{
-                      fontSize: '1rem',
-                      color: colors.moonpurplelight,
-                    }}
-                    inputStyle={{ height: 38 }}
-                  />
-
-                  <SelectInput
-                    label="Max Concurrency"
-                    name="max_concurrency"
-                    options={maxConcurrencyOptions}
-                    onSyntheticChange={formik.handleChange}
-                    value={formik.values.max_concurrency}
-                    style={{ width: '100%' }}
-                    labelStyles={{
-                      fontSize: '1rem',
-                      color: colors.moonpurplelight,
-                    }}
-                    inputStyle={{ height: 38 }}
-                  />
-
-                  <TextArea
-                    label="Other Parameters"
-                    name="params"
-                    onChange={handleParamsChange}
-                    value={formik.values.params}
-                    error={
-                      formik.errors.params ? formik.errors.params : undefined
-                    }
-                    placeholder="Additional parameters normally in JSON format"
-                    labelStyles={{
-                      fontSize: '1rem',
-                      color: colors.moonpurplelight,
-                    }}
-                    inputStyles={{ height: 200 }}
-                  />
-                </div>
-                <div className="flex grow gap-2 justify-end items-end">
-                  <Button
-                    mode={ButtonType.OUTLINE}
-                    size="lg"
-                    type="button"
-                    text="OK"
-                    onClick={handleConfigOkClick}
-                    hoverBtnColor={colors.moongray[800]}
-                    pressedBtnColor={colors.moongray[700]}
-                  />
-                </div>
-              </div>
-            )}
-          </section>
-        )}
-      </PopupSurface>
-    </div>
+    <>
+      {alertMessage && (
+        <Modal
+          heading={alertMessage.heading}
+          bgColor={colors.moongray['800']}
+          textColor="#FFFFFF"
+          primaryBtnLabel="Ok"
+          enableScreenOverlay
+          onCloseIconClick={() => setAlertMessage(undefined)}
+          onPrimaryBtnClick={() => setAlertMessage(undefined)}>
+          <div className="flex gap-2">
+            <Icon
+              name={alertMessage.iconName}
+              size={24}
+              color={alertMessage.iconColor}
+            />
+            <p className="text-[0.9rem] pt-3">{alertMessage.message}</p>
+          </div>
+        </Modal>
+      )}
+      <div className="flex flex-col pt-4 w-full h-full">
+        <PopupSurface
+          height="100%"
+          onCloseIconClick={onClose}>
+          {isLoading || createModelEndpointIsLoding ? (
+            <LoadingAnimation />
+          ) : (
+            <section className="relative flex flex-col p-10 pt-[7%] h-full items-start gap-2">
+              {formSection}
+            </section>
+          )}
+        </PopupSurface>
+      </div>
+    </>
   );
 }
 

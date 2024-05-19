@@ -26,9 +26,9 @@ function AttackModulesViewList({ attacks }: { attacks: AttackModule[] }) {
     return attacks.find((att) => att.id === id) || attacks[0];
   });
 
-  const selectedAttackDescription = selectedAttack.description
-    ? selectedAttack.description.replace(/\n/g, '<br /><br/>')
-    : '';
+  // const selectedAttackDescription = selectedAttack.description
+  //   ? selectedAttack.description.replace(/\n/g, '<br /><br/>')
+  //   : '';
 
   return (
     <MainSectionSurface
@@ -44,7 +44,7 @@ function AttackModulesViewList({ attacks }: { attacks: AttackModule[] }) {
         </header>
         <main
           className="grid grid-cols-2 gap-5 mb-3"
-          style={{ height: 'calc(100% - 58px)' }}>
+          style={{ height: 'calc(100% - 90px)' }}>
           <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar">
             {attacks.map((attack) => {
               const isSelected = attack.id === selectedAttack.id;
@@ -68,7 +68,7 @@ function AttackModulesViewList({ attacks }: { attacks: AttackModule[] }) {
                     <h4 className="text-[1rem] font-semibold">{attack.name}</h4>
                   </div>
                   <p
-                    className="text-[0.8rem] h-[40px] overflow-hidden"
+                    className="text-[0.8rem] h-[40px] overflow-hidden text-moongray-400"
                     style={ellipsisStyle}>
                     {description}
                   </p>
@@ -86,10 +86,15 @@ function AttackModulesViewList({ attacks }: { attacks: AttackModule[] }) {
                 {selectedAttack.name}
               </h3>
             </div>
-            <p
+            {/* <p
               dangerouslySetInnerHTML={{ __html: selectedAttackDescription }}
-              className="text-[0.95rem] mb-4"
-            />
+              className="text-[0.95rem] mb-4 text-moongray-300"
+            /> */}
+            <p className="text-[0.95rem] mb-4 text-moongray-300">
+              <pre className="whitespace-pre-wrap">
+                {selectedAttack.description}
+              </pre>
+            </p>
             <p className="text-[0.8rem] italic text-moongray-400">
               Parameters cannot be adjusted in this version of the tool.
             </p>

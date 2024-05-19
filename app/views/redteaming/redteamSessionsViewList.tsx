@@ -73,7 +73,7 @@ function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
                     </h4>
                   </div>
                   <p
-                    className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis"
+                    className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis text-moongray-400"
                     style={ellipsisStyle}>
                     Todo - Add Description
                   </p>
@@ -95,7 +95,7 @@ function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
             <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">
               Endpoints
             </h4>
-            <p className="text-[0.95rem] mb-10">
+            <p className="text-[0.95rem] mb-10 text-moongray-300">
               {selectedSession.endpoints.map((endpoint, idx) => {
                 return (
                   <span key={endpoint}>
@@ -106,22 +106,22 @@ function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
                 );
               })}
             </p>
-            <h4 className="text-[1.1rem] font-semibold mb-2">
+            <h4 className="text-[1.1rem] font-semibold mb-1">
               Last Attack Module Used
             </h4>
-            <p className="text-[0.95rem] mb-3">
+            <p className="text-[0.95rem] mb-3 text-moongray-300">
               {selectedSession.attack_module || 'None'}
             </p>
-            <h4 className="text-[1.1rem] font-semibold mb-2">
+            <h4 className="text-[1.1rem] font-semibold mb-1">
               Last Prompt Template Used
             </h4>
-            <p className="text-[0.95rem] mb-3">
+            <p className="text-[0.95rem] mb-3 text-moongray-300">
               {selectedSession.prompt_template || 'None'}
             </p>
-            <h4 className="text-[1.1rem] font-semibold mb-2">
+            <h4 className="text-[1.1rem] font-semibold mb-1">
               Last Context Strategy Used
             </h4>
-            <p className="text-[0.95rem] mb-3">
+            <p className="text-[0.95rem] mb-3 text-moongray-300">
               {selectedSession.context_strategy || 'None'}
             </p>
           </section>

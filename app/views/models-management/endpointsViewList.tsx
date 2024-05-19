@@ -1,22 +1,12 @@
 'use client';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { CSSProperties, useState } from 'react';
+import React, { useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
-import { colors } from '@/app/views/shared-components/customColors';
-import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
+import { Button, ButtonType } from '@/app/components/button';
 import { formatDate } from '@/app/lib/date-utils';
 import { toErrorWithMessage } from '@/app/lib/error-utils';
-import { Button, ButtonType } from '@/app/components/button';
-
-interface CustomStyle extends CSSProperties {
-  webkitLineClamp?: string;
-  webkitBoxOrient?: 'vertical';
-}
-const ellipsisStyle: CustomStyle = {
-  display: '-webkit-box',
-  webkitLineClamp: '2',
-  webkitBoxOrient: 'vertical',
-};
+import { colors } from '@/app/views/shared-components/customColors';
+import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 
 function EndpointsViewList({ endpoints }: { endpoints: LLMEndpoint[] }) {
   const router = useRouter();
@@ -49,7 +39,7 @@ function EndpointsViewList({ endpoints }: { endpoints: LLMEndpoint[] }) {
         <header className="flex gap-5 w-full mb-3 justify-between items-end">
           <h1 className="text-[1.6rem] text-white mt-3">Endpoints</h1>
           <Button
-            size="sm"
+            size="md"
             mode={ButtonType.OUTLINE}
             leftIconName={IconName.Plus}
             text="Create New Endpoint"
@@ -59,7 +49,7 @@ function EndpointsViewList({ endpoints }: { endpoints: LLMEndpoint[] }) {
         </header>
         <main
           className="grid grid-cols-2 gap-5"
-          style={{ height: 'calc(100% - 60px)' }}>
+          style={{ height: 'calc(100% - 90px)' }}>
           <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar">
             {endpoints.map((endpoint) => {
               const isSelected = endpoint.id === selectedEndpoint.id;
@@ -91,7 +81,7 @@ function EndpointsViewList({ endpoints }: { endpoints: LLMEndpoint[] }) {
                     </div>
                   </div>
 
-                  <p className="text-[0.8rem] text-moongray-400 text-right">
+                  <p className="text-[0.8rem] text-moongray-300 text-right">
                     Added on {formatDate(endpoint.created_date)}
                   </p>
                 </li>
@@ -123,17 +113,17 @@ function EndpointsViewList({ endpoints }: { endpoints: LLMEndpoint[] }) {
             <p className="text-[0.95rem] text-moongray-300 mb-4">
               {selectedEndpoint.token || 'None'}
             </p>
-            <h4 className="text-[1rem] font-semibold mb-2">
+            <h4 className="text-[1rem] font-semibold mb-1">
               Max number of calls per second
             </h4>
             <p className="text-[0.95rem] text-moongray-300 mb-4">
               {selectedEndpoint.max_calls_per_second || 'None'}
             </p>
-            <h4 className="text-[1rem] font-semibold mb-2">Max concurrecy</h4>
+            <h4 className="text-[1rem] font-semibold mb-1">Max concurrecy</h4>
             <p className="text-[0.95rem] text-moongray-300 mb-4">
               {selectedEndpoint.max_concurrency || 'None'}
             </p>
-            <h4 className="text-[1rem] font-semibold mb-2">Parameters</h4>
+            <h4 className="text-[1rem] font-semibold mb-1">Parameters</h4>
             <pre className="text-[0.95rem] text-moongray-300 mb-4 overflow-hidden w-[90%] whitespace-pre-wrap">
               {selectedEndpointParams}
             </pre>

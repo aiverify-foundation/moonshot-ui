@@ -50,13 +50,6 @@ type ActiveSessionProps = {
   sessionData: SessionData;
 };
 
-type AlertMsg = {
-  heading: string;
-  iconName: IconName;
-  iconColor: string;
-  message: string;
-};
-
 const promptBoxId = 'prompt-box';
 const streamPath = '/api/v1/redteaming/status';
 const ctxStrategyNumOfPrevPrompts = 5;

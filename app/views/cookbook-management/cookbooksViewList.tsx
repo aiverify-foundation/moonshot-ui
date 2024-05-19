@@ -38,7 +38,7 @@ function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
         </header>
         <main
           className="grid grid-cols-2 gap-5"
-          style={{ height: 'calc(100% - 50px)' }}>
+          style={{ height: 'calc(100% - 70px)' }}>
           <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar">
             {cookbooks.map((cookbook) => {
               const isSelected = cookbook.id === selectedCookbook.id;
@@ -61,7 +61,7 @@ function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
                     </h4>
                   </div>
                   <p
-                    className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis"
+                    className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis text-moongray-400"
                     style={ellipsisStyle}>
                     {cookbook.description}
                   </p>
@@ -79,9 +79,11 @@ function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
                 {selectedCookbook.name}
               </h3>
             </div>
-            <p className="text-[0.95rem]">{selectedCookbook.description}</p>
-            <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">Recipes</h4>
-            <p className="text-[0.95rem]">
+            <p className="text-[0.95rem] text-moongray-300">
+              {selectedCookbook.description}
+            </p>
+            <h4 className="text-[1.15rem] font-semibold mt-10 mb-1">Recipes</h4>
+            <p className="text-[0.95rem] text-moongray-300">
               {selectedCookbook.recipes.map((recipe, idx) => {
                 return (
                   <span key={recipe}>

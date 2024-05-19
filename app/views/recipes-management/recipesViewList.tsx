@@ -38,7 +38,7 @@ function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
         </header>
         <main
           className="grid grid-cols-2 gap-5 mb-3"
-          style={{ height: 'calc(100% - 58px)' }}>
+          style={{ height: 'calc(100% - 90px)' }}>
           <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar">
             {recipes.map((recipe) => {
               const isSelected = recipe.id === selectedRecipe.id;
@@ -59,7 +59,7 @@ function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
                     <h4 className="text-[1rem] font-semibold">{recipe.name}</h4>
                   </div>
                   <p
-                    className="text-[0.8rem] h-[40px] overflow-hidden"
+                    className="text-[0.8rem] h-[40px] overflow-hidden text-moongray-400"
                     style={ellipsisStyle}>
                     {recipe.description}
                   </p>
@@ -67,7 +67,9 @@ function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
               );
             })}
           </ul>
-          <section className="text-white border border-moonwine-500 p-4 rounded-md overflow-y-auto custom-scrollbar bg-moongray-800">
+          <section
+            className="text-white border border-moonwine-500 p-4 rounded-md 
+            overflow-y-auto custom-scrollbar bg-moongray-800">
             <div className="flex gap-2 mb-4">
               <Icon
                 name={IconName.File}
@@ -79,7 +81,7 @@ function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
             </div>
             <p className="text-[0.95rem] mb-4">{selectedRecipe.description}</p>
             <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">Recipes</h4>
-            <p className="text-[0.95rem] mb-4">
+            <p className="text-[0.95rem] mb-4 text-moongray-300">
               {selectedRecipe.categories.length === 0
                 ? 'None'
                 : selectedRecipe.categories.map((category, idx) => {
@@ -95,7 +97,7 @@ function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
                   })}
             </p>
             <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">Tags</h4>
-            <p className="text-[0.95rem] mb-4">
+            <p className="text-[0.95rem] mb-4 text-moongray-300">
               {selectedRecipe.tags.length === 0
                 ? 'None'
                 : selectedRecipe.tags.map((tag, idx) => {
@@ -109,11 +111,11 @@ function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
                   })}
             </p>
             <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">Prompts</h4>
-            <p className="text-[0.95rem] mb-4">
+            <p className="text-[0.95rem] mb-4 text-moongray-300">
               {selectedRecipe.total_prompt_in_recipe}
             </p>
             <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">Metrics</h4>
-            <p className="text-[0.95rem] mb-4">
+            <p className="text-[0.95rem] mb-4 text-moongray-300">
               {selectedRecipe.metrics.length === 0
                 ? 'None'
                 : selectedRecipe.metrics.map((metric, idx) => {

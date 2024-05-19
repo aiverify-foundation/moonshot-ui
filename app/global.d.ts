@@ -1,3 +1,10 @@
+type AlertMsg = {
+  heading: string;
+  iconName: IconName;
+  iconColor: string;
+  message: string;
+};
+
 type Session = {
   session_id: string;
   created_epoch: number;
