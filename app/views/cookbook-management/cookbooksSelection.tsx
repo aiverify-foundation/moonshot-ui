@@ -74,8 +74,10 @@ function CookbooksSelection(props: Props) {
     }
   );
 
-  const { totalHours, totalMinutes } =
-    calcTotalPromptsAndEstimatedTime(selectedCookbooks);
+  const { totalHours, totalMinutes } = calcTotalPromptsAndEstimatedTime(
+    selectedCookbooks,
+    config.estimatedPromptResponseTime
+  );
 
   function handleTabClick(tab: TabItem<string[]>) {
     setActiveTab(tab);
