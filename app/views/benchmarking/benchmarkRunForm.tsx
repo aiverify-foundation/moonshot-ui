@@ -147,6 +147,8 @@ function BenchmarkRunForm() {
             type="button"
             text="Run"
             onClick={() => formik.handleSubmit()}
+            hoverBtnColor={colors.moongray[950]}
+            pressedBtnColor={colors.moongray[900]}
           />
         </div>
       </div>
