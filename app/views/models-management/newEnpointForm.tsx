@@ -143,6 +143,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
       console.dir(result);
       if (disablePopupLayout) {
         router.push('/endpoints');
+        router.refresh();
       } else if (onClose) {
         onClose();
       }

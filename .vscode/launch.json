@@ -8,7 +8,7 @@
       "name": "Next.js: debug server-side",
       "type": "node-terminal",
       "request": "launch",
-      "command": "nvm use 21 && npm run dev"
+      "command": "npm run dev"
     },
     {
       "name": "Next.js: debug client-side",
