@@ -35,7 +35,7 @@ function EndpointsViewList({ endpoints }: { endpoints: LLMEndpoint[] }) {
       height="100%"
       minHeight={750}
       bgColor={colors.moongray['950']}>
-      <div className="h-full">
+      <div className="relative h-full">
         <header className="flex gap-5 w-full mb-3 justify-between items-end">
           <h1 className="text-[1.6rem] text-white mt-3">Endpoints</h1>
           <Button
@@ -49,7 +49,7 @@ function EndpointsViewList({ endpoints }: { endpoints: LLMEndpoint[] }) {
         </header>
         <main
           className="grid grid-cols-2 gap-5"
-          style={{ height: 'calc(100% - 90px)' }}>
+          style={{ height: 'calc(100% - 140px)' }}>
           <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar">
             {endpoints.map((endpoint) => {
               const isSelected = endpoint.id === selectedEndpoint.id;
@@ -129,6 +129,16 @@ function EndpointsViewList({ endpoints }: { endpoints: LLMEndpoint[] }) {
             </pre>
           </section>
         </main>
+        <footer className="absolute bottom-0 w-full flex justify-end gap-4">
+          <Button
+            size="lg"
+            mode={ButtonType.PRIMARY}
+            text="Edit Endpoint"
+            hoverBtnColor={colors.moongray[1000]}
+            pressedBtnColor={colors.moongray[900]}
+            onClick={() => router.push(`/endpoints/edit/${selectedEndpoint.id}`)}
+          />
+        </footer>
       </div>
     </MainSectionSurface>
   );
