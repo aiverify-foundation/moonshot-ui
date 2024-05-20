@@ -75,7 +75,7 @@ function EndpointsViewList({ endpoints }: { endpoints: LLMEndpoint[] }) {
                         <span className="font-semibold">Type</span>
                         &nbsp;
                         <span className="text-moongray-300">
-                          {selectedEndpoint.connector_type}
+                          {endpoint.connector_type}
                         </span>
                       </p>
                     </div>
