@@ -75,7 +75,7 @@ function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
                   <p
                     className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis text-moongray-400"
                     style={ellipsisStyle}>
-                    Todo - Add Description
+                    {session.description}
                   </p>
                 </li>
               );
@@ -91,7 +91,7 @@ function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
                 {selectedSession.session_id}
               </h3>
             </div>
-            <p className="text-[0.95rem]">Todo - Add Description</p>
+            <p className="text-[0.95rem]">{selectedSession.description}</p>
             <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">
               Endpoints
             </h4>

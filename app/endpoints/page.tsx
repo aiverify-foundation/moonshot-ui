@@ -5,8 +5,7 @@ export const dynamic = 'force-dynamic';
 
 async function fetchEndpoints() {
   const response = await fetch(
-    `${config.webAPI.hostURL}${config.webAPI.basePathLLMEndpoints}?count=true`,
-    { cache: 'no-store' }
+    `${config.webAPI.hostURL}${config.webAPI.basePathLLMEndpoints}?count=true`
   );
   const result = await processResponse<LLMEndpoint[]>(response);
   return result;

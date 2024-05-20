@@ -7,6 +7,7 @@ type AlertMsg = {
 
 type Session = {
   session_id: string;
+  description: string;
   created_epoch: number;
   created_datetime: string;
   chat_ids: string[];
