@@ -4,6 +4,7 @@ import { colors } from '@/app/views/shared-components/customColors';
 import { Badge, SquareBadge } from './components/badge';
 import { CookbooksBenchmarkResult } from './types/benchmarkReportTypes';
 import { calcTotalPromptsByEndpoint } from './utils/calcTotalPromptsByEndpoint';
+import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 
 type BenchmarkReportProps = {
   benchmarkReport: CookbooksBenchmarkResult;
@@ -13,7 +14,10 @@ type BenchmarkReportProps = {
 
 function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
   const { benchmarkReport, runnerInfo, endpointId } = props;
+  const { cookbooks } = benchmarkReport.metadata;
   const totalPrompts = calcTotalPromptsByEndpoint(benchmarkReport, endpointId); // very expensive calculation
+  const { data, isFetching } = useGetCookbooksQuery({ ids: cookbooks });
+
   return (
     <article
       className="h-full w-full text-moongray-300 text-[0.9rem] bg-moongray-9400
@@ -78,9 +82,9 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
             <div className="flex items-start gap-2">
               <Icon name={IconName.Book} />
               <p className="w-[80%]">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim.
+                Moonshot offers <span className="font-bold">cookbooks</span>{' '}
+                containing recipes (benchmark tests) that evaluate comparable
+                areas.
               </p>
             </div>
           </hgroup>
@@ -88,22 +92,17 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           <ol
             className="list-decimal list-inside text-white font-semi-bold text-[1rem]"
             style={{ color: '#ffffff' }}>
-            <li className="mb-1">
-              <span className="mr-3">Safety Baseline v0.5</span>
-              <Badge label="T" />
-            </li>
-            <li className="mb-1">
-              <span className="mr-3">English Language</span>
-              <Badge label="Q" />
-            </li>
-            <li className="mb-1">
-              <span className="mr-3">Tamil Language</span>
-              <Badge label="Q" />
-            </li>
-            <li className="mb-1">
-              <span className="mr-3">Legal Summarisation</span>
-              <Badge label="Q" />
-            </li>
+            {!isFetching &&
+              data &&
+              cookbooks.map((cookbook, idx) => {
+                const cookbookDetails = data.find((c) => c.id === cookbook);
+                return !cookbookDetails ? null : (
+                  <li className="mb-1">
+                    <span className="mr-3">{cookbookDetails.name}</span>
+                    {/* <Badge label="Q" /> */}
+                  </li>
+                );
+              })}
           </ol>
         </section>
 

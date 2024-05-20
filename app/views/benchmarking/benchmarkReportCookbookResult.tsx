@@ -29,7 +29,7 @@ function BenchmarkReportCookbookResult(
   const [showSection, setShowSection] = React.useState(false);
 
   if (!evaluationSummary) {
-    console.error('BenchmarkReportCookbookResult:: No evaluation summary');
+    console.log('BenchmarkReportCookbookResult:: No evaluation summary');
     return <p>BenchmarkReportCookbookResult: No evaluation summary</p>;
   }
 
