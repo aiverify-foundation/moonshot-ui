@@ -313,7 +313,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
                 absolute border-b-2 border-r-2
                 border-solid bottom-1 right-1 cursor-se-resize 
                 dark:border-neutral-400/30
-                border-fuchsia-200"
+                border-moongray-950"
               onMouseDown={handleResizeMouseDown}
             />
           ) : null}

@@ -63,7 +63,7 @@ const Container = forwardRef(
         onWholeWindowClick={onWholeWindowClick}
         disableCloseIcon={disableCloseIcon}
         footerHeight={17}
-        backgroundColor={colors.moongray[950]}
+        backgroundColor={colors.moongray[600]}
         styles={{
           zIndex: 100,
           ...styles,

@@ -154,8 +154,8 @@ const ChatBox = React.forwardRef(
                         fontSize: 14,
                         border:
                           dialoguePairHovered === index
-                            ? '2px solid #2563eb'
-                            : '2px solid transparent',
+                            ? '1px solid #2563eb'
+                            : '1px solid transparent',
                       }}>
                       {dialogue.prepared_prompt}
                     </Chat.TalkBubble>
@@ -173,8 +173,8 @@ const ChatBox = React.forwardRef(
                   textAlign: 'left',
                   border:
                     dialoguePairHovered === index
-                      ? '2px solid #2563eb'
-                      : '2px solid transparent',
+                      ? '1px solid #2563eb'
+                      : '1px solid transparent',
                 }}>
                 {dialogue.predicted_result}
               </Chat.TalkBubble>

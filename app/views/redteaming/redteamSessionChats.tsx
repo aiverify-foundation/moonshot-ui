@@ -636,21 +636,21 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
       <PopupSurface
         onCloseIconClick={() => setShowCloseSessionConfirmation(true)}
-        height="calc(100vh - 20px)"
+        height="calc(100vh - 30px)"
         style={{
           backgroundColor: colors.moongray[800],
-          width: 'calc(100vw - 20px)',
+          width: 'calc(100vw - 30px)',
           border: 'none',
           margin: '0 auto',
         }}>
         <header className="flex relative justify-between pt-4">
           <hgroup className="flex flex-col left-6 pl-5">
-            <h2 className="capitalize text-lg text-white">
-              <span className="font text-white text-lg">
+            <h1 className="capitalize text-[1.2rem] text-white pl-4">
+              <span className="font-semibold text-white">
                 {activeSession.session_name}
               </span>
-            </h2>
-            <div className="w-80 text-white text-sm">
+            </h1>
+            <div className="w-80 text-white text-sm pl-4">
               {activeSession.session_description}
             </div>
           </hgroup>
