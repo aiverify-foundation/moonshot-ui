@@ -729,6 +729,10 @@ function RedteamSessionChats(props: ActiveSessionProps) {
             onSelectPromptTemplate={handleSelectPromptTemplate}
             onWindowChange={handleOnWindowChange}
             onCloseSessionCommand={() => null}
+            styles={{
+              backgroundColor: colors.moongray[700],
+              borderRadius: '0.5rem',
+            }}
           />
           <div className="absolute bottom-[200px] right-[30%]">
             {optionsPanel}

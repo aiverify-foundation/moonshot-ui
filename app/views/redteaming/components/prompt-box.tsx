@@ -381,7 +381,7 @@ function PromptBox(props: PromptBoxProps) {
         </div>
         {hoveredSelectedPromptTemplate && !showPromptTemplateList ? (
           <div className="absolute left-[500px] top-[-40px] flex flex-col w-[400px]">
-            <div className="bg-white/90 p-2 rounded-md shadow-md flex flex-col gap-0">
+            <div className="bg-white/90 p-2 rounded-md flex flex-col gap-0">
               <div className="text-sm font-bold text-gray-800 underline">
                 {hoveredSelectedPromptTemplate.name}
               </div>

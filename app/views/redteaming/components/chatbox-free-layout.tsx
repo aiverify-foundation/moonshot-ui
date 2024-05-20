@@ -11,10 +11,12 @@ import { ChatBox, ChatBoxControls } from './chatbox';
 import useChatboxesPositionsUtils from '@views/redteaming/hooks/useChatboxesPositionsUtils';
 
 const minimizedStyle = {
-  transform: 'scale(0.1)', // Scale down the chatbox
-  top: `calc(100vh - 300px)`,
+  transform: 'scale(0.1)',
+  width: 500,
+  height: 500,
+  top: `calc(100vh - 350px)`,
   transition:
-    'transform 0.3s ease-in-out, top 0.5s ease-in-out, left 0.5s ease-in-out', // Smooth transition for the animation
+    'transform 0.3s ease-in, top 0.4s ease-in-out, left 0.5s ease-out', // Smooth transition for the animation
 };
 
 type ChatFreeLayoutProps = {
