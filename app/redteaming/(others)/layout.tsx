@@ -1,3 +1,5 @@
+import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import LeftNav from '@/app/components/leftNav';
@@ -14,12 +16,15 @@ export default function SessionsLayout({
       <nav className="pt-[5rem]">
         <LeftNav activeItem="redteaming" />
       </nav>
-      <header className="flex justify-between items-center px-4">
-        <h1
-          className="text-moonpurplelight tracking-[0.7rem] font-extralight text-[2.7rem] cursor-pointer"
-          style={{ textShadow: '2px 2px 3px rgba(0,0,0,0.5)' }}>
-          moonshot.
-        </h1>
+      <header className="flex justify-between items-center px-4 mb-5">
+        <Link href="/">
+          <Image
+            src="/aivmoonshot-logo.svg"
+            height={80}
+            width={250}
+            alt="AIVerify Moonshot Logo"
+          />
+        </Link>
         {/* <Icon
           color={colors.moongray[300]}
           name={IconName.Bell}

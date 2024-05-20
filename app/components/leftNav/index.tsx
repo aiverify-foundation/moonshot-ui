@@ -1,105 +1,118 @@
 'use client';
 import Link from 'next/link';
+import React from 'react';
 import { colors } from '@/app/views/shared-components/customColors';
 import { Icon, IconName } from '@components/IconSVG';
-import { Tooltip, TooltipPosition } from '@components/tooltip';
 
+type menuItem = 'benchmarking' | 'redteaming' | 'endpoints' | 'history' | 'utils';
 type LeftNavProps = {
-  activeItem?: 'benchmarking' | 'redteaming' | 'endpoints';
+  activeItem?: menuItem;
 };
 function LeftNav({ activeItem }: LeftNavProps) {
+  const [hoveredItem, setHoveredItem] = React.useState<menuItem | undefined>();
+
   return (
     <ul className="flex flex-col gap-10">
       <li className="flex justify-center">
-        <Tooltip
-          delay={0}
-          disabled={activeItem === 'endpoints'}
-          defaultShow={activeItem === 'endpoints'}
-          content={<span className="tracking-widest">endpoints</span>}
-          fontColor={colors.moonpurplelight}
-          transparent
-          position={TooltipPosition.left}
-          offsetTop={10}>
-          <Link href="/endpoints">
-            <Icon
-              color={
-                activeItem === 'endpoints'
+        <Link href="/endpoints"
+          onMouseEnter={() => setHoveredItem('endpoints')}
+          onMouseLeave={() => setHoveredItem(undefined)}
+          className='relative'>
+          {(hoveredItem === 'endpoints' || activeItem === 'endpoints') && (
+            <p className='absolute tracking-wider text-moonpurplelight right-[50px] w-[200px] text-right'>SUTs</p>
+          )}
+          <Icon
+            color={
+              activeItem === 'endpoints'
+                ? colors.moonpurplelight
+                : hoveredItem === 'endpoints'
                   ? colors.moonpurplelight
                   : colors.moongray[300]
-              }
-              name={IconName.OutlineBox}
-              size={40}
-            />
-          </Link>
-        </Tooltip>
+            }
+            name={IconName.OutlineBox}
+            size={40}
+          />
+        </Link>
       </li>
       <li className="flex justify-center">
-        <Tooltip
-          delay={0}
-          disabled={activeItem === 'benchmarking'}
-          defaultShow={activeItem === 'benchmarking'}
-          content={<span className="tracking-widest">benchmarking</span>}
-          fontColor={colors.moonpurplelight}
-          transparent
-          position={TooltipPosition.left}
-          offsetTop={10}>
-          <Link href="/benchmarking">
-            <Icon
-              color={
-                activeItem === 'benchmarking'
+        <Link href="/benchmarking"
+          onMouseEnter={() => setHoveredItem('benchmarking')}
+          onMouseLeave={() => setHoveredItem(undefined)}
+          className='relative'>
+          {(hoveredItem === 'benchmarking' || activeItem === 'benchmarking') && (
+            <p className='absolute tracking-wider text-moonpurplelight right-[50px] w-[200px] text-right'>benchmarking</p>
+          )}
+          <Icon
+            color={
+              activeItem === 'benchmarking'
+                ? colors.moonpurplelight
+                : hoveredItem === 'benchmarking'
                   ? colors.moonpurplelight
                   : colors.moongray[300]
-              }
-              name={IconName.CheckList}
-              size={40}
-            />
-          </Link>
-        </Tooltip>
+            }
+            name={IconName.CheckList}
+            size={40}
+          />
+        </Link>
       </li>
       <li className="flex justify-center">
-        <Tooltip
-          delay={0}
-          disabled={activeItem === 'redteaming'}
-          defaultShow={activeItem === 'redteaming'}
-          content={<span className="tracking-widest">red teaming</span>}
-          fontColor={colors.moonpurplelight}
-          transparent
-          position={TooltipPosition.left}
-          offsetTop={10}>
-          <Link href="/redteaming">
-            <Icon
-              color={
-                activeItem === 'redteaming'
+        <Link href="/redteaming"
+          onMouseEnter={() => setHoveredItem('redteaming')}
+          onMouseLeave={() => setHoveredItem(undefined)}
+          className='relative'>
+          {(hoveredItem === 'redteaming' || activeItem === 'redteaming') && (
+            <p className='absolute tracking-wider text-moonpurplelight right-[50px] w-[200px] text-right'>red teaming</p>
+          )}
+          <Icon
+            color={
+              activeItem === 'redteaming'
+                ? colors.moonpurplelight
+                : hoveredItem === 'redteaming'
                   ? colors.moonpurplelight
                   : colors.moongray[300]
-              }
-              name={IconName.Spacesuit}
-              size={40}
-            />
-          </Link>
-        </Tooltip>
+            }
+            name={IconName.Spacesuit}
+            size={40}
+          />
+        </Link>
       </li>
       <li>
-        <Icon
-          color={colors.moongray[300]}
-          name={IconName.HistoryClock}
-          size={40}
-        />
+        <Link href="/"
+          onMouseEnter={() => setHoveredItem('history')}
+          onMouseLeave={() => setHoveredItem(undefined)}
+          className='relative'>
+          {(hoveredItem === 'history' || activeItem === 'history') && (
+            <p className='absolute tracking-wider text-moonpurplelight right-[80px] w-[200px] text-right'>history</p>
+          )}
+          <Icon
+            color={activeItem === 'history'
+              ? colors.moonpurplelight
+              : hoveredItem === 'history'
+                ? colors.moonpurplelight
+                : colors.moongray[300]}
+            name={IconName.HistoryClock}
+            size={40}
+          />
+        </Link>
       </li>
       <li className="flex justify-center">
-        <Tooltip
-          delay={0}
-          content={<span className="tracking-widest">utilities</span>}
-          fontColor={colors.moonpurplelight}
-          position={TooltipPosition.left}
-          transparent
-          offsetTop={10}>
+        <Link href="/utils"
+          onMouseEnter={() => setHoveredItem('utils')}
+          onMouseLeave={() => setHoveredItem(undefined)}
+          className='relative'>
+          {(hoveredItem === 'utils' || activeItem === 'utils') && (
+            <p className='absolute tracking-wider text-moonpurplelight right-[50px] w-[200px] text-right'>utils</p>
+          )}
           <Icon
-            color={colors.moongray[300]}
+            color={activeItem === 'utils'
+              ? colors.moonpurplelight
+              : hoveredItem === 'utils'
+                ? colors.moonpurplelight
+                : colors.moongray[300]}
             name={IconName.Tools}
             size={40}
           />
-        </Tooltip>
+        </Link>
       </li>
     </ul>
   );
