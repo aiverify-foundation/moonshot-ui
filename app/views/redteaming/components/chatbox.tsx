@@ -194,7 +194,7 @@ const ChatBox = React.forwardRef(
               You
             </div>
             <Chat.TalkBubble
-              backgroundColor="#475569"
+              backgroundColor={colors.imdapurple}
               fontColor="#FFF"
               styles={{ alignSelf: 'flex-end', fontSize: 14 }}>
               {currentPromptTemplate && currentPromptText
@@ -208,14 +208,20 @@ const ChatBox = React.forwardRef(
               AI
             </div>
             <div className="flex justify-start mr-4">
-              <Chat.LoadingAnimation />
+              <Chat.LoadingAnimation
+                backgroundColor={colors.white}
+                dotColor={colors.imdapurple}
+              />
             </div>
           </div>
         )}
 
         {isChatCompletionInProgress && isAttackMode && (
           <div className="flex justify-start mr-4 p-2">
-            <Chat.LoadingAnimation />
+            <Chat.LoadingAnimation
+              backgroundColor={colors.white}
+              dotColor={colors.imdapurple}
+            />
           </div>
         )}
       </Chat.Container>
