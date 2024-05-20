@@ -14,8 +14,8 @@ import { useGetAllStatusQuery } from '@/app/services/status-api-service';
 import { AppEventTypes, TestStatusProgress } from '@/app/types/enums';
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
-import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
 import { Modal } from '@/app/views/shared-components/modal/modal';
+import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
 
 function BenchmarkRunStatus() {
   const [showRunDetails, setShowRunDetails] = React.useState(false);
@@ -121,14 +121,11 @@ function BenchmarkRunStatus() {
         border border-moongray-700 px-8 rounded-[20px]">
         <div className="w-full flex flex-col gap-2">
           <p className="text-white text-[1.1rem] w-[90%]">
-            {statuses[runner_id].current_status ==
-              TestStatusProgress.CANCELLED && 'Cancelled'}
+            {statuses[runner_id].current_status == TestStatusProgress.CANCELLED
+              ? 'Cancelled'
+              : `${Math.max(statuses[runner_id].current_progress, 10)}%`}
             {statuses[runner_id].current_status == TestStatusProgress.ERRORS &&
-              'Error'}
-            {statuses[runner_id].current_status == TestStatusProgress.RUNNING ||
-              (statuses[runner_id].current_status ==
-                TestStatusProgress.COMPLETED &&
-                `${Math.max(statuses[runner_id].current_progress, 10)}%`)}
+              ' (with error)'}
           </p>
           <div
             className={`${
