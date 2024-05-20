@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Icon, IconName } from '@/app/components/IconSVG';
+import { Button, ButtonType } from '@/app/components/button';
 import { ListItem, SelectList } from '@/app/components/selectList';
 import { TextArea } from '@/app/components/textArea';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import useOutsideClick from '@/app/hooks/use-outside-click';
 import { debounce } from '@/app/lib/throttle';
 import useChatboxesPositionsUtils from '@/app/views/redteaming/hooks/useChatboxesPositionsUtils';
+import { colors } from '@/app/views/shared-components/customColors';
 import { toggleDarkMode, useAppDispatch } from '@/lib/redux';
 import {
   LayoutMode,
@@ -291,7 +292,11 @@ function PromptBox(props: PromptBoxProps) {
       draggable={draggable}
       disableCloseIcon
       disableFadeIn
-      header={<div className="flex items-center h-8 text-sm">Prompt</div>}
+      header={
+        <div className="flex items-center h-8 text-[1rem] tracking-wide text-moonpurplelight">
+          Prompt
+        </div>
+      }
       onCloseClick={onCloseClick}
       onWindowChange={onWindowChange}
       styles={{ overflow: 'show', ...styles }}
@@ -309,7 +314,7 @@ function PromptBox(props: PromptBoxProps) {
       }}>
       {disabled && (
         <div
-          className="absolute gap-2 bg-moongray-950/50 w-full h-full z-10 flex justify-center items-center"
+          className="absolute gap-2 bg-transparent w-full h-full z-10 flex justify-center items-center"
           style={{ top: 0, left: 0 }}>
           <div className="waitspinner" />
         </div>
@@ -339,10 +344,17 @@ function PromptBox(props: PromptBoxProps) {
               placeholder={
                 textInputMode === TextInputMode.PROMPT_TEMPLATE
                   ? 'Search Prompt Templates'
-                  : 'Message'
+                  : 'Write a prompt...'
               }
               inputStyles={
-                showPromptTemplateList ? { backgroundColor: '#f5d0fe' } : {}
+                showPromptTemplateList
+                  ? { backgroundColor: '#f5d0fe' }
+                  : {
+                      backgroundColor: colors.chatPrompTextArea,
+                      border: 'none',
+                      color: colors.white,
+                      boxShadow: 'inset 0 0 5px 0 rgba(0, 0, 0, 0.4)',
+                    }
               }
               onChange={handleTextChange}
               value={promptMessage}
@@ -355,13 +367,17 @@ function PromptBox(props: PromptBoxProps) {
         </div>
         <div className="flex gap-2 w-full justify-end">
           {/* {promptTemplateTrigger} */}
-          <button
+          <Button
+            text="Send"
+            width={80}
+            size="md"
+            mode={ButtonType.PRIMARY}
             disabled={promptMessage.trim().length === 0}
-            className="btn-primary w-20 rounded h-[32px]"
             type="button"
-            onClick={handleOnSendMessageClick}>
-            Send
-          </button>
+            onClick={handleOnSendMessageClick}
+            hoverBtnColor={colors.moongray[950]}
+            pressedBtnColor={colors.moongray[900]}
+          />
         </div>
         {hoveredSelectedPromptTemplate && !showPromptTemplateList ? (
           <div className="absolute left-[500px] top-[-40px] flex flex-col w-[400px]">

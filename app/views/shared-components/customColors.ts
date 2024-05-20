@@ -11,6 +11,7 @@ type CustomColors = {
   chatboxbg: string;
   chatBubbleWhite: string;
   imdapurple: string;
+  chatPrompTextArea: string;
 };
 
 export const colors = tailwindConfig.theme?.extend?.colors as CustomColors;

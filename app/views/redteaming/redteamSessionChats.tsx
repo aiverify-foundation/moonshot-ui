@@ -688,7 +688,10 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                       onSendClick={handleSendPromptClick}
                       onSelectPromptTemplate={handleSelectPromptTemplate}
                       onWindowChange={handleOnWindowChange}
-                      styles={{ position: 'relative' }}
+                      styles={{
+                        position: 'relative',
+                        backgroundColor: 'transparent',
+                      }}
                     />
                     {optionsPanel}
                   </div>

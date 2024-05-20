@@ -24,6 +24,7 @@ const config: Config = {
         black: '#000000',
         chatboxbg: '#2D2B2F',
         chatBubbleWhite: '#DDDDDD',
+        chatPrompTextArea: '#353236',
         imdapurple: '#49305A',
         moonpurplelight: '#d5aaea',
         moonpurple: '#392348',
