@@ -54,7 +54,7 @@ const config: MoonshotConfig = {
       ],
     },
   ],
-  estimatedPromptResponseTime: 10, // seconds
+  estimatedPromptResponseTime: 1, // seconds
   webAPI: {
     hostURL: process.env.MOONSHOT_API_URL || 'http://localhost:5000',
     basePathSessions: '/api/v1/sessions',
