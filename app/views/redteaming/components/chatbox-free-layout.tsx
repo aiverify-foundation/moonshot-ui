@@ -5,6 +5,7 @@ import {
   getWindowSizeById,
   getWindowXYById,
 } from '@/app/lib/window-utils';
+import { colors } from '@/app/views/shared-components/customColors';
 import { useAppSelector } from '@/lib/redux';
 import { ChatBox, ChatBoxControls } from './chatbox';
 import useChatboxesPositionsUtils from '@views/redteaming/hooks/useChatboxesPositionsUtils';
@@ -93,6 +94,7 @@ const ChatboxFreeLayout = React.forwardRef(
               draggable
               disableOnScroll
               disableBubbleTooltips={isMinimized}
+              resizeHandlerColor={colors.moonwine[500]}
               ref={(imperativeHandles) => {
                 if (imperativeHandles) {
                   chatBoxControlsMap.set(id, imperativeHandles);
@@ -124,8 +126,12 @@ const ChatboxFreeLayout = React.forwardRef(
                         transition:
                           'transform 0.3s ease-in-out, top 0.5s ease-in-out, left 0.5s ease-in-out',
                       }
-                    : {}
+                    : { borderRadius: '0.5rem' }
               }
+              headerStyle={{
+                borderTopLeftRadius: '0.5rem',
+                borderTopRightRadius: '0.5rem',
+              }}
               onCloseClick={handleMinimizeClick(getWindowId(id))}
               onWholeWindowClick={
                 isMinimized ? handleMaximizeClick(getWindowId(id)) : undefined

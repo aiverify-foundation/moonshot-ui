@@ -2,7 +2,9 @@ import { ReactElement } from 'react';
 
 import { AlertIcon } from './icons/alert-icon';
 import { ArrowLeftIcon } from './icons/arrow-left-icon';
+import { WideArrowLeftIcon } from './icons/arrow-left-wide-icon';
 import { ArrowRightIcon } from './icons/arrow-right-icon';
+import { WideArrowRightIcon } from './icons/arrow-right-wide-icon';
 import { AsteriskIcon } from './icons/asterisk-icon';
 import { BellIcon } from './icons/bell-icon';
 import { BookIcon } from './icons/book-icon';
@@ -94,6 +96,8 @@ enum IconName {
   MoonPromptTemplate,
   MoonAttackStrategy,
   Alert,
+  WideArrowLeft,
+  WideArrowRight,
 }
 
 type IconProps = {
@@ -198,6 +202,24 @@ function Icon(props: IconProps) {
     case IconName.Close:
       iconToRender = (
         <CloseIcon
+          outlineColor={color}
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.WideArrowLeft:
+      iconToRender = (
+        <WideArrowLeftIcon
+          outlineColor={color}
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.WideArrowRight:
+      iconToRender = (
+        <WideArrowRightIcon
           outlineColor={color}
           width={size}
           height={size}

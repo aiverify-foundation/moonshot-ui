@@ -1,7 +1,4 @@
-import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
-import { useAppSelector } from '@/lib/redux';
 import React from 'react';
-import { PromptBubbleInfo } from './prompt-bubble-info';
 import { Chat } from '@/app/components/chat';
 
 type PromptAndResponseBubbleProps = {
@@ -22,7 +19,6 @@ function PromptAndResponseBubble(props: PromptAndResponseBubbleProps) {
     onMouseEnter,
     onMouseLeave,
   } = props;
-  const isDarkMode = useAppSelector((state) => state.darkMode.value);
   const dialogue = data[props.index];
   return (
     <div style={style}>
@@ -32,7 +28,7 @@ function PromptAndResponseBubble(props: PromptAndResponseBubbleProps) {
         key={index}
         onMouseEnter={() => onMouseEnter(index)}
         onMouseLeave={() => onMouseLeave()}>
-        <div className="flex flex-col text-right pr-2 text-sm text-black">
+        <div className="flex flex-col text-right pr-2 text-sm text-white">
           You
         </div>
         <div className="self-end snap-top max-w-[90%]">
@@ -49,7 +45,7 @@ function PromptAndResponseBubble(props: PromptAndResponseBubbleProps) {
             {dialogue.prepared_prompt}
           </Chat.TalkBubble>
         </div>
-        <div className="max-w-[90%] flex flex-col text-left pl-2 text-sm text-black">
+        <div className="max-w-[90%] flex flex-col text-left pl-2 text-sm text-white">
           AI
         </div>
         <Chat.TalkBubble

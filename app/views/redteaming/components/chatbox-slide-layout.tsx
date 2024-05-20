@@ -7,6 +7,7 @@ import {
   SlideChatBoxDimensions,
   getDefaultChatBoxSizes,
 } from './chatbox-slide-box-sizes';
+import { colors } from '../../shared-components/customColors';
 
 type ChatSlideLayoutProps = {
   chatSession: SessionData;
@@ -141,7 +142,7 @@ const ChatboxSlideLayout = React.forwardRef(
         <div className="flex items-center justify-between w-full">
           <Icon
             size={40}
-            name={IconName.CircleArrowLeft}
+            name={IconName.WideArrowLeft}
             onClick={() => {
               setCurrentBoxIndex((prevIndex) => Math.max(prevIndex - 1, 0));
             }}
@@ -149,7 +150,7 @@ const ChatboxSlideLayout = React.forwardRef(
           />
           <Icon
             size={40}
-            name={IconName.CircleArrowRight}
+            name={IconName.WideArrowRight}
             onClick={() => {
               setCurrentBoxIndex((prevIndex) =>
                 Math.min(
@@ -159,7 +160,7 @@ const ChatboxSlideLayout = React.forwardRef(
               );
             }}
             disabled={
-              currentBoxIndex === chatSession.session.endpoints.length - 1
+              currentBoxIndex === chatSession.session.endpoints.length - 3
             }
           />
         </div>
@@ -221,6 +222,13 @@ const ChatboxSlideLayout = React.forwardRef(
                     disableOnScroll
                     onWindowChange={handleOnWindowChange}
                     isChatCompletionInProgress={chatCompletionInProgress}
+                    styles={{
+                      borderRadius: '0.5rem',
+                    }}
+                    headerStyle={{
+                      borderTopLeftRadius: '0.5rem',
+                      borderTopRightRadius: '0.5rem',
+                    }}
                   />
                 );
               }

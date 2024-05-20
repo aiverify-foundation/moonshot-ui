@@ -22,6 +22,9 @@ const config: Config = {
         },
         white: '#FFFFFF',
         black: '#000000',
+        chatboxbg: '#2D2B2F',
+        chatBubbleWhite: '#DDDDDD',
+        imdapurple: '#49305A',
         moonpurplelight: '#d5aaea',
         moonpurple: '#392348',
         moonwine: {

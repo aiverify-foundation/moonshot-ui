@@ -13,6 +13,8 @@ type ChatboxProps = {
   initialScrollTop: number;
   disableOnScroll?: boolean;
   styles?: React.CSSProperties;
+  headerStyle?: React.CSSProperties;
+  resizeHandlerColor?: React.CSSProperties['color'];
   onCloseClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onWheel?: (e: React.WheelEvent<HTMLDivElement>) => void;
   onWholeWindowClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
@@ -41,6 +43,8 @@ const Container = forwardRef(
       onCloseClick,
       children,
       styles,
+      headerStyle,
+      resizeHandlerColor,
       onWheel,
       onWindowChange,
       onWholeWindowClick,
@@ -63,7 +67,8 @@ const Container = forwardRef(
         onWholeWindowClick={onWholeWindowClick}
         disableCloseIcon={disableCloseIcon}
         footerHeight={17}
-        backgroundColor={colors.moongray[600]}
+        backgroundColor={colors.chatboxbg}
+        resizeHandlerColor={resizeHandlerColor}
         styles={{
           zIndex: 100,
           ...styles,
@@ -76,11 +81,12 @@ const Container = forwardRef(
         }}
         headerAreaStyles={{
           marginBottom: 14,
+          ...headerStyle,
         }}>
         <div
           ref={ref}
           id="chatContainer"
-          className="h-full overflow-y-auto custom-scrollbar mr-[2px]">
+          className="h-full overflow-y-auto custom-scrollbar bg-chatboxbg">
           {children}
         </div>
       </Window>

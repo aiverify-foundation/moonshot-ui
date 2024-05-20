@@ -588,10 +588,10 @@ function RedteamSessionChats(props: ActiveSessionProps) {
       )}
       {showCloseSessionConfirmation && (
         <Modal
-          heading="Exit this session?"
+          heading="Exit Session"
           bgColor={colors.moongray['800']}
           textColor="#FFFFFF"
-          primaryBtnLabel="Exit Session"
+          primaryBtnLabel="Exit"
           secondaryBtnLabel="Cancel"
           enableScreenOverlay
           onCloseIconClick={() => setShowCloseSessionConfirmation(false)}

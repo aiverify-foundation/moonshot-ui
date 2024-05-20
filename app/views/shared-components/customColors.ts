@@ -8,6 +8,9 @@ type CustomColors = {
   black: string;
   moonpurplelight: string;
   moonpurple: string;
+  chatboxbg: string;
+  chatBubbleWhite: string;
+  imdapurple: string;
 };
 
 export const colors = tailwindConfig.theme?.extend?.colors as CustomColors;

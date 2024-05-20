@@ -22,6 +22,8 @@ type ChatBoxProps = {
   isAttackMode: boolean;
   isChatCompletionInProgress: boolean;
   styles?: React.CSSProperties;
+  headerStyle?: React.CSSProperties;
+  resizeHandlerColor?: React.CSSProperties['color'];
   onWindowChange: (
     x: number,
     y: number,
@@ -60,6 +62,8 @@ const ChatBox = React.forwardRef(
       isAttackMode = false,
       isChatCompletionInProgress,
       styles,
+      headerStyle,
+      resizeHandlerColor,
       onWindowChange,
       onWheel,
       onCloseClick,
@@ -105,6 +109,8 @@ const ChatBox = React.forwardRef(
         disableOnScroll={disableOnScroll}
         disableCloseIcon={disableCloseIcon}
         styles={styles}
+        headerStyle={headerStyle}
+        resizeHandlerColor={resizeHandlerColor}
         onWindowChange={onWindowChange}
         onWheel={onWheel}
         onCloseClick={onCloseClick}
@@ -121,7 +127,7 @@ const ChatBox = React.forwardRef(
               key={index}
               onMouseEnter={() => setDialoguePairHovered(index)}
               onMouseLeave={() => setDialoguePairHovered(undefined)}>
-              <div className="flex flex-col text-right pr-2 text-sm text-black">
+              <div className="flex flex-col text-right pr-2 text-sm text-white">
                 You
               </div>
               <div className="self-end snap-top max-w-[90%]">
@@ -147,7 +153,7 @@ const ChatBox = React.forwardRef(
                       />
                     }>
                     <Chat.TalkBubble
-                      backgroundColor="#475569"
+                      backgroundColor={colors.imdapurple}
                       fontColor="#FFF"
                       styles={{
                         marginBottom: 0,
@@ -162,12 +168,12 @@ const ChatBox = React.forwardRef(
                   </Tooltip>
                 </div>
               </div>
-              <div className="max-w-[90%] flex flex-col text-left pl-2 text-sm text-black">
+              <div className="max-w-[90%] flex flex-col text-left pl-2 text-sm text-white">
                 AI
               </div>
               <Chat.TalkBubble
-                backgroundColor="#94a3b8"
-                fontColor="#FFF"
+                backgroundColor={colors.chatBubbleWhite}
+                fontColor={colors.black}
                 styles={{
                   fontSize: 14,
                   textAlign: 'left',
@@ -184,7 +190,7 @@ const ChatBox = React.forwardRef(
 
         {isChatCompletionInProgress && !isAttackMode && (
           <div className="flex flex-col p-2">
-            <div className="flex flex-col text-right pr-2 text-xs text-black">
+            <div className="flex flex-col text-right pr-2 text-xs text-white">
               You
             </div>
             <Chat.TalkBubble
@@ -198,7 +204,7 @@ const ChatBox = React.forwardRef(
                   )
                 : currentPromptText}
             </Chat.TalkBubble>
-            <div className="flex flex-col text-left pl-2 text-xs text-black">
+            <div className="flex flex-col text-left pl-2 text-xs text-white">
               AI
             </div>
             <div className="flex justify-start mr-4">

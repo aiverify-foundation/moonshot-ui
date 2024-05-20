@@ -40,6 +40,7 @@ type WindowProps = {
   disableOnScroll?: boolean;
   children?: React.ReactNode;
   topBar?: React.ReactNode;
+  resizeHandlerColor?: React.CSSProperties['color'];
   onWholeWindowClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onCloseClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onWheel?: (e: React.WheelEvent<HTMLDivElement>) => void;
@@ -67,6 +68,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
       contentAreaStyles,
       resizeable = true,
       backgroundColor,
+      resizeHandlerColor,
       children,
       topBar,
       headerAreaStyles,
@@ -309,12 +311,14 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
           {resizeable ? (
             <div
               className="
-                w-3.5 h-3.5
+                w-3 h-3
                 absolute border-b-2 border-r-2
-                border-solid bottom-1 right-1 cursor-se-resize 
-                dark:border-neutral-400/30
+                border-solid bottom-[6px] right-[6px] cursor-se-resize 
                 border-moongray-950"
               onMouseDown={handleResizeMouseDown}
+              style={{
+                borderColor: resizeHandlerColor,
+              }}
             />
           ) : null}
         </div>
