@@ -29,7 +29,6 @@ const config: MoonshotConfig = {
     'common-risk-hard',
   ],
   defaultCookbooksForSelection: [
-    'evaluation-catalogue-cookbook',
     'chinese-safety-cookbook',
     'tamil-language-cookbook',
     'leaderboard-cookbook',

@@ -133,7 +133,6 @@ function CookbooksSelection(props: Props) {
       ) : (
         <PopupSurface
           height="100%"
-          onCloseIconClick={selectedCookbooks.length > 0 ? onClose : undefined}
           headerContent={
             <section className="flex items-center justify-flex-start gap-5 pt-4">
               <TabsMenu
