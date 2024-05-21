@@ -7,7 +7,6 @@ import {
   SlideChatBoxDimensions,
   getDefaultChatBoxSizes,
 } from './chatbox-slide-box-sizes';
-import { colors } from '../../shared-components/customColors';
 
 type ChatSlideLayoutProps = {
   chatSession: SessionData;
