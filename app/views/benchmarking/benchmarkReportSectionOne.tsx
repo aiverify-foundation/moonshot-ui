@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
+import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
 import { GradingColorsMlcEnum } from '@/app/views/benchmarking/enums';
 import { SquareBadge } from './components/badge';
 import { gradeColorsMlc } from './components/gradeColors';
@@ -10,7 +11,6 @@ import {
   CookbooksBenchmarkResult,
 } from './types/benchmarkReportTypes';
 import { calcTotalPromptsByEndpoint } from './utils/calcTotalPromptsByEndpoint';
-import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
 
 type BenchmarkReportProps = {
   benchmarkReport: CookbooksBenchmarkResult;
@@ -22,8 +22,11 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
   const { benchmarkReport, runnerInfo, endpointId } = props;
   const { cookbooks } = benchmarkReport.metadata;
   const totalPrompts = calcTotalPromptsByEndpoint(benchmarkReport, endpointId); // very expensive calculation
-  const { data, isFetching } = useGetCookbooksQuery({ ids: cookbooks });
+  const { data, isFetching: isFetchingCookbooks } = useGetCookbooksQuery({
+    ids: cookbooks,
+  });
 
+  const downloadUrl = `/api/v1/benchmarks/results/${benchmarkReport.metadata.id}?download=true`;
   const mlcCookbookIds = cookbooks.filter((cookbook) =>
     MLC_COOKBOOK_IDS.includes(cookbook)
   );
@@ -37,14 +40,16 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
   const mlcRecipeIds = mlcCookbookResult
     ? mlcCookbookResult.recipes.map((recipeResult) => recipeResult.id)
     : [];
-  const { data: mlcRecipes, isFetching: mlcRecipesIsFetching } =
-    useGetAllRecipesQuery({ ids: mlcRecipeIds }, { skip: !mlcCookbookResult });
+  const { data: mlcRecipes } = useGetAllRecipesQuery(
+    { ids: mlcRecipeIds },
+    { skip: !mlcCookbookResult }
+  );
 
   const sortedMlcRecipeResults = mlcCookbookResult
-    ? mlcCookbookResult.recipes.sort((a, b) => a.id.localeCompare(b.id))
+    ? [...mlcCookbookResult.recipes].sort((a, b) => a.id.localeCompare(b.id))
     : undefined;
   const sortedMlcRecipesData = mlcRecipes
-    ? mlcRecipes.sort((a, b) => a.id.localeCompare(b.id))
+    ? [...mlcRecipes].sort((a, b) => a.id.localeCompare(b.id))
     : undefined;
 
   const mlsCookbookResultOverallGrade =
@@ -131,32 +136,40 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
                   (summary) => summary.model_id === endpointId
                 );
                 const grade = evalSummary && evalSummary.grade;
+                const nameSegments = sortedMlcRecipesData[idx].name.split('-');
+                const name = sortedMlcRecipesData[idx].name.startsWith(
+                  'MLCommons AI Safety Benchmark -'
+                )
+                  ? nameSegments.slice(1).join('-')
+                  : sortedMlcRecipesData[idx].name;
                 return (
                   <figure
                     className="flex gap-4 justify-between"
                     key={recipeResult.id}>
                     <figcaption>
                       <h5 className="text-[0.9rem] text-white font-bold pb-1">
-                        {sortedMlcRecipesData[idx].name}
+                        {name}
                       </h5>
                       <p className="text-[0.8rem] leading-tight">
                         {sortedMlcRecipesData[idx].description}
                       </p>
                     </figcaption>
-                    <SquareBadge
-                      size={60}
-                      textSize="2rem"
-                      label={
-                        gradingLettersMlcMap[
-                          grade as keyof typeof gradingLettersMlcMap
-                        ]
-                      }
-                      color={
-                        gradeColorsMlc[
-                          grade as keyof typeof gradingLettersMlcMap
-                        ]
-                      }
-                    />
+                    <div>
+                      <SquareBadge
+                        size={60}
+                        textSize="2rem"
+                        label={
+                          gradingLettersMlcMap[
+                            grade as keyof typeof gradingLettersMlcMap
+                          ]
+                        }
+                        color={
+                          gradeColorsMlc[
+                            grade as keyof typeof gradingLettersMlcMap
+                          ]
+                        }
+                      />
+                    </div>
                   </figure>
                 );
               })}
@@ -379,7 +392,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           <ol
             className="list-decimal list-inside text-white font-semi-bold text-[1rem]"
             style={{ color: '#ffffff' }}>
-            {!isFetching &&
+            {!isFetchingCookbooks &&
               data &&
               cookbooks.map((cookbook, idx) => {
                 const cookbookDetails = data.find((c) => c.id === cookbook);
@@ -430,7 +443,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           System Under Test (SUT). For the full detailed test results, &nbsp;
           <a
             className="text-fuchsia-400"
-            href="/api/v1/benchmarks/results/test-report-1?download=true">
+            href={downloadUrl}>
             Download the JSON file here
           </a>
           .
