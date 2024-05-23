@@ -3,7 +3,7 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
 import { GradingColorsMlcEnum } from '@/app/views/benchmarking/enums';
-import { SquareBadge } from './components/badge';
+import { Badge, SquareBadge } from './components/badge';
 import { gradeColorsMlc } from './components/gradeColors';
 import { MLC_COOKBOOK_IDS, gradingLettersMlcMap } from './constants';
 import {
@@ -24,6 +24,27 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
   const totalPrompts = calcTotalPromptsByEndpoint(benchmarkReport, endpointId); // very expensive calculation
   const { data, isFetching: isFetchingCookbooks } = useGetCookbooksQuery({
     ids: cookbooks,
+  });
+  const {
+    data: cookbooksUnderQuality = [],
+    isFetching: isFetchingCookbooksUnderQuality,
+  } = useGetCookbooksQuery({
+    categories: ['Quality'],
+    count: false,
+  });
+  const {
+    data: cookbooksUnderCapability = [],
+    isFetching: isFetchingCookbooksUnderCapability,
+  } = useGetCookbooksQuery({
+    categories: ['Capability'],
+    count: false,
+  });
+  const {
+    data: cookbooksUnderTrustSafety = [],
+    isFetching: isFetchingCookbooksUnderTrustSafety,
+  } = useGetCookbooksQuery({
+    categories: ['Trust & Safety'],
+    count: false,
   });
 
   const downloadUrl = `/api/v1/benchmarks/results/${benchmarkReport.metadata.id}?download=true`;
@@ -396,12 +417,44 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
               data &&
               cookbooks.map((cookbook, idx) => {
                 const cookbookDetails = data.find((c) => c.id === cookbook);
+                const categories = [];
+                if (
+                  cookbookDetails &&
+                  cookbooksUnderQuality.some(
+                    (cookbook) => cookbook.id === cookbookDetails.id
+                  )
+                ) {
+                  categories.push('Q');
+                }
+                if (
+                  cookbookDetails &&
+                  cookbooksUnderCapability.some(
+                    (cookbook) => cookbook.id === cookbookDetails.id
+                  )
+                ) {
+                  categories.push('C');
+                }
+                if (
+                  cookbookDetails &&
+                  cookbooksUnderTrustSafety.some(
+                    (cookbook) => cookbook.id === cookbookDetails.id
+                  )
+                ) {
+                  categories.push('T');
+                }
                 return !cookbookDetails ? null : (
                   <li
                     key={`${cookbook}-${idx}`}
-                    className="mb-1">
+                    className="mb-1 w-[500px]">
                     <span className="mr-3">{cookbookDetails.name}</span>
-                    {/* <Badge label="Q" /> */}
+                    <span className="inline-flex gap-2 justify-start">
+                      {categories.map((categoryLetter) => (
+                        <Badge
+                          key={categoryLetter}
+                          label={categoryLetter}
+                        />
+                      ))}
+                    </span>
                   </li>
                 );
               })}
