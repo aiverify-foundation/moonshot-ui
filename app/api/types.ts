@@ -52,3 +52,26 @@ export type SystemEvents = EventNotifier<{
     event: AppEventTypes.SYSTEM_UPDATE;
   };
 }>;
+
+export type RunnerWebApiModel = {
+  id: string;
+  name: string;
+  description: string;
+  endpoits: string;
+  database_file: string;
+};
+
+export type RunnerDetailWebApiModel = {
+  run_id: number;
+  runner_id: string;
+  runner_args: {
+    cookbooks: string[];
+    num_of_prompts: number;
+    random_seed: number;
+    system_prompt: string;
+    runner_processing_module: string;
+    result_processing_module: string;
+  };
+  endpoints: string[];
+  start_time: number;
+};

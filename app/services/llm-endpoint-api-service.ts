@@ -7,7 +7,7 @@ const llmEndpointApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
     getLLMEndpoints: builder.query<LLMEndpoint[], void>({
-      query: () => 'api/v1/llm_endpoints',
+      query: () => 'api/v1/endpoints',
       keepUnusedDataFor: 0,
     }),
     createLLMEndpoint: builder.mutation<
@@ -29,7 +29,7 @@ const llmEndpointApi = createApi({
           body = endpointDetails;
         }
         return {
-          url: 'api/v1/llm_endpoints',
+          url: 'api/v1/endpoints',
           method: 'POST',
           body,
         };
@@ -54,7 +54,7 @@ const llmEndpointApi = createApi({
           body = endpointDetails;
         }
         return {
-          url: `api/v1/llm_endpoints/${id}`,
+          url: `api/v1/endpoints/${id}`,
           method: 'PUT',
           body,
         };

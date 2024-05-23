@@ -8,6 +8,10 @@ const runnerApi = createApi({
   reducerPath: 'runnerApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
+    getAllRunners: builder.query<Runner[], void>({
+      query: () => proxyPathRunners,
+      keepUnusedDataFor: 0,
+    }),
     getRunnerById: builder.query<
       Runner,
       { id?: string | null; additionalDetails?: boolean }
@@ -19,6 +23,6 @@ const runnerApi = createApi({
   }),
 });
 
-const { useGetRunnerByIdQuery } = runnerApi;
+const { useGetRunnerByIdQuery, useGetAllRunnersQuery } = runnerApi;
 
-export { runnerApi, useGetRunnerByIdQuery };
+export { runnerApi, useGetRunnerByIdQuery, useGetAllRunnersQuery };

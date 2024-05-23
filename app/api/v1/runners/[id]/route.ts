@@ -31,7 +31,11 @@ export async function GET(request: NextRequest) {
   const [runnerResponse, runnerDetailsResponse] = response;
   const runnerData = await runnerResponse.json();
   const runnerDetailsData = await runnerDetailsResponse.json();
-  const mergedResponse = { ...runnerData, ...runnerDetailsData };
+  const mergedResponse = {
+    ...runnerData,
+    ...runnerDetailsData,
+    database_file: undefined,
+  };
   return new Response(JSON.stringify(mergedResponse), {
     status: 200,
     headers: {

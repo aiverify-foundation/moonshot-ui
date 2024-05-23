@@ -293,7 +293,6 @@ type Runner = {
   run_id?: number;
   runner_id?: string;
   name: string;
-  database_file: string;
   endpoints: string[];
   description: string;
   runner_args?: {
@@ -306,8 +305,3 @@ type Runner = {
   };
   start_time?: number;
 };
-
-declare module 'next/dist/compiled/react-dom/cjs/react-dom-server-legacy.browser.development' {
-  import ReactDOMServer from 'react-dom/server';
-  export = ReactDOMServer;
-}

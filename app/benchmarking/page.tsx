@@ -30,14 +30,18 @@ export default function BenchmarkingHomePage() {
             textColor={colors.white}
           />
         </Link>
-        <SubmenuButton
-          width="40%"
-          text="View Past Runs"
-          menuIconName={IconName.HistoryClock}
-          btnColor={colors.moongray[950]}
-          hoverBtnColor={colors.moongray[800]}
-          textColor={colors.white}
-        />
+        <Link
+          href="/benchmarking/runs"
+          style={{ width: '40%' }}>
+          <SubmenuButton
+            width="100%"
+            text="View Past Runs"
+            menuIconName={IconName.HistoryClock}
+            btnColor={colors.moongray[950]}
+            hoverBtnColor={colors.moongray[800]}
+            textColor={colors.white}
+          />
+        </Link>
         <Link
           href="/benchmarking/cookbooks"
           style={{ width: '40%' }}>
