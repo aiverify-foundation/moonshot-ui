@@ -23,12 +23,11 @@ type MoonshotConfig = {
 };
 
 const config: MoonshotConfig = {
-  baselineSelectedCookbooks: [
+  baselineSelectedCookbooks: [],
+  defaultCookbooksForSelection: [
     'mlc-ai-safety',
     'common-risk-easy',
     'common-risk-hard',
-  ],
-  defaultCookbooksForSelection: [
     'chinese-safety-cookbook',
     'tamil-language-cookbook',
     'leaderboard-cookbook',
