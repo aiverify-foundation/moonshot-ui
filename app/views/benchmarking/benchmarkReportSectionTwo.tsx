@@ -2,6 +2,7 @@ import React from 'react';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { BenchmarkReportCookbookResult } from './benchmarkReportCookbookResult';
+import { MLC_COOKBOOK_IDS } from './constants';
 import { CookbooksBenchmarkResult } from './types/benchmarkReportTypes';
 
 type BenchmarkReportProps = {
@@ -16,11 +17,15 @@ function BenchmarkReportSectionTwo(props: BenchmarkReportProps) {
 
   const { data, isFetching } = useGetCookbooksQuery({ ids: cookbooks });
 
+  const containsMlcCookbook = cookbooks.some((cookbook) =>
+    MLC_COOKBOOK_IDS.includes(cookbook)
+  );
+
   return (
     <article className="h-full w-full text-moongray-300 text-[0.9rem] bg-moongray-800 rounded-lg ">
       <header className="bg-moongray-1000 px-6 py-8">
         <hgroup>
-          <p className="text-fuchsia-400">Section 2</p>
+          {containsMlcCookbook && <p className="text-fuchsia-400">Section 2</p>}
           <h2 className="text-[1.8rem] text-white flex">Full Results</h2>
         </hgroup>
       </header>
@@ -51,7 +56,7 @@ function BenchmarkReportSectionTwo(props: BenchmarkReportProps) {
               ) : (
                 <BenchmarkReportCookbookResult
                   result={cookbookResultList[idx]}
-                  key={cookbook}
+                  key={cookbook + idx}
                   cookbook={cookbookDetails}
                   endpointId={endpointId}
                 />

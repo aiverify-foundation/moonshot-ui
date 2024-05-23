@@ -1,20 +1,23 @@
-import { GradingScale } from '@/app/views/benchmarking/types/benchmarkReportTypes';
-import { gradeColors } from './gradeColors';
+import {
+  GradingColors,
+  GradingScale,
+} from '@/app/views/benchmarking/types/benchmarkReportTypes';
 
 type RangedBarChartProps = {
   gradingScale: GradingScale;
+  gradeColors: GradingColors;
   gradeValue: number;
 };
 
 function RangedBarChart(props: RangedBarChartProps) {
-  const { gradingScale, gradeValue } = props;
+  const { gradingScale, gradeValue, gradeColors } = props;
 
   let cumulativeWidth = 0;
   let pointerPosition = 0;
 
-  // Sort grades in descending order
-  const sortedGrades = Object.entries(gradingScale).sort((a, b) =>
-    b[0].localeCompare(a[0])
+  // sort by range start number which is the value of tuple first index
+  const sortedGrades = Object.entries(gradingScale).sort(
+    (a, b) => a[1][0] - b[1][0]
   );
 
   for (const [_, range] of sortedGrades) {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, ButtonType } from '@/app/components/button';
-import { colors } from '@/app/views/shared-components/customColors';
 import { BenchmarkReportSectionOne } from './benchmarkReportSectionOne';
 import { BenchmarkReportSectionTwo } from './benchmarkReportSectionTwo';
 import { CookbooksBenchmarkResult } from './types/benchmarkReportTypes';

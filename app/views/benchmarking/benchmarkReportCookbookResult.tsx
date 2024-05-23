@@ -5,7 +5,8 @@ import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { BenchmarkReportRecipeResult } from './benchmarkReportRecipeResult';
 import { RecipeGradeBadge } from './components/badge';
-import { gradeColors } from './components/gradeColors';
+import { gradeColorsMoonshot, gradeColorsMlc } from './components/gradeColors';
+import { MLC_COOKBOOK_IDS, gradingLettersMlcMap } from './constants';
 import { CookbookResult } from './types/benchmarkReportTypes';
 
 type BenchmarkReportCookbookResultsProps = {
@@ -33,6 +34,10 @@ function BenchmarkReportCookbookResult(
     return <p>BenchmarkReportCookbookResult: No evaluation summary</p>;
   }
 
+  const isMlcCookbook = MLC_COOKBOOK_IDS.includes(cookbook.id);
+
+  const gradeColors = isMlcCookbook ? gradeColorsMlc : gradeColorsMoonshot;
+
   return isFetching ? (
     <div className="relative w-full h-[100px]">
       <LoadingAnimation />
@@ -45,7 +50,7 @@ function BenchmarkReportCookbookResult(
         ${showSection ? 'rounded-b-none' : 'rounded-b-lg'}`}
         style={{
           transition: 'background-color 0.3s ease-in-out',
-          border: `1px solid ${gradeColors[evaluationSummary.overall_grade]}`,
+          border: `1px solid ${gradeColors[evaluationSummary.overall_grade as keyof typeof gradeColors]}`,
         }}
         onClick={() => setShowSection(!showSection)}>
         <div className="flex items-center gap-2">
@@ -62,6 +67,14 @@ function BenchmarkReportCookbookResult(
           {evaluationSummary && (
             <RecipeGradeBadge
               grade={evaluationSummary.overall_grade}
+              customLetter={
+                isMlcCookbook
+                  ? gradingLettersMlcMap[
+                      evaluationSummary.overall_grade as keyof typeof gradingLettersMlcMap
+                    ]
+                  : undefined
+              }
+              gradeColors={gradeColors}
               size={35}
               textSize="1rem"
               textColor={colors.white}
@@ -82,6 +95,7 @@ function BenchmarkReportCookbookResult(
               ) : (
                 <BenchmarkReportRecipeResult
                   key={recipeResult.id}
+                  cookbookId={cookbook.id}
                   result={recipeResult}
                   recipe={recipeDetails}
                   endpointId={endpointId}

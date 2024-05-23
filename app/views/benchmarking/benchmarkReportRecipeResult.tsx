@@ -2,17 +2,20 @@ import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/views/shared-components/customColors';
 import { RecipeGradeBadge } from './components/badge';
+import { gradeColorsMlc, gradeColorsMoonshot } from './components/gradeColors';
 import { RangedBarChart } from './components/rangedBarChart';
+import { gradingLettersMlcMap, MLC_COOKBOOK_IDS } from './constants';
 import { GradingScale, RecipeResult } from './types/benchmarkReportTypes';
 
 type BenchmarkReportRecipeResultProps = {
+  cookbookId: string;
   result: RecipeResult;
   recipe: Recipe;
   endpointId: string;
 };
 
 function BenchmarkReportRecipeResult(props: BenchmarkReportRecipeResultProps) {
-  const { result, recipe, endpointId } = props;
+  const { result, recipe, endpointId, cookbookId } = props;
   const recipeEvaluationSummary = result.evaluation_summary.find(
     (d) => d.model_id === endpointId
   );
@@ -27,6 +30,8 @@ function BenchmarkReportRecipeResult(props: BenchmarkReportRecipeResultProps) {
     recipeDetails.length > 0 &&
     recipeEvaluationSummary &&
     recipeEvaluationSummary.grade === null;
+
+  const isMlcCookbook = MLC_COOKBOOK_IDS.includes(cookbookId);
 
   return (
     <section className="flex flex-col gap-2">
@@ -44,6 +49,14 @@ function BenchmarkReportRecipeResult(props: BenchmarkReportRecipeResultProps) {
         {recipeEvaluationSummary && (
           <RecipeGradeBadge
             grade={recipeEvaluationSummary.grade}
+            customLetter={
+              isMlcCookbook
+                ? gradingLettersMlcMap[
+                    recipeEvaluationSummary.grade as keyof typeof gradingLettersMlcMap
+                  ]
+                : undefined
+            }
+            gradeColors={isMlcCookbook ? gradeColorsMlc : gradeColorsMoonshot}
             size={65}
             textSize="2rem"
             textColor={colors.white}
@@ -55,6 +68,11 @@ function BenchmarkReportRecipeResult(props: BenchmarkReportRecipeResultProps) {
           <RangedBarChart
             gradingScale={gradingScale as GradingScale}
             gradeValue={recipeEvaluationSummary.avg_grade_value}
+            gradeColors={
+              MLC_COOKBOOK_IDS.includes(cookbookId)
+                ? gradeColorsMlc
+                : gradeColorsMoonshot
+            }
           />
         </section>
       )}

@@ -1,10 +1,12 @@
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
-import { colors } from '@/app/views/shared-components/customColors';
-import { Badge, SquareBadge } from './components/badge';
+import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
+import { GradingColorsMlcEnum } from '@/app/views/benchmarking/enums';
+import { SquareBadge } from './components/badge';
+import { gradeColorsMlc } from './components/gradeColors';
+import { MLC_COOKBOOK_IDS } from './constants';
 import { CookbooksBenchmarkResult } from './types/benchmarkReportTypes';
 import { calcTotalPromptsByEndpoint } from './utils/calcTotalPromptsByEndpoint';
-import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 
 type BenchmarkReportProps = {
   benchmarkReport: CookbooksBenchmarkResult;
@@ -18,136 +20,8 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
   const totalPrompts = calcTotalPromptsByEndpoint(benchmarkReport, endpointId); // very expensive calculation
   const { data, isFetching } = useGetCookbooksQuery({ ids: cookbooks });
 
-  return (
-    <article
-      className="h-full w-full text-moongray-300 text-[0.9rem] bg-moongray-9400
-      rounded-lg "
-      style={{ color: '#bcb9c0' }}>
-      <header className="p-6">
-        <p
-          className="text-[1rem] text-moonwine-400 mb-8"
-          style={{ color: '#bcadc5' }}>
-          moonshot x MLCommons
-        </p>
-        <h1 className="text-[2.3rem] text-white mb-2">Benchmark Report</h1>
-        <p className="mb-3">{runnerInfo.name}</p>
-        <p className="mb-5">{runnerInfo.description}</p>
-        <div className="grid grid-cols-2 grid-rows-2 gap-4">
-          <div>
-            <h5
-              className="font-bold text-white"
-              style={{ color: '#ffffff' }}>
-              System Under Test (SUT)
-            </h5>
-            <p>{endpointId}</p>
-          </div>
-          <div>
-            <h5
-              className="font-bold text-white"
-              style={{ color: '#ffffff' }}>
-              Number of prompts ran
-            </h5>
-            <p>1{totalPrompts}</p>
-          </div>
-          <div>
-            <h5
-              className="font-bold text-white"
-              style={{ color: '#ffffff' }}>
-              Started on
-            </h5>
-            <p>{benchmarkReport.metadata.start_time}</p>
-          </div>
-          <div>
-            <h5
-              className="font-bold text-white"
-              style={{ color: '#ffffff' }}>
-              Completed on
-            </h5>
-            <p>{benchmarkReport.metadata.end_time}</p>
-          </div>
-        </div>
-      </header>
-
-      <section
-        id="areasTested"
-        className="p-6 bg-moongray-800"
-        style={{ backgroundColor: '#464349' }}>
-        <section className="grid grid-cols-2 py-6 gap-5">
-          <hgroup>
-            <h2
-              className="text-[1.8rem] text-white"
-              style={{ color: '#ffffff' }}>
-              Areas Tested
-            </h2>
-            <div className="flex items-start gap-2">
-              <Icon name={IconName.Book} />
-              <p className="w-[80%]">
-                Moonshot offers <span className="font-bold">cookbooks</span>{' '}
-                containing recipes (benchmark tests) that evaluate comparable
-                areas.
-              </p>
-            </div>
-          </hgroup>
-
-          <ol
-            className="list-decimal list-inside text-white font-semi-bold text-[1rem]"
-            style={{ color: '#ffffff' }}>
-            {!isFetching &&
-              data &&
-              cookbooks.map((cookbook, idx) => {
-                const cookbookDetails = data.find((c) => c.id === cookbook);
-                return !cookbookDetails ? null : (
-                  <li className="mb-1">
-                    <span className="mr-3">{cookbookDetails.name}</span>
-                    {/* <Badge label="Q" /> */}
-                  </li>
-                );
-              })}
-          </ol>
-        </section>
-
-        <section
-          className="bg-moongray-1000 rounded-lg py-6 px-6 flex flex-col gap-6"
-          style={{ backgroundColor: '#202020' }}>
-          <h3
-            className="text-white text-[0.75rem]"
-            style={{ color: '#ffffff' }}>
-            Legend
-          </h3>
-          <p>
-            <span className="font-bold text-fuchsia-400 ">Q - Quality</span>
-            &nbsp;evaluates the model&apos;s ability to consistently produce
-            content that meets general correctness and application-specific
-            standards.
-          </p>
-          <p>
-            <span className="font-bold text-fuchsia-400 ">C - Capability</span>
-            &nbsp;assesses the AI model&apos;s ability to perform within the
-            context of the unique requirements and challenges of a particular
-            domain or task.
-          </p>
-          <p>
-            <span className="font-bold text-fuchsia-400 ">
-              T - Trust & Safety
-            </span>
-            &nbsp;addresses the reliability, ethical considerations, and
-            inherent risks of the AI model. It also examines potential scenarios
-            where the AI system could be used maliciously or unethically.
-          </p>
-        </section>
-
-        <p className="p-6">
-          This report summarises the results for the benchmark tests ran on the
-          System Under Test (SUT). For the full detailed test results, &nbsp;
-          <a
-            className="text-fuchsia-400"
-            href="/api/v1/benchmarks/results/test-report-1?download=true">
-            Download the JSON file here
-          </a>
-          .
-        </p>
-      </section>
-
+  const mlcHeaderResult = (
+    <>
       <header
         className="bg-moongray-1000 px-6 py-8"
         style={{ backgroundColor: '#202020' }}>
@@ -356,7 +230,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
                 size={60}
                 textSize="2rem"
                 label="H"
-                color="#C4805E"
+                color={gradeColorsMlc[GradingColorsMlcEnum.HIGH_RISK]}
               />
               <figcaption>
                 <h5 className="text-[0.9rem] text-[#C4805E] font-semibold pb-1">
@@ -374,7 +248,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
                 size={60}
                 textSize="2rem"
                 label="ML"
-                color="#669C44"
+                color={gradeColorsMlc[GradingColorsMlcEnum.MODERATE_HIGH_RISK]}
               />
               <figcaption>
                 <h5 className="text-[0.9rem] text-[#669C44] font-semibold pb-1">
@@ -392,7 +266,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
                 size={60}
                 textSize="2rem"
                 label="M"
-                color="#7B94BD"
+                color={gradeColorsMlc[GradingColorsMlcEnum.MODERATE_RISK]}
               />
               <figcaption>
                 <h5 className="text-[0.9rem] text-[#7B94BD] font-semibold pb-1">
@@ -410,7 +284,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
                 size={60}
                 textSize="2rem"
                 label="L"
-                color="#25A167"
+                color={gradeColorsMlc[GradingColorsMlcEnum.MODERATE_LOW_RISK]}
               />
               <figcaption>
                 <h5 className="text-[0.9rem] text-[#25A167] font-semibold pb-1">
@@ -428,7 +302,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
                 size={60}
                 textSize="2rem"
                 label="M"
-                color="#7B94BD"
+                color={gradeColorsMlc[GradingColorsMlcEnum.LOW_RISK]}
               />
               <figcaption>
                 <h5 className="text-[0.9rem] text-[#7B94BD] font-semibold pb-1">
@@ -473,6 +347,142 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           </p>
         </section>
       </section>
+    </>
+  );
+
+  return (
+    <article
+      className="h-full w-full text-moongray-300 text-[0.9rem] bg-moongray-9400
+      rounded-lg "
+      style={{ color: '#bcb9c0' }}>
+      <header className="p-6">
+        <p
+          className="text-[1rem] text-moonwine-400 mb-8"
+          style={{ color: '#bcadc5' }}>
+          moonshot x MLCommons
+        </p>
+        <h1 className="text-[2.3rem] text-white mb-2">Benchmark Report</h1>
+        <p className="mb-3">{runnerInfo.name}</p>
+        <p className="mb-5">{runnerInfo.description}</p>
+        <div className="grid grid-cols-2 grid-rows-2 gap-4">
+          <div>
+            <h5
+              className="font-bold text-white"
+              style={{ color: '#ffffff' }}>
+              System Under Test (SUT)
+            </h5>
+            <p>{endpointId}</p>
+          </div>
+          <div>
+            <h5
+              className="font-bold text-white"
+              style={{ color: '#ffffff' }}>
+              Number of prompts ran
+            </h5>
+            <p>1{totalPrompts}</p>
+          </div>
+          <div>
+            <h5
+              className="font-bold text-white"
+              style={{ color: '#ffffff' }}>
+              Started on
+            </h5>
+            <p>{benchmarkReport.metadata.start_time}</p>
+          </div>
+          <div>
+            <h5
+              className="font-bold text-white"
+              style={{ color: '#ffffff' }}>
+              Completed on
+            </h5>
+            <p>{benchmarkReport.metadata.end_time}</p>
+          </div>
+        </div>
+      </header>
+
+      <section
+        id="areasTested"
+        className="p-6 bg-moongray-800"
+        style={{ backgroundColor: '#464349' }}>
+        <section className="grid grid-cols-2 py-6 gap-5">
+          <hgroup>
+            <h2
+              className="text-[1.8rem] text-white"
+              style={{ color: '#ffffff' }}>
+              Areas Tested
+            </h2>
+            <div className="flex items-start gap-2">
+              <Icon name={IconName.Book} />
+              <p className="w-[80%]">
+                Moonshot offers <span className="font-bold">cookbooks</span>{' '}
+                containing recipes (benchmark tests) that evaluate comparable
+                areas.
+              </p>
+            </div>
+          </hgroup>
+
+          <ol
+            className="list-decimal list-inside text-white font-semi-bold text-[1rem]"
+            style={{ color: '#ffffff' }}>
+            {!isFetching &&
+              data &&
+              cookbooks.map((cookbook, idx) => {
+                const cookbookDetails = data.find((c) => c.id === cookbook);
+                return !cookbookDetails ? null : (
+                  <li
+                    key={`${cookbook}-${idx}`}
+                    className="mb-1">
+                    <span className="mr-3">{cookbookDetails.name}</span>
+                    {/* <Badge label="Q" /> */}
+                  </li>
+                );
+              })}
+          </ol>
+        </section>
+
+        <section
+          className="bg-moongray-1000 rounded-lg py-6 px-6 flex flex-col gap-6"
+          style={{ backgroundColor: '#202020' }}>
+          <h3
+            className="text-white text-[0.75rem]"
+            style={{ color: '#ffffff' }}>
+            Legend
+          </h3>
+          <p>
+            <span className="font-bold text-fuchsia-400 ">Q - Quality</span>
+            &nbsp;evaluates the model&apos;s ability to consistently produce
+            content that meets general correctness and application-specific
+            standards.
+          </p>
+          <p>
+            <span className="font-bold text-fuchsia-400 ">C - Capability</span>
+            &nbsp;assesses the AI model&apos;s ability to perform within the
+            context of the unique requirements and challenges of a particular
+            domain or task.
+          </p>
+          <p>
+            <span className="font-bold text-fuchsia-400 ">
+              T - Trust & Safety
+            </span>
+            &nbsp;addresses the reliability, ethical considerations, and
+            inherent risks of the AI model. It also examines potential scenarios
+            where the AI system could be used maliciously or unethically.
+          </p>
+        </section>
+
+        <p className="p-6">
+          This report summarises the results for the benchmark tests ran on the
+          System Under Test (SUT). For the full detailed test results, &nbsp;
+          <a
+            className="text-fuchsia-400"
+            href="/api/v1/benchmarks/results/test-report-1?download=true">
+            Download the JSON file here
+          </a>
+          .
+        </p>
+      </section>
+
+      {cookbooks.some((id) => MLC_COOKBOOK_IDS.includes(id)) && mlcHeaderResult}
     </article>
   );
 }

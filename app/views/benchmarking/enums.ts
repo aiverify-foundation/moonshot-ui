@@ -13,3 +13,11 @@ export enum BenchmarkNewSessionViews {
   COOKBOOKS_SELECTION,
   BENCHMARK_RUN_FORM,
 }
+
+export enum GradingColorsMlcEnum {
+  LOW_RISK = 'Low Risk',
+  MODERATE_LOW_RISK = 'Moderate-Low Risk',
+  MODERATE_RISK = 'Moderate Risk',
+  MODERATE_HIGH_RISK = 'Moderate-High Risk',
+  HIGH_RISK = 'High Risk',
+}

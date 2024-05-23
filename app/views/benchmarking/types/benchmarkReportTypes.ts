@@ -1,3 +1,5 @@
+import { GradingColorsMlcEnum } from '@/app/views/benchmarking/enums';
+
 type CookbooksBenchmarkResult = {
   metadata: {
     id: string;
@@ -79,23 +81,17 @@ type EvaluationSummary = {
   model_id: string;
   num_of_prompts: number;
   avg_grade_value: number;
-  grade: 'A' | 'B' | 'C' | 'D' | 'E' | null;
+  grade: string;
 };
 
 type OverallEvaluationSummary = {
   model_id: string;
-  overall_grade: 'A' | 'B' | 'C' | 'D' | 'E';
+  overall_grade: string;
 };
 
-type GradingScale =
-  | {
-      A: number[];
-      B: number[];
-      C: number[];
-      D: number[];
-      E: number[];
-    }
-  | Record<string, number[]>;
+type GradingScale = Record<string, number[]>;
+
+export type GradingColors = Record<GradingColorsMlcEnum | string, string>;
 
 export type {
   CookbooksBenchmarkResult,

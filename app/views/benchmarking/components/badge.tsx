@@ -1,5 +1,6 @@
 import React from 'react';
-import { gradeColors } from './gradeColors';
+import { GradingColorsMlcEnum } from '@/app/views/benchmarking/enums';
+import { GradingColors } from '@/app/views/benchmarking/types/benchmarkReportTypes';
 
 function Badge(props: { label: string; style?: React.CSSProperties }) {
   return (
@@ -37,15 +38,23 @@ function SquareBadge(props: {
 }
 
 function RecipeGradeBadge(props: {
-  grade: 'A' | 'B' | 'C' | 'D' | 'E' | null;
+  grade: string | GradingColorsMlcEnum;
+  customLetter?: string;
+  gradeColors: GradingColors;
   textSize: React.CSSProperties['fontSize'];
   textColor: React.CSSProperties['color'];
   size: React.CSSProperties['width'];
 }) {
+  const letter =
+    props.customLetter != undefined ? props.customLetter : props.grade;
   return (
     <SquareBadge
-      label={props.grade === null ? '-' : props.grade}
-      color={props.grade === null ? '#9A9A9A' : gradeColors[props.grade]}
+      label={props.grade === null ? '-' : letter}
+      color={
+        props.grade === null
+          ? '#9A9A9A'
+          : props.gradeColors[props.grade as keyof typeof props.gradeColors]
+      }
       size={props.size}
       textColor={props.textColor}
       textSize={props.textSize}
