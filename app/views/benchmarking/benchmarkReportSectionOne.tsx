@@ -491,7 +491,9 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           </p>
         </section>
 
-        <p className="p-6">
+        <p
+          className="p-6"
+          data-download="hide">
           This report summarises the results for the benchmark tests ran on the
           System Under Test (SUT). For the full detailed test results, &nbsp;
           <a

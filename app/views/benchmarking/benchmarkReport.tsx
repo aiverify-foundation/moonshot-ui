@@ -28,6 +28,7 @@ function BenchmarkReport(props: BenchmarkReportProps) {
       />
       <footer className="flex justify-center pb-10">
         <a
+          data-download="hide"
           href={downloadUrl}
           download>
           <Button

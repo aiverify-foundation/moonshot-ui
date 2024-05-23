@@ -1,16 +1,14 @@
 'use client';
-import ReactDom from 'next/dist/compiled/react-dom/cjs/react-dom-server-legacy.browser.development';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button, ButtonType } from '@/app/components/button';
 import { SelectInput } from '@/app/components/selectInput';
 import { useGetBenchmarksResultQuery } from '@/app/services/benchmark-api-service';
 import { useGetRunnerByIdQuery } from '@/app/services/runner-api-service';
-import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
-import { Providers } from '@/lib/provider';
 import { BenchmarkReport } from './benchmarkReport';
+import { downloadHtmlReport } from './utils/reportDownloader';
 
 function BenchmarkReportViewer() {
   const router = useRouter();
@@ -27,38 +25,6 @@ function BenchmarkReportViewer() {
         value: endpoint,
       }))
     : [];
-
-  const handleDownloadHtmlReport = () => {
-    if (benchmarkResultData) {
-      const htmlString = ReactDom.renderToStaticMarkup(
-        <Providers>
-          <BenchmarkReport
-            benchmarkResult={benchmarkResultData}
-            endpointId={selectedEndpointId}
-            runnerInfo={runnerData as Runner}
-          />
-        </Providers>
-      );
-      const completeHtml = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
-        </head>
-        <body>
-          ${htmlString}
-        </body>
-        </html>
-      `;
-      const blob = new Blob([completeHtml], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'benchmark-report.html';
-      link.click();
-      URL.revokeObjectURL(url);
-    }
-  };
 
   useEffect(() => {
     const { searchParams } = new URL(window.location.href);
@@ -101,11 +67,13 @@ function BenchmarkReportViewer() {
               <Button
                 mode={ButtonType.OUTLINE}
                 text="Download HTML Report"
-                onClick={handleDownloadHtmlReport}
+                onClick={() => downloadHtmlReport(id)}
               />
             </section>
             <section className="flex-1 h-full border border-white rounded-lg overflow-hidden pr-[2px] py-[2px]">
-              <div className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar">
+              <div
+                id="report-content"
+                className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar">
                 {benchmarkResultData && runnerData && (
                   <BenchmarkReport
                     benchmarkResult={benchmarkResultData}

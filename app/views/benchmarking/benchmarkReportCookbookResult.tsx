@@ -45,6 +45,7 @@ function BenchmarkReportCookbookResult(
   ) : (
     <section className="bg-moongray-1000 rounded-lg">
       <header
+        data-download="collapsible-trigger"
         className={`flex justify-between items-center bg-moongray-800 p-4 
         rounded-t-lg cursor-pointer hover:bg-moongray-700
         ${showSection ? 'rounded-b-none' : 'rounded-b-lg'}`}
@@ -82,9 +83,9 @@ function BenchmarkReportCookbookResult(
           )}
         </div>
       </header>
-      {/* {showSection && ( */}
       <main
-        className={`px-4 main-transition ${showSection ? 'main-visible' : ''}`}>
+        className={`px-4 main-transition ${showSection ? 'main-visible' : ''}`}
+        data-download="collapsible">
         <p className="mt-6 mb-10">{cookbook.description}</p>
         <section className="grid grid-cols-1 gap-[50px]">
           {data &&
@@ -104,7 +105,6 @@ function BenchmarkReportCookbookResult(
             })}
         </section>
       </main>
-      {/* )} */}
     </section>
   );
 }
