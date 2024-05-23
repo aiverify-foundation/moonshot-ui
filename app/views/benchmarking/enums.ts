@@ -14,7 +14,7 @@ export enum BenchmarkNewSessionViews {
   BENCHMARK_RUN_FORM,
 }
 
-export enum GradingColorsMlcEnum {
+export enum GradingLevelsMlcEnum {
   LOW_RISK = 'Low Risk',
   MODERATE_LOW_RISK = 'Moderate-Low Risk',
   MODERATE_RISK = 'Moderate Risk',
