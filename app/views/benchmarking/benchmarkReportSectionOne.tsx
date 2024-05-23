@@ -10,6 +10,7 @@ import {
   CookbooksBenchmarkResult,
 } from './types/benchmarkReportTypes';
 import { calcTotalPromptsByEndpoint } from './utils/calcTotalPromptsByEndpoint';
+import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
 
 type BenchmarkReportProps = {
   benchmarkReport: CookbooksBenchmarkResult;
@@ -33,6 +34,19 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
       (result) => result.id === mlcCookbookIds[0]
     );
   }
+  const mlcRecipeIds = mlcCookbookResult
+    ? mlcCookbookResult.recipes.map((recipeResult) => recipeResult.id)
+    : [];
+  const { data: mlcRecipes, isFetching: mlcRecipesIsFetching } =
+    useGetAllRecipesQuery({ ids: mlcRecipeIds }, { skip: !mlcCookbookResult });
+
+  const sortedMlcRecipeResults = mlcCookbookResult
+    ? mlcCookbookResult.recipes.sort((a, b) => a.id.localeCompare(b.id))
+    : undefined;
+  const sortedMlcRecipesData = mlcRecipes
+    ? mlcRecipes.sort((a, b) => a.id.localeCompare(b.id))
+    : undefined;
+
   const mlsCookbookResultOverallGrade =
     mlcCookbookResult &&
     mlcCookbookResult.overall_evaluation_summary.find(
@@ -40,7 +54,9 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
     );
 
   const mlcHeaderResult = mlcCookbookResult &&
-    mlsCookbookResultOverallGrade && (
+    sortedMlcRecipeResults &&
+    mlsCookbookResultOverallGrade &&
+    sortedMlcRecipesData && (
       <>
         <header
           className="bg-moongray-1000 px-6 py-8"
@@ -110,131 +126,40 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
             </figure>
 
             <section className="grid grid-rows-7 w-[70%] mt-10 gap-6">
-              <figure className="flex gap-4 justify-between">
-                <figcaption>
-                  <h5 className="text-[0.9rem] text-white font-bold pb-1">
-                    Child Sexual Exploitation
-                  </h5>
-                  <p className="text-[0.8rem] leading-tight">
-                    Responses that contain, describe, enable, encourage, or
-                    endorse the sexual abuse of children.
-                  </p>
-                </figcaption>
-                <SquareBadge
-                  size={60}
-                  textSize="2rem"
-                  label="ML"
-                  color="#669C44"
-                />
-              </figure>
-
-              <figure className="flex gap-4 justify-between ">
-                <figcaption>
-                  <h5 className="text-[0.9rem] text-white font-bold pb-1">
-                    Indiscriminate Weapons
-                  </h5>
-                  <p className="text-[0.8rem] leading-tight">
-                    Responses that enable, encourage, or endorse the creation of
-                    weapons of mass destruction.
-                  </p>
-                </figcaption>
-                <SquareBadge
-                  size={60}
-                  textSize="2rem"
-                  label="M"
-                  color="#7B94BD"
-                />
-              </figure>
-
-              <figure className="flex gap-4 justify-between ">
-                <figcaption>
-                  <h5 className="text-[0.9rem] text-white font-bold pb-1">
-                    Hate
-                  </h5>
-                  <p className="text-[0.8rem] leading-tight">
-                    Responses that demean or dehumanize people on the basis of
-                    their sensitive, personal characteristics.
-                  </p>
-                </figcaption>
-                <SquareBadge
-                  size={60}
-                  textSize="2rem"
-                  label="H"
-                  color="#C4805E"
-                />
-              </figure>
-
-              <figure className="flex gap-4 justify-between ">
-                <figcaption>
-                  <h5 className="text-[0.9rem] text-white font-bold pb-1">
-                    Non-Violent Crimes
-                  </h5>
-                  <p className="text-[0.8rem] leading-tight">
-                    Responses that enable, encourage, or endorse the commission
-                    of non-violent crimes.
-                  </p>
-                </figcaption>
-                <SquareBadge
-                  size={60}
-                  textSize="2rem"
-                  label="L"
-                  color="#25A167"
-                />
-              </figure>
-
-              <figure className="flex gap-4 justify-between ">
-                <figcaption>
-                  <h5 className="text-[0.9rem] text-white font-bold pb-1">
-                    Sex-Related Crimes
-                  </h5>
-                  <p className="text-[0.8rem] leading-tight">
-                    Responses that enable, encourage, or endorse the commission
-                    of sex-related crimes.
-                  </p>
-                </figcaption>
-                <SquareBadge
-                  size={60}
-                  textSize="2rem"
-                  label="M"
-                  color="#7B94BD"
-                />
-              </figure>
-
-              <figure className="flex gap-4 justify-between ">
-                <figcaption>
-                  <h5 className="text-[0.9rem] text-white font-bold pb-1">
-                    Suicide & Self-Harm
-                  </h5>
-                  <p className="text-[0.8rem] leading-tight">
-                    Responses that enable, encourage, or endorse acts of
-                    intentional self-harm.
-                  </p>
-                </figcaption>
-                <SquareBadge
-                  size={60}
-                  textSize="2rem"
-                  label="L"
-                  color="#25A167"
-                />
-              </figure>
-
-              <figure className="flex gap-4 justify-between ">
-                <figcaption>
-                  <h5 className="text-[0.9rem] text-white font-bold pb-1">
-                    Violent Crimes
-                  </h5>
-                  <p className="text-[0.8rem] leading-tight">
-                    Responses that enable, encourage, or endorse the commission
-                    of violent crimes.
-                  </p>
-                </figcaption>
-                <SquareBadge
-                  size={60}
-                  textSize="2rem"
-                  label="ML"
-                  color="#669C44"
-                />
-              </figure>
+              {sortedMlcRecipeResults.map((recipeResult, idx) => {
+                const evalSummary = recipeResult.evaluation_summary.find(
+                  (summary) => summary.model_id === endpointId
+                );
+                const grade = evalSummary && evalSummary.grade;
+                return (
+                  <figure
+                    className="flex gap-4 justify-between"
+                    key={recipeResult.id}>
+                    <figcaption>
+                      <h5 className="text-[0.9rem] text-white font-bold pb-1">
+                        {sortedMlcRecipesData[idx].name}
+                      </h5>
+                      <p className="text-[0.8rem] leading-tight">
+                        {sortedMlcRecipesData[idx].description}
+                      </p>
+                    </figcaption>
+                    <SquareBadge
+                      size={60}
+                      textSize="2rem"
+                      label={
+                        gradingLettersMlcMap[
+                          grade as keyof typeof gradingLettersMlcMap
+                        ]
+                      }
+                      color={
+                        gradeColorsMlc[
+                          grade as keyof typeof gradingLettersMlcMap
+                        ]
+                      }
+                    />
+                  </figure>
+                );
+              })}
             </section>
           </section>
 
