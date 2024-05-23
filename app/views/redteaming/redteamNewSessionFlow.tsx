@@ -265,7 +265,7 @@ function RedteamNewSessionFlow() {
               <div className="flex justify-center">
                 <Button
                   mode={ButtonType.OUTLINE}
-                  size="sm"
+                  size="md"
                   text="Skip for now"
                   hoverBtnColor={colors.moongray[800]}
                   onClick={nextViewHandler}
