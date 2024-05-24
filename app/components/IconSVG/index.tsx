@@ -107,6 +107,7 @@ type IconProps = {
   color?: string;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onMouseDown?: (e: React.MouseEvent) => void;
+  style?: React.CSSProperties;
 };
 
 function Icon(props: IconProps) {
@@ -117,6 +118,7 @@ function Icon(props: IconProps) {
     onMouseDown,
     disabled = false,
     size = 20,
+    style,
   } = props;
 
   let iconToRender: ReactElement | null = null;
@@ -572,6 +574,7 @@ function Icon(props: IconProps) {
         ${onClick ? 'hover:opacity-50 active:opacity-25' : ''}
         ${disabled ? 'opacity-20 pointer-events-none' : ''}
       `}
+      style={style}
       onClick={disabled ? undefined : onClick}
       onMouseDown={disabled ? undefined : onMouseDown}>
       {iconToRender}

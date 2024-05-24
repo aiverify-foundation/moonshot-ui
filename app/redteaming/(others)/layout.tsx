@@ -1,10 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import { Icon, IconName } from '@/app/components/IconSVG';
 import LeftNav from '@/app/components/leftNav';
+import Notifications from '@/app/views/notifications/notifications';
 import { MicroLayout } from '@/app/views/quickstart-home/components/microLayout';
-import { colors } from '@/app/views/shared-components/customColors';
 
 export default function SessionsLayout({
   children,
@@ -25,11 +24,7 @@ export default function SessionsLayout({
             alt="AIVerify Moonshot Logo"
           />
         </Link>
-        {/* <Icon
-          color={colors.moongray[300]}
-          name={IconName.Bell}
-          size={30}
-        /> */}
+        <Notifications />
       </header>
       <main className="h-full">
         <div className="flex flex-col h-full">{children}</div>

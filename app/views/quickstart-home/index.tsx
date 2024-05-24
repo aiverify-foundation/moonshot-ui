@@ -1,7 +1,7 @@
+import Image from 'next/image';
 import React from 'react';
-import { Icon, IconName } from '@/app/components/IconSVG';
-import Image from 'next/image'
 import LeftNav from '@/app/components/leftNav';
+import Notifications from '@/app/views/notifications/notifications';
 import tailwindConfig from '@/tailwind.config';
 import { EntryBanners } from './components/entryBanners';
 import { MicroLayout } from './components/microLayout';
@@ -21,11 +21,7 @@ function HomePageView() {
           width={250}
           alt="AIVerify Moonshot Logo"
         />
-        {/* <Icon
-          color={colors.moongray[300]}
-          name={IconName.Bell}
-          size={30}
-        /> */}
+        <Notifications />
       </header>
       <main className="h-full">
         <EntryBanners />
