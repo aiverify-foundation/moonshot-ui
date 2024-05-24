@@ -104,6 +104,7 @@ function BenchmarkNewSessionFlow() {
   }
 
   let stepIndex = 0;
+  let disableNextBtn = false;
   let surfaceColor = colors.moongray['950'];
   let view: React.ReactElement | undefined;
 
@@ -138,6 +139,7 @@ function BenchmarkNewSessionFlow() {
   switch (currentView) {
     case BenchmarkNewSessionViews.TOPICS_SELECTION:
       stepIndex = 0;
+      if (selectedCookbooks.length === 0) disableNextBtn = true;
       view = (
         <BenchmarkDefaultSelection setHiddenNavButtons={setHiddenNavButtons} />
       );
@@ -148,6 +150,7 @@ function BenchmarkNewSessionFlow() {
       break;
     case BenchmarkNewSessionViews.ENDPOINTS_SELECTION:
       stepIndex = 2;
+      if (selectedModels.length === 0) disableNextBtn = true;
       view = (
         <EndpointSelectVew
           selectedModels={selectedModels}
@@ -250,12 +253,12 @@ function BenchmarkNewSessionFlow() {
               )}
               {view}
               {!hiddenNavButtons[1] && (
-                <div className="flex justify-center">
+                <div className="flex justify-center" style={{ opacity: disableNextBtn ? 0.3 : 1 }}>
                   <Icon
                     name={IconName.WideArrowDown}
                     size={28}
                     onClick={
-                      selectedCookbooks.length > 0 ? nextViewHandler : undefined
+                      disableNextBtn ? undefined : nextViewHandler
                     }
                   />
                 </div>
