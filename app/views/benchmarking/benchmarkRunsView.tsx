@@ -104,7 +104,7 @@ function BenchmarkRunsView({
             <p className="text-[0.95rem] text-moongray-300">
               {selectedRunner.description}
             </p>
-            <h4 className="text-[1.15rem] font-semibold mt-10 mb-1">SUTs</h4>
+            <h4 className="text-[1.15rem] font-semibold mt-10 mb-1">Model Endpoints</h4>
             <p className="text-[0.95rem] text-moongray-300">
               {selectedRunner.endpoints.map((endpoint, idx, endpoints) => {
                 return (

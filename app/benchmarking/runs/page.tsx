@@ -41,7 +41,9 @@ async function fetchBenchmarkRuns(): Promise<
 
   try {
     const mergedRunners = await Promise.all(runnerPromises);
-    return { status: 200, data: mergedRunners } as ApiResult<Runner[]>;
+    const filteredBenchmarkRunners = mergedRunners.filter(runner => 
+      runner.runner_args && runner.runner_args.runner_processing_module == 'benchmarking');
+    return { status: 200, data: filteredBenchmarkRunners } as ApiResult<Runner[]>;
   } catch (error) {
     const errorWithMsg = toErrorWithMessage(error);
     return errorWithMsg;

@@ -253,7 +253,7 @@ function BenchmarkRunStatus() {
                 {progressBox}
                 <div className="overflow-x-hidden overflow-y-auto custom-scrollbar px-8 mt-4 h-[320px]">
                   <section className="pt-6 w-full px-8 mb-5">
-                    <p className="text-moonwine-400">SUTs</p>
+                    <p className="text-moonwine-400">Model Endpoints</p>
                     <div className="grid grid-cols-2 gap-10 w-full">
                       {endpoints &&
                         endpoints.map((ep) => (

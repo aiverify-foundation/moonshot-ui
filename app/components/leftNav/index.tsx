@@ -19,7 +19,7 @@ function LeftNav({ activeItem }: LeftNavProps) {
           onMouseLeave={() => setHoveredItem(undefined)}
           className='relative'>
           {(hoveredItem === 'endpoints' || activeItem === 'endpoints') && (
-            <p className='absolute tracking-wider text-moonpurplelight right-[50px] w-[200px] text-right'>SUTs</p>
+            <p className='absolute tracking-wider text-moonpurplelight right-[50px] w-[200px] text-right'>model endpoints</p>
           )}
           <Icon
             color={
