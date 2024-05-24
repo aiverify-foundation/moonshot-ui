@@ -251,8 +251,8 @@ function BenchmarkRunStatus() {
                   </div>
                 </header>
                 {progressBox}
-                <div className="overflow-x-hidden overflow-y-auto custom-scrollbar px-8">
-                  <section className="pt-6 w-full h-full px-8 mb-5">
+                <div className="overflow-x-hidden overflow-y-auto custom-scrollbar px-8 mt-4 h-[320px]">
+                  <section className="pt-6 w-full px-8 mb-5">
                     <p className="text-moonwine-400">SUTs</p>
                     <div className="grid grid-cols-2 gap-10 w-full">
                       {endpoints &&
@@ -273,7 +273,7 @@ function BenchmarkRunStatus() {
                     </div>
                   </section>
 
-                  <section className="pt-6 w-full h-full px-8">
+                  <section className="pt-6 w-full px-8 mb-4">
                     <p className="text-moonwine-400 pb-2">Cookbooks</p>
                     <div className="grid grid-cols-2 gap-10 w-full">
                       {cookbooks &&
