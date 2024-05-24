@@ -26,22 +26,21 @@ function BenchmarkRunStatus() {
   >('/api/v1/stream', AppEventTypes.BENCHMARK_UPDATE);
   const {
     data = {},
-    error,
     isLoading,
   } = useGetAllStatusQuery(undefined, { refetchOnMountOrArgChange: true });
   const [triggerCancelBenchmark] = useCancelBenchmarkMutation();
   const router = useRouter();
   const searchParams = useSearchParams();
   const runner_id = searchParams.get('runner_id');
-  const { data: runnerData, isFetching: runnerDataIsLoading } =
+  const { data: runnerData } =
     useGetRunnerByIdQuery(
       { id: runner_id, additionalDetails: true },
       { skip: !runner_id }
     );
   const [showErrors, setShowErrors] = React.useState(false);
-  const { data: endpointsData, isFetching: endpointsDataIsLoading } =
+  const { data: endpointsData } =
     useGetLLMEndpointsQuery(undefined, { skip: !runnerData });
-  const { data: cookbooksData, isFetching: cookbooksDataIsLoading } =
+  const { data: cookbooksData } =
     useGetCookbooksQuery(
       {
         ids:
@@ -321,6 +320,7 @@ function BenchmarkRunStatus() {
                     While waiting for these to run, you can
                   </p>
                   <div className="col-span-3 grid grid-cols-3 gap-[1.7%] w-[90%]">
+                    <Link href="/redteaming/sessions/new">
                     <ActionCard
                       height={240}
                       iconSize={35}
@@ -330,16 +330,16 @@ function BenchmarkRunStatus() {
                       descriptionColor={colors.moongray[300]}
                       iconName={IconName.Spacesuit}
                       actionText="Start Red Teaming"
-                    />
+                    /></Link>
                     <ActionCard
                       height={240}
                       iconSize={35}
                       title="Create"
-                      description="custom tests"
+                      description="cookbooks"
                       descriptionColor={colors.moongray[300]}
                       cardColor={colors.moongray[800]}
-                      iconName={IconName.Lightning}
-                      actionText="Upload Datasets"
+                      iconName={IconName.Book}
+                      actionText="Select Recipes"
                     />
                     <div className="flex flex-col gap-2 justify-center">
                       <Button

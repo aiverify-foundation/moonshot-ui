@@ -201,7 +201,7 @@ function CookbooksSelection(props: Props) {
                 })
               )}
             </ul>
-            <footer className="flex justify-end items-center bg-moonpurple p-2 px-5 rounded-b-2xl w-full text-white">
+            <footer className="flex justify-end items-center bg-moonpurple p-2 px-5 rounded-b-2xl w-full text-white h-[52px] shrink-0">
               {timeDisplay}
               {selectedCookbooks.length > 0 && (
                 <span

@@ -35,13 +35,13 @@ const config: MoonshotConfig = {
     'medical-llm-leaderboard',
   ],
   cookbookCategoriesTabs: [
-    { id: 'quality', label: 'Quality', categoryNames: ['quality'] },
     { id: 'capability', label: 'Capability', categoryNames: ['capability'] },
     {
       id: 'trustAndSafety',
       label: 'Trust & Safety',
       categoryNames: ['Trust & Safety'],
     },
+    { id: 'quality', label: 'Quality', categoryNames: ['quality'] },
     {
       id: 'others',
       label: 'Others',

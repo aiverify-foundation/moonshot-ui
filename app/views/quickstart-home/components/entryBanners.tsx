@@ -55,11 +55,11 @@ function EntryBanners() {
             </Link>
             <ActionCard
               title="Create"
-              description="custom tests"
+              description="cookbooks"
               descriptionColor={colors.moongray[300]}
               cardColor={colors.moongray[950]}
-              iconName={IconName.Lightning}
-              actionText="Upload Datasets"
+              iconName={IconName.Book}
+              actionText="Select Recipes"
             />
           </div>
         </div>
