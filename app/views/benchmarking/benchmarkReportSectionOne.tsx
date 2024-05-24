@@ -138,7 +138,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
                 }
               />
               <figcaption className="w-[50%]">
-                <h5 className="text-[#C4805E] text-[0.9rem]">
+                <h5 className="text-[0.9rem]" style={{ color: gradeColorsMlc[mlsCookbookResultOverallGrade.overall_grade] }}>
                   {mlsCookbookResultOverallGrade.overall_grade}
                 </h5>
                 <p className="text-[0.8rem] leading-tight">
@@ -216,11 +216,12 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
                 <SquareBadge
                   size={60}
                   textSize="2rem"
-                  label="H"
+                  label={gradingLettersMlcMap[GradingLevelsMlcEnum.HIGH_RISK]}
                   color={gradeColorsMlc[GradingLevelsMlcEnum.HIGH_RISK]}
                 />
                 <figcaption>
-                  <h5 className="text-[0.9rem] text-[#C4805E] font-semibold pb-1">
+                  <h5 className="text-[0.9rem] font-semibold pb-1" 
+                    style={{ color: gradeColorsMlc[GradingLevelsMlcEnum.HIGH_RISK] }}>
                     {GradingLevelsMlcEnum.HIGH_RISK}
                   </h5>
                   <p className="text-[0.8rem] leading-tight">
@@ -233,13 +234,14 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
                 <SquareBadge
                   size={60}
                   textSize="2rem"
-                  label="ML"
+                  label={gradingLettersMlcMap[GradingLevelsMlcEnum.MODERATE_HIGH_RISK]}
                   color={
                     gradeColorsMlc[GradingLevelsMlcEnum.MODERATE_HIGH_RISK]
                   }
                 />
                 <figcaption>
-                  <h5 className="text-[0.9rem] text-[#669C44] font-semibold pb-1">
+                  <h5 className="text-[0.9rem] font-semibold pb-1" 
+                    style={{ color: gradeColorsMlc[GradingLevelsMlcEnum.MODERATE_HIGH_RISK] }}>
                     {GradingLevelsMlcEnum.MODERATE_HIGH_RISK}
                   </h5>
                   <p className="text-[0.8rem] leading-tight">
@@ -256,11 +258,12 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
                 <SquareBadge
                   size={60}
                   textSize="2rem"
-                  label="M"
+                  label={gradingLettersMlcMap[GradingLevelsMlcEnum.MODERATE_RISK]}
                   color={gradeColorsMlc[GradingLevelsMlcEnum.MODERATE_RISK]}
                 />
                 <figcaption>
-                  <h5 className="text-[0.9rem] text-[#7B94BD] font-semibold pb-1">
+                  <h5 className="text-[0.9rem] font-semibold pb-1" 
+                    style={{ color: gradeColorsMlc[GradingLevelsMlcEnum.MODERATE_RISK] }}>
                     {GradingLevelsMlcEnum.MODERATE_RISK}
                   </h5>
                   <p className="text-[0.8rem] leading-tight">
@@ -277,11 +280,12 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
                 <SquareBadge
                   size={60}
                   textSize="2rem"
-                  label="L"
+                  label={gradingLettersMlcMap[GradingLevelsMlcEnum.MODERATE_LOW_RISK]}
                   color={gradeColorsMlc[GradingLevelsMlcEnum.MODERATE_LOW_RISK]}
                 />
                 <figcaption>
-                  <h5 className="text-[0.9rem] text-[#25A167] font-semibold pb-1">
+                  <h5 className="text-[0.9rem] font-semibold pb-1" 
+                    style={{ color: gradeColorsMlc[GradingLevelsMlcEnum.MODERATE_LOW_RISK] }}>
                     {GradingLevelsMlcEnum.MODERATE_LOW_RISK}
                   </h5>
                   <p className="text-[0.8rem] leading-tight">
@@ -298,11 +302,12 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
                 <SquareBadge
                   size={60}
                   textSize="2rem"
-                  label="M"
+                  label={gradingLettersMlcMap[GradingLevelsMlcEnum.LOW_RISK]}
                   color={gradeColorsMlc[GradingLevelsMlcEnum.LOW_RISK]}
                 />
                 <figcaption>
-                  <h5 className="text-[0.9rem] text-[#7B94BD] font-semibold pb-1">
+                  <h5 className="text-[0.9rem] text-[#7B94BD] font-semibold pb-1" 
+                    style={{ color: gradeColorsMlc[GradingLevelsMlcEnum.LOW_RISK] }}>
                     {GradingLevelsMlcEnum.LOW_RISK}
                   </h5>
                   <p className="text-[0.8rem] leading-tight">
