@@ -2,11 +2,8 @@ import Image from 'next/image';
 import React from 'react';
 import LeftNav from '@/app/components/leftNav';
 import Notifications from '@/app/views/notifications/notifications';
-import tailwindConfig from '@/tailwind.config';
 import { EntryBanners } from './components/entryBanners';
 import { MicroLayout } from './components/microLayout';
-
-const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
 function HomePageView() {
   return (
@@ -18,7 +15,7 @@ function HomePageView() {
         <Image
           src="/aivmoonshot-logo.svg"
           height={80}
-          width={250}
+          width={310}
           alt="AIVerify Moonshot Logo"
         />
         <Notifications />

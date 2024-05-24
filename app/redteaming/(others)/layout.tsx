@@ -20,7 +20,7 @@ export default function SessionsLayout({
           <Image
             src="/aivmoonshot-logo.svg"
             height={80}
-            width={250}
+            width={310}
             alt="AIVerify Moonshot Logo"
           />
         </Link>
