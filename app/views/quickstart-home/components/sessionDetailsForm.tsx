@@ -51,34 +51,24 @@ const SessionDetailsForm: React.FC<NewSessonFormProps> = (props) => {
   const { selectedEndpoints, onFormSubmit } = props;
   const {
     promptTemplates,
-    error,
     isLoading: isPrompTemplatesLoading,
   } = usePromptTemplateList();
   const dispatch = useAppDispatch();
 
   const {
-    data: contextStrategies,
-    error: ctxErrors,
+    data: contextStrategies = [],
     isLoading: isCtxLoading,
-    refetch: ctxRefetch,
   } = useGetAllContextStrategiesQuery();
 
   let contextStrategySelectOptions: SelectOption[] = [];
   if (contextStrategies && contextStrategies.length) {
     contextStrategySelectOptions = contextStrategies.map((strategy) => ({
-      value: strategy,
-      label: strategy,
+      value: strategy.id,
+      label: strategy.name,
     }));
   }
 
-  const [
-    createSession,
-    {
-      data: newSession,
-      isLoading: createSessionIsLoding,
-      error: createSessionError,
-    },
-  ] = useCreateSessionMutation();
+  const [ createSession ] = useCreateSessionMutation();
 
   async function submitNewSessionForm(
     name: string,

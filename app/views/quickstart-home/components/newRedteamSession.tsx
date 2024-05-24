@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
-import { RedTeamingViewSteps } from '@/app/views/quickstart-home/enums';
 import { EndpointSelectVew } from '@/app/views/models-management/endpointsSelector';
+import { RedTeamingViewSteps } from '@/app/views/quickstart-home/enums';
 import { MainSectionSurface } from './mainSectionSurface';
 import { SessionDetailsForm } from './sessionDetailsForm';
 
