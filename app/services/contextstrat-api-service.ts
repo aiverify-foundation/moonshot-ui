@@ -7,9 +7,9 @@ const contextStratApi = createApi({
   reducerPath: 'contextStratApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
-    getAllContextStrategies: builder.query<string[], void>({
+    getAllContextStrategies: builder.query<ContextStrategy[], void>({
       query: () => proxyPathContextStrats,
-      keepUnusedDataFor: 600,
+      keepUnusedDataFor: 0,
     }),
   }),
 });

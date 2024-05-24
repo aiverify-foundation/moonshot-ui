@@ -81,8 +81,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const [selectedPromptTemplate, setSelectedPromptTemplate] = useState<
     PromptTemplate | undefined
   >();
-  const [selectedContextStrategy, setSelectedContextStrategy] = useState<
-    ContextStrategy | undefined
+  const [selectedContextStrategyId, setSelectedContextStrategyId] = useState<
+    string | undefined
   >(() =>
     Boolean(sessionData.session.context_strategy)
       ? sessionData.session.context_strategy
@@ -298,7 +298,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     }
   }
 
-  async function handleSelectContextStrategy(contextStrategy: ContextStrategy) {
+  async function handleSelectContextStrategy(contextStrategy: string) {
     setOptionsModal(undefined);
     const result = await setContextStrategy({
       session_id: activeSession.session.session_id,
@@ -307,7 +307,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     });
     if ('data' in result && result.data) {
       if (result.data.success) {
-        setSelectedContextStrategy(contextStrategy);
+        setSelectedContextStrategyId(contextStrategy);
       }
     }
   }
@@ -341,7 +341,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   }
 
   async function handleRemoveContextStrategyClick(
-    contextStrategy: ContextStrategy
+    contextStrategy: string
   ) {
     const result = await unsetContextStrategy({
       session_id: activeSession.session.session_id,
@@ -350,7 +350,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     });
     if ('data' in result && result.data) {
       if (result.data.success) {
-        setSelectedContextStrategy(undefined);
+        setSelectedContextStrategyId(undefined);
       }
     }
   }
@@ -503,11 +503,11 @@ function RedteamSessionChats(props: ActiveSessionProps) {
           leftIconName={IconName.MoonContextStrategy}
           onClick={() => setOptionsModal('context-strategy')}
         />
-        {selectedContextStrategy ? (
+        {selectedContextStrategyId ? (
           <SelectedOptionPill
-            label={selectedContextStrategy}
+            label={selectedContextStrategyId}
             onXClick={() =>
-              handleRemoveContextStrategyClick(selectedContextStrategy)
+              handleRemoveContextStrategyClick(selectedContextStrategyId)
             }
           />
         ) : (

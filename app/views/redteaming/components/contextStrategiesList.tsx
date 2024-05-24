@@ -6,7 +6,7 @@ import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 
 type ContextStrategiesListProps = {
-  onPrimaryBtnClick: (contextStrategy: ContextStrategy) => void;
+  onPrimaryBtnClick: (contextStrategyId: string) => void;
   onSecondaryBtnClick?: () => void;
 };
 
@@ -26,14 +26,14 @@ function ContextStrategiesList(props: ContextStrategiesListProps) {
           <div className="flex gap-2">
             <Icon name={IconName.MoonContextStrategy} />
             <h3 className="text-[1rem] font-semibold text-white">
-              {selectedContextStrategy}
+              {selectedContextStrategy.name}
             </h3>
           </div>
         </header>
         <div
           style={{ height: 'calc(100% - 40px)' }}
           className="text-[0.85rem] overflow-y-auto custom-scrollbar text-moongray-200 mb-3">
-          <p className="pr-2">{selectedContextStrategy}</p>
+          <p className="pr-2">{selectedContextStrategy.description}</p>
         </div>
       </section>
     );
@@ -42,10 +42,10 @@ function ContextStrategiesList(props: ContextStrategiesListProps) {
   const listOfContextStrategies = data ? (
     <ul className="divide-y divide-moongray-500 max-w-[400px] overflow-x-hidden overflow-y-auto custom-scrollbar h-full">
       {data.map((contextStrategy) => {
-        const isSelected = selectedContextStrategy === contextStrategy;
+        const isSelected = selectedContextStrategy && selectedContextStrategy.id === contextStrategy.id;
         return (
           <li
-            key={contextStrategy}
+            key={contextStrategy.id}
             className={`p-2 ${!isSelected && 'hover:bg-moongray-900'} active:bg-moongray-600 cursor-pointer 
             ${isSelected ? 'bg-moongray-950' : 'bg-moongray-700'} min-w-[300px]`}
             onClick={() => setSelectedContextStrategy(contextStrategy)}
@@ -58,10 +58,10 @@ function ContextStrategiesList(props: ContextStrategiesListProps) {
                   name={IconName.MoonContextStrategy}
                   size={18}
                 />
-                <h3 className="text-[0.87rem] text-white">{contextStrategy}</h3>
+                <h3 className="text-[0.87rem] text-white">{contextStrategy.name}</h3>
               </div>
               <p className="text-sm h-[80px] min-h-[80px] overflow-y-hidden text-[0.74rem] text-moongray-200">
-                {contextStrategy}
+                {contextStrategy.description}
               </p>
             </header>
           </li>
@@ -97,7 +97,7 @@ function ContextStrategiesList(props: ContextStrategiesListProps) {
               mode={ButtonType.PRIMARY}
               onClick={() =>
                 selectedContextStrategy
-                  ? onPrimaryBtnClick(selectedContextStrategy)
+                  ? onPrimaryBtnClick(selectedContextStrategy.id)
                   : null
               }
               text="Use"

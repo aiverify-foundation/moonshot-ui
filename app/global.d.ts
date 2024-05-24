@@ -63,7 +63,11 @@ type PromptTemplate = {
   template: string;
 };
 
-type ContextStrategy = string;
+type ContextStrategy = {
+  id: string;
+  name: string;
+  description: string;
+};
 
 type LLMEndpoint = {
   id: string;
