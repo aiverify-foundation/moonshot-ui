@@ -25,8 +25,6 @@ export default function BenchmarkingHomePage() {
             width="100%"
             text="Start New Run"
             menuIconName={IconName.CheckList}
-            btnColor={colors.moongray[950]}
-            hoverBtnColor={colors.moongray[800]}
             textColor={colors.white}
           />
         </Link>
@@ -37,8 +35,6 @@ export default function BenchmarkingHomePage() {
             width="100%"
             text="View Past Runs"
             menuIconName={IconName.HistoryClock}
-            btnColor={colors.moongray[950]}
-            hoverBtnColor={colors.moongray[800]}
             textColor={colors.white}
           />
         </Link>
@@ -49,8 +45,6 @@ export default function BenchmarkingHomePage() {
             width="100%"
             text="View Cookbooks"
             menuIconName={IconName.Book}
-            btnColor={colors.moongray[950]}
-            hoverBtnColor={colors.moongray[800]}
             textColor={colors.white}
           />
         </Link>
@@ -61,8 +55,6 @@ export default function BenchmarkingHomePage() {
             width="100%"
             text="View Recipes"
             menuIconName={IconName.File}
-            btnColor={colors.moongray[950]}
-            hoverBtnColor={colors.moongray[800]}
             textColor={colors.white}
           />
         </Link>

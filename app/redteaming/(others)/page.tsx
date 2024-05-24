@@ -25,8 +25,6 @@ export default function RedteamingHomePage() {
             width="100%"
             text="Start New Session"
             menuIconName={IconName.Spacesuit}
-            btnColor={colors.moongray[950]}
-            hoverBtnColor={colors.moongray[800]}
             textColor={colors.white}
           />
         </Link>
@@ -37,8 +35,6 @@ export default function RedteamingHomePage() {
             width="100%"
             text="View Past Sessions"
             menuIconName={IconName.HistoryClock}
-            btnColor={colors.moongray[950]}
-            hoverBtnColor={colors.moongray[800]}
             textColor={colors.white}
           />
         </Link>
@@ -49,8 +45,6 @@ export default function RedteamingHomePage() {
             width="100%"
             text="View Attack Modules"
             menuIconName={IconName.MoonAttackStrategy}
-            btnColor={colors.moongray[950]}
-            hoverBtnColor={colors.moongray[800]}
             textColor={colors.white}
           />
         </Link>

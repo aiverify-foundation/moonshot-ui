@@ -31,24 +31,18 @@ function UtilsSubmenu(props: UtilsSubmenuProps) {
         <SubmenuButton
           width="40%"
           text="Upload Datasets"
-          btnColor={colors.moongray[950]}
-          hoverBtnColor={colors.moongray[800]}
           textColor={colors.white}
           onClick={onClick}
         />
         <SubmenuButton
           width="40%"
           text="View Prompt Templates"
-          btnColor={colors.moongray[950]}
-          hoverBtnColor={colors.moongray[800]}
           textColor={colors.white}
           onClick={onClick}
         />
         <SubmenuButton
           width="40%"
           text="View Context Strategies"
-          btnColor={colors.moongray[950]}
-          hoverBtnColor={colors.moongray[800]}
           textColor={colors.white}
           onClick={onClick}
         />
