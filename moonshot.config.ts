@@ -33,6 +33,7 @@ const config: MoonshotConfig = {
     'leaderboard-cookbook',
     'legal-summarisation',
     'medical-llm-leaderboard',
+    'singapore-context',
   ],
   cookbookCategoriesTabs: [
     { id: 'capability', label: 'Capability', categoryNames: ['capability'] },
