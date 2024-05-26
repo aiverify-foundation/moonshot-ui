@@ -360,8 +360,9 @@ function NewEndpointForm(props: NewEndpointFormProps) {
               More Configs
             </p>
           </div>
-          <div className="flex grow gap-2 justify-end items-end">
+          <div className="flex grow gap-4 justify-end items-end">
             <Button
+              width={120}
               mode={ButtonType.OUTLINE}
               size="lg"
               type="button"
@@ -371,6 +372,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
               pressedBtnColor={colors.moongray[700]}
             />
             <Button
+              width={120}
               mode={ButtonType.PRIMARY}
               disabled={!submitEnabled}
               size="lg"

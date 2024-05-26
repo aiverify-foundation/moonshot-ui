@@ -136,7 +136,7 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
             control: (baseStyles, state) => ({
               ...baseStyles,
               minHeight: 30,
-              fontSize: 16,
+              fontSize: 14,
               lineHeight: 'normal',
               boxShadow: 'none',
               borderColor: state.isFocused ? BORDER_FOCUS_COLOR : BORDER_COLOR,
@@ -193,9 +193,11 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
               ...baseStyles,
               padding: 0,
               margin: 0,
+              fontSize: 14,
             }),
             option: (baseStyles, state) => ({
               ...baseStyles,
+              fontSize: 14,
               backgroundColor: state.isSelected
                 ? OPTION_SELECTED_COLOR
                 : 'inherit',
