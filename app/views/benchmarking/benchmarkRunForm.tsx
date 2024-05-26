@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { object, string, number, array } from 'yup';
 import { Button, ButtonType } from '@/app/components/button';
 import { TextArea } from '@/app/components/textArea';
@@ -8,7 +8,12 @@ import { TextInput } from '@/app/components/textInput';
 import { useRunBenchmarkMutation } from '@/app/services/benchmark-api-service';
 import { BenchmarkCollectionType } from '@/app/types/enums';
 import { colors } from '@/app/views/shared-components/customColors';
-import { useAppSelector } from '@/lib/redux';
+import {
+  resetBenchmarkCookbooks,
+  resetBenchmarkModels,
+  useAppDispatch,
+  useAppSelector,
+} from '@/lib/redux';
 
 const initialFormValues: BenchmarkRunFormValues = {
   run_name: '',
@@ -33,6 +38,8 @@ const validationSchema = object().shape({
 });
 
 function BenchmarkRunForm() {
+  const [disableRunBtn, setDisableRunBtn] = React.useState(false);
+  const dispatch = useAppDispatch();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
   );
@@ -43,22 +50,25 @@ function BenchmarkRunForm() {
     initialValues: initialFormValues,
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      setDisableRunBtn(true);
       createBenchmarkRun(values);
     },
   });
-  const [runBenchmark, { data, error, isLoading }] = useRunBenchmarkMutation();
+  const [runBenchmark, { isLoading }] = useRunBenchmarkMutation();
   const router = useRouter();
 
   async function createBenchmarkRun(data: BenchmarkRunFormValues) {
-    console.log(data);
     const response = await runBenchmark({
       benchmarkRunInputData: data,
       collectionType: BenchmarkCollectionType.COOKBOOK,
     });
     if ('error' in response) {
       console.error(response.error);
+      setDisableRunBtn(false);
       return;
     }
+    dispatch(resetBenchmarkCookbooks());
+    dispatch(resetBenchmarkModels());
     router.push(`/benchmarking/session/run?runner_id=${response.data.id}`);
   }
 
@@ -141,7 +151,7 @@ function BenchmarkRunForm() {
 
         <div className="flex grow gap-2 justify-center items-end mt-3">
           <Button
-            disabled={isLoading || !formik.isValid}
+            disabled={disableRunBtn || isLoading || !formik.isValid}
             mode={ButtonType.PRIMARY}
             size="lg"
             type="button"
