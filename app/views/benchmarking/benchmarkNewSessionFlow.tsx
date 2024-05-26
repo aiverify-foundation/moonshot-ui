@@ -3,9 +3,9 @@ import { useRouter } from 'next/navigation';
 import React, { useLayoutEffect, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
+import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
 import { CookbooksSelection } from '@/app/views/cookbook-management/cookbooksSelection';
 import { EndpointSelectVew } from '@/app/views/models-management/endpointsSelector';
-import { NewEndpointForm } from '@/app/views/models-management/newEnpointForm';
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 import { Modal } from '@/app/views/shared-components/modal/modal';
@@ -253,13 +253,13 @@ function BenchmarkNewSessionFlow() {
               )}
               {view}
               {!hiddenNavButtons[1] && (
-                <div className="flex justify-center" style={{ opacity: disableNextBtn ? 0.3 : 1 }}>
+                <div
+                  className="flex justify-center"
+                  style={{ opacity: disableNextBtn ? 0.3 : 1 }}>
                   <Icon
                     name={IconName.WideArrowDown}
                     size={28}
-                    onClick={
-                      disableNextBtn ? undefined : nextViewHandler
-                    }
+                    onClick={disableNextBtn ? undefined : nextViewHandler}
                   />
                 </div>
               )}
