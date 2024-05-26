@@ -60,7 +60,8 @@ async function fetchBenchmarkResultIds(): Promise<
   ApiResult<string[]> | ErrorWithMessage
 > {
   const response = await fetch(
-    `${config.webAPI.hostURL}${config.webAPI.basePathBenchmarks}/results/name`
+    `${config.webAPI.hostURL}${config.webAPI.basePathBenchmarks}/results/name`,
+    { cache: 'no-store' }
   );
   const result = await processResponse<string[]>(response);
   if ('error' in result) {

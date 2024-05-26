@@ -27,6 +27,10 @@ function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
     return sessions.find((sess) => sess.session_id === id) || sessions[0];
   });
 
+  if (sessions.length === 0) {
+    throw new Error('No sessions found', { cause: 'NO_SESSIONS_FOUND' });
+  }
+
   return (
     <MainSectionSurface
       closeLinkUrl="/"

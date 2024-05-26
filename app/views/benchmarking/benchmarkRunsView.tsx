@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import React, { CSSProperties } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
@@ -26,7 +26,6 @@ function BenchmarkRunsView({
   runners: Runner[];
   resultIds: string[];
 }) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedRunner, setSelectedRunner] = React.useState<Runner>(() => {
     const id = searchParams.get('id');
@@ -35,6 +34,10 @@ function BenchmarkRunsView({
     }
     return runners.find((runner) => runner.id === id) || runners[0];
   });
+
+  if (runners.length === 0) {
+    throw new Error('No past runs found', { cause: 'NO_RUNNERS_FOUND' });
+  }
 
   return (
     <MainSectionSurface

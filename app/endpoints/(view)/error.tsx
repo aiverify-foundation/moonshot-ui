@@ -23,14 +23,15 @@ export default function Error({
     <Modal
       width={600}
       height={400}
-      heading="Something went wrong!"
+      heading="Error Notification"
       bgColor={colors.moongray['800']}
       textColor="#FFFFFF"
       primaryBtnLabel="Try again"
       enableScreenOverlay
       onCloseIconClick={() => router.push('/')}
       onPrimaryBtnClick={() => reset()}>
-      <div className="flex items-start gap-2 pt-4 overflow-x-hidden overflow-y-auto"
+      <div
+        className="flex items-start gap-2 pt-4 overflow-x-hidden overflow-y-auto"
         style={{ height: '80%' }}>
         <Icon
           name={IconName.Alert}
