@@ -6,10 +6,13 @@ import { AppEventTypes } from '@apptypes/enums';
 
 export const dynamic = 'force-dynamic';
 
-let heartbeatInterval: NodeJS.Timeout;
+let heartbeatTimers: NodeJS.Timeout[] = [];
 
 const cleanup = () => {
-  clearInterval(heartbeatInterval);
+  heartbeatTimers.forEach((timer) => clearInterval(timer));
+  heartbeatTimers = [];
+  appEventBus.removeAllListeners(AppEventTypes.BENCHMARK_UPDATE);
+  appEventBus.removeAllListeners(AppEventTypes.SYSTEM_UPDATE);
 };
 
 process.on('exit', cleanup);
@@ -23,50 +26,68 @@ export async function GET() {
   const writer = stream.writable.getWriter();
   const encoder = new TextEncoder();
   const sseWriter = getSSEWriter(writer, encoder);
-  let isConnectionClosed = false;
 
-  appEventBus.removeAllListeners(AppEventTypes.BENCHMARK_UPDATE);
-  appEventBus.on(AppEventTypes.BENCHMARK_UPDATE, (data: TestStatus) => {
-    console.log('Data received from webhook', {
-      runner_id: data.current_runner_id,
-      current_progress: data.current_progress,
-      current_status: data.current_status,
-    });
-    try {
-      if ('current_runner_id' in data) {
-        (sseWriter as BenchMarkEvents).update({
-          data,
-          event: AppEventTypes.BENCHMARK_UPDATE,
-        });
-      } else {
-        (sseWriter as SystemEvents).update({
-          data,
-          event: AppEventTypes.SYSTEM_UPDATE,
-        });
+  const totalListeners = appEventBus.listenerCount(
+    AppEventTypes.BENCHMARK_UPDATE
+  );
+  if (totalListeners === appEventBus.getMaxListeners()) {
+    console.log(
+      'Max number of listeners reached for: ',
+      AppEventTypes.BENCHMARK_UPDATE
+    );
+    return new NextResponse('Max number of listeners reached', { status: 429 });
+  }
+
+  const emitter = appEventBus.on(
+    AppEventTypes.BENCHMARK_UPDATE,
+    (data: TestStatus) => {
+      console.debug('Data received from webhook', {
+        runner_id: data.current_runner_id,
+        current_progress: data.current_progress,
+        current_status: data.current_status,
+      });
+      try {
+        if ('current_runner_id' in data) {
+          (sseWriter as BenchMarkEvents).update({
+            data,
+            event: AppEventTypes.BENCHMARK_UPDATE,
+          });
+        } else {
+          (sseWriter as SystemEvents).update({
+            data,
+            event: AppEventTypes.SYSTEM_UPDATE,
+          });
+        }
+      } catch (error) {
+        console.error('Error writing to SSE stream', error);
       }
-    } catch (error) {
-      console.error('Error writing to SSE stream', error);
     }
-  });
+  );
+
   // Heartbeat mechanism
-  clearInterval(heartbeatInterval);
-  heartbeatInterval = setInterval(() => {
-    console.log('Sending SSE heartbeat');
+  const heartbeatInterval = setInterval(() => {
+    console.log('sending BM SSE heartbeat');
+    console.log(
+      'listeners on appEventBus: ',
+      appEventBus.listenerCount(AppEventTypes.BENCHMARK_UPDATE)
+    );
+    console.log('heartbeatTimers: ', heartbeatTimers.length);
     writer.write(encoder.encode(': \n\n')).catch(() => {
-      isConnectionClosed = true;
-      appEventBus.removeAllListeners(AppEventTypes.BENCHMARK_UPDATE);
-      appEventBus.removeAllListeners(AppEventTypes.SYSTEM_UPDATE);
+      emitter.removeAllListeners(AppEventTypes.BENCHMARK_UPDATE);
       clearInterval(heartbeatInterval);
+      const index = heartbeatTimers.indexOf(heartbeatInterval);
+      if (index > -1) {
+        heartbeatTimers.splice(index, 1);
+      }
       console.error(
         'Error writing heartbeat to SSE stream. This is expected if SSE connection was closed. Cleaning up SSE resources.'
       );
     });
   }, 10000);
 
+  heartbeatTimers.push(heartbeatInterval);
+
   const eventStream = async (notifier: BenchMarkEvents | SystemEvents) => {
-    if (isConnectionClosed) {
-      return;
-    }
     (notifier as SystemEvents).update({
       data: { msg: 'SSE init done' },
       event: AppEventTypes.SYSTEM_UPDATE,
