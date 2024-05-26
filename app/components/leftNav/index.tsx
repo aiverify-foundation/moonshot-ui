@@ -4,7 +4,12 @@ import React from 'react';
 import { colors } from '@/app/views/shared-components/customColors';
 import { Icon, IconName } from '@components/IconSVG';
 
-type menuItem = 'benchmarking' | 'redteaming' | 'endpoints' | 'history' | 'utils';
+type menuItem =
+  | 'benchmarking'
+  | 'redteaming'
+  | 'endpoints'
+  | 'history'
+  | 'utils';
 type LeftNavProps = {
   activeItem?: menuItem;
 };
@@ -14,12 +19,15 @@ function LeftNav({ activeItem }: LeftNavProps) {
   return (
     <ul className="flex flex-col gap-10">
       <li className="flex justify-center">
-        <Link href="/endpoints"
+        <Link
+          href="/endpoints"
           onMouseEnter={() => setHoveredItem('endpoints')}
           onMouseLeave={() => setHoveredItem(undefined)}
-          className='relative'>
+          className="relative">
           {(hoveredItem === 'endpoints' || activeItem === 'endpoints') && (
-            <p className='absolute tracking-wider text-moonpurplelight right-[50px] w-[200px] text-right'>model endpoints</p>
+            <p className="absolute tracking-wider text-moonpurplelight right-[50px] w-[200px] text-right">
+              model endpoints
+            </p>
           )}
           <Icon
             color={
@@ -35,12 +43,16 @@ function LeftNav({ activeItem }: LeftNavProps) {
         </Link>
       </li>
       <li className="flex justify-center">
-        <Link href="/benchmarking"
+        <Link
+          href="/benchmarking"
           onMouseEnter={() => setHoveredItem('benchmarking')}
           onMouseLeave={() => setHoveredItem(undefined)}
-          className='relative'>
-          {(hoveredItem === 'benchmarking' || activeItem === 'benchmarking') && (
-            <p className='absolute tracking-wider text-moonpurplelight right-[50px] w-[200px] text-right'>benchmarking</p>
+          className="relative">
+          {(hoveredItem === 'benchmarking' ||
+            activeItem === 'benchmarking') && (
+            <p className="absolute tracking-wider text-moonpurplelight right-[50px] w-[200px] text-right">
+              benchmarking
+            </p>
           )}
           <Icon
             color={
@@ -56,12 +68,15 @@ function LeftNav({ activeItem }: LeftNavProps) {
         </Link>
       </li>
       <li className="flex justify-center">
-        <Link href="/redteaming"
+        <Link
+          href="/redteaming"
           onMouseEnter={() => setHoveredItem('redteaming')}
           onMouseLeave={() => setHoveredItem(undefined)}
-          className='relative'>
+          className="relative">
           {(hoveredItem === 'redteaming' || activeItem === 'redteaming') && (
-            <p className='absolute tracking-wider text-moonpurplelight right-[50px] w-[200px] text-right'>red teaming</p>
+            <p className="absolute tracking-wider text-moonpurplelight right-[50px] w-[200px] text-right">
+              red teaming
+            </p>
           )}
           <Icon
             color={
@@ -77,38 +92,48 @@ function LeftNav({ activeItem }: LeftNavProps) {
         </Link>
       </li>
       <li>
-        <Link href="/"
+        <Link
+          href="/history"
           onMouseEnter={() => setHoveredItem('history')}
           onMouseLeave={() => setHoveredItem(undefined)}
-          className='relative'>
+          className="relative">
           {(hoveredItem === 'history' || activeItem === 'history') && (
-            <p className='absolute tracking-wider text-moonpurplelight right-[80px] w-[200px] text-right'>history</p>
+            <p className="absolute tracking-wider text-moonpurplelight right-[80px] w-[200px] text-right">
+              history
+            </p>
           )}
           <Icon
-            color={activeItem === 'history'
-              ? colors.moonpurplelight
-              : hoveredItem === 'history'
+            color={
+              activeItem === 'history'
                 ? colors.moonpurplelight
-                : colors.moongray[300]}
+                : hoveredItem === 'history'
+                  ? colors.moonpurplelight
+                  : colors.moongray[300]
+            }
             name={IconName.HistoryClock}
             size={40}
           />
         </Link>
       </li>
       <li className="flex justify-center">
-        <Link href="/utils"
+        <Link
+          href="/utilities"
           onMouseEnter={() => setHoveredItem('utils')}
           onMouseLeave={() => setHoveredItem(undefined)}
-          className='relative'>
+          className="relative">
           {(hoveredItem === 'utils' || activeItem === 'utils') && (
-            <p className='absolute tracking-wider text-moonpurplelight right-[50px] w-[200px] text-right'>utils</p>
+            <p className="absolute tracking-wider text-moonpurplelight right-[50px] w-[200px] text-right">
+              utils
+            </p>
           )}
           <Icon
-            color={activeItem === 'utils'
-              ? colors.moonpurplelight
-              : hoveredItem === 'utils'
+            color={
+              activeItem === 'utils'
                 ? colors.moonpurplelight
-                : colors.moongray[300]}
+                : hoveredItem === 'utils'
+                  ? colors.moonpurplelight
+                  : colors.moongray[300]
+            }
             name={IconName.Tools}
             size={40}
           />
