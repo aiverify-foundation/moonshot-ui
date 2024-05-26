@@ -123,7 +123,7 @@ function Notifications() {
                               : 'bg-blue-600'
                         } leading-none h-1 rounded-full`}
                         style={{
-                          width: `${Math.max(statuses[runnerId].current_progress, 10)}%`,
+                          width: `${statuses[runnerId].current_progress}%`,
                           animation:
                             statuses[runnerId].current_status ==
                             TestStatusProgress.RUNNING

@@ -1,6 +1,5 @@
 import EventEmitter from 'events';
 import { NextResponse } from 'next/server';
-import { appEventBus } from '@/app/api/eventbus';
 import { toErrorWithMessage } from '@/app/lib/error-utils';
 import { AppEventTypes } from '@/app/types/enums';
 import { Writer, getSSEWriter } from './sse_writer';
@@ -13,8 +12,8 @@ only test this using prod build (npm run build && npm start)
 */
 
 const artEventBus = new EventEmitter();
-artEventBus.setMaxListeners(5);
-console.log('ART EventBus limits: ', appEventBus.getMaxListeners());
+artEventBus.setMaxListeners(8);
+console.log('ART EventBus limits: ', artEventBus.getMaxListeners());
 
 export async function POST(request: Request) {
   const body = (await request.json()) as ArtStatus;
@@ -29,11 +28,14 @@ export async function POST(request: Request) {
   );
 }
 
-let isConnectionClosed = false;
 let heartbeatTimers: NodeJS.Timeout[] = [];
+let artEmitters: EventEmitter[] = [];
 const cleanup = () => {
   heartbeatTimers.forEach((timer) => clearInterval(timer));
   heartbeatTimers = [];
+  artEmitters.forEach((emitter) => emitter.removeAllListeners());
+  artEmitters = [];
+  artEventBus.removeAllListeners(AppEventTypes.REDTEAM_UPDATE);
 };
 
 process.on('exit', cleanup);
@@ -69,10 +71,14 @@ export async function GET() {
     }
   }
 
-  const totalListeners = appEventBus.listenerCount(
+  const totalListeners = artEventBus.listenerCount(
     AppEventTypes.REDTEAM_UPDATE
   );
-  if (totalListeners === appEventBus.getMaxListeners()) {
+  if (totalListeners === artEventBus.getMaxListeners() - 1) {
+    artEmitters[0].removeAllListeners(AppEventTypes.REDTEAM_UPDATE);
+    artEmitters.shift();
+  }
+  if (totalListeners === artEventBus.getMaxListeners()) {
     console.log(
       'Max number of listeners reached for: ',
       AppEventTypes.REDTEAM_UPDATE
@@ -86,32 +92,35 @@ export async function GET() {
       handleRedTeamUpdate(data);
     }
   );
+  artEmitters.push(emitter);
 
   // Heartbeat mechanism
-  isConnectionClosed = true;
+  let writeErrorCount = 0;
   const heartbeatInterval = setInterval(() => {
     try {
       console.log('Sending ART SSE heartbeat');
       console.log(
-        'Number of listeners on appEventBus: ',
+        'Number of listeners on artEmitters: ',
         artEventBus.listenerCount(AppEventTypes.REDTEAM_UPDATE)
       );
-      writer.write(encoder.encode(': \n\n')).catch((error) => {
-        if (error.name === 'AbortError') {
+      console.log('art heartbeatTimers: ', heartbeatTimers.length);
+      writer.write(encoder.encode(': \n\n')).catch(() => {
+        if (writeErrorCount > 5) {
           console.error(
-            'AbortError detected in heartbeat. This is expected if SSE connection was closed. Cleaning up SSE ART resources.'
+            'Error writing heartbeat to SSE ART stream. This is expected if SSE connection was closed. Cleaning up SSE ART resources.'
           );
+          emitter.removeAllListeners(AppEventTypes.REDTEAM_UPDATE);
+          clearInterval(heartbeatInterval);
+          const index = heartbeatTimers.indexOf(heartbeatInterval);
+          if (index > -1) {
+            heartbeatTimers.splice(index, 1);
+          }
+
+          writeErrorCount = 0;
+          return;
         }
-        isConnectionClosed = true;
-        emitter.removeAllListeners(AppEventTypes.REDTEAM_UPDATE);
-        clearInterval(heartbeatInterval);
-        const index = heartbeatTimers.indexOf(heartbeatInterval);
-        if (index > -1) {
-          heartbeatTimers.splice(index, 1);
-        }
-        console.error(
-          'Error writing heartbeat to SSE ART stream. This is expected if SSE connection was closed. Cleaning up SSE ART resources.'
-        );
+
+        writeErrorCount += 1;
       });
     } catch (error) {
       const errWIthMsg = toErrorWithMessage(error);
@@ -122,9 +131,6 @@ export async function GET() {
   heartbeatTimers.push(heartbeatInterval);
 
   const eventStream = async (notifier: RedTeamEvents | SystemEvents) => {
-    if (!isConnectionClosed) {
-      return;
-    }
     (notifier as SystemEvents).update({
       data: { msg: 'SSE RT init done' },
       event: AppEventTypes.SYSTEM_UPDATE,

@@ -1,3 +1,4 @@
+import EventEmitter from 'events';
 import { NextResponse } from 'next/server';
 import { getSSEWriter } from './sse_writer';
 import { appEventBus } from '@api/eventbus';
@@ -7,10 +8,13 @@ import { AppEventTypes } from '@apptypes/enums';
 export const dynamic = 'force-dynamic';
 
 let heartbeatTimers: NodeJS.Timeout[] = [];
+let bmEmitters: EventEmitter[] = [];
 
 const cleanup = () => {
   heartbeatTimers.forEach((timer) => clearInterval(timer));
   heartbeatTimers = [];
+  bmEmitters.forEach((emitter) => emitter.removeAllListeners());
+  bmEmitters = [];
   appEventBus.removeAllListeners(AppEventTypes.BENCHMARK_UPDATE);
   appEventBus.removeAllListeners(AppEventTypes.SYSTEM_UPDATE);
 };
@@ -30,6 +34,10 @@ export async function GET() {
   const totalListeners = appEventBus.listenerCount(
     AppEventTypes.BENCHMARK_UPDATE
   );
+  if (totalListeners === appEventBus.getMaxListeners() - 1) {
+    bmEmitters[0].removeAllListeners(AppEventTypes.BENCHMARK_UPDATE);
+    bmEmitters.shift();
+  }
   if (totalListeners === appEventBus.getMaxListeners()) {
     console.log(
       'Max number of listeners reached for: ',
@@ -63,8 +71,10 @@ export async function GET() {
       }
     }
   );
+  bmEmitters.push(emitter);
 
   // Heartbeat mechanism
+  let writeErrorCount = 0;
   const heartbeatInterval = setInterval(() => {
     console.log('sending BM SSE heartbeat');
     console.log(
@@ -73,15 +83,21 @@ export async function GET() {
     );
     console.log('heartbeatTimers: ', heartbeatTimers.length);
     writer.write(encoder.encode(': \n\n')).catch(() => {
-      emitter.removeAllListeners(AppEventTypes.BENCHMARK_UPDATE);
-      clearInterval(heartbeatInterval);
-      const index = heartbeatTimers.indexOf(heartbeatInterval);
-      if (index > -1) {
-        heartbeatTimers.splice(index, 1);
+      if (writeErrorCount > 5) {
+        console.error(
+          'Error writing heartbeat to SSE stream. This is expected if SSE connection was closed. Cleaning up SSE resources.'
+        );
+        emitter.removeAllListeners(AppEventTypes.BENCHMARK_UPDATE);
+        clearInterval(heartbeatInterval);
+        const index = heartbeatTimers.indexOf(heartbeatInterval);
+        if (index > -1) {
+          heartbeatTimers.splice(index, 1);
+        }
+        writeErrorCount = 0;
+        return;
       }
-      console.error(
-        'Error writing heartbeat to SSE stream. This is expected if SSE connection was closed. Cleaning up SSE resources.'
-      );
+
+      writeErrorCount += 1;
     });
   }, 10000);
 
