@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { object, string, number, boolean } from 'yup';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { TextArea } from '@/app/components/textArea';
@@ -18,7 +19,6 @@ import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 import { Modal } from '@/app/views/shared-components/modal/modal';
 import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
-import { Icon, IconName } from '@/app/components/IconSVG';
 
 const initialFormValues: LLMEndpointFormValues = {
   connector_type: '',

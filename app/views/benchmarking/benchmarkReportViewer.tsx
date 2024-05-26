@@ -44,7 +44,7 @@ function BenchmarkReportViewer() {
 
   return (
     <MainSectionSurface
-      onCloseIconClick={() => router.push('/benchmarking')}
+      closeLinkUrl="/benchmarking"
       height="100%"
       minHeight={750}
       bgColor="#2d2b2f">

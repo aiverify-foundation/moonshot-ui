@@ -28,7 +28,7 @@ function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
 
   return (
     <MainSectionSurface
-      onCloseIconClick={() => router.push('/')}
+      closeLinkUrl="/"
       height="100%"
       minHeight={750}
       bgColor={colors.moongray['950']}>

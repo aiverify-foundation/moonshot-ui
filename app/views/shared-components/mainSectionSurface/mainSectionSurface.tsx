@@ -8,11 +8,18 @@ type MainSectionSurfaceProps = {
   height?: React.CSSProperties['height'];
   minHeight?: React.CSSProperties['minHeight'];
   onCloseIconClick?: () => void;
-  closeLinkUrl: string;
+  closeLinkUrl?: string;
 };
 
 function MainSectionSurface(props: MainSectionSurfaceProps) {
-  const { height, minHeight, closeLinkUrl, children, bgColor } = props;
+  const {
+    height,
+    minHeight,
+    closeLinkUrl,
+    onCloseIconClick,
+    children,
+    bgColor,
+  } = props;
   return (
     <div
       className="flex flex-col w-full dark:bg-moongray-950 rounded-2xl p-6"
@@ -21,12 +28,20 @@ function MainSectionSurface(props: MainSectionSurfaceProps) {
         className="flex flex-col shrink-0 relative"
         style={{ height: 32 }}>
         <div className="absolute top-0 right-0">
-          <Link href={closeLinkUrl}>
+          {closeLinkUrl ? (
+            <Link href={closeLinkUrl}>
+              <Icon
+                name={IconName.Close}
+                size={32}
+              />
+            </Link>
+          ) : onCloseIconClick ? (
             <Icon
               name={IconName.Close}
               size={32}
+              onClick={onCloseIconClick}
             />
-          </Link>
+          ) : null}
         </div>
       </header>
       <section style={{ height: 'calc(100% - 32px)' }}>{children}</section>

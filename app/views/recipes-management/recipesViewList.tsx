@@ -28,7 +28,7 @@ function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
 
   return (
     <MainSectionSurface
-      onCloseIconClick={() => router.push('/')}
+      closeLinkUrl="/"
       height="100%"
       minHeight={750}
       bgColor={colors.moongray['950']}>
@@ -80,7 +80,9 @@ function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
               </h3>
             </div>
             <p className="text-[0.95rem] mb-4">{selectedRecipe.description}</p>
-            <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">Categories</h4>
+            <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">
+              Categories
+            </h4>
             <p className="text-[0.95rem] mb-4 text-moongray-300">
               {selectedRecipe.categories.length === 0
                 ? 'None'

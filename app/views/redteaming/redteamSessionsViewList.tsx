@@ -29,7 +29,7 @@ function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
 
   return (
     <MainSectionSurface
-      onCloseIconClick={() => router.push('/')}
+      closeLinkUrl="/"
       height="100%"
       minHeight={750}
       bgColor={colors.moongray['950']}>
