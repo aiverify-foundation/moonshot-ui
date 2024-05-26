@@ -22,9 +22,7 @@ export default function RootLayout({
         className="overflow-hidden">
         <body
           className={`${inter.className} w-screen h-screen bg-gradient-to-br from-moonwine-950 to-moonwine-700`}>
-          <div className="dust-overlay-removed" />
           {children}
-          <div id="moonshotDesktop" />
         </body>
       </html>
     </Providers>

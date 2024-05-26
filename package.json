@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build --debug",
+    "build": "next build",
     "start": "next start",
+    "start-trace": "node --trace-warnings node_modules/.bin/next",
     "lint": "next lint",
     "tsc": "tsc --noEmit"
   },

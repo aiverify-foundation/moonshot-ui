@@ -29,6 +29,15 @@ export async function POST(request: Request) {
 
 let isConnectionClosed = false;
 let heartbeatInterval: NodeJS.Timeout;
+const cleanup = () => {
+  clearInterval(heartbeatInterval);
+};
+
+process.on('exit', cleanup);
+process.on('SIGINT', () => {
+  cleanup();
+  process.exit();
+});
 
 export async function GET() {
   const stream = new TransformStream();
@@ -57,6 +66,7 @@ export async function GET() {
     }
   }
 
+  artEventBus.removeAllListeners(AppEventTypes.REDTEAM_UPDATE);
   artEventBus.on(AppEventTypes.REDTEAM_UPDATE, (data: ArtStatus) => {
     handleRedTeamUpdate(data);
   });

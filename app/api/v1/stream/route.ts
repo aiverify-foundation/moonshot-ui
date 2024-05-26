@@ -6,6 +6,18 @@ import { AppEventTypes } from '@apptypes/enums';
 
 export const dynamic = 'force-dynamic';
 
+let heartbeatInterval: NodeJS.Timeout;
+
+const cleanup = () => {
+  clearInterval(heartbeatInterval);
+};
+
+process.on('exit', cleanup);
+process.on('SIGINT', () => {
+  cleanup();
+  process.exit();
+});
+
 export async function GET() {
   const stream = new TransformStream();
   const writer = stream.writable.getWriter();
@@ -13,6 +25,7 @@ export async function GET() {
   const sseWriter = getSSEWriter(writer, encoder);
   let isConnectionClosed = false;
 
+  appEventBus.removeAllListeners(AppEventTypes.BENCHMARK_UPDATE);
   appEventBus.on(AppEventTypes.BENCHMARK_UPDATE, (data: TestStatus) => {
     console.log('Data received from webhook', {
       runner_id: data.current_runner_id,
@@ -36,7 +49,8 @@ export async function GET() {
     }
   });
   // Heartbeat mechanism
-  const heartbeatInterval = setInterval(() => {
+  clearInterval(heartbeatInterval);
+  heartbeatInterval = setInterval(() => {
     console.log('Sending SSE heartbeat');
     writer.write(encoder.encode(': \n\n')).catch(() => {
       isConnectionClosed = true;
