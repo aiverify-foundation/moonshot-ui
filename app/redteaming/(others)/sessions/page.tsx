@@ -5,7 +5,8 @@ export const dynamic = 'force-dynamic';
 
 async function fetchSessions() {
   const response = await fetch(
-    `${config.webAPI.hostURL}${config.webAPI.basePathSessions}`
+    `${config.webAPI.hostURL}${config.webAPI.basePathSessions}`,
+    { cache: 'no-store' }
   );
   const result = await processResponse<Session[]>(response);
   return result;
