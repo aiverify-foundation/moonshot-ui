@@ -9,7 +9,8 @@ async function fetchBenchmarkRuns(): Promise<
   ApiResult<Runner[]> | ErrorWithMessage
 > {
   const response = await fetch(
-    `${config.webAPI.hostURL}${config.webAPI.basePathRunners}`
+    `${config.webAPI.hostURL}${config.webAPI.basePathRunners}`,
+    { cache: 'no-store' }
   );
   const result = await processResponse<RunnerWebApiModel[]>(response);
   if ('error' in result) {
@@ -41,9 +42,14 @@ async function fetchBenchmarkRuns(): Promise<
 
   try {
     const mergedRunners = await Promise.all(runnerPromises);
-    const filteredBenchmarkRunners = mergedRunners.filter(runner => 
-      runner.runner_args && runner.runner_args.runner_processing_module == 'benchmarking');
-    return { status: 200, data: filteredBenchmarkRunners } as ApiResult<Runner[]>;
+    const filteredBenchmarkRunners = mergedRunners.filter(
+      (runner) =>
+        runner.runner_args &&
+        runner.runner_args.runner_processing_module == 'benchmarking'
+    );
+    return { status: 200, data: filteredBenchmarkRunners } as ApiResult<
+      Runner[]
+    >;
   } catch (error) {
     const errorWithMsg = toErrorWithMessage(error);
     return errorWithMsg;
