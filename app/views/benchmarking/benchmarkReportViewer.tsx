@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button, ButtonType } from '@/app/components/button';
 import { SelectInput } from '@/app/components/selectInput';
@@ -12,13 +11,11 @@ import { BenchmarkReport } from './benchmarkReport';
 import { downloadHtmlReport } from './utils/reportDownloader';
 
 function BenchmarkReportViewer() {
-  const router = useRouter();
   const [selectedEndpointId, setSelectedEndpointId] = useState('');
   const [id, setId] = useState<string | undefined>(undefined);
   const { data: benchmarkResultData, isFetching: benchmarkResultIsFetching } =
     useGetBenchmarksResultQuery({ id: !id ? undefined : id }, { skip: !id });
-  const { data: runnerData, isFetching: runnerIsFetching } =
-    useGetRunnerByIdQuery({ id: id }, { skip: !id });
+  const { data: runnerData } = useGetRunnerByIdQuery({ id: id }, { skip: !id });
 
   const endpointOptions = benchmarkResultData
     ? benchmarkResultData.metadata.endpoints.map((endpoint) => ({

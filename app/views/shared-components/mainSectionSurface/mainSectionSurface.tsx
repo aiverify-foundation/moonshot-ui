@@ -29,7 +29,9 @@ function MainSectionSurface(props: MainSectionSurfaceProps) {
         style={{ height: 32 }}>
         <div className="absolute top-0 right-0">
           {closeLinkUrl ? (
-            <Link href={closeLinkUrl}>
+            <Link
+              href={closeLinkUrl}
+              className="hover:opacity-50 active:opacity-25">
               <Icon
                 name={IconName.Close}
                 size={32}
