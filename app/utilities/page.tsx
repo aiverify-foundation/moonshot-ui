@@ -29,7 +29,7 @@ export default function UtilitiesHomePage() {
           />
         </Link>
         <Link
-          href="/benchmarking/runs"
+          href="/utilities/context-strategies"
           style={{ width: '40%' }}>
           <SubmenuButton
             width="100%"

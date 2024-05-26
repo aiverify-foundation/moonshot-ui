@@ -13,7 +13,7 @@ export default function BenchmarkingLayout({
   return (
     <MicroLayout>
       <nav className="pt-[5rem]">
-        <LeftNav activeItem="benchmarking" />
+        <LeftNav activeItem="history" />
       </nav>
       <header className="flex justify-between items-center px-4 mb-5">
         <Link href="/">
