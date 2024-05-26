@@ -17,65 +17,41 @@ import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSur
 import { Modal } from '@/app/views/shared-components/modal/modal';
 import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
 
-function BenchmarkRunStatus() {
+function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
   const [showRunDetails, setShowRunDetails] = React.useState(false);
-  const [statuses, setStatuses] = React.useState<TestStatuses | undefined>();
+  const [isCancelBtnDisabled, setIsCancelBtnDisabled] = React.useState(false);
+  const [statuses, setStatuses] = React.useState<TestStatuses | undefined>(
+    () => allStatuses
+  );
   const [eventData, closeEventSource] = useEventSource<
     TestStatus,
     AppEventTypes
   >('/api/v1/stream', AppEventTypes.BENCHMARK_UPDATE);
-  const {
-    data = {},
-    isLoading,
-  } = useGetAllStatusQuery(undefined, { refetchOnMountOrArgChange: true });
-  const [triggerCancelBenchmark] = useCancelBenchmarkMutation();
+  const { data = {}, isLoading } = useGetAllStatusQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
+  const [triggerCancelBenchmark, { isLoading: isCancelling }] =
+    useCancelBenchmarkMutation();
   const router = useRouter();
   const searchParams = useSearchParams();
   const runner_id = searchParams.get('runner_id');
-  const { data: runnerData } =
-    useGetRunnerByIdQuery(
-      { id: runner_id, additionalDetails: true },
-      { skip: !runner_id }
-    );
+  const { data: runnerData } = useGetRunnerByIdQuery(
+    { id: runner_id, additionalDetails: true },
+    { skip: !runner_id }
+  );
   const [showErrors, setShowErrors] = React.useState(false);
-  const { data: endpointsData } =
-    useGetLLMEndpointsQuery(undefined, { skip: !runnerData });
-  const { data: cookbooksData } =
-    useGetCookbooksQuery(
-      {
-        ids:
-          runnerData && runnerData.runner_args
-            ? runnerData.runner_args.cookbooks
-            : [],
-      },
-      { skip: !runnerData }
-    );
-
-  const endpoints =
-    endpointsData &&
-    endpointsData.filter(
-      (ep) =>
-        runnerData &&
-        runnerData.endpoints &&
-        runnerData.endpoints.includes(ep.id)
-    );
-  const cookbooks = cookbooksData && cookbooksData;
-
-  let headingText = '';
-  if (statuses && runner_id !== null && statuses[runner_id]) {
-    if (statuses[runner_id].current_status == TestStatusProgress.RUNNING) {
-      headingText = 'Running Tests...';
-    }
-    if (statuses[runner_id].current_status == TestStatusProgress.COMPLETED) {
-      headingText = 'Tests Completed';
-    }
-    if (statuses[runner_id].current_status == TestStatusProgress.CANCELLED) {
-      headingText = 'Tests Cancelled';
-    }
-    if (statuses[runner_id].current_status == TestStatusProgress.ERRORS) {
-      headingText = 'Tests Completed';
-    }
-  }
+  const { data: endpointsData } = useGetLLMEndpointsQuery(undefined, {
+    skip: !runnerData,
+  });
+  const { data: cookbooksData } = useGetCookbooksQuery(
+    {
+      ids:
+        runnerData && runnerData.runner_args
+          ? runnerData.runner_args.cookbooks
+          : [],
+    },
+    { skip: !runnerData }
+  );
 
   React.useEffect(() => {
     if (!statuses) return;
@@ -108,7 +84,47 @@ function BenchmarkRunStatus() {
     };
   }, []);
 
-  const progressBox = statuses && runner_id && statuses[runner_id] && (
+  const endpoints =
+    endpointsData &&
+    endpointsData.filter(
+      (ep) =>
+        runnerData &&
+        runnerData.endpoints &&
+        runnerData.endpoints.includes(ep.id)
+    );
+  const cookbooks = cookbooksData && cookbooksData;
+
+  let headingText = 'Running Tests...';
+  if (statuses && runner_id !== null && statuses[runner_id]) {
+    if (statuses[runner_id].current_status == TestStatusProgress.RUNNING) {
+      headingText = 'Running Tests...';
+    }
+    if (statuses[runner_id].current_status == TestStatusProgress.COMPLETED) {
+      headingText = 'Tests Completed';
+    }
+    if (statuses[runner_id].current_status == TestStatusProgress.CANCELLED) {
+      headingText = 'Tests Cancelled';
+    }
+    if (statuses[runner_id].current_status == TestStatusProgress.ERRORS) {
+      headingText = 'Tests Completed';
+    }
+  }
+
+  function handleCancelBtnClick(id: string) {
+    return () => {
+      setIsCancelBtnDisabled(true);
+      triggerCancelBenchmark(id);
+    };
+  }
+
+  const progress =
+    runner_id != null &&
+    statuses &&
+    statuses[runner_id] &&
+    statuses[runner_id].current_progress != undefined
+      ? statuses[runner_id].current_progress
+      : 0;
+  const progressBox = runner_id != null && (
     <div className="w-full flex flex-col items-center gap-2 mt-5">
       {!showRunDetails && (
         <p className="text-white text-[0.9rem] w-[90%] pl-4">
@@ -120,44 +136,88 @@ function BenchmarkRunStatus() {
         border border-moongray-700 px-8 rounded-[20px]">
         <div className="w-full flex flex-col gap-2">
           <p className="text-white text-[1.1rem] w-[90%]">
-            {statuses[runner_id].current_status == TestStatusProgress.CANCELLED
+            {statuses &&
+            statuses[runner_id] &&
+            statuses[runner_id].current_status == TestStatusProgress.CANCELLED
               ? 'Cancelled'
-              : `${Math.max(statuses[runner_id].current_progress, 10)}%`}
-            {statuses[runner_id].current_status == TestStatusProgress.ERRORS &&
+              : `${progress}%`}
+            {statuses &&
+              statuses[runner_id] &&
+              statuses[runner_id].current_status == TestStatusProgress.ERRORS &&
               ' (with error)'}
           </p>
           <div
             className={`${
+              statuses &&
+              statuses[runner_id] &&
               statuses[runner_id].current_status == TestStatusProgress.ERRORS
                 ? 'bg-red-700'
-                : statuses[runner_id].current_status ==
-                    TestStatusProgress.CANCELLED
+                : statuses &&
+                    statuses[runner_id] &&
+                    statuses[runner_id].current_status ==
+                      TestStatusProgress.CANCELLED
                   ? 'bg-moonwine-400'
                   : 'bg-blue-600'
             } leading-none h-2 rounded-full`}
             style={{
-              width: `${Math.max(statuses[runner_id].current_progress, 10)}%`,
+              width: `${progress}%`,
               animation:
+                statuses &&
+                statuses[runner_id] &&
                 statuses[runner_id].current_status == TestStatusProgress.RUNNING
                   ? 'pulse 1.5s infinite ease-out'
                   : 'none',
             }}
           />
         </div>
-        {statuses[runner_id].current_status === TestStatusProgress.RUNNING && (
-          <Button
-            mode={ButtonType.OUTLINE}
-            size="lg"
-            type="button"
-            hoverBtnColor={colors.moongray[700]}
-            pressedBtnColor={colors.moongray[900]}
-            text="Cancel"
-            onClick={() => triggerCancelBenchmark(runner_id)}
-          />
-        )}
-        {statuses[runner_id].current_status ===
-          TestStatusProgress.COMPLETED && (
-          <Link href={`/benchmarking/report?id=${runner_id}`}>
+
+        {/* clean this madness */}
+        {!statuses ||
+        !statuses[runner_id] ||
+        (statuses &&
+          statuses[runner_id] &&
+          statuses[runner_id].current_status !== TestStatusProgress.COMPLETED &&
+          statuses[runner_id].current_status !== TestStatusProgress.ERRORS &&
+          statuses[runner_id].current_status !==
+            TestStatusProgress.CANCELLED) ? (
+          <div
+            style={{
+              opacity: isCancelling || isCancelBtnDisabled ? 0.8 : 1,
+            }}>
+            <Button
+              disabled={isCancelling || isCancelBtnDisabled}
+              mode={ButtonType.OUTLINE}
+              size="lg"
+              type="button"
+              hoverBtnColor={colors.moongray[700]}
+              pressedBtnColor={colors.moongray[900]}
+              text={isCancelling ? 'Cancelling...' : 'Cancel'}
+              onClick={handleCancelBtnClick(runner_id)}
+            />
+          </div>
+        ) : null}
+        {statuses &&
+          statuses[runner_id] &&
+          (statuses[runner_id].current_status ===
+            TestStatusProgress.COMPLETED ||
+            statuses[runner_id].current_status ===
+              TestStatusProgress.CANCELLED) && (
+            <Link href={`/benchmarking/report?id=${runner_id}`}>
+              <Button
+                width={150}
+                mode={ButtonType.OUTLINE}
+                size="lg"
+                type="button"
+                hoverBtnColor={colors.moongray[700]}
+                pressedBtnColor={colors.moongray[900]}
+                text="View Report"
+              />
+            </Link>
+          )}
+
+        {statuses &&
+          statuses[runner_id] &&
+          statuses[runner_id].current_status === TestStatusProgress.ERRORS && (
             <Button
               width={150}
               mode={ButtonType.OUTLINE}
@@ -165,23 +225,10 @@ function BenchmarkRunStatus() {
               type="button"
               hoverBtnColor={colors.moongray[700]}
               pressedBtnColor={colors.moongray[900]}
-              text="View Report"
+              text="View Errors"
+              onClick={() => setShowErrors(true)}
             />
-          </Link>
-        )}
-
-        {statuses[runner_id].current_status === TestStatusProgress.ERRORS && (
-          <Button
-            width={150}
-            mode={ButtonType.OUTLINE}
-            size="lg"
-            type="button"
-            hoverBtnColor={colors.moongray[700]}
-            pressedBtnColor={colors.moongray[900]}
-            text="View Errors"
-            onClick={() => setShowErrors(true)}
-          />
-        )}
+          )}
       </div>
     </div>
   );
@@ -321,16 +368,17 @@ function BenchmarkRunStatus() {
                   </p>
                   <div className="col-span-3 grid grid-cols-3 gap-[1.7%] w-[90%]">
                     <Link href="/redteaming/sessions/new">
-                    <ActionCard
-                      height={240}
-                      iconSize={35}
-                      cardColor={colors.moongray[800]}
-                      title="Discover"
-                      description="new vulnerabilities"
-                      descriptionColor={colors.moongray[300]}
-                      iconName={IconName.Spacesuit}
-                      actionText="Start Red Teaming"
-                    /></Link>
+                      <ActionCard
+                        height={240}
+                        iconSize={35}
+                        cardColor={colors.moongray[800]}
+                        title="Discover"
+                        description="new vulnerabilities"
+                        descriptionColor={colors.moongray[300]}
+                        iconName={IconName.Spacesuit}
+                        actionText="Start Red Teaming"
+                      />
+                    </Link>
                     <ActionCard
                       height={240}
                       iconSize={35}
