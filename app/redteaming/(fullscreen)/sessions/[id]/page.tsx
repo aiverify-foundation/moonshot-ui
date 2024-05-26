@@ -14,7 +14,8 @@ async function fetchSessionData(id: string) {
     return new Error('No id provided');
   }
   const response = await fetch(
-    `${config.webAPI.hostURL}${config.webAPI.basePathSessions}/${id}?include_history=true`
+    `${config.webAPI.hostURL}${config.webAPI.basePathSessions}/${id}?include_history=true`,
+    { cache: 'no-store' }
   );
   const result = await processResponse<SessionData>(response);
   return result;

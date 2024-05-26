@@ -75,16 +75,17 @@ type NewEndpointFormProps = {
 };
 
 enum TokenInputMode {
-  MASKED = 'password',
-  TEXT = 'text',
+  EDITING = 'editing',
+  DEFAULT = 'default',
 }
 
 function NewEndpointForm(props: NewEndpointFormProps) {
   const router = useRouter();
   const { onClose, disablePopupLayout, endpointToEdit } = props;
   const [showMoreConfig, setShowMoreConfig] = useState(false);
-  const [tokenInputMode, setTokenInputMode] = useState<TokenInputMode>(() =>
-    endpointToEdit ? TokenInputMode.MASKED : TokenInputMode.TEXT
+  const [isMaskTypedToken, setIsMaskTypedToken] = useState(false);
+  const [tokenInputMode, setTokenInputMode] = useState<TokenInputMode>(
+    () => TokenInputMode.DEFAULT
   );
   const [alertMessage, setAlertMessage] = useState<AlertMsg | undefined>();
 
@@ -151,15 +152,35 @@ function NewEndpointForm(props: NewEndpointFormProps) {
   });
 
   function handleTokenInputFocus(_: React.FocusEvent<HTMLInputElement>) {
-    setTokenInputMode(TokenInputMode.TEXT);
+    setTokenInputMode(TokenInputMode.EDITING);
+    // note - backend api returns empty string if token is not set; it returns string of asterisks masking the token if token exists
+    if (tokenInputMode === TokenInputMode.DEFAULT) {
+      // not editing the input, cursor is outside
+      if (endpointToEdit) {
+        // if EDITING AN ENDPOINT
+        if (
+          formik.values.token.trim() !== '' &&
+          formik.values.token.length > 0
+        ) {
+          // user has typed in an updated token string
+          setIsMaskTypedToken(false); // display clear text
+        }
+        // user has not typed in anything
+        setIsMaskTypedToken(true); // display masked text
+      }
+      // if CREATING A NEW ENDPOINT
+      setIsMaskTypedToken(false); // creating a new endpoint, just display clear text
+      return;
+    }
+
+    if (tokenInputMode === TokenInputMode.EDITING) {
+      // if editing the input, cursor is inside (focused)
+      setIsMaskTypedToken(false); // display clear text regardless if new endpoint or editing existing endpoint
+    }
   }
 
   function handleTokenInputBlur(e: React.FocusEvent<HTMLInputElement>) {
-    if (endpointToEdit) {
-      setTokenInputMode(TokenInputMode.MASKED);
-    } else {
-      setTokenInputMode(TokenInputMode.TEXT);
-    }
+    setTokenInputMode(TokenInputMode.DEFAULT);
     formik.handleBlur(e);
   }
 
@@ -283,15 +304,46 @@ function NewEndpointForm(props: NewEndpointFormProps) {
                 fontSize: '1rem',
                 color: colors.moonpurplelight,
               }}
-              inputStyles={{ height: 38 }}
-              onChange={formik.handleChange}
-              value={
-                tokenInputMode === TokenInputMode.MASKED
-                  ? endpointToEdit
-                    ? endpointToEdit.token
-                    : ''
-                  : formik.values.token
+              inputStyles={
+                {
+                  height: 38,
+                  ...(isMaskTypedToken && {
+                    WebkitTextSecurity: 'disc',
+                    textSecurity: 'disc',
+                  }),
+                } as React.CSSProperties
               }
+              onChange={formik.handleChange}
+              value={(() => {
+                // note - backend api returns empty string if token is not set; it returns string of asterisks masking the token if token exists
+                if (tokenInputMode === TokenInputMode.DEFAULT) {
+                  // not editing the input, cursor is outside
+                  if (endpointToEdit) {
+                    // if EDITING AN ENDPOINT
+                    if (
+                      formik.values.token.trim() !== '' &&
+                      formik.values.token.length > 0
+                    ) {
+                      // user has typed in an updated token string, populate with user input
+                      return formik.values.token;
+                    }
+                    if (endpointToEdit.token.length > 0) {
+                      return endpointToEdit.token; // display the masked string if there is token
+                    }
+                    return ''; // populate with empty string if no token
+                  }
+                  // if CREATING A NEW ENDPOINT
+                  return formik.values.token; // populate with user input (what user has entered)
+                }
+                if (tokenInputMode === TokenInputMode.EDITING) {
+                  // if editing the input, cursor is inside (focused)
+                  if (endpointToEdit) {
+                    // if EDITING AN ENDPOINT
+                    return formik.values.token; // populate with user input (what user has entered)
+                  }
+                  return formik.values.token; // populate with user input (what user has entered)
+                }
+              })()}
               onBlur={handleTokenInputBlur}
               onFocus={handleTokenInputFocus}
               error={
@@ -300,7 +352,6 @@ function NewEndpointForm(props: NewEndpointFormProps) {
                   : undefined
               }
               placeholder="Access token for the remote model endpoint"
-              type={tokenInputMode}
             />
             <p
               className="text-[0.95rem] text-white underline cursor-pointer pt-4"
