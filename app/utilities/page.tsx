@@ -19,7 +19,7 @@ export default function UtilitiesHomePage() {
           moonshot utilities
         </h3>
         <Link
-          href="/benchmarking/session/new"
+          href="/utilities/prompt-templates"
           style={{ width: '40%' }}>
           <SubmenuButton
             width="100%"
