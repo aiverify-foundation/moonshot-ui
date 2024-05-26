@@ -453,7 +453,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
             <h5
               className="font-bold text-white"
               style={{ color: '#ffffff' }}>
-              System Under Test (SUT)
+              Model Endpoints
             </h5>
             <p>{endpointId}</p>
           </div>
@@ -590,7 +590,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           className="p-6"
           data-download="hide">
           This report summarises the results for the benchmark tests ran on the
-          System Under Test (SUT). For the full detailed test results, &nbsp;
+          endpoint. For the full detailed test results, &nbsp;
           <a
             className="text-fuchsia-400"
             href={downloadUrl}>
