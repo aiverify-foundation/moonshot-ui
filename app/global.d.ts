@@ -82,6 +82,7 @@ type LLMEndpoint = {
 };
 
 type LLMEndpointFormValues = {
+  id?: string;
   connector_type: string;
   name: string;
   uri: string;

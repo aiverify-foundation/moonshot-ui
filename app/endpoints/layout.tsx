@@ -5,7 +5,7 @@ import LeftNav from '@/app/components/leftNav';
 import Notifications from '@/app/views/notifications/notifications';
 import { MicroLayout } from '@/app/views/quickstart-home/components/microLayout';
 
-export default function BenchmarkingLayout({
+export default async function BenchmarkingLayout({
   children,
 }: {
   children: React.ReactNode;

@@ -1,5 +1,4 @@
-import { NewEndpointForm } from '@/app/views/models-management/newEnpointForm';
-export const dynamic = 'force-dynamic';
+import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
 
 export default function CreateNewEndpointPage() {
   return (

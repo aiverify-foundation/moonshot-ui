@@ -1,12 +1,10 @@
 import { ApiResult, processResponse } from '@/app/lib/http-requests';
-import { EndpointsViewList } from '@/app/views/models-management/endpointsViewList';
 import config from '@/moonshot.config';
-export const dynamic = 'force-dynamic';
+import { EndpointDetails } from './endpointDetails';
 
 async function fetchEndpoints() {
   const response = await fetch(
-    `${config.webAPI.hostURL}${config.webAPI.basePathLLMEndpoints}?count=true`,
-    { cache: 'no-store' }
+    `${config.webAPI.hostURL}${config.webAPI.basePathLLMEndpoints}`
   );
   const result = await processResponse<LLMEndpoint[]>(response);
   return result;
@@ -17,7 +15,7 @@ export default async function EndpointsHomepage() {
   if ('error' in result) {
     throw result.error;
   }
-  return (
-    <EndpointsViewList endpoints={(result as ApiResult<LLMEndpoint[]>).data} />
-  );
+
+  const allEndpoints = (result as ApiResult<LLMEndpoint[]>).data;
+  return <EndpointDetails endpoint={allEndpoints[0]} />;
 }

@@ -1,24 +1,23 @@
-'use server';
+'use client';
 
 import Link from 'next/link';
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
-// import { Button, ButtonType } from '@/app/components/button';
+import { Button, ButtonType } from '@/app/components/button';
 import { formatDate } from '@/app/lib/date-utils';
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 
 type EndpointsViewListProps = {
-  defaultSelectedEndpoint: LLMEndpoint;
   endpoints: LLMEndpoint[];
   children: React.ReactNode;
 };
 
-function EndpointsViewList({
-  defaultSelectedEndpoint,
-  endpoints,
-  children,
-}: EndpointsViewListProps) {
+function EndpointsViewList({ endpoints, children }: EndpointsViewListProps) {
+  const [selectedEndpointId, setSelectedEndpointId] = React.useState<
+    string | undefined
+  >(() => (endpoints.length ? endpoints[0].id : undefined));
+
   return (
     <MainSectionSurface
       closeLinkUrl="/"
@@ -28,7 +27,7 @@ function EndpointsViewList({
       <div className="relative h-full">
         <header className="flex gap-5 w-full mb-3 justify-between items-end">
           <h1 className="text-[1.6rem] text-white mt-3">Endpoints</h1>
-          {/* <Link href={`/endpoints/new`}>
+          <Link href={`/endpoints/new`}>
             <Button
               size="md"
               mode={ButtonType.OUTLINE}
@@ -36,18 +35,18 @@ function EndpointsViewList({
               text="Create New Endpoint"
               hoverBtnColor={colors.moongray[800]}
             />
-          </Link> */}
+          </Link>
         </header>
         <main
           className="grid grid-cols-2 gap-5"
           style={{ height: 'calc(100% - 140px)' }}>
           <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar">
             {endpoints.map((endpoint) => {
-              const isSelected = endpoint.id === defaultSelectedEndpoint.id;
+              const isSelected = endpoint.id === selectedEndpointId;
               return (
                 <li
                   key={endpoint.id}
-                  className="p-6 bg-moongray-900 text-white hover:bg-moongray-800 
+                  className=" bg-moongray-900 text-white hover:bg-moongray-800 
                   hover:border-moonwine-700 cursor-pointer"
                   style={{
                     transition: 'background-color 0.2s ease-in-out',
@@ -55,7 +54,10 @@ function EndpointsViewList({
                       backgroundColor: colors.moongray['700'],
                     }),
                   }}>
-                  <Link href={`/endpoints/${endpoint.id}`}>
+                  <Link
+                    href={`/endpoints/${endpoint.id}`}
+                    className="block p-6"
+                    onClick={() => setSelectedEndpointId(endpoint.id)}>
                     <div className="flex gap-2 mb-3 items-start">
                       <Icon name={IconName.OutlineBox} />
                       <div>
@@ -83,7 +85,7 @@ function EndpointsViewList({
           {children}
         </main>
         <footer className="absolute bottom-0 w-full flex justify-end gap-4">
-          {/* <Link href={`/endpoints/edit/${defaultSelectedEndpoint.id}`}>
+          <Link href={`/endpoints/${selectedEndpointId}/edit`}>
             <Button
               size="lg"
               mode={ButtonType.PRIMARY}
@@ -91,7 +93,7 @@ function EndpointsViewList({
               hoverBtnColor={colors.moongray[1000]}
               pressedBtnColor={colors.moongray[900]}
             />
-          </Link> */}
+          </Link>
         </footer>
       </div>
     </MainSectionSurface>
