@@ -88,6 +88,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
     () => TokenInputMode.DEFAULT
   );
   const [alertMessage, setAlertMessage] = useState<AlertMsg | undefined>();
+  const [disableSaveBtn, setDisableSaveBtn] = useState(true);
 
   const [createModelEndpoint, { isLoading: createModelEndpointIsLoding }] =
     useCreateLLMEndpointMutation();
@@ -141,7 +142,6 @@ function NewEndpointForm(props: NewEndpointFormProps) {
       } else {
         result = await submitNewEndpoint(values);
       }
-      console.dir(result);
       if (disablePopupLayout) {
         router.push('/endpoints');
         router.refresh();
@@ -150,6 +150,11 @@ function NewEndpointForm(props: NewEndpointFormProps) {
       }
     },
   });
+
+  useEffect(() => {
+    if (!Object.keys(formik.touched).length) return;
+    setDisableSaveBtn(!formik.isValid);
+  }, [formik.touched, formik.isValid]);
 
   function handleTokenInputFocus(_: React.FocusEvent<HTMLInputElement>) {
     setTokenInputMode(TokenInputMode.EDITING);
@@ -231,8 +236,6 @@ function NewEndpointForm(props: NewEndpointFormProps) {
       return;
     }
   }
-
-  const submitEnabled = formik.isValid;
 
   const formSection = (
     <>
@@ -373,8 +376,8 @@ function NewEndpointForm(props: NewEndpointFormProps) {
             />
             <Button
               width={120}
+              disabled={disableSaveBtn}
               mode={ButtonType.PRIMARY}
-              disabled={!submitEnabled}
               size="lg"
               type="submit"
               text="Save"
@@ -431,6 +434,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
           </div>
           <div className="flex grow gap-2 justify-end items-end">
             <Button
+              width={120}
               mode={ButtonType.OUTLINE}
               size="lg"
               type="button"
