@@ -13,6 +13,7 @@ type BannerProps = {
   buttonColor?: string;
   buttonHoverColor?: string;
   buttonTextColor?: string;
+  onBtnClick?: () => void;
 };
 
 function Banner(props: PropsWithChildren<BannerProps>) {
@@ -24,6 +25,7 @@ function Banner(props: PropsWithChildren<BannerProps>) {
     buttonColor = '#000000',
     buttonHoverColor = '#EEEEEE',
     buttonTextColor = '#FFFFFF',
+    onBtnClick,
     children,
   } = props;
 
@@ -38,7 +40,9 @@ function Banner(props: PropsWithChildren<BannerProps>) {
           style={{ color: textColor }}>
           {bannerText}
         </p>
-        <Link href="/benchmarking/session/new">
+        <Link
+          href="/benchmarking/session/new"
+          onClick={onBtnClick}>
           <Button
             type="button"
             size="lg"

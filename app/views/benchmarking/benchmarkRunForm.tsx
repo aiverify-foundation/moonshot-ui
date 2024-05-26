@@ -52,6 +52,8 @@ function BenchmarkRunForm() {
     onSubmit: (values) => {
       setDisableRunBtn(true);
       createBenchmarkRun(values);
+      dispatch(resetBenchmarkCookbooks());
+      dispatch(resetBenchmarkModels());
     },
   });
   const [runBenchmark, { isLoading }] = useRunBenchmarkMutation();
@@ -67,8 +69,6 @@ function BenchmarkRunForm() {
       setDisableRunBtn(false);
       return;
     }
-    dispatch(resetBenchmarkCookbooks());
-    dispatch(resetBenchmarkModels());
     router.push(`/benchmarking/session/run?runner_id=${response.data.id}`);
   }
 

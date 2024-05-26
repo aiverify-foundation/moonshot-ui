@@ -1,10 +1,22 @@
+'use client';
 import Link from 'next/link';
 import { IconName } from '@/app/components/IconSVG';
 import BackToHomeButton from '@/app/views/shared-components/backToHomeButton/backToHomeButton';
 import { colors } from '@/app/views/shared-components/customColors';
 import { SubmenuButton } from '@/app/views/shared-components/submenuButton/submenuButton';
+import {
+  resetBenchmarkCookbooks,
+  resetBenchmarkModels,
+  useAppDispatch,
+} from '@/lib/redux';
 
 export default function BenchmarkingHomePage() {
+  const dispatch = useAppDispatch();
+  function handleStartNewRunClick() {
+    dispatch(resetBenchmarkCookbooks());
+    dispatch(resetBenchmarkModels());
+  }
+
   return (
     <>
       <header className="relative h-[50px]">
@@ -20,7 +32,8 @@ export default function BenchmarkingHomePage() {
         </h3>
         <Link
           href="/benchmarking/session/new"
-          style={{ width: '40%' }}>
+          style={{ width: '40%' }}
+          onClick={handleStartNewRunClick}>
           <SubmenuButton
             width="100%"
             text="Start New Run"
