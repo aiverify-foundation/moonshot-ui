@@ -11,8 +11,10 @@ artEventBus is instantiated twice instead of sharing the same intsance in dev mo
 only test this using prod build (npm run build && npm start)
 */
 
+const MAX_LISTENERS = 8;
+
 const artEventBus = new EventEmitter();
-artEventBus.setMaxListeners(8);
+artEventBus.setMaxListeners(MAX_LISTENERS);
 console.log('ART EventBus limits: ', artEventBus.getMaxListeners());
 
 export async function POST(request: Request) {
@@ -51,6 +53,7 @@ export async function GET() {
   const sseWriter: Writer | undefined = getSSEWriter(writer, encoder);
 
   function handleRedTeamUpdate(data: ArtStatus) {
+    let errorCount = 0;
     console.debug('ART Data received from webhook', {
       runner_id: data.current_runner_id,
       current_status: data.current_status,
@@ -68,6 +71,15 @@ export async function GET() {
       }
     } catch (error) {
       console.error('Error handling REDTEAM_UPDATE event', error);
+      errorCount++; // Increment error count
+      if (errorCount === 20) {
+        emitter.removeAllListeners(AppEventTypes.REDTEAM_UPDATE);
+        errorCount = 0; // Reset error count after 10 occurrences
+        const index = artEmitters.indexOf(emitter);
+        if (index > -1) {
+          artEmitters.splice(index, 1);
+        }
+      }
     }
   }
 
@@ -95,40 +107,32 @@ export async function GET() {
   artEmitters.push(emitter);
 
   // Heartbeat mechanism
-  let writeErrorCount = 0;
-  const heartbeatInterval = setInterval(() => {
-    try {
-      console.log('Sending ART SSE heartbeat');
-      console.log(
-        'Number of listeners on artEmitters: ',
-        artEventBus.listenerCount(AppEventTypes.REDTEAM_UPDATE)
-      );
-      console.log('art heartbeatTimers: ', heartbeatTimers.length);
-      writer.write(encoder.encode(': \n\n')).catch(() => {
-        if (writeErrorCount > 5) {
-          console.error(
-            'Error writing heartbeat to SSE ART stream. This is expected if SSE connection was closed. Cleaning up SSE ART resources.'
-          );
-          emitter.removeAllListeners(AppEventTypes.REDTEAM_UPDATE);
-          clearInterval(heartbeatInterval);
-          const index = heartbeatTimers.indexOf(heartbeatInterval);
-          if (index > -1) {
-            heartbeatTimers.splice(index, 1);
-          }
+  // const heartbeatInterval = setInterval(() => {
+  //   try {
+  //     console.log('Sending ART SSE heartbeat');
+  //     console.log(
+  //       'Number of listeners on artEmitters: ',
+  //       artEventBus.listenerCount(AppEventTypes.REDTEAM_UPDATE)
+  //     );
+  //     console.log('art heartbeatTimers: ', heartbeatTimers.length);
+  //     writer.write(encoder.encode(': \n\n')).catch(() => {
+  //         console.error(
+  //           'Error writing heartbeat to SSE ART stream. This is expected if SSE connection was closed. Cleaning up SSE ART resources.'
+  //         );
+  //         emitter.removeAllListeners(AppEventTypes.REDTEAM_UPDATE);
+  //         clearInterval(heartbeatInterval);
+  //         const index = heartbeatTimers.indexOf(heartbeatInterval);
+  //         if (index > -1) {
+  //           heartbeatTimers.splice(index, 1);
+  //         }
+  //     });
+  //   } catch (error) {
+  //     const errWIthMsg = toErrorWithMessage(error);
+  //     console.error('Error sending ART SSE heartbeat', errWIthMsg);
+  //   }
+  // }, 10000);
 
-          writeErrorCount = 0;
-          return;
-        }
-
-        writeErrorCount += 1;
-      });
-    } catch (error) {
-      const errWIthMsg = toErrorWithMessage(error);
-      console.error('Error sending ART SSE heartbeat', errWIthMsg);
-    }
-  }, 10000);
-
-  heartbeatTimers.push(heartbeatInterval);
+  // heartbeatTimers.push(heartbeatInterval);
 
   const eventStream = async (notifier: RedTeamEvents | SystemEvents) => {
     (notifier as SystemEvents).update({

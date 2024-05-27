@@ -49,6 +49,7 @@ export async function GET() {
   const emitter = appEventBus.on(
     AppEventTypes.BENCHMARK_UPDATE,
     (data: TestStatus) => {
+      let errorCount = 0;
       console.debug('Data received from webhook', {
         runner_id: data.current_runner_id,
         current_progress: data.current_progress,
@@ -67,41 +68,43 @@ export async function GET() {
           });
         }
       } catch (error) {
-        console.error('Error writing to SSE stream', error);
+        console.error('Error writing webhook data to SSE stream', error);
+        errorCount++; // Increment error count
+
+        if (errorCount === 20) {
+          emitter.removeAllListeners(AppEventTypes.BENCHMARK_UPDATE);
+          errorCount = 0; // Reset error count after 10 occurrences
+          const index = bmEmitters.indexOf(emitter);
+          if (index > -1) {
+            bmEmitters.splice(index, 1);
+          }
+        }
       }
     }
   );
   bmEmitters.push(emitter);
 
   // Heartbeat mechanism
-  let writeErrorCount = 0;
-  const heartbeatInterval = setInterval(() => {
-    console.log('sending BM SSE heartbeat');
-    console.log(
-      'listeners on appEventBus: ',
-      appEventBus.listenerCount(AppEventTypes.BENCHMARK_UPDATE)
-    );
-    console.log('heartbeatTimers: ', heartbeatTimers.length);
-    writer.write(encoder.encode(': \n\n')).catch(() => {
-      if (writeErrorCount > 5) {
-        console.error(
-          'Error writing heartbeat to SSE stream. This is expected if SSE connection was closed. Cleaning up SSE resources.'
-        );
-        emitter.removeAllListeners(AppEventTypes.BENCHMARK_UPDATE);
-        clearInterval(heartbeatInterval);
-        const index = heartbeatTimers.indexOf(heartbeatInterval);
-        if (index > -1) {
-          heartbeatTimers.splice(index, 1);
-        }
-        writeErrorCount = 0;
-        return;
-      }
+  // const heartbeatInterval = setInterval(() => {
+  //   console.log('sending BM SSE heartbeat');
+  //   console.log(
+  //     'listeners on appEventBus: ',
+  //     appEventBus.listenerCount(AppEventTypes.BENCHMARK_UPDATE)
+  //   );
+  //   console.log('heartbeatTimers: ', heartbeatTimers.length);
+  //   writer.write(encoder.encode(': \n\n')).catch(() => {
+  //     console.error(
+  //       'Error writing heartbeat to SSE stream. This is expected if SSE connection was closed. Cleaning up SSE resources.'
+  //     );
+  //     clearInterval(heartbeatInterval);
+  //     const index = heartbeatTimers.indexOf(heartbeatInterval);
+  //     if (index > -1) {
+  //       heartbeatTimers.splice(index, 1);
+  //     }
+  //   });
+  // }, 10000);
 
-      writeErrorCount += 1;
-    });
-  }, 10000);
-
-  heartbeatTimers.push(heartbeatInterval);
+  // heartbeatTimers.push(heartbeatInterval);
 
   const eventStream = async (notifier: BenchMarkEvents | SystemEvents) => {
     (notifier as SystemEvents).update({
