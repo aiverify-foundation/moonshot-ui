@@ -1,7 +1,12 @@
 import React from 'react';
 
 type CookBookContextValue =
-  | [Cookbook[], React.Dispatch<React.SetStateAction<Cookbook[]>>]
+  | [
+      Cookbook[],
+      React.Dispatch<React.SetStateAction<Cookbook[]>>,
+      boolean,
+      React.Dispatch<React.SetStateAction<boolean>>,
+    ]
   | undefined;
 
 const CookbooksContext = React.createContext<CookBookContextValue>(undefined);
@@ -9,8 +14,16 @@ CookbooksContext.displayName = 'CookbooksContext';
 
 function CookbooksProvider({ children }: { children: React.ReactNode }) {
   const [cookbooks, setCookbooks] = React.useState<Cookbook[]>([]);
+  const [isFirstCookbooksFetch, setIsFirstCookbooksFetch] = React.useState(
+    () => true
+  );
 
-  const value: CookBookContextValue = [cookbooks, setCookbooks];
+  const value: CookBookContextValue = [
+    cookbooks,
+    setCookbooks,
+    isFirstCookbooksFetch,
+    setIsFirstCookbooksFetch,
+  ];
   return (
     <CookbooksContext.Provider value={value}>
       {children}

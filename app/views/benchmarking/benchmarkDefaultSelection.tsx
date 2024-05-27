@@ -1,10 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
-import {
-  useGetCookbooksQuery,
-  useLazyGetCookbooksQuery,
-} from '@/app/services/cookbook-api-service';
+import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import {
@@ -22,7 +19,8 @@ type Props = {
 
 function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
   const dispatch = useAppDispatch();
-  const [allCookbooks, setAllCookbooks] = useCookbooks();
+  const [_, setAllCookbooks, isFirstCookbooksFetch, setIsFirstCookbooksFetch] =
+    useCookbooks();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
   );
@@ -37,7 +35,6 @@ function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
         config.defaultCookbooksForSelection.length === 0,
     }
   );
-  // const [fetchCookbooks] = useLazyGetCookbooksQuery();
 
   function handleCookbookBtnClick(cb: Cookbook) {
     if (selectedCookbooks.some((t) => t.id === cb.id)) {
@@ -47,30 +44,20 @@ function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
     }
   }
 
-  // useEffect(() => {
-  //   const preselectedCookbooks: Cookbook[] = config.baselineSelectedCookbooks
-  //     .map((id) => defaultCookbooksForSelection?.find((cb) => cb.id === id))
-  //     .filter((cb) => cb !== undefined) as Cookbook[];
-  //   dispatch(addBenchmarkCookbooks(preselectedCookbooks));
-  // }, [defaultCookbooksForSelection]);
-
   React.useEffect(() => {
     if (isFetchingDefaultCookbooksForSelection || !defaultCookbooksForSelection)
       return;
     updateAllCookbooks(setAllCookbooks, defaultCookbooksForSelection);
-    // After the default cookbooks for selection is updated, fetch all cookbooks in the background to store them in Context.
-    // No need to handle situation where this component is unmounted while the fetch is in progress.
-    // async function fetchAllCookbooksWithCount() {
-    //   const result = await fetchCookbooks({ count: true });
-    //   updateAllCookbooks(setAllCookbooks, result.data || []);
-    //   if (!result.data) return;
-    // }
     if (defaultCookbooksForSelection.length > 0) {
       setHiddenNavButtons([true, false]);
     }
-    // if (!allCookbooks.length) {
-    //   fetchAllCookbooksWithCount();
-    // }
+    if (isFirstCookbooksFetch === true) {
+      const preselectedCookbooks: Cookbook[] = config.baselineSelectedCookbooks
+        .map((id) => defaultCookbooksForSelection?.find((cb) => cb.id === id))
+        .filter((cb) => cb !== undefined) as Cookbook[];
+      dispatch(addBenchmarkCookbooks(preselectedCookbooks));
+      setIsFirstCookbooksFetch(false);
+    }
   }, [isFetchingDefaultCookbooksForSelection, defaultCookbooksForSelection]);
 
   const defaultCookbookBtns = defaultCookbooksForSelection
