@@ -13,7 +13,10 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
   const { cookbook, selected, onSelect, onAboutClick } = props;
   const [isSelected, setIsSelected] = useState(selected);
 
-  function handleClick() {
+  function handleClick(
+    e: React.MouseEvent | React.ChangeEvent<HTMLInputElement>
+  ) {
+    e.stopPropagation();
     setIsSelected(!isSelected);
     onSelect(cookbook);
   }
@@ -42,7 +45,6 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
           type="checkbox"
           className="w-2 h-2 shrink-0"
           checked={isSelected}
-          onChange={handleClick}
         />
       </header>
       <p>{cookbook.description}</p>
