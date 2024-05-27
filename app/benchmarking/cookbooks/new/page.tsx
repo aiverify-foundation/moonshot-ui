@@ -26,9 +26,6 @@ export default async function RecipesPage() {
       minHeight={750}
       bgColor={colors.moongray['950']}>
       <div className="h-full">
-        <header className="flex gap-5 w-full">
-          <h1 className="text-[1.6rem] text-white">Create Cookbook</h1>
-        </header>
         <CreateCookbookForm recipes={(result as ApiResult<Recipe[]>).data} />
       </div>
     </MainSectionSurface>
