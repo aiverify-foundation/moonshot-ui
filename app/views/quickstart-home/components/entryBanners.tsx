@@ -69,14 +69,16 @@ function EntryBanners() {
                 actionText="Run Benchmarks"
               />
             </Link>
-            <ActionCard
-              title="Create"
-              description="cookbooks"
-              descriptionColor={colors.moongray[300]}
-              cardColor={colors.moongray[950]}
-              iconName={IconName.Book}
-              actionText="Select Recipes"
-            />
+            <Link href="/benchmarking/cookbooks/new">
+              <ActionCard
+                title="Create"
+                description="cookbooks"
+                descriptionColor={colors.moongray[300]}
+                cardColor={colors.moongray[950]}
+                iconName={IconName.Book}
+                actionText="Select Recipes"
+              />
+            </Link>
           </div>
         </div>
       </section>
