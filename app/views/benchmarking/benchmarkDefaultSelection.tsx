@@ -27,14 +27,9 @@ function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
   const {
     data: defaultCookbooksForSelection,
     isFetching: isFetchingDefaultCookbooksForSelection,
-  } = useGetCookbooksQuery(
-    { ids: config.defaultCookbooksForSelection, count: true },
-    {
-      skip:
-        !config.defaultCookbooksForSelection ||
-        config.defaultCookbooksForSelection.length === 0,
-    }
-  );
+  } = useGetCookbooksQuery({
+    count: true,
+  });
 
   function handleCookbookBtnClick(cb: Cookbook) {
     if (selectedCookbooks.some((t) => t.id === cb.id)) {
@@ -98,7 +93,9 @@ function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
             <span className="font-bold">Optional tests</span> to evaluate a
             model&apos;s performance in specific topics or languages
           </p>
-          <div className="flex flex-wrap gap-4 mt-10 w-[80%] justify-center">
+          <div
+            className="flex flex-wrap gap-4 mt-10 w-[80%] justify-center
+            max-h-[350px] overflow-y-auto custom-scrollbar p-1">
             {defaultCookbookBtns}
           </div>
         </>
