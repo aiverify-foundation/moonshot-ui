@@ -90,8 +90,8 @@ function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
             Would you like to test any of these?
           </h2>
           <p className="text-[1.1rem] text-moongray-300 w-full text-center py-0">
-            <span className="font-bold">Optional tests</span> to evaluate a
-            model&apos;s performance in specific topics or languages
+            Evaluate a model&apos;s performance in specific topics, languages
+            and safety
           </p>
           <div
             className="flex flex-wrap gap-4 mt-10 w-[80%] justify-center
