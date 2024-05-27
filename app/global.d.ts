@@ -102,7 +102,7 @@ type Cookbook = {
 
 type CookbookFormValues = {
   name: string;
-  description: string;
+  description?: string;
   recipes: string[];
 };
 

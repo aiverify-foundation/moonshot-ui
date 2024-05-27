@@ -1,45 +1,69 @@
 'use client';
 
 import { useFormik } from 'formik';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { object, string, array } from 'yup';
-import { IconName } from '@/app/components/IconSVG';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
+import { toErrorWithMessage } from '@/app/lib/error-utils';
+import { useCreateCookbookMutation } from '@/app/services/cookbook-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
-import config from '@/moonshot.config';
+import { Modal } from '@/app/views/shared-components/modal/modal';
 import { RecipesViewList } from './recipesViewList';
 export const dynamic = 'force-dynamic';
 
-type CreateCookbookFormValues = {
-  name: string;
-  description: string;
-  recipes: string[];
-};
-
-const initialFormValues: CreateCookbookFormValues = {
+const initialFormValues: CookbookFormValues = {
   name: '',
-  description: '',
+  description: undefined,
   recipes: [],
 };
 
 const validationSchema = object().shape({
   name: string().required('Name is required'),
-  description: string(),
+  description: string().nullable(),
   recipes: array().min(1, 'At least one recipe is required'),
 });
 
 function CreateCookbookForm({ recipes }: { recipes: Recipe[] }) {
+  const router = useRouter();
   const [selectedRecipes, setSelectedRecipes] = React.useState<Recipe[]>([]);
   const [showRecipesList, setShowRecipesList] = React.useState(false);
+  const [showResultModal, setShowResultModal] = React.useState(false);
+  const [creationError, setCreationError] = React.useState<
+    string | undefined
+  >();
+  const [createCookbook] = useCreateCookbookMutation();
   const formik = useFormik({
     initialValues: initialFormValues,
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      // TODO submission
+      if (!values.description || values.description === '') {
+        delete values.description;
+      }
+      submitCookbookCreation(values);
     },
   });
+
+  React.useEffect(() => {
+    formik.setFieldValue(
+      'recipes',
+      selectedRecipes.map((recipe) => recipe.id)
+    );
+  }, [selectedRecipes]);
+
+  async function submitCookbookCreation(values: CookbookFormValues) {
+    const result = await createCookbook(values);
+    if ('error' in result) {
+      const errWithMsg = toErrorWithMessage(result.error);
+      console.log(result.error);
+      setCreationError(errWithMsg.message);
+      return;
+    }
+    setShowResultModal(true);
+  }
 
   function handleAddRecipes(recipes: Recipe[]) {
     setSelectedRecipes(recipes);
@@ -69,6 +93,49 @@ function CreateCookbookForm({ recipes }: { recipes: Recipe[] }) {
 
   return (
     <>
+      {creationError != undefined ? (
+        <Modal
+          heading="Errors"
+          bgColor={colors.moongray['800']}
+          textColor="#FFFFFF"
+          primaryBtnLabel="Close"
+          enableScreenOverlay
+          onCloseIconClick={() => setCreationError(undefined)}
+          onPrimaryBtnClick={() => setCreationError(undefined)}>
+          <div className="flex gap-2 items-start">
+            <Icon
+              name={IconName.Alert}
+              size={40}
+              color="red"
+            />
+            <p>{creationError}</p>
+          </div>
+        </Modal>
+      ) : null}
+      {showResultModal ? (
+        <Modal
+          heading="Cookbook Created"
+          bgColor={colors.moongray['800']}
+          textColor="#FFFFFF"
+          primaryBtnLabel="View Cookbooks"
+          secondaryBtnLabel="Create Another"
+          enableScreenOverlay
+          onCloseIconClick={() => {
+            setShowResultModal(false);
+            formik.resetForm();
+            setSelectedRecipes([]);
+          }}
+          onSecondaryBtnClick={() => {
+            setShowResultModal(false);
+            formik.resetForm();
+            setSelectedRecipes([]);
+          }}
+          onPrimaryBtnClick={() => router.push('/benchmarking/cookbooks')}>
+          <div className="flex gap-2 items-start">
+            <p>{`Cookbook ${formik.values.name} was successfully created.`}</p>
+          </div>
+        </Modal>
+      ) : null}
       <header className="flex gap-5 w-full justify-center">
         <h1 className="text-[1.6rem] text-white">Create Cookbook</h1>
       </header>
@@ -119,11 +186,11 @@ function CreateCookbookForm({ recipes }: { recipes: Recipe[] }) {
               Selected Recipes
             </h2>
             <Button
-              disabled={!formik.isValid}
               mode={ButtonType.OUTLINE}
-              size="md"
+              size="sm"
               type="button"
               text="Select Recipes"
+              textSize="0.85rem"
               leftIconName={IconName.Plus}
               hoverBtnColor={colors.moongray[800]}
               pressedBtnColor={colors.moongray[700]}

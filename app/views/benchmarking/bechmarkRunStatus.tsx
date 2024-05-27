@@ -379,16 +379,18 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
                         actionText="Start Red Teaming"
                       />
                     </Link>
-                    <ActionCard
-                      height={240}
-                      iconSize={35}
-                      title="Create"
-                      description="cookbooks"
-                      descriptionColor={colors.moongray[300]}
-                      cardColor={colors.moongray[800]}
-                      iconName={IconName.Book}
-                      actionText="Select Recipes"
-                    />
+                    <Link href="/benchmarking/cookbooks/new">
+                      <ActionCard
+                        height={240}
+                        iconSize={35}
+                        title="Create"
+                        description="cookbooks"
+                        descriptionColor={colors.moongray[300]}
+                        cardColor={colors.moongray[800]}
+                        iconName={IconName.Book}
+                        actionText="Select Recipes"
+                      />
+                    </Link>
                     <div className="flex flex-col gap-2 justify-center">
                       <Button
                         rightIconName={IconName.ArrowRight}
