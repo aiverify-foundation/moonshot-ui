@@ -1,8 +1,8 @@
 <div align="center">
 
-![Moonshot Logo](./misc/aiverify-moonshot-logo.png)
+![Moonshot Logo](https://github.com/moonshot-admin/moonshot/raw/main/misc/aiverify-moonshot-logo.png)
 
-This repository contains the Web UI integration for [Project Moonshot](https://github.com/aiverify-foundation/moonshot)
+This repository contains the UI integration for [Project Moonshot](https://github.com/aiverify-foundation/moonshot)
 
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 
@@ -10,12 +10,11 @@ This repository contains the Web UI integration for [Project Moonshot](https://g
 
 <b>Motivation </b>
 
-Developed by the [AI Verify Foundation](https://aiverifyfoundation.sg/), Project Moonshot is one of the first tools to bring [Benchmarking](#benchmarking-with-moonshot) and [Red-Teaming](#red-teaming-with-moonshot) together to help AI developers, compliance teams and AI system owners <b>evaluate LLMs and LLM applications</b>.
-Project Moonshot's Web UI is designed to provide a more intuitive user experience for benchmarking and red teaming processes via [Moonshot Library](https://github.com/aiverify-foundation/moonshot).
+Developed by the [AI Verify Foundation](https://aiverifyfoundation.sg/), Project Moonshot is one of the first tools to bring benchmarking and red teaming together to help AI developers, compliance teams and AI system owners <b>evaluate LLMs and LLM applications</b>.
 
-Go to [Project Moonshot Python Library Repository](https://github.com/aiverify-foundation/moonshot).
+Project Moonshot's UI is designed to provide a more intuitive user experience for benchmarking and red teaming processes via [Moonshot Library](https://github.com/aiverify-foundation/moonshot).
 
-![Moonshot UI Home](./misc/aiverify-moonshot-UI.png)
+You can view the Project Moonshot Library Repository [here](https://github.com/aiverify-foundation/moonshot).
 
 
 ## Getting Started
@@ -26,11 +25,11 @@ Go to [Project Moonshot Python Library Repository](https://github.com/aiverify-f
 
 2. [Node.js verion 20.11.1 LTS](https://nodejs.org/en/blog/release/v20.11.1) and above
 
-3. [Moonshot Python Library]()
+3. [Moonshot Python Library](https://pypi.org/project/aiverify-moonshot/)
 
 ### ⬇️ Installation
 
-If you already have installed the [Moonshot Python Library](), simply run
+If you already have installed the [Moonshot Python Library](https://pypi.org/project/aiverify-moonshot/), simply run
 ```
 python -m moonshot -i moonshot-ui
 ```
@@ -64,10 +63,10 @@ npm start
 
 ⚠️ You will need to have test assets from [moonshot-data](https://github.com/aiverify-foundation/moonshot-data) before you can run any tests.
 
-Check out our [Installation Guide]() for a more details.
+Check out our [Installation Guide](https://aiverify-foundation.github.io/moonshot/getting_started/quick_install/) for more details.
 
-If you are having installation issues, see the [Troubleshooting Guide]().
+If you are having installation issues, see the [Troubleshooting Guide](https://aiverify-foundation.github.io/moonshot/troubleshoot/troubleshoot/).
 
 ## User Guides
 
-[Getting Started with Moonshot Web UI]()
+[Getting Started with Moonshot Web UI](https://aiverify-foundation.github.io/moonshot/web_ui/web_ui_guide/)
