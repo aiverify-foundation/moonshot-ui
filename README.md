@@ -16,6 +16,9 @@ Project Moonshot's UI is designed to provide a more intuitive user experience fo
 
 You can view the Project Moonshot Library Repository [here](https://github.com/aiverify-foundation/moonshot).
 
+Preview: 
+
+![moonshot-ui](./misc/ui-homepage.png)
 
 ## Getting Started
 
