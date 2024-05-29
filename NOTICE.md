@@ -3,7 +3,7 @@ Copyright 2024
 [aiverify-moonshot-ui : main]
 
 Phase: DEVELOPMENT
-Distribution: EXTERNAL
+Distribution: OPENSOURCE
 
 Components: 
 
