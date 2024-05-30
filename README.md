@@ -12,7 +12,7 @@ This repository contains the UI integration for [Project Moonshot](https://githu
 
 Developed by the [AI Verify Foundation](https://aiverifyfoundation.sg/), Project Moonshot is one of the first tools to bring benchmarking and red teaming together to help AI developers, compliance teams and AI system owners <b>evaluate LLMs and LLM applications</b>.
 
-Project Moonshot's UI is designed to provide a more intuitive user experience for benchmarking and red teaming processes via [Moonshot Library](https://github.com/aiverify-foundation/moonshot).
+Project Moonshot's UI is designed to provide a more intuitive user experience for benchmarking and red teaming processes via [Moonshot Library](https://pypi.org/project/aiverify-moonshot/).
 
 You can view the Project Moonshot Library Repository [here](https://github.com/aiverify-foundation/moonshot).
 
@@ -68,8 +68,8 @@ npm start
 
 Check out our [Installation Guide](https://aiverify-foundation.github.io/moonshot/getting_started/quick_install/) for more details.
 
-If you are having installation issues, see the [Troubleshooting Guide](https://aiverify-foundation.github.io/moonshot/troubleshoot/troubleshoot/).
+If you are having installation issues, see the [Troubleshooting Guide](https://aiverify-foundation.github.io/moonshot/common_issues/).
 
 ## User Guides
 
-[Getting Started with Moonshot Web UI](https://aiverify-foundation.github.io/moonshot/web_ui/web_ui_guide/)
+[Getting Started with Moonshot Web UI](https://aiverify-foundation.github.io/moonshot/user_guide/web_ui/web_ui_guide/)
