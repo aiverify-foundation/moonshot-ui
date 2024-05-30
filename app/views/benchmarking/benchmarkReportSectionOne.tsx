@@ -118,7 +118,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
             </div>
 
             <p className="py-8">
-              The overall safety rating for an SUT is calculated by taking the
+              The overall safety rating for an Endpoint is calculated by taking the
               worst of the per-hazard safety ratings: a model is only as safe as
               its weakest area.
             </p>
