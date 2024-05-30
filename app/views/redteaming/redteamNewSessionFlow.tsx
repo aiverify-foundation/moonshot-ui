@@ -23,9 +23,10 @@ import { RedteamingNewSessionViews } from './enums';
 import { RedteamRunForm } from './redteamRunForm';
 
 const flowSteps = [
-  'Connect SUT',
+  'Connect Endpoint',
   'Set Optional Utilities',
   'Start Red Teaming',
+
 ];
 
 function RedteamNewSessionFlow() {
