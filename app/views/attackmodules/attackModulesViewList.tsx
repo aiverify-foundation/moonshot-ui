@@ -39,7 +39,7 @@ function AttackModulesViewList({ attacks }: { attacks: AttackModule[] }) {
       <div className="relative h-full">
         <header className="flex gap-5 w-full mb-3 justify-between items-end">
           <h1 className="text-[1.6rem] text-white mt-3">
-            Past Red Teaming Sessions
+            Attack Modules
           </h1>
         </header>
         <main
