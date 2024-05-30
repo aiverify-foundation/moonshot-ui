@@ -10,7 +10,7 @@ This repository contains the UI integration for [Project Moonshot](https://githu
 
 <b>Motivation </b>
 
-Developed by the [AI Verify Foundation](https://aiverifyfoundation.sg/), Project Moonshot is one of the first tools to bring benchmarking and red teaming together to help AI developers, compliance teams and AI system owners <b>evaluate LLMs and LLM applications</b>.
+Developed by the [AI Verify Foundation](https://aiverifyfoundation.sg/?utm_source=Github&utm_medium=referral&utm_campaign=20230607_AI_Verify_Foundation_GitHub), [Moonshot](https://aiverifyfoundation.sg/project-moonshot/?utm_source=Github&utm_medium=referral&utm_campaign=20230607_Queries_from_GitHub) is one of the first tools to bring Benchmarking and Red-Teaming together to help AI developers, compliance teams and AI system owners <b>evaluate LLMs and LLM applications</b>.
 
 Project Moonshot's UI is designed to provide a more intuitive user experience for benchmarking and red teaming processes via [Moonshot Library](https://pypi.org/project/aiverify-moonshot/).
 
