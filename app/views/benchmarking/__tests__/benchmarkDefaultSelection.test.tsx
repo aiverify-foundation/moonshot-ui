@@ -36,6 +36,7 @@ const mockSetHiddenNavButtons = jest.fn();
 
 let mockDispatchUpdateSelectedCookbooksInState: jest.Mock;
 let mockAddCookbooksMutation: jest.Mock;
+let mockRemoveCookbooksMutation: jest.Mock;
 
 const mockCookbooks = [
   {
@@ -59,6 +60,7 @@ describe('BenchmarkDefaultSelection', () => {
     jest.clearAllMocks();
     mockDispatchUpdateSelectedCookbooksInState = jest.fn();
     mockAddCookbooksMutation = jest.fn();
+    mockRemoveCookbooksMutation = jest.fn();
     function useMockGetCookbooksQuery() {
       return {
         data: mockCookbooks,
@@ -144,12 +146,18 @@ describe('BenchmarkDefaultSelection', () => {
     expect(mockDispatchUpdateSelectedCookbooksInState).toHaveBeenCalledTimes(2);
   });
 
-  it('should render selected cookbooks buttons with color', () => {
+  it('should render selected cookbook button with color', async () => {
     const mockOneAlreadySelectedCookbooksFromState: Cookbook[] = [
       mockCookbooks[0],
     ];
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockOneAlreadySelectedCookbooksFromState
+    );
+    (useAppDispatch as jest.Mock).mockImplementation(
+      () => mockDispatchUpdateSelectedCookbooksInState
+    );
+    (removeBenchmarkCookbooks as unknown as jest.Mock).mockImplementation(
+      mockRemoveCookbooksMutation
     );
 
     render(
@@ -164,5 +172,10 @@ describe('BenchmarkDefaultSelection', () => {
       name: /Mock Cookbook One/i,
     });
     expect(mockCookbookOneButton.style.backgroundColor).toBeTruthy();
+    await userEvent.click(mockCookbookOneButton);
+    const clickedCookbook = mockCookbooks[0];
+    expect(mockRemoveCookbooksMutation).toHaveBeenNthCalledWith(1, [
+      clickedCookbook,
+    ]);
   });
 });
