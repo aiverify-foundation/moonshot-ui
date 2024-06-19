@@ -1,30 +1,76 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import { BenchmarkDefaultSelection } from '@/app/views/benchmarking/benchmarkDefaultSelection';
-import { useCookbooks } from '@/app/views/benchmarking/contexts/cookbooksContext';
+import { CookbooksProvider } from '@/app/views/benchmarking/contexts/cookbooksContext';
+import {
+  useAppSelector,
+  useAppDispatch,
+  addBenchmarkCookbooks,
+  removeBenchmarkCookbooks,
+} from '@/lib/redux';
 
-jest.mock('../contexts/cookbooksContext');
-jest.mock('@/lib/redux', mockRedux);
-jest.mock('@/app/services/cookbook-api-service', () => ({
-  useGetCookbooksQuery: jest.fn(),
+jest.mock('@/moonshot.config', () => ({
+  __esModule: true,
+  default: {
+    baselineSelectedCookbooks: ['cb-id-1'],
+  },
 }));
+jest.mock('@/lib/redux', mockRedux);
+jest.mock('@/app/services/cookbook-api-service', mockCookbookApiService);
 function mockRedux() {
   return {
-    useAppDispatch: () => jest.fn(),
-    useAppSelector: () => jest.fn(),
-    resetBenchmarkCookbooks: jest.fn(),
-    resetBenchmarkModels: jest.fn(),
+    useAppDispatch: jest.fn(),
+    useAppSelector: jest.fn(),
+    removeBenchmarkCookbooks: jest.fn(),
+    addBenchmarkCookbooks: jest.fn(),
   };
 }
-function mockUseCookbooks() {
-  return [[], jest.fn(), true, jest.fn()];
+function mockCookbookApiService() {
+  return {
+    useGetCookbooksQuery: jest.fn(),
+  };
 }
-
-(useCookbooks as jest.Mock).mockImplementation(mockUseCookbooks);
 
 const mockSetHiddenNavButtons = jest.fn();
 
+let mockDispatchUpdateSelectedCookbooksInState: jest.Mock;
+let mockAddCookbooksMutation: jest.Mock;
+
+const mockCookbooks = [
+  {
+    id: 'cb-id-1',
+    name: 'Mock Cookbook One',
+    description: 'Mock description',
+    recipes: ['rc-id-1'],
+    total_prompt_in_cookbook: 10,
+  },
+  {
+    id: 'cb-id-2',
+    name: 'Mock Cookbook Two',
+    description: 'Mock description',
+    recipes: ['rc-id-2'],
+    total_prompt_in_cookbook: 20,
+  },
+];
+
 describe('BenchmarkDefaultSelection', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockDispatchUpdateSelectedCookbooksInState = jest.fn();
+    mockAddCookbooksMutation = jest.fn();
+    function useMockGetCookbooksQuery() {
+      return {
+        data: mockCookbooks,
+        isFetching: false,
+      };
+    }
+
+    (useGetCookbooksQuery as jest.Mock).mockImplementation(
+      useMockGetCookbooksQuery
+    );
+  });
+
   it('should render loading animation', () => {
     function useMockGetCookbooksQuery() {
       return {
@@ -37,45 +83,86 @@ describe('BenchmarkDefaultSelection', () => {
       useMockGetCookbooksQuery
     );
     render(
-      <BenchmarkDefaultSelection
-        setHiddenNavButtons={mockSetHiddenNavButtons}
-      />
+      <CookbooksProvider>
+        <BenchmarkDefaultSelection
+          setHiddenNavButtons={mockSetHiddenNavButtons}
+        />
+      </CookbooksProvider>
     );
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
-  it('should render cookbooks for selection', () => {
-    const mockCookbooks = [
-      {
-        id: 'cb-id-1',
-        name: 'Mock Cookbook One',
-        description: 'Mock description',
-        recipes: ['rc-id-1'],
-        total_prompt_in_cookbook: 10,
-      },
-      {
-        id: 'cb-id-2',
-        name: 'Mock Cookbook Two',
-        description: 'Mock description',
-        recipes: ['rc-id-2'],
-        total_prompt_in_cookbook: 20,
-      },
-    ];
+  it('should render cookbooks for selection', async () => {
+    const mockNoneAlreadySelectedCookbooksFromState: Cookbook[] = [];
+    const baseLineCookbooksFromConfig = mockCookbooks[0];
+    (useAppSelector as jest.Mock).mockImplementation(
+      () => mockNoneAlreadySelectedCookbooksFromState
+    );
+    (useAppDispatch as jest.Mock).mockImplementation(
+      () => mockDispatchUpdateSelectedCookbooksInState
+    );
+    (addBenchmarkCookbooks as unknown as jest.Mock).mockImplementation(
+      mockAddCookbooksMutation
+    );
+
     function useMockGetCookbooksQuery() {
       return {
         data: mockCookbooks,
-        isFetching: true,
+        isFetching: false,
       };
     }
 
     (useGetCookbooksQuery as jest.Mock).mockImplementation(
       useMockGetCookbooksQuery
     );
+
     render(
-      <BenchmarkDefaultSelection
-        setHiddenNavButtons={mockSetHiddenNavButtons}
-      />
+      <CookbooksProvider>
+        <BenchmarkDefaultSelection
+          setHiddenNavButtons={mockSetHiddenNavButtons}
+        />
+      </CookbooksProvider>
     );
 
-    screen.debug;
+    expect(mockAddCookbooksMutation).toHaveBeenNthCalledWith(1, [
+      baseLineCookbooksFromConfig,
+    ]);
+    const mockCookbookOneButton = screen.getByRole('button', {
+      name: /Mock Cookbook One/i,
+    });
+    const mockCookbookTwoButton = screen.getByRole('button', {
+      name: /Mock Cookbook Two/i,
+    });
+    expect(mockCookbookOneButton).toBeInTheDocument();
+    expect(mockCookbookTwoButton).toBeInTheDocument();
+    expect(mockCookbookOneButton.style.backgroundColor).toBeFalsy();
+    expect(mockCookbookTwoButton.style.backgroundColor).toBeFalsy();
+    await userEvent.click(mockCookbookOneButton);
+    expect(mockAddCookbooksMutation).toHaveBeenNthCalledWith(2, [
+      mockCookbooks[0],
+    ]);
+    expect(mockDispatchUpdateSelectedCookbooksInState).toHaveBeenCalledTimes(2);
+  });
+
+  it('should render selected cookbooks buttons with color', () => {
+    const mockOneAlreadySelectedCookbooksFromState: Cookbook[] = [
+      mockCookbooks[0],
+    ];
+    (useAppSelector as jest.Mock).mockImplementation(
+      () => mockOneAlreadySelectedCookbooksFromState
+    );
+
+    render(
+      <CookbooksProvider>
+        <BenchmarkDefaultSelection
+          setHiddenNavButtons={mockSetHiddenNavButtons}
+        />
+      </CookbooksProvider>
+    );
+
+    const mockCookbookOneButton = screen.getByRole('button', {
+      name: /Mock Cookbook One/i,
+    });
+    expect(mockCookbookOneButton.style.backgroundColor).toBeTruthy();
   });
 });
