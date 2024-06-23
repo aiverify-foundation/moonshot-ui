@@ -38,6 +38,7 @@ describe('BenchmarkMainCookbooksPromptCount', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
   it('shows loading animation', () => {
     const mockOneAlreadySelectedCookbooksFromState = mockCookbooks;
     (useAppSelector as jest.Mock).mockImplementation(
@@ -49,6 +50,18 @@ describe('BenchmarkMainCookbooksPromptCount', () => {
       </CookbooksProvider>
     );
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
+  });
+
+  it('shows the correct number of prompts', () => {
+    const mockOneAlreadySelectedCookbooksFromState = mockCookbooks;
+    (useAppSelector as jest.Mock).mockImplementation(
+      () => mockOneAlreadySelectedCookbooksFromState
+    );
+    render(
+      <CookbooksProvider>
+        <BenchmarkMainCookbooksPromptCount changeView={mockChangeView} />
+      </CookbooksProvider>
+    );
 
     screen.debug();
   });
