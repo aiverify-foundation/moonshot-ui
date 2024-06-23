@@ -1,5 +1,5 @@
+import { RecipesViewList } from '@/app/benchmarking/recipes/recipesViewList';
 import { ApiResult, processResponse } from '@/app/lib/http-requests';
-import { RecipesViewList } from '@/app/views/recipes-management/recipesViewList';
 import config from '@/moonshot.config';
 export const dynamic = 'force-dynamic';
 

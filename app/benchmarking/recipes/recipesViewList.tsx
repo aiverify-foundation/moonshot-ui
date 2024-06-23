@@ -1,9 +1,10 @@
 'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import React, { CSSProperties, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
+import { TextInput } from '@/app/components/textInput';
 
 interface CustomStyle extends CSSProperties {
   webkitLineClamp?: string;
@@ -16,7 +17,6 @@ const ellipsisStyle: CustomStyle = {
 };
 
 function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe>(() => {
     const id = searchParams.get('id');
@@ -37,39 +37,49 @@ function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
           <h1 className="text-[1.6rem] text-white mt-3">Recipes</h1>
         </header>
         <main
-          className="grid grid-cols-2 gap-5 mb-3"
+          className="flex gap-5 mb-3"
           style={{ height: 'calc(100% - 90px)' }}>
-          <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar">
-            {recipes.map((recipe) => {
-              const isSelected = recipe.id === selectedRecipe.id;
-              return (
-                <li
-                  key={recipe.id}
-                  className="p-6 bg-moongray-900 text-white hover:bg-moongray-800 
+          <section className="flex flex-col flex-1">
+            <TextInput
+              name="search"
+              placeholder="Search"
+              value={''}
+              onChange={() => null}
+            />
+            <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar">
+              {recipes.map((recipe) => {
+                const isSelected = recipe.id === selectedRecipe.id;
+                return (
+                  <li
+                    key={recipe.id}
+                    className="p-6 bg-moongray-900 text-white hover:bg-moongray-800 
                   hover:border-moonwine-700 cursor-pointer"
-                  style={{
-                    transition: 'background-color 0.2s ease-in-out',
-                    ...(isSelected && {
-                      backgroundColor: colors.moongray['700'],
-                    }),
-                  }}
-                  onClick={() => setSelectedRecipe(recipe)}>
-                  <div className="flex gap-2 mb-2">
-                    <Icon name={IconName.File} />
-                    <h4 className="text-[1rem] font-semibold">{recipe.name}</h4>
-                  </div>
-                  <p
-                    className="text-[0.8rem] h-[40px] overflow-hidden text-moongray-400"
-                    style={ellipsisStyle}>
-                    {recipe.description}
-                  </p>
-                </li>
-              );
-            })}
-          </ul>
+                    style={{
+                      transition: 'background-color 0.2s ease-in-out',
+                      ...(isSelected && {
+                        backgroundColor: colors.moongray['700'],
+                      }),
+                    }}
+                    onClick={() => setSelectedRecipe(recipe)}>
+                    <div className="flex gap-2 mb-2">
+                      <Icon name={IconName.File} />
+                      <h4 className="text-[1rem] font-semibold">
+                        {recipe.name}
+                      </h4>
+                    </div>
+                    <p
+                      className="text-[0.8rem] h-[40px] overflow-hidden text-moongray-400"
+                      style={ellipsisStyle}>
+                      {recipe.description}
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
           <section
             className="text-white border border-moonwine-500 p-4 rounded-md 
-            overflow-y-auto custom-scrollbar bg-moongray-800">
+            overflow-y-auto custom-scrollbar bg-moongray-800 flex-1">
             <div className="flex gap-2 mb-4">
               <Icon
                 name={IconName.File}
