@@ -1,11 +1,13 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { TextInput } from '@/app/components/textInput';
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
+import { Modal } from '@/app/views/shared-components/modal/modal';
 
 interface CustomStyle extends React.CSSProperties {
   webkitLineClamp?: string;
@@ -25,6 +27,7 @@ function RecipesViewList({
   cookbooks: Cookbook[];
 }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [selectedRecipe, setSelectedRecipe] = React.useState<Recipe>(() => {
     const id = searchParams.get('id');
     if (!Boolean(id)) {
@@ -45,6 +48,7 @@ function RecipesViewList({
   const [searchQuery, setSearchQuery] = React.useState('');
   const [checkedRecipes, setCheckedRecipes] = React.useState<Recipe[]>([]);
   const [formStep, setFormStep] = React.useState<'view' | 'add'>('view');
+  const [showResultModal, setShowResultModal] = React.useState(false);
 
   const filteredRecipes = recipes.filter((recipe) =>
     recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -344,25 +348,52 @@ function RecipesViewList({
           size="lg"
           hoverBtnColor={colors.moongray[1000]}
           pressedBtnColor={colors.moongray[900]}
-          onClick={() => {}}
+          onClick={() => setShowResultModal(true)}
         />
       </footer>
     </>
   );
 
-  return (
-    <MainSectionSurface
-      closeLinkUrl="/"
-      height="100%"
-      minHeight={750}
-      bgColor={colors.moongray['950']}>
-      <div className="relative h-full">
-        <header className="flex gap-5 w-full mb-3 justify-between items-end">
-          <h1 className="text-[1.6rem] text-white mt-3">{title}</h1>
-        </header>
-        {formStep === 'view' ? viewRecipes : addRecipes}
+  const resultModal = (
+    <Modal
+      heading="Recipes Added to Cookbook"
+      bgColor={colors.moongray['800']}
+      textColor="#FFFFFF"
+      primaryBtnLabel="View Cookbooks"
+      secondaryBtnLabel="View Recipes"
+      enableScreenOverlay
+      onCloseIconClick={() => {
+        setShowResultModal(false);
+      }}
+      onSecondaryBtnClick={() => {
+        setCheckedRecipes([]);
+        setSelectedCookbook(cookbooks[0]);
+        setFormStep('view');
+        setShowResultModal(false);
+      }}
+      onPrimaryBtnClick={() => router.push('/benchmarking/cookbooks')}>
+      <div className="flex gap-2 items-start">
+        <p>{`Cookbook ${selectedCookbook.name} was successfully updated with the selected recipes.`}</p>
       </div>
-    </MainSectionSurface>
+    </Modal>
+  );
+
+  return (
+    <>
+      {showResultModal ? resultModal : null}
+      <MainSectionSurface
+        closeLinkUrl="/"
+        height="100%"
+        minHeight={750}
+        bgColor={colors.moongray['950']}>
+        <div className="relative h-full">
+          <header className="flex gap-5 w-full mb-3 justify-between items-end">
+            <h1 className="text-[1.6rem] text-white mt-3">{title}</h1>
+          </header>
+          {formStep === 'view' ? viewRecipes : addRecipes}
+        </div>
+      </MainSectionSurface>
+    </>
   );
 }
 
