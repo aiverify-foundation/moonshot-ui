@@ -17,7 +17,13 @@ const ellipsisStyle: CustomStyle = {
   webkitBoxOrient: 'vertical',
 };
 
-function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
+function RecipesViewList({
+  recipes,
+  cookbooks,
+}: {
+  recipes: Recipe[];
+  cookbooks: Cookbook[];
+}) {
   const searchParams = useSearchParams();
   const [selectedRecipe, setSelectedRecipe] = React.useState<Recipe>(() => {
     const id = searchParams.get('id');
@@ -26,6 +32,15 @@ function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
     }
     return recipes.find((att) => att.id === id) || recipes[0];
   });
+  const [selectedCookbook, setSelectedCookbook] = React.useState<Cookbook>(
+    () => {
+      const id = searchParams.get('id');
+      if (!Boolean(id)) {
+        return cookbooks[0];
+      }
+      return cookbooks.find((cb) => cb.id === id) || cookbooks[0];
+    }
+  );
 
   const [searchQuery, setSearchQuery] = React.useState('');
   const [checkedRecipes, setCheckedRecipes] = React.useState<Recipe[]>([]);
@@ -195,7 +210,7 @@ function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
         className="flex flex-col gap-5 mb-3"
         style={{
           height:
-            checkedRecipes.length > 0
+            checkedRecipes.length > 0 || formStep === 'add'
               ? 'calc(100% - 125px)'
               : 'calc(100% - 90px)',
         }}>
@@ -210,19 +225,103 @@ function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
           </h2>
           <section
             className="flex flex-wrap gap-3 w-full border border-white/20
-            p-4 pt-2 rounded-lg max-h-[180px] min-h-[100px] overflow-y-auto custom-scrollbar">
-            {checkedRecipes.map((recipe) => (
+            p-4 rounded-lg max-h-[150px] min-h-[100px] overflow-y-auto custom-scrollbar">
+            {!checkedRecipes.length ? (
               <Button
-                key={recipe.id}
-                size="sm"
-                leftIconName={IconName.Close}
+                width={200}
                 mode={ButtonType.OUTLINE}
-                text={recipe.name}
+                text="Back to select Recipes"
+                size="md"
                 hoverBtnColor={colors.moongray[800]}
                 pressedBtnColor={colors.moongray[700]}
-                onClick={() => handleRemoveRecipe(recipe)}
+                onClick={() => setFormStep('view')}
               />
-            ))}
+            ) : (
+              checkedRecipes.map((recipe) => (
+                <Button
+                  key={recipe.id}
+                  size="sm"
+                  leftIconName={IconName.Close}
+                  mode={ButtonType.OUTLINE}
+                  text={recipe.name}
+                  hoverBtnColor={colors.moongray[800]}
+                  pressedBtnColor={colors.moongray[700]}
+                  onClick={() => handleRemoveRecipe(recipe)}
+                />
+              ))
+            )}
+          </section>
+        </div>
+        <div className="flex flex-col gap-2 max-h-[450px]">
+          <h2
+            className="text-[1rem] text-white"
+            style={{
+              fontSize: '1rem',
+              color: colors.moonpurplelight,
+            }}>
+            Select a Cookbook
+          </h2>
+          <section
+            className="grid grid-cols-2 gap-5"
+            style={{ height: 'calc(100% - 70px)' }}>
+            <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar">
+              {cookbooks.map((cookbook) => {
+                const isSelected = cookbook.id === selectedCookbook.id;
+                return (
+                  <li
+                    key={cookbook.id}
+                    className="p-6 bg-moongray-900 text-white hover:bg-moongray-800 
+                  hover:border-moonwine-700 cursor-pointer"
+                    style={{
+                      transition: 'background-color 0.2s ease-in-out',
+                      ...(isSelected && {
+                        backgroundColor: colors.moongray['700'],
+                      }),
+                    }}
+                    onClick={() => setSelectedCookbook(cookbook)}>
+                    <div className="flex gap-2 mb-2">
+                      <Icon name={IconName.Book} />
+                      <h4 className="text-[1rem] font-semibold">
+                        {cookbook.name}
+                      </h4>
+                    </div>
+                    <p
+                      className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis text-moongray-400"
+                      style={ellipsisStyle}>
+                      {cookbook.description}
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
+            <section className="text-white border border-moonwine-500 p-4 rounded-md overflow-y-auto custom-scrollbar bg-moongray-800">
+              <div className="flex gap-2 mb-4">
+                <Icon
+                  name={IconName.Book}
+                  size={24}
+                />
+                <h3 className="text-[1.2rem] font-semibold">
+                  {selectedCookbook.name}
+                </h3>
+              </div>
+              <p className="text-[0.95rem] text-moongray-300">
+                {selectedCookbook.description}
+              </p>
+              <h4 className="text-[1.15rem] font-semibold mt-10 mb-1">
+                Recipes
+              </h4>
+              <p className="text-[0.95rem] text-moongray-300">
+                {selectedCookbook.recipes.map((recipe, idx) => {
+                  return (
+                    <span key={recipe}>
+                      {recipe}
+                      {idx === selectedCookbook.recipes.length - 1 ? '' : `,`}
+                      &nbsp;
+                    </span>
+                  );
+                })}
+              </p>
+            </section>
           </section>
         </div>
       </main>
@@ -237,7 +336,9 @@ function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
           onClick={() => setFormStep('view')}
         />
         <Button
-          disabled={checkedRecipes.length === 0}
+          disabled={
+            checkedRecipes.length === 0 && selectedCookbook !== undefined
+          }
           mode={ButtonType.PRIMARY}
           text="Add"
           size="lg"
