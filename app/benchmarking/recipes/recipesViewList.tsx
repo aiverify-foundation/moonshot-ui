@@ -1,12 +1,12 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
-import React, { CSSProperties, useState } from 'react';
+import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { TextInput } from '@/app/components/textInput';
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
-import { TextInput } from '@/app/components/textInput';
 
-interface CustomStyle extends CSSProperties {
+interface CustomStyle extends React.CSSProperties {
   webkitLineClamp?: string;
   webkitBoxOrient?: 'vertical';
 }
@@ -18,13 +18,25 @@ const ellipsisStyle: CustomStyle = {
 
 function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
   const searchParams = useSearchParams();
-  const [selectedRecipe, setSelectedRecipe] = useState<Recipe>(() => {
+  const [selectedRecipe, setSelectedRecipe] = React.useState<Recipe>(() => {
     const id = searchParams.get('id');
     if (!Boolean(id)) {
       return recipes[0];
     }
     return recipes.find((att) => att.id === id) || recipes[0];
   });
+
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const filteredRecipes = recipes.filter((recipe) =>
+    recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSearch = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchQuery(e.target.value);
+    },
+    []
+  );
 
   return (
     <MainSectionSurface
@@ -43,11 +55,11 @@ function RecipesViewList({ recipes }: { recipes: Recipe[] }) {
             <TextInput
               name="search"
               placeholder="Search"
-              value={''}
-              onChange={() => null}
+              value={searchQuery}
+              onChange={handleSearch}
             />
             <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar">
-              {recipes.map((recipe) => {
+              {filteredRecipes.map((recipe) => {
                 const isSelected = recipe.id === selectedRecipe.id;
                 return (
                   <li
