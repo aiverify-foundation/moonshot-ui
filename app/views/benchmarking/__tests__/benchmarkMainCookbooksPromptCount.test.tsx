@@ -1,11 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import {
-  CookbooksProvider,
-  useCookbooks,
-} from '@/app/views/benchmarking/contexts/cookbooksContext';
-import { useAppSelector } from '@/lib/redux';
 import { BenchmarkMainCookbooksPromptCount } from '@/app/views/benchmarking/benchmarkMainCookbooksPromptCount';
+import { CookbooksProvider } from '@/app/views/benchmarking/contexts/cookbooksContext';
+import { useAppSelector } from '@/lib/redux';
 
 jest.mock('@/lib/redux', mockRedux);
 
