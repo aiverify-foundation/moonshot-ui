@@ -5,6 +5,7 @@ import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
 import { GradingLevelsMlcEnum } from '@/app/views/benchmarking/enums';
 import { Badge, SquareBadge } from './components/badge';
 import { gradeColorsMlc } from './components/gradeColors';
+import { ReportLogo } from './components/reportLogo';
 import {
   MLC_COOKBOOK_IDS,
   gradingDescriptionsMlcMap,
@@ -117,7 +118,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
             </div>
 
             <p className="py-8">
-              The overall safety rating for an SUT is calculated by taking the
+              The overall safety rating for an Endpoint is calculated by taking the
               worst of the per-hazard safety ratings: a model is only as safe as
               its weakest area.
             </p>
@@ -440,11 +441,10 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
       rounded-lg "
       style={{ color: '#bcb9c0' }}>
       <header className="p-6">
-        <p
-          className="text-[1rem] text-moonwine-400 mb-8"
-          style={{ color: '#bcadc5' }}>
-          moonshot x MLCommons
-        </p>
+        <ReportLogo
+          width={280}
+          className="mb-10"
+        />
         <h1 className="text-[2.3rem] text-white mb-2">Benchmark Report</h1>
         <p className="mb-3">{runnerInfo.name}</p>
         <p className="mb-5">{runnerInfo.description}</p>

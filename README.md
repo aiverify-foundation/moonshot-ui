@@ -1,59 +1,75 @@
-This is the Web UI for [moonshot](https://github.com/moonshot-admin/moonshot).
+<div align="center">
+
+![Moonshot Logo](https://github.com/moonshot-admin/moonshot/raw/main/misc/aiverify-moonshot-logo.png)
+
+This repository contains the UI integration for [Project Moonshot](https://github.com/aiverify-foundation/moonshot)
+
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+
+</div>
+
+<b>Motivation </b>
+
+Developed by the [AI Verify Foundation](https://aiverifyfoundation.sg/), Project Moonshot is one of the first tools to bring benchmarking and red teaming together to help AI developers, compliance teams and AI system owners <b>evaluate LLMs and LLM applications</b>.
+
+Project Moonshot's UI is designed to provide a more intuitive user experience for benchmarking and red teaming processes via [Moonshot Library](https://pypi.org/project/aiverify-moonshot/).
+
+You can view the Project Moonshot Library Repository [here](https://github.com/aiverify-foundation/moonshot).
+
+Preview: 
+
+![moonshot-ui](./misc/ui-homepage.png)
 
 ## Getting Started
 
-### Prerequisites
+### ✅ Prerequisites
 
-- Node.js verion 20.11.1 LTS and above
-- Python version 3.11 and above
-- Moonshot Web API Python module - [projectmoonshot-imda version 0.3.4(https://pypi.org/project/projectmoonshot-imda/)
+1. [Git](https://github.com/git-guides/install-git)
 
-## Install and run Moonshot Web Api
+2. [Node.js verion 20.11.1 LTS](https://nodejs.org/en/blog/release/v20.11.1) and above
 
-- Follow the instructions in https://pypi.org/project/projectmoonshot-imda to install the module but do not run it.
+3. [Moonshot Python Library](https://pypi.org/project/aiverify-moonshot/)
 
-> If a .env file is not created in the next step, the module will use these default values: HOST_ADDRESS=`127.0.0.1`, HOST_PORT=`5000`, MOONSHOT_UI_CALLBACK_URL=`http://localhost:3000/api/v1/benchmarks/status`
-- Before running the module, a `.env` file containing these variables can be created if the hostnames and ports need to be updated:
+### ⬇️ Installation
 
+If you already have installed the [Moonshot Python Library](https://pypi.org/project/aiverify-moonshot/), simply run
 ```
-HOST_ADDRESS=127.0.0.1 # The interface the server will bind to
-HOST_PORT=5000
-
-# Below is the uri of the Web UI webhook.
-# In the next section, if Web UI listens on a different port,
-# update this uri accordingly and restart.
-
-MOONSHOT_UI_CALLBACK_URL=http://localhost:3000/api/v1/benchmarks/status 
+python -m moonshot -i moonshot-ui
 ```
-- Place the .env file in the directory where the following command will be executed from
 
-`python -m moonshot web-api`
+Else, to install and build from source:
+1. Download Moonshot UI from GitHub.
+    ```
+    git clone git@github.com:moonshot-admin/moonshot-ui.git
+    ```
+2. Install Required Dependencies
+- Make sure that all necessary requirements are installed by executing the following command:
+    ```
+    npm install
+    ```
+3. From the project root folder, execute the following command:
+    ```
+    npm run build
+    ```
 
-## Install Web UI
-
-- git clone this project into the local machine.
-
-`git clone git@github.com:moonshot-admin/moonshot-ui.git`
-
-- In the cloned project root directory (/moonshot-ui), create `.env` file containing this variable:
-
+### 🖼️ Serving Moonshot UI
+After the build is completed, serve the UI with this command:
 ```
-# This should be the URL of the Moonshot Web Api module which was started in the previous section.
-# Check the startup logs to determine the hostname and port number.
-
-MOONSHOT_API_URL=http://127.0.0.1:5000
+python -m moonshot web
 ```
-- Install dependencies - `npm install`
-
-
-## Building
-
-From the same project root folder, run `npm run build`
-
-## Run
-
-After the build step is completed, start the Web UI with this command
-
-`npm start`
-
 Access the Web UI from browser `http://localhost:3000`
+
+Alternatively, to manually start up the Web UI, you can run:
+```
+npm start
+```
+
+⚠️ You will need to have test assets from [moonshot-data](https://github.com/aiverify-foundation/moonshot-data) before you can run any tests.
+
+Check out our [Installation Guide](https://aiverify-foundation.github.io/moonshot/getting_started/quick_install/) for more details.
+
+If you are having installation issues, see the [Troubleshooting Guide](https://aiverify-foundation.github.io/moonshot/common_issues/).
+
+## User Guides
+
+[Getting Started with Moonshot Web UI](https://aiverify-foundation.github.io/moonshot/user_guide/web_ui/web_ui_guide/)

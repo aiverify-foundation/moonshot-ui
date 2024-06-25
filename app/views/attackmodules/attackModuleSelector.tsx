@@ -24,7 +24,7 @@ function AttackModuleSelectView(props: AttackModuleSelectViewProps) {
           </h2>
           <p className="text-[0.9rem] text-moongray-400 text-center">
             <span className="font-bold">Optional</span>&nbsp;modules that
-            automatically generate prompts to red team a SUT.
+            automatically generate prompts to red team an Endpoint.
           </p>
         </hgroup>
       </section>
