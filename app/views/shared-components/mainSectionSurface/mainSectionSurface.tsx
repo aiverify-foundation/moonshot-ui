@@ -1,6 +1,6 @@
+import Link from 'next/link';
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
-import Link from 'next/link';
 
 type MainSectionSurfaceProps = {
   children: React.ReactNode;

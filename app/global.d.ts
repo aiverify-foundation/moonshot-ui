@@ -120,6 +120,9 @@ type Recipe = {
     num_of_tags: number;
     num_of_datasets: number;
     num_of_datasets_prompts: Record<string, number>;
+    num_of_prompt_templates: number;
+    num_of_metrics: number;
+    num_of_attack_modules: number;
   };
   tags: string[];
   total_prompt_in_recipe: number;

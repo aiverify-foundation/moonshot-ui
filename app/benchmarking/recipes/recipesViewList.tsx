@@ -1,22 +1,20 @@
 'use client';
-import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { TextInput } from '@/app/components/textInput';
 import { colors } from '@/app/views/shared-components/customColors';
-import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 import { Modal } from '@/app/views/shared-components/modal/modal';
 
 interface CustomStyle extends React.CSSProperties {
-  webkitLineClamp?: string;
-  webkitBoxOrient?: 'vertical';
+  WebkitLineClamp?: string;
+  WebkitBoxOrient?: 'vertical';
 }
 const ellipsisStyle: CustomStyle = {
   display: '-webkit-box',
-  webkitLineClamp: '2',
-  webkitBoxOrient: 'vertical',
+  WebkitLineClamp: '2',
+  WebkitBoxOrient: 'vertical',
 };
 
 function RecipesViewList({
@@ -36,13 +34,7 @@ function RecipesViewList({
     return recipes.find((att) => att.id === id) || recipes[0];
   });
   const [selectedCookbook, setSelectedCookbook] = React.useState<Cookbook>(
-    () => {
-      const id = searchParams.get('id');
-      if (!Boolean(id)) {
-        return cookbooks[0];
-      }
-      return cookbooks.find((cb) => cb.id === id) || cookbooks[0];
-    }
+    () => cookbooks[0]
   );
 
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -86,7 +78,7 @@ function RecipesViewList({
         <section className="flex flex-col flex-1">
           <TextInput
             name="search"
-            placeholder="Search"
+            placeholder="Search by name"
             value={searchQuery}
             onChange={handleSearch}
           />
@@ -107,6 +99,8 @@ function RecipesViewList({
                   onClick={() => setSelectedRecipe(recipe)}>
                   <input
                     type="checkbox"
+                    name={recipe.id}
+                    aria-label={`Select ${recipe.name}`}
                     className="w-2 h-2 shrink-0"
                     checked={checkedRecipes.some((rc) => rc.id === recipe.id)}
                     onChange={() => handleCheck(recipe)}
@@ -379,21 +373,13 @@ function RecipesViewList({
   );
 
   return (
-    <>
+    <div className="relative h-full">
       {showResultModal ? resultModal : null}
-      <MainSectionSurface
-        closeLinkUrl="/"
-        height="100%"
-        minHeight={750}
-        bgColor={colors.moongray['950']}>
-        <div className="relative h-full">
-          <header className="flex gap-5 w-full mb-3 justify-between items-end">
-            <h1 className="text-[1.6rem] text-white mt-3">{title}</h1>
-          </header>
-          {formStep === 'view' ? viewRecipes : addRecipes}
-        </div>
-      </MainSectionSurface>
-    </>
+      <header className="flex gap-5 w-full mb-3 justify-between items-end">
+        <h1 className="text-[1.6rem] text-white mt-3">{title}</h1>
+      </header>
+      {formStep === 'view' ? viewRecipes : addRecipes}
+    </div>
   );
 }
 
