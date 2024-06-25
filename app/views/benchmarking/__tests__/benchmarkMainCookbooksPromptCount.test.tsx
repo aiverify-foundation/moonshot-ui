@@ -34,35 +34,59 @@ const mockCookbooks = [
   },
 ];
 
+function renderWithProviders(
+  ui: React.ReactNode,
+  { initialCookbooks = [], ...options }: { initialCookbooks?: Cookbook[] } = {}
+) {
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
+    <CookbooksProvider initialCookbooks={initialCookbooks}>
+      {children}
+    </CookbooksProvider>
+  );
+  return render(ui, { wrapper: Wrapper, ...options });
+}
+
 describe('BenchmarkMainCookbooksPromptCount', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('shows loading animation', () => {
+  test('shows loading animation', () => {
     const mockOneAlreadySelectedCookbooksFromState = mockCookbooks;
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockOneAlreadySelectedCookbooksFromState
     );
-    render(
-      <CookbooksProvider>
-        <BenchmarkMainCookbooksPromptCount changeView={mockChangeView} />
-      </CookbooksProvider>
+    renderWithProviders(
+      <BenchmarkMainCookbooksPromptCount changeView={mockChangeView} />
     );
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
-  it('shows the correct number of prompts', () => {
+  test('shows 30 prompts', () => {
     const mockOneAlreadySelectedCookbooksFromState = mockCookbooks;
+    const mockAllCookbooks = mockCookbooks;
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockOneAlreadySelectedCookbooksFromState
     );
-    render(
-      <CookbooksProvider>
-        <BenchmarkMainCookbooksPromptCount changeView={mockChangeView} />
-      </CookbooksProvider>
+    renderWithProviders(
+      <BenchmarkMainCookbooksPromptCount changeView={mockChangeView} />,
+      { initialCookbooks: mockAllCookbooks }
     );
 
-    screen.debug();
+    expect(screen.getByText(/30/i)).toBeInTheDocument();
+  });
+
+  test('shows 20 prompts', () => {
+    const mockOneAlreadySelectedCookbooksFromState = [mockCookbooks[1]];
+    const mockAllCookbooks = mockCookbooks;
+    (useAppSelector as jest.Mock).mockImplementation(
+      () => mockOneAlreadySelectedCookbooksFromState
+    );
+    renderWithProviders(
+      <BenchmarkMainCookbooksPromptCount changeView={mockChangeView} />,
+      { initialCookbooks: mockAllCookbooks }
+    );
+
+    expect(screen.getByText(/20/i)).toBeInTheDocument();
   });
 });
