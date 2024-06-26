@@ -68,6 +68,9 @@ const mockCookbooks: Cookbook[] = [
   },
 ];
 
+const newCookbookBtnRegx = /add to new cookbook/i;
+const existingCookbookBtnRegx = /add to existing cookbook/i;
+
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
   useSearchParams: jest.fn(),
@@ -90,66 +93,114 @@ describe('RecipesViewList', () => {
     jest.clearAllMocks();
   });
 
-  test('show first recipe details by default', () => {
-    render(
-      <RecipesViewList
-        recipes={mockRecipes}
-        cookbooks={mockCookbooks}
-      />
-    );
+  describe('View / Search / Select Recipes', () => {
+    test('show first recipe details by default', () => {
+      render(
+        <RecipesViewList
+          recipes={mockRecipes}
+          cookbooks={mockCookbooks}
+        />
+      );
 
-    expect(screen.getAllByText(mockRecipes[0].name)).toHaveLength(2);
-    expect(screen.getAllByText(mockRecipes[0].description)).toHaveLength(2);
-    expect(screen.getAllByText(mockRecipes[1].name)).toHaveLength(1);
+      expect(screen.getAllByText(mockRecipes[0].name)).toHaveLength(2);
+      expect(screen.getAllByText(mockRecipes[0].description)).toHaveLength(2);
+      expect(screen.getAllByText(mockRecipes[1].name)).toHaveLength(1);
+    });
+
+    test('show recipe details when recipe id is in url', () => {
+      const mockId = mockRecipes[1].id;
+      mockGetParam.mockReturnValue(mockId);
+      render(
+        <RecipesViewList
+          recipes={mockRecipes}
+          cookbooks={mockCookbooks}
+        />
+      );
+      expect(mockGetParam).toHaveBeenCalledWith('id');
+      expect(screen.getAllByText(mockRecipes[0].name)).toHaveLength(1);
+      expect(screen.getAllByText(mockRecipes[1].name)).toHaveLength(2);
+      expect(screen.getAllByText(mockRecipes[1].description)).toHaveLength(2);
+    });
+
+    test('filter recipes by name search', () => {
+      render(
+        <RecipesViewList
+          recipes={mockRecipes}
+          cookbooks={mockCookbooks}
+        />
+      );
+
+      const searchInput = screen.getByPlaceholderText('Search by name');
+      userEvent.type(searchInput, mockRecipes[1].name);
+      expect(screen.getAllByText(mockRecipes[1].name)).toHaveLength(2);
+      expect(screen.getAllByText(mockRecipes[0].name)).toHaveLength(1);
+    });
+
+    test('show seleceted recipe Pill button and Add buttons', async () => {
+      render(
+        <RecipesViewList
+          recipes={mockRecipes}
+          cookbooks={mockCookbooks}
+        />
+      );
+
+      expect(
+        screen.queryByRole('button', { name: newCookbookBtnRegx })
+      ).toBeNull();
+
+      expect(
+        screen.queryByRole('button', { name: existingCookbookBtnRegx })
+      ).toBeNull();
+
+      expect(
+        screen.queryByRole('button', { name: mockRecipes[1].name })
+      ).toBeNull();
+
+      await userEvent.click(
+        screen.getByRole('checkbox', { name: `Select ${mockRecipes[1].name}` })
+      );
+
+      expect(
+        screen.queryByRole('button', { name: newCookbookBtnRegx })
+      ).toBeInTheDocument();
+
+      expect(
+        screen.queryByRole('button', { name: existingCookbookBtnRegx })
+      ).toBeInTheDocument();
+
+      expect(
+        screen.queryByRole('button', { name: mockRecipes[1].name })
+      ).toBeInTheDocument();
+
+      await await userEvent.click(
+        screen.getByRole('button', { name: mockRecipes[1].name })
+      );
+
+      expect(
+        screen.queryByRole('button', { name: mockRecipes[1].name })
+      ).toBeNull();
+    });
   });
 
-  test('show recipe details when recipe id is in url', () => {
-    const mockId = mockRecipes[1].id;
-    mockGetParam.mockReturnValue(mockId);
-    render(
-      <RecipesViewList
-        recipes={mockRecipes}
-        cookbooks={mockCookbooks}
-      />
-    );
-    expect(mockGetParam).toHaveBeenCalledWith('id');
-    expect(screen.getAllByText(mockRecipes[0].name)).toHaveLength(1);
-    expect(screen.getAllByText(mockRecipes[1].name)).toHaveLength(2);
-    expect(screen.getAllByText(mockRecipes[1].description)).toHaveLength(2);
-  });
+  describe('Add Recipes to Cookbook', () => {
+    test('show cookbook selection', async () => {
+      render(
+        <RecipesViewList
+          recipes={mockRecipes}
+          cookbooks={mockCookbooks}
+        />
+      );
 
-  test('filter recipes by name search', () => {
-    render(
-      <RecipesViewList
-        recipes={mockRecipes}
-        cookbooks={mockCookbooks}
-      />
-    );
+      await userEvent.click(
+        screen.getByRole('checkbox', { name: `Select ${mockRecipes[1].name}` })
+      );
 
-    const searchInput = screen.getByPlaceholderText('Search by name');
-    userEvent.type(searchInput, mockRecipes[1].name);
-    expect(screen.getAllByText(mockRecipes[1].name)).toHaveLength(2);
-    expect(screen.getAllByText(mockRecipes[0].name)).toHaveLength(1);
-  });
+      await userEvent.click(
+        screen.getByRole('button', { name: existingCookbookBtnRegx })
+      );
 
-  test('should show Add button', async () => {
-    render(
-      <RecipesViewList
-        recipes={mockRecipes}
-        cookbooks={mockCookbooks}
-      />
-    );
-
-    expect(
-      screen.queryByRole('button', { name: /add to cookbook/i })
-    ).toBeNull();
-
-    await userEvent.click(
-      screen.getByRole('checkbox', { name: `Select ${mockRecipes[1].name}` })
-    );
-
-    expect(
-      screen.queryByRole('button', { name: /add to cookbook/i })
-    ).toBeInTheDocument();
+      expect(screen.getAllByText(mockCookbooks[0].name)).toHaveLength(2);
+      expect(screen.getAllByText(mockCookbooks[1].name)).toHaveLength(1);
+    });
   });
 });
