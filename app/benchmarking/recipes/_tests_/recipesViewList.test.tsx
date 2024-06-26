@@ -122,7 +122,7 @@ describe('RecipesViewList', () => {
       expect(screen.getAllByText(mockRecipes[1].description)).toHaveLength(2);
     });
 
-    test('filter recipes by name search', () => {
+    test('filter recipes by name search', async () => {
       render(
         <RecipesViewList
           recipes={mockRecipes}
@@ -131,9 +131,9 @@ describe('RecipesViewList', () => {
       );
 
       const searchInput = screen.getByPlaceholderText('Search by name');
-      userEvent.type(searchInput, mockRecipes[1].name);
+      await userEvent.type(searchInput, mockRecipes[1].name);
       expect(screen.getAllByText(mockRecipes[1].name)).toHaveLength(2);
-      expect(screen.getAllByText(mockRecipes[0].name)).toHaveLength(1);
+      expect(screen.queryByText(mockRecipes[0].name)).toBeNull();
     });
 
     test('show seleceted recipe Pill button and Add buttons', async () => {

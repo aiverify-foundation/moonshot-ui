@@ -1,6 +1,7 @@
 'use client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
+import { updateCookbookRecipes } from '@/actions/updateCookbookRecipes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { TextInput } from '@/app/components/textInput';
@@ -42,6 +43,7 @@ function RecipesViewList({
   const [checkedRecipes, setCheckedRecipes] = React.useState<Recipe[]>([]);
   const [formStep, setFormStep] = React.useState<'view' | 'add'>('view');
   const [showResultModal, setShowResultModal] = React.useState(false);
+  const [isPending, startTransition] = React.useTransition();
 
   const filteredRecipes = recipes.filter((recipe) =>
     recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -62,6 +64,20 @@ function RecipesViewList({
 
   function handleRemoveRecipe(recipe: Recipe) {
     setCheckedRecipes((prev) => prev.filter((r) => r.id !== recipe.id));
+  }
+
+  function handleAddClick() {
+    startTransition(() => {
+      updateCookbookRecipes({
+        cookbookId: selectedCookbook.id,
+        recipeIds: Array.from(
+          new Set([
+            ...selectedCookbook.recipes,
+            ...checkedRecipes.map((recipe) => recipe.id),
+          ])
+        ),
+      });
+    });
   }
 
   const title = formStep === 'view' ? 'Recipes' : 'Add Recipes to Cookbook';
@@ -100,7 +116,7 @@ function RecipesViewList({
                   onClick={() => setSelectedRecipe(recipe)}>
                   <input
                     type="checkbox"
-                    name={recipe.id}
+                    name="recipes[]"
                     aria-label={`Select ${recipe.name}`}
                     className="w-2 h-2 shrink-0"
                     checked={checkedRecipes.some((rc) => rc.id === recipe.id)}
@@ -300,21 +316,20 @@ function RecipesViewList({
           mode={ButtonType.OUTLINE}
           text="Back"
           size="lg"
+          disabled={true}
           hoverBtnColor={colors.moongray[800]}
           pressedBtnColor={colors.moongray[700]}
           onClick={() => setFormStep('view')}
         />
         <Button
           width={120}
-          disabled={
-            checkedRecipes.length === 0 && selectedCookbook !== undefined
-          }
+          disabled={true}
           mode={ButtonType.PRIMARY}
           text="Add"
           size="lg"
           hoverBtnColor={colors.moongray[1000]}
           pressedBtnColor={colors.moongray[900]}
-          onClick={() => setShowResultModal(true)}
+          onClick={handleAddClick}
         />
       </footer>
     </>
