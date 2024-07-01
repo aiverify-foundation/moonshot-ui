@@ -241,8 +241,13 @@ function RecipesViewList({
       <main
         className="flex flex-col gap-3"
         style={{
-          height: 'calc(100% - 125px)',
+          height: 'calc(100% - 135px)',
         }}>
+        <SelectedRecipesPills
+          maxHeight="100px"
+          checkedRecipes={checkedRecipes}
+          onPillButtonClick={handleRemoveRecipe}
+        />
         <h2
           className="text-[1rem] text-white"
           style={{
@@ -251,7 +256,7 @@ function RecipesViewList({
           }}>
           Select a Cookbook
         </h2>
-        <section className="flex gap-5 h-[calc(100%-50px)]">
+        <section className="flex gap-5 h-[calc(100%-180px)]">
           <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar flex-1">
             {cookbooks.map((cookbook) => {
               const isSelected = cookbook.id === selectedCookbook.id;
@@ -309,29 +314,29 @@ function RecipesViewList({
             </p>
           </section>
         </section>
+        <footer className="flex justify-end gap-2 mt-2">
+          <Button
+            width={120}
+            mode={ButtonType.OUTLINE}
+            text="Back"
+            size="lg"
+            disabled={!selectedCookbook}
+            hoverBtnColor={colors.moongray[800]}
+            pressedBtnColor={colors.moongray[700]}
+            onClick={() => setFormStep('view')}
+          />
+          <Button
+            width={120}
+            disabled={!selectedCookbook}
+            mode={ButtonType.PRIMARY}
+            text="Add"
+            size="lg"
+            hoverBtnColor={colors.moongray[1000]}
+            pressedBtnColor={colors.moongray[900]}
+            onClick={handleAddClick}
+          />
+        </footer>
       </main>
-      <footer className="flex justify-end gap-2 mt-2">
-        <Button
-          width={120}
-          mode={ButtonType.OUTLINE}
-          text="Back"
-          size="lg"
-          disabled={true}
-          hoverBtnColor={colors.moongray[800]}
-          pressedBtnColor={colors.moongray[700]}
-          onClick={() => setFormStep('view')}
-        />
-        <Button
-          width={120}
-          disabled={true}
-          mode={ButtonType.PRIMARY}
-          text="Add"
-          size="lg"
-          hoverBtnColor={colors.moongray[1000]}
-          pressedBtnColor={colors.moongray[900]}
-          onClick={handleAddClick}
-        />
-      </footer>
     </>
   );
 

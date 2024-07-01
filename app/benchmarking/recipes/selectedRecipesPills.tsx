@@ -1,13 +1,16 @@
+import React from 'react';
 import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { colors } from '@/app/views/shared-components/customColors';
 
 type SelectedRecipesPillsProps = {
+  maxHeight?: React.CSSProperties['maxHeight'];
   checkedRecipes: Recipe[];
   onPillButtonClick: (recipe: Recipe) => void;
 };
 
 function SelectedRecipesPills({
+  maxHeight,
   checkedRecipes,
   onPillButtonClick,
 }: SelectedRecipesPillsProps) {
@@ -23,7 +26,8 @@ function SelectedRecipesPills({
       </h2>
       <section
         className="flex flex-wrap gap-3 w-full border border-white/20
-    p-4 rounded-lg max-h-[150px] min-h-[100px] overflow-y-auto custom-scrollbar">
+        p-4 rounded-lg max-h-[150px] min-h-[100px] overflow-y-auto custom-scrollbar"
+        style={{ maxHeight }}>
         {!checkedRecipes.length ? (
           <p className="text-white">No recipes selected</p>
         ) : (

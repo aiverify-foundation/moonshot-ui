@@ -201,6 +201,9 @@ describe('RecipesViewList', () => {
 
       expect(screen.getAllByText(mockCookbooks[0].name)).toHaveLength(2);
       expect(screen.getAllByText(mockCookbooks[1].name)).toHaveLength(1);
+      expect(
+        screen.queryByRole('button', { name: mockRecipes[1].name })
+      ).toBeInTheDocument();
     });
   });
 });
