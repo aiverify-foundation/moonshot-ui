@@ -10,6 +10,7 @@ type ModalProps = {
   textColor: React.CSSProperties['color'];
   headingColor?: React.CSSProperties['color'];
   heading: string;
+  hideCloseIcon?: boolean;
   children: React.ReactNode;
   enableScreenOverlay: boolean;
   overlayOpacity?: React.CSSProperties['opacity'];
@@ -28,6 +29,7 @@ function Modal(props: ModalProps) {
     textColor,
     headingColor,
     heading,
+    hideCloseIcon = false,
     children,
     primaryBtnLabel,
     secondaryBtnLabel,
@@ -61,10 +63,12 @@ function Modal(props: ModalProps) {
           className="flex justify-between mb-3"
           style={{ color: headingColor }}>
           <h1 className="text-[1.4rem] font-normal">{heading}</h1>
-          <Icon
-            name={IconName.Close}
-            onClick={onCloseIconClick}
-          />
+          {!hideCloseIcon ? (
+            <Icon
+              name={IconName.Close}
+              onClick={onCloseIconClick}
+            />
+          ) : null}
         </header>
         <main style={{ height: 'calc(100% - 20px' }}>{children}</main>
         {(onSecondaryBtnClick || onPrimaryBtnClick) && (

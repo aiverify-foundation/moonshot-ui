@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { RecipesViewList } from '@/app/benchmarking/recipes/recipesViewList';
 import userEvent from '@testing-library/user-event';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { updateCookbookRecipes } from '@/actions/updateCookbookRecipes';
+import { RecipesViewList } from '@/app/benchmarking/recipes/recipesViewList';
 
 const mockRecipes: Recipe[] = [
   {
@@ -74,6 +75,10 @@ const existingCookbookBtnRegx = /add to existing cookbook/i;
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
   useSearchParams: jest.fn(),
+}));
+
+jest.mock('@/actions/updateCookbookRecipes', () => ({
+  updateCookbookRecipes: jest.fn(),
 }));
 
 describe('RecipesViewList', () => {
@@ -183,7 +188,24 @@ describe('RecipesViewList', () => {
   });
 
   describe('Add Recipes to Cookbook', () => {
-    test('show cookbook selection', async () => {
+    const mockUpdateCookbookRecipes: jest.Mock = jest.fn(() => {
+      return Promise.resolve({
+        statusCode: 200,
+        data: 'success',
+      });
+    });
+
+    beforeAll(() => {
+      (updateCookbookRecipes as jest.Mock).mockImplementation(
+        mockUpdateCookbookRecipes
+      );
+    });
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('hide add button if no recipes selected', async () => {
       render(
         <RecipesViewList
           recipes={mockRecipes}
@@ -202,7 +224,105 @@ describe('RecipesViewList', () => {
       expect(screen.getAllByText(mockCookbooks[0].name)).toHaveLength(2);
       expect(screen.getAllByText(mockCookbooks[1].name)).toHaveLength(1);
       expect(
-        screen.queryByRole('button', { name: mockRecipes[1].name })
+        screen.getByRole('checkbox', {
+          name: `Select ${mockCookbooks[0].name}`,
+        })
+      ).toBeChecked();
+
+      const selectedRecipePillBtn = screen.queryByRole('button', {
+        name: mockRecipes[1].name,
+      });
+      expect(selectedRecipePillBtn).toBeInTheDocument();
+
+      await userEvent.click(selectedRecipePillBtn as HTMLElement);
+      expect(screen.queryByRole('button', { name: /add/i })).toBeNull();
+    });
+
+    test('select cookbook and add recipe to selected cookbook', async () => {
+      render(
+        <RecipesViewList
+          recipes={mockRecipes}
+          cookbooks={mockCookbooks}
+        />
+      );
+
+      await userEvent.click(
+        screen.getByRole('checkbox', { name: `Select ${mockRecipes[1].name}` })
+      );
+
+      await userEvent.click(
+        screen.getByRole('button', { name: existingCookbookBtnRegx })
+      );
+
+      expect(screen.getAllByText(mockCookbooks[0].name)).toHaveLength(2);
+      expect(screen.getAllByText(mockCookbooks[1].name)).toHaveLength(1);
+
+      await userEvent.click(screen.getAllByText(mockCookbooks[1].name)[0]);
+      expect(
+        screen.getByRole('checkbox', {
+          name: `Select ${mockCookbooks[1].name}`,
+        })
+      ).toBeChecked();
+
+      await userEvent.click(
+        screen.queryByRole('button', { name: /add/i }) as HTMLElement
+      );
+
+      expect(
+        screen.getByRole('button', { name: /view cookbooks/i })
+      ).toBeInTheDocument();
+
+      expect(mockUpdateCookbookRecipes).toHaveBeenCalledWith({
+        cookbookId: mockCookbooks[1].id,
+        recipeIds: [mockRecipes[1].id],
+      });
+    });
+
+    test('show error message if error adding recipes to cookbook', async () => {
+      const mockUpdateCookbookRecipesWithError: jest.Mock = jest.fn(() => {
+        return Promise.resolve({
+          statusCode: 500,
+          data: 'there was an error',
+        });
+      });
+
+      (updateCookbookRecipes as jest.Mock).mockImplementation(
+        mockUpdateCookbookRecipesWithError
+      );
+
+      render(
+        <RecipesViewList
+          recipes={mockRecipes}
+          cookbooks={mockCookbooks}
+        />
+      );
+
+      await userEvent.click(
+        screen.getByRole('checkbox', { name: `Select ${mockRecipes[1].name}` })
+      );
+
+      await userEvent.click(
+        screen.getByRole('button', { name: existingCookbookBtnRegx })
+      );
+
+      expect(screen.getAllByText(mockCookbooks[0].name)).toHaveLength(2);
+      expect(screen.getAllByText(mockCookbooks[1].name)).toHaveLength(1);
+
+      await userEvent.click(screen.getAllByText(mockCookbooks[1].name)[0]);
+      expect(
+        screen.getByRole('checkbox', {
+          name: `Select ${mockCookbooks[1].name}`,
+        })
+      ).toBeChecked();
+
+      await userEvent.click(
+        screen.queryByRole('button', { name: /add/i }) as HTMLElement
+      );
+
+      expect(screen.getByText(/error/i)).toBeInTheDocument();
+
+      expect(
+        screen.getByRole('button', { name: /close/i })
       ).toBeInTheDocument();
     });
   });

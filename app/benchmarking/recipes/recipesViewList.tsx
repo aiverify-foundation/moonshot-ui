@@ -43,6 +43,7 @@ function RecipesViewList({
   const [checkedRecipes, setCheckedRecipes] = React.useState<Recipe[]>([]);
   const [formStep, setFormStep] = React.useState<'view' | 'add'>('view');
   const [showResultModal, setShowResultModal] = React.useState(false);
+  const [showErrorModal, setShowErrorModal] = React.useState(false);
   const [isPending, startTransition] = React.useTransition();
 
   const filteredRecipes = recipes.filter((recipe) =>
@@ -76,6 +77,12 @@ function RecipesViewList({
             ...checkedRecipes.map((recipe) => recipe.id),
           ])
         ),
+      }).then((result) => {
+        if (result.statusCode === 200) {
+          setShowResultModal(true);
+        } else {
+          setShowErrorModal(true);
+        }
       });
     });
   }
@@ -264,7 +271,7 @@ function RecipesViewList({
                 <li
                   key={cookbook.id}
                   className="p-6 bg-moongray-900 text-white hover:bg-moongray-800 
-                  hover:border-moonwine-700 cursor-pointer"
+                  hover:border-moonwine-700 cursor-pointer flex gap-4"
                   style={{
                     transition: 'background-color 0.2s ease-in-out',
                     ...(isSelected && {
@@ -272,17 +279,27 @@ function RecipesViewList({
                     }),
                   }}
                   onClick={() => setSelectedCookbook(cookbook)}>
-                  <div className="flex gap-2 mb-2">
-                    <Icon name={IconName.Book} />
-                    <h4 className="text-[1rem] font-semibold">
-                      {cookbook.name}
-                    </h4>
+                  <input
+                    readOnly
+                    type="checkbox"
+                    name="cookbooks[]"
+                    aria-label={`Select ${cookbook.name}`}
+                    className="w-2 h-2 shrink-0"
+                    checked={selectedCookbook.id === cookbook.id}
+                  />
+                  <div>
+                    <div className="flex gap-2 mb-2 items-start">
+                      <Icon name={IconName.Book} />
+                      <h4 className="text-[1rem] font-semibold">
+                        {cookbook.name}
+                      </h4>
+                    </div>
+                    <p
+                      className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis text-moongray-400"
+                      style={ellipsisStyle}>
+                      {cookbook.description}
+                    </p>
                   </div>
-                  <p
-                    className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis text-moongray-400"
-                    style={ellipsisStyle}>
-                    {cookbook.description}
-                  </p>
                 </li>
               );
             })}
@@ -320,21 +337,23 @@ function RecipesViewList({
             mode={ButtonType.OUTLINE}
             text="Back"
             size="lg"
-            disabled={!selectedCookbook}
+            disabled={!selectedCookbook || isPending}
             hoverBtnColor={colors.moongray[800]}
             pressedBtnColor={colors.moongray[700]}
             onClick={() => setFormStep('view')}
           />
-          <Button
-            width={120}
-            disabled={!selectedCookbook}
-            mode={ButtonType.PRIMARY}
-            text="Add"
-            size="lg"
-            hoverBtnColor={colors.moongray[1000]}
-            pressedBtnColor={colors.moongray[900]}
-            onClick={handleAddClick}
-          />
+          {checkedRecipes.length ? (
+            <Button
+              width={120}
+              disabled={!selectedCookbook || isPending}
+              mode={ButtonType.PRIMARY}
+              text="Add"
+              size="lg"
+              hoverBtnColor={colors.moongray[1000]}
+              pressedBtnColor={colors.moongray[900]}
+              onClick={handleAddClick}
+            />
+          ) : null}
         </footer>
       </main>
     </>
@@ -342,6 +361,7 @@ function RecipesViewList({
 
   const resultModal = (
     <Modal
+      hideCloseIcon
       heading="Recipes Added to Cookbook"
       bgColor={colors.moongray['800']}
       textColor="#FFFFFF"
@@ -364,9 +384,39 @@ function RecipesViewList({
     </Modal>
   );
 
+  const errorModal = (
+    <Modal
+      heading="Error Adding Recipes"
+      bgColor={colors.moongray['800']}
+      textColor="#FFFFFF"
+      primaryBtnLabel="Close"
+      enableScreenOverlay
+      onCloseIconClick={() => {
+        setShowErrorModal(false);
+      }}
+      onPrimaryBtnClick={() => {
+        setShowErrorModal(false);
+      }}>
+      <div
+        className="flex items-start gap-2 pt-4 overflow-x-hidden overflow-y-auto"
+        style={{ height: '80%' }}>
+        <Icon
+          name={IconName.Alert}
+          size={30}
+          color="red"
+        />
+        <p className="text-[0.9rem]">
+          There was a problem adding the recipes to the cookbook. Please try
+          again.
+        </p>
+      </div>
+    </Modal>
+  );
+
   return (
     <div className="relative h-full">
       {showResultModal ? resultModal : null}
+      {showErrorModal ? errorModal : null}
       <header className="flex gap-5 w-full mb-3 justify-between items-end">
         <h1 className="text-[1.6rem] text-white mt-3">{title}</h1>
       </header>

@@ -306,3 +306,8 @@ type Runner = {
   };
   start_time?: number;
 };
+
+type ActionResponse<T> = {
+  statusCode: number;
+  data?: T;
+};
