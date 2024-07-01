@@ -26,7 +26,10 @@ export default async function RecipesPage() {
       minHeight={750}
       bgColor={colors.moongray['950']}>
       <div className="h-full">
-        <CreateCookbookForm recipes={(result as ApiResult<Recipe[]>).data} />
+        <CreateCookbookForm
+          recipes={(result as ApiResult<Recipe[]>).data}
+          defaultSelectedRecipes={[]}
+        />
       </div>
     </MainSectionSurface>
   );

@@ -8,6 +8,7 @@ import { TextInput } from '@/app/components/textInput';
 import { colors } from '@/app/views/shared-components/customColors';
 import { Modal } from '@/app/views/shared-components/modal/modal';
 import { SelectedRecipesPills } from './selectedRecipesPills';
+import { CreateCookbookForm } from '@/app/benchmarking/cookbooks/new/createCookbookForm';
 
 interface CustomStyle extends React.CSSProperties {
   WebkitLineClamp?: string;
@@ -18,6 +19,12 @@ const ellipsisStyle: CustomStyle = {
   WebkitLineClamp: '2',
   WebkitBoxOrient: 'vertical',
 };
+
+enum Step {
+  VIEW_RECIPES = 'viewRecipes',
+  ADD_TO_NEW_COOKBOOK = 'addToNewCookbook',
+  ADD_TO_EXISTING_COOKBOOK = 'addToExistingCookbook',
+}
 
 function RecipesViewList({
   recipes,
@@ -41,7 +48,7 @@ function RecipesViewList({
 
   const [searchQuery, setSearchQuery] = React.useState('');
   const [checkedRecipes, setCheckedRecipes] = React.useState<Recipe[]>([]);
-  const [formStep, setFormStep] = React.useState<'view' | 'add'>('view');
+  const [flowStep, setFlowStep] = React.useState<Step>(Step.VIEW_RECIPES);
   const [showResultModal, setShowResultModal] = React.useState(false);
   const [showErrorModal, setShowErrorModal] = React.useState(false);
   const [isPending, startTransition] = React.useTransition();
@@ -87,7 +94,20 @@ function RecipesViewList({
     });
   }
 
-  const title = formStep === 'view' ? 'Recipes' : 'Add Recipes to Cookbook';
+  function handleAddToNewCookbookClick() {
+    setFlowStep(Step.ADD_TO_NEW_COOKBOOK);
+  }
+
+  let title = 'Recipes';
+  if (flowStep === Step.VIEW_RECIPES) {
+    title = 'Recipes';
+  }
+  if (flowStep === Step.ADD_TO_EXISTING_COOKBOOK) {
+    title = 'Add Recipes to Cookbook';
+  }
+  if (flowStep === Step.ADD_TO_NEW_COOKBOOK) {
+    title = 'Create New Cookbook';
+  }
 
   const viewRecipes = (
     <>
@@ -221,22 +241,22 @@ function RecipesViewList({
       {checkedRecipes.length > 0 && (
         <footer className="flex justify-end gap-2 mt-6">
           <Button
-            disabled={checkedRecipes.length === 0}
+            disabled={checkedRecipes.length === 0 || isPending}
             mode={ButtonType.PRIMARY}
             text="Add to New Cookbook"
             size="lg"
             hoverBtnColor={colors.moongray[1000]}
             pressedBtnColor={colors.moongray[900]}
-            onClick={() => setFormStep('add')}
+            onClick={handleAddToNewCookbookClick}
           />
           <Button
-            disabled={checkedRecipes.length === 0}
+            disabled={checkedRecipes.length === 0 || isPending}
             mode={ButtonType.PRIMARY}
             text="Add to Existing Cookbook"
             size="lg"
             hoverBtnColor={colors.moongray[1000]}
             pressedBtnColor={colors.moongray[900]}
-            onClick={() => setFormStep('add')}
+            onClick={() => setFlowStep(Step.ADD_TO_EXISTING_COOKBOOK)}
           />
         </footer>
       )}
@@ -304,7 +324,9 @@ function RecipesViewList({
               );
             })}
           </ul>
-          <section className="text-white border border-moonwine-500 p-4 rounded-md overflow-y-auto custom-scrollbar bg-moongray-800 flex-1">
+          <section
+            className="text-white border border-moonwine-500 p-4 rounded-md overflow-y-auto
+            custom-scrollbar bg-moongray-800 flex-1">
             <div className="flex gap-2 mb-4">
               <Icon
                 name={IconName.Book}
@@ -340,7 +362,7 @@ function RecipesViewList({
             disabled={!selectedCookbook || isPending}
             hoverBtnColor={colors.moongray[800]}
             pressedBtnColor={colors.moongray[700]}
-            onClick={() => setFormStep('view')}
+            onClick={() => setFlowStep(Step.VIEW_RECIPES)}
           />
           {checkedRecipes.length ? (
             <Button
@@ -374,7 +396,7 @@ function RecipesViewList({
       onSecondaryBtnClick={() => {
         setCheckedRecipes([]);
         setSelectedCookbook(cookbooks[0]);
-        setFormStep('view');
+        setFlowStep(Step.VIEW_RECIPES);
         setShowResultModal(false);
       }}
       onPrimaryBtnClick={() => router.push('/benchmarking/cookbooks')}>
@@ -417,10 +439,23 @@ function RecipesViewList({
     <div className="relative h-full">
       {showResultModal ? resultModal : null}
       {showErrorModal ? errorModal : null}
-      <header className="flex gap-5 w-full mb-3 justify-between items-end">
-        <h1 className="text-[1.6rem] text-white mt-3">{title}</h1>
-      </header>
-      {formStep === 'view' ? viewRecipes : selectCookbook}
+      {flowStep !== Step.ADD_TO_NEW_COOKBOOK ? (
+        <header className="flex gap-5 w-full mb-3 justify-between items-end">
+          <h1 className="text-[1.6rem] text-white mt-3">{title}</h1>
+        </header>
+      ) : null}
+      {flowStep === Step.VIEW_RECIPES ? viewRecipes : null}
+      {flowStep === Step.ADD_TO_EXISTING_COOKBOOK ? selectCookbook : null}
+      {flowStep === Step.ADD_TO_NEW_COOKBOOK ? (
+        <CreateCookbookForm
+          showBackBtn
+          onBackBtnClick={() => setFlowStep(Step.VIEW_RECIPES)}
+          onSelectRecipesBtnClick={() => setFlowStep(Step.VIEW_RECIPES)}
+          recipes={recipes}
+          defaultSelectedRecipes={checkedRecipes}
+          onRecipePillBtnClick={handleRemoveRecipe}
+        />
+      ) : null}
     </div>
   );
 }

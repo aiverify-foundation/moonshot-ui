@@ -22,7 +22,7 @@ export const updateCookbookRecipes = async ({
   );
   const data = await response.json();
   return {
-    statusCode: 500,
+    statusCode: response.status,
     data,
   };
 };

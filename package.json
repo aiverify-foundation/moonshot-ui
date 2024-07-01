@@ -22,7 +22,8 @@
     "react-redux": "9.0.4",
     "react-select": "5.8.0",
     "react-window": "1.8.10",
-    "yup": "1.4.0"
+    "yup": "1.4.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",

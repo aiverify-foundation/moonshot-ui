@@ -71,6 +71,7 @@ const mockCookbooks: Cookbook[] = [
 
 const newCookbookBtnRegx = /add to new cookbook/i;
 const existingCookbookBtnRegx = /add to existing cookbook/i;
+const createCookbookBtnRegx = /create cookbook/i;
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
@@ -187,7 +188,7 @@ describe('RecipesViewList', () => {
     });
   });
 
-  describe('Add Recipes to Cookbook', () => {
+  describe('Add Recipes to Existing Cookbook', () => {
     const mockUpdateCookbookRecipes: jest.Mock = jest.fn(() => {
       return Promise.resolve({
         statusCode: 200,
@@ -323,6 +324,39 @@ describe('RecipesViewList', () => {
 
       expect(
         screen.getByRole('button', { name: /close/i })
+      ).toBeInTheDocument();
+    });
+  });
+
+  describe('Add Recipes to New Cookbook', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('new cookbook form', async () => {
+      render(
+        <RecipesViewList
+          recipes={mockRecipes}
+          cookbooks={mockCookbooks}
+        />
+      );
+
+      await userEvent.click(
+        screen.getByRole('checkbox', { name: `Select ${mockRecipes[1].name}` })
+      );
+
+      await userEvent.click(
+        screen.getByRole('button', { name: newCookbookBtnRegx })
+      );
+
+      expect(
+        screen.queryByRole('button', {
+          name: mockRecipes[1].name,
+        })
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByRole('button', { name: createCookbookBtnRegx })
       ).toBeInTheDocument();
     });
   });
