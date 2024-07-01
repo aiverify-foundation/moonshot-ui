@@ -50,15 +50,8 @@ jobs:
       run: |
           echo "BRANCH=${{ inputs.branch_to_test }}" >> "$GITHUB_ENV"
 
-    - name: Setup Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.11"
-
     - name: Install & Scan MOONSHOT UI
       run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
+          npm install
           bash <(curl -s -L https://detect.synopsys.com/detect9.sh) --blackduck.url=https://blackduck.aipo-imda.net/ --blackduck.api.token=${{ secrets.BLACKDUCK_TOKEN }} --detect.detector.search.depth=10 --detect.project.name=aiverify-moonshot-ui --detect.project.version.name=$BRANCH --detect.source.path=. --detect.code.location.name="aiverify-moonshot-ui_$BRANCH" --detect.excluded.directories=/tests --blackduck.trust.cert=true
           cd ../
