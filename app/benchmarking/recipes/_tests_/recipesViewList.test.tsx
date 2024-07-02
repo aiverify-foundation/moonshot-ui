@@ -3,8 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useFormState } from 'react-dom';
 import { updateCookbookRecipes } from '@/actions/updateCookbookRecipes';
+import { Step } from '@/app/benchmarking/recipes/enums';
 import { RecipesViewList } from '@/app/benchmarking/recipes/recipesViewList';
-import { Step } from '../enums';
 
 const mockRecipes: Recipe[] = [
   {
