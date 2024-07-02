@@ -1,20 +1,16 @@
 'use client';
 
-import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useFormState } from 'react-dom';
-import { object, string, array } from 'yup';
+import { createCookbook } from '@/actions/createCookbook';
 import { SelectedRecipesPills } from '@/app/benchmarking/recipes/selectedRecipesPills';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
-import { toErrorWithMessage } from '@/app/lib/error-utils';
-// import { useCreateCookbookMutation } from '@/app/services/cookbook-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
 import { Modal } from '@/app/views/shared-components/modal/modal';
-import { createCookbook } from '@/actions/createCookbook';
 export const dynamic = 'force-dynamic';
 
 type CreateCookbookFormProps = {
@@ -26,17 +22,13 @@ type CreateCookbookFormProps = {
   defaultSelectedRecipes: Recipe[];
 };
 
-const initialFormValues: CookbookFormValues = {
+const initialFormValues: FormState<CookbookFormValues> = {
+  formStatus: 'initial',
+  formErrors: undefined,
   name: '',
   description: undefined,
   recipes: [],
 };
-
-const validationSchema = object().shape({
-  name: string().required('Name is required'),
-  description: string().nullable(),
-  recipes: array().min(1, 'At least one recipe is required'),
-});
 
 function CreateCookbookForm({
   defaultSelectedRecipes = [],
@@ -47,61 +39,53 @@ function CreateCookbookForm({
 }: CreateCookbookFormProps) {
   const router = useRouter();
   const [showResultModal, setShowResultModal] = React.useState(false);
-  const [creationError, setCreationError] = React.useState<
-    string | undefined
-  >();
-  // const [createCookbook] = useCreateCookbookMutation();
-  const [formState, action] = useFormState<{ msg: string }>(
-    createCookbook,
-    initialFormValues
-  );
-  const formik = useFormik({
-    initialValues: initialFormValues,
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      if (!values.description || values.description === '') {
-        delete values.description;
-      }
-      submitCookbookCreation(values);
-    },
-  });
+  const [showErrorModal, setShowErrorModal] = React.useState(false);
+  const [formState, action] = useFormState<
+    FormState<CookbookFormValues>,
+    FormData
+  >(createCookbook, initialFormValues);
 
   React.useEffect(() => {
-    formik.setFieldValue(
-      'recipes',
-      defaultSelectedRecipes.map((recipe) => recipe.id)
-    );
-  }, [defaultSelectedRecipes]);
-
-  async function submitCookbookCreation(values: CookbookFormValues) {
-    // const result = await createCookbook(values);
-    // if ('error' in result) {
-    //   const errWithMsg = toErrorWithMessage(result.error);
-    //   console.log(result.error);
-    //   setCreationError(errWithMsg.message);
-    //   return;
-    // }
-    // setShowResultModal(true);
-  }
+    if (formState.formStatus === 'error') {
+      console.error(formState);
+      setShowErrorModal(true);
+      return;
+    }
+    if (formState.formStatus === 'success') {
+      setShowResultModal(true);
+    }
+  }, [formState]);
 
   return (
     <>
-      {creationError != undefined ? (
+      {showErrorModal ? (
         <Modal
           heading="Errors"
           bgColor={colors.moongray['800']}
           textColor="#FFFFFF"
           primaryBtnLabel="Close"
           enableScreenOverlay
-          onCloseIconClick={() => setCreationError(undefined)}
-          onPrimaryBtnClick={() => setCreationError(undefined)}>
+          onCloseIconClick={() => setShowErrorModal(false)}
+          onPrimaryBtnClick={() => setShowErrorModal(false)}>
           <div className="flex gap-2 items-start">
             <Icon
               name={IconName.Alert}
               size={40}
               color="red"
             />
-            <p>{creationError}</p>
+            <p>
+              {formState.formErrors ? (
+                <ul>
+                  {Object.entries(formState.formErrors).map(([key, value]) => (
+                    <li key={key}>
+                      {key}: {value.join(', ')}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                'An unknown error occurred'
+              )}
+            </p>
           </div>
         </Modal>
       ) : null}
@@ -115,15 +99,13 @@ function CreateCookbookForm({
           enableScreenOverlay
           onCloseIconClick={() => {
             setShowResultModal(false);
-            formik.resetForm();
           }}
           onSecondaryBtnClick={() => {
             setShowResultModal(false);
-            formik.resetForm();
           }}
           onPrimaryBtnClick={() => router.push('/benchmarking/cookbooks')}>
           <div className="flex gap-2 items-start">
-            <p>{`Cookbook ${formik.values.name} was successfully created.`}</p>
+            <p>{`Cookbook ${formState.name} was successfully created.`}</p>
           </div>
         </Modal>
       ) : null}
@@ -136,20 +118,13 @@ function CreateCookbookForm({
             <TextInput
               name="name"
               label="Name"
-              onChange={formik.handleChange}
-              value={formik.values.name}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.name && formik.errors.name
-                  ? formik.errors.name
-                  : undefined
-              }
               labelStyles={{
                 fontSize: '1rem',
                 color: colors.moonpurplelight,
               }}
               inputStyles={{ height: 38 }}
               placeholder="Give this cookbook a unique name"
+              error={formState.formErrors?.name[0]}
             />
 
             <TextArea
@@ -159,22 +134,21 @@ function CreateCookbookForm({
                 fontSize: '1rem',
                 color: colors.moonpurplelight,
               }}
-              onChange={formik.handleChange}
-              value={formik.values.description}
-              error={
-                formik.touched.description && formik.errors.description
-                  ? formik.errors.description
-                  : undefined
-              }
               placeholder="Describe this cookbook"
+              error={formState.formErrors?.description[0]}
             />
-            <input
-              type="hidden"
-              name="recipes"
-              value={defaultSelectedRecipes
-                .map((recipe) => recipe.id)
-                .join(',')}
-            />
+            <div className="hidden">
+              {defaultSelectedRecipes.map((recipe) => (
+                <input
+                  checked
+                  type="checkbox"
+                  name="recipes"
+                  value={recipe.id}
+                  aria-label={`hidden selected recipe ${recipe.name}`}
+                  key={recipe.id}
+                />
+              ))}
+            </div>
             <section className="relative">
               <div
                 style={{
@@ -212,9 +186,7 @@ function CreateCookbookForm({
                 />
               ) : null}
               <Button
-                disabled={
-                  !formik.isValid || defaultSelectedRecipes.length === 0
-                }
+                disabled={defaultSelectedRecipes.length === 0}
                 mode={ButtonType.PRIMARY}
                 size="lg"
                 type="submit"

@@ -311,3 +311,8 @@ type ActionResponse<T> = {
   statusCode: number;
   data?: T;
 };
+
+type FormState<T = Record<string, string | number>> = {
+  formStatus: string;
+  formErrors: Record<string, string[]> | undefined;
+} & Partial<T>;

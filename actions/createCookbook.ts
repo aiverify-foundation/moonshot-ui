@@ -1,6 +1,6 @@
 'use server';
-
-import { z } from 'zod';
+import { ZodError, z } from 'zod';
+import config from '@/moonshot.config';
 
 const cookbookSchema = z.object({
   name: z.string(),
@@ -9,13 +9,51 @@ const cookbookSchema = z.object({
 });
 
 export const createCookbook = async (
-  prevState: CookbookFormValues,
+  prevState: FormState<CookbookFormValues>,
   formData: FormData
-): Promise<ActionResponse<string>> => {
-  const data = cookbookSchema.parse(Object.fromEntries(formData));
-  console.log(data);
+): Promise<FormState<CookbookFormValues>> => {
+  let newCookbookData: z.infer<typeof cookbookSchema>;
+  try {
+    newCookbookData = cookbookSchema.parse({
+      name: formData.get('name'),
+      description: formData.get('description'),
+      recipes: formData.getAll('recipes'),
+    });
+  } catch (error) {
+    const zodError = error as ZodError;
+    const errorMap = zodError.flatten().fieldErrors;
+    return {
+      formStatus: 'error',
+      formErrors: errorMap
+        ? Object.entries(errorMap).reduce(
+            (acc, [key, value]) => {
+              acc[key] = value || [];
+              return acc;
+            },
+            {} as Record<string, string[]>
+          )
+        : undefined,
+    };
+  }
+
+  const response = await fetch(
+    `${config.webAPI.hostURL}${config.webAPI.basePathCookbooks}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newCookbookData),
+    }
+  );
+  if (!response.ok) {
+    return {
+      formStatus: 'error',
+      formErrors: { error: ['An unknown error occurred'] },
+    };
+  }
   return {
-    statusCode: 200,
-    data: 'Cookbook created',
+    formStatus: 'success',
+    formErrors: undefined,
   };
 };
