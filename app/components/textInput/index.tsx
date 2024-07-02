@@ -63,13 +63,12 @@ function TextInput(props: TextInputProps) {
 
   return (
     <div
-      id={id}
       className={clsx(
         styles.textInput,
         error !== undefined ? styles.inputError : null
       )}
       style={style}>
-      <label>
+      <label htmlFor={id}>
         {label !== '' && label !== undefined ? (
           <div
             className={styles.label}
@@ -82,6 +81,7 @@ function TextInput(props: TextInputProps) {
           <div className={styles.description}>{description}</div>
         ) : null}
         <input
+          id={id}
           ref={inputRef}
           disabled={disabled}
           type={type}

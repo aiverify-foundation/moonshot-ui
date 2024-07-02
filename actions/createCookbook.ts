@@ -36,6 +36,14 @@ export const createCookbook = async (
     };
   }
 
+  return {
+    formStatus: 'error',
+    formErrors: {
+      name: ['mock name error'],
+      description: ['mock description error'],
+    },
+  };
+
   const response = await fetch(
     `${config.webAPI.hostURL}${config.webAPI.basePathCookbooks}`,
     {

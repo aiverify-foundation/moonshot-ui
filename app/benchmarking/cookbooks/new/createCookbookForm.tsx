@@ -44,6 +44,7 @@ function CreateCookbookForm({
     FormState<CookbookFormValues>,
     FormData
   >(createCookbook, initialFormValues);
+  const formRef = React.useRef<HTMLFormElement>(null);
 
   React.useEffect(() => {
     if (formState.formStatus === 'error') {
@@ -53,6 +54,9 @@ function CreateCookbookForm({
     }
     if (formState.formStatus === 'success') {
       setShowResultModal(true);
+      if (formRef.current) {
+        formRef.current.reset();
+      }
     }
   }, [formState]);
 
@@ -114,8 +118,11 @@ function CreateCookbookForm({
       </header>
       <main className="flex items-center justify-center min-h-[300px] gap-5 mt-8">
         <div className="flex flex-col w-[50%] gap-2">
-          <form action={action}>
+          <form
+            action={action}
+            ref={formRef}>
             <TextInput
+              id="cbName"
               name="name"
               label="Name"
               labelStyles={{
@@ -128,6 +135,7 @@ function CreateCookbookForm({
             />
 
             <TextArea
+              id="cbDesc"
               name="description"
               label="Description (optional)"
               labelStyles={{
@@ -140,11 +148,12 @@ function CreateCookbookForm({
             <div className="hidden">
               {defaultSelectedRecipes.map((recipe) => (
                 <input
+                  readOnly
                   checked
                   type="checkbox"
                   name="recipes"
                   value={recipe.id}
-                  aria-label={`hidden selected recipe ${recipe.name}`}
+                  aria-label={`Hidden selected recipe ${recipe.name}`}
                   key={recipe.id}
                 />
               ))}
