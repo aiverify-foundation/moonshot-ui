@@ -16,10 +16,14 @@ export const dynamic = 'force-dynamic';
 type CreateCookbookFormProps = {
   recipes: Recipe[];
   showBackBtn?: boolean;
+  defaultSelectedRecipes: Recipe[];
+  name: string;
+  description: string;
   onBackBtnClick?: () => void;
   onSelectRecipesBtnClick: () => void;
   onRecipePillBtnClick: (recipe: Recipe) => void;
-  defaultSelectedRecipes: Recipe[];
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  setDescription: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const initialFormValues: FormState<CookbookFormValues> = {
@@ -33,9 +37,13 @@ const initialFormValues: FormState<CookbookFormValues> = {
 function CreateCookbookForm({
   defaultSelectedRecipes = [],
   showBackBtn = false,
+  name,
+  description,
   onBackBtnClick,
   onSelectRecipesBtnClick,
   onRecipePillBtnClick,
+  setName,
+  setDescription,
 }: CreateCookbookFormProps) {
   const router = useRouter();
   const [showResultModal, setShowResultModal] = React.useState(false);
@@ -44,7 +52,6 @@ function CreateCookbookForm({
     FormState<CookbookFormValues>,
     FormData
   >(createCookbook, initialFormValues);
-  const formRef = React.useRef<HTMLFormElement>(null);
 
   React.useEffect(() => {
     if (formState.formStatus === 'error') {
@@ -54,9 +61,8 @@ function CreateCookbookForm({
     }
     if (formState.formStatus === 'success') {
       setShowResultModal(true);
-      if (formRef.current) {
-        formRef.current.reset();
-      }
+      setName('');
+      setDescription('');
     }
   }, [formState]);
 
@@ -77,19 +83,17 @@ function CreateCookbookForm({
               size={40}
               color="red"
             />
-            <p>
-              {formState.formErrors ? (
-                <ul>
-                  {Object.entries(formState.formErrors).map(([key, value]) => (
-                    <li key={key}>
-                      {key}: {value.join(', ')}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                'An unknown error occurred'
-              )}
-            </p>
+            {formState.formErrors ? (
+              <ul>
+                {Object.entries(formState.formErrors).map(([key, value]) => (
+                  <li key={key}>
+                    {key}: {value.join(', ')}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              'An unknown error occurred'
+            )}
           </div>
         </Modal>
       ) : null}
@@ -118,9 +122,7 @@ function CreateCookbookForm({
       </header>
       <main className="flex items-center justify-center min-h-[300px] gap-5 mt-8">
         <div className="flex flex-col w-[50%] gap-2">
-          <form
-            action={action}
-            ref={formRef}>
+          <form action={action}>
             <TextInput
               id="cbName"
               name="name"
@@ -131,7 +133,9 @@ function CreateCookbookForm({
               }}
               inputStyles={{ height: 38 }}
               placeholder="Give this cookbook a unique name"
-              error={formState.formErrors?.name[0]}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              error={formState.formErrors?.name?.[0]}
             />
 
             <TextArea
@@ -143,7 +147,9 @@ function CreateCookbookForm({
                 color: colors.moonpurplelight,
               }}
               placeholder="Describe this cookbook"
-              error={formState.formErrors?.description[0]}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              error={formState.formErrors?.description?.[0]}
             />
             <div className="hidden">
               {defaultSelectedRecipes.map((recipe) => (
@@ -185,6 +191,7 @@ function CreateCookbookForm({
             <div className="flex grow gap-4 justify-center items-end mt-3">
               {showBackBtn ? (
                 <Button
+                  width={150}
                   mode={ButtonType.OUTLINE}
                   size="lg"
                   type="button"

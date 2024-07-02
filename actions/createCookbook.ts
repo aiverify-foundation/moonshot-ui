@@ -1,9 +1,10 @@
 'use server';
+import { revalidatePath } from 'next/cache';
 import { ZodError, z } from 'zod';
 import config from '@/moonshot.config';
 
 const cookbookSchema = z.object({
-  name: z.string(),
+  name: z.string().min(1, 'Name cannot be empty'),
   description: z.string().optional(),
   recipes: z.array(z.string()).min(1, 'At least one recipe is required'),
 });
@@ -52,6 +53,7 @@ export const createCookbook = async (
       formErrors: { error: ['An unknown error occurred'] },
     };
   }
+  revalidatePath('/benchmarking/cookbooks');
   return {
     formStatus: 'success',
     formErrors: undefined,

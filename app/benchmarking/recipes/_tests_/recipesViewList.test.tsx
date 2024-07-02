@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useFormState } from 'react-dom';
 import { updateCookbookRecipes } from '@/actions/updateCookbookRecipes';
 import { RecipesViewList } from '@/app/benchmarking/recipes/recipesViewList';
-import { useFormState } from 'react-dom';
+import { Step } from '../enums';
 
 const mockRecipes: Recipe[] = [
   {
@@ -388,51 +389,6 @@ describe('RecipesViewList', () => {
       ).toBeInTheDocument();
     });
 
-    test('new cookbook form - initial form state', async () => {
-      const mockUseFormState: jest.Mock = jest.fn().mockImplementation(() => {
-        return [
-          {
-            formStatus: 'initial',
-            formErrors: undefined,
-          },
-          'actions-cannot-be-tested-yet', // use a dummy string to prevent jest from complaining
-        ];
-      });
-
-      (useFormState as jest.Mock).mockImplementation(mockUseFormState);
-
-      render(
-        <RecipesViewList
-          recipes={mockRecipes}
-          cookbooks={mockCookbooks}
-        />
-      );
-
-      await userEvent.click(
-        screen.getByRole('checkbox', { name: `Select ${mockRecipes[1].name}` })
-      );
-
-      await userEvent.click(
-        screen.getByRole('button', { name: newCookbookBtnRegx })
-      );
-
-      expect(
-        screen.queryByRole('button', {
-          name: mockRecipes[1].name,
-        })
-      ).toBeInTheDocument();
-
-      expect(
-        screen.getByRole('checkbox', {
-          name: `Hidden selected recipe ${mockRecipes[1].name}`,
-        })
-      ).toBeInTheDocument();
-
-      expect(
-        screen.getByRole('button', { name: createCookbookBtnRegx })
-      ).toBeInTheDocument();
-    });
-
     test('new cookbook form - success form state', async () => {
       const mockUseFormState: jest.Mock = jest.fn().mockImplementation(() => {
         return [
@@ -503,6 +459,40 @@ describe('RecipesViewList', () => {
       expect(
         screen.getByRole('button', { name: /close/i })
       ).toBeInTheDocument();
+    });
+  });
+
+  describe('Create Cookbook flow', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('starts with cookbook form', async () => {
+      const mockUseFormState: jest.Mock = jest.fn().mockImplementation(() => {
+        return [
+          {
+            formStatus: 'initial',
+            formErrors: undefined,
+          },
+          'actions-cannot-be-tested-yet', // use a dummy string to prevent jest from complaining
+        ];
+      });
+
+      (useFormState as jest.Mock).mockImplementation(mockUseFormState);
+      render(
+        <RecipesViewList
+          defaultFirstStep={Step.ADD_TO_NEW_COOKBOOK}
+          recipes={mockRecipes}
+          cookbooks={mockCookbooks}
+        />
+      );
+
+      expect(screen.getByText(/no recipes selected/i)).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: createCookbookBtnRegx })
+      ).toBeInTheDocument();
+
+      expect(screen.queryByRole('button', { name: /back/i })).toBeNull();
     });
   });
 });

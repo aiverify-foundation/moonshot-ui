@@ -2,13 +2,14 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 import { updateCookbookRecipes } from '@/actions/updateCookbookRecipes';
+import { CreateCookbookForm } from '@/app/benchmarking/cookbooks/new/createCookbookForm';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { TextInput } from '@/app/components/textInput';
 import { colors } from '@/app/views/shared-components/customColors';
 import { Modal } from '@/app/views/shared-components/modal/modal';
+import { Step } from './enums';
 import { SelectedRecipesPills } from './selectedRecipesPills';
-import { CreateCookbookForm } from '@/app/benchmarking/cookbooks/new/createCookbookForm';
 
 interface CustomStyle extends React.CSSProperties {
   WebkitLineClamp?: string;
@@ -20,18 +21,14 @@ const ellipsisStyle: CustomStyle = {
   WebkitBoxOrient: 'vertical',
 };
 
-enum Step {
-  VIEW_RECIPES = 'viewRecipes',
-  ADD_TO_NEW_COOKBOOK = 'addToNewCookbook',
-  ADD_TO_EXISTING_COOKBOOK = 'addToExistingCookbook',
-}
-
 function RecipesViewList({
   recipes,
   cookbooks,
+  defaultFirstStep = Step.VIEW_RECIPES,
 }: {
   recipes: Recipe[];
   cookbooks: Cookbook[];
+  defaultFirstStep?: Step;
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -48,10 +45,12 @@ function RecipesViewList({
 
   const [searchQuery, setSearchQuery] = React.useState('');
   const [checkedRecipes, setCheckedRecipes] = React.useState<Recipe[]>([]);
-  const [flowStep, setFlowStep] = React.useState<Step>(Step.VIEW_RECIPES);
+  const [flowStep, setFlowStep] = React.useState<Step>(defaultFirstStep);
   const [showResultModal, setShowResultModal] = React.useState(false);
   const [showErrorModal, setShowErrorModal] = React.useState(false);
   const [isPending, startTransition] = React.useTransition();
+  const [name, setName] = React.useState('');
+  const [description, setDescription] = React.useState('');
 
   const filteredRecipes = recipes.filter((recipe) =>
     recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -238,7 +237,7 @@ function RecipesViewList({
           />
         </div>
       </main>
-      {checkedRecipes.length > 0 && (
+      {checkedRecipes.length > 0 && defaultFirstStep === Step.VIEW_RECIPES ? (
         <footer className="flex justify-end gap-2 mt-6">
           <Button
             disabled={checkedRecipes.length === 0 || isPending}
@@ -259,7 +258,22 @@ function RecipesViewList({
             onClick={() => setFlowStep(Step.ADD_TO_EXISTING_COOKBOOK)}
           />
         </footer>
-      )}
+      ) : null}
+      {checkedRecipes.length > 0 &&
+      defaultFirstStep === Step.ADD_TO_NEW_COOKBOOK ? (
+        <footer className="flex justify-end gap-2 mt-6">
+          <Button
+            width={150}
+            disabled={checkedRecipes.length === 0 || isPending}
+            mode={ButtonType.PRIMARY}
+            text="OK"
+            size="lg"
+            hoverBtnColor={colors.moongray[1000]}
+            pressedBtnColor={colors.moongray[900]}
+            onClick={handleAddToNewCookbookClick}
+          />
+        </footer>
+      ) : null}
     </>
   );
 
@@ -448,12 +462,16 @@ function RecipesViewList({
       {flowStep === Step.ADD_TO_EXISTING_COOKBOOK ? selectCookbook : null}
       {flowStep === Step.ADD_TO_NEW_COOKBOOK ? (
         <CreateCookbookForm
-          showBackBtn
+          showBackBtn={defaultFirstStep === Step.VIEW_RECIPES}
           onBackBtnClick={() => setFlowStep(Step.VIEW_RECIPES)}
           onSelectRecipesBtnClick={() => setFlowStep(Step.VIEW_RECIPES)}
           recipes={recipes}
           defaultSelectedRecipes={checkedRecipes}
           onRecipePillBtnClick={handleRemoveRecipe}
+          name={name}
+          description={description}
+          setName={setName}
+          setDescription={setDescription}
         />
       ) : null}
     </div>
