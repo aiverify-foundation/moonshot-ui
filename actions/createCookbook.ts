@@ -1,5 +1,4 @@
 'use server';
-import { revalidatePath } from 'next/cache';
 import { ZodError, z } from 'zod';
 import config from '@/moonshot.config';
 
@@ -36,6 +35,9 @@ export const createCookbook = async (
         : undefined,
     };
   }
+  if (newCookbookData.description?.trim() === '') {
+    newCookbookData.description = undefined;
+  }
 
   const response = await fetch(
     `${config.webAPI.hostURL}${config.webAPI.basePathCookbooks}`,
@@ -47,15 +49,24 @@ export const createCookbook = async (
       body: JSON.stringify(newCookbookData),
     }
   );
+  const result = await response.json();
+  let errors = [];
+  if (result.error && result.error.length) {
+    errors = result.error.map((error: Record<string, string>) =>
+      JSON.stringify(error)
+    );
+  }
   if (!response.ok) {
     return {
       formStatus: 'error',
-      formErrors: { error: ['An unknown error occurred'] },
+      formErrors: {
+        error: (errors.length && errors) || ['An unknown error occurred'],
+      },
     };
   }
-  revalidatePath('/benchmarking/cookbooks');
   return {
     formStatus: 'success',
     formErrors: undefined,
+    ...newCookbookData,
   };
 };

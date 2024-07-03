@@ -1,9 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useFormState } from 'react-dom';
 import { createCookbook } from '@/actions/createCookbook';
+import { redirectRoute } from '@/actions/redirectRoute';
 import { SelectedRecipesPills } from '@/app/benchmarking/recipes/selectedRecipesPills';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
@@ -45,7 +45,6 @@ function CreateCookbookForm({
   setName,
   setDescription,
 }: CreateCookbookFormProps) {
-  const router = useRouter();
   const [showResultModal, setShowResultModal] = React.useState(false);
   const [showErrorModal, setShowErrorModal] = React.useState(false);
   const [formState, action] = useFormState<
@@ -111,7 +110,9 @@ function CreateCookbookForm({
           onSecondaryBtnClick={() => {
             setShowResultModal(false);
           }}
-          onPrimaryBtnClick={() => router.push('/benchmarking/cookbooks')}>
+          onPrimaryBtnClick={() =>
+            redirectRoute('/benchmarking/cookbooks', ['cookbooks-collection'])
+          }>
           <div className="flex gap-2 items-start">
             <p>{`Cookbook ${formState.name} was successfully created.`}</p>
           </div>
@@ -164,7 +165,7 @@ function CreateCookbookForm({
                 />
               ))}
             </div>
-            <section className="relative">
+            <section className="relative mt-8">
               <div
                 style={{
                   position: 'absolute',
@@ -202,7 +203,7 @@ function CreateCookbookForm({
                 />
               ) : null}
               <Button
-                disabled={defaultSelectedRecipes.length === 0}
+                disabled={defaultSelectedRecipes.length === 0 || !name}
                 mode={ButtonType.PRIMARY}
                 size="lg"
                 type="submit"

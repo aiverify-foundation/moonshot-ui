@@ -1,6 +1,7 @@
 'use client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
+import { redirectRoute } from '@/actions/redirectRoute';
 import { updateCookbookRecipes } from '@/actions/updateCookbookRecipes';
 import { CreateCookbookForm } from '@/app/benchmarking/cookbooks/new/createCookbookForm';
 import { Icon, IconName } from '@/app/components/IconSVG';
@@ -119,12 +120,25 @@ function RecipesViewList({
               : 'calc(100% - 90px)',
         }}>
         <section className="flex flex-col flex-1">
-          <TextInput
-            name="search"
-            placeholder="Search by name"
-            value={searchQuery}
-            onChange={handleSearch}
-          />
+          <div className="relative">
+            <TextInput
+              name="search"
+              placeholder="Search by name"
+              value={searchQuery}
+              onChange={handleSearch}
+            />
+            <Icon
+              style={{
+                position: 'absolute',
+                right: 8,
+                top: 7,
+              }}
+              name={IconName.Close}
+              size={20}
+              onClick={() => setSearchQuery('')}
+              color={colors.black}
+            />
+          </div>
           <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar">
             {filteredRecipes.map((recipe) => {
               const isSelected = recipe.id === selectedRecipe.id;
@@ -413,9 +427,11 @@ function RecipesViewList({
         setFlowStep(Step.VIEW_RECIPES);
         setShowResultModal(false);
       }}
-      onPrimaryBtnClick={() => router.push('/benchmarking/cookbooks')}>
+      onPrimaryBtnClick={() =>
+        redirectRoute('/benchmarking/cookbooks', ['cookbooks-collection'])
+      }>
       <div className="flex gap-2 items-start">
-        <p>{`Cookbook ${selectedCookbook.name} was successfully updated with the selected recipes.`}</p>
+        <p>{`Cookbook ${selectedCookbook.name} was successfully updated.`}</p>
       </div>
     </Modal>
   );

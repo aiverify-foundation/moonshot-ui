@@ -16,7 +16,11 @@ async function fetchRecipes() {
 async function fetchCookbooks() {
   const response = await fetch(
     `${config.webAPI.hostURL}${config.webAPI.basePathCookbooks}?count=true`,
-    { cache: 'no-store' }
+    {
+      next: {
+        tags: ['cookbooks-collection'],
+      },
+    }
   );
   const result = await processResponse<Cookbook[]>(response);
   return result;
