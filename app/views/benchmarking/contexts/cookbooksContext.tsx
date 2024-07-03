@@ -12,8 +12,17 @@ type CookBookContextValue =
 const CookbooksContext = React.createContext<CookBookContextValue>(undefined);
 CookbooksContext.displayName = 'CookbooksContext';
 
-function CookbooksProvider({ children }: { children: React.ReactNode }) {
-  const [cookbooks, setCookbooks] = React.useState<Cookbook[]>([]);
+type CookbooksProviderProps = {
+  children: React.ReactNode;
+  initialCookbooks?: Cookbook[];
+};
+
+function CookbooksProvider({
+  children,
+  initialCookbooks = [],
+}: CookbooksProviderProps) {
+  const [cookbooks, setCookbooks] =
+    React.useState<Cookbook[]>(initialCookbooks);
   const [isFirstCookbooksFetch, setIsFirstCookbooksFetch] = React.useState(
     () => true
   );

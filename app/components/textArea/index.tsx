@@ -53,13 +53,12 @@ function TextArea(props: TextInputProps) {
 
   return (
     <div
-      id={id}
       className={clsx(
         styles.textInput,
         error !== undefined ? styles.inputError : null
       )}
       style={containerStyles}>
-      <label>
+      <label htmlFor={id}>
         {label !== undefined ? (
           <div
             className={styles.label}
@@ -69,6 +68,7 @@ function TextArea(props: TextInputProps) {
           </div>
         ) : null}
         <textarea
+          id={id}
           ref={inputRef}
           name={name}
           placeholder={placeholder}

@@ -8,7 +8,9 @@
     "start": "next start",
     "start-trace": "node --trace-warnings node_modules/.bin/next",
     "lint": "next lint",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@reduxjs/toolkit": "2.0.1",
@@ -20,9 +22,16 @@
     "react-redux": "9.0.4",
     "react-select": "5.8.0",
     "react-window": "1.8.10",
-    "yup": "1.4.0"
+    "yup": "1.4.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@jackfranklin/test-data-bot": "^2.1.0",
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/react": "^15.0.7",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -35,10 +44,13 @@
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "eslint-config-prettier": "^8.8.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8",
     "prettier": "^3.2.4",
     "redux-logger": "^3.0.6",
     "tailwindcss": "^3.3.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }

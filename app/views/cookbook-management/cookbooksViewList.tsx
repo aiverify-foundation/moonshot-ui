@@ -16,7 +16,6 @@ const ellipsisStyle: CustomStyle = {
 };
 
 function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedCookbook, setSelectedCookbook] = useState<Cookbook>(() => {
     const id = searchParams.get('id');
