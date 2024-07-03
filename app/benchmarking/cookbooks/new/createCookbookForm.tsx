@@ -54,7 +54,6 @@ function CreateCookbookForm({
 
   React.useEffect(() => {
     if (formState.formStatus === 'error') {
-      console.error(formState);
       setShowErrorModal(true);
       return;
     }
