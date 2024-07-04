@@ -107,11 +107,11 @@ type CookbookFormValues = {
 };
 
 type Recipe = {
-  attack_modules: any[];
+  attack_modules: unknown[];
   categories: string[];
   datasets: string[];
   description: string;
-  grading_scale: Record<string, any>;
+  grading_scale: Record<string, unknown>;
   id: string;
   metrics: string[];
   name: string;

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "start-trace": "node --trace-warnings node_modules/.bin/next",
-    "lint": "next lint",
+    "lint": "next lint --quiet && npm run tsc",
+    "lint:fix": "next lint --fix",
     "tsc": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch"

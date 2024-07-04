@@ -1,3 +1,6 @@
+/*
+TODO - remove this route. It's using mock data. Might not be used
+*/
 import { NextRequest } from 'next/server';
 export const dynamic = 'force-dynamic';
 
@@ -22,7 +25,6 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // const metadata = await fetchMetadataByIds(ids);
     return new Response(JSON.stringify(mockResponse), {
       status: 200,
     });
@@ -31,10 +33,4 @@ export async function GET(request: NextRequest) {
       status: 500,
     });
   }
-}
-
-async function fetchMetadataByIds(ids: number[]) {
-  // This function should interact with the database or another service to retrieve metadata
-  // Placeholder for  service call
-  return ids.map((id) => ({ id, metadata: `Metadata for id ${id}` }));
 }

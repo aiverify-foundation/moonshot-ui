@@ -14,7 +14,7 @@ export interface EventNotifier<
     complete: T['complete'] extends Message
       ? Message<T['complete']>['data']
       : never;
-  } = any,
+  } = any, // eslint-disable-line
 > {
   update: (message: Message<T['update']>['data']) => void;
   complete: (message: Message<T['complete']>['data']) => Promise<void>;

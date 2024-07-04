@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import React, {
   ChangeEvent,
-  ChangeEventHandler,
   KeyboardEventHandler,
   useEffect,
   useRef,

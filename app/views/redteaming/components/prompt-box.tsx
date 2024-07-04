@@ -22,11 +22,6 @@ enum TextInputMode {
   SLASH_COMMAND,
 }
 
-enum Size {
-  SMALL,
-  LARGE,
-}
-
 type PromptBoxProps = {
   windowId: string;
   zIndex: number;
@@ -75,8 +70,7 @@ function PromptBox(props: PromptBoxProps) {
   const [showPromptTemplateList, setShowPromptTemplateList] = useState(false);
   const [hoveredPromptTemplate, setHoveredPromptTemplate] =
     useState<PromptTemplate>();
-  const [hoveredSelectedPromptTemplate, setSelectedHoveredPromptTemplate] =
-    useState<PromptTemplate>();
+  const [hoveredSelectedPromptTemplate, _] = useState<PromptTemplate>();
   const [textInputMode, setTextInputMode] = useState<TextInputMode>(
     TextInputMode.PROMPT_TEXT
   );
@@ -203,11 +197,6 @@ function PromptBox(props: PromptBoxProps) {
     }
   }
 
-  function handleShowPromptTemplateList() {
-    setShowSlashCommands(false);
-    setShowPromptTemplateList(true);
-  }
-
   function handlePromptTemplateClick(item: ListItem) {
     const selected = promptTemplates.find((pt) => pt.name === item.id);
     if (selected) {
@@ -233,17 +222,6 @@ function PromptBox(props: PromptBoxProps) {
 
   function handlePromptTemplateUnMatch() {
     setHoveredPromptTemplate(undefined);
-  }
-
-  function handleSelectedPromptTemplateMouseOver(templateName: string) {
-    return () => {
-      const promptTemplate = promptTemplates.find(
-        (pt) => pt.name === templateName
-      );
-      if (promptTemplate) {
-        setSelectedHoveredPromptTemplate(promptTemplate);
-      }
-    };
   }
 
   function handlePromptTemplateMouseOut() {

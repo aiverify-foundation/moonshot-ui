@@ -1,5 +1,4 @@
 import { IconName } from '@/app/components/IconSVG';
-import { Button, ButtonType } from '@/app/components/button';
 import { useGetAllAttackModulesQuery } from '@/app/services/attack-modules-api-service';
 import { SelectListItem } from '@/app/views/shared-components/selectListItem';
 import tailwindConfig from '@/tailwind.config';
@@ -12,7 +11,7 @@ type AttackModuleSelectViewProps = {
 };
 
 function AttackModuleSelectView(props: AttackModuleSelectViewProps) {
-  const { selectedAttack, onAttackClick, onSkipClick } = props;
+  const { selectedAttack, onAttackClick } = props;
   const { data, isFetching } = useGetAllAttackModulesQuery();
 
   return (

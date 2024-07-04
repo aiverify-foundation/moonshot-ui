@@ -13,12 +13,8 @@ function AutoRedTeamingForm() {
   );
   const [initialPrompt, setInitialPrompt] = useState<string>('');
 
-  const {
-    data: recipes,
-    error: recipesError,
-    isLoading: recipesIsLoading,
-    refetch: refetchRecipes,
-  } = useGetAllRecipesQuery(undefined);
+  const { data: recipes, isLoading: recipesIsLoading } =
+    useGetAllRecipesQuery(undefined);
 
   let recipesSelectionOptions: SelectOption[] = [];
   if (recipes && recipes.length) {

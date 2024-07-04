@@ -1,6 +1,5 @@
 import EventEmitter from 'events';
 import { NextResponse } from 'next/server';
-import { toErrorWithMessage } from '@/app/lib/error-utils';
 import { AppEventTypes } from '@/app/types/enums';
 import { Writer, getSSEWriter } from './sse_writer';
 import { RedTeamEvents, SystemEvents } from '@api/types';
