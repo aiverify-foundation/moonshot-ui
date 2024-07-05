@@ -127,23 +127,6 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
   const positionClassname = `pos__${position}`;
   const showTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Use useRef to store the timeout
 
-  let borderColor = '';
-
-  switch (position) {
-    case TooltipPosition.top:
-      borderColor = `${backgroundColor} transparent transparent ${backgroundColor}`;
-      break;
-    case TooltipPosition.bottom:
-      borderColor = `transparent ${backgroundColor} ${backgroundColor} transparent`;
-      break;
-    case TooltipPosition.left:
-      borderColor = `${backgroundColor} ${backgroundColor} transparent transparent`;
-      break;
-    case TooltipPosition.right:
-      borderColor = `transparent transparent ${backgroundColor} ${backgroundColor}`;
-      break;
-  }
-
   function handleMouseOver() {
     if (disabled && !defaultShow) return;
     if (!tooltipRef.current || !triggerRef.current) return;

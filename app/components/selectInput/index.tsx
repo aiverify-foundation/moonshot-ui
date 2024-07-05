@@ -9,7 +9,7 @@ type SelectOption<T = string> = {
 
 type SelectInputProps<valueType = string> = {
   id?: string;
-  isMulti?: boolean;
+  isMulti?: false | undefined;
   name: string;
   width?: number;
   label?: string;
@@ -34,7 +34,6 @@ const BORDER_COLOR = '#cfcfcf';
 const BORDER_FOCUS_COLOR = 'hsl(0, 0%, 70%)';
 const PLACEHOLDER_COLOR = '#cfcfcf';
 const OPTION_TEXT_COLOR = '#374151';
-const OPTION_SELECTED_TEXT_COLOR = '#ffffff';
 const OPTION_HOVER_COLOR = '#e5e7eb';
 const OPTION_SELECTED_COLOR = '#d1d5db';
 const CONTROL_ENABLED_COLOR = '#ffffff';
@@ -215,7 +214,6 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
             }),
           }}
           name={name}
-          // @ts-ignore
           isMulti={isMulti}
           placeholder={placeholder}
           value={selectedOption}

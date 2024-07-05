@@ -69,7 +69,6 @@ export function calcTopRightWindowXY(
   offsetY = 0
 ): [number, number] {
   const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
 
   const left = viewportWidth - width + offsetX;
   const top = 0 + offsetY;

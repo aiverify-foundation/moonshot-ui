@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { getHostAndPort } from './host';
 import { proxyPathDatasets } from './constants';
+import { getHostAndPort } from './host';
 
 const [host, port] = getHostAndPort();
 

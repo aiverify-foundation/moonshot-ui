@@ -1,5 +1,5 @@
 'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import React from 'react';
 import { redirectRoute } from '@/actions/redirectRoute';
 import { updateCookbookRecipes } from '@/actions/updateCookbookRecipes';
@@ -32,7 +32,6 @@ function RecipesViewList({
   defaultFirstStep?: Step;
 }) {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const [selectedRecipe, setSelectedRecipe] = React.useState<Recipe>(() => {
     const id = searchParams.get('id');
     if (!Boolean(id)) {

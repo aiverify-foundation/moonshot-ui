@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { IconName, Icon } from '@/app/components/IconSVG';
-import { Tooltip } from '@/app/components/tooltip';
 
 type Props<T> = {
   item: T;

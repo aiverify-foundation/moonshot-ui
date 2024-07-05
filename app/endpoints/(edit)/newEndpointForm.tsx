@@ -133,14 +133,13 @@ function NewEndpointForm(props: NewEndpointFormProps) {
     initialValues: endpointToEdit ? editModeFormValues : initialFormValues,
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      let result;
       if (endpointToEdit) {
-        result = await updateModelEndpoint({
+        await updateModelEndpoint({
           id: endpointToEdit.id,
           endpointDetails: values,
         });
       } else {
-        result = await submitNewEndpoint(values);
+        await submitNewEndpoint(values);
       }
       if (disablePopupLayout) {
         router.push('/endpoints');

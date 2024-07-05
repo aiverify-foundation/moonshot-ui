@@ -11,13 +11,13 @@ import {
 } from 'react-redux';
 
 /* Instruments */
-import { reducer } from './rootReducer';
 import { middleware } from './middleware';
+import { reducer } from './rootReducer';
 
 export const applicationStore = configureStore({
   reducer,
-  //@ts-ignore
-  middleware: (getDefaultMiddleware) => {
+  // eslint-disable-next-line
+  middleware: (getDefaultMiddleware): any => {
     return getDefaultMiddleware().concat(middleware);
   },
 });

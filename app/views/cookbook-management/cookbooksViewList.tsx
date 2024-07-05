@@ -1,5 +1,5 @@
 'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import React, { CSSProperties, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/views/shared-components/customColors';

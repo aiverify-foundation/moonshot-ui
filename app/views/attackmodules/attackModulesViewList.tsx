@@ -1,5 +1,5 @@
 'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import React, { CSSProperties, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/views/shared-components/customColors';
@@ -16,7 +16,6 @@ const ellipsisStyle: CustomStyle = {
 };
 
 function AttackModulesViewList({ attacks }: { attacks: AttackModule[] }) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedAttack, setSelectedAttack] = useState<AttackModule>(() => {
     const id = searchParams.get('id');
@@ -38,9 +37,7 @@ function AttackModulesViewList({ attacks }: { attacks: AttackModule[] }) {
       bgColor={colors.moongray['950']}>
       <div className="relative h-full">
         <header className="flex gap-5 w-full mb-3 justify-between items-end">
-          <h1 className="text-[1.6rem] text-white mt-3">
-            Attack Modules
-          </h1>
+          <h1 className="text-[1.6rem] text-white mt-3">Attack Modules</h1>
         </header>
         <main
           className="grid grid-cols-2 gap-5 mb-3"

@@ -13,7 +13,7 @@ on:
         required: true
         default: 'dev_main'
         type: string
-   
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -22,12 +22,12 @@ jobs:
       - name: Checkout Repository (Pull Request)
         if: github.event_name == 'pull_request'
         uses: actions/checkout@v4
-           
+
       - name: Checkout Repository (Workflow Dispatch)
         if: github.event_name == 'workflow_dispatch'
         uses: actions/checkout@v4
         with:
-           ref: ${{ inputs.branch_to_test }}
+          ref: ${{ inputs.branch_to_test }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -39,3 +39,6 @@ jobs:
 
       - name: Run tests
         run: npm run test
+
+      - name: Run lint
+        run: npm run lint

@@ -120,7 +120,7 @@ const ChatboxSlideLayout = React.forwardRef(
         gap: 0,
       }
     );
-    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [_, setHoveredIndex] = useState<number | null>(null);
     const chatBoxControlsMap = new Map<string, ChatBoxControls>();
     React.useImperativeHandle(ref, () => chatBoxControlsMap);
 

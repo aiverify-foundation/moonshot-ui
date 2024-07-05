@@ -9,12 +9,7 @@ type Props = {
 };
 
 function CookbookAbout({ cookbook, checked, onSelectChange }: Props) {
-  const {
-    data: recipes,
-    isFetching,
-    isLoading,
-    isError,
-  } = useGetAllRecipesQuery({
+  const { data: recipes, isFetching } = useGetAllRecipesQuery({
     ids: cookbook.recipes,
     count: true,
   });
