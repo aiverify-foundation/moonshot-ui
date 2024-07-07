@@ -1,7 +1,7 @@
 import { isErrorWithMessage } from '@/app/lib/error-utils';
 import { ApiResult, processResponse } from '@/app/lib/http-requests';
-import { AttackModulesViewList } from '@/app/views/attackmodules/attackModulesViewList';
 import config from '@/moonshot.config';
+import { AttackModulesViewList } from './attackModulesViewList';
 export const dynamic = 'force-dynamic';
 
 async function fetchAttackModules() {
