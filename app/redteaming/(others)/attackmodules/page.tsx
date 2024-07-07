@@ -6,7 +6,10 @@ export const dynamic = 'force-dynamic';
 
 async function fetchAttackModules() {
   const response = await fetch(
-    `${config.webAPI.hostURL}${config.webAPI.basePathAttackModules}`
+    `${config.webAPI.hostURL}${config.webAPI.basePathAttackModules}`,
+    {
+      cache: 'no-store',
+    }
   );
   const result = await processResponse<AttackModule[]>(response);
   return result;
