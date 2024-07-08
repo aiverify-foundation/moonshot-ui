@@ -15,7 +15,11 @@ function PromptTemplatesList(props: PromptTemplatesListProps) {
   const [selectedPromptTemplate, setSelectedPromptTemplate] = React.useState<
     PromptTemplate | undefined
   >();
-  const { data, isLoading } = useGetAllPromptTemplatesQuery();
+  const { data, refetch, isLoading } = useGetAllPromptTemplatesQuery();
+
+  React.useEffect(() => {
+    refetch();
+  }, []);
 
   let promptTemplateDetailsSection: React.ReactNode;
 

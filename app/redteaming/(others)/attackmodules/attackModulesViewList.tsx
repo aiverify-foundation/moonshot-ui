@@ -25,10 +25,6 @@ function AttackModulesViewList({ attacks }: { attacks: AttackModule[] }) {
     return attacks.find((att) => att.id === id) || attacks[0];
   });
 
-  // const selectedAttackDescription = selectedAttack.description
-  //   ? selectedAttack.description.replace(/\n/g, '<br /><br/>')
-  //   : '';
-
   return (
     <MainSectionSurface
       closeLinkUrl="/"
