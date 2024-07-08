@@ -15,7 +15,11 @@ function AttackModulesList(props: AttackModulesListProps) {
   const [selectedAttackModule, setSelectedAttackModule] = React.useState<
     AttackModule | undefined
   >();
-  const { data, isLoading } = useGetAllAttackModulesQuery();
+  const { data, refetch, isLoading } = useGetAllAttackModulesQuery();
+
+  React.useEffect(() => {
+    refetch();
+  }, []);
 
   let attackModuleDetailsSection: React.ReactNode;
 
