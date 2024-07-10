@@ -163,10 +163,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
   });
 
   useEffect(() => {
-    if (!formik.dirty) return; // no change in form values
-    if (endpointToEdit) {
-      setDisableSaveBtn(!formik.isValid);
-    }
+    if (!formik.dirty) return;
     setDisableSaveBtn(!formik.isValid);
   }, [formik.dirty, endpointToEdit]);
 
