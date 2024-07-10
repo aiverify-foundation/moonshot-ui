@@ -86,7 +86,7 @@ type LLMEndpointFormValues = {
   connector_type: string;
   name: string;
   uri: string;
-  token: string;
+  token: string | undefined;
   max_calls_per_second: string;
   max_concurrency: string;
   params?: string;
