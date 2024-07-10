@@ -308,6 +308,11 @@ function NewEndpointForm(props: NewEndpointFormProps) {
               value={formik.values.connector_type}
               placeholder="Select the connector type"
               style={{ width: '100%' }}
+              error={
+                formik.touched.connector_type && formik.errors.connector_type
+                  ? formik.errors.connector_type
+                  : undefined
+              }
             />
 
             <TextInput
