@@ -1,7 +1,7 @@
 'use client';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { object, string, number, boolean } from 'yup';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
@@ -46,7 +46,10 @@ const paramsSchema = object().shape({
 
 const validationSchema = object().shape({
   name: string().required('Name is required'),
-  token: string(),
+  token: string()
+    .min(1, 'Token is required')
+    .matches(/\S/, 'Token cannot be empty spaces')
+    .required('Token is required'),
   connector_type: string().required('Connector Type is required'),
   max_calls_per_second: string().required('Max calls Per Second is required'),
   max_concurrency: string().required('Max Concurrency is required'),
@@ -118,7 +121,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
           connector_type: endpointToEdit.connector_type,
           name: endpointToEdit.name,
           uri: endpointToEdit.uri,
-          token: '', //Not providing existing sensitive token DOM
+          token: endpointToEdit.token,
           max_calls_per_second: endpointToEdit.max_calls_per_second.toString(),
           max_concurrency: endpointToEdit.max_concurrency.toString(),
           params: JSON.stringify(endpointToEdit.params, null, 2),
@@ -134,6 +137,15 @@ function NewEndpointForm(props: NewEndpointFormProps) {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       if (endpointToEdit) {
+        if (values.token !== undefined && values.token.length === 0) {
+          delete values.token; // do not send empty string token. can just patch other values to update at server-end
+        }
+        if (
+          values.token !== undefined &&
+          values.token.trim() === endpointToEdit.token
+        ) {
+          delete values.token; // do not send token if user did not update token value. just patch other values to update at server-end
+        }
         await updateModelEndpoint({
           id: endpointToEdit.id,
           endpointDetails: values,
@@ -151,9 +163,15 @@ function NewEndpointForm(props: NewEndpointFormProps) {
   });
 
   useEffect(() => {
-    if (!Object.keys(formik.touched).length) return;
+    if (!formik.dirty) return;
     setDisableSaveBtn(!formik.isValid);
-  }, [formik.touched, formik.isValid]);
+  }, [formik.dirty, endpointToEdit]);
+
+  const hasEmptyFields =
+    formik.values.name.trim() === '' ||
+    formik.values.connector_type.trim() === '' ||
+    formik.values.params?.trim() === '' ||
+    formik.values.token?.trim() === '';
 
   function handleTokenInputFocus(_: React.FocusEvent<HTMLInputElement>) {
     setTokenInputMode(TokenInputMode.EDITING);
@@ -162,12 +180,19 @@ function NewEndpointForm(props: NewEndpointFormProps) {
       // not editing the input, cursor is outside
       if (endpointToEdit) {
         // if EDITING AN ENDPOINT
+        if (formik.values.token === endpointToEdit.token) {
+          formik.setFieldValue('token', '');
+          setIsMaskTypedToken(false); // display masked text
+          return;
+        }
         if (
-          formik.values.token.trim() !== '' &&
+          formik.values.token &&
+          formik.values.token.trim() !== endpointToEdit.token &&
           formik.values.token.length > 0
         ) {
           // user has typed in an updated token string
           setIsMaskTypedToken(false); // display clear text
+          return;
         }
         // user has not typed in anything
         setIsMaskTypedToken(true); // display masked text
@@ -184,6 +209,14 @@ function NewEndpointForm(props: NewEndpointFormProps) {
   }
 
   function handleTokenInputBlur(e: React.FocusEvent<HTMLInputElement>) {
+    if (formik.values.token && formik.values.token.trim() === '') {
+      if (endpointToEdit) {
+        formik.setFieldValue('token', endpointToEdit.token);
+      }
+      setTokenInputMode(TokenInputMode.DEFAULT);
+      formik.handleBlur(e);
+      return;
+    }
     setTokenInputMode(TokenInputMode.DEFAULT);
     formik.handleBlur(e);
   }
@@ -278,6 +311,11 @@ function NewEndpointForm(props: NewEndpointFormProps) {
               value={formik.values.connector_type}
               placeholder="Select the connector type"
               style={{ width: '100%' }}
+              error={
+                formik.touched.connector_type && formik.errors.connector_type
+                  ? formik.errors.connector_type
+                  : undefined
+              }
             />
 
             <TextInput
@@ -323,6 +361,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
                   if (endpointToEdit) {
                     // if EDITING AN ENDPOINT
                     if (
+                      formik.values.token !== undefined &&
                       formik.values.token.trim() !== '' &&
                       formik.values.token.length > 0
                     ) {
@@ -330,6 +369,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
                       return formik.values.token;
                     }
                     if (endpointToEdit.token.length > 0) {
+                      formik.setFieldValue('token', endpointToEdit.token);
                       return endpointToEdit.token; // display the masked string if there is token
                     }
                     return ''; // populate with empty string if no token
@@ -375,7 +415,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
             />
             <Button
               width={120}
-              disabled={disableSaveBtn}
+              disabled={hasEmptyFields || disableSaveBtn}
               mode={ButtonType.PRIMARY}
               size="lg"
               type="submit"
@@ -433,6 +473,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
           </div>
           <div className="flex grow gap-2 justify-end items-end">
             <Button
+              disabled={!formik.values.params}
               width={120}
               mode={ButtonType.OUTLINE}
               size="lg"
