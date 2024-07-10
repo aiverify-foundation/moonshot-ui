@@ -1,7 +1,7 @@
 'use client';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { object, string, number, boolean } from 'yup';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
@@ -170,6 +170,13 @@ function NewEndpointForm(props: NewEndpointFormProps) {
     setDisableSaveBtn(!formik.isValid);
   }, [formik.dirty, endpointToEdit]);
 
+  const hasEmptyFields =
+    formik.values.name.trim() === '' ||
+    formik.values.connector_type.trim() === '' ||
+    formik.values.params?.trim() === '' ||
+    formik.values.token?.trim() === '';
+
+  console.log(hasEmptyFields);
   function handleTokenInputFocus(_: React.FocusEvent<HTMLInputElement>) {
     setTokenInputMode(TokenInputMode.EDITING);
     // note - backend api returns empty string if token is not set; it returns string of asterisks masking the token if token exists
@@ -412,7 +419,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
             />
             <Button
               width={120}
-              disabled={disableSaveBtn}
+              disabled={hasEmptyFields || disableSaveBtn}
               mode={ButtonType.PRIMARY}
               size="lg"
               type="submit"
@@ -470,6 +477,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
           </div>
           <div className="flex grow gap-2 justify-end items-end">
             <Button
+              disabled={!formik.values.params}
               width={120}
               mode={ButtonType.OUTLINE}
               size="lg"
