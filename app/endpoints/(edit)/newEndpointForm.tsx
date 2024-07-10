@@ -173,7 +173,6 @@ function NewEndpointForm(props: NewEndpointFormProps) {
     formik.values.params?.trim() === '' ||
     formik.values.token?.trim() === '';
 
-  console.log(hasEmptyFields);
   function handleTokenInputFocus(_: React.FocusEvent<HTMLInputElement>) {
     setTokenInputMode(TokenInputMode.EDITING);
     // note - backend api returns empty string if token is not set; it returns string of asterisks masking the token if token exists
