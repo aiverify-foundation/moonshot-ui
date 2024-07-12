@@ -4,8 +4,9 @@ import { useSearchParams } from 'next/navigation';
 import React, { CSSProperties, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
-import { colors } from '@/app/views/shared-components/customColors';
 import { TextInput } from '@/app/components/textInput';
+import { colors } from '@/app/views/shared-components/customColors';
+import { SelectedCookbooksPills } from './selectedCookbooksPills';
 
 interface CustomStyle extends CSSProperties {
   webkitLineClamp?: string;
@@ -44,6 +45,10 @@ function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
       }
       return [...prev, cookbook];
     });
+  }
+
+  function handleRemoveCookbook(cookbook: Cookbook) {
+    setCheckedCookbooks((prev) => prev.filter((cb) => cb.id !== cookbook.id));
   }
 
   const cookbookList = (
@@ -105,7 +110,12 @@ function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
       </header>
       <main
         className="flex gap-5 mb-3"
-        style={{ height: 'calc(100% - 70px)' }}>
+        style={{
+          height:
+            checkedCookbooks.length > 0
+              ? 'calc(100% - 140px)'
+              : 'calc(100% - 90px)',
+        }}>
         <section className="flex flex-col flex-1">
           <div className="relative">
             <TextInput
@@ -128,35 +138,55 @@ function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
           </div>
           {cookbookList}
         </section>
-        <section
-          className="text-white border border-moonwine-500 p-4 rounded-md 
-          overflow-y-auto custom-scrollbar bg-moongray-800 flex-1">
-          <div className="flex gap-2 mb-4">
-            <Icon
-              name={IconName.Book}
-              size={24}
-            />
-            <h3 className="text-[1.2rem] font-semibold">
-              {selectedCookbook.name}
-            </h3>
-          </div>
-          <p className="text-[0.95rem] text-moongray-300">
-            {selectedCookbook.description}
-          </p>
-          <h4 className="text-[1.15rem] font-semibold mt-10 mb-1">Recipes</h4>
-          <p className="text-[0.95rem] text-moongray-300">
-            {selectedCookbook.recipes.map((recipe, idx) => {
-              return (
-                <span key={recipe}>
-                  {recipe}
-                  {idx === selectedCookbook.recipes.length - 1 ? '' : `,`}
-                  &nbsp;
-                </span>
-              );
-            })}
-          </p>
-        </section>
+        <div className="flex flex-col flex-1 gap-5">
+          <section
+            className="text-white border border-moonwine-500 p-4 rounded-md 
+            overflow-y-auto custom-scrollbar bg-moongray-800 flex-1">
+            <div className="flex gap-2 mb-4">
+              <Icon
+                name={IconName.Book}
+                size={24}
+              />
+              <h3 className="text-[1.2rem] font-semibold">
+                {selectedCookbook.name}
+              </h3>
+            </div>
+            <p className="text-[0.95rem] text-moongray-300">
+              {selectedCookbook.description}
+            </p>
+            <h4 className="text-[1.15rem] font-semibold mt-10 mb-1">Recipes</h4>
+            <p className="text-[0.95rem] text-moongray-300">
+              {selectedCookbook.recipes.map((recipe, idx) => {
+                return (
+                  <span key={recipe}>
+                    {recipe}
+                    {idx === selectedCookbook.recipes.length - 1 ? '' : `,`}
+                    &nbsp;
+                  </span>
+                );
+              })}
+            </p>
+          </section>
+          <SelectedCookbooksPills
+            checkedCookbooks={checkedCookbooks}
+            onPillButtonClick={handleRemoveCookbook}
+          />
+        </div>
       </main>
+      {checkedCookbooks.length > 0 && (
+        <footer className="flex gap-2 justify-end mt-6">
+          <Button
+            rightIconName={IconName.ArrowRight}
+            width={120}
+            text="Run"
+            size="lg"
+            mode={ButtonType.PRIMARY}
+            hoverBtnColor={colors.moongray[1000]}
+            pressedBtnColor={colors.moongray[900]}
+            onClick={() => null}
+          />
+        </footer>
+      )}
     </div>
   );
 }

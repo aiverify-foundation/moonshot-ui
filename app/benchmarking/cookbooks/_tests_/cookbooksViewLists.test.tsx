@@ -56,5 +56,26 @@ describe('CookbooksViewList', () => {
       expect(screen.getAllByText(mockCookbooks[1].name)).toHaveLength(2);
       expect(screen.queryByText(mockCookbooks[0].name)).toBeNull();
     });
+
+    test('hide run button when no cookbooks are selected', async () => {
+      render(<CookbooksViewList cookbooks={mockCookbooks} />);
+      expect(screen.queryByRole('button', { name: /run/i })).toBeNull();
+      expect(screen.queryByRole('button', { name: /run/i })).toBeNull();
+
+      await userEvent.click(
+        screen.getByRole('checkbox', {
+          name: `Select ${mockCookbooks[1].name}`,
+        })
+      );
+
+      expect(
+        screen.getByRole('checkbox', {
+          name: `Select ${mockCookbooks[1].name}`,
+        })
+      ).toBeChecked();
+
+      expect(screen.getAllByText(mockCookbooks[1].name)).toHaveLength(3);
+      expect(screen.getByRole('button', { name: /run/i })).toBeInTheDocument();
+    });
   });
 });
