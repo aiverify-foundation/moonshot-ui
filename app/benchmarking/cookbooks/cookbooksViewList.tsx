@@ -20,6 +20,7 @@ const ellipsisStyle: CustomStyle = {
 function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
+  const [checkedCookbooks, setCheckedCookbooks] = useState<Cookbook[]>([]);
   const [selectedCookbook, setSelectedCookbook] = useState<Cookbook>(() => {
     const id = searchParams.get('id');
     if (!Boolean(id)) {
@@ -35,6 +36,58 @@ function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchQuery(e.target.value);
   }
+
+  function handleCheck(cookbook: Cookbook) {
+    setCheckedCookbooks((prev) => {
+      if (prev.includes(cookbook)) {
+        return prev.filter((cb) => cb.id !== cookbook.id);
+      }
+      return [...prev, cookbook];
+    });
+  }
+
+  const cookbookList = (
+    <ul
+      className="divide-y divide-moongray-700 pr-1
+    overflow-y-auto custom-scrollbar">
+      {filteredCookbooks.map((cookbook) => {
+        const isSelected = cookbook.id === selectedCookbook.id;
+        return (
+          <li
+            key={cookbook.id}
+            className="flex gap-4 p-6 bg-moongray-900 text-white hover:bg-moongray-800 
+            hover:border-moonwine-700 cursor-pointer"
+            style={{
+              transition: 'background-color 0.2s ease-in-out',
+              ...(isSelected && {
+                backgroundColor: colors.moongray['700'],
+              }),
+            }}
+            onClick={() => setSelectedCookbook(cookbook)}>
+            <input
+              type="checkbox"
+              name="cookbooks[]"
+              aria-label={`Select ${cookbook.name}`}
+              className="w-2 h-2 shrink-0"
+              checked={checkedCookbooks.some((cb) => cb.id === cookbook.id)}
+              onChange={() => handleCheck(cookbook)}
+            />
+            <div>
+              <div className="flex gap-2 mb-2 items-start">
+                <Icon name={IconName.Book} />
+                <h4 className="text-[1rem] font-semibold">{cookbook.name}</h4>
+              </div>
+              <p
+                className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis text-moongray-400"
+                style={ellipsisStyle}>
+                {cookbook.description}
+              </p>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  );
 
   return (
     <div className="h-full">
@@ -73,38 +126,7 @@ function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
               color={colors.black}
             />
           </div>
-          <ul
-            className="divide-y divide-moongray-700 pr-1
-              overflow-y-auto custom-scrollbar">
-            {filteredCookbooks.map((cookbook) => {
-              const isSelected = cookbook.id === selectedCookbook.id;
-              return (
-                <li
-                  key={cookbook.id}
-                  className="p-6 bg-moongray-900 text-white hover:bg-moongray-800 
-                      hover:border-moonwine-700 cursor-pointer"
-                  style={{
-                    transition: 'background-color 0.2s ease-in-out',
-                    ...(isSelected && {
-                      backgroundColor: colors.moongray['700'],
-                    }),
-                  }}
-                  onClick={() => setSelectedCookbook(cookbook)}>
-                  <div className="flex gap-2 mb-2">
-                    <Icon name={IconName.Book} />
-                    <h4 className="text-[1rem] font-semibold">
-                      {cookbook.name}
-                    </h4>
-                  </div>
-                  <p
-                    className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis text-moongray-400"
-                    style={ellipsisStyle}>
-                    {cookbook.description}
-                  </p>
-                </li>
-              );
-            })}
-          </ul>
+          {cookbookList}
         </section>
         <section
           className="text-white border border-moonwine-500 p-4 rounded-md 
