@@ -64,7 +64,7 @@ function SelectListItem<T>(props: Props<T>) {
           type="checkbox"
           aria-label={`Select ${label}`}
           className="w-4 h-4 shrink-0"
-          defaultChecked={isChecked}
+          checked={isChecked}
           readOnly
         />
       )}

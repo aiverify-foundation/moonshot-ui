@@ -106,7 +106,6 @@ describe('EndpointSelector', () => {
     expect(selectedCheckbox).toBeChecked();
 
     await userEvent.click(selectedCheckbox);
-
     expect(mockModelClickHandler).toHaveBeenCalledWith(mockEndpoints[1]);
     expect(mockModelClickHandler).toHaveBeenCalledTimes(1);
 

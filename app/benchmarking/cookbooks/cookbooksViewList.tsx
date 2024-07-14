@@ -20,13 +20,20 @@ const ellipsisStyle: CustomStyle = {
 
 type CookbookViewListProps = {
   cookbooks: Cookbook[];
+  defaultCheckedCookbooks?: Cookbook[];
   onRunClick: (cookbooks: Cookbook[]) => void;
 };
 
-function CookbooksViewList({ cookbooks, onRunClick }: CookbookViewListProps) {
+function CookbooksViewList({
+  cookbooks,
+  defaultCheckedCookbooks = [],
+  onRunClick,
+}: CookbookViewListProps) {
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
-  const [checkedCookbooks, setCheckedCookbooks] = useState<Cookbook[]>([]);
+  const [checkedCookbooks, setCheckedCookbooks] = useState<Cookbook[]>(
+    defaultCheckedCookbooks
+  );
   const [selectedCookbook, setSelectedCookbook] = useState<Cookbook>(() => {
     const id = searchParams.get('id');
     if (!Boolean(id)) {

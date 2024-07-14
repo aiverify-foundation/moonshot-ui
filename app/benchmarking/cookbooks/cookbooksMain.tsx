@@ -3,9 +3,9 @@ import React from 'react';
 import { CookbooksViewList } from '@/app/benchmarking/cookbooks/cookbooksViewList';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
+import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
 import { EndpointSelectVew } from '@/app/views/models-management/endpointsSelector';
 import { colors } from '@/app/views/shared-components/customColors';
-import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 
 const stepTitles = ['Select Cookbooks', 'Connect Endpoint', 'Run'];
@@ -29,11 +29,17 @@ function CookbooksMain({ cookbooks }: { cookbooks: Cookbook[] }) {
   const [selectedEndpoints, setSelectedEndpoints] = React.useState<
     LLMEndpoint[]
   >([]);
+  const [selectedCookbooks, setSelectedCookbooks] = React.useState<Cookbook[]>(
+    []
+  );
   const [endpointToEdit, setEndpointToEdit] = React.useState<
     LLMEndpoint | undefined
   >();
 
   let view: React.ReactElement | undefined;
+  let showPreviousIcon = false;
+  let showNextIcon = false;
+  let surfaceColor = colors.moongray['950'];
 
   function handleEditEndpointBtnClick(endpoint: LLMEndpoint) {
     setEndpointToEdit(endpoint);
@@ -53,9 +59,24 @@ function CookbooksMain({ cookbooks }: { cookbooks: Cookbook[] }) {
     }
   }
 
+  function handleRunClick(cookbooks: Cookbook[]) {
+    setSelectedCookbooks(cookbooks);
+    handleNextClick();
+  }
+
+  function handleNextClick() {
+    setCurrentStep(currentStep + 1);
+  }
+
+  function handlePreviousClick() {
+    setCurrentStep(currentStep - 1);
+  }
+
   switch (currentStep) {
     case FlowSteps.ConnectEndpoint:
       if (endpointFormView == undefined) {
+        showPreviousIcon = true;
+        showNextIcon = true;
         view = (
           <EndpointSelectVew
             selectedModels={selectedEndpoints}
@@ -66,10 +87,16 @@ function CookbooksMain({ cookbooks }: { cookbooks: Cookbook[] }) {
           />
         );
       } else if (endpointFormView === EndpointFormViews.Create) {
+        showPreviousIcon = false;
+        showNextIcon = false;
+        surfaceColor = colors.moongray['800'];
         view = (
           <NewEndpointForm onClose={() => setEndpointFormView(undefined)} />
         );
       } else if (endpointFormView === EndpointFormViews.Edit) {
+        showPreviousIcon = false;
+        showNextIcon = false;
+        surfaceColor = colors.moongray['800'];
         view = (
           <NewEndpointForm
             endpointToEdit={endpointToEdit}
@@ -79,6 +106,7 @@ function CookbooksMain({ cookbooks }: { cookbooks: Cookbook[] }) {
       }
       break;
     case FlowSteps.Run:
+      showPreviousIcon = false;
       view = <div>Run</div>;
       break;
   }
@@ -88,11 +116,12 @@ function CookbooksMain({ cookbooks }: { cookbooks: Cookbook[] }) {
       closeLinkUrl="/"
       height="100%"
       minHeight={750}
-      bgColor={colors.moongray['950']}>
+      bgColor={surfaceColor}>
       {currentStep === FlowSteps.SelectCookbooks && (
         <CookbooksViewList
           cookbooks={cookbooks}
-          onRunClick={() => setCurrentStep(FlowSteps.ConnectEndpoint)}
+          defaultCheckedCookbooks={selectedCookbooks}
+          onRunClick={handleRunClick}
         />
       )}
       {(currentStep === FlowSteps.ConnectEndpoint ||
@@ -109,22 +138,24 @@ function CookbooksMain({ cookbooks }: { cookbooks: Cookbook[] }) {
           <div
             className="flex flex-col gap-5 justify-center w-full"
             style={{ height: 'calc(100% - 33px)' }}>
-            <div className="flex justify-center">
-              <Icon
-                name={IconName.WideArrowUp}
-                size={28}
-                onClick={() => setCurrentStep(currentStep - 1)}
-              />
-            </div>
+            {showPreviousIcon && (
+              <div className="flex justify-center">
+                <Icon
+                  name={IconName.WideArrowUp}
+                  size={28}
+                  onClick={handlePreviousClick}
+                />
+              </div>
+            )}
             {view}
-            {currentStep !== FlowSteps.Run && (
+            {showNextIcon && (
               <div
                 className="flex justify-center"
                 style={{ opacity: false ? 0.3 : 1 }}>
                 <Icon
                   name={IconName.WideArrowDown}
                   size={28}
-                  onClick={() => setCurrentStep(currentStep + 1)}
+                  onClick={handleNextClick}
                 />
               </div>
             )}
