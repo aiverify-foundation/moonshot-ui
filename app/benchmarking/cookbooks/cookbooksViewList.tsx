@@ -18,7 +18,12 @@ const ellipsisStyle: CustomStyle = {
   webkitBoxOrient: 'vertical',
 };
 
-function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
+type CookbookViewListProps = {
+  cookbooks: Cookbook[];
+  onRunClick: (cookbooks: Cookbook[]) => void;
+};
+
+function CookbooksViewList({ cookbooks, onRunClick }: CookbookViewListProps) {
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [checkedCookbooks, setCheckedCookbooks] = useState<Cookbook[]>([]);
@@ -183,7 +188,7 @@ function CookbooksViewList({ cookbooks }: { cookbooks: Cookbook[] }) {
             mode={ButtonType.PRIMARY}
             hoverBtnColor={colors.moongray[1000]}
             pressedBtnColor={colors.moongray[900]}
-            onClick={() => null}
+            onClick={() => onRunClick(checkedCookbooks)}
           />
         </footer>
       )}
