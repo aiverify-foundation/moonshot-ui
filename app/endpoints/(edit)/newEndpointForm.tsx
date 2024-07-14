@@ -165,7 +165,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
   useEffect(() => {
     if (!formik.dirty) return;
     setDisableSaveBtn(!formik.isValid);
-  }, [formik.dirty, endpointToEdit]);
+  }, [formik.isValid]);
 
   const hasEmptyFields =
     formik.values.name.trim() === '' ||
