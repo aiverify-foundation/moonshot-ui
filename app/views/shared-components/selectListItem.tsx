@@ -62,8 +62,9 @@ function SelectListItem<T>(props: Props<T>) {
       {!hideCheckbox && (
         <input
           type="checkbox"
+          aria-label={`Select ${label}`}
           className="w-4 h-4 shrink-0"
-          checked={isChecked}
+          defaultChecked={isChecked}
           readOnly
         />
       )}
