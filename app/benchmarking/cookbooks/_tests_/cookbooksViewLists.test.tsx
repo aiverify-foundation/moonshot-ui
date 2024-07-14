@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useSearchParams } from 'next/navigation';
 import { CookbooksViewList } from '@/app/benchmarking/cookbooks/cookbooksViewList';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('next/navigation', () => ({
   useSearchParams: jest.fn(),
@@ -26,6 +26,7 @@ const mockCookbooks: Cookbook[] = [
 
 describe('CookbooksViewList', () => {
   const mockGetParam: jest.Mock = jest.fn();
+  const mockRunClick: jest.Mock = jest.fn();
 
   beforeAll(() => {
     (useSearchParams as jest.Mock).mockImplementation(() => ({
@@ -39,18 +40,33 @@ describe('CookbooksViewList', () => {
 
   describe('View / Search / Select Cookbook', () => {
     test('show first cookbook details by default', () => {
-      render(<CookbooksViewList cookbooks={mockCookbooks} />);
+      render(
+        <CookbooksViewList
+          cookbooks={mockCookbooks}
+          onRunClick={mockRunClick}
+        />
+      );
       expect(screen.getAllByText(mockCookbooks[0].name)).toHaveLength(2);
     });
 
     test('show selected cookbook details when cookbook id is in url query parameter', () => {
       mockGetParam.mockReturnValue(mockCookbooks[1].id);
-      render(<CookbooksViewList cookbooks={mockCookbooks} />);
+      render(
+        <CookbooksViewList
+          cookbooks={mockCookbooks}
+          onRunClick={mockRunClick}
+        />
+      );
       expect(screen.getAllByText(mockCookbooks[1].name)).toHaveLength(2);
     });
 
     test('filter cookbooks by name text search', async () => {
-      render(<CookbooksViewList cookbooks={mockCookbooks} />);
+      render(
+        <CookbooksViewList
+          cookbooks={mockCookbooks}
+          onRunClick={mockRunClick}
+        />
+      );
       const searchInput = screen.getByPlaceholderText('Search by name');
       await userEvent.type(searchInput, mockCookbooks[1].name);
       expect(screen.getAllByText(mockCookbooks[1].name)).toHaveLength(2);
@@ -58,7 +74,12 @@ describe('CookbooksViewList', () => {
     });
 
     test('hide run button when no cookbooks are selected', async () => {
-      render(<CookbooksViewList cookbooks={mockCookbooks} />);
+      render(
+        <CookbooksViewList
+          cookbooks={mockCookbooks}
+          onRunClick={mockRunClick}
+        />
+      );
       expect(screen.queryByRole('button', { name: /run/i })).toBeNull();
       expect(screen.queryByRole('button', { name: /run/i })).toBeNull();
 
@@ -76,6 +97,22 @@ describe('CookbooksViewList', () => {
 
       expect(screen.getAllByText(mockCookbooks[1].name)).toHaveLength(3);
       expect(screen.getByRole('button', { name: /run/i })).toBeInTheDocument();
+    });
+
+    test('execute onRunClick when run button is clicked', async () => {
+      render(
+        <CookbooksViewList
+          cookbooks={mockCookbooks}
+          onRunClick={mockRunClick}
+        />
+      );
+      await userEvent.click(
+        screen.getByRole('checkbox', {
+          name: `Select ${mockCookbooks[1].name}`,
+        })
+      );
+      await userEvent.click(screen.getByRole('button', { name: /run/i }));
+      expect(mockRunClick).toHaveBeenCalledWith([mockCookbooks[1]]);
     });
   });
 });
