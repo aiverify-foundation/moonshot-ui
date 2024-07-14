@@ -36,6 +36,7 @@ describe('CookbooksViewList', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockGetParam.mockReturnValue(undefined);
   });
 
   describe('View / Search / Select Cookbook', () => {
@@ -60,6 +61,22 @@ describe('CookbooksViewList', () => {
       expect(screen.getAllByText(mockCookbooks[1].name)).toHaveLength(2);
     });
 
+    test('check selected cookbook received via prop defaultCheckedCookbooks', () => {
+      render(
+        <CookbooksViewList
+          cookbooks={mockCookbooks}
+          defaultCheckedCookbooks={[mockCookbooks[0]]}
+          onRunClick={mockRunClick}
+        />
+      );
+      expect(screen.getAllByText(mockCookbooks[0].name)).toHaveLength(3);
+      expect(
+        screen.getByRole('checkbox', {
+          name: `Select ${mockCookbooks[0].name}`,
+        })
+      ).toBeChecked();
+    });
+
     test('filter cookbooks by name text search', async () => {
       render(
         <CookbooksViewList
@@ -68,9 +85,13 @@ describe('CookbooksViewList', () => {
         />
       );
       const searchInput = screen.getByPlaceholderText('Search by name');
-      await userEvent.type(searchInput, mockCookbooks[1].name);
-      expect(screen.getAllByText(mockCookbooks[1].name)).toHaveLength(2);
-      expect(screen.queryByText(mockCookbooks[0].name)).toBeNull();
+      await userEvent.type(searchInput, mockCookbooks[1].name.slice(-3));
+      expect(screen.getAllByText(mockCookbooks[1].name)).toHaveLength(1);
+      expect(
+        screen.getAllByRole('checkbox', {
+          name: /Select .*/i,
+        })
+      ).toHaveLength(1);
     });
 
     test('hide run button when no cookbooks are selected', async () => {
