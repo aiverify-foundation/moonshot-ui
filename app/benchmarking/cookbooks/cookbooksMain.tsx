@@ -1,12 +1,15 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { CookbooksViewList } from '@/app/benchmarking/cookbooks/cookbooksViewList';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
+import BenchmarkRunForm from '@/app/views/benchmarking/benchmarkRunForm';
 import { EndpointSelectVew } from '@/app/views/models-management/endpointsSelector';
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
+import { Modal } from '@/app/views/shared-components/modal/modal';
 
 const stepTitles = ['Select Cookbooks', 'Connect Endpoint', 'Run'];
 enum FlowSteps {
@@ -20,6 +23,7 @@ enum EndpointFormViews {
 }
 
 function CookbooksMain({ cookbooks }: { cookbooks: Cookbook[] }) {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = React.useState(
     FlowSteps.SelectCookbooks
   );
@@ -35,6 +39,7 @@ function CookbooksMain({ cookbooks }: { cookbooks: Cookbook[] }) {
   const [endpointToEdit, setEndpointToEdit] = React.useState<
     LLMEndpoint | undefined
   >();
+  const [showExitModal, setShowExitModal] = React.useState(false);
 
   let view: React.ReactElement | undefined;
   let showPreviousIcon = false;
@@ -72,6 +77,22 @@ function CookbooksMain({ cookbooks }: { cookbooks: Cookbook[] }) {
     setCurrentStep(currentStep - 1);
   }
 
+  function handleExitWorkflow() {
+    setSelectedCookbooks([]);
+    setSelectedEndpoints([]);
+    setCurrentStep(FlowSteps.SelectCookbooks);
+    setEndpointFormView(undefined);
+    setShowExitModal(false);
+  }
+
+  function handleOnCloseIconClick() {
+    if (currentStep === FlowSteps.SelectCookbooks) {
+      router.push('/');
+    } else {
+      setShowExitModal(true);
+    }
+  }
+
   switch (currentStep) {
     case FlowSteps.ConnectEndpoint:
       if (endpointFormView == undefined) {
@@ -106,64 +127,90 @@ function CookbooksMain({ cookbooks }: { cookbooks: Cookbook[] }) {
       }
       break;
     case FlowSteps.Run:
-      showPreviousIcon = false;
-      view = <div>Run</div>;
+      showPreviousIcon = true;
+      showNextIcon = false;
+      surfaceColor = colors.moongray['950'];
+      view = (
+        <BenchmarkRunForm
+          defaultSelectedCookbooks={selectedCookbooks}
+          defaultSelectedEndpoints={selectedEndpoints}
+        />
+      );
       break;
   }
 
   return (
-    <MainSectionSurface
-      closeLinkUrl="/"
-      height="100%"
-      minHeight={750}
-      bgColor={surfaceColor}>
-      {currentStep === FlowSteps.SelectCookbooks && (
-        <CookbooksViewList
-          cookbooks={cookbooks}
-          defaultCheckedCookbooks={selectedCookbooks}
-          onRunClick={handleRunClick}
-        />
+    <>
+      {showExitModal && (
+        <Modal
+          heading="Exit this workflow?"
+          bgColor={colors.moongray['800']}
+          textColor="#FFFFFF"
+          primaryBtnLabel="Exit Workflow"
+          secondaryBtnLabel="Cancel"
+          enableScreenOverlay
+          onCloseIconClick={() => setShowExitModal(false)}
+          onPrimaryBtnClick={handleExitWorkflow}
+          onSecondaryBtnClick={() => setShowExitModal(false)}>
+          <p className="text-[0.9rem] pt-3">
+            If you exit this workflow now, your progress will not be saved.
+          </p>
+        </Modal>
       )}
-      {(currentStep === FlowSteps.ConnectEndpoint ||
-        currentStep === FlowSteps.Run) && (
-        <div className="flex flex-col items-center h-full">
-          <div className="w-[700px] flex shrink-0 justify-center">
-            <SimpleStepsIndicator
-              textColor={colors.moongray[300]}
-              stepColor={colors.moonpurplelight}
-              steps={stepTitles}
-              currentStepIndex={currentStep}
-            />
+      <MainSectionSurface
+        onCloseIconClick={handleOnCloseIconClick}
+        height="100%"
+        minHeight={750}
+        bgColor={surfaceColor}>
+        {currentStep === FlowSteps.SelectCookbooks && (
+          <CookbooksViewList
+            cookbooks={cookbooks}
+            defaultCheckedCookbooks={selectedCookbooks}
+            onRunClick={handleRunClick}
+          />
+        )}
+        {(currentStep === FlowSteps.ConnectEndpoint ||
+          currentStep === FlowSteps.Run) && (
+          <div className="flex flex-col items-center h-full">
+            <div className="w-[700px] flex shrink-0 justify-center">
+              <SimpleStepsIndicator
+                textColor={colors.moongray[300]}
+                stepColor={colors.moonpurplelight}
+                steps={stepTitles}
+                currentStepIndex={currentStep}
+              />
+            </div>
+            <div
+              className="flex flex-col gap-5 justify-center w-full"
+              style={{ height: 'calc(100% - 33px)' }}>
+              {showPreviousIcon && (
+                <div className="flex justify-center">
+                  <Icon
+                    name={IconName.WideArrowUp}
+                    size={28}
+                    onClick={handlePreviousClick}
+                  />
+                </div>
+              )}
+              {view}
+              {showNextIcon && (
+                <div
+                  className="flex justify-center"
+                  style={{ opacity: selectedEndpoints.length ? 1 : 0.3 }}>
+                  <Icon
+                    name={IconName.WideArrowDown}
+                    size={28}
+                    onClick={
+                      selectedEndpoints.length ? handleNextClick : undefined
+                    }
+                  />
+                </div>
+              )}
+            </div>
           </div>
-          <div
-            className="flex flex-col gap-5 justify-center w-full"
-            style={{ height: 'calc(100% - 33px)' }}>
-            {showPreviousIcon && (
-              <div className="flex justify-center">
-                <Icon
-                  name={IconName.WideArrowUp}
-                  size={28}
-                  onClick={handlePreviousClick}
-                />
-              </div>
-            )}
-            {view}
-            {showNextIcon && (
-              <div
-                className="flex justify-center"
-                style={{ opacity: false ? 0.3 : 1 }}>
-                <Icon
-                  name={IconName.WideArrowDown}
-                  size={28}
-                  onClick={handleNextClick}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-      {currentStep === FlowSteps.Run && <div>Run</div>}
-    </MainSectionSurface>
+        )}
+      </MainSectionSurface>
+    </>
   );
 }
 
