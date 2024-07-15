@@ -1,7 +1,7 @@
 'use client';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { object, string, number, boolean } from 'yup';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
@@ -53,6 +53,9 @@ const validationSchema = object().shape({
   connector_type: string().required('Connector Type is required'),
   max_calls_per_second: string().required('Max calls Per Second is required'),
   max_concurrency: string().required('Max Concurrency is required'),
+  params: string()
+    .min(1, 'Other Parameters is required')
+    .required('Other Parameters is required'),
 });
 
 const maxConcurrencyOptions: SelectOption[] = Array.from(
