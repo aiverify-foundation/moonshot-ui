@@ -1,6 +1,6 @@
 import { ApiResult, processResponse } from '@/app/lib/http-requests';
-import { CookbooksViewList } from '@/app/views/cookbook-management/cookbooksViewList';
 import config from '@/moonshot.config';
+import { CookbooksMain } from './cookbooksMain';
 
 async function fetchCookbooks() {
   const response = await fetch(
@@ -21,7 +21,5 @@ export default async function CookbooksPage() {
     throw result.error;
   }
 
-  return (
-    <CookbooksViewList cookbooks={(result as ApiResult<Cookbook[]>).data} />
-  );
+  return <CookbooksMain cookbooks={(result as ApiResult<Cookbook[]>).data} />;
 }

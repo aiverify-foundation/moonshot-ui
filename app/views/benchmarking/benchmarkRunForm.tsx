@@ -37,7 +37,15 @@ const validationSchema = object().shape({
   endpoints: array().min(1, 'At least one endpoint is required'),
 });
 
-function BenchmarkRunForm() {
+type BenchmarkRunFormProps = {
+  defaultSelectedCookbooks?: Cookbook[];
+  defaultSelectedEndpoints?: LLMEndpoint[];
+};
+
+function BenchmarkRunForm({
+  defaultSelectedCookbooks,
+  defaultSelectedEndpoints,
+}: BenchmarkRunFormProps) {
   const [disableRunBtn, setDisableRunBtn] = React.useState(false);
   const dispatch = useAppDispatch();
   const selectedCookbooks = useAppSelector(
@@ -75,16 +83,20 @@ function BenchmarkRunForm() {
   useEffect(() => {
     formik.setFieldValue(
       'inputs',
-      selectedCookbooks.map((cb) => cb.id)
+      defaultSelectedCookbooks
+        ? defaultSelectedCookbooks.map((cb) => cb.id)
+        : selectedCookbooks.map((cb) => cb.id)
     );
-  }, [selectedCookbooks]);
+  }, [selectedCookbooks, defaultSelectedCookbooks]);
 
   useEffect(() => {
     formik.setFieldValue(
       'endpoints',
-      selectedEndpoints.map((ep) => ep.id)
+      defaultSelectedEndpoints
+        ? defaultSelectedEndpoints.map((ep) => ep.id)
+        : selectedEndpoints.map((ep) => ep.id)
     );
-  }, [selectedEndpoints]);
+  }, [selectedEndpoints, defaultSelectedEndpoints]);
 
   return (
     <section className="flex flex-col items-center justify-center min-h-[300px] gap-5">
