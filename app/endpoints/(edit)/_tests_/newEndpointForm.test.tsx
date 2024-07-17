@@ -349,9 +349,11 @@ describe('NewEndpointForm', () => {
     expect(screen.getByDisplayValue(mockEndpoint.uri)).toBeInTheDocument();
     expect(screen.getByDisplayValue(mockEndpoint.token)).toBeInTheDocument();
     expect(screen.getByDisplayValue(mockEndpoint.connector_type)).toBeInTheDocument();
+
+    await userEvent.click(screen.getByText(/more configs/i));
     expect(screen.getByDisplayValue(mockEndpoint.max_calls_per_second.toString())).toBeInTheDocument();
     expect(screen.getByDisplayValue(mockEndpoint.max_concurrency.toString())).toBeInTheDocument();
-    expect(screen.getByDisplayValue(JSON.stringify(mockEndpoint.params, null, 2))).toBeInTheDocument();
+    expect(screen.getByDisplayValue(JSON.stringify(mockEndpoint.params))).toBeInTheDocument();
     
   });
 });
