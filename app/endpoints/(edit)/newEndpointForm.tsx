@@ -262,8 +262,6 @@ function NewEndpointForm(props: NewEndpointFormProps) {
     const response = await createModelEndpoint(newModelEndpoint);
     if ('error' in response) {
       const errWithMsg = toErrorWithMessage(response.error);
-      console.log(errWithMsg.message);
-      console.log('test');
       setAlertMessage({
         heading: 'Error',
         iconName: IconName.Alert,

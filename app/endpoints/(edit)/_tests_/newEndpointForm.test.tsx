@@ -107,7 +107,7 @@ describe('NewEndpointForm', () => {
     ).toBeInTheDocument();
   });
 
-  test.skip('new endpoint form filling, popup disabled, router redirect on submit success', async () => {
+  test('new endpoint form filling, popup disabled, router redirect on submit success', async () => {
     const mockCreateModelEndpointSuccess = jest.fn().mockResolvedValue({});
     (useCreateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
       mockCreateModelEndpointSuccess,
@@ -178,10 +178,9 @@ describe('NewEndpointForm', () => {
   }, 10000);
 
   test('form submit - error response', async () => {
-    const mockErrorMessage = 'mock error message';
     const mockCreateModelEndpointError = jest
       .fn()
-      .mockResolvedValue({ error: mockErrorMessage });
+      .mockResolvedValue({ error: 'mock error message' });
     (useCreateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
       mockCreateModelEndpointError,
       { isLoading: false },
@@ -245,13 +244,10 @@ describe('NewEndpointForm', () => {
       uri: 'mockuri',
     };
     expect(mockCreateModelEndpointError).toHaveBeenCalledWith(expectedPayload);
-    screen.debug();
-    await waitFor(() => {
-      expect(screen.getByText(mockErrorMessage)).toBeInTheDocument();
-    });
+    expect(screen.getByText(/mock error message/i)).toBeInTheDocument();
   }, 10000);
 
-  test.skip('on close callback', async () => {
+  test('on close callback', async () => {
     const mockCreateModelEndpointSuccess = jest.fn().mockResolvedValue({});
     const mockCloseHandler = jest.fn();
     (useCreateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
