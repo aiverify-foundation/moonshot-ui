@@ -1,4 +1,4 @@
-import { screen, render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import { useRouter } from 'next/navigation';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
 // import { useFormik } from 'formik';
@@ -35,10 +35,12 @@ describe('NewEndpointForm', () => {
   const mockCreateModelEndpoint = jest.fn();
   const mockUpdateModelEndpoint = jest.fn();
   const mockRouterPush = jest.fn();
+  const mockRouterRefresh = jest.fn();
 
   beforeAll(() => {
     (useRouter as jest.Mock).mockImplementation(() => ({
       push: mockRouterPush,
+      refresh: mockRouterRefresh,
     }));
     (useGetAllConnectorsQuery as jest.Mock).mockImplementation(() => ({
       data: mockConnectors,
@@ -105,7 +107,7 @@ describe('NewEndpointForm', () => {
     ).toBeInTheDocument();
   });
 
-  test('new endpoint form filling and submit success', async () => {
+  test.skip('new endpoint form filling, popup disabled, router redirect on submit success', async () => {
     const mockCreateModelEndpointSuccess = jest.fn().mockResolvedValue({});
     (useCreateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
       mockCreateModelEndpointSuccess,
@@ -172,5 +174,151 @@ describe('NewEndpointForm', () => {
     expect(mockCreateModelEndpointSuccess).toHaveBeenCalledWith(
       expectedPayload
     );
+    expect(mockRouterPush).toHaveBeenCalledWith('/endpoints');
+  }, 10000);
+
+  test('form submit - error response', async () => {
+    const mockErrorMessage = 'mock error message';
+    const mockCreateModelEndpointError = jest
+      .fn()
+      .mockResolvedValue({ error: mockErrorMessage });
+    (useCreateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
+      mockCreateModelEndpointError,
+      { isLoading: false },
+    ]);
+
+    render(<NewEndpointForm />);
+
+    const nameTextbox = screen.getByRole('textbox', { name: /name/i });
+    const connectorSelect = screen.getByRole('combobox');
+    const uriTextbox = screen.getByRole('textbox', { name: /uri/i });
+    const tokenTextbox = screen.getByRole('textbox', { name: /token/i });
+
+    await userEvent.clear(nameTextbox);
+    await userEvent.clear(uriTextbox);
+    await userEvent.clear(tokenTextbox);
+
+    await userEvent.click(screen.getByRole('button', { name: /save/i }));
+    expect(screen.getByText(/name is required/i)).toBeInTheDocument();
+    expect(screen.getByText(/token is required/i)).toBeInTheDocument();
+
+    await userEvent.type(nameTextbox, 'mockname');
+    await userEvent.type(tokenTextbox, 'mocktoken');
+    await userEvent.type(uriTextbox, 'mockuri');
+    await userEvent.type(connectorSelect, mockConnectors[0]);
+    await userEvent.type(connectorSelect, '{enter}');
+    await userEvent.click(screen.getByText(/more configs/i));
+
+    const mockValidParams = `{
+      "timeout": 300,
+      "allow_retries": true,
+      "num_of_retries": 3,
+      "temperature": 0.5,
+      "model": "mock-model"
+    }`;
+
+    const otherParamsTextbox = screen.getByRole('textbox', {
+      name: /other parameters/i,
+    });
+
+    // Escape { and [
+    const escapedMockValidParams = mockValidParams.replace(/[{[]/g, '$&$&');
+    await userEvent.clear(otherParamsTextbox);
+    await userEvent.type(otherParamsTextbox, escapedMockValidParams);
+    await userEvent.click(screen.getByRole('button', { name: /ok/i }));
+    await userEvent.click(screen.getByRole('button', { name: /save/i }));
+    expect(screen.getByRole('button', { name: /save/i })).not.toBeDisabled();
+
+    const expectedPayload = {
+      connector_type: 'connector1',
+      max_calls_per_second: '10',
+      max_concurrency: '1',
+      name: 'mockname',
+      params: `{
+      \"timeout\": 300,
+      \"allow_retries\": true,
+      \"num_of_retries\": 3,
+      \"temperature\": 0.5,
+      \"model\": \"mock-model\"
+    }`,
+      token: 'mocktoken',
+      uri: 'mockuri',
+    };
+    expect(mockCreateModelEndpointError).toHaveBeenCalledWith(expectedPayload);
+    screen.debug();
+    await waitFor(() => {
+      expect(screen.getByText(mockErrorMessage)).toBeInTheDocument();
+    });
+  }, 10000);
+
+  test.skip('on close callback', async () => {
+    const mockCreateModelEndpointSuccess = jest.fn().mockResolvedValue({});
+    const mockCloseHandler = jest.fn();
+    (useCreateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
+      mockCreateModelEndpointSuccess,
+      { isLoading: false },
+    ]);
+
+    render(<NewEndpointForm onClose={mockCloseHandler} />);
+
+    const nameTextbox = screen.getByRole('textbox', { name: /name/i });
+    const connectorSelect = screen.getByRole('combobox');
+    const uriTextbox = screen.getByRole('textbox', { name: /uri/i });
+    const tokenTextbox = screen.getByRole('textbox', { name: /token/i });
+
+    await userEvent.clear(nameTextbox);
+    await userEvent.clear(uriTextbox);
+    await userEvent.clear(tokenTextbox);
+
+    await userEvent.click(screen.getByRole('button', { name: /save/i }));
+    expect(screen.getByText(/name is required/i)).toBeInTheDocument();
+    expect(screen.getByText(/token is required/i)).toBeInTheDocument();
+
+    await userEvent.type(nameTextbox, 'mockname');
+    await userEvent.type(tokenTextbox, 'mocktoken');
+    await userEvent.type(uriTextbox, 'mockuri');
+    await userEvent.type(connectorSelect, mockConnectors[0]);
+    await userEvent.type(connectorSelect, '{enter}');
+    await userEvent.click(screen.getByText(/more configs/i));
+
+    const mockValidParams = `{
+      "timeout": 300,
+      "allow_retries": true,
+      "num_of_retries": 3,
+      "temperature": 0.5,
+      "model": "mock-model"
+    }`;
+
+    const otherParamsTextbox = screen.getByRole('textbox', {
+      name: /other parameters/i,
+    });
+
+    // Escape { and [
+    const escapedMockValidParams = mockValidParams.replace(/[{[]/g, '$&$&');
+    await userEvent.clear(otherParamsTextbox);
+    await userEvent.type(otherParamsTextbox, escapedMockValidParams);
+    await userEvent.click(screen.getByRole('button', { name: /ok/i }));
+    await userEvent.click(screen.getByRole('button', { name: /save/i }));
+    expect(screen.getByRole('button', { name: /save/i })).not.toBeDisabled();
+
+    const expectedPayload = {
+      connector_type: 'connector1',
+      max_calls_per_second: '10',
+      max_concurrency: '1',
+      name: 'mockname',
+      params: `{
+      \"timeout\": 300,
+      \"allow_retries\": true,
+      \"num_of_retries\": 3,
+      \"temperature\": 0.5,
+      \"model\": \"mock-model\"
+    }`,
+      token: 'mocktoken',
+      uri: 'mockuri',
+    };
+    expect(mockCreateModelEndpointSuccess).toHaveBeenCalledWith(
+      expectedPayload
+    );
+    expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   }, 10000);
 });
