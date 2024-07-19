@@ -112,9 +112,8 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
   return (
     <div
       className={styles.selectInput}
-      style={containerStyles}
-      id={id}>
-      <label htmlFor={name}>
+      style={containerStyles}>
+      <label htmlFor={id}>
         {label !== '' && label !== undefined ? (
           <div
             className={styles.label}
@@ -127,6 +126,7 @@ function SelectInput<T = string>(props: SelectInputProps<T>) {
           <div className={styles.description}>{description}</div>
         ) : null}
         <Select<SelectOption<T>>
+          inputId={id}
           styles={{
             container: (baseStyles) => ({
               ...baseStyles,

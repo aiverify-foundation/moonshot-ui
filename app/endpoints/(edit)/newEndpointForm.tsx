@@ -1,7 +1,7 @@
 'use client';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { object, string, number, boolean } from 'yup';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
@@ -87,9 +87,10 @@ enum TokenInputMode {
 
 function NewEndpointForm(props: NewEndpointFormProps) {
   const router = useRouter();
+  const isFirstRender = useRef(true);
   const { onClose, disablePopupLayout, endpointToEdit } = props;
   const [showMoreConfig, setShowMoreConfig] = useState(false);
-  const [isMaskTypedToken, setIsMaskTypedToken] = useState(false);
+  const [isMaskTypedToken, setIsMaskTypedToken] = useState(true);
   const [tokenInputMode, setTokenInputMode] = useState<TokenInputMode>(
     () => TokenInputMode.DEFAULT
   );
@@ -107,16 +108,6 @@ function NewEndpointForm(props: NewEndpointFormProps) {
   >([]);
   const { data, isLoading } = useGetAllConnectorsQuery();
 
-  useEffect(() => {
-    if (data) {
-      const options: SelectOption[] = data.map((connector) => ({
-        value: connector,
-        label: connector,
-      }));
-      setConnectionTypeOptions(options);
-    }
-  }, [data]);
-
   let editModeFormValues: LLMEndpointFormValues = initialFormValues;
   try {
     editModeFormValues = endpointToEdit
@@ -131,8 +122,13 @@ function NewEndpointForm(props: NewEndpointFormProps) {
         }
       : initialFormValues;
   } catch (error) {
-    toErrorWithMessage(error);
-    console.error(error);
+    const errWithMsg = toErrorWithMessage(error);
+    setAlertMessage({
+      heading: 'Error',
+      iconName: IconName.Alert,
+      iconColor: 'red',
+      message: errWithMsg.message,
+    });
   }
 
   const formik = useFormik({
@@ -166,9 +162,34 @@ function NewEndpointForm(props: NewEndpointFormProps) {
   });
 
   useEffect(() => {
-    if (!formik.dirty) return;
+    if (data) {
+      const options: SelectOption[] = data.map((connector) => ({
+        value: connector,
+        label: connector,
+      }));
+      setConnectionTypeOptions(options);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (endpointToEdit) return;
     setDisableSaveBtn(!formik.isValid);
-  }, [formik.isValid]);
+  }, [formik.isValid, endpointToEdit]);
+
+  useEffect(() => {
+    if (!endpointToEdit || isFirstRender.current) return;
+    if (formik.dirty) {
+      setDisableSaveBtn(!formik.isValid);
+    } else {
+      setDisableSaveBtn(true);
+    }
+  }, [formik.dirty, endpointToEdit]);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+    }
+  }, []);
 
   const hasEmptyFields =
     formik.values.name.trim() === '' ||
@@ -220,6 +241,8 @@ function NewEndpointForm(props: NewEndpointFormProps) {
       formik.handleBlur(e);
       return;
     }
+
+    setIsMaskTypedToken(true);
     setTokenInputMode(TokenInputMode.DEFAULT);
     formik.handleBlur(e);
   }
@@ -433,6 +456,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
         <div className="w-[100%] flex justify-between">
           <div className="flex flex-col w-[50%] gap-2">
             <SelectInput
+              id="max_calls_per_second"
               label="Max Calls Per Second"
               name="max_calls_per_second"
               options={maxCallsPerSecondOptions}
@@ -447,6 +471,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
             />
 
             <SelectInput
+              id="max_concurrency"
               label="Max Concurrency"
               name="max_concurrency"
               options={maxConcurrencyOptions}
