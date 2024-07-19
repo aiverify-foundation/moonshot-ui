@@ -1,14 +1,14 @@
-import { screen, render, waitFor } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/navigation';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
 // import { useFormik } from 'formik';
-import { useAppSelector } from '@/lib/redux';
 import { useGetAllConnectorsQuery } from '@/app/services/connector-api-service';
 import {
   useCreateLLMEndpointMutation,
   useUpdateLLMEndpointMutation,
 } from '@/app/services/llm-endpoint-api-service';
-import userEvent from '@testing-library/user-event';
+import { useAppSelector } from '@/lib/redux';
 
 const mockConnectors = ['connector1', 'connector2'];
 
@@ -60,7 +60,7 @@ describe('NewEndpointForm', () => {
     jest.clearAllMocks();
   });
 
-  test.skip('other parameters textbox', async () => {
+  test('other parameters textbox', async () => {
     render(<NewEndpointForm />);
 
     await userEvent.click(screen.getByText(/more configs/i));
@@ -107,7 +107,7 @@ describe('NewEndpointForm', () => {
     ).toBeInTheDocument();
   });
 
-  test.skip('new endpoint form filling, popup disabled, router redirect on submit success', async () => {
+  test('new endpoint - form filling, popup disabled, router redirect on submit success', async () => {
     const mockCreateModelEndpointSuccess = jest.fn().mockResolvedValue({});
     (useCreateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
       mockCreateModelEndpointSuccess,
@@ -154,7 +154,7 @@ describe('NewEndpointForm', () => {
     await userEvent.type(otherParamsTextbox, escapedMockValidParams);
     await userEvent.click(screen.getByRole('button', { name: /ok/i }));
     await userEvent.click(screen.getByRole('button', { name: /save/i }));
-    expect(screen.getByRole('button', { name: /save/i })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
 
     const expectedPayload = {
       connector_type: 'connector1',
@@ -177,7 +177,7 @@ describe('NewEndpointForm', () => {
     expect(mockRouterPush).toHaveBeenCalledWith('/endpoints');
   }, 10000);
 
-  test.skip('form submit - error response', async () => {
+  test('form submit - error response', async () => {
     const mockCreateModelEndpointError = jest
       .fn()
       .mockResolvedValue({ error: 'mock error message' });
@@ -247,7 +247,7 @@ describe('NewEndpointForm', () => {
     expect(screen.getByText(/mock error message/i)).toBeInTheDocument();
   }, 10000);
 
-  test.skip('on close callback', async () => {
+  test('on close callback', async () => {
     const mockCreateModelEndpointSuccess = jest.fn().mockResolvedValue({});
     const mockCloseHandler = jest.fn();
     (useCreateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
@@ -295,7 +295,7 @@ describe('NewEndpointForm', () => {
     await userEvent.type(otherParamsTextbox, escapedMockValidParams);
     await userEvent.click(screen.getByRole('button', { name: /ok/i }));
     await userEvent.click(screen.getByRole('button', { name: /save/i }));
-    expect(screen.getByRole('button', { name: /save/i })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
 
     const expectedPayload = {
       connector_type: 'connector1',
@@ -318,7 +318,7 @@ describe('NewEndpointForm', () => {
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   }, 10000);
 
-  test('edit existing endpoint', async () => {
+  test('edit endpoint - form filling, no change to token value', async () => {
     const mockUpdateModelEndpointSuccess = jest.fn().mockResolvedValue({});
     (useUpdateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
       mockUpdateModelEndpointSuccess,
@@ -330,30 +330,145 @@ describe('NewEndpointForm', () => {
       connector_type: 'connector1',
       name: 'mockname',
       uri: 'mockuri',
-      token: 'mocktoken',
+      token: '*****',
       max_calls_per_second: 10,
       max_concurrency: 1,
       created_date: '2024-11-15T00:00:00.000Z',
       params: {
         timeout: 300,
-        allow_retries: 10,
+        allow_retries: true,
         num_of_retries: 3,
         temperature: 0.5,
         model: 'mock-model',
       },
     };
 
+    const {
+      id: _,
+      token: __,
+      created_date: ___,
+      max_calls_per_second,
+      max_concurrency,
+      params,
+      ...restOfMockEndpoint
+    } = mockEndpoint;
+
+    const expectedPayloadWithoutToken = {
+      ...restOfMockEndpoint,
+      name: `${mockEndpoint.name}-edited`,
+      max_calls_per_second: String(max_calls_per_second),
+      max_concurrency: String(max_concurrency),
+      params: JSON.stringify(params, null, 2),
+    };
+
     render(<NewEndpointForm endpointToEdit={mockEndpoint} />);
 
+    expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
     expect(screen.getByDisplayValue(mockEndpoint.name)).toBeInTheDocument();
     expect(screen.getByDisplayValue(mockEndpoint.uri)).toBeInTheDocument();
     expect(screen.getByDisplayValue(mockEndpoint.token)).toBeInTheDocument();
-    expect(screen.getByDisplayValue(mockEndpoint.connector_type)).toBeInTheDocument();
+    expect(
+      screen.getByDisplayValue(mockEndpoint.connector_type)
+    ).toBeInTheDocument();
 
     await userEvent.click(screen.getByText(/more configs/i));
-    expect(screen.getByDisplayValue(mockEndpoint.max_calls_per_second.toString())).toBeInTheDocument();
-    expect(screen.getByDisplayValue(mockEndpoint.max_concurrency.toString())).toBeInTheDocument();
-    expect(screen.getByDisplayValue(JSON.stringify(mockEndpoint.params))).toBeInTheDocument();
-    
-  });
+    expect(
+      screen.getByDisplayValue(mockEndpoint.max_calls_per_second.toString())
+    ).toBeInTheDocument();
+    expect(
+      screen.getByDisplayValue(mockEndpoint.max_concurrency.toString())
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('textbox', { name: /other parameters/i })
+    ).toHaveValue(JSON.stringify(mockEndpoint.params, null, 2));
+
+    await userEvent.click(screen.getByRole('button', { name: /ok/i }));
+
+    const nameTextbox = screen.getByDisplayValue(mockEndpoint.name);
+    const saveBtn = screen.getByRole('button', { name: /save/i });
+    await userEvent.type(nameTextbox, '--');
+    expect(saveBtn).toBeEnabled();
+
+    await userEvent.type(nameTextbox, '{backspace}{backspace}');
+    expect(saveBtn).toBeDisabled();
+
+    await userEvent.type(nameTextbox, '-edited');
+    expect(saveBtn).toBeEnabled();
+
+    const tokenTextbox = screen.getByDisplayValue(mockEndpoint.token);
+    await userEvent.click(tokenTextbox);
+    expect(tokenTextbox).toHaveValue('');
+    await userEvent.click(nameTextbox);
+    expect(tokenTextbox).toHaveValue(mockEndpoint.token);
+
+    await userEvent.click(saveBtn);
+    expect(mockUpdateModelEndpointSuccess).toHaveBeenCalledWith({
+      id: mockEndpoint.id,
+      endpointDetails: expectedPayloadWithoutToken,
+    });
+  }, 10000);
+
+  test('edit endpoint - form filling, token value updated', async () => {
+    const mockUpdateModelEndpointSuccess = jest.fn().mockResolvedValue({});
+    (useUpdateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
+      mockUpdateModelEndpointSuccess,
+      { isLoading: false },
+    ]);
+
+    const mockEndpoint: LLMEndpoint = {
+      id: 'mock-id',
+      connector_type: 'connector1',
+      name: 'mockname',
+      uri: 'mockuri',
+      token: '*****',
+      max_calls_per_second: 10,
+      max_concurrency: 1,
+      created_date: '2024-11-15T00:00:00.000Z',
+      params: {
+        timeout: 300,
+        allow_retries: true,
+        num_of_retries: 3,
+        temperature: 0.5,
+        model: 'mock-model',
+      },
+    };
+
+    const {
+      id: _,
+      token: __,
+      created_date: ___,
+      max_calls_per_second,
+      max_concurrency,
+      params,
+      ...restOfMockEndpoint
+    } = mockEndpoint;
+
+    const updatedToken = 'updated-token';
+    const expectedPayloadWithToken = {
+      ...restOfMockEndpoint,
+      token: updatedToken,
+      name: `${mockEndpoint.name}-edited`,
+      max_calls_per_second: String(max_calls_per_second),
+      max_concurrency: String(max_concurrency),
+      params: JSON.stringify(params, null, 2),
+    };
+
+    render(<NewEndpointForm endpointToEdit={mockEndpoint} />);
+
+    const nameTextbox = screen.getByDisplayValue(mockEndpoint.name);
+    const saveBtn = screen.getByRole('button', { name: /save/i });
+
+    await userEvent.type(nameTextbox, '-edited');
+    expect(saveBtn).toBeEnabled();
+
+    const tokenTextbox = screen.getByDisplayValue(mockEndpoint.token);
+    await userEvent.click(tokenTextbox);
+    expect(tokenTextbox).toHaveValue('');
+    await userEvent.type(tokenTextbox, updatedToken);
+    await userEvent.click(saveBtn);
+    expect(mockUpdateModelEndpointSuccess).toHaveBeenCalledWith({
+      id: mockEndpoint.id,
+      endpointDetails: expectedPayloadWithToken,
+    });
+  }, 10000);
 });
