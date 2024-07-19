@@ -2,7 +2,6 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/navigation';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
-// import { useFormik } from 'formik';
 import { useGetAllConnectorsQuery } from '@/app/services/connector-api-service';
 import {
   useCreateLLMEndpointMutation,
@@ -12,7 +11,6 @@ import { useAppSelector } from '@/lib/redux';
 
 const mockConnectors = ['connector1', 'connector2'];
 
-jest.mock('@/lib/redux', mockRedux);
 jest.mock('@/app/services/connector-api-service', () => ({
   useGetAllConnectorsQuery: jest.fn(),
 }));
@@ -20,12 +18,6 @@ jest.mock('@/app/services/llm-endpoint-api-service', () => ({
   useCreateLLMEndpointMutation: jest.fn(),
   useUpdateLLMEndpointMutation: jest.fn(),
 }));
-
-function mockRedux() {
-  return {
-    useAppSelector: jest.fn(),
-  };
-}
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
