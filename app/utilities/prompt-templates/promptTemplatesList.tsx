@@ -6,13 +6,13 @@ import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 
 interface CustomStyle extends CSSProperties {
-  webkitLineClamp?: string;
-  webkitBoxOrient?: 'vertical';
+  WebkitLineClamp?: string;
+  WebkitBoxOrient?: 'vertical';
 }
 const ellipsisStyle: CustomStyle = {
   display: '-webkit-box',
-  webkitLineClamp: '2',
-  webkitBoxOrient: 'vertical',
+  WebkitLineClamp: '2',
+  WebkitBoxOrient: 'vertical',
 };
 
 function PromptTemplatesList({ templates }: { templates: PromptTemplate[] }) {
@@ -88,11 +88,11 @@ function PromptTemplatesList({ templates }: { templates: PromptTemplate[] }) {
             <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">
               Template
             </h4>
-            <p className="text-[0.95rem] mb-4">
+            <div className="text-[0.95rem] mb-4">
               <pre className="whitespace-pre-wrap">
                 {selectedTemplate.template}
               </pre>
-            </p>
+            </div>
           </section>
         </main>
       </div>

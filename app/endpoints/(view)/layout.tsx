@@ -8,14 +8,15 @@ async function fetchEndpoints() {
     `${config.webAPI.hostURL}${config.webAPI.basePathLLMEndpoints}`,
     { cache: 'no-store' }
   );
+  console.log('----------fetchEndpoints', response);
   const result = await processResponse<LLMEndpoint[]>(response);
   return result;
 }
 
 export default async function BenchmarkingLayout({
-  children,
+  children = null,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }) {
   const result = await fetchEndpoints();
   if ('error' in result) {

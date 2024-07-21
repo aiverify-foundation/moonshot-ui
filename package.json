@@ -11,7 +11,8 @@
     "lint:fix": "next lint --fix",
     "tsc": "tsc --noEmit",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@reduxjs/toolkit": "2.0.1",
@@ -49,6 +50,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8",
     "prettier": "^3.2.4",
+    "prettier-2": "npm:prettier@^2",
     "redux-logger": "^3.0.6",
     "tailwindcss": "^3.3.0",
     "ts-node": "^10.9.2",

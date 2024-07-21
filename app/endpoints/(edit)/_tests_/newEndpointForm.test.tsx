@@ -7,7 +7,6 @@ import {
   useCreateLLMEndpointMutation,
   useUpdateLLMEndpointMutation,
 } from '@/app/services/llm-endpoint-api-service';
-import { useAppSelector } from '@/lib/redux';
 
 const mockConnectors = ['connector1', 'connector2'];
 
