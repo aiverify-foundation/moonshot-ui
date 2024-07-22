@@ -172,8 +172,10 @@ function NewEndpointForm(props: NewEndpointFormProps) {
   }, [data]);
 
   useEffect(() => {
-    if (endpointToEdit) return;
-    setDisableSaveBtn(!formik.isValid);
+    const handler = setTimeout(() => {
+      setDisableSaveBtn(!formik.isValid);
+    }, 300);
+    return () => clearTimeout(handler);
   }, [formik.isValid, endpointToEdit]);
 
   useEffect(() => {
