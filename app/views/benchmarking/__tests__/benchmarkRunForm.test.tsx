@@ -161,8 +161,6 @@ describe('BenchmarkRunForm', () => {
       />
     );
 
-    screen.debug();
-
     const runButton = screen.getByRole('button', { name: /Run/i });
 
     // Fill in the form
