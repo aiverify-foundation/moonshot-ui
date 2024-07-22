@@ -23,7 +23,9 @@ const config: Config = {
     '!**/loading.tsx',
     '!**/not-found.tsx',
     '!**/global.d.ts',
-    '!app/components/IconSVG/**',
+    '!app/components/chat.tsx',
+    '!app/components/window.tsx',
+    '!app/hooks/**',
   ],
   coverageReporters: ['text', 'text-summary'],
   moduleNameMapper: {
