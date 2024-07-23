@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { RedteamMode } from '@/app/types/enums';
 import { proxyPathSessions } from './constants';
 import { getHostAndPort } from './host';
 

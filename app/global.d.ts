@@ -78,7 +78,7 @@ type LLMEndpoint = {
   max_calls_per_second: number;
   max_concurrency: number;
   created_date: string;
-  params?: Record<string, string | number>;
+  params?: Record<string, string | number | boolean>;
 };
 
 type LLMEndpointFormValues = {
@@ -86,7 +86,7 @@ type LLMEndpointFormValues = {
   connector_type: string;
   name: string;
   uri: string;
-  token: string;
+  token: string | undefined;
   max_calls_per_second: string;
   max_concurrency: string;
   params?: string;
@@ -107,11 +107,11 @@ type CookbookFormValues = {
 };
 
 type Recipe = {
-  attack_modules: any[];
+  attack_modules: unknown[];
   categories: string[];
   datasets: string[];
   description: string;
-  grading_scale: Record<string, any>;
+  grading_scale: Record<string, unknown>;
   id: string;
   metrics: string[];
   name: string;
@@ -120,6 +120,9 @@ type Recipe = {
     num_of_tags: number;
     num_of_datasets: number;
     num_of_datasets_prompts: Record<string, number>;
+    num_of_prompt_templates: number;
+    num_of_metrics: number;
+    num_of_attack_modules: number;
   };
   tags: string[];
   total_prompt_in_recipe: number;
@@ -303,3 +306,13 @@ type Runner = {
   };
   start_time?: number;
 };
+
+type ActionResponse<T> = {
+  statusCode: number;
+  data?: T;
+};
+
+type FormState<T = Record<string, string | number>> = {
+  formStatus: string;
+  formErrors: Record<string, string[]> | undefined;
+} & Partial<T>;

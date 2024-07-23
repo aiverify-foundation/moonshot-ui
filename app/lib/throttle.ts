@@ -1,6 +1,6 @@
-export function throttle(func: (...args: any[]) => void, delay: number) {
+export function throttle(func: (...args: unknown[]) => void, delay: number) {
   let lastCall = 0;
-  return function (...args: any[]) {
+  return function (...args: unknown[]) {
     const now = new Date().getTime();
     if (now - lastCall < delay) {
       return;
@@ -10,9 +10,13 @@ export function throttle(func: (...args: any[]) => void, delay: number) {
   };
 }
 
-export function debounce(func: (...args: any[]) => void, delay: number) {
+// eslint-disable-next-line
+export function debounce<T extends (...args: any[]) => void>(
+  func: T,
+  delay: number
+) {
   let timeoutId: NodeJS.Timeout | null = null;
-  return function (...args: any[]) {
+  return function (...args: Parameters<T>) {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }

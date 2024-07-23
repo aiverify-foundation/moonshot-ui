@@ -6,6 +6,7 @@ export async function GET() {
     `${config.webAPI.hostURL}${config.webAPI.basePathPromptTemplates}`,
     {
       method: 'GET',
+      cache: 'no-store',
     }
   );
   return response;

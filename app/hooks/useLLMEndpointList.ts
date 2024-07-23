@@ -1,6 +1,6 @@
 import { useGetLLMEndpointsQuery } from '@/app/services/llm-endpoint-api-service';
 
-export default function useModelsList() {
+function useModelsList() {
   const { data, error, isLoading, refetch } = useGetLLMEndpointsQuery();
   let models: LLMEndpoint[] = [];
   if (data !== undefined) {
@@ -8,3 +8,5 @@ export default function useModelsList() {
   }
   return { models, error, isLoading, refetch };
 }
+
+export { useModelsList };

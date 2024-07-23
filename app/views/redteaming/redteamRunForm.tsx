@@ -10,7 +10,6 @@ import { colors } from '@/app/views/shared-components/customColors';
 import {
   resetAttackModule,
   resetRedteamModels,
-  setActiveSession,
   useAppDispatch,
   useAppSelector,
 } from '@/lib/redux';
@@ -35,8 +34,7 @@ function RedteamRunForm() {
   const selectedEndpoints = useAppSelector(
     (state) => state.redteamModels.entities
   );
-  const [createSession, { data, error, isLoading }] =
-    useCreateSessionMutation();
+  const [createSession, { isLoading }] = useCreateSessionMutation();
   const formik = useFormik({
     initialValues: initialFormValues,
     validationSchema: validationSchema,

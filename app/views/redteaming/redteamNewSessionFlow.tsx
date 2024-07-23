@@ -5,7 +5,6 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
-import { AttackModuleSelectView } from '@/app/views/attackmodules/attackModuleSelector';
 import { EndpointSelectVew } from '@/app/views/models-management/endpointsSelector';
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
@@ -19,6 +18,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '@/lib/redux';
+import { AttackModuleSelectView } from './components/attackModuleSelector';
 import { RedteamingNewSessionViews } from './enums';
 import { RedteamRunForm } from './redteamRunForm';
 
@@ -26,7 +26,6 @@ const flowSteps = [
   'Connect Endpoint',
   'Set Optional Utilities',
   'Start Red Teaming',
-
 ];
 
 function RedteamNewSessionFlow() {
