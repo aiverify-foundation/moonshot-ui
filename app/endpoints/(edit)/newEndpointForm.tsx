@@ -1,7 +1,7 @@
 'use client';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, useRef, memo } from 'react';
+import { useEffect, useState, useRef, memo, useMemo } from 'react';
 import { object, string, number, boolean } from 'yup';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
@@ -20,7 +20,7 @@ import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSur
 import { Modal } from '@/app/views/shared-components/modal/modal';
 import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
 
-//memoize
+//memoize select input - it is a complex component with many react elements, re-rendering it often is not efficient
 const MemSelectInput = memo(SelectInput);
 
 const initialFormValues: LLMEndpointFormValues = {
@@ -454,18 +454,14 @@ function NewEndpointForm(props: NewEndpointFormProps) {
       ) : (
         <div className="w-[100%] flex justify-between">
           <div className="flex flex-col w-[50%] gap-2">
-            <SelectInput
+            <MemSelectInput
               id="max_calls_per_second"
               label="Max Calls Per Second"
               name="max_calls_per_second"
               options={maxCallsPerSecondOptions}
               onSyntheticChange={formik.handleChange}
               value={formik.values.max_calls_per_second}
-              style={{ width: '100%' }}
-              labelStyles={{
-                fontSize: '1rem',
-                color: colors.moonpurplelight,
-              }}
+              labelStyles={labelStyle}
               inputStyle={inputStyle}
             />
 
@@ -476,11 +472,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
               options={maxConcurrencyOptions}
               onSyntheticChange={formik.handleChange}
               value={formik.values.max_concurrency}
-              style={{ width: '100%' }}
-              labelStyles={{
-                fontSize: '1rem',
-                color: colors.moonpurplelight,
-              }}
+              labelStyles={labelStyle}
               inputStyle={inputStyle}
             />
 
@@ -491,10 +483,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
               value={formik.values.params}
               error={formik.errors.params ? formik.errors.params : undefined}
               placeholder="Additional parameters normally in JSON format"
-              labelStyles={{
-                fontSize: '1rem',
-                color: colors.moonpurplelight,
-              }}
+              labelStyles={labelStyle}
               inputStyles={{ height: 200 }}
             />
           </div>
