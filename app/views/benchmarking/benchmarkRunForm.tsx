@@ -73,7 +73,7 @@ function BenchmarkRunForm({
       collectionType: BenchmarkCollectionType.COOKBOOK,
     });
     if ('error' in response) {
-      console.error(response.error);
+      console.log(response.error);
       setDisableRunBtn(false);
       return;
     }
