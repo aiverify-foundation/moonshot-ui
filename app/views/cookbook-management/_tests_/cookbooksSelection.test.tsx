@@ -41,6 +41,13 @@ const mockCookbooks = [
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
   },
+  {
+    id: 'cb-id-3',
+    name: 'Mock Cookbook Three',
+    description: 'Mock description',
+    recipes: ['rc-id-3'],
+    total_prompt_in_cookbook: 30,
+  },
 ];
 
 function renderWithProviders(
@@ -59,17 +66,9 @@ describe('CookbooksSelection', () => {
   const mockDispatch = jest.fn();
   const mockOnClose = jest.fn();
   const mockAddBenchmarkCookbooks = jest.fn();
+  const mockUpdateBenchmarkCookbooks = jest.fn();
 
   beforeAll(() => {
-    (useAppDispatch as jest.Mock).mockImplementation(() => mockDispatch);
-    (useAppSelector as jest.Mock).mockImplementation(() => mockCookbooks);
-    (addBenchmarkCookbooks as unknown as jest.Mock).mockImplementation(
-      mockAddBenchmarkCookbooks
-    );
-  });
-
-  beforeEach(() => {
-    jest.clearAllMocks();
     function useMockGetCookbooksQuery() {
       return {
         data: mockCookbooks,
@@ -77,18 +76,57 @@ describe('CookbooksSelection', () => {
       };
     }
 
+    (useAppDispatch as jest.Mock).mockImplementation(() => mockDispatch);
+    (addBenchmarkCookbooks as unknown as jest.Mock).mockImplementation(
+      mockAddBenchmarkCookbooks
+    );
     (useGetCookbooksQuery as jest.Mock).mockImplementation(
       useMockGetCookbooksQuery
     );
+    (updateBenchmarkCookbooks as unknown as jest.Mock).mockImplementation(
+      mockUpdateBenchmarkCookbooks
+    );
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
   test('renders cookbooks selection correctly', () => {
+    const mockAlreadySelectedCookbooks = [mockCookbooks[0], mockCookbooks[2]];
+    (useAppSelector as jest.Mock).mockImplementation(
+      () => mockAlreadySelectedCookbooks
+    );
     renderWithProviders(<CookbooksSelection onClose={mockOnClose} />);
     expect(screen.getByText(/Mock Cookbook One/i)).toBeInTheDocument();
     expect(screen.getByText(/Mock Cookbook Two/i)).toBeInTheDocument();
+    expect(screen.getByText(/Mock Cookbook Three/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole('checkbox', {
+        name: `Select ${mockCookbooks[0].id}`,
+      })
+    ).toBeChecked();
+    expect(
+      screen.getByRole('checkbox', {
+        name: `Select ${mockCookbooks[2].id}`,
+      })
+    ).toBeChecked();
+    expect(
+      screen.getByRole('checkbox', {
+        name: `Select ${mockCookbooks[1].id}`,
+      })
+    ).not.toBeChecked();
+    expect(mockDispatch).toHaveBeenCalledTimes(1);
+    expect(mockDispatch).toHaveBeenCalledWith(
+      updateBenchmarkCookbooks([mockCookbooks[0], mockCookbooks[2]])
+    );
   });
 
   test('selects and deselects a cookbook', async () => {
+    const mockNoSelectedCookbooks: Cookbook[] = [];
+    (useAppSelector as jest.Mock).mockImplementation(
+      () => mockNoSelectedCookbooks
+    );
     renderWithProviders(<CookbooksSelection onClose={mockOnClose} />, {
       initialCookbooks: mockCookbooks,
     });
@@ -96,19 +134,31 @@ describe('CookbooksSelection', () => {
     const cookbookOneCheckbox = screen.getByRole('checkbox', {
       name: `Select ${mockCookbooks[0].id}`,
     });
-    await userEvent.click(cookbookOneCheckbox);
-    // expect(mockAddBenchmarkCookbooks).toHaveBeenCalledWith([mockCookbooks[0]]);
 
     await userEvent.click(cookbookOneCheckbox);
-    // expect(removeBenchmarkCookbooks).toHaveBeenCalledWith([mockCookbooks[0]]);
+    expect(mockDispatch).toHaveBeenCalledTimes(1);
+    expect(mockDispatch).toHaveBeenCalledWith(
+      addBenchmarkCookbooks([mockCookbooks[0]])
+    );
+    expect(cookbookOneCheckbox).toBeChecked();
+
+    await userEvent.click(cookbookOneCheckbox);
+    expect(mockDispatch).toHaveBeenCalledWith(
+      removeBenchmarkCookbooks([mockCookbooks[0]])
+    );
+    expect(cookbookOneCheckbox).not.toBeChecked();
   });
 
-  test.skip('closes the selection popup', async () => {
+  test('closes the selection view', async () => {
+    const mockAlreadySelectedCookbooks = [mockCookbooks[0], mockCookbooks[2]];
+    (useAppSelector as jest.Mock).mockImplementation(
+      () => mockAlreadySelectedCookbooks
+    );
     renderWithProviders(<CookbooksSelection onClose={mockOnClose} />, {
       initialCookbooks: mockCookbooks,
     });
 
-    const closeButton = screen.getByText(/OK/i);
+    const closeButton = screen.getByRole('button', { name: /ok/i });
     await userEvent.click(closeButton);
     expect(mockOnClose).toHaveBeenCalled();
   });

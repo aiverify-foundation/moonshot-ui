@@ -42,6 +42,7 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
           <h3 className="font-bold">{cookbook.name}</h3>
         </div>
         <input
+          readOnly
           type="checkbox"
           aria-label={`Select ${cookbook.id}`}
           className="w-2 h-2 shrink-0"
