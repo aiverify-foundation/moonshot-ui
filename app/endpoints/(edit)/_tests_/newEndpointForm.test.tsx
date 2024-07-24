@@ -1,4 +1,4 @@
-import { screen, render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/navigation';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
@@ -456,6 +456,69 @@ describe('NewEndpointForm', () => {
     await userEvent.click(tokenTextbox);
     expect(tokenTextbox).toHaveValue('');
     await userEvent.type(tokenTextbox, updatedToken);
+    await userEvent.click(saveBtn);
+    expect(mockUpdateModelEndpointSuccess).toHaveBeenCalledWith({
+      id: mockEndpoint.id,
+      endpointDetails: expectedPayloadWithToken,
+    });
+  }, 10000);
+
+  test('edit endpoint - form filling, no inital token value (default fresh install), new token added', async () => {
+    const mockUpdateModelEndpointSuccess = jest.fn().mockResolvedValue({});
+    (useUpdateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
+      mockUpdateModelEndpointSuccess,
+      { isLoading: false },
+    ]);
+
+    const mockEndpoint: LLMEndpoint = {
+      id: 'mock-id',
+      connector_type: 'connector1',
+      name: 'mockname',
+      uri: 'mockuri',
+      token: '',
+      max_calls_per_second: 10,
+      max_concurrency: 1,
+      created_date: '2024-11-15T00:00:00.000Z',
+      params: {
+        timeout: 300,
+        allow_retries: true,
+        num_of_retries: 3,
+        temperature: 0.5,
+        model: 'mock-model',
+      },
+    };
+
+    const {
+      id: _,
+      token: __,
+      created_date: ___,
+      max_calls_per_second,
+      max_concurrency,
+      params,
+      ...restOfMockEndpoint
+    } = mockEndpoint;
+
+    const newToken = 'new-token';
+    const expectedPayloadWithToken = {
+      ...restOfMockEndpoint,
+      token: newToken,
+      name: mockEndpoint.name,
+      max_calls_per_second: String(max_calls_per_second),
+      max_concurrency: String(max_concurrency),
+      params: JSON.stringify(params, null, 2),
+    };
+
+    render(<NewEndpointForm endpointToEdit={mockEndpoint} />);
+
+    const nameTextbox = screen.getByDisplayValue(mockEndpoint.name);
+    const saveBtn = screen.getByRole('button', { name: /save/i });
+    expect(saveBtn).toBeDisabled();
+
+    const tokenTextbox = screen.getByRole('textbox', {name: /token/i});
+    await userEvent.click(tokenTextbox);
+    expect(tokenTextbox).toHaveValue('');
+    await userEvent.type(tokenTextbox, newToken);
+    await waitFor(() => expect(saveBtn).toBeEnabled());
     await userEvent.click(saveBtn);
     expect(mockUpdateModelEndpointSuccess).toHaveBeenCalledWith({
       id: mockEndpoint.id,
