@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/navigation';
 import { useRunBenchmarkMutation } from '@/app/services/benchmark-api-service';
@@ -90,14 +90,13 @@ function renderWithProviders(
 
 describe('BenchmarkRunForm', () => {
   const mockRouterPush = jest.fn();
-  const mockRunBenchmark = jest.fn();
 
   beforeAll(() => {
     (useRouter as jest.Mock).mockImplementation(() => ({
       push: mockRouterPush,
     }));
     (useRunBenchmarkMutation as jest.Mock).mockImplementation(() => [
-      mockRunBenchmark,
+      jest.fn(),
       { isLoading: false },
     ]);
     const mockAlreadySelectedCookbooksFromState = mockCookbooks;
@@ -108,40 +107,37 @@ describe('BenchmarkRunForm', () => {
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockAlreadySelectedEndpointsFromState
     );
-    const mockDispatch = jest.fn();
-    (useAppDispatch as jest.Mock).mockImplementation(() => ({
-      dispatch: mockDispatch,
-    }));
-    const mockResetBenchmarkCookbooks = jest.fn();
-    const mockResetBenchmarkModels = jest.fn();
-    // (resetBenchmarkCookbooks as jest.Mock).mockImplementation(
-    //   () => mockResetBenchmarkCookbooks
-    // );
-    // (resetBenchmarkModels as jest.Mock).mockImplementation(
-    //   () => mockResetBenchmarkModels
-    // );
   });
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test('renders form fields correctly', () => {
-    renderWithProviders(
-      <BenchmarkRunForm
-        defaultSelectedCookbooks={mockCookbooks}
-        defaultSelectedEndpoints={mockEndpoints}
-      />
+  test('renders form initial state', async () => {
+    // have to use act because benchmarkrunform has stateupdaters in useEffect which
+    // are not automatically wraped by the react testing lib
+    await act(async () =>
+      renderWithProviders(
+        <BenchmarkRunForm
+          defaultSelectedCookbooks={mockCookbooks}
+          defaultSelectedEndpoints={mockEndpoints}
+        />
+      )
     );
-    expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
-    expect(
-      screen.getByLabelText(/Description \(optional\)/i)
-    ).toBeInTheDocument();
-    expect(screen.getByLabelText(/Run a smaller set/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Run/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Run/i })).toBeDisabled();
   });
 
   test('form validation and submission', async () => {
+    const mockDispatch = jest.fn();
+    (useAppDispatch as jest.Mock).mockImplementation(() => mockDispatch);
+    const mockResetBenchmarkCookbooks = jest.fn();
+    const mockResetBenchmarkModels = jest.fn();
+    (resetBenchmarkCookbooks as unknown as jest.Mock).mockImplementation(
+      mockResetBenchmarkCookbooks
+    );
+    (resetBenchmarkModels as unknown as jest.Mock).mockImplementation(
+      mockResetBenchmarkModels
+    );
     const mockRunBenchmarkSuccess = jest.fn().mockResolvedValue({
       data: {
         id: 'br-id-1',
@@ -154,23 +150,23 @@ describe('BenchmarkRunForm', () => {
       mockRunBenchmarkSuccess,
       { isLoading: false },
     ]);
-    renderWithProviders(
-      <BenchmarkRunForm
-        defaultSelectedCookbooks={mockCookbooks}
-        defaultSelectedEndpoints={mockEndpoints}
-      />
+    await act(async () =>
+      renderWithProviders(
+        <BenchmarkRunForm
+          defaultSelectedCookbooks={mockCookbooks}
+          defaultSelectedEndpoints={mockEndpoints}
+        />
+      )
     );
 
     const runButton = screen.getByRole('button', { name: /Run/i });
 
-    // Fill in the form
     await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
+    await userEvent.clear(screen.getByLabelText(/Run a smaller set/i));
     await userEvent.type(screen.getByLabelText(/Run a smaller set/i), '5');
 
-    // The run button should be enabled now
     expect(runButton).toBeEnabled();
 
-    // Submit the form
     await userEvent.click(runButton);
 
     expect(mockRunBenchmarkSuccess).toHaveBeenCalledWith({
@@ -178,7 +174,7 @@ describe('BenchmarkRunForm', () => {
         description: '',
         endpoints: ['ep-id-1', 'ep-id-2'],
         inputs: ['cb-id-1', 'cb-id-2'],
-        num_of_prompts: '05',
+        num_of_prompts: '5',
         random_seed: '0',
         run_name: 'Test Run',
         runner_processing_module: 'benchmarking',
@@ -186,33 +182,40 @@ describe('BenchmarkRunForm', () => {
       },
       collectionType: 'cookbook',
     });
-    // expect(resetBenchmarkCookbooks).toHaveBeenCalled();
-    // expect(resetBenchmarkModels).toHaveBeenCalled();
+    expect(mockDispatch).toHaveBeenCalledTimes(2);
+    expect(mockDispatch).toHaveBeenCalledWith(mockResetBenchmarkCookbooks());
+    expect(mockDispatch).toHaveBeenCalledWith(mockResetBenchmarkModels());
     expect(mockRouterPush).toHaveBeenCalledWith(
       '/benchmarking/session/run?runner_id=br-id-1'
     );
   });
 
-  test.skip('form submission with error', async () => {
+  test('form submission with error', async () => {
+    const mockRunBenchmarkError = jest.fn().mockResolvedValue({
+      error: 'Error',
+    });
     (useRunBenchmarkMutation as jest.Mock).mockImplementation(() => [
-      jest.fn().mockResolvedValue({ error: 'Error' }),
+      mockRunBenchmarkError,
       { isLoading: false },
     ]);
 
-    render(<BenchmarkRunForm />);
+    await act(async () =>
+      renderWithProviders(
+        <BenchmarkRunForm
+          defaultSelectedCookbooks={mockCookbooks}
+          defaultSelectedEndpoints={mockEndpoints}
+        />
+      )
+    );
 
     const runButton = screen.getByRole('button', { name: /Run/i });
 
-    // Fill in the form
     await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
     await userEvent.type(screen.getByLabelText(/Run a smaller set/i), '5');
-
-    // Submit the form
     await userEvent.click(runButton);
 
-    expect(mockRunBenchmark).toHaveBeenCalled();
-    expect(resetBenchmarkCookbooks).toHaveBeenCalled();
-    expect(resetBenchmarkModels).toHaveBeenCalled();
+    expect(mockRunBenchmarkError).toHaveBeenCalled();
     expect(mockRouterPush).not.toHaveBeenCalled();
+    // TODO - assert show error modal
   });
 });
