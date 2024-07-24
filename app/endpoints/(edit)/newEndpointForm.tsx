@@ -209,6 +209,49 @@ function NewEndpointForm(props: NewEndpointFormProps) {
     formik.values.params?.trim() === '' ||
     formik.values.token?.trim() === '';
 
+  const tokenTextboxValue = useMemo(() => {
+    // note - backend api returns empty string if token is not set; it returns string of asterisks masking the token if token exists
+    if (tokenInputMode === TokenInputMode.DEFAULT) {
+      // not editing the input, cursor is outside
+      if (endpointToEdit) {
+        // if EDITING AN ENDPOINT
+        if (
+          formik.values.token !== undefined &&
+          formik.values.token.trim() !== '' &&
+          formik.values.token.length > 0
+        ) {
+          // user has typed in an updated token string, populate with user input
+          return formik.values.token;
+        }
+        if (endpointToEdit.token.length > 0) {
+          formik.setFieldValue('token', endpointToEdit.token);
+          return endpointToEdit.token; // display the masked string if there is token
+        }
+        return ''; // populate with empty string if no token
+      }
+      // if CREATING A NEW ENDPOINT
+      return formik.values.token; // populate with user input (what user has entered)
+    }
+    if (tokenInputMode === TokenInputMode.EDITING) {
+      // if editing the input, cursor is inside (focused)
+      if (endpointToEdit) {
+        // if EDITING AN ENDPOINT
+        return formik.values.token; // populate with user input (what user has entered)
+      }
+      return formik.values.token; // populate with user input (what user has entered)
+    }
+  }, [tokenInputMode, endpointToEdit, formik.values.token]);
+
+  const tokenInputStyle = useMemo(() => {
+    return {
+      height: 38,
+      ...(isMaskTypedToken && {
+        WebkitTextSecurity: 'disc',
+        textSecurity: 'disc',
+      }),
+    } as React.CSSProperties;
+  }, [isMaskTypedToken]);
+
   function handleTokenInputFocus(_: React.FocusEvent<HTMLInputElement>) {
     setTokenInputMode(TokenInputMode.EDITING);
     // note - backend api returns empty string if token is not set; it returns string of asterisks masking the token if token exists
@@ -369,48 +412,9 @@ function NewEndpointForm(props: NewEndpointFormProps) {
               name="token"
               label="Token"
               labelStyles={labelStyle}
-              inputStyles={
-                {
-                  height: 38,
-                  ...(isMaskTypedToken && {
-                    WebkitTextSecurity: 'disc',
-                    textSecurity: 'disc',
-                  }),
-                } as React.CSSProperties
-              }
+              inputStyles={tokenInputStyle}
               onChange={formik.handleChange}
-              value={(() => {
-                // note - backend api returns empty string if token is not set; it returns string of asterisks masking the token if token exists
-                if (tokenInputMode === TokenInputMode.DEFAULT) {
-                  // not editing the input, cursor is outside
-                  if (endpointToEdit) {
-                    // if EDITING AN ENDPOINT
-                    if (
-                      formik.values.token !== undefined &&
-                      formik.values.token.trim() !== '' &&
-                      formik.values.token.length > 0
-                    ) {
-                      // user has typed in an updated token string, populate with user input
-                      return formik.values.token;
-                    }
-                    if (endpointToEdit.token.length > 0) {
-                      formik.setFieldValue('token', endpointToEdit.token);
-                      return endpointToEdit.token; // display the masked string if there is token
-                    }
-                    return ''; // populate with empty string if no token
-                  }
-                  // if CREATING A NEW ENDPOINT
-                  return formik.values.token; // populate with user input (what user has entered)
-                }
-                if (tokenInputMode === TokenInputMode.EDITING) {
-                  // if editing the input, cursor is inside (focused)
-                  if (endpointToEdit) {
-                    // if EDITING AN ENDPOINT
-                    return formik.values.token; // populate with user input (what user has entered)
-                  }
-                  return formik.values.token; // populate with user input (what user has entered)
-                }
-              })()}
+              value={tokenTextboxValue}
               onBlur={handleTokenInputBlur}
               onFocus={handleTokenInputFocus}
               error={
