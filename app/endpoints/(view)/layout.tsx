@@ -8,7 +8,6 @@ async function fetchEndpoints() {
     `${config.webAPI.hostURL}${config.webAPI.basePathLLMEndpoints}`,
     { cache: 'no-store' }
   );
-  console.log('----------fetchEndpoints', response);
   const result = await processResponse<LLMEndpoint[]>(response);
   return result;
 }
