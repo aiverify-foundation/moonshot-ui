@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
@@ -13,8 +14,15 @@ import {
   useAppSelector,
 } from '@/lib/redux';
 import config from '@/moonshot.config';
-import { CookbookAbout } from './cookbookAbout';
 import { CookbookSelectionItem } from './cookbookSelectionItem';
+
+const CookbookAbout = dynamic(
+  () => import('./cookbookAbout').then((mod) => mod.CookbookAbout),
+  {
+    loading: () => <LoadingAnimation />,
+    ssr: true,
+  }
+);
 
 const enableEstimatedTime = false;
 

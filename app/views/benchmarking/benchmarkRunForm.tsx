@@ -73,7 +73,7 @@ function BenchmarkRunForm({
       collectionType: BenchmarkCollectionType.COOKBOOK,
     });
     if ('error' in response) {
-      console.log(response.error);
+      // TODO - show error modal
       setDisableRunBtn(false);
       return;
     }
