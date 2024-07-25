@@ -40,7 +40,9 @@ function EndpointsViewList({ endpoints, children }: EndpointsViewListProps) {
         <main
           className="grid grid-cols-2 gap-5"
           style={{ height: 'calc(100% - 140px)' }}>
-          <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar">
+          <ul
+            className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar"
+            role="list">
             {endpoints.map((endpoint) => {
               const isSelected = endpoint.id === selectedEndpointId;
               return (
