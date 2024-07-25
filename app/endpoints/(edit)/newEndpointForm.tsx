@@ -1,7 +1,7 @@
 'use client';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, memo, useMemo } from 'react';
 import { object, string, number, boolean } from 'yup';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
@@ -19,6 +19,9 @@ import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 import { Modal } from '@/app/views/shared-components/modal/modal';
 import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
+
+//memoize select input - it is a complex component with many react elements, re-rendering it often is not efficient
+const MemSelectInput = memo(SelectInput);
 
 const initialFormValues: LLMEndpointFormValues = {
   connector_type: '',
@@ -79,6 +82,13 @@ type NewEndpointFormProps = {
   disablePopupLayout?: boolean;
   onClose?: () => void;
 };
+
+const labelStyle: React.CSSProperties = {
+  fontSize: '1rem',
+  color: colors.moonpurplelight,
+};
+
+const inputStyle: React.CSSProperties = { height: 38 };
 
 enum TokenInputMode {
   EDITING = 'editing',
@@ -199,6 +209,49 @@ function NewEndpointForm(props: NewEndpointFormProps) {
     formik.values.params?.trim() === '' ||
     formik.values.token?.trim() === '';
 
+  const tokenTextboxValue = useMemo(() => {
+    // note - backend api returns empty string if token is not set; it returns string of asterisks masking the token if token exists
+    if (tokenInputMode === TokenInputMode.DEFAULT) {
+      // not editing the input, cursor is outside
+      if (endpointToEdit) {
+        // if EDITING AN ENDPOINT
+        if (
+          formik.values.token !== undefined &&
+          formik.values.token.trim() !== '' &&
+          formik.values.token.length > 0
+        ) {
+          // user has typed in an updated token string, populate with user input
+          return formik.values.token;
+        }
+        if (endpointToEdit.token.length > 0) {
+          formik.setFieldValue('token', endpointToEdit.token);
+          return endpointToEdit.token; // display the masked string if there is token
+        }
+        return ''; // populate with empty string if no token
+      }
+      // if CREATING A NEW ENDPOINT
+      return formik.values.token; // populate with user input (what user has entered)
+    }
+    if (tokenInputMode === TokenInputMode.EDITING) {
+      // if editing the input, cursor is inside (focused)
+      if (endpointToEdit) {
+        // if EDITING AN ENDPOINT
+        return formik.values.token; // populate with user input (what user has entered)
+      }
+      return formik.values.token; // populate with user input (what user has entered)
+    }
+  }, [tokenInputMode, endpointToEdit, formik.values.token]);
+
+  const tokenInputStyle = useMemo(() => {
+    return {
+      height: 38,
+      ...(isMaskTypedToken && {
+        WebkitTextSecurity: 'disc',
+        textSecurity: 'disc',
+      }),
+    } as React.CSSProperties;
+  }, [isMaskTypedToken]);
+
   function handleTokenInputFocus(_: React.FocusEvent<HTMLInputElement>) {
     setTokenInputMode(TokenInputMode.EDITING);
     // note - backend api returns empty string if token is not set; it returns string of asterisks masking the token if token exists
@@ -310,11 +363,8 @@ function NewEndpointForm(props: NewEndpointFormProps) {
             <TextInput
               name="name"
               label="Name*"
-              labelStyles={{
-                fontSize: '1rem',
-                color: colors.moonpurplelight,
-              }}
-              inputStyles={{ height: 38 }}
+              labelStyles={labelStyle}
+              inputStyles={inputStyle}
               onChange={formik.handleChange}
               value={formik.values.name}
               onBlur={formik.handleBlur}
@@ -326,19 +376,15 @@ function NewEndpointForm(props: NewEndpointFormProps) {
               placeholder="Name of the model"
             />
 
-            <SelectInput
-              label="Connection Type*"
+            <MemSelectInput
+              label="Connection TypeX*"
               name="connector_type"
-              labelStyles={{
-                fontSize: '1rem',
-                color: colors.moonpurplelight,
-              }}
-              inputStyle={{ height: 38 }}
+              labelStyles={labelStyle}
+              inputStyle={inputStyle}
               options={connectionTypeOptions}
               onSyntheticChange={formik.handleChange}
               value={formik.values.connector_type}
               placeholder="Select the connector type"
-              style={{ width: '100%' }}
               error={
                 formik.touched.connector_type && formik.errors.connector_type
                   ? formik.errors.connector_type
@@ -349,11 +395,8 @@ function NewEndpointForm(props: NewEndpointFormProps) {
             <TextInput
               name="uri"
               label="URI"
-              labelStyles={{
-                fontSize: '1rem',
-                color: colors.moonpurplelight,
-              }}
-              inputStyles={{ height: 38 }}
+              labelStyles={labelStyle}
+              inputStyles={inputStyle}
               onChange={formik.handleChange}
               value={formik.values.uri}
               onBlur={formik.handleBlur}
@@ -368,52 +411,10 @@ function NewEndpointForm(props: NewEndpointFormProps) {
             <TextInput
               name="token"
               label="Token"
-              labelStyles={{
-                fontSize: '1rem',
-                color: colors.moonpurplelight,
-              }}
-              inputStyles={
-                {
-                  height: 38,
-                  ...(isMaskTypedToken && {
-                    WebkitTextSecurity: 'disc',
-                    textSecurity: 'disc',
-                  }),
-                } as React.CSSProperties
-              }
+              labelStyles={labelStyle}
+              inputStyles={tokenInputStyle}
               onChange={formik.handleChange}
-              value={(() => {
-                // note - backend api returns empty string if token is not set; it returns string of asterisks masking the token if token exists
-                if (tokenInputMode === TokenInputMode.DEFAULT) {
-                  // not editing the input, cursor is outside
-                  if (endpointToEdit) {
-                    // if EDITING AN ENDPOINT
-                    if (
-                      formik.values.token !== undefined &&
-                      formik.values.token.trim() !== '' &&
-                      formik.values.token.length > 0
-                    ) {
-                      // user has typed in an updated token string, populate with user input
-                      return formik.values.token;
-                    }
-                    if (endpointToEdit.token.length > 0) {
-                      formik.setFieldValue('token', endpointToEdit.token);
-                      return endpointToEdit.token; // display the masked string if there is token
-                    }
-                    return ''; // populate with empty string if no token
-                  }
-                  // if CREATING A NEW ENDPOINT
-                  return formik.values.token; // populate with user input (what user has entered)
-                }
-                if (tokenInputMode === TokenInputMode.EDITING) {
-                  // if editing the input, cursor is inside (focused)
-                  if (endpointToEdit) {
-                    // if EDITING AN ENDPOINT
-                    return formik.values.token; // populate with user input (what user has entered)
-                  }
-                  return formik.values.token; // populate with user input (what user has entered)
-                }
-              })()}
+              value={tokenTextboxValue}
               onBlur={handleTokenInputBlur}
               onFocus={handleTokenInputFocus}
               error={
@@ -457,34 +458,26 @@ function NewEndpointForm(props: NewEndpointFormProps) {
       ) : (
         <div className="w-[100%] flex justify-between">
           <div className="flex flex-col w-[50%] gap-2">
-            <SelectInput
+            <MemSelectInput
               id="max_calls_per_second"
               label="Max Calls Per Second"
               name="max_calls_per_second"
               options={maxCallsPerSecondOptions}
               onSyntheticChange={formik.handleChange}
               value={formik.values.max_calls_per_second}
-              style={{ width: '100%' }}
-              labelStyles={{
-                fontSize: '1rem',
-                color: colors.moonpurplelight,
-              }}
-              inputStyle={{ height: 38 }}
+              labelStyles={labelStyle}
+              inputStyle={inputStyle}
             />
 
-            <SelectInput
+            <MemSelectInput
               id="max_concurrency"
               label="Max Concurrency"
               name="max_concurrency"
               options={maxConcurrencyOptions}
               onSyntheticChange={formik.handleChange}
               value={formik.values.max_concurrency}
-              style={{ width: '100%' }}
-              labelStyles={{
-                fontSize: '1rem',
-                color: colors.moonpurplelight,
-              }}
-              inputStyle={{ height: 38 }}
+              labelStyles={labelStyle}
+              inputStyle={inputStyle}
             />
 
             <TextArea
@@ -494,10 +487,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
               value={formik.values.params}
               error={formik.errors.params ? formik.errors.params : undefined}
               placeholder="Additional parameters normally in JSON format"
-              labelStyles={{
-                fontSize: '1rem',
-                color: colors.moonpurplelight,
-              }}
+              labelStyles={labelStyle}
               inputStyles={{ height: 200 }}
             />
           </div>
