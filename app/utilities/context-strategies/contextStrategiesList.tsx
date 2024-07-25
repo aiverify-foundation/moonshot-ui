@@ -6,13 +6,13 @@ import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 
 interface CustomStyle extends CSSProperties {
-  webkitLineClamp?: string;
-  webkitBoxOrient?: 'vertical';
+  WebkitLineClamp?: string;
+  WebkitBoxOrient?: 'vertical';
 }
 const ellipsisStyle: CustomStyle = {
   display: '-webkit-box',
-  webkitLineClamp: '2',
-  webkitBoxOrient: 'vertical',
+  WebkitLineClamp: '2',
+  WebkitBoxOrient: 'vertical',
 };
 
 function ContextStrategiesList({

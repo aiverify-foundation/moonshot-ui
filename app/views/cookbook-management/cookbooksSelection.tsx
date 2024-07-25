@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
@@ -13,8 +14,15 @@ import {
   useAppSelector,
 } from '@/lib/redux';
 import config from '@/moonshot.config';
-import { CookbookAbout } from './cookbookAbout';
 import { CookbookSelectionItem } from './cookbookSelectionItem';
+
+const CookbookAbout = dynamic(
+  () => import('./cookbookAbout').then((mod) => mod.CookbookAbout),
+  {
+    loading: () => <LoadingAnimation />,
+    ssr: true,
+  }
+);
 
 const enableEstimatedTime = false;
 
@@ -119,32 +127,34 @@ function CookbooksSelection(props: Props) {
     }
   }, [cookbooks]);
 
-  const timeDisplay = enableEstimatedTime && ( <div className="flex gap-5">
-    <div className="flex flex-col justify-center">
-      <div className="text-[1rem] leading-[1.1rem] text-end">
-        Estimated time
+  const timeDisplay = enableEstimatedTime && (
+    <div className="flex gap-5">
+      <div className="flex flex-col justify-center">
+        <div className="text-[1rem] leading-[1.1rem] text-end">
+          Estimated time
+        </div>
+        <div className="text-[0.8rem] leading-[1.1rem] text-moongray-300 text-end">
+          assuming{' '}
+          <span className="decoration-1 underline">
+            {config.estimatedPromptResponseTime}s
+          </span>{' '}
+          per prompt
+        </div>
       </div>
-      <div className="text-[0.8rem] leading-[1.1rem] text-moongray-300 text-end">
-        assuming{' '}
-        <span className="decoration-1 underline">
-          {config.estimatedPromptResponseTime}s
-        </span>{' '}
-        per prompt
+      <div className="flex">
+        <h3 className="text-[2.4rem] font-bolder tracking-wide leading-[3rem] text-white mb-0">
+          {totalHours}
+          <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300 mr-2">
+            hrs
+          </span>
+          {totalMinutes}
+          <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300">
+            mins
+          </span>
+        </h3>
       </div>
     </div>
-    <div className="flex">
-      <h3 className="text-[2.4rem] font-bolder tracking-wide leading-[3rem] text-white mb-0">
-        {totalHours}
-        <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300 mr-2">
-          hrs
-        </span>
-        {totalMinutes}
-        <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300">
-          mins
-        </span>
-      </h3>
-    </div>
-  </div> )
+  );
 
   return (
     <div className="flex flex-col pt-4 w-full h-full">
@@ -205,6 +215,7 @@ function CookbooksSelection(props: Props) {
               {timeDisplay}
               {selectedCookbooks.length > 0 && (
                 <span
+                  role="button"
                   className="text-[1.5rem] decoration-1 underline text-white cursor-pointer"
                   onClick={onClose}>
                   OK

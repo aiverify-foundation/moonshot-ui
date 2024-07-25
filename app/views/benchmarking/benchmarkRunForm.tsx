@@ -73,7 +73,7 @@ function BenchmarkRunForm({
       collectionType: BenchmarkCollectionType.COOKBOOK,
     });
     if ('error' in response) {
-      console.error(response.error);
+      // TODO - show error modal
       setDisableRunBtn(false);
       return;
     }
@@ -102,6 +102,7 @@ function BenchmarkRunForm({
     <section className="flex flex-col items-center justify-center min-h-[300px] gap-5">
       <div className="flex flex-col w-[50%] gap-2">
         <TextInput
+          id="run_name"
           name="run_name"
           label="Name"
           onChange={formik.handleChange}
@@ -121,6 +122,7 @@ function BenchmarkRunForm({
         />
 
         <TextArea
+          id="description"
           name="description"
           label="Description (optional)"
           labelStyles={{
@@ -143,6 +145,7 @@ function BenchmarkRunForm({
         </p>
 
         <TextInput
+          id="num_of_prompts"
           name="num_of_prompts"
           label="Run a smaller set"
           labelStyles={{
