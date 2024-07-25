@@ -9,6 +9,7 @@ export function formatDate(dateString: string): string {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
+    timeZone: 'UTC',
   };
   return date.toLocaleString('en-US', options);
 }
@@ -23,6 +24,7 @@ export function formatDateFromTimestamp(timestamp: number): string {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
+    timeZone: 'UTC',
   };
   return date.toLocaleString('en-US', options);
 }
