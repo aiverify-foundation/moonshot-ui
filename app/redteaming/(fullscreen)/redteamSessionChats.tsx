@@ -340,9 +340,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     }
   }
 
-  async function handleRemoveContextStrategyClick(
-    contextStrategy: string
-  ) {
+  async function handleRemoveContextStrategyClick(contextStrategy: string) {
     const result = await unsetContextStrategy({
       session_id: activeSession.session.session_id,
       strategyName: contextStrategy,
