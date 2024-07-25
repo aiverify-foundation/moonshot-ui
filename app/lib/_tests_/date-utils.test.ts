@@ -4,7 +4,7 @@ describe('formatDate', () => {
   it('should format date string correctly', () => {
     const dateString = '2024-05-13 14:17:47';
     const formattedDate = formatDate(dateString);
-    expect(formattedDate).toBe('May 13, 2024, 06:17:47');
+    expect(formattedDate).toBe('May 13, 2024, 14:17:47');
   });
 
   it('should handle invalid date string', () => {

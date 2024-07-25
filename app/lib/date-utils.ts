@@ -1,4 +1,3 @@
-// takes in '2024-05-13 14:17:47' and output '14:17:47 13 May 2024'
 export function formatDate(dateString: string): string {
   const date = new Date(dateString);
   const options: Intl.DateTimeFormatOptions = {
@@ -9,7 +8,6 @@ export function formatDate(dateString: string): string {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
-    timeZone: 'UTC',
   };
   return date.toLocaleString('en-US', options);
 }
