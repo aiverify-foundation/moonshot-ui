@@ -1,6 +1,6 @@
 import { ApiResult, processResponse } from '@/app/lib/http-requests';
-import { RedteamSessionsViewList } from '@/app/views/redteaming/redteamSessionsViewList';
 import config from '@/moonshot.config';
+import { RedteamSessionsViewList } from './redteamSessionsViewList';
 export const dynamic = 'force-dynamic';
 
 async function fetchSessions() {

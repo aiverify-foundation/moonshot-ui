@@ -5,10 +5,10 @@ import {
   getWindowSizeById,
   getWindowXYById,
 } from '@/app/lib/window-utils';
+import useChatboxesPositionsUtils from '@/app/redteaming/(fullscreen)/hooks/useChatboxesPositionsUtils';
 import { colors } from '@/app/views/shared-components/customColors';
 import { useAppSelector } from '@/lib/redux';
 import { ChatBox, ChatBoxControls } from './chatbox';
-import useChatboxesPositionsUtils from '@views/redteaming/hooks/useChatboxesPositionsUtils';
 
 const minimizedStyle = {
   transform: 'scale(0.1)',
