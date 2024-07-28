@@ -318,11 +318,13 @@ type FormState<T = Record<string, string | number>> = {
 } & Partial<T>;
 
 type CreatePromptBookmarkFunction = (
+  duration: string,
   prompt: string,
   preparedPrompt: string,
   attackModule: string | undefined,
   contextStrategy: string | undefined,
   promptTemplateName: string | undefined,
+  template: string | undefined,
   metric: string | undefined,
   response: string
 ) => void;

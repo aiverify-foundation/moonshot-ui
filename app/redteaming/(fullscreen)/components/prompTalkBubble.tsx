@@ -1,9 +1,9 @@
 import React from 'react';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import { Chat } from '@/app/components/chat';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/views/shared-components/customColors';
 import { PromptBubbleInfo } from './prompt-bubble-info';
-import { Icon, IconName } from '@/app/components/IconSVG';
 
 export type PromptTalkBubbleProps = {
   isHovered: boolean;

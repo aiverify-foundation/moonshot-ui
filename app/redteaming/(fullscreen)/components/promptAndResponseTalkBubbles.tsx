@@ -27,11 +27,13 @@ function PromptAndResponseBubbles(props: PromptAndResponseBubblesProps) {
   }
   function handleBookmarkIconClick() {
     props.onBookmarkIconClick(
+      props.duration,
       props.prompt,
       props.preparedPrompt,
       props.attackModule,
       props.contextStrategy,
       props.promptTemplateName,
+      props.template,
       props.metric,
       props.response
     );
