@@ -95,26 +95,47 @@ const Container = forwardRef(
 );
 
 type TalkBubbleProps = {
-  backgroundColor: string;
-  fontColor: string;
+  backgroundColor?: React.CSSProperties['backgroundColor'];
+  fontColor?: React.CSSProperties['color'];
+  fontSize?: React.CSSProperties['fontSize'];
+  textAlign?: React.CSSProperties['textAlign'];
+  marginBottom?: React.CSSProperties['marginBottom'];
+  marginTop?: React.CSSProperties['marginTop'];
+  border?: React.CSSProperties['border'];
+  borderRadius?: React.CSSProperties['borderRadius'];
+  padding?: React.CSSProperties['padding'];
   styles?: React.CSSProperties;
 };
 
 function TalkBubble(props: PropsWithChildren<TalkBubbleProps>) {
-  const { fontColor, backgroundColor, styles, children } = props;
+  const {
+    fontColor = '#FFF',
+    backgroundColor = 'darkslategrey',
+    fontSize,
+    textAlign = 'left',
+    marginBottom = 25,
+    marginTop = 0,
+    border = 'none',
+    borderRadius = 14,
+    padding = '12px 16px',
+    children,
+    styles,
+  } = props;
   return (
     <div
-      className="snap-top"
       style={{
+        textAlign,
         color: fontColor,
-        padding: '12px 16px',
-        fontSize: 12,
-        background: backgroundColor,
+        padding,
+        fontSize,
+        backgroundColor,
         margin: 0,
-        marginBottom: 25,
-        borderRadius: 14,
+        marginTop,
+        marginBottom,
+        borderRadius,
         width: 'fit-content',
         minWidth: '35%',
+        border,
         ...styles,
       }}>
       {children}

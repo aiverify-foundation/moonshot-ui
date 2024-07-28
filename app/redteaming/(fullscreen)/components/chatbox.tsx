@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/views/shared-components/customColors';
-import { PromptBubbleInfo } from './prompt-bubble-info';
+import { PromptTalkBubble } from './prompTalkBubble';
+import { ResponseTalkBubble } from './responseTalkBubble';
 import { Chat } from '@components/chat';
 
 type ChatBoxProps = {
@@ -96,6 +96,19 @@ const ChatBox = React.forwardRef(
       scrollToBottom();
     }, [chatHistory]);
 
+    const inProgressPromptStyle: React.CSSProperties = {
+      alignSelf: 'flex-end',
+      fontSize: 14,
+    };
+
+    const inProgressPromptText =
+      currentPromptTemplate && currentPromptText
+        ? currentPromptTemplate.template.replace(
+            '{{ prompt }}',
+            currentPromptText
+          )
+        : currentPromptText;
+
     return (
       <Chat.Container
         ref={scrollDivRef}
@@ -121,69 +134,25 @@ const ChatBox = React.forwardRef(
                 (template) => template.name === dialogue.prompt_template
               )
             : undefined;
+          const isHovered = dialoguePairHovered === index;
           return (
             <li
               className="flex flex-col p-2"
               key={index}
               onMouseEnter={() => setDialoguePairHovered(index)}
               onMouseLeave={() => setDialoguePairHovered(undefined)}>
-              <div className="flex flex-col text-right pr-2 text-sm text-white">
-                You
-              </div>
-              <div className="self-end snap-top max-w-[90%]">
-                <div className="flex items-center">
-                  <Tooltip
-                    disabled={disableBubbleTooltips}
-                    position={TooltipPosition.top}
-                    contentMaxWidth={500}
-                    contentMinWidth={300}
-                    backgroundColor={colors.moongray[700]}
-                    fontColor={colors.white}
-                    offsetTop={-10}
-                    content={
-                      <PromptBubbleInfo
-                        duration={dialogue.duration}
-                        prompt={dialogue.prepared_prompt}
-                        prompt_template={dialogue.prompt_template}
-                        templateString={
-                          appliedPromptTemplate
-                            ? appliedPromptTemplate.template
-                            : undefined
-                        }
-                      />
-                    }>
-                    <Chat.TalkBubble
-                      backgroundColor={colors.imdapurple}
-                      fontColor="#FFF"
-                      styles={{
-                        marginBottom: 0,
-                        fontSize: 14,
-                        border:
-                          dialoguePairHovered === index
-                            ? '1px solid #2563eb'
-                            : '1px solid transparent',
-                      }}>
-                      {dialogue.prepared_prompt}
-                    </Chat.TalkBubble>
-                  </Tooltip>
-                </div>
-              </div>
-              <div className="max-w-[90%] flex flex-col text-left pl-2 text-sm text-white">
-                AI
-              </div>
-              <Chat.TalkBubble
-                backgroundColor={colors.chatBubbleWhite}
-                fontColor={colors.black}
-                styles={{
-                  fontSize: 14,
-                  textAlign: 'left',
-                  border:
-                    dialoguePairHovered === index
-                      ? '1px solid #2563eb'
-                      : '1px solid transparent',
-                }}>
-                {dialogue.predicted_result}
-              </Chat.TalkBubble>
+              <PromptTalkBubble
+                isHovered={isHovered}
+                enableTooltip={!disableBubbleTooltips}
+                template={appliedPromptTemplate?.template}
+                duration={dialogue.duration}
+                preparedPrompt={dialogue.prepared_prompt}
+                promptTemplateName={dialogue.prompt_template}
+              />
+              <ResponseTalkBubble
+                isHovered={isHovered}
+                response={dialogue.predicted_result}
+              />
             </li>
           );
         })}
@@ -196,13 +165,8 @@ const ChatBox = React.forwardRef(
             <Chat.TalkBubble
               backgroundColor={colors.imdapurple}
               fontColor="#FFF"
-              styles={{ alignSelf: 'flex-end', fontSize: 14 }}>
-              {currentPromptTemplate && currentPromptText
-                ? currentPromptTemplate.template.replace(
-                    '{{ prompt }}',
-                    currentPromptText
-                  )
-                : currentPromptText}
+              styles={inProgressPromptStyle}>
+              {inProgressPromptText}
             </Chat.TalkBubble>
             <div className="flex flex-col text-left pl-2 text-xs text-white">
               AI
