@@ -1,7 +1,7 @@
 import { Chat } from '@/app/components/chat';
 import { colors } from '@/app/views/shared-components/customColors';
 
-type ResposneTalkBubbleProps = {
+export type ResposneTalkBubbleProps = {
   isHovered: boolean;
   response: string;
 };

@@ -34,6 +34,7 @@ type ChatFreeLayoutProps = {
     scrollPosition: number,
     windowId: string
   ) => void;
+  handleCreatePromptBookmarkClick: CreatePromptBookmarkFunction;
 };
 
 const ChatboxFreeLayout = React.forwardRef(
@@ -49,6 +50,7 @@ const ChatboxFreeLayout = React.forwardRef(
       selectedPromptTemplate,
       promptText,
       handleOnWindowChange,
+      handleCreatePromptBookmarkClick,
     } = props;
     const windowsMap = useAppSelector((state) => state.windows.map);
     const { resetChatboxPositions } = useChatboxesPositionsUtils(chatSession);
@@ -80,11 +82,24 @@ const ChatboxFreeLayout = React.forwardRef(
       }, 300);
     }, [isMaximizing]);
 
+    const chatboxHeaderStyle: React.CSSProperties = {
+      borderTopLeftRadius: '0.5rem',
+      borderTopRightRadius: '0.5rem',
+    };
+
     return (
       <>
         {chatSession.session.endpoints.map((id: string, index: number) => {
           const isMinimized = minizedChats.includes(getWindowId(id));
           const left = index * 20;
+          const chatboxStyle = isMinimized
+            ? { ...minimizedStyle, left }
+            : isMaximizing
+              ? {
+                  transition:
+                    'transform 0.3s ease-in-out, top 0.5s ease-in-out, left 0.5s ease-in-out',
+                }
+              : { borderRadius: '0.5rem' };
           return windowsMap[getWindowId(id)] ? (
             <ChatBox
               key={id}
@@ -120,24 +135,13 @@ const ChatboxFreeLayout = React.forwardRef(
               currentPromptText={promptText}
               isChatCompletionInProgress={chatCompletionInProgress}
               onWindowChange={handleOnWindowChange}
-              styles={
-                isMinimized
-                  ? { ...minimizedStyle, left }
-                  : isMaximizing
-                    ? {
-                        transition:
-                          'transform 0.3s ease-in-out, top 0.5s ease-in-out, left 0.5s ease-in-out',
-                      }
-                    : { borderRadius: '0.5rem' }
-              }
-              headerStyle={{
-                borderTopLeftRadius: '0.5rem',
-                borderTopRightRadius: '0.5rem',
-              }}
+              styles={chatboxStyle}
+              headerStyle={chatboxHeaderStyle}
               onCloseClick={handleMinimizeClick(getWindowId(id))}
               onWholeWindowClick={
                 isMinimized ? handleMaximizeClick(getWindowId(id)) : undefined
               }
+              onCreatePromptBookmarkClick={handleCreatePromptBookmarkClick}
             />
           ) : null;
         })}

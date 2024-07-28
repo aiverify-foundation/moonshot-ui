@@ -23,6 +23,7 @@ type ChatSlideLayoutProps = {
     scrollPosition: number,
     windowId: string
   ) => void;
+  handleCreatePromptBookmarkClick: CreatePromptBookmarkFunction;
 };
 
 type SlidesIndexBtnsProps = {
@@ -111,6 +112,7 @@ const ChatboxSlideLayout = React.forwardRef(
       selectedPromptTemplate,
       promptText,
       handleOnWindowChange,
+      handleCreatePromptBookmarkClick,
     } = props;
     const [currentBoxIndex, setCurrentBoxIndex] = useState(0);
     const [{ width, height, gap }, setSizes] = useState<SlideChatBoxDimensions>(
@@ -228,6 +230,9 @@ const ChatboxSlideLayout = React.forwardRef(
                       borderTopLeftRadius: '0.5rem',
                       borderTopRightRadius: '0.5rem',
                     }}
+                    onCreatePromptBookmarkClick={
+                      handleCreatePromptBookmarkClick
+                    }
                   />
                 );
               }

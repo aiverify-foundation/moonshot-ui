@@ -20,7 +20,7 @@ export const activeSessionSlice = createSlice({
     },
     updateChatHistory: (
       state,
-      action: PayloadAction<Record<string, DialoguePairInfo[]>>
+      action: PayloadAction<Record<string, PromptDetails[]>>
     ) => {
       if (state.entity) {
         state.entity.chat_records = action.payload;
@@ -28,7 +28,7 @@ export const activeSessionSlice = createSlice({
     },
     appendChatHistory: (
       state,
-      action: PayloadAction<Record<string, DialoguePairInfo[]>>
+      action: PayloadAction<Record<string, PromptDetails[]>>
     ) => {
       if (state.entity) {
         Object.keys(action.payload).forEach((endpointId) => {

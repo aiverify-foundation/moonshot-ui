@@ -375,6 +375,26 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     return [left, top, width, height, 0];
   }
 
+  const handleCreatePromptBookmarkClick: CreatePromptBookmarkFunction = (
+    prompt: string,
+    preparedPrompt: string,
+    attackModule: string | undefined,
+    contextStrategy: string | undefined,
+    promptTemplateName: string | undefined,
+    metric: string | undefined,
+    response: string
+  ) => {
+    console.log(
+      prompt,
+      preparedPrompt,
+      attackModule,
+      contextStrategy,
+      promptTemplateName,
+      metric,
+      response
+    );
+  };
+
   if (activeSession && activeSession.session.endpoints.length < 4) {
     layoutMode = LayoutMode.FREE;
   }
@@ -670,6 +690,9 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                     selectedPromptTemplate={selectedPromptTemplate}
                     promptText={promptText}
                     handleOnWindowChange={handleOnWindowChange}
+                    handleCreatePromptBookmarkClick={
+                      handleCreatePromptBookmarkClick
+                    }
                   />
                 </div>
                 <div className="flex justify-center">
@@ -711,6 +734,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
             selectedPromptTemplate={selectedPromptTemplate}
             promptText={promptText}
             handleOnWindowChange={handleOnWindowChange}
+            handleCreatePromptBookmarkClick={handleCreatePromptBookmarkClick}
           />
           <PromptBox
             zIndex={Z_Index.FocusedWindow}

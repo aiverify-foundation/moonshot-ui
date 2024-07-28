@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { colors } from '@/app/views/shared-components/customColors';
-import { PromptTalkBubble } from './prompTalkBubble';
-import { ResponseTalkBubble } from './responseTalkBubble';
+import { PromptAndResponseBubbles } from './promptAndResponseTalkBubbles';
 import { Chat } from '@components/chat';
 
 type ChatBoxProps = {
@@ -11,7 +10,7 @@ type ChatBoxProps = {
   draggable: boolean;
   disableCloseIcon?: boolean;
   disableOnScroll: boolean;
-  chatHistory: DialoguePairInfo[];
+  chatHistory: PromptDetails[];
   disableBubbleTooltips?: boolean;
   initialXY: [number, number];
   initialSize: [number, number];
@@ -35,6 +34,7 @@ type ChatBoxProps = {
   onWheel?: (event: React.WheelEvent<HTMLDivElement>) => void;
   onCloseClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onWholeWindowClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onCreatePromptBookmarkClick: CreatePromptBookmarkFunction;
 };
 
 export type ChatBoxControls = {
@@ -68,17 +68,18 @@ const ChatBox = React.forwardRef(
       onWheel,
       onCloseClick,
       onWholeWindowClick,
+      onCreatePromptBookmarkClick,
     } = props;
-
-    const [dialoguePairHovered, setDialoguePairHovered] = useState<
-      number | undefined
-    >();
 
     const scrollDivRef = React.useRef<HTMLDivElement>(null);
     React.useImperativeHandle(ref, () => ({
       scrollToBottom,
       scrollToTop,
     }));
+
+    React.useLayoutEffect(() => {
+      scrollToBottom();
+    }, [chatHistory]);
 
     function scrollToBottom() {
       if (scrollDivRef.current) {
@@ -91,10 +92,6 @@ const ChatBox = React.forwardRef(
         scrollDivRef.current.scrollTop = scrollDivRef.current.scrollHeight;
       }
     }
-
-    React.useLayoutEffect(() => {
-      scrollToBottom();
-    }, [chatHistory]);
 
     const inProgressPromptStyle: React.CSSProperties = {
       alignSelf: 'flex-end',
@@ -134,26 +131,22 @@ const ChatBox = React.forwardRef(
                 (template) => template.name === dialogue.prompt_template
               )
             : undefined;
-          const isHovered = dialoguePairHovered === index;
+          const template = appliedPromptTemplate?.template;
           return (
-            <li
-              className="flex flex-col p-2"
+            <PromptAndResponseBubbles
               key={index}
-              onMouseEnter={() => setDialoguePairHovered(index)}
-              onMouseLeave={() => setDialoguePairHovered(undefined)}>
-              <PromptTalkBubble
-                isHovered={isHovered}
-                enableTooltip={!disableBubbleTooltips}
-                template={appliedPromptTemplate?.template}
-                duration={dialogue.duration}
-                preparedPrompt={dialogue.prepared_prompt}
-                promptTemplateName={dialogue.prompt_template}
-              />
-              <ResponseTalkBubble
-                isHovered={isHovered}
-                response={dialogue.predicted_result}
-              />
-            </li>
+              enableTooltip={!disableBubbleTooltips}
+              template={template}
+              duration={dialogue.duration}
+              prompt={dialogue.prompt}
+              preparedPrompt={dialogue.prepared_prompt}
+              promptTemplateName={dialogue.prompt_template}
+              response={dialogue.predicted_result}
+              attackModule={dialogue.attack_module}
+              contextStrategy={dialogue.context_strategy}
+              metric={dialogue.metric}
+              onBookmarkIconClick={onCreatePromptBookmarkClick}
+            />
           );
         })}
 
