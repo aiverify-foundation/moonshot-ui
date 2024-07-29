@@ -328,3 +328,14 @@ type CreatePromptBookmarkFunction = (
   metric: string | undefined,
   response: string
 ) => void;
+
+type BookmarkFormValues = {
+  name: string;
+  prompt: string;
+  preparedPrompt: string;
+  response: string;
+  metric: string;
+  attackModule: string;
+  contextStrategy: string;
+  promptTemplate: string;
+};
