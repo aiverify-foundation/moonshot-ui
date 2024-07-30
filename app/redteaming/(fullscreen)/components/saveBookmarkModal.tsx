@@ -80,6 +80,7 @@ function SaveBookMarkModal(props: SaveBookMarkModalProps) {
           textColor="#FFFFFF"
           primaryBtnLabel="View Bookmarks"
           enableScreenOverlay
+          overlayOpacity={0.8}
           onCloseIconClick={onCloseIconClick}
           onPrimaryBtnClick={onCloseIconClick}>
           <div className="flex gap-2 items-start">
@@ -94,6 +95,7 @@ function SaveBookMarkModal(props: SaveBookMarkModalProps) {
           textColor="#FFFFFF"
           primaryBtnLabel="Close"
           enableScreenOverlay
+          overlayOpacity={0.8}
           onCloseIconClick={() => setShowErrorModal(false)}
           onPrimaryBtnClick={() => setShowErrorModal(false)}>
           <div className="flex gap-2 items-start">
@@ -124,6 +126,7 @@ function SaveBookMarkModal(props: SaveBookMarkModalProps) {
           bgColor={colors.moongray['800']}
           textColor="#FFFFFF"
           enableScreenOverlay={true}
+          overlayOpacity={0.8}
           onCloseIconClick={onCloseIconClick}>
           <p className="mb-8 text-[0.95rem]">
             Save this turn as a bookmark to be able to quickly reference it in
