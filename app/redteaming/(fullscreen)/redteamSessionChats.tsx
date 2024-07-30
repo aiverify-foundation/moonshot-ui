@@ -44,6 +44,7 @@ import {
 } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { Z_Index } from '@views/moonshot-desktop/constants';
+import { BookmarksPanel } from './components/bookmarksPanel';
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -788,6 +789,10 @@ function RedteamSessionChats(props: ActiveSessionProps) {
               backgroundColor: colors.moongray[700],
               borderRadius: '0.5rem',
             }}
+          />
+          <BookmarksPanel
+            bottom={150}
+            left="10%"
           />
           <div className="absolute bottom-[200px] right-[30%]">
             {optionsPanel}

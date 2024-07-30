@@ -1,0 +1,44 @@
+import React from 'react';
+import { IconName } from '@/app/components/IconSVG';
+import { Button, ButtonType } from '@/app/components/button';
+import { colors } from '@/app/views/shared-components/customColors';
+
+function BookmarksPanel({
+  bottom,
+  left,
+  disabled,
+}: {
+  bottom: React.CSSProperties['top'];
+  left: React.CSSProperties['left'];
+  disabled: boolean;
+}) {
+  return (
+    <div
+      className="bg-moongray-600 w-[220px] absolute rounded-md p-2 shadow-lg
+        flex gap-4"
+      style={{ bottom, left }}>
+      {disabled && (
+        <div
+          className="absolute gap-2 bg-moongray-950/50 w-full h-full z-10 flex justify-center items-center rounded-md"
+          style={{ top: 0, left: 0 }}>
+          <div className="waitspinner" />
+        </div>
+      )}
+      <div className="flex items-center gap-2">
+        <Button
+          width={200}
+          alignContent="flex-start"
+          text="Bookmarked Prompts"
+          type="button"
+          mode={ButtonType.TEXT}
+          hoverBtnColor={colors.moongray[500]}
+          pressedBtnColor={colors.moongray[400]}
+          leftIconName={IconName.Ribbon}
+          onClick={() => null}
+        />
+      </div>
+    </div>
+  );
+}
+
+export { BookmarksPanel };
