@@ -8,6 +8,7 @@ import { TextInput } from '@/app/components/textInput';
 import { colors } from '@/app/views/shared-components/customColors';
 import { Modal } from '@/app/views/shared-components/modal/modal';
 import { PromptBubbleInfo } from './prompt-bubble-info';
+import { SubmitButton } from './submitButton';
 
 type SaveBookMarkModalProps = {
   duration: string;
@@ -232,15 +233,7 @@ function SaveBookMarkModal(props: SaveBookMarkModalProps) {
                 pressedBtnColor={colors.moongray[800]}
                 onClick={onCloseIconClick}
               />
-              <Button
-                mode={ButtonType.PRIMARY}
-                size="lg"
-                width={120}
-                type="submit"
-                text="Save"
-                hoverBtnColor={colors.moongray[1000]}
-                pressedBtnColor={colors.moongray[900]}
-              />
+              <SubmitButton />
             </div>
           </form>
         </Modal>
