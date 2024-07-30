@@ -401,17 +401,6 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     metric: string | undefined,
     response: string
   ) => {
-    console.log(
-      duration,
-      prompt,
-      preparedPrompt,
-      attackModule,
-      contextStrategy,
-      promptTemplateName,
-      template,
-      metric,
-      response
-    );
     setSaveBookmarkData({
       duration,
       prompt,
