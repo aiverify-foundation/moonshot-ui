@@ -58,7 +58,7 @@ describe('Chatbox', () => {
     (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
     (useAppSelector as jest.Mock).mockReturnValue(jest.fn());
   });
-  it('render chatbox container prompt and response talk bubbles', () => {
+  it('render chatbox containing prompt and response talk bubbles', () => {
     const { container } = render(
       <ChatBox
         windowId="test-window"
@@ -73,8 +73,8 @@ describe('Chatbox', () => {
         promptTemplates={mockPromptTemplates}
         isAttackMode={false}
         isChatCompletionInProgress={false}
-        onWindowChange={() => {}}
-        onCreatePromptBookmarkClick={() => {}}
+        onWindowChange={() => null}
+        onCreatePromptBookmarkClick={() => null}
       />
     );
 
