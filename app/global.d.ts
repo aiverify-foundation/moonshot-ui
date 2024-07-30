@@ -332,10 +332,10 @@ type CreatePromptBookmarkFunction = (
 type BookmarkFormValues = {
   name: string;
   prompt: string;
-  preparedPrompt: string;
+  prepared_prompt: string;
   response: string;
-  metric: string;
-  attackModule: string;
-  contextStrategy: string;
-  promptTemplate: string;
+  metric?: string;
+  attack_module?: string;
+  context_strategy?: string;
+  prompt_template?: string;
 };

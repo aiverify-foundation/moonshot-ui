@@ -19,6 +19,7 @@ type MoonshotConfig = {
     basePathBenchmarks: string;
     basePathRunners: string;
     basePathAttackModules: string;
+    basePathBookmarks: string;
   };
 };
 
@@ -70,6 +71,7 @@ const config: MoonshotConfig = {
     basePathBenchmarks: '/api/v1/benchmarks',
     basePathRunners: '/api/v1/runners',
     basePathAttackModules: '/api/v1/attack-modules/metadata',
+    basePathBookmarks: '/api/v1/bookmarks',
   },
 };
 
