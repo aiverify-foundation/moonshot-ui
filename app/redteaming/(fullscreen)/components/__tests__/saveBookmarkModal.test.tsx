@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useFormStatus } from 'react-dom';
 import { useFormState } from 'react-dom';
 import { SaveBookMarkModal } from '@/app/redteaming/(fullscreen)/components/saveBookmarkModal';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('@/lib/redux', () => ({
   useAppDispatch: jest.fn(),
