@@ -75,7 +75,7 @@ function SaveBookMarkModal(props: SaveBookMarkModalProps) {
     <>
       {showResultModal ? (
         <Modal
-          heading="Cookbook Created"
+          heading="Bookmark Saved"
           bgColor={colors.moongray['800']}
           textColor="#FFFFFF"
           primaryBtnLabel="View Bookmarks"
@@ -84,7 +84,7 @@ function SaveBookMarkModal(props: SaveBookMarkModalProps) {
           onCloseIconClick={onCloseIconClick}
           onPrimaryBtnClick={onCloseIconClick}>
           <div className="flex gap-2 items-start">
-            <p>{`Bookmark ${formState.name} was successfully created.`}</p>
+            <p>{`Bookmark ${formState.name} was successfully saved.`}</p>
           </div>
         </Modal>
       ) : null}
@@ -236,7 +236,7 @@ function SaveBookMarkModal(props: SaveBookMarkModalProps) {
                 pressedBtnColor={colors.moongray[800]}
                 onClick={onCloseIconClick}
               />
-              <SubmitButton />
+              <SubmitButton disabled={bookmarkName === ''} />
             </div>
           </form>
         </Modal>

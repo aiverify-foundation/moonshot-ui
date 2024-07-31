@@ -5,12 +5,12 @@ import { Button } from '@/app/components/button';
 import { ButtonType } from '@/app/components/button';
 import { colors } from '@/app/views/shared-components/customColors';
 
-function SubmitButton() {
+function SubmitButton({ disabled }: { disabled: boolean }) {
   const { pending } = useFormStatus();
   return (
     <Button
       mode={ButtonType.PRIMARY}
-      disabled={pending}
+      disabled={disabled || pending}
       size="lg"
       width={120}
       type="submit"
