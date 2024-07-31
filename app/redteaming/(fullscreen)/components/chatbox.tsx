@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
+import React from 'react';
 import { colors } from '@/app/views/shared-components/customColors';
-import { PromptBubbleInfo } from './prompt-bubble-info';
+import { PromptAndResponseBubbles } from './promptAndResponseTalkBubbles';
 import { Chat } from '@components/chat';
 
 type ChatBoxProps = {
@@ -11,7 +10,7 @@ type ChatBoxProps = {
   draggable: boolean;
   disableCloseIcon?: boolean;
   disableOnScroll: boolean;
-  chatHistory: DialoguePairInfo[];
+  chatHistory: PromptDetails[];
   disableBubbleTooltips?: boolean;
   initialXY: [number, number];
   initialSize: [number, number];
@@ -35,6 +34,7 @@ type ChatBoxProps = {
   onWheel?: (event: React.WheelEvent<HTMLDivElement>) => void;
   onCloseClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   onWholeWindowClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onCreatePromptBookmarkClick: CreatePromptBookmarkFunction;
 };
 
 export type ChatBoxControls = {
@@ -68,17 +68,18 @@ const ChatBox = React.forwardRef(
       onWheel,
       onCloseClick,
       onWholeWindowClick,
+      onCreatePromptBookmarkClick,
     } = props;
-
-    const [dialoguePairHovered, setDialoguePairHovered] = useState<
-      number | undefined
-    >();
 
     const scrollDivRef = React.useRef<HTMLDivElement>(null);
     React.useImperativeHandle(ref, () => ({
       scrollToBottom,
       scrollToTop,
     }));
+
+    React.useLayoutEffect(() => {
+      scrollToBottom();
+    }, [chatHistory]);
 
     function scrollToBottom() {
       if (scrollDivRef.current) {
@@ -92,9 +93,18 @@ const ChatBox = React.forwardRef(
       }
     }
 
-    React.useLayoutEffect(() => {
-      scrollToBottom();
-    }, [chatHistory]);
+    const inProgressPromptStyle: React.CSSProperties = {
+      alignSelf: 'flex-end',
+      fontSize: 14,
+    };
+
+    const inProgressPromptText =
+      currentPromptTemplate && currentPromptText
+        ? currentPromptTemplate.template.replace(
+            '{{ prompt }}',
+            currentPromptText
+          )
+        : currentPromptText;
 
     return (
       <Chat.Container
@@ -121,88 +131,37 @@ const ChatBox = React.forwardRef(
                 (template) => template.name === dialogue.prompt_template
               )
             : undefined;
+          const template = appliedPromptTemplate?.template;
           return (
-            <li
-              className="flex flex-col p-2"
+            <PromptAndResponseBubbles
               key={index}
-              onMouseEnter={() => setDialoguePairHovered(index)}
-              onMouseLeave={() => setDialoguePairHovered(undefined)}>
-              <div className="flex flex-col text-right pr-2 text-sm text-white">
-                You
-              </div>
-              <div className="self-end snap-top max-w-[90%]">
-                <div className="flex items-center">
-                  <Tooltip
-                    disabled={disableBubbleTooltips}
-                    position={TooltipPosition.top}
-                    contentMaxWidth={500}
-                    contentMinWidth={300}
-                    backgroundColor={colors.moongray[700]}
-                    fontColor={colors.white}
-                    offsetTop={-10}
-                    content={
-                      <PromptBubbleInfo
-                        duration={dialogue.duration}
-                        prompt={dialogue.prepared_prompt}
-                        prompt_template={dialogue.prompt_template}
-                        templateString={
-                          appliedPromptTemplate
-                            ? appliedPromptTemplate.template
-                            : undefined
-                        }
-                      />
-                    }>
-                    <Chat.TalkBubble
-                      backgroundColor={colors.imdapurple}
-                      fontColor="#FFF"
-                      styles={{
-                        marginBottom: 0,
-                        fontSize: 14,
-                        border:
-                          dialoguePairHovered === index
-                            ? '1px solid #2563eb'
-                            : '1px solid transparent',
-                      }}>
-                      {dialogue.prepared_prompt}
-                    </Chat.TalkBubble>
-                  </Tooltip>
-                </div>
-              </div>
-              <div className="max-w-[90%] flex flex-col text-left pl-2 text-sm text-white">
-                AI
-              </div>
-              <Chat.TalkBubble
-                backgroundColor={colors.chatBubbleWhite}
-                fontColor={colors.black}
-                styles={{
-                  fontSize: 14,
-                  textAlign: 'left',
-                  border:
-                    dialoguePairHovered === index
-                      ? '1px solid #2563eb'
-                      : '1px solid transparent',
-                }}>
-                {dialogue.predicted_result}
-              </Chat.TalkBubble>
-            </li>
+              enableTooltip={!disableBubbleTooltips}
+              template={template}
+              duration={dialogue.duration}
+              prompt={dialogue.prompt}
+              preparedPrompt={dialogue.prepared_prompt}
+              promptTemplateName={dialogue.prompt_template}
+              response={dialogue.predicted_result}
+              attackModule={dialogue.attack_module}
+              contextStrategy={dialogue.context_strategy}
+              metric={dialogue.metric}
+              onBookmarkIconClick={onCreatePromptBookmarkClick}
+            />
           );
         })}
 
         {isChatCompletionInProgress && !isAttackMode && (
-          <div className="flex flex-col p-2">
+          <div
+            className="flex flex-col p-2"
+            role="status">
             <div className="flex flex-col text-right pr-2 text-xs text-white">
               You
             </div>
             <Chat.TalkBubble
               backgroundColor={colors.imdapurple}
               fontColor="#FFF"
-              styles={{ alignSelf: 'flex-end', fontSize: 14 }}>
-              {currentPromptTemplate && currentPromptText
-                ? currentPromptTemplate.template.replace(
-                    '{{ prompt }}',
-                    currentPromptText
-                  )
-                : currentPromptText}
+              styles={inProgressPromptStyle}>
+              {inProgressPromptText}
             </Chat.TalkBubble>
             <div className="flex flex-col text-left pl-2 text-xs text-white">
               AI
@@ -217,7 +176,9 @@ const ChatBox = React.forwardRef(
         )}
 
         {isChatCompletionInProgress && isAttackMode && (
-          <div className="flex justify-start mr-4 p-2">
+          <div
+            className="flex justify-start mr-4 p-2"
+            role="status">
             <Chat.LoadingAnimation
               backgroundColor={colors.white}
               dotColor={colors.imdapurple}

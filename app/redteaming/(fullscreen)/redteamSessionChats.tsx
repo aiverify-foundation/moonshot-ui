@@ -32,6 +32,7 @@ import { ChatboxSlideLayout } from './components/chatbox-slide-layout';
 import { ContextStrategiesList } from './components/contextStrategiesList';
 import { PromptBox } from './components/prompt-box';
 import { PromptTemplatesList } from './components/promptTemplatesList';
+import { SaveBookMarkModal } from './components/saveBookmarkModal';
 import { SelectedOptionPill } from './components/selectedOptionPill';
 import useChatboxesPositionsUtils from './hooks/useChatboxesPositionsUtils';
 import { getWindowId, getWindowXYById } from '@app/lib/window-utils';
@@ -50,6 +51,18 @@ type ActiveSessionProps = {
   sessionData: SessionData;
 };
 
+type SaveBookmarkData = {
+  duration: string;
+  prompt: string;
+  preparedPrompt: string;
+  attackModule: string | undefined;
+  contextStrategy: string | undefined;
+  promptTemplateName: string | undefined;
+  template: string | undefined;
+  metric: string | undefined;
+  response: string;
+};
+
 const promptBoxId = 'prompt-box';
 const streamPath = '/api/v1/redteaming/status';
 const ctxStrategyNumOfPrevPrompts = 5;
@@ -59,12 +72,14 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const dispatch = useAppDispatch();
   const windowsMap = useAppSelector((state) => state.windows.map);
   const { sessionData } = props;
-  // console.dir(sessionData);
   const { resetChatboxPositions } = useChatboxesPositionsUtils(sessionData);
   const [promptText, setPromptText] = useState('');
   const [isFetchingData, setIsFetchingData] = useState(true);
   const [liveAttackInProgress, setLiveAttackInProgress] = useState(false);
   const [alertMessage, setAlertMessage] = useState<AlertMsg | undefined>();
+  const [saveBookmarkData, setSaveBookmarkData] = useState<
+    SaveBookmarkData | undefined
+  >();
   const [isAttackMode, setIsAttackMode] = useState(
     Boolean(sessionData.session.attack_module)
   );
@@ -375,6 +390,30 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     return [left, top, width, height, 0];
   }
 
+  const handleCreatePromptBookmarkClick: CreatePromptBookmarkFunction = (
+    duration: string,
+    prompt: string,
+    preparedPrompt: string,
+    attackModule: string | undefined,
+    contextStrategy: string | undefined,
+    promptTemplateName: string | undefined,
+    template: string | undefined,
+    metric: string | undefined,
+    response: string
+  ) => {
+    setSaveBookmarkData({
+      duration,
+      prompt,
+      preparedPrompt,
+      attackModule,
+      contextStrategy,
+      promptTemplateName,
+      template,
+      metric,
+      response,
+    });
+  };
+
   if (activeSession && activeSession.session.endpoints.length < 4) {
     layoutMode = LayoutMode.FREE;
   }
@@ -584,6 +623,20 @@ function RedteamSessionChats(props: ActiveSessionProps) {
           </div>
         </Modal>
       )}
+      {saveBookmarkData && (
+        <SaveBookMarkModal
+          duration={saveBookmarkData.duration}
+          prompt={saveBookmarkData.prompt}
+          preparedPrompt={saveBookmarkData.preparedPrompt}
+          attackModule={saveBookmarkData.attackModule}
+          contextStrategy={saveBookmarkData.contextStrategy}
+          promptTemplateName={saveBookmarkData.promptTemplateName}
+          template={saveBookmarkData.template}
+          response={saveBookmarkData.response}
+          metric={saveBookmarkData.metric}
+          onCloseIconClick={() => setSaveBookmarkData(undefined)}
+        />
+      )}
       {showCloseSessionConfirmation && (
         <Modal
           heading="Exit Session"
@@ -670,6 +723,9 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                     selectedPromptTemplate={selectedPromptTemplate}
                     promptText={promptText}
                     handleOnWindowChange={handleOnWindowChange}
+                    handleCreatePromptBookmarkClick={
+                      handleCreatePromptBookmarkClick
+                    }
                   />
                 </div>
                 <div className="flex justify-center">
@@ -711,6 +767,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
             selectedPromptTemplate={selectedPromptTemplate}
             promptText={promptText}
             handleOnWindowChange={handleOnWindowChange}
+            handleCreatePromptBookmarkClick={handleCreatePromptBookmarkClick}
           />
           <PromptBox
             zIndex={Z_Index.FocusedWindow}

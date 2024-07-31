@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/lib/redux';
 import { ColorCodedTemplateString } from './color-coded-template';
 
-type PromptBubbleInfoProps = Partial<DialoguePairInfo> & {
+type PromptBubbleInfoProps = Partial<PromptDetails> & {
   templateString?: string;
 };
 
