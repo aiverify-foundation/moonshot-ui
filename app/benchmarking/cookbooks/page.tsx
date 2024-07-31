@@ -1,6 +1,7 @@
 import { ApiResult, processResponse } from '@/app/lib/http-requests';
 import config from '@/moonshot.config';
 import { CookbooksMain } from './cookbooksMain';
+export const dynamic = 'force-dynamic';
 
 async function fetchCookbooks() {
   const response = await fetch(
