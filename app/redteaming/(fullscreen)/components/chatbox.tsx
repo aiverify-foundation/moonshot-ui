@@ -151,7 +151,9 @@ const ChatBox = React.forwardRef(
         })}
 
         {isChatCompletionInProgress && !isAttackMode && (
-          <div className="flex flex-col p-2">
+          <div
+            className="flex flex-col p-2"
+            role="status">
             <div className="flex flex-col text-right pr-2 text-xs text-white">
               You
             </div>
@@ -174,7 +176,9 @@ const ChatBox = React.forwardRef(
         )}
 
         {isChatCompletionInProgress && isAttackMode && (
-          <div className="flex justify-start mr-4 p-2">
+          <div
+            className="flex justify-start mr-4 p-2"
+            role="status">
             <Chat.LoadingAnimation
               backgroundColor={colors.white}
               dotColor={colors.imdapurple}

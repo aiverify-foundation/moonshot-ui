@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ChatBox } from '@/app/redteaming/(fullscreen)/components/chatbox';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 
@@ -52,28 +53,34 @@ const mockPromptDetails: PromptDetails[] = [
 ];
 
 describe('Chatbox', () => {
+  const chatboxProps = {
+    windowId: 'test-window',
+    title: 'Test Chat',
+    resizable: false,
+    draggable: false,
+    disableOnScroll: true,
+    chatHistory: mockPromptDetails,
+    initialXY: [0, 0] as [number, number],
+    initialSize: [300, 400] as [number, number],
+    initialScrollTop: 0,
+    promptTemplates: mockPromptTemplates,
+    isAttackMode: false,
+    isChatCompletionInProgress: false,
+  };
+
   beforeAll(() => {
     const mockDispatch = jest.fn();
     (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
     (useAppSelector as jest.Mock).mockReturnValue(jest.fn());
   });
-  it('render chatbox containing prompt and response talk bubbles', () => {
+
+  it('render chatbox containing prompt and response talk bubbles', async () => {
+    const mockCreatePromptBookmarkClickHandler = jest.fn();
     const { container } = render(
       <ChatBox
-        windowId="test-window"
-        title="Test Chat"
-        resizable={false}
-        draggable={false}
-        disableOnScroll={true}
-        chatHistory={mockPromptDetails}
-        initialXY={[0, 0]}
-        initialSize={[300, 400]}
-        initialScrollTop={0}
-        promptTemplates={mockPromptTemplates}
-        isAttackMode={false}
-        isChatCompletionInProgress={false}
+        {...chatboxProps}
         onWindowChange={() => null}
-        onCreatePromptBookmarkClick={() => null}
+        onCreatePromptBookmarkClick={mockCreatePromptBookmarkClickHandler}
       />
     );
 
@@ -83,6 +90,43 @@ describe('Chatbox', () => {
     expect(
       screen.getByText(mockPromptDetails[0].predicted_result)
     ).toBeInTheDocument();
+
+    await userEvent.click(screen.queryAllByRole('button')[0]);
+    expect(mockCreatePromptBookmarkClickHandler).toHaveBeenCalledTimes(1);
     expect(container).toMatchSnapshot();
+  });
+
+  it('displays new prompt text and loading animation when chat completion is in progress', () => {
+    const mockNewPrompt = 'mock new prompt';
+    const expectedPromptTextInProgress =
+      mockPromptTemplates[0].template.replace('{{ prompt }}', mockNewPrompt);
+    render(
+      <ChatBox
+        {...chatboxProps}
+        isAttackMode={false}
+        currentPromptText={mockNewPrompt}
+        currentPromptTemplate={mockPromptTemplates[0]}
+        isChatCompletionInProgress={true}
+        onWindowChange={() => null}
+        onCreatePromptBookmarkClick={() => null}
+      />
+    );
+
+    expect(screen.getByRole('status')).toBeInTheDocument();
+    expect(screen.getByText(expectedPromptTextInProgress)).toBeInTheDocument();
+  });
+
+  it('displays loading animation when chat completion and attack mode are in progress', () => {
+    render(
+      <ChatBox
+        {...chatboxProps}
+        isAttackMode={true}
+        isChatCompletionInProgress={true}
+        onWindowChange={() => null}
+        onCreatePromptBookmarkClick={() => null}
+      />
+    );
+
+    expect(screen.getByRole('status')).toBeInTheDocument();
   });
 });

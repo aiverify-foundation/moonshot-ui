@@ -66,6 +66,7 @@ exports[`Chatbox render chatbox containing prompt and response talk bubbles 1`] 
         hover:opacity-50 active:opacity-25
         
       "
+                        role="button"
                       >
                         <svg
                           fill="#FFFFFF"
@@ -85,7 +86,7 @@ exports[`Chatbox render chatbox containing prompt and response talk bubbles 1`] 
                     class="childWrapper"
                   >
                     <div
-                      style="text-align: right; color: rgb(255, 255, 255); padding: 12px 16px; font-size: 14px; background-color: rgb(73, 48, 90); margin: 0px 0px 0px 0px; border-radius: 14px; min-width: 35%; border: 1px solid transparent;"
+                      style="text-align: right; color: rgb(255, 255, 255); padding: 12px 16px; font-size: 14px; background-color: rgb(73, 48, 90); margin: 0px 0px 0px 0px; border-radius: 14px; min-width: 35%; border: 1px solid #2563eb;"
                     >
                       Prepared test prompt 1
                     </div>
@@ -99,7 +100,7 @@ exports[`Chatbox render chatbox containing prompt and response talk bubbles 1`] 
               AI
             </h1>
             <div
-              style="text-align: left; color: rgb(0, 0, 0); padding: 12px 16px; font-size: 14px; background-color: rgb(221, 221, 221); margin: 0px 0px 0px 0px; border-radius: 14px; min-width: 35%; border: 1px solid transparent;"
+              style="text-align: left; color: rgb(0, 0, 0); padding: 12px 16px; font-size: 14px; background-color: rgb(221, 221, 221); margin: 0px 0px 0px 0px; border-radius: 14px; min-width: 35%; border: 1px solid #2563eb;"
             >
               Predicted result 1
             </div>
@@ -134,6 +135,7 @@ exports[`Chatbox render chatbox containing prompt and response talk bubbles 1`] 
         hover:opacity-50 active:opacity-25
         
       "
+                        role="button"
                       >
                         <svg
                           fill="#FFFFFF"

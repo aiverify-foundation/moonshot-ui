@@ -57,6 +57,7 @@ function PromptTalkBubble(props: PromptTalkBubbleProps) {
                 offsetLeft={-10}
                 content="Bookmark this prompt">
                 <Icon
+                  role="button"
                   name={IconName.Ribbon}
                   color={colors.white}
                   onClick={handleBookmarkIconClick}
