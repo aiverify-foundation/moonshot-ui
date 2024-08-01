@@ -47,7 +47,8 @@ function BookmarksPanel({
       style={{ bottom, left }}>
       {disabled && (
         <div
-          className="absolute gap-2 bg-moongray-950/50 w-full h-full z-10 flex justify-center items-center rounded-md"
+          className="absolute gap-2 bg-moongray-950/50 w-full h-full z-10
+            flex justify-center items-center rounded-md"
           style={{ top: 0, left: 0 }}>
           <div className="waitspinner" />
         </div>

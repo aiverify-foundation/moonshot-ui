@@ -7,6 +7,7 @@ import { formatDate } from '@/app/lib/date-utils';
 import { colors } from '@/app/views/shared-components/customColors';
 import { Modal } from '@/app/views/shared-components/modal/modal';
 import { ColorCodedTemplateString } from './color-coded-template';
+import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 
 type ViewBookmarksModalProps = {
   onCloseIconClick: () => void;
@@ -20,13 +21,16 @@ function ViewBookmarksModal(props: ViewBookmarksModalProps) {
   const [selectedBookmark, setSelectedBookmark] = React.useState<
     BookMark | undefined
   >();
+  const [isPending, startTransition] = React.useTransition();
 
   React.useEffect(() => {
     async function callServerAction() {
-      const result = await getAllBookmarks();
-      if (result.status === 'success') {
-        setBookmarks(result.data);
-      }
+      startTransition(async () => {
+        const result = await getAllBookmarks();
+        if (result.status === 'success') {
+          setBookmarks(result.data);
+        }
+      });
     }
     callServerAction();
   }, []);
@@ -65,7 +69,7 @@ function ViewBookmarksModal(props: ViewBookmarksModalProps) {
             name={IconName.Ribbon}
             size={24}
           />
-          <h3 className="text-[1rem] font-semibold text-white">
+          <h3 className="text-[1.3rem] font-semibold text-white">
             {selectedBookmark.name}
           </h3>
         </div>
@@ -187,25 +191,26 @@ function ViewBookmarksModal(props: ViewBookmarksModalProps) {
       onCloseIconClick={onCloseIconClick}
       primaryBtnLabel="Use"
       secondaryBtnLabel="Cancel"
-      onPrimaryBtnClick={handlePrimaryBtnClick}
+      onPrimaryBtnClick={!isPending ? handlePrimaryBtnClick : undefined}
       onSecondaryBtnClick={onCloseIconClick}>
-      <main
-        className="flex gap-5 mb-3 w-full"
-        style={{
-          height: 'calc(100% - 90px)',
-        }}>
-        {!bookmarks.length ? (
-          <p>No bookmarks found</p>
-        ) : (
-          <div className="flex gap-4 h-full w-full">
-            <div className="flex flex-col flex-1">
-              {searchTextbox}
-              {bookmarksList}
+      {isPending ? <LoadingAnimation /> : (
+        <main
+          className="flex gap-5 mb-3 w-full"
+          style={{
+            height: 'calc(100% - 90px)',
+          }}>
+          {(!isPending && !bookmarks.length) ? (
+            <p>No bookmarks found</p>
+          ) : (
+            <div className="flex gap-4 h-full w-full">
+              <div className="flex flex-col flex-1">
+                {searchTextbox}
+                {bookmarksList}
+              </div>
+              <div className="flex-1">{detailsSection}</div>
             </div>
-            <div className="flex-1">{detailsSection}</div>
-          </div>
-        )}
-      </main>
+          )}
+        </main>)}
     </Modal>
   );
 }
