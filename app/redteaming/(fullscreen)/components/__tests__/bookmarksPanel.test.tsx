@@ -1,6 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { getAllBookmarks } from '@/actions/getAllBookmarks';
 import { BookmarksPanel } from '@/app/redteaming/(fullscreen)/components/bookmarksPanel';
+
+jest.mock('@/actions/getAllBookmarks');
 
 const mockBookmarks = [
   {
@@ -38,16 +41,24 @@ const mockBookmarks = [
 describe('BookmarksPanel', () => {
   const mockUseButtonHandler = jest.fn();
 
+  beforeAll(() => {
+    (getAllBookmarks as jest.Mock).mockResolvedValue({
+      status: 'success',
+      data: mockBookmarks,
+    });
+  });
+
   it('shows first bookmark details by default', async () => {
     render(
       <BookmarksPanel
         bottom={0}
         left={0}
         disabled={false}
+        onUseBtnClick={mockUseButtonHandler}
       />
     );
     await userEvent.click(
-      screen.getByRole('button', { name: /saved bookmakrs/i })
+      screen.getByRole('button', { name: /bookmarked prompts/i })
     );
     expect(screen.queryAllByText(mockBookmarks[0].name)).toHaveLength(2);
     expect(screen.getByText(mockBookmarks[1].name)).toBeInTheDocument();
@@ -70,15 +81,25 @@ describe('BookmarksPanel', () => {
         bottom={0}
         left={0}
         disabled={false}
+        onUseBtnClick={mockUseButtonHandler}
       />
     );
     await userEvent.click(
-      screen.getByRole('button', { name: /saved bookmakrs/i })
+      screen.getByRole('button', { name: /bookmarked prompts/i })
     );
     const searchInput = screen.getByPlaceholderText('Search by name');
     await userEvent.type(searchInput, mockBookmarks[1].name.slice(-3));
-    expect(screen.getByText(mockBookmarks[1].name)).toBeInTheDocument();
+    await userEvent.click(screen.getByText(mockBookmarks[1].name));
+    expect(screen.queryAllByText(mockBookmarks[1].name)).toHaveLength(2);
     expect(screen.queryByText(mockBookmarks[0].name)).not.toBeInTheDocument();
     expect(screen.queryByText(mockBookmarks[2].name)).not.toBeInTheDocument();
+
+    await userEvent.click(
+      screen.getByRole('button', { name: /clear search/i })
+    );
+
+    expect(screen.queryByText(mockBookmarks[0].name)).toBeInTheDocument();
+    expect(screen.queryAllByText(mockBookmarks[1].name)).toHaveLength(2);
+    expect(screen.queryByText(mockBookmarks[2].name)).toBeInTheDocument();
   });
 });

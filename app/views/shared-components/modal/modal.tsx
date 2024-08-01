@@ -4,6 +4,8 @@ import { Button, ButtonType } from '@/app/components/button';
 import { colors } from '@/app/views/shared-components/customColors';
 
 type ModalProps = {
+  top?: React.CSSProperties['top'];
+  left?: React.CSSProperties['left'];
   width?: React.CSSProperties['width'];
   height?: React.CSSProperties['height'];
   bgColor: React.CSSProperties['backgroundColor'];
@@ -23,6 +25,8 @@ type ModalProps = {
 
 function Modal(props: ModalProps) {
   const {
+    top,
+    left,
     width = 500,
     height = 260,
     bgColor,
@@ -39,6 +43,7 @@ function Modal(props: ModalProps) {
     onSecondaryBtnClick,
     onCloseIconClick,
   } = props;
+
   return (
     <>
       {enableScreenOverlay && (
@@ -53,6 +58,8 @@ function Modal(props: ModalProps) {
         className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
         w-[600px] h-[260px] z-[1000] rounded-[15px] p-6"
         style={{
+          top,
+          left,
           width,
           height,
           backgroundColor: bgColor,

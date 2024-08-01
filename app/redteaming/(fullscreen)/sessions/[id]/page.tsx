@@ -1,7 +1,7 @@
 import React from 'react';
 import { isErrorWithMessage } from '@/app/lib/error-utils';
 import { processResponse } from '@/app/lib/http-requests';
-import { RedteamSessionChats } from '@/app/redteaming/(fullscreen)/redteamSessionChats';
+import { RedteamSessionChats } from '@/app/redteaming/(fullscreen)/components/redteamSessionChats';
 import config from '@/moonshot.config';
 /*
 IMPORTANT - this page must be dynamically rendered.

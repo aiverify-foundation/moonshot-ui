@@ -2,16 +2,20 @@ import React from 'react';
 import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { colors } from '@/app/views/shared-components/customColors';
+import { ViewBookmarksModal } from './viewBookmarksModal';
 
 function BookmarksPanel({
   bottom,
   left,
   disabled,
+  onUseBtnClick,
 }: {
   bottom: React.CSSProperties['top'];
   left: React.CSSProperties['left'];
   disabled: boolean;
+  onUseBtnClick: (preparedPrompt: string) => void;
 }) {
+  const [showPanel, setShowPanel] = React.useState(false);
   return (
     <div
       className="bg-moongray-600 w-[220px] absolute rounded-md p-2 shadow-lg
@@ -24,6 +28,12 @@ function BookmarksPanel({
           <div className="waitspinner" />
         </div>
       )}
+      {showPanel && (
+        <ViewBookmarksModal
+          onCloseIconClick={() => setShowPanel(false)}
+          onPrimaryBtnClick={onUseBtnClick}
+        />
+      )}
       <div className="flex items-center gap-2">
         <Button
           width={200}
@@ -34,7 +44,7 @@ function BookmarksPanel({
           hoverBtnColor={colors.moongray[500]}
           pressedBtnColor={colors.moongray[400]}
           leftIconName={IconName.Ribbon}
-          onClick={() => null}
+          onClick={() => setShowPanel(true)}
         />
       </div>
     </div>
