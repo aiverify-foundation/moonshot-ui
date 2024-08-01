@@ -42,6 +42,7 @@ describe('SaveBookmarkModal', () => {
     response: 'Test response',
     metric: 'Test metric',
     onCloseIconClick: jest.fn(),
+    onPrimaryBtnClick: jest.fn(),
   };
 
   beforeAll(() => {
@@ -88,7 +89,7 @@ describe('SaveBookmarkModal', () => {
     expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
   });
 
-  it('displays success message', () => {
+  it('displays success message', async () => {
     const mockSuccessFormState: FormState<BookmarkFormValues> = {
       formStatus: 'success',
       formErrors: undefined,
@@ -105,8 +106,18 @@ describe('SaveBookmarkModal', () => {
       mockSuccessFormState,
       mockFormAction,
     ]);
-    render(<SaveBookMarkModal {...mockProps} />);
+    const mockOnPrimaryBtnClick = jest.fn();
+    render(
+      <SaveBookMarkModal
+        {...mockProps}
+        onPrimaryBtnClick={mockOnPrimaryBtnClick}
+      />
+    );
     expect(screen.getByText(/bookmark saved/i)).toBeInTheDocument();
+    await userEvent.click(
+      screen.getByRole('button', { name: /view bookmarks/i })
+    );
+    expect(mockOnPrimaryBtnClick).toHaveBeenCalled();
   });
 
   it('displays error message', () => {

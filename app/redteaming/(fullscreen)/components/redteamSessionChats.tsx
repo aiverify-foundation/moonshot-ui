@@ -1,10 +1,12 @@
 'use client';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { toErrorWithMessage } from '@/app/lib/error-utils';
+import useChatboxesPositionsUtils from '@/app/redteaming/(fullscreen)/hooks/useChatboxesPositionsUtils';
 import { useGetAllAttackModulesQuery } from '@/app/services/attack-modules-api-service';
 import { useGetAllPromptTemplatesQuery } from '@/app/services/prompt-template-api-service';
 import {
@@ -25,16 +27,15 @@ import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSu
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 import tailwindConfig from '@/tailwind.config';
-import { AttackModulesList } from './components/attackModulesList';
-import { ChatBoxControls } from './components/chatbox';
-import { ChatboxFreeLayout } from './components/chatbox-free-layout';
-import { ChatboxSlideLayout } from './components/chatbox-slide-layout';
-import { ContextStrategiesList } from './components/contextStrategiesList';
-import { PromptBox } from './components/prompt-box';
-import { PromptTemplatesList } from './components/promptTemplatesList';
-import { SaveBookMarkModal } from './components/saveBookmarkModal';
-import { SelectedOptionPill } from './components/selectedOptionPill';
-import useChatboxesPositionsUtils from './hooks/useChatboxesPositionsUtils';
+import { AttackModulesList } from './attackModulesList';
+import { ChatBoxControls } from './chatbox';
+import { ChatboxFreeLayout } from './chatbox-free-layout';
+import { ChatboxSlideLayout } from './chatbox-slide-layout';
+import { ContextStrategiesList } from './contextStrategiesList';
+import { PromptBox } from './prompt-box';
+import { PromptTemplatesList } from './promptTemplatesList';
+import { SaveBookMarkModal } from './saveBookmarkModal';
+import { SelectedOptionPill } from './selectedOptionPill';
 import { getWindowId, getWindowXYById } from '@app/lib/window-utils';
 import { Tooltip, TooltipPosition } from '@components/tooltip';
 import {
@@ -44,6 +45,10 @@ import {
 } from '@redux/slices';
 import { LayoutMode, setChatLayoutMode } from '@redux/slices';
 import { Z_Index } from '@views/moonshot-desktop/constants';
+
+const BookmarksPanel = dynamic(() =>
+  import('./bookmarksPanel').then((mod) => mod.BookmarksPanel)
+);
 
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
@@ -77,6 +82,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const [isFetchingData, setIsFetchingData] = useState(true);
   const [liveAttackInProgress, setLiveAttackInProgress] = useState(false);
   const [alertMessage, setAlertMessage] = useState<AlertMsg | undefined>();
+  const [defaultShowBookmarksPanel, setDefaultShowBookmarksPanel] =
+    useState(false);
   const [saveBookmarkData, setSaveBookmarkData] = useState<
     SaveBookmarkData | undefined
   >();
@@ -341,6 +348,11 @@ function RedteamSessionChats(props: ActiveSessionProps) {
         setIsAttackMode(false);
       }
     }
+  }
+
+  function handleUseBookmarkClick(preparedPrompt: string) {
+    console.log(preparedPrompt);
+    handleSendPromptClick(preparedPrompt);
   }
 
   async function handleRemovePromptTemplateClick(template: PromptTemplate) {
@@ -635,6 +647,10 @@ function RedteamSessionChats(props: ActiveSessionProps) {
           response={saveBookmarkData.response}
           metric={saveBookmarkData.metric}
           onCloseIconClick={() => setSaveBookmarkData(undefined)}
+          onPrimaryBtnClick={() => {
+            setSaveBookmarkData(undefined);
+            setDefaultShowBookmarksPanel(true);
+          }}
         />
       )}
       {showCloseSessionConfirmation && (
@@ -788,6 +804,14 @@ function RedteamSessionChats(props: ActiveSessionProps) {
               backgroundColor: colors.moongray[700],
               borderRadius: '0.5rem',
             }}
+          />
+          <BookmarksPanel
+            disabled={isChatControlsDisabled}
+            onUseBtnClick={handleUseBookmarkClick}
+            bottom={150}
+            defaultShowPanel={defaultShowBookmarksPanel}
+            onPanelClose={() => setDefaultShowBookmarksPanel(false)}
+            left="10%"
           />
           <div className="absolute bottom-[200px] right-[30%]">
             {optionsPanel}

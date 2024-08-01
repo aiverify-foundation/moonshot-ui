@@ -1,3 +1,7 @@
+// There is a mix of camelCase and snake_case in naming.
+// This is because, a lot of the types are designed to map directly to the web-api API response payloads, for convenience.
+// The backend is done in Python. Thus the snake_case in some of the naming.
+
 type AlertMsg = {
   heading: string;
   iconName: IconName;
@@ -338,4 +342,16 @@ type BookmarkFormValues = {
   attack_module?: string;
   context_strategy?: string;
   prompt_template?: string;
+};
+
+type BookMark = {
+  name: string;
+  prompt: string;
+  prepared_prompt: string;
+  response: string;
+  metric?: string;
+  attack_module?: string;
+  context_strategy?: string;
+  prompt_template?: string;
+  bookmark_time: string;
 };
