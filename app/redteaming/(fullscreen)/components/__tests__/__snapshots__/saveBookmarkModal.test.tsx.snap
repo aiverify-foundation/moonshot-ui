@@ -62,7 +62,7 @@ exports[`SaveBookmarkModal renders and populates hidden form elements with the c
       <p
         class="mb-8 text-[0.95rem]"
       >
-        Save this turn as a bookmark to be able to quickly reference it in future red teaming exercises.
+        Save this prompt as a bookmark to be able to quickly reference it in future red teaming exercises.
       </p>
       <div
         class="flex gap-4 h-[300px]"

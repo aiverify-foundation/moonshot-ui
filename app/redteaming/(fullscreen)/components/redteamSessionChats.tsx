@@ -744,6 +744,14 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                     }
                   />
                 </div>
+                <BookmarksPanel
+                  disabled={isChatControlsDisabled}
+                  onUseBtnClick={handleUseBookmarkClick}
+                  bottom={120}
+                  defaultShowPanel={defaultShowBookmarksPanel}
+                  onPanelClose={() => setDefaultShowBookmarksPanel(false)}
+                  left="20%"
+                />
                 <div className="flex justify-center">
                   <div className="relative">
                     <PromptBox
