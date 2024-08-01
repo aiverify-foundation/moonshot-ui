@@ -377,7 +377,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
             />
 
             <MemSelectInput
-              label="Connection TypeX*"
+              label="Connection Type*"
               name="connector_type"
               labelStyles={labelStyle}
               inputStyle={inputStyle}
