@@ -353,4 +353,5 @@ type BookMark = {
   attack_module?: string;
   context_strategy?: string;
   prompt_template?: string;
+  bookmark_time: string;
 };

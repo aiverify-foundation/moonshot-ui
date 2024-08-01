@@ -82,6 +82,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const [isFetchingData, setIsFetchingData] = useState(true);
   const [liveAttackInProgress, setLiveAttackInProgress] = useState(false);
   const [alertMessage, setAlertMessage] = useState<AlertMsg | undefined>();
+  const [defaultShowBookmarksPanel, setDefaultShowBookmarksPanel] =
+    useState(false);
   const [saveBookmarkData, setSaveBookmarkData] = useState<
     SaveBookmarkData | undefined
   >();
@@ -350,7 +352,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
   function handleUseBookmarkClick(preparedPrompt: string) {
     console.log(preparedPrompt);
-    setPromptText(preparedPrompt);
+    handleSendPromptClick(preparedPrompt);
   }
 
   async function handleRemovePromptTemplateClick(template: PromptTemplate) {
@@ -645,6 +647,10 @@ function RedteamSessionChats(props: ActiveSessionProps) {
           response={saveBookmarkData.response}
           metric={saveBookmarkData.metric}
           onCloseIconClick={() => setSaveBookmarkData(undefined)}
+          onPrimaryBtnClick={() => {
+            setSaveBookmarkData(undefined);
+            setDefaultShowBookmarksPanel(true);
+          }}
         />
       )}
       {showCloseSessionConfirmation && (
@@ -803,6 +809,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
             disabled={isChatControlsDisabled}
             onUseBtnClick={handleUseBookmarkClick}
             bottom={150}
+            defaultShowPanel={defaultShowBookmarksPanel}
+            onPanelClose={() => setDefaultShowBookmarksPanel(false)}
             left="10%"
           />
           <div className="absolute bottom-[200px] right-[30%]">

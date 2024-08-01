@@ -8,14 +8,38 @@ function BookmarksPanel({
   bottom,
   left,
   disabled,
+  defaultShowPanel = false,
   onUseBtnClick,
+  onPanelClose,
 }: {
   bottom: React.CSSProperties['top'];
   left: React.CSSProperties['left'];
   disabled: boolean;
+  defaultShowPanel?: boolean;
+  onPanelClose?: () => void;
   onUseBtnClick: (preparedPrompt: string) => void;
 }) {
-  const [showPanel, setShowPanel] = React.useState(false);
+  const [showPanel, setShowPanel] = React.useState(() => defaultShowPanel);
+
+  React.useEffect(() => {
+    setShowPanel(defaultShowPanel);
+  }, [defaultShowPanel]);
+
+  function handleUseBtnClick(preparedPrompt: string) {
+    onUseBtnClick(preparedPrompt);
+    setShowPanel(false);
+    if (onPanelClose) {
+      onPanelClose();
+    }
+  }
+
+  function handleCancelBtnClick() {
+    setShowPanel(false);
+    if (onPanelClose) {
+      onPanelClose();
+    }
+  }
+
   return (
     <div
       className="bg-moongray-600 w-[220px] absolute rounded-md p-2 shadow-lg
@@ -30,8 +54,8 @@ function BookmarksPanel({
       )}
       {showPanel && (
         <ViewBookmarksModal
-          onCloseIconClick={() => setShowPanel(false)}
-          onPrimaryBtnClick={onUseBtnClick}
+          onCloseIconClick={handleCancelBtnClick}
+          onPrimaryBtnClick={handleUseBtnClick}
         />
       )}
       <div className="flex items-center gap-2">

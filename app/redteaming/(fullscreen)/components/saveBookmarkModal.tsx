@@ -21,6 +21,7 @@ type SaveBookMarkModalProps = {
   response: string;
   metric: string | undefined;
   onCloseIconClick: () => void;
+  onPrimaryBtnClick: () => void;
 };
 
 const initialFormValues: FormState<BookmarkFormValues> = {
@@ -47,6 +48,7 @@ function SaveBookMarkModal(props: SaveBookMarkModalProps) {
     attackModule,
     contextStrategy,
     onCloseIconClick,
+    onPrimaryBtnClick,
   } = props;
   const [bookmarkName, setBookmarkName] = React.useState('');
   const [showResultModal, setShowResultModal] = React.useState(false);
@@ -82,7 +84,7 @@ function SaveBookMarkModal(props: SaveBookMarkModalProps) {
           enableScreenOverlay
           overlayOpacity={0.8}
           onCloseIconClick={onCloseIconClick}
-          onPrimaryBtnClick={onCloseIconClick}>
+          onPrimaryBtnClick={onPrimaryBtnClick}>
           <div className="flex gap-2 items-start">
             <p>{`Bookmark ${formState.name} was successfully saved.`}</p>
           </div>
