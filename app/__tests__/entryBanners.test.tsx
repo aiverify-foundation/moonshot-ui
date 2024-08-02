@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { EntryBanners } from '@/app/views/entryBanners';
+import { EntryBanners } from '@/app/entryBanners';
 import { resetBenchmarkCookbooks, resetBenchmarkModels } from '@/lib/redux';
 
 jest.mock('@/lib/redux', () => ({
