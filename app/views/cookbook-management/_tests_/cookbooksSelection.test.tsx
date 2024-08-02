@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
-import { CookbooksProvider } from '@/app/views/benchmarking/contexts/cookbooksContext';
 import { CookbooksSelection } from '@/app/views/cookbook-management/cookbooksSelection';
 import {
   addBenchmarkCookbooks,

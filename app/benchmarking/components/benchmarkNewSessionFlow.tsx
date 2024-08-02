@@ -1,6 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import React, { useLayoutEffect, useState } from 'react';
+import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
@@ -20,7 +21,6 @@ import {
 import { BenchmarkDefaultSelection } from './benchmarkDefaultSelection';
 import { BenchmarkMainCookbooksPromptCount } from './benchmarkMainCookbooksPromptCount';
 import BenchmarkRunForm from './benchmarkRunForm';
-import { CookbooksProvider } from './contexts/cookbooksContext';
 import { BenchmarkNewSessionViews } from './enums';
 
 const flowSteps = ['Your LLM', 'Recommended Tests', 'Connect Endpoint', 'Run'];

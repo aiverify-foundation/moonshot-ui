@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { BenchmarkDefaultSelection } from '@/app/benchmarking/components/benchmarkDefaultSelection';
+import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
-import { BenchmarkDefaultSelection } from '@/app/views/benchmarking/benchmarkDefaultSelection';
-import { CookbooksProvider } from '@/app/views/benchmarking/contexts/cookbooksContext';
 import {
   useAppSelector,
   useAppDispatch,

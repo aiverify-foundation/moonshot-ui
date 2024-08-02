@@ -1,8 +1,8 @@
+import { useCookbooks } from '@/app/benchmarking/contexts/cookbooksContext';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
 import { useAppSelector } from '@/lib/redux';
 import config from '@/moonshot.config';
-import { useCookbooks } from './contexts/cookbooksContext';
 import { BenchmarkNewSessionViews } from './enums';
 
 type Props = {
@@ -22,29 +22,30 @@ function BenchmarkMainCookbooksPromptCount({ changeView }: Props) {
       config.estimatedPromptResponseTime
     );
 
-  const timeDisplay = enableEstimatedTime && (<div className="flex flex-col gap-2">
-    <h3 className="text-[3.5rem] font-bolder tracking-wide leading-[3rem] text-white mb-0">
-      {totalHours}
-      <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300">
-        hrs
-      </span>
-      {totalMinutes}
-      <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300">
-        mins
-      </span>
-    </h3>
-    <p className="text-[1.1rem] leading-[1.1rem] text-moongray-300 pl-1 ">
-      <span className="text-moonpurplelight">Estimated Time</span>{' '}
-      <br />{' '}
-      <span className="text-[0.9rem]">
-        assuming{' '}
-        <span className="decoration-1 underline">
-          {config.estimatedPromptResponseTime}s
-        </span>{' '}
-        per prompt
-      </span>
-    </p>
-  </div>)
+  const timeDisplay = enableEstimatedTime && (
+    <div className="flex flex-col gap-2">
+      <h3 className="text-[3.5rem] font-bolder tracking-wide leading-[3rem] text-white mb-0">
+        {totalHours}
+        <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300">
+          hrs
+        </span>
+        {totalMinutes}
+        <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300">
+          mins
+        </span>
+      </h3>
+      <p className="text-[1.1rem] leading-[1.1rem] text-moongray-300 pl-1 ">
+        <span className="text-moonpurplelight">Estimated Time</span> <br />{' '}
+        <span className="text-[0.9rem]">
+          assuming{' '}
+          <span className="decoration-1 underline">
+            {config.estimatedPromptResponseTime}s
+          </span>{' '}
+          per prompt
+        </span>
+      </p>
+    </div>
+  );
 
   return (
     <section className="flex flex-col items-center justify-center min-h-[300px] gap-5">

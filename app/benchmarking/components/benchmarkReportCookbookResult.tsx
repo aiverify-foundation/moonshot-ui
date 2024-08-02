@@ -1,13 +1,13 @@
 import React from 'react';
+import { CookbookResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
+import { RecipeGradeBadge } from './badge';
 import { BenchmarkReportRecipeResult } from './benchmarkReportRecipeResult';
-import { RecipeGradeBadge } from './components/badge';
-import { gradeColorsMoonshot, gradeColorsMlc } from './components/gradeColors';
 import { MLC_COOKBOOK_IDS, gradingLettersMlcMap } from './constants';
-import { CookbookResult } from './types/benchmarkReportTypes';
+import { gradeColorsMoonshot, gradeColorsMlc } from './gradeColors';
 
 type BenchmarkReportCookbookResultsProps = {
   result: CookbookResult;

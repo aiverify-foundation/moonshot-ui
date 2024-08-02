@@ -1,4 +1,4 @@
-import { CookbooksBenchmarkResult } from '@/app/views/benchmarking/types/benchmarkReportTypes';
+import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 
 export function calcTotalPromptsByEndpoint(
   result: CookbooksBenchmarkResult,

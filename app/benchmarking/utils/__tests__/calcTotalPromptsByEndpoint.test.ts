@@ -1,5 +1,5 @@
-import { CookbooksBenchmarkResult } from '@/app/views/benchmarking/types/benchmarkReportTypes';
-import { calcTotalPromptsByEndpoint } from '@/app/views/benchmarking/utils/calcTotalPromptsByEndpoint';
+import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
+import { calcTotalPromptsByEndpoint } from '@/app/benchmarking/utils/calcTotalPromptsByEndpoint';
 
 describe('calcTotalPromptsByEndpoint', () => {
   const mockResult: CookbooksBenchmarkResult = {

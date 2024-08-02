@@ -1,21 +1,21 @@
 import React from 'react';
+import { GradingLevelsMlcEnum } from '@/app/benchmarking/components/enums';
+import {
+  CookbookResult,
+  CookbooksBenchmarkResult,
+} from '@/app/benchmarking/types/benchmarkReportTypes';
+import { calcTotalPromptsByEndpoint } from '@/app/benchmarking/utils/calcTotalPromptsByEndpoint';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
-import { GradingLevelsMlcEnum } from '@/app/views/benchmarking/enums';
-import { Badge, SquareBadge } from './components/badge';
-import { gradeColorsMlc } from './components/gradeColors';
-import { ReportLogo } from './components/reportLogo';
+import { Badge, SquareBadge } from './badge';
 import {
   MLC_COOKBOOK_IDS,
   gradingDescriptionsMlcMap,
   gradingLettersMlcMap,
 } from './constants';
-import {
-  CookbookResult,
-  CookbooksBenchmarkResult,
-} from './types/benchmarkReportTypes';
-import { calcTotalPromptsByEndpoint } from './utils/calcTotalPromptsByEndpoint';
+import { gradeColorsMlc } from './gradeColors';
+import { ReportLogo } from './reportLogo';
 
 type BenchmarkReportProps = {
   benchmarkReport: CookbooksBenchmarkResult;
@@ -118,9 +118,9 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
             </div>
 
             <p className="py-8">
-              The overall safety rating for an Endpoint is calculated by taking the
-              worst of the per-hazard safety ratings: a model is only as safe as
-              its weakest area.
+              The overall safety rating for an Endpoint is calculated by taking
+              the worst of the per-hazard safety ratings: a model is only as
+              safe as its weakest area.
             </p>
 
             <figure

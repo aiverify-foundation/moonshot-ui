@@ -1,12 +1,12 @@
 import React from 'react';
+import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
+import { SquareBadge } from './badge';
 import { BenchmarkReportCookbookResult } from './benchmarkReportCookbookResult';
-import { SquareBadge } from './components/badge';
-import { gradeColorsMoonshot } from './components/gradeColors';
 import { MLC_COOKBOOK_IDS } from './constants';
-import { CookbooksBenchmarkResult } from './types/benchmarkReportTypes';
+import { gradeColorsMoonshot } from './gradeColors';
 
 type BenchmarkReportProps = {
   benchmarkResult: CookbooksBenchmarkResult;

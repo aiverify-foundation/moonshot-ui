@@ -1,4 +1,4 @@
-import { formatDateTime } from '@/app/views/benchmarking/utils/formatDateTime';
+import { formatDateTime } from '@/app/benchmarking/utils/formatDateTime';
 
 describe('formatDateTime', () => {
   test('formats date and time correctly', () => {

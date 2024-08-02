@@ -1,8 +1,8 @@
 import React from 'react';
+import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Button, ButtonType } from '@/app/components/button';
 import { BenchmarkReportSectionOne } from './benchmarkReportSectionOne';
 import { BenchmarkReportSectionTwo } from './benchmarkReportSectionTwo';
-import { CookbooksBenchmarkResult } from './types/benchmarkReportTypes';
 
 type BenchmarkReportProps = {
   benchmarkResult: CookbooksBenchmarkResult;

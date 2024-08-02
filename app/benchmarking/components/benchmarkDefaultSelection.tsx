@@ -1,4 +1,8 @@
 import React from 'react';
+import {
+  updateAllCookbooks,
+  useCookbooks,
+} from '@/app/benchmarking/contexts/cookbooksContext';
 import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
@@ -11,7 +15,6 @@ import {
   useAppSelector,
 } from '@/lib/redux';
 import config from '@/moonshot.config';
-import { updateAllCookbooks, useCookbooks } from './contexts/cookbooksContext';
 
 type Props = {
   setHiddenNavButtons: React.Dispatch<React.SetStateAction<[boolean, boolean]>>;

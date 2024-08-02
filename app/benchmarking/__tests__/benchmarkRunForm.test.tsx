@@ -1,9 +1,9 @@
 import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/navigation';
+import BenchmarkRunForm from '@/app/benchmarking/components/benchmarkRunForm';
+import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
 import { useRunBenchmarkMutation } from '@/app/services/benchmark-api-service';
-import BenchmarkRunForm from '@/app/views/benchmarking/benchmarkRunForm';
-import { CookbooksProvider } from '@/app/views/benchmarking/contexts/cookbooksContext';
 import {
   resetBenchmarkCookbooks,
   resetBenchmarkModels,

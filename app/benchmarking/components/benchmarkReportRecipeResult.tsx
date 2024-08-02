@@ -1,11 +1,14 @@
 import React from 'react';
+import {
+  GradingScale,
+  RecipeResult,
+} from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/views/shared-components/customColors';
-import { RecipeGradeBadge } from './components/badge';
-import { gradeColorsMlc, gradeColorsMoonshot } from './components/gradeColors';
-import { RangedBarChart } from './components/rangedBarChart';
+import { RecipeGradeBadge } from './badge';
 import { gradingLettersMlcMap, MLC_COOKBOOK_IDS } from './constants';
-import { GradingScale, RecipeResult } from './types/benchmarkReportTypes';
+import { gradeColorsMlc, gradeColorsMoonshot } from './gradeColors';
+import { RangedBarChart } from './rangedBarChart';
 
 type BenchmarkReportRecipeResultProps = {
   cookbookId: string;

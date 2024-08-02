@@ -1,7 +1,7 @@
 import {
   GradingColors,
   GradingScale,
-} from '@/app/views/benchmarking/types/benchmarkReportTypes';
+} from '@/app/benchmarking/types/benchmarkReportTypes';
 
 type RangedBarChartProps = {
   gradingScale: GradingScale;
