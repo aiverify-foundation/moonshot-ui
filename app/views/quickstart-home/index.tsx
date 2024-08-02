@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import LeftNav from '@/app/components/leftNav';
-import Notifications from '@/app/views/notifications/notifications';
+import Notifications from '@/app/components/notifications';
 import { EntryBanners } from './components/entryBanners';
 import { MicroLayout } from './components/microLayout';
 
