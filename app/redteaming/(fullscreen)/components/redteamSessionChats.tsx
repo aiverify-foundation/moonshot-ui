@@ -11,6 +11,7 @@ import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { toErrorWithMessage } from '@/app/lib/error-utils';
 import { getWindowId, getWindowXYById } from '@/app/lib/window-utils';
+import { Z_Index } from '@/app/redteaming/(fullscreen)/constants';
 import useChatboxesPositionsUtils from '@/app/redteaming/(fullscreen)/hooks/useChatboxesPositionsUtils';
 import { useGetAllAttackModulesQuery } from '@/app/services/attack-modules-api-service';
 import { useGetAllPromptTemplatesQuery } from '@/app/services/prompt-template-api-service';
@@ -26,7 +27,6 @@ import {
   useUnsetPromptTemplateMutation,
 } from '@/app/services/session-api-service';
 import { AppEventTypes, RedteamStatusProgress } from '@/app/types/enums';
-import { Z_Index } from '@/app/views/moonshot-desktop/constants';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import {
   appendChatHistory,

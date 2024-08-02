@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { debounce } from '@/app/lib/throttle';
-import { Z_Index } from '@/app/views/moonshot-desktop/constants';
+import { Z_Index } from '@/app/redteaming/(fullscreen)/constants';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { updateFocusedWindowId } from '@/lib/redux/slices/windowsSlice';
 import { Icon, IconName } from './IconSVG';

@@ -8,5 +8,3 @@ export const Z_Index: ZIndex = {
   FocusedWindow: 998, // fourth layer - any focused window, should be set to this layer
   Top: 999, // fifth layer - for any elements that needs to be at the top most layer (modal popup, tooltip, etc)
 };
-
-export const moonshotDesktopDivID = 'moonshotDesktop'; // This is a crucial div element id. There are react portals that port elements to this div

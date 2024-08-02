@@ -2,8 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import LeftNav from '@/app/components/leftNav';
+import { MicroLayout } from '@/app/components/microLayout';
 import Notifications from '@/app/components/notifications';
-import { MicroLayout } from '@/app/views/quickstart-home/components/microLayout';
 
 export default async function BenchmarkingLayout({
   children,
