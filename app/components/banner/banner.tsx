@@ -1,9 +1,9 @@
 'use client';
 import Link from 'next/link';
 import { PropsWithChildren, ReactNode } from 'react';
+import { IconName } from '@/app/components/IconSVG';
+import { Button, ButtonType } from '@/app/components/button';
 import styles from './styles/banner.module.css';
-import { IconName } from '@components/IconSVG';
-import { Button, ButtonType } from '@components/button';
 
 type BannerProps = {
   bannerText: string | ReactNode;

@@ -1,7 +1,7 @@
 import React from 'react';
+import { Chat } from '@/app/components/chat';
 import { colors } from '@/app/customColors';
 import { PromptAndResponseBubbles } from './promptAndResponseTalkBubbles';
-import { Chat } from '@components/chat';
 
 type ChatBoxProps = {
   windowId: string;

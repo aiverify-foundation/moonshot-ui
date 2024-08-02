@@ -5,11 +5,11 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { debounce } from '@/app/lib/throttle';
+import { Z_Index } from '@/app/views/moonshot-desktop/constants';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { updateFocusedWindowId } from '@/lib/redux/slices/windowsSlice';
 import { Icon, IconName } from './IconSVG';
-import { debounce } from '@app/lib/throttle';
-import { Z_Index } from '@views/moonshot-desktop/constants';
 
 enum WindowState {
   drag,

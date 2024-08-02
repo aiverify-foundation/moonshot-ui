@@ -6,8 +6,10 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { Modal } from '@/app/components/modal';
 import { PopupSurface } from '@/app/components/popupSurface';
+import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { toErrorWithMessage } from '@/app/lib/error-utils';
+import { getWindowId, getWindowXYById } from '@/app/lib/window-utils';
 import useChatboxesPositionsUtils from '@/app/redteaming/(fullscreen)/hooks/useChatboxesPositionsUtils';
 import { useGetAllAttackModulesQuery } from '@/app/services/attack-modules-api-service';
 import { useGetAllPromptTemplatesQuery } from '@/app/services/prompt-template-api-service';
@@ -23,8 +25,15 @@ import {
   useUnsetPromptTemplateMutation,
 } from '@/app/services/session-api-service';
 import { AppEventTypes, RedteamStatusProgress } from '@/app/types/enums';
+import { Z_Index } from '@/app/views/moonshot-desktop/constants';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
+import {
+  appendChatHistory,
+  removeActiveSession,
+  setActiveSession,
+} from '@/lib/redux/slices';
+import { LayoutMode, setChatLayoutMode } from '@/lib/redux/slices';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 import tailwindConfig from '@/tailwind.config';
 import { AttackModulesList } from './attackModulesList';
@@ -36,15 +45,6 @@ import { PromptBox } from './prompt-box';
 import { PromptTemplatesList } from './promptTemplatesList';
 import { SaveBookMarkModal } from './saveBookmarkModal';
 import { SelectedOptionPill } from './selectedOptionPill';
-import { getWindowId, getWindowXYById } from '@app/lib/window-utils';
-import { Tooltip, TooltipPosition } from '@components/tooltip';
-import {
-  appendChatHistory,
-  removeActiveSession,
-  setActiveSession,
-} from '@redux/slices';
-import { LayoutMode, setChatLayoutMode } from '@redux/slices';
-import { Z_Index } from '@views/moonshot-desktop/constants';
 
 const BookmarksPanel = dynamic(() =>
   import('./bookmarksPanel').then((mod) => mod.BookmarksPanel)

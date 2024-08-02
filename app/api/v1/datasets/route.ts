@@ -1,4 +1,4 @@
-import { basePathDatasets, hostURL } from '@api/constants';
+import { basePathDatasets, hostURL } from '@/app/api/constants';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {

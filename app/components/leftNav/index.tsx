@@ -1,8 +1,8 @@
 'use client';
 import Link from 'next/link';
 import React from 'react';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
-import { Icon, IconName } from '@components/IconSVG';
 
 type menuItem =
   | 'benchmarking'
