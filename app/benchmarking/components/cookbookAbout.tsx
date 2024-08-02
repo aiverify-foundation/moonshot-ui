@@ -1,6 +1,6 @@
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
-import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 
 type Props = {
   cookbook: Cookbook;

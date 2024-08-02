@@ -5,9 +5,9 @@ import {
 } from '@/app/benchmarking/contexts/cookbooksContext';
 import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { colors } from '@/app/customColors';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
-import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import {
   addBenchmarkCookbooks,
   removeBenchmarkCookbooks,

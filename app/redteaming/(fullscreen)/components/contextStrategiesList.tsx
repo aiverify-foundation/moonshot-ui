@@ -1,9 +1,9 @@
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { colors } from '@/app/customColors';
 import { useGetAllContextStrategiesQuery } from '@/app/services/contextstrat-api-service';
-import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 
 type ContextStrategiesListProps = {
   onPrimaryBtnClick: (contextStrategyId: string) => void;

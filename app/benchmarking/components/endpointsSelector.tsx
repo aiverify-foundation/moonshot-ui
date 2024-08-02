@@ -1,8 +1,8 @@
 import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { SelectListItem } from '@/app/components/selectListItem';
 import { useModelsList } from '@/app/hooks/useLLMEndpointList';
 import { formatDate } from '@/app/lib/date-utils';
-import { SelectListItem } from '@/app/views/shared-components/selectListItem';
 import tailwindConfig from '@/tailwind.config';
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 

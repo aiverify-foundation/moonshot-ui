@@ -1,9 +1,9 @@
 import React from 'react';
 import { CookbookResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { colors } from '@/app/customColors';
 import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
-import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { RecipeGradeBadge } from './badge';
 import { BenchmarkReportRecipeResult } from './benchmarkReportRecipeResult';
 import { MLC_COOKBOOK_IDS, gradingLettersMlcMap } from './constants';

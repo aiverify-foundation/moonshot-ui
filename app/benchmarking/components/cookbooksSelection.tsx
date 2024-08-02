@@ -1,11 +1,11 @@
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { PopupSurface } from '@/app/components/popupSurface';
+import { TabsMenu, TabItem } from '@/app/components/tabsMenu';
 import { colors } from '@/app/customColors';
 import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
-import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
-import { TabsMenu, TabItem } from '@/app/views/shared-components/tabsMenu';
 import {
   addBenchmarkCookbooks,
   removeBenchmarkCookbooks,

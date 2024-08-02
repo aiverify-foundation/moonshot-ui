@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { Modal } from '@/app/components/modal';
 import { PopupSurface } from '@/app/components/popupSurface';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
@@ -26,7 +27,6 @@ import {
 } from '@/app/services/session-api-service';
 import { AppEventTypes, RedteamStatusProgress } from '@/app/types/enums';
 import { Z_Index } from '@/app/views/moonshot-desktop/constants';
-import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import {
   appendChatHistory,

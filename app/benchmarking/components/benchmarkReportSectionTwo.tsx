@@ -1,8 +1,8 @@
 import React from 'react';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
-import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { SquareBadge } from './badge';
 import { BenchmarkReportCookbookResult } from './benchmarkReportCookbookResult';
 import { MLC_COOKBOOK_IDS } from './constants';
