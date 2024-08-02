@@ -1,11 +1,11 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import React, { useLayoutEffect, useState } from 'react';
+import { CookbooksSelection } from '@/app/benchmarking/components/cookbooksSelection';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
-import { CookbooksSelection } from '@/app/views/cookbook-management/cookbooksSelection';
 import { EndpointSelectVew } from '@/app/views/models-management/endpointsSelector';
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
