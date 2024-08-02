@@ -110,9 +110,7 @@ function ViewBookmarksModal(props: ViewBookmarksModalProps) {
             ? selectedBookmark.context_strategy
             : 'No context strategy'}
         </p>
-        <h4 className="text-[1rem] font-semibold mt-10 mb-1">
-          Context Strategy
-        </h4>
+        <h4 className="text-[1rem] font-semibold mt-10 mb-1">Attack Module</h4>
         <p className="text-[0.95rem] text-moongray-300">
           {selectedBookmark.attack_module
             ? selectedBookmark.attack_module

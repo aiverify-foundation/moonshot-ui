@@ -131,7 +131,7 @@ function SaveBookMarkModal(props: SaveBookMarkModalProps) {
           overlayOpacity={0.8}
           onCloseIconClick={onCloseIconClick}>
           <p className="mb-8 text-[0.95rem]">
-            Save this turn as a bookmark to be able to quickly reference it in
+            Save this prompt as a bookmark to be able to quickly reference it in
             future red teaming exercises.
           </p>
           <div className="flex gap-4 h-[300px]">
