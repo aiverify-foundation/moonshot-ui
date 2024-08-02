@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { Modal } from '@/app/components/modal';
+import { PopupSurface } from '@/app/components/popupSurface';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { toErrorWithMessage } from '@/app/lib/error-utils';
 import useChatboxesPositionsUtils from '@/app/redteaming/(fullscreen)/hooks/useChatboxesPositionsUtils';
@@ -22,8 +24,6 @@ import {
 } from '@/app/services/session-api-service';
 import { AppEventTypes, RedteamStatusProgress } from '@/app/types/enums';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
-import { Modal } from '@/app/views/shared-components/modal/modal';
-import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 import { updateWindows } from '@/lib/redux/slices/windowsSlice';
 import tailwindConfig from '@/tailwind.config';

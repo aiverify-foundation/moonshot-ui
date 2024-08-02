@@ -5,6 +5,9 @@ import { useEffect, useState, useRef, memo, useMemo } from 'react';
 import { object, string, number, boolean } from 'yup';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { MainSectionSurface } from '@/app/components/mainSectionSurface';
+import { Modal } from '@/app/components/modal';
+import { PopupSurface } from '@/app/components/popupSurface';
 import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
@@ -16,9 +19,6 @@ import {
 } from '@/app/services/llm-endpoint-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
-import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
-import { Modal } from '@/app/views/shared-components/modal/modal';
-import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
 
 //memoize select input - it is a complex component with many react elements, re-rendering it often is not efficient
 const MemSelectInput = memo(SelectInput);

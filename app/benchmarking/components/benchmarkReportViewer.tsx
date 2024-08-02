@@ -2,12 +2,12 @@
 import { useEffect, useState } from 'react';
 import { downloadHtmlReport } from '@/app/benchmarking/utils/reportDownloader';
 import { Button, ButtonType } from '@/app/components/button';
+import { MainSectionSurface } from '@/app/components/mainSectionSurface';
 import { SelectInput } from '@/app/components/selectInput';
 import { useGetBenchmarksResultQuery } from '@/app/services/benchmark-api-service';
 import { useGetRunnerByIdQuery } from '@/app/services/runner-api-service';
 import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
-import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 import { BenchmarkReport } from './benchmarkReport';
 
 function BenchmarkReportViewer() {

@@ -2,14 +2,14 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import BenchmarkRunForm from '@/app/benchmarking/components/benchmarkRunForm';
+import { EndpointSelectVew } from '@/app/benchmarking/components/endpointsSelector';
 import { CookbooksViewList } from '@/app/benchmarking/cookbooks/cookbooksViewList';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { MainSectionSurface } from '@/app/components/mainSectionSurface';
+import { Modal } from '@/app/components/modal';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
-import { EndpointSelectVew } from '@/app/benchmarking/components/endpointsSelector';
 import { colors } from '@/app/views/shared-components/customColors';
-import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
-import { Modal } from '@/app/views/shared-components/modal/modal';
 
 const stepTitles = ['Select Cookbooks', 'Connect Endpoint', 'Run'];
 enum FlowSteps {

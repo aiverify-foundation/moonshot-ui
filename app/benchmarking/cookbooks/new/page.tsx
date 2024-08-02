@@ -1,8 +1,8 @@
 import { Step } from '@/app/benchmarking/recipes/enums';
 import { RecipesViewList } from '@/app/benchmarking/recipes/recipesViewList';
+import { MainSectionSurface } from '@/app/components/mainSectionSurface';
 import { ApiResult, processResponse } from '@/app/lib/http-requests';
 import { colors } from '@/app/views/shared-components/customColors';
-import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 import config from '@/moonshot.config';
 export const dynamic = 'force-dynamic';
 

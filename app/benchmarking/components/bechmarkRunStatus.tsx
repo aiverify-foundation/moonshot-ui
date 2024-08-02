@@ -5,6 +5,9 @@ import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { ActionCard } from '@/app/components/actionCard/actionCard';
 import { Button, ButtonType } from '@/app/components/button';
+import { MainSectionSurface } from '@/app/components/mainSectionSurface';
+import { Modal } from '@/app/components/modal';
+import { PopupSurface } from '@/app/components/popupSurface';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { useCancelBenchmarkMutation } from '@/app/services/benchmark-api-service';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
@@ -13,9 +16,6 @@ import { useGetRunnerByIdQuery } from '@/app/services/runner-api-service';
 import { useGetAllStatusQuery } from '@/app/services/status-api-service';
 import { AppEventTypes, TestStatusProgress } from '@/app/types/enums';
 import { colors } from '@/app/views/shared-components/customColors';
-import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
-import { Modal } from '@/app/views/shared-components/modal/modal';
-import { PopupSurface } from '@/app/views/shared-components/popupSurface/popupSurface';
 
 function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
   const [showRunDetails, setShowRunDetails] = React.useState(false);

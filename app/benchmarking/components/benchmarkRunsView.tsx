@@ -5,9 +5,9 @@ import { useSearchParams } from 'next/navigation';
 import React, { CSSProperties } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { MainSectionSurface } from '@/app/components/mainSectionSurface';
 import { formatDateFromTimestamp } from '@/app/lib/date-utils';
 import { colors } from '@/app/views/shared-components/customColors';
-import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 
 interface CustomStyle extends CSSProperties {
   WebkitLineClamp?: string;
