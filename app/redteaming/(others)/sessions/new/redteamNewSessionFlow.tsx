@@ -6,7 +6,7 @@ import { Button, ButtonType } from '@/app/components/button';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
 import { AttackModuleSelectView } from '@/app/redteaming/(fullscreen)/components/attackModuleSelector';
-import { EndpointSelectVew } from '@/app/views/models-management/endpointsSelector';
+import { EndpointSelectVew } from '@/app/benchmarking/components/endpointsSelector';
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 import { Modal } from '@/app/views/shared-components/modal/modal';

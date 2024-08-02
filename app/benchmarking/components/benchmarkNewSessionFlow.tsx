@@ -6,7 +6,7 @@ import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext'
 import { Icon, IconName } from '@/app/components/IconSVG';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
-import { EndpointSelectVew } from '@/app/views/models-management/endpointsSelector';
+import { EndpointSelectVew } from '@/app/benchmarking/components/endpointsSelector';
 import { colors } from '@/app/views/shared-components/customColors';
 import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 import { Modal } from '@/app/views/shared-components/modal/modal';

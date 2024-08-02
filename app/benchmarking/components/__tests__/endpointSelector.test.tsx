@@ -1,7 +1,7 @@
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { EndpointSelectVew } from '@/app/benchmarking/components/endpointsSelector';
 import { useModelsList } from '@/app/hooks/useLLMEndpointList';
-import { EndpointSelectVew } from '@/app/views/models-management/endpointsSelector';
 
 const mockEndpoints: LLMEndpoint[] = [
   {
