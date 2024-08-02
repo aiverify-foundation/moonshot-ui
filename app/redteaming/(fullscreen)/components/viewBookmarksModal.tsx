@@ -5,9 +5,9 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { TextInput } from '@/app/components/textInput';
 import { formatDate } from '@/app/lib/date-utils';
 import { colors } from '@/app/views/shared-components/customColors';
+import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { Modal } from '@/app/views/shared-components/modal/modal';
 import { ColorCodedTemplateString } from './color-coded-template';
-import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 
 type ViewBookmarksModalProps = {
   onCloseIconClick: () => void;
@@ -110,9 +110,7 @@ function ViewBookmarksModal(props: ViewBookmarksModalProps) {
             ? selectedBookmark.context_strategy
             : 'No context strategy'}
         </p>
-        <h4 className="text-[1rem] font-semibold mt-10 mb-1">
-          Context Strategy
-        </h4>
+        <h4 className="text-[1rem] font-semibold mt-10 mb-1">Attack Module</h4>
         <p className="text-[0.95rem] text-moongray-300">
           {selectedBookmark.attack_module
             ? selectedBookmark.attack_module
@@ -193,13 +191,15 @@ function ViewBookmarksModal(props: ViewBookmarksModalProps) {
       secondaryBtnLabel="Cancel"
       onPrimaryBtnClick={!isPending ? handlePrimaryBtnClick : undefined}
       onSecondaryBtnClick={onCloseIconClick}>
-      {isPending ? <LoadingAnimation /> : (
+      {isPending ? (
+        <LoadingAnimation />
+      ) : (
         <main
           className="flex gap-5 mb-3 w-full"
           style={{
             height: 'calc(100% - 90px)',
           }}>
-          {(!isPending && !bookmarks.length) ? (
+          {!isPending && !bookmarks.length ? (
             <p>No bookmarks found</p>
           ) : (
             <div className="flex gap-4 h-full w-full">
@@ -210,7 +210,8 @@ function ViewBookmarksModal(props: ViewBookmarksModalProps) {
               <div className="flex-1">{detailsSection}</div>
             </div>
           )}
-        </main>)}
+        </main>
+      )}
     </Modal>
   );
 }
