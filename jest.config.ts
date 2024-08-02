@@ -31,12 +31,7 @@ const config: Config = {
   coverageReporters: ['text', 'text-summary'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
-    '^@components/(.*)$': '<rootDir>/app/components/$1',
-    '^@apptypes/(.*)$': '<rootDir>/app/types/$1',
-    '^@views/(.*)$': '<rootDir>/app/views/$1',
-    '^@app/lib/(.*)$': '<rootDir>/app/lib/$1',
-    '^@api/(.*)$': '<rootDir>/app/api/$1',
-    '^@redux/slices$': '<rootDir>/lib/redux/slices/index',
+    '^@/app/components/(.*)$': '<rootDir>/app/components/$1',
   },
 };
 

@@ -1,6 +1,6 @@
 import { IconName } from '@/app/components/IconSVG';
+import { SelectListItem } from '@/app/components/selectListItem';
 import { useGetAllAttackModulesQuery } from '@/app/services/attack-modules-api-service';
-import { SelectListItem } from '@/app/views/shared-components/selectListItem';
 import tailwindConfig from '@/tailwind.config';
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 

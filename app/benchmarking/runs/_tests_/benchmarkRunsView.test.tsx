@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useSearchParams } from 'next/navigation';
-import BenchmarkRunsView from '@/app/views/benchmarking/benchmarkRunsView';
+import BenchmarkRunsView from '@/app/benchmarking/components/benchmarkRunsView';
 
 jest.mock('next/link', () => {
   return {

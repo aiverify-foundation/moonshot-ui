@@ -1,9 +1,9 @@
 import EventEmitter from 'events';
 import { NextResponse } from 'next/server';
+import { appEventBus } from '@/app/api/eventbus';
+import { BenchMarkEvents, SystemEvents } from '@/app/api/types';
+import { AppEventTypes } from '@/app/types/enums';
 import { getSSEWriter } from './sse_writer';
-import { appEventBus } from '@api/eventbus';
-import { BenchMarkEvents, SystemEvents } from '@api/types';
-import { AppEventTypes } from '@apptypes/enums';
 
 export const dynamic = 'force-dynamic';
 

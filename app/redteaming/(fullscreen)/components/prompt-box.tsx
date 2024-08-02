@@ -3,10 +3,11 @@ import { Button, ButtonType } from '@/app/components/button';
 import { ListItem, SelectList } from '@/app/components/selectList';
 import { TextArea } from '@/app/components/textArea';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
+import { Window } from '@/app/components/window';
+import { colors } from '@/app/customColors';
 import useOutsideClick from '@/app/hooks/use-outside-click';
 import { debounce } from '@/app/lib/throttle';
 import useChatboxesPositionsUtils from '@/app/redteaming/(fullscreen)/hooks/useChatboxesPositionsUtils';
-import { colors } from '@/app/views/shared-components/customColors';
 import { toggleDarkMode, useAppDispatch } from '@/lib/redux';
 import {
   LayoutMode,
@@ -14,7 +15,6 @@ import {
 } from '@/lib/redux/slices/chatLayoutModeSlice';
 import { ColorCodedTemplateString } from './color-coded-template';
 import { SlashCommand, descriptionByCommand } from './slash-commands';
-import { Window } from '@components/window';
 
 enum TextInputMode {
   PROMPT_TEXT,

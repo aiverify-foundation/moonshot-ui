@@ -2,11 +2,11 @@
 import React from 'react';
 import { getAllBookmarks } from '@/actions/getAllBookmarks';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { LoadingAnimation } from '@/app/components/loadingAnimation';
+import { Modal } from '@/app/components/modal';
 import { TextInput } from '@/app/components/textInput';
+import { colors } from '@/app/customColors';
 import { formatDate } from '@/app/lib/date-utils';
-import { colors } from '@/app/views/shared-components/customColors';
-import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
-import { Modal } from '@/app/views/shared-components/modal/modal';
 import { ColorCodedTemplateString } from './color-coded-template';
 
 type ViewBookmarksModalProps = {

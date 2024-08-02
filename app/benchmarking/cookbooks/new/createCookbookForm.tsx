@@ -7,10 +7,10 @@ import { redirectRoute } from '@/actions/redirectRoute';
 import { SelectedRecipesPills } from '@/app/benchmarking/recipes/selectedRecipesPills';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { Modal } from '@/app/components/modal';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
-import { colors } from '@/app/views/shared-components/customColors';
-import { Modal } from '@/app/views/shared-components/modal/modal';
+import { colors } from '@/app/customColors';
 export const dynamic = 'force-dynamic';
 
 type CreateCookbookFormProps = {

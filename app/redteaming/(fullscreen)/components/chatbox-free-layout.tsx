@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { colors } from '@/app/customColors';
 import {
   getWindowId,
   getWindowScrollTopById,
@@ -6,7 +7,6 @@ import {
   getWindowXYById,
 } from '@/app/lib/window-utils';
 import useChatboxesPositionsUtils from '@/app/redteaming/(fullscreen)/hooks/useChatboxesPositionsUtils';
-import { colors } from '@/app/views/shared-components/customColors';
 import { useAppSelector } from '@/lib/redux';
 import { ChatBox, ChatBoxControls } from './chatbox';
 

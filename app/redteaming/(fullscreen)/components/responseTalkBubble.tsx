@@ -1,5 +1,5 @@
 import { Chat } from '@/app/components/chat';
-import { colors } from '@/app/views/shared-components/customColors';
+import { colors } from '@/app/customColors';
 
 export type ResposneTalkBubbleProps = {
   isHovered: boolean;

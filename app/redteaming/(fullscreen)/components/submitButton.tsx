@@ -3,7 +3,7 @@
 import { useFormStatus } from 'react-dom';
 import { Button } from '@/app/components/button';
 import { ButtonType } from '@/app/components/button';
-import { colors } from '@/app/views/shared-components/customColors';
+import { colors } from '@/app/customColors';
 
 function SubmitButton({ disabled }: { disabled: boolean }) {
   const { pending } = useFormStatus();

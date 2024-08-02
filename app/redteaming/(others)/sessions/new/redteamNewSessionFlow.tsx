@@ -1,15 +1,15 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import React, { useLayoutEffect, useState } from 'react';
+import { EndpointSelectVew } from '@/app/benchmarking/components/endpointsSelector';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { MainSectionSurface } from '@/app/components/mainSectionSurface';
+import { Modal } from '@/app/components/modal';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
+import { colors } from '@/app/customColors';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
 import { AttackModuleSelectView } from '@/app/redteaming/(fullscreen)/components/attackModuleSelector';
-import { EndpointSelectVew } from '@/app/views/models-management/endpointsSelector';
-import { colors } from '@/app/views/shared-components/customColors';
-import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
-import { Modal } from '@/app/views/shared-components/modal/modal';
 import {
   addRedteamModels,
   removeRedteamModels,

@@ -6,9 +6,9 @@ import { updateCookbookRecipes } from '@/actions/updateCookbookRecipes';
 import { CreateCookbookForm } from '@/app/benchmarking/cookbooks/new/createCookbookForm';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { Modal } from '@/app/components/modal';
 import { TextInput } from '@/app/components/textInput';
-import { colors } from '@/app/views/shared-components/customColors';
-import { Modal } from '@/app/views/shared-components/modal/modal';
+import { colors } from '@/app/customColors';
 import { Step } from './enums';
 import { SelectedRecipesPills } from './selectedRecipesPills';
 

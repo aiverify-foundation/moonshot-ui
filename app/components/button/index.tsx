@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import styles from './styles/button.module.css';
-import { Icon, IconName } from '@components/IconSVG';
 
 export enum ButtonType {
   PRIMARY,

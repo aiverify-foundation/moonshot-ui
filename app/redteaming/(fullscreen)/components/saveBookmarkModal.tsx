@@ -4,9 +4,9 @@ import { createBookmark } from '@/actions/createBookmark';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { Chat } from '@/app/components/chat';
+import { Modal } from '@/app/components/modal';
 import { TextInput } from '@/app/components/textInput';
-import { colors } from '@/app/views/shared-components/customColors';
-import { Modal } from '@/app/views/shared-components/modal/modal';
+import { colors } from '@/app/customColors';
 import { PromptBubbleInfo } from './prompt-bubble-info';
 import { SubmitButton } from './submitButton';
 

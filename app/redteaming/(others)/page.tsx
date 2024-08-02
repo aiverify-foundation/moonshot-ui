@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { IconName } from '@/app/components/IconSVG';
-import BackToHomeButton from '@/app/views/shared-components/backToHomeButton/backToHomeButton';
-import { colors } from '@/app/views/shared-components/customColors';
-import { SubmenuButton } from '@/app/views/shared-components/submenuButton/submenuButton';
+import BackToHomeButton from '@/app/components/backToHomeButton';
+import { SubmenuButton } from '@/app/components/submenuButton/submenuButton';
+import { colors } from '@/app/customColors';
 
 export default function RedteamingHomePage() {
   return (

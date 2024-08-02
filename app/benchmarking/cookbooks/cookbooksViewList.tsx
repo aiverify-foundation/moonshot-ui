@@ -5,7 +5,7 @@ import React, { CSSProperties, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { TextInput } from '@/app/components/textInput';
-import { colors } from '@/app/views/shared-components/customColors';
+import { colors } from '@/app/customColors';
 import { SelectedCookbooksPills } from './selectedCookbooksPills';
 
 interface CustomStyle extends CSSProperties {
