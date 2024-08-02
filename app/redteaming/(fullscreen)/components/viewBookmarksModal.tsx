@@ -4,8 +4,8 @@ import { getAllBookmarks } from '@/actions/getAllBookmarks';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Modal } from '@/app/components/modal';
 import { TextInput } from '@/app/components/textInput';
+import { colors } from '@/app/customColors';
 import { formatDate } from '@/app/lib/date-utils';
-import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { ColorCodedTemplateString } from './color-coded-template';
 

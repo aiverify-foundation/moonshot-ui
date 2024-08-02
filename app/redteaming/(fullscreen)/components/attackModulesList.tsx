@@ -1,8 +1,8 @@
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { colors } from '@/app/customColors';
 import { useGetAllAttackModulesQuery } from '@/app/services/attack-modules-api-service';
-import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 
 type AttackModulesListProps = {

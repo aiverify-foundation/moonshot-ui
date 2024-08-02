@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { PopupSurface } from '@/app/components/popupSurface';
+import { colors } from '@/app/customColors';
 import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
-import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { TabsMenu, TabItem } from '@/app/views/shared-components/tabsMenu';
 import {

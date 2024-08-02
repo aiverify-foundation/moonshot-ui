@@ -8,8 +8,8 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
 import { Modal } from '@/app/components/modal';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
+import { colors } from '@/app/customColors';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
-import { colors } from '@/app/views/shared-components/customColors';
 
 const stepTitles = ['Select Cookbooks', 'Connect Endpoint', 'Run'];
 enum FlowSteps {

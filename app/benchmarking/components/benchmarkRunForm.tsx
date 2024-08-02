@@ -5,9 +5,9 @@ import { object, string, number, array } from 'yup';
 import { Button, ButtonType } from '@/app/components/button';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
+import { colors } from '@/app/customColors';
 import { useRunBenchmarkMutation } from '@/app/services/benchmark-api-service';
 import { BenchmarkCollectionType } from '@/app/types/enums';
-import { colors } from '@/app/views/shared-components/customColors';
 import {
   resetBenchmarkCookbooks,
   resetBenchmarkModels,

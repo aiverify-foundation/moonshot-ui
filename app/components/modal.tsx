@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
-import { colors } from '@/app/views/shared-components/customColors';
+import { colors } from '@/app/customColors';
 
 type ModalProps = {
   top?: React.CSSProperties['top'];

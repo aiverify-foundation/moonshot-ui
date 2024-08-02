@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Chat } from '@/app/components/chat';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
-import { colors } from '@/app/views/shared-components/customColors';
+import { colors } from '@/app/customColors';
 import { PromptBubbleInfo } from './prompt-bubble-info';
 
 export type PromptTalkBubbleProps = {

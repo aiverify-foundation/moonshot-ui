@@ -1,8 +1,8 @@
 import React from 'react';
 import { CookbookResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { colors } from '@/app/customColors';
 import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
-import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 import { RecipeGradeBadge } from './badge';
 import { BenchmarkReportRecipeResult } from './benchmarkReportRecipeResult';

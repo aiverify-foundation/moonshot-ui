@@ -5,8 +5,8 @@ import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
+import { colors } from '@/app/customColors';
 import { formatDate } from '@/app/lib/date-utils';
-import { colors } from '@/app/views/shared-components/customColors';
 
 type EndpointsViewListProps = {
   endpoints: LLMEndpoint[];

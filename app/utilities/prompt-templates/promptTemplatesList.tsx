@@ -3,7 +3,7 @@ import { useSearchParams } from 'next/navigation';
 import React, { CSSProperties, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
-import { colors } from '@/app/views/shared-components/customColors';
+import { colors } from '@/app/customColors';
 
 interface CustomStyle extends CSSProperties {
   WebkitLineClamp?: string;

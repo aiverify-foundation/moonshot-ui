@@ -10,7 +10,7 @@ import { Button, ButtonType } from '@/app/components/button';
 import { Modal } from '@/app/components/modal';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
-import { colors } from '@/app/views/shared-components/customColors';
+import { colors } from '@/app/customColors';
 export const dynamic = 'force-dynamic';
 
 type CreateCookbookFormProps = {

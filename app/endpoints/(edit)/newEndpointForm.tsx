@@ -11,13 +11,13 @@ import { PopupSurface } from '@/app/components/popupSurface';
 import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
+import { colors } from '@/app/customColors';
 import { toErrorWithMessage } from '@/app/lib/error-utils';
 import { useGetAllConnectorsQuery } from '@/app/services/connector-api-service';
 import {
   useCreateLLMEndpointMutation,
   useUpdateLLMEndpointMutation,
 } from '@/app/services/llm-endpoint-api-service';
-import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 
 //memoize select input - it is a complex component with many react elements, re-rendering it often is not efficient

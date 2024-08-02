@@ -7,9 +7,9 @@ import { Button, ButtonType } from '@/app/components/button';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
 import { Modal } from '@/app/components/modal';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
+import { colors } from '@/app/customColors';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
 import { AttackModuleSelectView } from '@/app/redteaming/(fullscreen)/components/attackModuleSelector';
-import { colors } from '@/app/views/shared-components/customColors';
 import {
   addRedteamModels,
   removeRedteamModels,

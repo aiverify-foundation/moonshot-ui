@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors } from '@/app/views/shared-components/customColors';
+import { colors } from '@/app/customColors';
 import { PromptAndResponseBubbles } from './promptAndResponseTalkBubbles';
 import { Chat } from '@components/chat';
 

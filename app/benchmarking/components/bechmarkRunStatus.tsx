@@ -8,6 +8,7 @@ import { Button, ButtonType } from '@/app/components/button';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
 import { Modal } from '@/app/components/modal';
 import { PopupSurface } from '@/app/components/popupSurface';
+import { colors } from '@/app/customColors';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { useCancelBenchmarkMutation } from '@/app/services/benchmark-api-service';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
@@ -15,7 +16,6 @@ import { useGetLLMEndpointsQuery } from '@/app/services/llm-endpoint-api-service
 import { useGetRunnerByIdQuery } from '@/app/services/runner-api-service';
 import { useGetAllStatusQuery } from '@/app/services/status-api-service';
 import { AppEventTypes, TestStatusProgress } from '@/app/types/enums';
-import { colors } from '@/app/views/shared-components/customColors';
 
 function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
   const [showRunDetails, setShowRunDetails] = React.useState(false);

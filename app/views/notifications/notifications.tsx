@@ -2,11 +2,11 @@
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { colors } from '@/app/customColors';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { useGetAllRunnersQuery } from '@/app/services/runner-api-service';
 import { useGetAllStatusQuery } from '@/app/services/status-api-service';
 import { AppEventTypes, TestStatusProgress } from '@/app/types/enums';
-import { colors } from '@/app/views/shared-components/customColors';
 
 function Notifications() {
   const [statuses, setStatuses] = React.useState<TestStatuses>({});

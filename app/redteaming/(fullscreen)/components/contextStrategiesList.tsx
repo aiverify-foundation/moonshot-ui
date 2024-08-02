@@ -1,8 +1,8 @@
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { colors } from '@/app/customColors';
 import { useGetAllContextStrategiesQuery } from '@/app/services/contextstrat-api-service';
-import { colors } from '@/app/views/shared-components/customColors';
 import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
 
 type ContextStrategiesListProps = {
@@ -42,7 +42,9 @@ function ContextStrategiesList(props: ContextStrategiesListProps) {
   const listOfContextStrategies = data ? (
     <ul className="divide-y divide-moongray-500 max-w-[400px] overflow-x-hidden overflow-y-auto custom-scrollbar h-full">
       {data.map((contextStrategy) => {
-        const isSelected = selectedContextStrategy && selectedContextStrategy.id === contextStrategy.id;
+        const isSelected =
+          selectedContextStrategy &&
+          selectedContextStrategy.id === contextStrategy.id;
         return (
           <li
             key={contextStrategy.id}
@@ -58,7 +60,9 @@ function ContextStrategiesList(props: ContextStrategiesListProps) {
                   name={IconName.MoonContextStrategy}
                   size={18}
                 />
-                <h3 className="text-[0.87rem] text-white">{contextStrategy.name}</h3>
+                <h3 className="text-[0.87rem] text-white">
+                  {contextStrategy.name}
+                </h3>
               </div>
               <p className="text-sm h-[80px] min-h-[80px] overflow-y-hidden text-[0.74rem] text-moongray-200">
                 {contextStrategy.description}

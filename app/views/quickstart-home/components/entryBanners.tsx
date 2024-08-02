@@ -4,7 +4,7 @@ import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { ActionCard } from '@/app/components/actionCard/actionCard';
 import { Banner } from '@/app/components/banner/banner';
-import { colors } from '@/app/views/shared-components/customColors';
+import { colors } from '@/app/customColors';
 import {
   resetBenchmarkCookbooks,
   resetBenchmarkModels,

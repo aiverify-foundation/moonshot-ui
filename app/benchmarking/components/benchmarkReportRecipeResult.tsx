@@ -4,7 +4,7 @@ import {
   RecipeResult,
 } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
-import { colors } from '@/app/views/shared-components/customColors';
+import { colors } from '@/app/customColors';
 import { RecipeGradeBadge } from './badge';
 import { gradingLettersMlcMap, MLC_COOKBOOK_IDS } from './constants';
 import { gradeColorsMlc, gradeColorsMoonshot } from './gradeColors';

@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import React from 'react';
-import { colors } from '@/app/views/shared-components/customColors';
+import { colors } from '@/app/customColors';
 import { Icon, IconName } from '@components/IconSVG';
 
 type menuItem =

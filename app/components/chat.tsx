@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, forwardRef } from 'react';
 import { Window } from '@/app/components/window';
-import { colors } from '@/app/views/shared-components/customColors';
+import { colors } from '@/app/customColors';
 
 type ChatboxProps = {
   windowId: string;
