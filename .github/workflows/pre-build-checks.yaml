@@ -133,33 +133,33 @@ jobs:
             exit $exit_code_audit
           fi
 
-      ### Publish reports to ci dashboard ###
-
-      - name: Checkout dashboard
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && always() }}
-        uses: actions/checkout@v3
-        with:
-          repository: aiverify-foundation/ci-dashboard
-          token: ${{ secrets.CHECKOUT_TOKEN }}
-          ref: main
-          path: check-results
-
-      - name: Push results to dashboard
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && always() }}
-        working-directory: ${{ github.workspace }}/check-results
-        run: |
-          set +e
-          find ../ -type f -name ".gitignore" -exec rm {} +
-          [ -d "docs/pre-build/moonshot-ui" ] && rm -rf docs/pre-build/moonshot-ui
-          mkdir -p docs/pre-build/moonshot-ui
-          mv ../coverage docs/pre-build/moonshot-ui/
-          mv ../*.svg docs/pre-build/moonshot-ui/
-          mv ../*.html docs/pre-build/moonshot-ui/
-          mv ../*.md docs/pre-build/moonshot-ui/
-          mv ../*.txt docs/pre-build/moonshot-ui/
-          git add docs/pre-build/moonshot-ui
-          git config user.name "moonshot"
-          git config user.email "moonshot@imda.gov.sg"
-          git commit -m "feat(moonshot-ui) actions publish moonshot-ui reports to dashboard"
-          git push
-          set -e
+#      ### Publish reports to ci dashboard ###
+#
+#      - name: Checkout dashboard
+#        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && always() }}
+#        uses: actions/checkout@v3
+#        with:
+#          repository: aiverify-foundation/ci-dashboard
+#          token: ${{ secrets.CHECKOUT_TOKEN }}
+#          ref: main
+#          path: check-results
+#
+#      - name: Push results to dashboard
+#        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && always() }}
+#        working-directory: ${{ github.workspace }}/check-results
+#        run: |
+#          set +e
+#          find ../ -type f -name ".gitignore" -exec rm {} +
+#          [ -d "docs/pre-build/moonshot-ui" ] && rm -rf docs/pre-build/moonshot-ui
+#          mkdir -p docs/pre-build/moonshot-ui
+#          mv ../coverage docs/pre-build/moonshot-ui/
+#          mv ../*.svg docs/pre-build/moonshot-ui/
+#          mv ../*.html docs/pre-build/moonshot-ui/
+#          mv ../*.md docs/pre-build/moonshot-ui/
+#          mv ../*.txt docs/pre-build/moonshot-ui/
+#          git add docs/pre-build/moonshot-ui
+#          git config user.name "moonshot"
+#          git config user.email "moonshot@imda.gov.sg"
+#          git commit -m "feat(moonshot-ui) actions publish moonshot-ui reports to dashboard"
+#          git push
+#          set -e
