@@ -121,8 +121,6 @@ jobs:
           npx markdown-to-html-cli --source npm-audit-report.md --output npm-audit-report.html -y
           echo -e "License Check Summary for moonshot-ui\n" > license-report.txt
           cat licenses-found.txt >> license-report.txt
-          echo -e "\nLicense Check Summary for shared-library\n" >> license-report.txt
-          cat ../ai-verify-shared-library/licenses-found.txt >> license-report.txt
           cat license-report.txt
           cp license-report.txt licenses-found.txt
           node .ci/createBadges.mjs dependency        
