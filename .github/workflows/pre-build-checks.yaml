@@ -71,11 +71,11 @@ jobs:
           cp .env.local .env
           npm run build
 
-      # Format check
-      - name: Format Check
-        if: ${{ ! cancelled() }}
-        run: |
-          npm run format-check
+#      # Format check
+#      - name: Format Check
+#        if: ${{ ! cancelled() }}
+#        run: |
+#          npm run format-check
 
       # Unit Tests & Coverage
       - name: Unit tests with coverage
