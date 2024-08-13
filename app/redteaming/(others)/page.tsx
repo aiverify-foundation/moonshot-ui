@@ -48,6 +48,16 @@ export default function RedteamingHomePage() {
             textColor={colors.white}
           />
         </Link>
+        <Link
+          href="/redteaming/bookmarks"
+          style={{ width: '40%' }}>
+          <SubmenuButton
+            width="100%"
+            text="View Bookmarks"
+            menuIconName={IconName.Ribbon}
+            textColor={colors.white}
+          />
+        </Link>
       </section>
     </>
   );
