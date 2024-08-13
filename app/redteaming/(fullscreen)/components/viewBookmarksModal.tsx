@@ -2,6 +2,7 @@
 import React from 'react';
 import { getAllBookmarks } from '@/actions/getAllBookmarks';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { Button, ButtonType } from '@/app/components/button';
 import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { Modal } from '@/app/components/modal';
 import { TextInput } from '@/app/components/textInput';
@@ -189,7 +190,9 @@ function ViewBookmarksModal(props: ViewBookmarksModalProps) {
       onCloseIconClick={onCloseIconClick}
       primaryBtnLabel="Use"
       secondaryBtnLabel="Cancel"
-      onPrimaryBtnClick={!isPending ? handlePrimaryBtnClick : undefined}
+      onPrimaryBtnClick={
+        !isPending && bookmarks.length ? handlePrimaryBtnClick : undefined
+      }
       onSecondaryBtnClick={onCloseIconClick}>
       {isPending ? (
         <LoadingAnimation />
@@ -210,6 +213,18 @@ function ViewBookmarksModal(props: ViewBookmarksModalProps) {
               <div className="flex-1">{detailsSection}</div>
             </div>
           )}
+          <div className="absolute bottom-0 left-0 p-4 z-10">
+            <a href="/api/v1/bookmarks">
+              <Button
+                size="md"
+                width={150}
+                mode={ButtonType.OUTLINE}
+                text="Export Bookmarks"
+                hoverBtnColor={colors.moongray[1000]}
+                pressedBtnColor={colors.moongray[900]}
+              />
+            </a>
+          </div>
         </main>
       )}
     </Modal>
