@@ -40,7 +40,7 @@ export async function GET() {
     const res = new NextResponse(stream);
     res.headers.set(
       'Content-Disposition',
-      'attachment; filename="filename.json"'
+      'attachment; filename="bookmarks.json"'
     );
     res.headers.set('Content-Type', 'application/json');
     return res;

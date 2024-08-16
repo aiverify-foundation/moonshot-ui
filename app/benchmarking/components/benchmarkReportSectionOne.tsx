@@ -463,7 +463,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
               style={{ color: '#ffffff' }}>
               Number of prompts ran
             </h5>
-            <p>1{totalPrompts}</p>
+            <p>{totalPrompts}</p>
           </div>
           <div>
             <h5
