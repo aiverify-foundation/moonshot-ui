@@ -9,8 +9,13 @@
     "start-trace": "node --trace-warnings node_modules/.bin/next",
     "lint": "next lint && npm run tsc",
     "lint:fix": "next lint --fix",
+    "lint-html-report": "next lint -f html -o eslint-report.html",
+    "lint-json-report": "next lint -f json -o eslint-report.json",
+    "lint-check": "next lint",
+    "format-check": "prettier --check .",
     "tsc": "tsc --noEmit",
     "test": "jest",
+    "coverage": "npx jest --silent",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },
