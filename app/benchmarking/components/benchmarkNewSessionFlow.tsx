@@ -37,6 +37,8 @@ function BenchmarkNewSessionFlow() {
   const [currentView, setCurrentView] = useState<BenchmarkNewSessionViews>(
     BenchmarkNewSessionViews.TOPICS_SELECTION
   );
+  console.log(selectedModels);
+  console.log(selectedCookbooks);
   const [endpointToEdit, setEndpointToEdit] = useState<
     LLMEndpoint | undefined
   >();
@@ -243,7 +245,11 @@ function BenchmarkNewSessionFlow() {
               className="flex flex-col gap-5 justify-center w-full"
               style={{ height: 'calc(100% - 33px)' }}>
               {!hiddenNavButtons[0] && (
-                <div className="flex justify-center">
+                <div
+                  role="button"
+                  className="flex justify-center"
+                  onClick={previousViewHandler}
+                  aria-label="Previous View">
                   <Icon
                     name={IconName.WideArrowUp}
                     size={28}
@@ -254,8 +260,11 @@ function BenchmarkNewSessionFlow() {
               {view}
               {!hiddenNavButtons[1] && (
                 <div
+                  role="button"
                   className="flex justify-center"
-                  style={{ opacity: disableNextBtn ? 0.3 : 1 }}>
+                  style={{ opacity: disableNextBtn ? 0.3 : 1 }}
+                  onClick={disableNextBtn ? undefined : nextViewHandler}
+                  aria-label="Next View">
                   <Icon
                     name={IconName.WideArrowDown}
                     size={28}
