@@ -1,3 +1,7 @@
+// There is a mix of camelCase and snake_case in naming.
+// This is because, a lot of the types are designed to map directly to the web-api API response payloads, for convenience.
+// The backend is done in Python. Thus the snake_case in some of the naming.
+
 type AlertMsg = {
   heading: string;
   iconName: IconName;
@@ -24,10 +28,10 @@ type SessionData = {
   session: Session;
   session_name: string;
   session_description: string;
-  chat_records: Record<string, DialoguePairInfo[]>;
+  chat_records: Record<string, PromptDetails[]>;
 };
 
-type DialoguePairInfo = {
+type PromptDetails = {
   chat_record_id: number;
   conn_id: string;
   context_strategy: string;
@@ -47,7 +51,7 @@ type ManualPromptResponseData = {
   current_am_id: string;
   current_cs_id: string;
   current_pt_id: string;
-  current_chats: Record<string, DialoguePairInfo[]>;
+  current_chats: Record<string, PromptDetails[]>;
   current_batch_size: number;
   current_status: string;
 };
@@ -55,7 +59,7 @@ type ManualPromptResponseData = {
 //[x, y, w, h, scrollTop]
 type WindowData = [number, number, number, number, number];
 
-type ChatHistory = Record<string, DialoguePairInfo[]>;
+type ChatHistory = Record<string, PromptDetails[]>;
 
 type PromptTemplate = {
   name: string;
@@ -200,7 +204,7 @@ type ArtStatus = {
   current_am_id: string;
   current_pt_id: string;
   current_cs_id: string;
-  current_chats: Record<string, DialoguePairInfo[]>;
+  current_chats: Record<string, PromptDetails[]>;
   current_batch_size: string;
   current_status: string;
 };
@@ -316,3 +320,38 @@ type FormState<T = Record<string, string | number>> = {
   formStatus: string;
   formErrors: Record<string, string[]> | undefined;
 } & Partial<T>;
+
+type CreatePromptBookmarkFunction = (
+  duration: string,
+  prompt: string,
+  preparedPrompt: string,
+  attackModule: string | undefined,
+  contextStrategy: string | undefined,
+  promptTemplateName: string | undefined,
+  template: string | undefined,
+  metric: string | undefined,
+  response: string
+) => void;
+
+type BookmarkFormValues = {
+  name: string;
+  prompt: string;
+  prepared_prompt: string;
+  response: string;
+  metric?: string;
+  attack_module?: string;
+  context_strategy?: string;
+  prompt_template?: string;
+};
+
+type BookMark = {
+  name: string;
+  prompt: string;
+  prepared_prompt: string;
+  response: string;
+  metric?: string;
+  attack_module?: string;
+  context_strategy?: string;
+  prompt_template?: string;
+  bookmark_time: string;
+};

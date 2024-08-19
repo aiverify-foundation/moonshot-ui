@@ -1,6 +1,6 @@
+import { appEventBus } from '@/app/api/eventbus';
 import { AppEventTypes } from '@/app/types/enums';
 import config from '@/moonshot.config';
-import { appEventBus } from '@api/eventbus';
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {

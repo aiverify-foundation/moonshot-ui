@@ -1,7 +1,7 @@
 // SSE implementation follows 'ts-sse' closely
 //https://github.com/michaelangeloio/ts-sse
 
-import { EventNotifier, Message } from '@api/types';
+import { EventNotifier, Message } from '@/app/api/types';
 
 function toDataString(data: string | Record<string, unknown>): string {
   let stringData: string;

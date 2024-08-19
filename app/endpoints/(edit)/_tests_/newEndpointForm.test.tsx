@@ -7,7 +7,6 @@ import {
   useCreateLLMEndpointMutation,
   useUpdateLLMEndpointMutation,
 } from '@/app/services/llm-endpoint-api-service';
-import { useAppSelector } from '@/lib/redux';
 
 const mockConnectors = ['connector1', 'connector2'];
 
@@ -511,11 +510,10 @@ describe('NewEndpointForm', () => {
 
     render(<NewEndpointForm endpointToEdit={mockEndpoint} />);
 
-    const nameTextbox = screen.getByDisplayValue(mockEndpoint.name);
     const saveBtn = screen.getByRole('button', { name: /save/i });
     expect(saveBtn).toBeDisabled();
 
-    const tokenTextbox = screen.getByRole('textbox', {name: /token/i});
+    const tokenTextbox = screen.getByRole('textbox', { name: /token/i });
     await userEvent.click(tokenTextbox);
     expect(tokenTextbox).toHaveValue('');
     await userEvent.type(tokenTextbox, newToken);

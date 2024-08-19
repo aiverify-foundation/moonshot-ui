@@ -1,7 +1,7 @@
 import { RunnerDetailWebApiModel, RunnerWebApiModel } from '@/app/api/types';
+import BenchmarkRunsView from '@/app/benchmarking/components/benchmarkRunsView';
 import { ErrorWithMessage, toErrorWithMessage } from '@/app/lib/error-utils';
 import { ApiResult, processResponse } from '@/app/lib/http-requests';
-import BenchmarkRunsView from '@/app/views/benchmarking/benchmarkRunsView';
 import config from '@/moonshot.config';
 export const dynamic = 'force-dynamic';
 

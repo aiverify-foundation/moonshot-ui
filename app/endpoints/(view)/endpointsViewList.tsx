@@ -4,9 +4,9 @@ import Link from 'next/link';
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { MainSectionSurface } from '@/app/components/mainSectionSurface';
+import { colors } from '@/app/customColors';
 import { formatDate } from '@/app/lib/date-utils';
-import { colors } from '@/app/views/shared-components/customColors';
-import { MainSectionSurface } from '@/app/views/shared-components/mainSectionSurface/mainSectionSurface';
 
 type EndpointsViewListProps = {
   endpoints: LLMEndpoint[];
@@ -40,7 +40,9 @@ function EndpointsViewList({ endpoints, children }: EndpointsViewListProps) {
         <main
           className="grid grid-cols-2 gap-5"
           style={{ height: 'calc(100% - 140px)' }}>
-          <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar">
+          <ul
+            className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar"
+            role="list">
             {endpoints.map((endpoint) => {
               const isSelected = endpoint.id === selectedEndpointId;
               return (

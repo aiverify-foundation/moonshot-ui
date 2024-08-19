@@ -1,0 +1,254 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SaveBookmarkModal renders and populates hidden form elements with the correct values 1`] = `
+<div>
+  <div
+    class="fixed inset-0 flex items-center justify-center bg-black z-[999]"
+    style="opacity: 0.8;"
+  />
+  <div
+    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[260px] z-[1000] rounded-[15px] p-6"
+    style="width: 900px; height: 640px; background-color: rgb(70, 67, 73); color: rgb(255, 255, 255); box-shadow: 0 0 10px rgba(0,0,0,.5);"
+  >
+    <header
+      class="flex justify-between mb-3"
+    >
+      <h1
+        class="text-[1.4rem] font-normal"
+      >
+        Save New Bookmark
+      </h1>
+      <div
+        class="
+        flex items-center justify-center 
+        cursor-pointer
+        hover:opacity-50 active:opacity-25
+        
+      "
+      >
+        <svg
+          height="20"
+          viewBox="0 0 32 32"
+          width="20"
+        >
+          <g
+            id="cross"
+          >
+            <line
+              stroke="#FFFFFF"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              x1="7"
+              x2="25"
+              y1="7"
+              y2="25"
+            />
+            <line
+              stroke="#FFFFFF"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              x1="7"
+              x2="25"
+              y1="25"
+              y2="7"
+            />
+          </g>
+        </svg>
+      </div>
+    </header>
+    <main>
+      <p
+        class="mb-8 text-[0.95rem]"
+      >
+        Save this prompt as a bookmark to be able to quickly reference it in future red teaming exercises.
+      </p>
+      <div
+        class="flex gap-4 h-[300px]"
+      >
+        <section
+          class="flex-1 h-full bg-chatboxbg p-4 pr-2 rounded-lg"
+        >
+          <div
+            class="custom-scrollbar overflow-y-auto h-full"
+          >
+            <div
+              class="max-w-[90%]"
+            >
+              <h2
+                class="text-left text-white text-[0.8rem] mb-2"
+              >
+                Prompt
+              </h2>
+              <div
+                style="text-align: left; color: rgb(255, 255, 255); padding: 12px 16px; font-size: 14px; background-color: rgb(73, 48, 90); margin: 0px 0px 0px 0px; border-radius: 14px; min-width: 35%;"
+              >
+                Prepared test prompt
+              </div>
+              <h2
+                class="text-left text-white text-[0.8rem] mb-2 mt-4"
+              >
+                Response
+              </h2>
+              <div
+                style="text-align: left; color: rgb(0, 0, 0); padding: 12px 16px; font-size: 14px; background-color: rgb(221, 221, 221); margin: 0px 0px 0px 0px; border-radius: 14px; min-width: 35%;"
+              >
+                Test response
+              </div>
+            </div>
+          </div>
+        </section>
+        <section
+          class="flex-1"
+        >
+          <div
+            class="w-full p-2"
+          >
+            <h3
+              class="mb-1 underline text-stone-50"
+            >
+              Prompt Details
+            </h3>
+            <div>
+              <span
+                class="text-sky-400 pr-1"
+              >
+                Response Time Taken (secs):
+              </span>
+              <span
+                class="text-white"
+              >
+                2.0000
+              </span>
+            </div>
+            <div>
+              <span
+                class="text-sky-400 pr-1"
+              >
+                Template Name:
+              </span>
+              <span
+                class="text-white"
+              >
+                Test template
+              </span>
+            </div>
+            <div
+              class="text-stone-50 dark:text-sky-400 mb-1 mt-2 underline"
+            >
+              Template String
+            </div>
+            <div
+              class="max-h-[200px] custom-scrollbar overflow-y-auto"
+            >
+              <div>
+                <span
+                  style="color: rgb(207, 250, 254);"
+                >
+                  Test template string
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <form
+        action="unused"
+        class="absolute bottom-0 left-0 flex flex-col gap-2 p-7 w-full mt-4"
+      >
+        <div
+          class="border-t border-moongray-500 w-[98%] mb-2"
+        />
+        <div
+          class="w-[380px]"
+        >
+          <div
+            class="textInput"
+          >
+            <label
+              for="bookmarkName"
+            >
+              <div
+                class="label"
+                style="font-size: 0.9rem; color: rgb(213, 170, 234);"
+              >
+                <div>
+                  Name *
+                </div>
+              </div>
+              <input
+                autocomplete="off"
+                id="bookmarkName"
+                name="name"
+                placeholder="Give this bookmark a unique name"
+                style="height: 38px;"
+                type="text"
+                value=""
+              />
+            </label>
+          </div>
+        </div>
+        <input
+          name="prompt"
+          type="hidden"
+          value="Test prompt"
+        />
+        <input
+          name="prompt_template"
+          type="hidden"
+          value="Test template string"
+        />
+        <input
+          name="prepared_prompt"
+          type="hidden"
+          value="Prepared test prompt"
+        />
+        <input
+          name="response"
+          type="hidden"
+          value="Test response"
+        />
+        <input
+          name="metric"
+          type="hidden"
+          value="Test metric"
+        />
+        <input
+          name="attack_module"
+          type="hidden"
+          value="Test attack module"
+        />
+        <input
+          name="context_strategy"
+          type="hidden"
+          value="Test context strategy"
+        />
+        <div
+          class="flex gap-4 justify-end"
+        >
+          <button
+            class="btn btn_outline btn_lg"
+            style="width: 120px;"
+            type="button"
+          >
+            <span>
+              Cancel
+            </span>
+          </button>
+          <button
+            class="btn btn_primary btn_lg"
+            disabled=""
+            style="width: 120px;"
+            type="submit"
+          >
+            <span>
+              Save
+            </span>
+          </button>
+        </div>
+      </form>
+    </main>
+  </div>
+</div>
+`;
