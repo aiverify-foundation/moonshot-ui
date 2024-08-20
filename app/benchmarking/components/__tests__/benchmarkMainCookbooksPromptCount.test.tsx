@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { BenchmarkMainCookbooksPromptCount } from '@/app/benchmarking/components/benchmarkMainCookbooksPromptCount';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
-import { useAppSelector } from '@/lib/redux';
 
 jest.mock('@/lib/redux', mockRedux);
 
@@ -49,11 +48,11 @@ describe('BenchmarkMainCookbooksPromptCount', () => {
 
   test('shows loading animation', () => {
     const mockOneAlreadySelectedCookbooksFromState = mockCookbooks;
-    (useAppSelector as jest.Mock).mockImplementation(
-      () => mockOneAlreadySelectedCookbooksFromState
-    );
     renderWithProviders(
-      <BenchmarkMainCookbooksPromptCount changeView={mockChangeView} />
+      <BenchmarkMainCookbooksPromptCount
+        selectedCookbooks={mockOneAlreadySelectedCookbooksFromState}
+        changeView={mockChangeView}
+      />
     );
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
@@ -61,11 +60,11 @@ describe('BenchmarkMainCookbooksPromptCount', () => {
   test('shows 30 prompts', () => {
     const mockOneAlreadySelectedCookbooksFromState = mockCookbooks;
     const mockAllCookbooks = mockCookbooks;
-    (useAppSelector as jest.Mock).mockImplementation(
-      () => mockOneAlreadySelectedCookbooksFromState
-    );
     renderWithProviders(
-      <BenchmarkMainCookbooksPromptCount changeView={mockChangeView} />,
+      <BenchmarkMainCookbooksPromptCount
+        selectedCookbooks={mockOneAlreadySelectedCookbooksFromState}
+        changeView={mockChangeView}
+      />,
       { initialCookbooks: mockAllCookbooks }
     );
 
@@ -75,11 +74,11 @@ describe('BenchmarkMainCookbooksPromptCount', () => {
   test('shows 20 prompts', () => {
     const mockOneAlreadySelectedCookbooksFromState = [mockCookbooks[1]];
     const mockAllCookbooks = mockCookbooks;
-    (useAppSelector as jest.Mock).mockImplementation(
-      () => mockOneAlreadySelectedCookbooksFromState
-    );
     renderWithProviders(
-      <BenchmarkMainCookbooksPromptCount changeView={mockChangeView} />,
+      <BenchmarkMainCookbooksPromptCount
+        selectedCookbooks={mockOneAlreadySelectedCookbooksFromState}
+        changeView={mockChangeView}
+      />,
       { initialCookbooks: mockAllCookbooks }
     );
 

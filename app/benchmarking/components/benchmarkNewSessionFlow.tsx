@@ -37,8 +37,6 @@ function BenchmarkNewSessionFlow() {
   const [currentView, setCurrentView] = useState<BenchmarkNewSessionViews>(
     BenchmarkNewSessionViews.TOPICS_SELECTION
   );
-  console.log(selectedModels);
-  console.log(selectedCookbooks);
   const [endpointToEdit, setEndpointToEdit] = useState<
     LLMEndpoint | undefined
   >();
@@ -143,12 +141,20 @@ function BenchmarkNewSessionFlow() {
       stepIndex = 0;
       if (selectedCookbooks.length === 0) disableNextBtn = true;
       view = (
-        <BenchmarkDefaultSelection setHiddenNavButtons={setHiddenNavButtons} />
+        <BenchmarkDefaultSelection
+          selectedCookbooks={selectedCookbooks}
+          setHiddenNavButtons={setHiddenNavButtons}
+        />
       );
       break;
     case BenchmarkNewSessionViews.RECOMMENDED_TESTS:
       stepIndex = 1;
-      view = <BenchmarkMainCookbooksPromptCount changeView={changeView} />;
+      view = (
+        <BenchmarkMainCookbooksPromptCount
+          selectedCookbooks={selectedCookbooks}
+          changeView={changeView}
+        />
+      );
       break;
     case BenchmarkNewSessionViews.ENDPOINTS_SELECTION:
       stepIndex = 2;
@@ -202,7 +208,12 @@ function BenchmarkNewSessionFlow() {
     case BenchmarkNewSessionViews.BENCHMARK_RUN_FORM:
       stepIndex = 3;
       surfaceColor = colors.moongray['950'];
-      view = <BenchmarkRunForm />;
+      view = (
+        <BenchmarkRunForm
+          selectedCookbooks={selectedCookbooks}
+          selectedEndpoints={selectedModels}
+        />
+      );
       break;
   }
 

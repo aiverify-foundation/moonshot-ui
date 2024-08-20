@@ -79,24 +79,15 @@ jest.mock('@/app/services/benchmark-api-service', () => ({
 }));
 
 it('should go to next view when next button is clicked', async () => {
-  (useAppSelector as jest.Mock).mockImplementationOnce(() => [
-    mockCookbooks[0],
-  ]);
-  (useAppSelector as jest.Mock).mockImplementationOnce(() => [
-    mockEndpoints[0],
-  ]);
-  (useAppSelector as jest.Mock).mockImplementationOnce(() => [
-    mockCookbooks[0],
-  ]);
-  (useAppSelector as jest.Mock).mockImplementationOnce(() => [
-    mockEndpoints[0],
-  ]);
-  (useAppSelector as jest.Mock).mockImplementationOnce(() => [
-    mockCookbooks[0],
-  ]);
-  (useAppSelector as jest.Mock).mockImplementationOnce(() => [
-    mockEndpoints[0],
-  ]);
+  let callCount = 1;
+  (useAppSelector as jest.Mock).mockImplementation(() => {
+    if (callCount === 1) {
+      callCount++;
+      return [mockCookbooks[0]];
+    }
+    callCount--;
+    return [];
+  });
   (useGetCookbooksQuery as jest.Mock).mockReturnValue({
     data: mockCookbooks,
     isFetching: false,
@@ -130,25 +121,23 @@ it('should go to next view when next button is clicked', async () => {
     screen.getByRole('checkbox', { name: /Select Endpoint 1/i })
   ).not.toBeChecked();
 
-  // Simulate user selecting an endpoint
-  // (useAppSelector as jest.Mock).mockImplementationOnce(() => [
-  //   mockCookbooks[0],
-  // ]);
-  // (useAppSelector as jest.Mock).mockImplementationOnce(() => [
-  //   mockEndpoints[0],
-  // ]);
-  // (useAppSelector as jest.Mock).mockImplementationOnce(() => [
-  //   mockCookbooks[0],
-  // ]);
-  // await act(async () => {
-  //   rerender(<BenchmarkNewSessionFlow />);
-  //   expect(screen.getByText(mockEndpoints[0].name)).toBeInTheDocument();
-  //   expect(screen.getByText(mockEndpoints[1].name)).toBeInTheDocument();
-  //   expect(
-  //     screen.getByRole('checkbox', { name: /Select Endpoint 1/i })
-  //   ).toBeChecked();
-  // });
-  // screen.debug();
-  // await userEvent.click(nextViewButton);
-  // expect(screen.getByRole('button', { name: /run/i })).toBeInTheDocument();
+  // simulate 1 endpoint selected
+  callCount = 1;
+  (useAppSelector as jest.Mock).mockReset();
+  (useAppSelector as jest.Mock).mockImplementation(() => {
+    if (callCount === 1) {
+      callCount++;
+      return [mockCookbooks[0]];
+    }
+    callCount--;
+    return [mockEndpoints[0]];
+  });
+  await act(async () => {
+    rerender(<BenchmarkNewSessionFlow />);
+  });
+  expect(
+    screen.getByRole('checkbox', { name: /Select Endpoint 1/i })
+  ).toBeChecked();
+  await userEvent.click(nextViewButton);
+  expect(screen.getByRole('button', { name: /run/i })).toBeInTheDocument();
 });

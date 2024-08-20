@@ -8,7 +8,6 @@ import {
   resetBenchmarkCookbooks,
   resetBenchmarkModels,
   useAppDispatch,
-  useAppSelector,
 } from '@/lib/redux';
 
 jest.mock('next/navigation', () => ({
@@ -23,7 +22,6 @@ jest.mock('@/lib/redux', () => ({
   resetBenchmarkCookbooks: jest.fn(),
   resetBenchmarkModels: jest.fn(),
   useAppDispatch: jest.fn(),
-  useAppSelector: jest.fn(),
 }));
 
 const mockCookbooks = [
@@ -99,14 +97,6 @@ describe('BenchmarkRunForm', () => {
       jest.fn(),
       { isLoading: false },
     ]);
-    const mockAlreadySelectedCookbooksFromState = mockCookbooks;
-    const mockAlreadySelectedEndpointsFromState = mockEndpoints;
-    (useAppSelector as jest.Mock).mockImplementation(
-      () => mockAlreadySelectedCookbooksFromState
-    );
-    (useAppSelector as jest.Mock).mockImplementation(
-      () => mockAlreadySelectedEndpointsFromState
-    );
   });
 
   beforeEach(() => {
@@ -119,8 +109,8 @@ describe('BenchmarkRunForm', () => {
     await act(async () =>
       renderWithProviders(
         <BenchmarkRunForm
-          defaultSelectedCookbooks={mockCookbooks}
-          defaultSelectedEndpoints={mockEndpoints}
+          selectedCookbooks={mockCookbooks}
+          selectedEndpoints={mockEndpoints}
         />
       )
     );
@@ -153,8 +143,8 @@ describe('BenchmarkRunForm', () => {
     await act(async () =>
       renderWithProviders(
         <BenchmarkRunForm
-          defaultSelectedCookbooks={mockCookbooks}
-          defaultSelectedEndpoints={mockEndpoints}
+          selectedCookbooks={mockCookbooks}
+          selectedEndpoints={mockEndpoints}
         />
       )
     );
@@ -202,8 +192,8 @@ describe('BenchmarkRunForm', () => {
     await act(async () =>
       renderWithProviders(
         <BenchmarkRunForm
-          defaultSelectedCookbooks={mockCookbooks}
-          defaultSelectedEndpoints={mockEndpoints}
+          selectedCookbooks={mockCookbooks}
+          selectedEndpoints={mockEndpoints}
         />
       )
     );
