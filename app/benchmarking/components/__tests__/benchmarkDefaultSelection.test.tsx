@@ -4,7 +4,6 @@ import { BenchmarkDefaultSelection } from '@/app/benchmarking/components/benchma
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import {
-  useAppSelector,
   useAppDispatch,
   addBenchmarkCookbooks,
   removeBenchmarkCookbooks,
