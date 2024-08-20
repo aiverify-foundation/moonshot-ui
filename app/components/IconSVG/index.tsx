@@ -102,6 +102,8 @@ enum IconName {
 
 type IconProps = {
   name: IconName;
+  role?: string;
+  ariaLabel?: string;
   size?: number;
   disabled?: boolean;
   color?: string;
@@ -113,6 +115,8 @@ type IconProps = {
 function Icon(props: IconProps) {
   const {
     name,
+    role,
+    ariaLabel,
     color = '#FFFFFF',
     onClick,
     onMouseDown,
@@ -568,6 +572,8 @@ function Icon(props: IconProps) {
 
   return (
     <div
+      role={role}
+      aria-label={ariaLabel}
       className={`
         flex items-center justify-center 
         ${onClick ? 'cursor-pointer' : 'default'}

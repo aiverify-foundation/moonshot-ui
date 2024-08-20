@@ -1,6 +1,7 @@
 'use server';
 import { ZodError, z } from 'zod';
 import config from '@/moonshot.config';
+import { formatZodSchemaErrors } from './helpers/formatZodSchemaErrors';
 
 const cookbookSchema = z.object({
   name: z.string().min(1, 'Name cannot be empty'),
@@ -20,20 +21,7 @@ export const createCookbook = async (
       recipes: formData.getAll('recipes'),
     });
   } catch (error) {
-    const zodError = error as ZodError;
-    const errorMap = zodError.flatten().fieldErrors;
-    return {
-      formStatus: 'error',
-      formErrors: errorMap
-        ? Object.entries(errorMap).reduce(
-            (acc, [key, value]) => {
-              acc[key] = value || [];
-              return acc;
-            },
-            {} as Record<string, string[]>
-          )
-        : undefined,
-    };
+    return formatZodSchemaErrors(error as ZodError);
   }
   if (newCookbookData.description?.trim() === '') {
     newCookbookData.description = undefined;

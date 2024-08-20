@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import React from 'react';
+import { BenchmarkRunStatus } from '@/app/benchmarking/components/bechmarkRunStatus';
 import { ErrorWithMessage } from '@/app/lib/error-utils';
 import { ApiResult, processResponse } from '@/app/lib/http-requests';
-import { BenchmarkRunStatus } from '@/app/views/benchmarking/bechmarkRunStatus';
 import config from '@/moonshot.config';
 export const dynamic = 'force-dynamic';
 

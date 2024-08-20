@@ -20,16 +20,9 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@components/*": ["./app/components/*"],
-      "@apptypes/*": ["./app/types/*"],
-      "@views/*": ["./app/views/*"],
-      "@app/lib/*": ["./app/lib/*"],
-      "@api/*": ["./app/api/*"],
-      "@redux/slices": ["./lib/redux/slices/index"]
     }
 
   },
-
 
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

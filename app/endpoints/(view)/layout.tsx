@@ -13,9 +13,9 @@ async function fetchEndpoints() {
 }
 
 export default async function BenchmarkingLayout({
-  children,
+  children = null,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }) {
   const result = await fetchEndpoints();
   if ('error' in result) {

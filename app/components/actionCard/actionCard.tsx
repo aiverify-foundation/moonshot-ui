@@ -1,6 +1,6 @@
 import React from 'react';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import styles from './styles/actionCard.module.css';
-import { Icon, IconName } from '@components/IconSVG';
 
 type ActionCardProps = {
   title: string;

@@ -1,4 +1,4 @@
-import { LoadingAnimation } from '@/app/views/shared-components/loadingAnimation';
+import { LoadingAnimation } from '@/app/components/loadingAnimation';
 
 export default function Loading() {
   return <LoadingAnimation />;

@@ -5,17 +5,17 @@ import React, { CSSProperties, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { TextInput } from '@/app/components/textInput';
-import { colors } from '@/app/views/shared-components/customColors';
+import { colors } from '@/app/customColors';
 import { SelectedCookbooksPills } from './selectedCookbooksPills';
 
 interface CustomStyle extends CSSProperties {
-  webkitLineClamp?: string;
-  webkitBoxOrient?: 'vertical';
+  WebkitLineClamp?: string;
+  WebkitBoxOrient?: 'vertical';
 }
 const ellipsisStyle: CustomStyle = {
   display: '-webkit-box',
-  webkitLineClamp: '2',
-  webkitBoxOrient: 'vertical',
+  WebkitLineClamp: '2',
+  WebkitBoxOrient: 'vertical',
 };
 
 type CookbookViewListProps = {
