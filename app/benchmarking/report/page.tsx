@@ -27,6 +27,7 @@ export default async function BenchmarkingReportPage(props: {
   ];
   const [reportResponse, runnerHeadingResponse, cookbooksResponse] =
     await Promise.all(fetchPromises);
+
   if ('message' in reportResponse) {
     if (reportResponse.message.includes('No results found')) {
       return notFound();
@@ -43,11 +44,15 @@ export default async function BenchmarkingReportPage(props: {
     throw new Error(cookbooksResponse.message);
   }
 
-  const report = (reportResponse as ApiResult<CookbooksBenchmarkResult>).data;
-  const cookbookIdsInReport = report.metadata.cookbooks;
+  const bencmarkResult = (reportResponse as ApiResult<CookbooksBenchmarkResult>)
+    .data;
+  const cookbookIdsInReport = bencmarkResult.metadata.cookbooks;
+  const runnerNameAndDescription = (
+    runnerHeadingResponse as ApiResult<RunnerHeading>
+  ).data;
 
   const fetchCookbooksPromises = [
-    fetchCookbooks({ ids: report.metadata.cookbooks }),
+    fetchCookbooks({ ids: bencmarkResult.metadata.cookbooks }),
     fetchCookbooks({ categories: ['Quality'], count: false }),
     fetchCookbooks({ categories: ['Capability'], count: false }),
     fetchCookbooks({ categories: ['Trust & Safety'], count: false }),
@@ -59,6 +64,22 @@ export default async function BenchmarkingReportPage(props: {
     performanceCookbooksResponse,
     securityCookbooksResponse,
   ] = await Promise.all(fetchCookbooksPromises);
+
+  if ('message' in cookbooksInReportResponse) {
+    throw new Error(cookbooksInReportResponse.message);
+  }
+
+  if ('message' in qualityCookbooksResponse) {
+    throw new Error(qualityCookbooksResponse.message);
+  }
+
+  if ('message' in performanceCookbooksResponse) {
+    throw new Error(performanceCookbooksResponse.message);
+  }
+
+  if ('message' in securityCookbooksResponse) {
+    throw new Error(securityCookbooksResponse.message);
+  }
 
   const cookbooksInReport = (
     cookbooksInReportResponse as ApiResult<Cookbook[]>
@@ -74,7 +95,7 @@ export default async function BenchmarkingReportPage(props: {
   ).data;
 
   const cookbookCategoryLabels: CookbookCategoryLabels =
-    report.metadata.cookbooks.reduce((acc, cookbookId) => {
+    bencmarkResult.metadata.cookbooks.reduce((acc, cookbookId) => {
       if (!acc[cookbookId]) {
         acc[cookbookId] = [];
       }
@@ -102,7 +123,7 @@ export default async function BenchmarkingReportPage(props: {
   );
   let mlcCookbookResult: CookbookResult | undefined;
   if (mlcCookbookIds.length > 0) {
-    mlcCookbookResult = report.results.cookbooks.find(
+    mlcCookbookResult = bencmarkResult.results.cookbooks.find(
       (result) => result.id === mlcCookbookIds[0]
     );
   }
@@ -124,12 +145,8 @@ export default async function BenchmarkingReportPage(props: {
       minHeight={750}
       bgColor="#2d2b2f">
       <BenchmarkReportViewer
-        benchmarkResult={
-          (reportResponse as ApiResult<CookbooksBenchmarkResult>).data
-        }
-        runnerNameAndDescription={
-          (runnerHeadingResponse as ApiResult<RunnerHeading>).data
-        }
+        benchmarkResult={bencmarkResult}
+        runnerNameAndDescription={runnerNameAndDescription}
         cookbookCategoryLabels={cookbookCategoryLabels}
         cookbooksInReport={cookbooksInReport}
         mlcCookbookResult={mlcCookbookResult}
