@@ -1,5 +1,6 @@
 import React from 'react';
 import { GradingLevelsMlcEnum } from '@/app/benchmarking/components/enums';
+import { CookbookCategoryLabels } from '@/app/benchmarking/components/types';
 import {
   CookbookResult,
   CookbooksBenchmarkResult,
@@ -19,35 +20,30 @@ import { ReportLogo } from './reportLogo';
 
 type BenchmarkReportProps = {
   benchmarkReport: CookbooksBenchmarkResult;
-  runnerInfo: Runner;
   endpointId: string;
+  runnerNameAndDescription: RunnerHeading;
+  cookbooksInReport: Cookbook[];
+  cookbookCategoryLabels: CookbookCategoryLabels;
 };
 
 function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
-  const { benchmarkReport, runnerInfo, endpointId } = props;
-  const { cookbooks } = benchmarkReport.metadata;
-  const totalPrompts = calcTotalPromptsByEndpoint(benchmarkReport, endpointId); // very expensive calculation
+  const {
+    benchmarkReport,
+    endpointId,
+    runnerNameAndDescription,
+    cookbooksInReport,
+    cookbookCategoryLabels,
+  } = props;
+  const { cookbooks: cookbookIdsInReport } = benchmarkReport.metadata;
   const [expandLimitations, setExpandLimitations] = React.useState(false);
   const [expandSafetyRatings, setExpandSafetyRatings] = React.useState(false);
-  const { data, isFetching: isFetchingCookbooks } = useGetCookbooksQuery({
-    ids: cookbooks,
-  });
-  const { data: cookbooksUnderQuality = [] } = useGetCookbooksQuery({
-    categories: ['Quality'],
-    count: false,
-  });
-  const { data: cookbooksUnderCapability = [] } = useGetCookbooksQuery({
-    categories: ['Capability'],
-    count: false,
-  });
-  const { data: cookbooksUnderTrustSafety = [] } = useGetCookbooksQuery({
-    categories: ['Trust & Safety'],
-    count: false,
-  });
-
   const downloadUrl = `/api/v1/benchmarks/results/${benchmarkReport.metadata.id}?download=true`;
-  const mlcCookbookIds = cookbooks.filter((cookbook) =>
-    MLC_COOKBOOK_IDS.includes(cookbook)
+  const mlcCookbookIds = cookbookIdsInReport.filter((id) =>
+    MLC_COOKBOOK_IDS.includes(id)
+  );
+  const totalPrompts = React.useMemo(
+    () => calcTotalPromptsByEndpoint(benchmarkReport, endpointId), // expensive with large datasets
+    [benchmarkReport.metadata.id, endpointId]
   );
 
   let mlcCookbookResult: CookbookResult | undefined;
@@ -446,8 +442,8 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           className="mb-10"
         />
         <h1 className="text-[2.3rem] text-white mb-2">Benchmark Report</h1>
-        <p className="mb-3">{runnerInfo.name}</p>
-        <p className="mb-5">{runnerInfo.description}</p>
+        <p className="mb-3">{runnerNameAndDescription.name}</p>
+        <p className="mb-5">{runnerNameAndDescription.description}</p>
         <div className="grid grid-cols-2 grid-rows-2 gap-4">
           <div>
             <h5
@@ -508,51 +504,25 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           <ol
             className="list-decimal list-inside text-white font-semi-bold text-[1rem]"
             style={{ color: '#ffffff' }}>
-            {!isFetchingCookbooks &&
-              data &&
-              cookbooks.map((cookbook, idx) => {
-                const cookbookDetails = data.find((c) => c.id === cookbook);
-                const categories = [];
-                if (
-                  cookbookDetails &&
-                  cookbooksUnderQuality.some(
-                    (cookbook) => cookbook.id === cookbookDetails.id
-                  )
-                ) {
-                  categories.push('Q');
-                }
-                if (
-                  cookbookDetails &&
-                  cookbooksUnderCapability.some(
-                    (cookbook) => cookbook.id === cookbookDetails.id
-                  )
-                ) {
-                  categories.push('C');
-                }
-                if (
-                  cookbookDetails &&
-                  cookbooksUnderTrustSafety.some(
-                    (cookbook) => cookbook.id === cookbookDetails.id
-                  )
-                ) {
-                  categories.push('T');
-                }
-                return !cookbookDetails ? null : (
-                  <li
-                    key={`${cookbook}-${idx}`}
-                    className="mb-1 w-[500px]">
-                    <span className="mr-3">{cookbookDetails.name}</span>
-                    <span className="inline-flex gap-2 justify-start">
-                      {categories.map((categoryLetter) => (
+            {cookbooksInReport.map((cookbook, idx) => {
+              return (
+                <li
+                  key={cookbook.id}
+                  className="mb-1 w-[500px]">
+                  <span className="mr-3">{cookbook.name}</span>
+                  <span className="inline-flex gap-2 justify-start">
+                    {cookbookCategoryLabels[cookbook.id].map(
+                      (categoryLetter) => (
                         <Badge
                           key={categoryLetter}
                           label={categoryLetter}
                         />
-                      ))}
-                    </span>
-                  </li>
-                );
-              })}
+                      )
+                    )}
+                  </span>
+                </li>
+              );
+            })}
           </ol>
         </section>
 

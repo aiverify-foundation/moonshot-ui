@@ -293,6 +293,13 @@ type CookbookMetadata = {
   estTotalPromptResponseTime: number;
 };
 
+type RunnerHeading = {
+  id: string;
+  name: string;
+  description: string;
+  endpoints: string[];
+};
+
 type Runner = {
   id: string;
   run_id?: number;
