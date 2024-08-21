@@ -1,14 +1,14 @@
 import { notFound } from 'next/navigation';
 import React from 'react';
-import { BenchmarkReportViewer } from '@/app/benchmarking/components/benchmarkReportViewer';
-import { MLC_COOKBOOK_IDS } from '@/app/benchmarking/components/constants';
 import {
   fetchCookbooks,
   fetchRecipes,
   fetchReport,
   fetchRunnerHeading,
 } from '@/app/benchmarking/components/reportComponents/api';
-import { CookbookCategoryLabels } from '@/app/benchmarking/components/types';
+import { BenchmarkReportViewer } from '@/app/benchmarking/components/reportComponents/benchmarkReportViewer';
+import { MLC_COOKBOOK_IDS } from '@/app/benchmarking/components/reportComponents/constants';
+import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
 import {
   CookbookResult,
   CookbooksBenchmarkResult,

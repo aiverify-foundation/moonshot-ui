@@ -1,6 +1,5 @@
 import React from 'react';
-import { GradingLevelsMlcEnum } from '@/app/benchmarking/components/enums';
-import { CookbookCategoryLabels } from '@/app/benchmarking/components/types';
+import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
 import {
   CookbookResult,
   CookbooksBenchmarkResult,
@@ -9,6 +8,7 @@ import { calcTotalPromptsByEndpoint } from '@/app/benchmarking/utils/calcTotalPr
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Badge, SquareBadge } from './badge';
 import { gradingDescriptionsMlcMap, gradingLettersMlcMap } from './constants';
+import { GradingLevelsMlcEnum } from './enums';
 import { gradeColorsMlc } from './gradeColors';
 import { ReportLogo } from './reportLogo';
 

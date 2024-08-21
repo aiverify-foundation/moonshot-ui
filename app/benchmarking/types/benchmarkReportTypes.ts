@@ -1,4 +1,4 @@
-import { GradingLevelsMlcEnum } from '@/app/benchmarking/components/enums';
+import { GradingLevelsMlcEnum } from '@/app/benchmarking/components/reportComponents/enums';
 
 type CookbooksBenchmarkResult = {
   metadata: {
@@ -91,7 +91,9 @@ type OverallEvaluationSummary = {
 
 type GradingScale = Record<string, number[]>;
 
-export type GradingColors = Record<GradingLevelsMlcEnum | string, string>;
+type GradingColors = Record<GradingLevelsMlcEnum | string, string>;
+
+type CookbookCategoryLabels = Record<string, ('Q' | 'C' | 'T')[]>;
 
 export type {
   CookbooksBenchmarkResult,
@@ -102,4 +104,6 @@ export type {
   Metric,
   EvaluationSummary,
   GradingScale,
+  GradingColors,
+  CookbookCategoryLabels,
 };

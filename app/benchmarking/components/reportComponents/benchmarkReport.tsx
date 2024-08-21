@@ -3,10 +3,10 @@ import {
   CookbookResult,
   CookbooksBenchmarkResult,
 } from '@/app/benchmarking/types/benchmarkReportTypes';
+import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Button, ButtonType } from '@/app/components/button';
 import { BenchmarkReportSectionOne } from './benchmarkReportSectionOne';
 import { BenchmarkReportSectionTwo } from './benchmarkReportSectionTwo';
-import { CookbookCategoryLabels } from './types';
 
 type BenchmarkReportProps = {
   benchmarkResult: CookbooksBenchmarkResult;
