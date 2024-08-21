@@ -1,5 +1,8 @@
 import React from 'react';
-import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
+import {
+  CookbookResult,
+  CookbooksBenchmarkResult,
+} from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Button, ButtonType } from '@/app/components/button';
 import { BenchmarkReportSectionOne } from './benchmarkReportSectionOne';
 import { BenchmarkReportSectionTwo } from './benchmarkReportSectionTwo';
@@ -11,28 +14,18 @@ type BenchmarkReportProps = {
   runnerNameAndDescription: RunnerHeading;
   cookbooksInReport: Cookbook[];
   cookbookCategoryLabels: CookbookCategoryLabels;
+  mlcCookbookResult?: CookbookResult;
+  mlcRecipes?: Recipe[];
 };
 
 function BenchmarkReport(props: BenchmarkReportProps) {
-  const {
-    benchmarkResult,
-    endpointId,
-    runnerNameAndDescription,
-    cookbookCategoryLabels,
-    cookbooksInReport,
-  } = props;
+  const { benchmarkResult, endpointId } = props;
   const downloadUrl = `/api/v1/benchmarks/results/${benchmarkResult.metadata.id}?download=true`;
   return (
     <div
       className="flex flex-col gap-8 bg-moongray-800"
       style={{ backgroundColor: '#464349' }}>
-      <BenchmarkReportSectionOne
-        benchmarkReport={benchmarkResult}
-        endpointId={endpointId}
-        runnerNameAndDescription={runnerNameAndDescription}
-        cookbooksInReport={cookbooksInReport}
-        cookbookCategoryLabels={cookbookCategoryLabels}
-      />
+      <BenchmarkReportSectionOne {...props} />
       <BenchmarkReportSectionTwo
         benchmarkResult={benchmarkResult}
         endpointId={endpointId}

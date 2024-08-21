@@ -97,30 +97,25 @@ export default async function BenchmarkingReportPage(props: {
       return acc;
     }, {} as CookbookCategoryLabels);
 
-  // const mlcCookbookIds = cookbookIdsInReport.filter((id) =>
-  //   MLC_COOKBOOK_IDS.includes(id)
-  // );
-  // let mlcCookbookResult: CookbookResult | undefined;
-  // if (mlcCookbookIds && mlcCookbookIds.length > 0) {
-  //   mlcCookbookResult = report.results.cookbooks.find(
-  //     (result) => result.id === mlcCookbookIds[0]
-  //   );
-  // }
-  // const mlcRecipeIds = mlcCookbookResult
-  //   ? mlcCookbookResult.recipes.map((recipeResult) => recipeResult.id)
-  //   : [];
+  const mlcCookbookIds = cookbookIdsInReport.filter((id) =>
+    MLC_COOKBOOK_IDS.includes(id)
+  );
+  let mlcCookbookResult: CookbookResult | undefined;
+  if (mlcCookbookIds.length > 0) {
+    mlcCookbookResult = report.results.cookbooks.find(
+      (result) => result.id === mlcCookbookIds[0]
+    );
+  }
 
-  // const mlcRecipesResponse = await fetchRecipes({ ids: mlcRecipeIds });
-  // if ('message' in mlcRecipesResponse) {
-  //   throw new Error(mlcRecipesResponse.message);
-  // }
-  // const mlcRecipes = (mlcRecipesResponse as ApiResult<Recipe[]>).data;
-  // const sortedMlcRecipeResults = mlcCookbookResult
-  //   ? [...mlcCookbookResult.recipes].sort((a, b) => a.id.localeCompare(b.id))
-  //   : undefined;
-  // const sortedMlcRecipesData = mlcRecipes
-  //   ? [...mlcRecipes].sort((a, b) => a.id.localeCompare(b.id))
-  //   : undefined;
+  const mlcRecipeIds = mlcCookbookResult
+    ? mlcCookbookResult.recipes.map((recipeResult) => recipeResult.id)
+    : [];
+
+  const mlcRecipesResponse = await fetchRecipes({ ids: mlcRecipeIds });
+  if ('message' in mlcRecipesResponse) {
+    throw new Error(mlcRecipesResponse.message);
+  }
+  const mlcRecipes = (mlcRecipesResponse as ApiResult<Recipe[]>).data;
 
   return (
     <MainSectionSurface
@@ -137,6 +132,8 @@ export default async function BenchmarkingReportPage(props: {
         }
         cookbookCategoryLabels={cookbookCategoryLabels}
         cookbooksInReport={cookbooksInReport}
+        mlcCookbookResult={mlcCookbookResult}
+        mlcRecipes={mlcRecipes}
       />
     </MainSectionSurface>
   );

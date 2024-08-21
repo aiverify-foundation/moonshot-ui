@@ -1,6 +1,9 @@
 'use client';
 import { useState } from 'react';
-import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
+import {
+  CookbookResult,
+  CookbooksBenchmarkResult,
+} from '@/app/benchmarking/types/benchmarkReportTypes';
 import { downloadHtmlReport } from '@/app/benchmarking/utils/reportDownloader';
 import { Button, ButtonType } from '@/app/components/button';
 import { SelectInput } from '@/app/components/selectInput';
@@ -13,15 +16,12 @@ type BenchmarkReportViewerProps = {
   runnerNameAndDescription: RunnerHeading;
   cookbookCategoryLabels: CookbookCategoryLabels;
   cookbooksInReport: Cookbook[];
+  mlcCookbookResult?: CookbookResult;
+  mlcRecipes?: Recipe[];
 };
 
 function BenchmarkReportViewer(props: BenchmarkReportViewerProps) {
-  const {
-    benchmarkResult,
-    runnerNameAndDescription,
-    cookbookCategoryLabels,
-    cookbooksInReport,
-  } = props;
+  const { benchmarkResult } = props;
   const [selectedEndpointId, setSelectedEndpointId] = useState(
     benchmarkResult.metadata.endpoints[0]
   );
@@ -60,11 +60,8 @@ function BenchmarkReportViewer(props: BenchmarkReportViewerProps) {
             id="report-content"
             className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar">
             <BenchmarkReport
-              benchmarkResult={benchmarkResult}
+              {...props}
               endpointId={selectedEndpointId}
-              runnerNameAndDescription={runnerNameAndDescription}
-              cookbookCategoryLabels={cookbookCategoryLabels}
-              cookbooksInReport={cookbooksInReport}
             />
           </div>
         </section>
