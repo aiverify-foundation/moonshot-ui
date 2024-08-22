@@ -6,11 +6,11 @@ import {
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
 import { RecipeGradeBadge } from './badge';
+import { gradeColorsMlc, gradeColorsMoonshot } from './gradeColors';
 import {
   gradingLettersMlcMap,
   MLC_COOKBOOK_IDS,
 } from './mlcReportComponents/constants';
-import { gradeColorsMlc, gradeColorsMoonshot } from './gradeColors';
 import { RangedBarChart } from './rangedBarChart';
 
 type BenchmarkReportRecipeResultProps = {

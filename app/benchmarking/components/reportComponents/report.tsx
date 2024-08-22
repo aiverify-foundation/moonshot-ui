@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  CookbookResult,
-  CookbooksBenchmarkResult,
-} from '@/app/benchmarking/types/benchmarkReportTypes';
+import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { calcTotalPromptsByEndpoint } from '@/app/benchmarking/utils/calcTotalPromptsByEndpoint';
 import { Button, ButtonType } from '@/app/components/button';
@@ -10,6 +7,7 @@ import { BenchmarkReportSectionTwo } from './benchmarkReportSectionTwo';
 import { MlcSafetyBaselineGrades } from './mlcReportComponents/mlcSafetyBaselineGrades';
 import { ReportLogo } from './reportLogo';
 import { RunSummary } from './runSummary';
+import { hasMlcAISafetyCookbook } from './utils';
 
 type BenchmarkReportProps = {
   benchmarkResult: CookbooksBenchmarkResult;
@@ -17,8 +15,6 @@ type BenchmarkReportProps = {
   runnerNameAndDescription: RunnerHeading;
   cookbooksInReport: Cookbook[];
   cookbookCategoryLabels: CookbookCategoryLabels;
-  mlcCookbookResult?: CookbookResult;
-  mlcRecipes?: Recipe[];
 };
 
 function Report(props: BenchmarkReportProps) {
@@ -34,6 +30,9 @@ function Report(props: BenchmarkReportProps) {
     () => calcTotalPromptsByEndpoint(benchmarkResult, endpointId), // expensive with large datasets
     [benchmarkResult.metadata.id, endpointId]
   );
+
+  const showMlcSafetyBaselineGrades = hasMlcAISafetyCookbook(benchmarkResult);
+
   return (
     <section className="flex-1 h-full border border-white rounded-lg overflow-hidden pr-[2px] py-[2px]">
       <div
@@ -60,7 +59,9 @@ function Report(props: BenchmarkReportProps) {
             startTime={benchmarkResult.metadata.start_time}
             endTime={benchmarkResult.metadata.end_time}
           />
-          <MlcSafetyBaselineGrades {...props} />
+          {showMlcSafetyBaselineGrades && (
+            <MlcSafetyBaselineGrades {...props} />
+          )}
           <BenchmarkReportSectionTwo
             benchmarkResult={benchmarkResult}
             endpointId={endpointId}

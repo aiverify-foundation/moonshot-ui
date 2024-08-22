@@ -6,11 +6,11 @@ import { colors } from '@/app/customColors';
 import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
 import { RecipeGradeBadge } from './badge';
 import { BenchmarkReportRecipeResult } from './benchmarkReportRecipeResult';
+import { gradeColorsMoonshot, gradeColorsMlc } from './gradeColors';
 import {
   MLC_COOKBOOK_IDS,
   gradingLettersMlcMap,
 } from './mlcReportComponents/constants';
-import { gradeColorsMoonshot, gradeColorsMlc } from './gradeColors';
 
 type BenchmarkReportCookbookResultsProps = {
   result: CookbookResult;

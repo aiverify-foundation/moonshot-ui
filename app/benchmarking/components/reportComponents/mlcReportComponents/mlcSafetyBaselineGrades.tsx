@@ -1,14 +1,21 @@
 import React from 'react';
 import { SquareBadge } from '@/app/benchmarking/components/reportComponents/badge';
-import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
 import {
-  CookbookResult,
-  CookbooksBenchmarkResult,
-} from '@/app/benchmarking/types/benchmarkReportTypes';
+  extractCookbookResults,
+  extractRecipeIds,
+} from '@/app/benchmarking/components/reportComponents/utils';
+import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
+import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
-import { gradingDescriptionsMlcMap, gradingLettersMlcMap } from './constants';
+import { LoadingAnimation } from '@/app/components/loadingAnimation';
+import {
+  gradingDescriptionsMlcMap,
+  gradingLettersMlcMap,
+  MLC_COOKBOOK_IDS,
+} from './constants';
 import { GradingLevelsMlcEnum } from './enums';
 import { gradeColorsMlc } from './gradeColors';
+import { getMlcRecipes } from './serverActions/getMlcRecipes';
 
 type BenchmarkReportProps = {
   benchmarkResult: CookbooksBenchmarkResult;
@@ -16,23 +23,47 @@ type BenchmarkReportProps = {
   runnerNameAndDescription: RunnerHeading;
   cookbooksInReport: Cookbook[];
   cookbookCategoryLabels: CookbookCategoryLabels;
-  mlcCookbookResult: CookbookResult;
-  mlcRecipes: Recipe[];
 };
 
 function MlcSafetyBaselineGrades(props: BenchmarkReportProps) {
-  const { endpointId, mlcCookbookResult, mlcRecipes } = props;
+  const { benchmarkResult, endpointId } = props;
   const [expandLimitations, setExpandLimitations] = React.useState(false);
   const [expandSafetyRatings, setExpandSafetyRatings] = React.useState(false);
-  const sortedMlcRecipeResults = [...mlcCookbookResult.recipes].sort((a, b) =>
-    a.id.localeCompare(b.id)
-  );
-  const sortedMlcRecipes = [...mlcRecipes].sort((a, b) =>
-    a.id.localeCompare(b.id)
-  );
+  const [mlcRecipes, setMlcRecipes] = React.useState<Recipe[]>([]);
+  const [isPending, startTransition] = React.useTransition();
+
+  // 👉 This component displays results for Safety Baseline v0.5. The results must be based on ONLY 1 cookbook - 'mlc-ai-safety'.
+  const mlcCookbookResults = extractCookbookResults(benchmarkResult, [
+    MLC_COOKBOOK_IDS[0], // Safety Baseline v0.5 ('mlc-ai-safety')
+  ]);
+
+  const mlcAISafetyCookbookResult = mlcCookbookResults[0];
+
+  React.useEffect(() => {
+    if (mlcCookbookResults.length === 0) {
+      return;
+    }
+    const mlcRecipeIds = Array.from(
+      new Set(extractRecipeIds(mlcCookbookResults))
+    );
+    if (mlcRecipeIds.length === 0) {
+      return;
+    }
+    async function callServerAction() {
+      startTransition(async () => {
+        const result = await getMlcRecipes(mlcRecipeIds);
+        if ('message' in result) {
+          console.error(result.message);
+        } else {
+          setMlcRecipes(result.data);
+        }
+      });
+    }
+    callServerAction();
+  }, [mlcCookbookResults]);
 
   const mlsCookbookResultOverallGrade =
-    mlcCookbookResult.overall_evaluation_summary.find(
+    mlcAISafetyCookbookResult.overall_evaluation_summary.find(
       (summary) => summary.model_id === endpointId
     );
 
@@ -54,50 +85,53 @@ function MlcSafetyBaselineGrades(props: BenchmarkReportProps) {
       ]
     : 'None';
 
-  const mlcGrades = (
-    <section className="grid grid-rows-7 w-[70%] mt-10 gap-6">
-      {sortedMlcRecipeResults.map((recipeResult, idx) => {
-        const evalSummary = recipeResult.evaluation_summary.find(
-          (summary) => summary.model_id === endpointId
-        );
-        const grade = evalSummary && evalSummary.grade;
-        const nameSegments = sortedMlcRecipes[idx].name.split('-');
-        const name = sortedMlcRecipes[idx].name.startsWith(
-          'MLCommons AI Safety Benchmark -'
-        )
-          ? nameSegments.slice(1).join('-')
-          : sortedMlcRecipes[idx].name;
-        return (
-          <figure
-            className="flex gap-4 justify-between"
-            key={recipeResult.id}>
-            <figcaption>
-              <h5 className="text-[0.9rem] text-white font-bold pb-1">
-                {name}
-              </h5>
-              <p className="text-[0.8rem] leading-tight">
-                {sortedMlcRecipes[idx].description}
-              </p>
-            </figcaption>
-            <div>
-              <SquareBadge
-                size={60}
-                textSize="2rem"
-                label={
-                  gradingLettersMlcMap[
-                    grade as keyof typeof gradingLettersMlcMap
-                  ]
-                }
-                color={
-                  gradeColorsMlc[grade as keyof typeof gradingLettersMlcMap]
-                }
-              />
-            </div>
-          </figure>
-        );
-      })}
-    </section>
-  );
+  const mlcGrades =
+    mlcRecipes.length > 0 ? (
+      <section className="grid grid-rows-7 w-[70%] mt-10 gap-6">
+        {mlcAISafetyCookbookResult.recipes.map((recipeResult, idx) => {
+          const evalSummary = recipeResult.evaluation_summary.find(
+            (summary) => summary.model_id === endpointId
+          );
+          const grade = evalSummary && evalSummary.grade;
+          const nameSegments = mlcRecipes[idx].name.split('-');
+          const name = mlcRecipes[idx].name.startsWith(
+            'MLCommons AI Safety Benchmark -'
+          )
+            ? nameSegments.slice(1).join('-')
+            : mlcRecipes[idx].name;
+          return (
+            <figure
+              className="flex gap-4 justify-between"
+              key={recipeResult.id}>
+              <figcaption>
+                <h5 className="text-[0.9rem] text-white font-bold pb-1">
+                  {name}
+                </h5>
+                <p className="text-[0.8rem] leading-tight">
+                  {mlcRecipes[idx].description}
+                </p>
+              </figcaption>
+              <div>
+                <SquareBadge
+                  size={60}
+                  textSize="2rem"
+                  label={
+                    gradingLettersMlcMap[
+                      grade as keyof typeof gradingLettersMlcMap
+                    ]
+                  }
+                  color={
+                    gradeColorsMlc[grade as keyof typeof gradingLettersMlcMap]
+                  }
+                />
+              </div>
+            </figure>
+          );
+        })}
+      </section>
+    ) : (
+      <p>No recipes found</p>
+    );
 
   return (
     <article
@@ -169,7 +203,13 @@ function MlcSafetyBaselineGrades(props: BenchmarkReportProps) {
             </figure>
           ) : null}
 
-          {mlcGrades}
+          {isPending ? (
+            <section className="relative mt-10 h-[100px]">
+              <LoadingAnimation />
+            </section>
+          ) : (
+            mlcGrades
+          )}
         </section>
 
         <section className="bg-moongray-1000 rounded-lg p-6 flex flex-col mt-6">

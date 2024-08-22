@@ -1,11 +1,5 @@
 import { notFound } from 'next/navigation';
 import React from 'react';
-import {
-  fetchCookbooks,
-  fetchRecipes,
-  fetchReport,
-  fetchRunnerHeading,
-} from '@/app/benchmarking/components/reportComponents/api';
 import { BenchmarkReportViewer } from '@/app/benchmarking/components/reportComponents/benchmarkReportViewer';
 import { MLC_COOKBOOK_IDS } from '@/app/benchmarking/components/reportComponents/mlcReportComponents/constants';
 import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
@@ -14,6 +8,12 @@ import {
   CookbooksBenchmarkResult,
 } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
+import {
+  fetchCookbooks,
+  fetchRecipes,
+  fetchReport,
+  fetchRunnerHeading,
+} from '@/app/lib/fetchApis';
 import { ApiResult } from '@/app/lib/http-requests';
 export const dynamic = 'force-dynamic';
 
@@ -46,7 +46,6 @@ export default async function BenchmarkingReportPage(props: {
 
   const bencmarkResult = (reportResponse as ApiResult<CookbooksBenchmarkResult>)
     .data;
-  const cookbookIdsInReport = bencmarkResult.metadata.cookbooks;
   const runnerNameAndDescription = (
     runnerHeadingResponse as ApiResult<RunnerHeading>
   ).data;
@@ -118,26 +117,6 @@ export default async function BenchmarkingReportPage(props: {
       return acc;
     }, {} as CookbookCategoryLabels);
 
-  const mlcCookbookIds = cookbookIdsInReport.filter((id) =>
-    MLC_COOKBOOK_IDS.includes(id)
-  );
-  let mlcCookbookResult: CookbookResult | undefined;
-  if (mlcCookbookIds.length > 0) {
-    mlcCookbookResult = bencmarkResult.results.cookbooks.find(
-      (result) => result.id === mlcCookbookIds[0]
-    );
-  }
-
-  const mlcRecipeIds = mlcCookbookResult
-    ? mlcCookbookResult.recipes.map((recipeResult) => recipeResult.id)
-    : [];
-
-  const mlcRecipesResponse = await fetchRecipes({ ids: mlcRecipeIds });
-  if ('message' in mlcRecipesResponse) {
-    throw new Error(mlcRecipesResponse.message);
-  }
-  const mlcRecipes = (mlcRecipesResponse as ApiResult<Recipe[]>).data;
-
   return (
     <MainSectionSurface
       closeLinkUrl="/benchmarking"
@@ -149,8 +128,6 @@ export default async function BenchmarkingReportPage(props: {
         runnerNameAndDescription={runnerNameAndDescription}
         cookbookCategoryLabels={cookbookCategoryLabels}
         cookbooksInReport={cookbooksInReport}
-        mlcCookbookResult={mlcCookbookResult}
-        mlcRecipes={mlcRecipes}
       />
     </MainSectionSurface>
   );

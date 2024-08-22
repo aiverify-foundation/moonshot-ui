@@ -13,8 +13,6 @@ type BenchmarkReportViewerProps = {
   runnerNameAndDescription: RunnerHeading;
   cookbookCategoryLabels: CookbookCategoryLabels;
   cookbooksInReport: Cookbook[];
-  mlcCookbookResult?: CookbookResult;
-  mlcRecipes?: Recipe[];
 };
 
 function BenchmarkReportViewer(props: BenchmarkReportViewerProps) {

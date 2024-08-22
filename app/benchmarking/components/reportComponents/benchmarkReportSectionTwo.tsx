@@ -5,8 +5,8 @@ import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import { SquareBadge } from './badge';
 import { BenchmarkReportCookbookResult } from './benchmarkReportCookbookResult';
-import { MLC_COOKBOOK_IDS } from './mlcReportComponents/constants';
 import { gradeColorsMoonshot } from './gradeColors';
+import { MLC_COOKBOOK_IDS } from './mlcReportComponents/constants';
 
 type BenchmarkReportProps = {
   benchmarkResult: CookbooksBenchmarkResult;
