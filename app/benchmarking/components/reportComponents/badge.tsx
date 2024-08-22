@@ -1,6 +1,6 @@
 import React from 'react';
 import { GradingColors } from '@/app/benchmarking/types/benchmarkReportTypes';
-import { GradingLevelsMlcEnum } from './enums';
+import { GradingLevelsMlcEnum } from './mlcReportComponents/enums';
 
 function Badge(props: { label: string; style?: React.CSSProperties }) {
   return (

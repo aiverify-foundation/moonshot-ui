@@ -1,4 +1,4 @@
-import { GradingLevelsMlcEnum } from '@/app/benchmarking/components/reportComponents/enums';
+import { GradingLevelsMlcEnum } from '@/app/benchmarking/components/reportComponents/mlcReportComponents/enums';
 
 type CookbooksBenchmarkResult = {
   metadata: {

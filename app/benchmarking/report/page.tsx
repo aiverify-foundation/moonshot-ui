@@ -7,7 +7,7 @@ import {
   fetchRunnerHeading,
 } from '@/app/benchmarking/components/reportComponents/api';
 import { BenchmarkReportViewer } from '@/app/benchmarking/components/reportComponents/benchmarkReportViewer';
-import { MLC_COOKBOOK_IDS } from '@/app/benchmarking/components/reportComponents/constants';
+import { MLC_COOKBOOK_IDS } from '@/app/benchmarking/components/reportComponents/mlcReportComponents/constants';
 import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
 import {
   CookbookResult,

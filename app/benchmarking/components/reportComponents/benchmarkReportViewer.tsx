@@ -5,8 +5,8 @@ import {
   CookbooksBenchmarkResult,
 } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
-import { BenchmarkReport } from './benchmarkReport';
 import { HeaderControls } from './headerControls';
+import { Report } from './report';
 
 type BenchmarkReportViewerProps = {
   benchmarkResult: CookbooksBenchmarkResult;
@@ -29,16 +29,10 @@ function BenchmarkReportViewer(props: BenchmarkReportViewerProps) {
         benchmarkResult={benchmarkResult}
         onEndpointChange={setSelectedEndpointId}
       />
-      <section className="flex-1 h-full border border-white rounded-lg overflow-hidden pr-[2px] py-[2px]">
-        <div
-          id="report-content"
-          className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar">
-          <BenchmarkReport
-            {...props}
-            endpointId={selectedEndpointId}
-          />
-        </div>
-      </section>
+      <Report
+        {...props}
+        endpointId={selectedEndpointId}
+      />
     </div>
   );
 }

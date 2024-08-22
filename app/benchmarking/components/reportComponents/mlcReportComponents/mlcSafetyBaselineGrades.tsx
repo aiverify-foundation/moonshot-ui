@@ -1,16 +1,14 @@
 import React from 'react';
+import { SquareBadge } from '@/app/benchmarking/components/reportComponents/badge';
 import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
 import {
   CookbookResult,
   CookbooksBenchmarkResult,
 } from '@/app/benchmarking/types/benchmarkReportTypes';
-import { calcTotalPromptsByEndpoint } from '@/app/benchmarking/utils/calcTotalPromptsByEndpoint';
 import { Icon, IconName } from '@/app/components/IconSVG';
-import { Badge, SquareBadge } from './badge';
 import { gradingDescriptionsMlcMap, gradingLettersMlcMap } from './constants';
 import { GradingLevelsMlcEnum } from './enums';
 import { gradeColorsMlc } from './gradeColors';
-import { ReportLogo } from './reportLogo';
 
 type BenchmarkReportProps = {
   benchmarkResult: CookbooksBenchmarkResult;
@@ -18,45 +16,45 @@ type BenchmarkReportProps = {
   runnerNameAndDescription: RunnerHeading;
   cookbooksInReport: Cookbook[];
   cookbookCategoryLabels: CookbookCategoryLabels;
-  mlcCookbookResult?: CookbookResult;
-  mlcRecipes?: Recipe[];
+  mlcCookbookResult: CookbookResult;
+  mlcRecipes: Recipe[];
 };
 
-function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
-  const {
-    benchmarkResult,
-    endpointId,
-    runnerNameAndDescription,
-    cookbooksInReport,
-    cookbookCategoryLabels,
-    mlcCookbookResult,
-    mlcRecipes,
-  } = props;
+function MlcSafetyBaselineGrades(props: BenchmarkReportProps) {
+  const { endpointId, mlcCookbookResult, mlcRecipes } = props;
   const [expandLimitations, setExpandLimitations] = React.useState(false);
   const [expandSafetyRatings, setExpandSafetyRatings] = React.useState(false);
-  const downloadUrl = `/api/v1/benchmarks/results/${benchmarkResult.metadata.id}?download=true`;
-  const totalPrompts = React.useMemo(
-    () => calcTotalPromptsByEndpoint(benchmarkResult, endpointId), // expensive with large datasets
-    [benchmarkResult.metadata.id, endpointId]
+  const sortedMlcRecipeResults = [...mlcCookbookResult.recipes].sort((a, b) =>
+    a.id.localeCompare(b.id)
+  );
+  const sortedMlcRecipes = [...mlcRecipes].sort((a, b) =>
+    a.id.localeCompare(b.id)
   );
 
-  const sortedMlcRecipeResults = mlcCookbookResult
-    ? [...mlcCookbookResult.recipes].sort((a, b) => a.id.localeCompare(b.id))
-    : undefined;
-  const sortedMlcRecipes = mlcRecipes
-    ? [...mlcRecipes].sort((a, b) => a.id.localeCompare(b.id))
-    : undefined;
-
   const mlsCookbookResultOverallGrade =
-    mlcCookbookResult &&
     mlcCookbookResult.overall_evaluation_summary.find(
       (summary) => summary.model_id === endpointId
     );
 
-  const showMLCSection =
-    sortedMlcRecipeResults && sortedMlcRecipes && mlsCookbookResultOverallGrade;
+  const badgeLabel = mlsCookbookResultOverallGrade
+    ? gradingLettersMlcMap[
+        mlsCookbookResultOverallGrade.overall_grade as GradingLevelsMlcEnum
+      ]
+    : 'None';
 
-  const mlcGrades = showMLCSection ? (
+  const gradeColor = mlsCookbookResultOverallGrade
+    ? gradeColorsMlc[
+        mlsCookbookResultOverallGrade.overall_grade as GradingLevelsMlcEnum
+      ]
+    : 'gray';
+
+  const overallGradeDescription = mlsCookbookResultOverallGrade
+    ? gradingDescriptionsMlcMap[
+        mlsCookbookResultOverallGrade.overall_grade as GradingLevelsMlcEnum
+      ]
+    : 'None';
+
+  const mlcGrades = (
     <section className="grid grid-rows-7 w-[70%] mt-10 gap-6">
       {sortedMlcRecipeResults.map((recipeResult, idx) => {
         const evalSummary = recipeResult.evaluation_summary.find(
@@ -99,10 +97,12 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
         );
       })}
     </section>
-  ) : null;
+  );
 
-  const mlcHeaderResult = showMLCSection && (
-    <>
+  return (
+    <article
+      className="h-full w-full text-[0.9rem] bg-moongray-9400
+      rounded-lg text-reportText">
       <header
         className="bg-moongray-1000 px-6 py-8"
         style={{ backgroundColor: '#202020' }}>
@@ -144,41 +144,30 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
             as its weakest area.
           </p>
 
-          <figure
-            id="overallSafetyRating"
-            className="flex gap-4 justify-center">
-            <SquareBadge
-              size={80}
-              textSize="2rem"
-              label={
-                gradingLettersMlcMap[
-                  mlsCookbookResultOverallGrade.overall_grade as GradingLevelsMlcEnum
-                ]
-              }
-              color={
-                gradeColorsMlc[
-                  mlsCookbookResultOverallGrade.overall_grade as GradingLevelsMlcEnum
-                ]
-              }
-            />
-            <figcaption className="w-[50%]">
-              <h5
-                className="text-[0.9rem]"
-                style={{
-                  color:
-                    gradeColorsMlc[mlsCookbookResultOverallGrade.overall_grade],
-                }}>
-                {mlsCookbookResultOverallGrade.overall_grade}
-              </h5>
-              <p className="text-[0.8rem] leading-tight">
-                {
-                  gradingDescriptionsMlcMap[
-                    mlsCookbookResultOverallGrade.overall_grade as GradingLevelsMlcEnum
-                  ]
-                }
-              </p>
-            </figcaption>
-          </figure>
+          {mlsCookbookResultOverallGrade ? (
+            <figure
+              id="overallSafetyRating"
+              className="flex gap-4 justify-center">
+              <SquareBadge
+                size={80}
+                textSize="2rem"
+                label={badgeLabel}
+                color={gradeColor}
+              />
+              <figcaption className="w-[50%]">
+                <h5
+                  className="text-[0.9rem]"
+                  style={{
+                    color: gradeColor,
+                  }}>
+                  {mlsCookbookResultOverallGrade.overall_grade}
+                </h5>
+                <p className="text-[0.8rem] leading-tight">
+                  {overallGradeDescription}
+                </p>
+              </figcaption>
+            </figure>
+          ) : null}
 
           {mlcGrades}
         </section>
@@ -394,151 +383,8 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
           </div>
         </section>
       </section>
-    </>
-  );
-
-  return (
-    <article
-      className="h-full w-full text-moongray-300 text-[0.9rem] bg-moongray-9400
-      rounded-lg "
-      style={{ color: '#bcb9c0' }}>
-      <header className="p-6">
-        <ReportLogo
-          width={280}
-          className="mb-10"
-        />
-        <h1 className="text-[2.3rem] text-white mb-2">Benchmark Report</h1>
-        <p className="mb-3">{runnerNameAndDescription.name}</p>
-        <p className="mb-5">{runnerNameAndDescription.description}</p>
-        <div className="grid grid-cols-2 grid-rows-2 gap-4">
-          <div>
-            <h5
-              className="font-bold text-white"
-              style={{ color: '#ffffff' }}>
-              Model Endpoints
-            </h5>
-            <p>{endpointId}</p>
-          </div>
-          <div>
-            <h5
-              className="font-bold text-white"
-              style={{ color: '#ffffff' }}>
-              Number of prompts ran
-            </h5>
-            <p>{totalPrompts}</p>
-          </div>
-          <div>
-            <h5
-              className="font-bold text-white"
-              style={{ color: '#ffffff' }}>
-              Started on
-            </h5>
-            <p>{benchmarkResult.metadata.start_time}</p>
-          </div>
-          <div>
-            <h5
-              className="font-bold text-white"
-              style={{ color: '#ffffff' }}>
-              Completed on
-            </h5>
-            <p>{benchmarkResult.metadata.end_time}</p>
-          </div>
-        </div>
-      </header>
-
-      <section
-        id="areasTested"
-        className="p-6 bg-moongray-800"
-        style={{ backgroundColor: '#464349' }}>
-        <section className="grid grid-cols-2 py-6 gap-5">
-          <hgroup>
-            <h2
-              className="text-[1.8rem] text-white"
-              style={{ color: '#ffffff' }}>
-              Areas Tested
-            </h2>
-            <div className="flex items-start gap-2">
-              <Icon name={IconName.Book} />
-              <p className="w-[80%]">
-                Moonshot offers <span className="font-bold">cookbooks</span>{' '}
-                containing recipes (benchmark tests) that evaluate comparable
-                areas.
-              </p>
-            </div>
-          </hgroup>
-
-          <ol
-            className="list-decimal list-inside text-white font-semi-bold text-[1rem]"
-            style={{ color: '#ffffff' }}>
-            {cookbooksInReport.map((cookbook) => {
-              return (
-                <li
-                  key={cookbook.id}
-                  className="mb-1 w-[500px]">
-                  <span className="mr-3">{cookbook.name}</span>
-                  <span className="inline-flex gap-2 justify-start">
-                    {cookbookCategoryLabels[cookbook.id].map(
-                      (categoryLetter) => (
-                        <Badge
-                          key={categoryLetter}
-                          label={categoryLetter}
-                        />
-                      )
-                    )}
-                  </span>
-                </li>
-              );
-            })}
-          </ol>
-        </section>
-
-        <section
-          className="bg-moongray-1000 rounded-lg py-6 px-6 flex flex-col gap-6"
-          style={{ backgroundColor: '#202020' }}>
-          <h3
-            className="text-white text-[0.75rem]"
-            style={{ color: '#ffffff' }}>
-            Legend
-          </h3>
-          <p>
-            <span className="font-bold text-fuchsia-400 ">Q - Quality</span>
-            &nbsp;evaluates the model&apos;s ability to consistently produce
-            content that meets general correctness and application-specific
-            standards.
-          </p>
-          <p>
-            <span className="font-bold text-fuchsia-400 ">C - Capability</span>
-            &nbsp;assesses the AI model&apos;s ability to perform within the
-            context of the unique requirements and challenges of a particular
-            domain or task.
-          </p>
-          <p>
-            <span className="font-bold text-fuchsia-400 ">
-              T - Trust & Safety
-            </span>
-            &nbsp;addresses the reliability, ethical considerations, and
-            inherent risks of the AI model. It also examines potential scenarios
-            where the AI system could be used maliciously or unethically.
-          </p>
-        </section>
-
-        <p
-          className="p-6"
-          data-download="hide">
-          This report summarises the results for the benchmark tests ran on the
-          endpoint. For the full detailed test results, &nbsp;
-          <a
-            className="text-fuchsia-400"
-            href={downloadUrl}>
-            Download the JSON file here
-          </a>
-          .
-        </p>
-      </section>
-
-      {mlcHeaderResult}
     </article>
   );
 }
 
-export { BenchmarkReportSectionOne };
+export { MlcSafetyBaselineGrades };

@@ -15,7 +15,6 @@ const config: Config = {
         'moonwide-gradient': `linear-gradient(to right, #363138 10%, #594a60 90%)`,
       },
       colors: {
-        e7e7e7: '#e7e7e7',
         fuchsia: {
           980: '#702f8a',
           1000: '#4c2b5d',
@@ -28,6 +27,7 @@ const config: Config = {
         imdapurple: '#49305A',
         moonpurplelight: '#d5aaea',
         moonpurple: '#392348',
+        reportText: '#bcb9c0',
         moonwine: {
           50: '#f9f8fb',
           100: '#f4f1f6',

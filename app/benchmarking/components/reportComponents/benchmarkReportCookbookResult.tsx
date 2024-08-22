@@ -6,7 +6,10 @@ import { colors } from '@/app/customColors';
 import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
 import { RecipeGradeBadge } from './badge';
 import { BenchmarkReportRecipeResult } from './benchmarkReportRecipeResult';
-import { MLC_COOKBOOK_IDS, gradingLettersMlcMap } from './constants';
+import {
+  MLC_COOKBOOK_IDS,
+  gradingLettersMlcMap,
+} from './mlcReportComponents/constants';
 import { gradeColorsMoonshot, gradeColorsMlc } from './gradeColors';
 
 type BenchmarkReportCookbookResultsProps = {
@@ -30,7 +33,6 @@ function BenchmarkReportCookbookResult(
   const [showSection, setShowSection] = React.useState(false);
 
   if (!evaluationSummary) {
-    console.log('BenchmarkReportCookbookResult:: No evaluation summary');
     return <p>BenchmarkReportCookbookResult: No evaluation summary</p>;
   }
 
