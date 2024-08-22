@@ -42,8 +42,8 @@ export async function fetchCookbooks(params?: inputParams) {
     `${config.webAPI.hostURL}${config.webAPI.basePathCookbooks}?${urlQueryParams}`,
     {
       method: 'GET',
-      headers: {
-        'Cache-Control': 'no-cache',
+      next: {
+        tags: ['cookbooks-collection'],
       },
     }
   );

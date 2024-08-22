@@ -3,7 +3,7 @@ import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkRepo
 import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { calcTotalPromptsByEndpoint } from '@/app/benchmarking/utils/calcTotalPromptsByEndpoint';
 import { Button, ButtonType } from '@/app/components/button';
-import { BenchmarkReportSectionTwo } from './benchmarkReportSectionTwo';
+import { CookbooksFullResults } from './cookbooksFullResults';
 import { MlcSafetyBaselineGrades } from './mlcReportComponents/mlcSafetyBaselineGrades';
 import { ReportLogo } from './reportLogo';
 import { RunSummary } from './runSummary';
@@ -31,7 +31,30 @@ function Report(props: BenchmarkReportProps) {
     [benchmarkResult.metadata.id, endpointId]
   );
 
-  const showMlcSafetyBaselineGrades = hasMlcAISafetyCookbook(benchmarkResult);
+  const showMlcAISafetyElements = hasMlcAISafetyCookbook(benchmarkResult);
+
+  const reportHeader = (
+    <hgroup className="p-6 pb-0 text-reportText">
+      <ReportLogo
+        width={280}
+        className="mb-10"
+      />
+      <h1 className="text-[2.3rem] text-white mb-2">Benchmark Report</h1>
+      <p className="mb-3 font-bold">{runnerNameAndDescription.name}</p>
+      <p className="mb-5">{runnerNameAndDescription.description}</p>
+    </hgroup>
+  );
+
+  const fullResultsHeading = (
+    <header className="bg-moongray-1000 px-6 py-8">
+      <hgroup>
+        {showMlcAISafetyElements && (
+          <p className="text-fuchsia-400">Section 2</p>
+        )}
+        <h2 className="text-[1.8rem] text-white flex">Full Results</h2>
+      </hgroup>
+    </header>
+  );
 
   return (
     <section className="flex-1 h-full border border-white rounded-lg overflow-hidden pr-[2px] py-[2px]">
@@ -41,15 +64,7 @@ function Report(props: BenchmarkReportProps) {
         <article
           className="flex flex-col gap-8 bg-moongray-800"
           style={{ backgroundColor: '#464349' }}>
-          <hgroup className="p-6 pb-0 text-reportText">
-            <ReportLogo
-              width={280}
-              className="mb-10"
-            />
-            <h1 className="text-[2.3rem] text-white mb-2">Benchmark Report</h1>
-            <p className="mb-3 font-bold">{runnerNameAndDescription.name}</p>
-            <p className="mb-5">{runnerNameAndDescription.description}</p>
-          </hgroup>
+          {reportHeader}
           <RunSummary
             resultId={benchmarkResult.metadata.id}
             cookbooksInReport={cookbooksInReport}
@@ -59,10 +74,9 @@ function Report(props: BenchmarkReportProps) {
             startTime={benchmarkResult.metadata.start_time}
             endTime={benchmarkResult.metadata.end_time}
           />
-          {showMlcSafetyBaselineGrades && (
-            <MlcSafetyBaselineGrades {...props} />
-          )}
-          <BenchmarkReportSectionTwo
+          {showMlcAISafetyElements && <MlcSafetyBaselineGrades {...props} />}
+          {fullResultsHeading}
+          <CookbooksFullResults
             benchmarkResult={benchmarkResult}
             endpointId={endpointId}
           />

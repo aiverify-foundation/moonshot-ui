@@ -2,38 +2,24 @@ import React from 'react';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { LoadingAnimation } from '@/app/components/loadingAnimation';
-import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import { SquareBadge } from './badge';
 import { BenchmarkReportCookbookResult } from './benchmarkReportCookbookResult';
 import { gradeColorsMoonshot } from './gradeColors';
-import { MLC_COOKBOOK_IDS } from './mlcReportComponents/constants';
 
-type BenchmarkReportProps = {
+type CookbookFullResultsProps = {
   benchmarkResult: CookbooksBenchmarkResult;
+  cookbooksInReport: Cookbook[];
   endpointId: string;
 };
 
-function BenchmarkReportSectionTwo(props: BenchmarkReportProps) {
-  const { benchmarkResult, endpointId } = props;
-  const { cookbooks } = benchmarkResult.metadata;
+function CookbooksFullResults(props: CookbookFullResultsProps) {
+  const { benchmarkResult, endpointId, cookbooksInReport } = props;
   const cookbookResultList = benchmarkResult.results.cookbooks;
 
-  const { data, isFetching } = useGetCookbooksQuery({ ids: cookbooks });
   const [expandAERatings, setExpandAERatings] = React.useState(false);
-
-  const containsMlcCookbook = cookbooks.some((cookbook) =>
-    MLC_COOKBOOK_IDS.includes(cookbook)
-  );
 
   return (
     <article className="h-full w-full text-moongray-300 text-[0.9rem] bg-moongray-800 rounded-lg ">
-      <header className="bg-moongray-1000 px-6 py-8">
-        <hgroup>
-          {containsMlcCookbook && <p className="text-fuchsia-400">Section 2</p>}
-          <h2 className="text-[1.8rem] text-white flex">Full Results</h2>
-        </hgroup>
-      </header>
-
       <section
         id="resultsSafetyBaseline"
         className="bg-moongray-800 p-6">
@@ -218,31 +204,19 @@ function BenchmarkReportSectionTwo(props: BenchmarkReportProps) {
           </div>
         </section>
 
-        {isFetching && (
-          <div className="w-full relative">
-            <LoadingAnimation />
-          </div>
-        )}
         <div className="flex flex-col gap-4">
-          {!isFetching &&
-            data &&
-            cookbooks.map((cookbook, idx) => {
-              const cookbookDetails = data.find((c) => c.id === cookbook);
-              return !cookbookDetails ? (
-                <p>No cookbook data</p>
-              ) : (
-                <BenchmarkReportCookbookResult
-                  result={cookbookResultList[idx]}
-                  key={cookbook + idx}
-                  cookbook={cookbookDetails}
-                  endpointId={endpointId}
-                />
-              );
-            })}
+          {cookbooksInReport.map((cookbook, idx) => (
+            <BenchmarkReportCookbookResult
+              result={cookbookResultList[idx]}
+              key={cookbook.id}
+              cookbook={cookbook}
+              endpointId={endpointId}
+            />
+          ))}
         </div>
       </section>
     </article>
   );
 }
 
-export { BenchmarkReportSectionTwo };
+export { CookbooksFullResults };
