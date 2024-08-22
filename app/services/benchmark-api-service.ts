@@ -34,27 +34,9 @@ const benchmarkRunApi = createApi({
         method: 'POST',
       }),
     }),
-    getBenchmarksResult: builder.query<
-      CookbooksBenchmarkResult,
-      { id?: string }
-    >({
-      query: ({ id }) => ({
-        url: `${proxyPathBenchmarksGetResults}/${id}`,
-        method: 'GET',
-      }),
-    }),
   }),
 });
 
-const {
-  useRunBenchmarkMutation,
-  useGetBenchmarksResultQuery,
-  useCancelBenchmarkMutation,
-} = benchmarkRunApi;
+const { useRunBenchmarkMutation, useCancelBenchmarkMutation } = benchmarkRunApi;
 
-export {
-  benchmarkRunApi,
-  useRunBenchmarkMutation,
-  useGetBenchmarksResultQuery,
-  useCancelBenchmarkMutation,
-};
+export { benchmarkRunApi, useRunBenchmarkMutation, useCancelBenchmarkMutation };

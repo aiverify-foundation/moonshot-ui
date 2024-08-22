@@ -60,7 +60,7 @@ function MlcSafetyBaselineGrades(props: BenchmarkReportProps) {
       });
     }
     callServerAction();
-  }, [mlcCookbookResults]);
+  }, []);
 
   const mlsCookbookResultOverallGrade =
     mlcAISafetyCookbookResult.overall_evaluation_summary.find(
