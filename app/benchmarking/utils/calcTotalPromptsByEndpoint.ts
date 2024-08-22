@@ -6,6 +6,7 @@ export function calcTotalPromptsByEndpoint(
 ): number {
   let totalPrompts = 0;
 
+  // 🤬 omg
   // Iterate through each cookbook in the results
   result.results.cookbooks.forEach((cookbook) => {
     // Iterate through each recipe in the cookbook

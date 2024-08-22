@@ -153,7 +153,6 @@ function MlcSafetyBaselineGrades(props: BenchmarkReportProps) {
       </header>
 
       <section
-        id="resultsSafetyBaseline"
         className="bg-moongray-800 p-6"
         style={{ backgroundColor: '#464349' }}>
         <section className="p-6">
