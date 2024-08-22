@@ -1,6 +1,6 @@
 import React from 'react';
+import { BenchmarkReportCookbookResult } from '@/app/benchmarking/components/reportComponents/benchmarkReportCookbookResult';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
-import { BenchmarkReportCookbookResult } from './benchmarkReportCookbookResult';
 
 type CookbookFullResultsProps = {
   benchmarkResult: CookbooksBenchmarkResult;
@@ -8,7 +8,7 @@ type CookbookFullResultsProps = {
   endpointId: string;
 };
 
-function CookbooksFullResults(props: CookbookFullResultsProps) {
+function MlcAISafeyCookbookFullResults(props: CookbookFullResultsProps) {
   const { benchmarkResult, endpointId, cookbooksInReport } = props;
   const cookbookResultList = benchmarkResult.results.cookbooks;
   const sortedResultsByCookbooksInReport = cookbooksInReport.map((cookbook) =>
@@ -41,4 +41,4 @@ function CookbooksFullResults(props: CookbookFullResultsProps) {
   );
 }
 
-export { CookbooksFullResults };
+export { MlcAISafeyCookbookFullResults };

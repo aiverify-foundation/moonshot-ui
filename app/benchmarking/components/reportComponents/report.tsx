@@ -2,15 +2,17 @@ import React from 'react';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { calcTotalPromptsByEndpoint } from '@/app/benchmarking/utils/calcTotalPromptsByEndpoint';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { SquareBadge } from './badge';
 import { CookbooksFullResults } from './cookbooksFullResults';
+import { gradeColorsMoonshot } from './gradeColors';
+import { MLC_COOKBOOK_IDS } from './mlcReportComponents/constants';
+import { MlcAISafeyCookbookFullResults } from './mlcReportComponents/mlcAISafetyCookbookFullResults';
 import { MlcSafetyBaselineGrades } from './mlcReportComponents/mlcSafetyBaselineGrades';
 import { ReportLogo } from './reportLogo';
 import { RunSummary } from './runSummary';
 import { hasMlcAISafetyCookbook } from './utils';
-import { Icon, IconName } from '@/app/components/IconSVG';
-import { SquareBadge } from './badge';
-import { gradeColorsMoonshot } from './gradeColors';
 
 type BenchmarkReportProps = {
   benchmarkResult: CookbooksBenchmarkResult;
@@ -31,11 +33,24 @@ function Report(props: BenchmarkReportProps) {
   const [expandRatings, setExpandAERatings] = React.useState(false);
   const downloadUrl = `/api/v1/benchmarks/results/${benchmarkResult.metadata.id}?download=true`;
   const totalPrompts = React.useMemo(
-    () => calcTotalPromptsByEndpoint(benchmarkResult, endpointId), // expensive with large datasets
+    () => calcTotalPromptsByEndpoint(benchmarkResult, endpointId),
     [benchmarkResult.metadata.id, endpointId]
   );
+  let standardCookbooks: Cookbook[] = [];
+  let mlcAISafetyCookbook: Cookbook[] = [];
 
   const showMlcAISafetyElements = hasMlcAISafetyCookbook(benchmarkResult);
+
+  if (showMlcAISafetyElements) {
+    mlcAISafetyCookbook = cookbooksInReport.filter(
+      (cookbook) => cookbook.id === MLC_COOKBOOK_IDS[0]
+    );
+    standardCookbooks = cookbooksInReport.filter(
+      (cookbook) => cookbook.id !== MLC_COOKBOOK_IDS[0]
+    );
+  } else {
+    standardCookbooks = cookbooksInReport;
+  }
 
   const reportHeader = (
     <hgroup className="p-6 pb-0 text-reportText">
@@ -260,11 +275,20 @@ function Report(props: BenchmarkReportProps) {
             defined tiered grading system will not be assigned a grade.
           </p>
           {ratingsDescriptions}
-          <CookbooksFullResults
-            benchmarkResult={benchmarkResult}
-            endpointId={endpointId}
-            cookbooksInReport={cookbooksInReport}
-          />
+          <div className="flex flex-col gap-4">
+            <CookbooksFullResults
+              benchmarkResult={benchmarkResult}
+              endpointId={endpointId}
+              cookbooksInReport={standardCookbooks}
+            />
+            {showMlcAISafetyElements && (
+              <MlcAISafeyCookbookFullResults
+                benchmarkResult={benchmarkResult}
+                endpointId={endpointId}
+                cookbooksInReport={mlcAISafetyCookbook}
+              />
+            )}
+          </div>
           <footer className="flex justify-center pb-10">
             <a
               data-download="hide"
