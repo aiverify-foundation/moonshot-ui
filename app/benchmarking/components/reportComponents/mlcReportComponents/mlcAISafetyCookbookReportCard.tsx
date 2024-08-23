@@ -1,11 +1,11 @@
 import React from 'react';
 import { RecipeGradeBadge } from '@/app/benchmarking/components/reportComponents/badge';
-import { BenchmarkReportRecipeResult } from '@/app/benchmarking/components/reportComponents/benchmarkReportRecipeResult';
 import { gradeColorsMlc } from '@/app/benchmarking/components/reportComponents/gradeColors';
 import { gradingLettersMlcMap } from '@/app/benchmarking/components/reportComponents/mlcReportComponents/constants';
 import { CookbookResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
+import { MlcAiSafetyRecipeRatingResult } from './mlcAiSafetyRecipeRatingResult';
 
 type BenchmarkReportCookbookResultsProps = {
   result: CookbookResult;
@@ -78,9 +78,8 @@ function MlcAISafetyCookbookReportCard(
             return !recipeDetails ? (
               <p>recipeDetails: No recipe details</p>
             ) : (
-              <BenchmarkReportRecipeResult
+              <MlcAiSafetyRecipeRatingResult
                 key={recipeResult.id}
-                cookbookId={cookbook.id}
                 result={recipeResult}
                 recipe={recipeDetails}
                 endpointId={endpointId}

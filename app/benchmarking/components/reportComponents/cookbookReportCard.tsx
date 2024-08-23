@@ -3,12 +3,8 @@ import { CookbookResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
 import { RecipeGradeBadge } from './badge';
-import { BenchmarkReportRecipeResult } from './benchmarkReportRecipeResult';
-import { gradeColorsMoonshot, gradeColorsMlc } from './gradeColors';
-import {
-  MLC_COOKBOOK_IDS,
-  gradingLettersMlcMap,
-} from './mlcReportComponents/constants';
+import { gradeColorsMoonshot } from './gradeColors';
+import { RecipeRatingResult } from './recipeRatingResult';
 
 type BenchmarkReportCookbookResultsProps = {
   result: CookbookResult;
@@ -28,10 +24,6 @@ function CookbookReportCard(props: BenchmarkReportCookbookResultsProps) {
     return <p>CookbookReportCard: No evaluation summary</p>;
   }
 
-  const isMlcCookbook = MLC_COOKBOOK_IDS.includes(cookbook.id);
-
-  const gradeColors = isMlcCookbook ? gradeColorsMlc : gradeColorsMoonshot;
-
   return (
     <section className="bg-moongray-1000 rounded-lg">
       <header
@@ -41,7 +33,7 @@ function CookbookReportCard(props: BenchmarkReportCookbookResultsProps) {
         ${showSection ? 'rounded-b-none' : 'rounded-b-lg'}`}
         style={{
           transition: 'background-color 0.3s ease-in-out',
-          border: `1px solid ${gradeColors[evaluationSummary.overall_grade as keyof typeof gradeColors]}`,
+          border: `1px solid ${gradeColorsMoonshot[evaluationSummary.overall_grade as keyof typeof gradeColorsMoonshot]}`,
         }}
         onClick={() => setShowSection(!showSection)}>
         <div className="flex items-center gap-2">
@@ -58,14 +50,7 @@ function CookbookReportCard(props: BenchmarkReportCookbookResultsProps) {
           {evaluationSummary && (
             <RecipeGradeBadge
               grade={evaluationSummary.overall_grade}
-              customLetter={
-                isMlcCookbook
-                  ? gradingLettersMlcMap[
-                      evaluationSummary.overall_grade as keyof typeof gradingLettersMlcMap
-                    ]
-                  : undefined
-              }
-              gradeColors={gradeColors}
+              gradeColors={gradeColorsMoonshot}
               size={35}
               textSize="1rem"
               textColor={colors.white}
@@ -85,9 +70,8 @@ function CookbookReportCard(props: BenchmarkReportCookbookResultsProps) {
             return !recipeDetails ? (
               <p>recipeDetails: No recipe details</p>
             ) : (
-              <BenchmarkReportRecipeResult
+              <RecipeRatingResult
                 key={recipeResult.id}
-                cookbookId={cookbook.id}
                 result={recipeResult}
                 recipe={recipeDetails}
                 endpointId={endpointId}
