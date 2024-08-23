@@ -1,50 +1,33 @@
 import React from 'react';
+import { RecipeGradeBadge } from '@/app/benchmarking/components/reportComponents/badge';
+import { BenchmarkReportRecipeResult } from '@/app/benchmarking/components/reportComponents/benchmarkReportRecipeResult';
+import { gradeColorsMlc } from '@/app/benchmarking/components/reportComponents/gradeColors';
+import { gradingLettersMlcMap } from '@/app/benchmarking/components/reportComponents/mlcReportComponents/constants';
 import { CookbookResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
-import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { colors } from '@/app/customColors';
-import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
-import { RecipeGradeBadge } from './badge';
-import { BenchmarkReportRecipeResult } from './benchmarkReportRecipeResult';
-import { gradeColorsMoonshot, gradeColorsMlc } from './gradeColors';
-import {
-  MLC_COOKBOOK_IDS,
-  gradingLettersMlcMap,
-} from './mlcReportComponents/constants';
 
 type BenchmarkReportCookbookResultsProps = {
   result: CookbookResult;
   cookbook: Cookbook;
   endpointId: string;
+  recipes: Recipe[];
 };
 
-function BenchmarkReportCookbookResult(
+function MlcAISafetyCookbookReportCard(
   props: BenchmarkReportCookbookResultsProps
 ) {
-  const { result, cookbook, endpointId } = props;
+  const { result, cookbook, endpointId, recipes } = props;
   const evaluationSummary = result.overall_evaluation_summary.find(
     (summary) => summary.model_id === endpointId
   );
-  const recipeIdsInResult = result.recipes.map((recipe) => recipe.id);
-  const { data, isFetching } = useGetAllRecipesQuery({
-    ids: recipeIdsInResult,
-    count: true,
-  });
   const [showSection, setShowSection] = React.useState(false);
 
   if (!evaluationSummary) {
-    return <p>BenchmarkReportCookbookResult: No evaluation summary</p>;
+    return <p>CookbookReportCard: No evaluation summary for {cookbook.name}</p>;
   }
 
-  const isMlcCookbook = MLC_COOKBOOK_IDS.includes(cookbook.id);
-
-  const gradeColors = isMlcCookbook ? gradeColorsMlc : gradeColorsMoonshot;
-
-  return isFetching ? (
-    <div className="relative w-full h-[100px]">
-      <LoadingAnimation />
-    </div>
-  ) : (
+  return (
     <section className="bg-moongray-1000 rounded-lg">
       <header
         data-download="collapsible-trigger"
@@ -53,7 +36,7 @@ function BenchmarkReportCookbookResult(
         ${showSection ? 'rounded-b-none' : 'rounded-b-lg'}`}
         style={{
           transition: 'background-color 0.3s ease-in-out',
-          border: `1px solid ${gradeColors[evaluationSummary.overall_grade as keyof typeof gradeColors]}`,
+          border: `1px solid ${gradeColorsMlc[evaluationSummary.overall_grade as keyof typeof gradeColorsMlc]}`,
         }}
         onClick={() => setShowSection(!showSection)}>
         <div className="flex items-center gap-2">
@@ -71,13 +54,11 @@ function BenchmarkReportCookbookResult(
             <RecipeGradeBadge
               grade={evaluationSummary.overall_grade}
               customLetter={
-                isMlcCookbook
-                  ? gradingLettersMlcMap[
-                      evaluationSummary.overall_grade as keyof typeof gradingLettersMlcMap
-                    ]
-                  : undefined
+                gradingLettersMlcMap[
+                  evaluationSummary.overall_grade as keyof typeof gradingLettersMlcMap
+                ]
               }
-              gradeColors={gradeColors}
+              gradeColors={gradeColorsMlc}
               size={35}
               textSize="1rem"
               textColor={colors.white}
@@ -90,25 +71,26 @@ function BenchmarkReportCookbookResult(
         data-download="collapsible">
         <p className="mt-6 mb-10">{cookbook.description}</p>
         <section className="grid grid-cols-1 gap-[50px]">
-          {data &&
-            result.recipes.map((recipeResult) => {
-              const recipeDetails = data?.find((r) => r.id === recipeResult.id);
-              return !recipeDetails ? (
-                <p>recipeDetails: No recipe details</p>
-              ) : (
-                <BenchmarkReportRecipeResult
-                  key={recipeResult.id}
-                  cookbookId={cookbook.id}
-                  result={recipeResult}
-                  recipe={recipeDetails}
-                  endpointId={endpointId}
-                />
-              );
-            })}
+          {result.recipes.map((recipeResult) => {
+            const recipeDetails = recipes.find(
+              (recipe) => recipe.id === recipeResult.id
+            );
+            return !recipeDetails ? (
+              <p>recipeDetails: No recipe details</p>
+            ) : (
+              <BenchmarkReportRecipeResult
+                key={recipeResult.id}
+                cookbookId={cookbook.id}
+                result={recipeResult}
+                recipe={recipeDetails}
+                endpointId={endpointId}
+              />
+            );
+          })}
         </section>
       </main>
     </section>
   );
 }
 
-export { BenchmarkReportCookbookResult };
+export { MlcAISafetyCookbookReportCard };

@@ -2,7 +2,6 @@ import {
   CookbookResult,
   CookbooksBenchmarkResult,
 } from '@/app/benchmarking/types/benchmarkReportTypes';
-import { MLC_COOKBOOK_IDS } from './mlcReportComponents/constants';
 
 /**
  * Extracts cookbook results from the benchmark result based on the provided cookbook IDs.
@@ -33,13 +32,15 @@ export function extractRecipeIds(cookbookResults: CookbookResult[]): string[] {
 }
 
 /**
- * Checks if the benchmark result has the MLC AI Safety cookbook.
+ * Checks if the benchmark result contains a specific cookbook.
  *
+ * @param {string} cookbookId - The ID of the cookbook to check for.
  * @param {CookbooksBenchmarkResult} benchmarkResult - The benchmark result containing cookbook data.
- * @returns {boolean} - True if the benchmark result has the MLC AI Safety cookbook, false otherwise.
+ * @returns {boolean} - True if the benchmark result contains the specified cookbook, false otherwise.
  */
-export function hasMlcAISafetyCookbook(
+export function hasSpecificCookbook(
+  cookbookId: string,
   benchmarkResult: CookbooksBenchmarkResult
 ): boolean {
-  return benchmarkResult.metadata.cookbooks.includes(MLC_COOKBOOK_IDS[0]);
+  return benchmarkResult.metadata.cookbooks.includes(cookbookId);
 }

@@ -1,13 +1,10 @@
 import { notFound } from 'next/navigation';
 import React from 'react';
 import { BenchmarkReportViewer } from '@/app/benchmarking/components/reportComponents/benchmarkReportViewer';
-import { MLC_COOKBOOK_IDS } from '@/app/benchmarking/components/reportComponents/mlcReportComponents/constants';
 import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
-import {
-  CookbookResult,
-  CookbooksBenchmarkResult,
-} from '@/app/benchmarking/types/benchmarkReportTypes';
+import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
+import { colors } from '@/app/customColors';
 import {
   fetchCookbooks,
   fetchRecipes,
@@ -23,10 +20,20 @@ export default async function BenchmarkingReportPage(props: {
   const fetchPromises = [
     fetchReport(props.searchParams.id),
     fetchRunnerHeading(props.searchParams.id),
-    fetchCookbooks({ count: true }),
+    fetchCookbooks({ categories: ['Quality'], count: false }),
+    fetchCookbooks({ categories: ['Capability'], count: false }),
+    fetchCookbooks({ categories: ['Trust & Safety'], count: false }),
+    fetchRecipes({ count: true }),
   ];
-  const [reportResponse, runnerHeadingResponse, cookbooksResponse] =
-    await Promise.all(fetchPromises);
+  const [
+    reportResponse,
+    runnerHeadingResponse,
+    qualityCookbooksResponse,
+    performanceCookbooksResponse,
+    securityCookbooksResponse,
+    recipesResponse,
+  ] = await Promise.all(fetchPromises);
+  await Promise.all(fetchPromises);
 
   if ('message' in reportResponse) {
     if (reportResponse.message.includes('No results found')) {
@@ -38,34 +45,6 @@ export default async function BenchmarkingReportPage(props: {
 
   if ('message' in runnerHeadingResponse) {
     throw new Error(runnerHeadingResponse.message);
-  }
-
-  if ('message' in cookbooksResponse) {
-    throw new Error(cookbooksResponse.message);
-  }
-
-  const bencmarkResult = (reportResponse as ApiResult<CookbooksBenchmarkResult>)
-    .data;
-  const runnerNameAndDescription = (
-    runnerHeadingResponse as ApiResult<RunnerHeading>
-  ).data;
-
-  const fetchCookbooksPromises = [
-    fetchCookbooks({ ids: bencmarkResult.metadata.cookbooks }),
-    fetchCookbooks({ categories: ['Quality'], count: false }),
-    fetchCookbooks({ categories: ['Capability'], count: false }),
-    fetchCookbooks({ categories: ['Trust & Safety'], count: false }),
-  ];
-
-  const [
-    cookbooksInReportResponse,
-    qualityCookbooksResponse,
-    performanceCookbooksResponse,
-    securityCookbooksResponse,
-  ] = await Promise.all(fetchCookbooksPromises);
-
-  if ('message' in cookbooksInReportResponse) {
-    throw new Error(cookbooksInReportResponse.message);
   }
 
   if ('message' in qualityCookbooksResponse) {
@@ -80,6 +59,24 @@ export default async function BenchmarkingReportPage(props: {
     throw new Error(securityCookbooksResponse.message);
   }
 
+  if ('message' in recipesResponse) {
+    throw new Error(recipesResponse.message);
+  }
+
+  const bencmarkResult = (reportResponse as ApiResult<CookbooksBenchmarkResult>)
+    .data;
+  const runnerNameAndDescription = (
+    runnerHeadingResponse as ApiResult<RunnerHeading>
+  ).data;
+
+  const cookbooksInReportResponse = await fetchCookbooks({
+    ids: bencmarkResult.metadata.cookbooks,
+  });
+
+  if ('message' in cookbooksInReportResponse) {
+    throw new Error(cookbooksInReportResponse.message);
+  }
+
   const cookbooksInReport = (
     cookbooksInReportResponse as ApiResult<Cookbook[]>
   ).data.sort((a, b) => a.name.localeCompare(b.name));
@@ -92,6 +89,7 @@ export default async function BenchmarkingReportPage(props: {
   const cookbooksUnderTrustSafety = (
     securityCookbooksResponse as ApiResult<Cookbook[]>
   ).data;
+  const recipes = (recipesResponse as ApiResult<Recipe[]>).data;
 
   const cookbookCategoryLabels: CookbookCategoryLabels =
     bencmarkResult.metadata.cookbooks.reduce((acc, cookbookId) => {
@@ -122,12 +120,13 @@ export default async function BenchmarkingReportPage(props: {
       closeLinkUrl="/benchmarking"
       height="100%"
       minHeight={750}
-      bgColor="#2d2b2f">
+      bgColor={colors.moongray['950']}>
       <BenchmarkReportViewer
         benchmarkResult={bencmarkResult}
         runnerNameAndDescription={runnerNameAndDescription}
         cookbookCategoryLabels={cookbookCategoryLabels}
         cookbooksInReport={cookbooksInReport}
+        recipes={recipes}
       />
     </MainSectionSurface>
   );

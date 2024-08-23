@@ -1,9 +1,6 @@
 'use client';
 import { useState } from 'react';
-import {
-  CookbookResult,
-  CookbooksBenchmarkResult,
-} from '@/app/benchmarking/types/benchmarkReportTypes';
+import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { HeaderControls } from './headerControls';
 import { Report } from './report';
@@ -13,6 +10,7 @@ type BenchmarkReportViewerProps = {
   runnerNameAndDescription: RunnerHeading;
   cookbookCategoryLabels: CookbookCategoryLabels;
   cookbooksInReport: Cookbook[];
+  recipes: Recipe[];
 };
 
 function BenchmarkReportViewer(props: BenchmarkReportViewerProps) {

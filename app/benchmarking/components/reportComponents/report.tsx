@@ -1,18 +1,20 @@
 import React from 'react';
-import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
+import {
+  CookbookResult,
+  CookbooksBenchmarkResult,
+} from '@/app/benchmarking/types/benchmarkReportTypes';
 import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { calcTotalPromptsByEndpoint } from '@/app/benchmarking/utils/calcTotalPromptsByEndpoint';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { SquareBadge } from './badge';
-import { CookbooksFullResults } from './cookbooksFullResults';
+import { CookbookReportCard } from './cookbookReportCard';
 import { gradeColorsMoonshot } from './gradeColors';
 import { MLC_COOKBOOK_IDS } from './mlcReportComponents/constants';
-import { MlcAISafeyCookbookFullResults } from './mlcReportComponents/mlcAISafetyCookbookFullResults';
+import { MlcAISafetyCookbookReportCard } from './mlcReportComponents/mlcAISafetyCookbookReportCard';
 import { MlcSafetyBaselineGrades } from './mlcReportComponents/mlcSafetyBaselineGrades';
 import { ReportLogo } from './reportLogo';
 import { RunSummary } from './runSummary';
-import { hasMlcAISafetyCookbook } from './utils';
 
 type BenchmarkReportProps = {
   benchmarkResult: CookbooksBenchmarkResult;
@@ -20,6 +22,7 @@ type BenchmarkReportProps = {
   runnerNameAndDescription: RunnerHeading;
   cookbooksInReport: Cookbook[];
   cookbookCategoryLabels: CookbookCategoryLabels;
+  recipes: Recipe[];
 };
 
 function Report(props: BenchmarkReportProps) {
@@ -29,6 +32,7 @@ function Report(props: BenchmarkReportProps) {
     endpointId,
     cookbooksInReport,
     cookbookCategoryLabels,
+    recipes,
   } = props;
   const [expandRatings, setExpandAERatings] = React.useState(false);
   const downloadUrl = `/api/v1/benchmarks/results/${benchmarkResult.metadata.id}?download=true`;
@@ -36,14 +40,25 @@ function Report(props: BenchmarkReportProps) {
     () => calcTotalPromptsByEndpoint(benchmarkResult, endpointId),
     [benchmarkResult.metadata.id, endpointId]
   );
+  const mlcAISafetyCookbookResult: CookbookResult | undefined =
+    benchmarkResult.results.cookbooks.find(
+      (result) => result.id === MLC_COOKBOOK_IDS[0]
+    );
+  const hasMlcAISafetyCookbookResult = mlcAISafetyCookbookResult !== undefined;
   let standardCookbooks: Cookbook[] = [];
-  let mlcAISafetyCookbook: Cookbook[] = [];
+  let mlcAISafetyCookbook: Cookbook | undefined;
+  const standardCookbookResults: CookbookResult[] = [];
+  let recipesInStandardCookbooks: Recipe[] = [];
+  let recipesInMlcAISafetyCookbook: Recipe[] = [];
 
-  const showMlcAISafetyElements = hasMlcAISafetyCookbook(benchmarkResult);
-
-  if (showMlcAISafetyElements) {
-    mlcAISafetyCookbook = cookbooksInReport.filter(
+  if (hasMlcAISafetyCookbookResult) {
+    mlcAISafetyCookbook = cookbooksInReport.find(
       (cookbook) => cookbook.id === MLC_COOKBOOK_IDS[0]
+    );
+    recipesInMlcAISafetyCookbook = recipes.filter((recipe) =>
+      mlcAISafetyCookbook
+        ? mlcAISafetyCookbook.recipes.includes(recipe.id)
+        : false
     );
     standardCookbooks = cookbooksInReport.filter(
       (cookbook) => cookbook.id !== MLC_COOKBOOK_IDS[0]
@@ -51,6 +66,23 @@ function Report(props: BenchmarkReportProps) {
   } else {
     standardCookbooks = cookbooksInReport;
   }
+
+  standardCookbooks.forEach((cookbook) => {
+    const result = benchmarkResult.results.cookbooks.find(
+      (result) => result.id === cookbook.id
+    );
+    if (result) {
+      standardCookbookResults.push(result);
+      recipesInStandardCookbooks.push(
+        ...recipes.filter((recipe) => cookbook.recipes.includes(recipe.id))
+      );
+    }
+  });
+
+  recipesInStandardCookbooks = Array.from(new Set(recipesInStandardCookbooks));
+  recipesInMlcAISafetyCookbook = Array.from(
+    new Set(recipesInMlcAISafetyCookbook)
+  );
 
   const reportHeader = (
     <hgroup className="p-6 pb-0 text-reportText">
@@ -67,7 +99,7 @@ function Report(props: BenchmarkReportProps) {
   const fullResultsHeading = (
     <header className="bg-moongray-1000 px-6 py-8">
       <hgroup>
-        {showMlcAISafetyElements && (
+        {hasMlcAISafetyCookbookResult && (
           <p className="text-fuchsia-400">Section 2</p>
         )}
         <h2 className="text-[1.8rem] text-white flex">Full Results</h2>
@@ -252,9 +284,7 @@ function Report(props: BenchmarkReportProps) {
       <div
         id="report-content"
         className="h-full overflow-x-hidden overflow-y-auto custom-scrollbar">
-        <article
-          className="flex flex-col gap-8 bg-moongray-800"
-          style={{ backgroundColor: '#464349' }}>
+        <article className="flex flex-col gap-8 bg-moongray-800">
           {reportHeader}
           <RunSummary
             resultId={benchmarkResult.metadata.id}
@@ -265,7 +295,9 @@ function Report(props: BenchmarkReportProps) {
             startTime={benchmarkResult.metadata.start_time}
             endTime={benchmarkResult.metadata.end_time}
           />
-          {showMlcAISafetyElements && <MlcSafetyBaselineGrades {...props} />}
+          {hasMlcAISafetyCookbookResult && (
+            <MlcSafetyBaselineGrades {...props} />
+          )}
           {fullResultsHeading}
           <p className="px-6 text-reportText text-[0.9rem]">
             Each cookbook dedicated to testing a specific area can contain
@@ -275,20 +307,27 @@ function Report(props: BenchmarkReportProps) {
             defined tiered grading system will not be assigned a grade.
           </p>
           {ratingsDescriptions}
-          <div className="flex flex-col gap-4">
-            <CookbooksFullResults
-              benchmarkResult={benchmarkResult}
-              endpointId={endpointId}
-              cookbooksInReport={standardCookbooks}
-            />
-            {showMlcAISafetyElements && (
-              <MlcAISafeyCookbookFullResults
-                benchmarkResult={benchmarkResult}
-                endpointId={endpointId}
-                cookbooksInReport={mlcAISafetyCookbook}
-              />
+          <section className="h-full w-full text-moongray-300 text-[0.9rem] bg-moongray-800 rounded-lg px-6 flex flex-col gap-4">
+            {standardCookbooks.map((cookbook, idx) =>
+              standardCookbookResults[idx] ? (
+                <CookbookReportCard
+                  result={standardCookbookResults[idx]}
+                  key={cookbook.id}
+                  cookbook={cookbook}
+                  endpointId={endpointId}
+                  recipes={recipesInStandardCookbooks}
+                />
+              ) : null
             )}
-          </div>
+            {hasMlcAISafetyCookbookResult && mlcAISafetyCookbook ? (
+              <MlcAISafetyCookbookReportCard
+                result={mlcAISafetyCookbookResult}
+                cookbook={mlcAISafetyCookbook}
+                endpointId={endpointId}
+                recipes={recipesInMlcAISafetyCookbook}
+              />
+            ) : null}
+          </section>
           <footer className="flex justify-center pb-10">
             <a
               data-download="hide"
