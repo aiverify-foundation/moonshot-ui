@@ -1,7 +1,7 @@
 import React from 'react';
-import { RecipeGradeBadge } from '@/app/benchmarking/components/reportComponents/badge';
-import { gradeColorsMlc } from '@/app/benchmarking/components/reportComponents/gradeColors';
-import { gradingLettersMlcMap } from '@/app/benchmarking/components/reportComponents/mlcReportComponents/constants';
+import { RecipeGradeBadge } from '@/app/benchmarking/report/components/badge';
+import { gradeColorsMlc } from '@/app/benchmarking/report/components/gradeColors';
+import { gradingLettersMlcMap } from '@/app/benchmarking/report/components/mlcReportComponents/constants';
 import { CookbookResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';

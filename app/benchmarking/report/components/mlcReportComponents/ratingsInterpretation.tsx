@@ -1,5 +1,5 @@
 import React from 'react';
-import { SquareBadge } from '@/app/benchmarking/components/reportComponents/badge';
+import { SquareBadge } from '@/app/benchmarking/report/components/badge';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { gradingDescriptionsMlcMap, gradingLettersMlcMap } from './constants';
 import { GradingLevelsMlcEnum } from './enums';

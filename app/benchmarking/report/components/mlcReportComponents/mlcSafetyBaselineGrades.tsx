@@ -1,6 +1,6 @@
 import React from 'react';
-import { SquareBadge } from '@/app/benchmarking/components/reportComponents/badge';
-import { extractCookbookResults } from '@/app/benchmarking/components/reportComponents/utils';
+import { SquareBadge } from '@/app/benchmarking/report/components/badge';
+import { extractCookbookResults } from '@/app/benchmarking/report/components/utils';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import {
