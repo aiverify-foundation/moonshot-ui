@@ -1,6 +1,6 @@
 import { GradingLevelsMlcEnum } from './enums';
 
-export const MLC_COOKBOOK_IDS = ['mlc-ai-safety'];
+export const MLC_AI_SAFETY_COOKBOOK_ID = 'mlc-ai-safety';
 export const MLC_RECIPE_IDS = [
   'mlc-cae',
   'mlc-cbr',

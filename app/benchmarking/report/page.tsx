@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import React from 'react';
-import { BenchmarkReportViewer } from '@/app/benchmarking/components/reportComponents/benchmarkReportViewer';
+import { ReportViewer } from '@/app/benchmarking/components/reportComponents/reportViewer';
 import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
@@ -121,7 +121,7 @@ export default async function BenchmarkingReportPage(props: {
       height="100%"
       minHeight={750}
       bgColor={colors.moongray['950']}>
-      <BenchmarkReportViewer
+      <ReportViewer
         benchmarkResult={bencmarkResult}
         runnerNameAndDescription={runnerNameAndDescription}
         cookbookCategoryLabels={cookbookCategoryLabels}

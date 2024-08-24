@@ -13,8 +13,8 @@ import {
 export function extractCookbookResults(
   benchmarkResult: CookbooksBenchmarkResult,
   cookbookIds: string[]
-): CookbookResult[] {
-  return benchmarkResult.results.cookbooks.filter((cookbook) =>
+): CookbookResult | undefined {
+  return benchmarkResult.results.cookbooks.find((cookbook) =>
     cookbookIds.includes(cookbook.id)
   );
 }
@@ -52,7 +52,6 @@ export function hasSpecificCookbook(
  * @param {CookbooksBenchmarkResult} benchmarkResult - The benchmark result containing cookbook data.
  * @returns {boolean} - True if the benchmark result contains any of the specified recipes, false otherwise.
  */
-
 export function hasAnyOfSpecificRecipes(
   recipeIds: string[],
   benchmarkResult: CookbooksBenchmarkResult
@@ -60,4 +59,18 @@ export function hasAnyOfSpecificRecipes(
   return benchmarkResult.results.cookbooks.some((cookbook) =>
     cookbook.recipes.some((recipe) => recipeIds.includes(recipe.id))
   );
+}
+
+/**
+ * Filters recipes by a specific ID.
+ *
+ * @param {Recipe[]} recipes - An array of recipe results.
+ * @param {string[]} recipeIds - An array of recipe IDs to filter by.
+ * @returns {Recipe[]} - An array of recipes by the specified IDs.
+ */
+export function filterRecipes(
+  recipes: Recipe[],
+  recipeIds: string[]
+): Recipe[] {
+  return recipes.filter((recipe) => recipeIds.includes(recipe.id));
 }

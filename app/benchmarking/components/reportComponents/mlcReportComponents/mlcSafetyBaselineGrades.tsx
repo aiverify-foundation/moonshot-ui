@@ -1,70 +1,44 @@
 import React from 'react';
 import { SquareBadge } from '@/app/benchmarking/components/reportComponents/badge';
-import {
-  extractCookbookResults,
-  extractRecipeIds,
-} from '@/app/benchmarking/components/reportComponents/utils';
-import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
+import { extractCookbookResults } from '@/app/benchmarking/components/reportComponents/utils';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
-import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import {
   gradingDescriptionsMlcMap,
   gradingLettersMlcMap,
-  MLC_COOKBOOK_IDS,
+  MLC_AI_SAFETY_COOKBOOK_ID,
 } from './constants';
 import { GradingLevelsMlcEnum } from './enums';
 import { gradeColorsMlc } from './gradeColors';
 import RatingsInterpretation from './ratingsInterpretation';
-import { getMlcRecipes } from './serverActions/getMlcRecipes';
 
-type BenchmarkReportProps = {
+type MlcSafetyBaselineGradesProps = {
   benchmarkResult: CookbooksBenchmarkResult;
   endpointId: string;
-  runnerNameAndDescription: RunnerHeading;
-  cookbooksInReport: Cookbook[];
-  cookbookCategoryLabels: CookbookCategoryLabels;
+  recipesInMlcAISafetyCookbook: Recipe[];
 };
 
-export default function MlcSafetyBaselineGrades(props: BenchmarkReportProps) {
-  const { benchmarkResult, endpointId } = props;
-  const [mlcRecipes, setMlcRecipes] = React.useState<Recipe[]>([]);
-  const [isPending, startTransition] = React.useTransition();
+export default function MlcSafetyBaselineGrades(
+  props: MlcSafetyBaselineGradesProps
+) {
+  const { benchmarkResult, endpointId, recipesInMlcAISafetyCookbook } = props;
+
+  if (recipesInMlcAISafetyCookbook.length === 0) {
+    return <p className="text-white px-6">Recipes data is empty</p>;
+  }
 
   // 👉 This component displays results for Safety Baseline v0.5. The results must be based on ONLY 1 cookbook - 'mlc-ai-safety'.
   const mlcCookbookResults = extractCookbookResults(benchmarkResult, [
-    MLC_COOKBOOK_IDS[0], // Safety Baseline v0.5 ('mlc-ai-safety')
+    MLC_AI_SAFETY_COOKBOOK_ID, // Safety Baseline v0.5 ('mlc-ai-safety')
   ]);
 
-  const mlcAISafetyCookbookResult = mlcCookbookResults[0];
+  const mlcAISafetyCookbookResult = mlcCookbookResults;
 
-  React.useEffect(() => {
-    if (mlcCookbookResults.length === 0) {
-      return;
-    }
-    const mlcRecipeIds = Array.from(
-      new Set(extractRecipeIds(mlcCookbookResults))
-    );
-    if (mlcRecipeIds.length === 0) {
-      return;
-    }
-    async function callServerAction() {
-      startTransition(async () => {
-        const result = await getMlcRecipes(mlcRecipeIds);
-        if ('message' in result) {
-          console.error(result.message);
-        } else {
-          setMlcRecipes(result.data);
-        }
-      });
-    }
-    callServerAction();
-  }, []);
-
-  const mlsCookbookResultOverallGrade =
-    mlcAISafetyCookbookResult.overall_evaluation_summary.find(
-      (summary) => summary.model_id === endpointId
-    );
+  const mlsCookbookResultOverallGrade = mlcAISafetyCookbookResult
+    ? mlcAISafetyCookbookResult.overall_evaluation_summary.find(
+        (summary) => summary.model_id === endpointId
+      )
+    : undefined;
 
   const badgeLabel = mlsCookbookResultOverallGrade
     ? gradingLettersMlcMap[
@@ -85,19 +59,20 @@ export default function MlcSafetyBaselineGrades(props: BenchmarkReportProps) {
     : 'None';
 
   const mlcGrades =
-    mlcRecipes.length > 0 ? (
+    mlcAISafetyCookbookResult && recipesInMlcAISafetyCookbook.length > 0 ? (
       <section className="grid grid-rows-7 w-[70%] mt-10 gap-6">
         {mlcAISafetyCookbookResult.recipes.map((recipeResult, idx) => {
           const evalSummary = recipeResult.evaluation_summary.find(
             (summary) => summary.model_id === endpointId
           );
           const grade = evalSummary && evalSummary.grade;
-          const nameSegments = mlcRecipes[idx].name.split('-');
-          const name = mlcRecipes[idx].name.startsWith(
+          const nameSegments =
+            recipesInMlcAISafetyCookbook[idx].name.split('-');
+          const name = recipesInMlcAISafetyCookbook[idx].name.startsWith(
             'MLCommons AI Safety Benchmark -'
           )
             ? nameSegments.slice(1).join('-')
-            : mlcRecipes[idx].name;
+            : recipesInMlcAISafetyCookbook[idx].name;
           return (
             <figure
               className="flex gap-4 justify-between"
@@ -107,7 +82,7 @@ export default function MlcSafetyBaselineGrades(props: BenchmarkReportProps) {
                   {name}
                 </h5>
                 <p className="text-[0.8rem] leading-tight">
-                  {mlcRecipes[idx].description}
+                  {recipesInMlcAISafetyCookbook[idx].description}
                 </p>
               </figcaption>
               <div>
@@ -201,13 +176,7 @@ export default function MlcSafetyBaselineGrades(props: BenchmarkReportProps) {
             </figure>
           ) : null}
 
-          {isPending ? (
-            <section className="relative mt-10 h-[100px]">
-              <LoadingAnimation />
-            </section>
-          ) : (
-            mlcGrades
-          )}
+          {mlcGrades}
         </section>
 
         <RatingsInterpretation />

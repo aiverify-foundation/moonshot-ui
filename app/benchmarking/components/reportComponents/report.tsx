@@ -8,7 +8,7 @@ import { calcTotalPromptsByEndpoint } from '@/app/benchmarking/utils/calcTotalPr
 import { Button, ButtonType } from '@/app/components/button';
 import { CookbookReportCard } from './cookbookReportCard';
 import {
-  MLC_COOKBOOK_IDS,
+  MLC_AI_SAFETY_COOKBOOK_ID,
   MLC_RECIPE_IDS,
 } from './mlcReportComponents/constants';
 import { RecipeRatingResult } from './recipeRatingResult';
@@ -59,7 +59,7 @@ function Report(props: BenchmarkReportProps) {
   );
   const mlcAISafetyCookbookResult: CookbookResult | undefined =
     benchmarkResult.results.cookbooks.find(
-      (result) => result.id === MLC_COOKBOOK_IDS[0]
+      (result) => result.id === MLC_AI_SAFETY_COOKBOOK_ID
     );
   const hasMlcAISafetyCookbookResult = mlcAISafetyCookbookResult !== undefined;
   let standardCookbooksHasMlcRecipes: boolean | undefined;
@@ -71,7 +71,7 @@ function Report(props: BenchmarkReportProps) {
 
   if (hasMlcAISafetyCookbookResult) {
     mlcAISafetyCookbook = cookbooksInReport.find(
-      (cookbook) => cookbook.id === MLC_COOKBOOK_IDS[0]
+      (cookbook) => cookbook.id === MLC_AI_SAFETY_COOKBOOK_ID
     );
     recipesInMlcAISafetyCookbook = recipes.filter((recipe) =>
       mlcAISafetyCookbook
@@ -79,7 +79,7 @@ function Report(props: BenchmarkReportProps) {
         : false
     );
     standardCookbooks = cookbooksInReport.filter(
-      (cookbook) => cookbook.id !== MLC_COOKBOOK_IDS[0]
+      (cookbook) => cookbook.id !== MLC_AI_SAFETY_COOKBOOK_ID
     );
   } else {
     standardCookbooks = cookbooksInReport;
@@ -147,7 +147,11 @@ function Report(props: BenchmarkReportProps) {
           />
           {hasMlcAISafetyCookbookResult && (
             <React.Suspense fallback={<div>Loading...</div>}>
-              <MlcSafetyBaselineGrades {...props} />
+              <MlcSafetyBaselineGrades
+                benchmarkResult={benchmarkResult}
+                endpointId={endpointId}
+                recipesInMlcAISafetyCookbook={recipesInMlcAISafetyCookbook}
+              />
             </React.Suspense>
           )}
           {fullResultsHeading}
