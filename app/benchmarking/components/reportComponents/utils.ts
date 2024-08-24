@@ -44,3 +44,20 @@ export function hasSpecificCookbook(
 ): boolean {
   return benchmarkResult.metadata.cookbooks.includes(cookbookId);
 }
+
+/**
+ * Checks if the benchmark result contains any of the specified recipes.
+ *
+ * @param {string[]} recipeIds - An array of recipe IDs to check for.
+ * @param {CookbooksBenchmarkResult} benchmarkResult - The benchmark result containing cookbook data.
+ * @returns {boolean} - True if the benchmark result contains any of the specified recipes, false otherwise.
+ */
+
+export function hasAnyOfSpecificRecipes(
+  recipeIds: string[],
+  benchmarkResult: CookbooksBenchmarkResult
+): boolean {
+  return benchmarkResult.results.cookbooks.some((cookbook) =>
+    cookbook.recipes.some((recipe) => recipeIds.includes(recipe.id))
+  );
+}

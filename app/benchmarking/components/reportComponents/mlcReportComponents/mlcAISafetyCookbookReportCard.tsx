@@ -14,7 +14,7 @@ type BenchmarkReportCookbookResultsProps = {
   recipes: Recipe[];
 };
 
-function MlcAISafetyCookbookReportCard(
+export default function MlcAISafetyCookbookReportCard(
   props: BenchmarkReportCookbookResultsProps
 ) {
   const { result, cookbook, endpointId, recipes } = props;
@@ -91,5 +91,3 @@ function MlcAISafetyCookbookReportCard(
     </section>
   );
 }
-
-export { MlcAISafetyCookbookReportCard };

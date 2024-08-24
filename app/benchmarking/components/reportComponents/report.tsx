@@ -11,10 +11,15 @@ import { SquareBadge } from './badge';
 import { CookbookReportCard } from './cookbookReportCard';
 import { gradeColorsMoonshot } from './gradeColors';
 import { MLC_COOKBOOK_IDS } from './mlcReportComponents/constants';
-import { MlcAISafetyCookbookReportCard } from './mlcReportComponents/mlcAISafetyCookbookReportCard';
-import { MlcSafetyBaselineGrades } from './mlcReportComponents/mlcSafetyBaselineGrades';
 import { ReportLogo } from './reportLogo';
 import { RunSummary } from './runSummary';
+
+const MlcSafetyBaselineGrades = React.lazy(
+  () => import('./mlcReportComponents/mlcSafetyBaselineGrades')
+);
+const MlcAISafetyCookbookReportCard = React.lazy(
+  () => import('./mlcReportComponents/mlcAISafetyCookbookReportCard')
+);
 
 type BenchmarkReportProps = {
   benchmarkResult: CookbooksBenchmarkResult;
@@ -296,7 +301,9 @@ function Report(props: BenchmarkReportProps) {
             endTime={benchmarkResult.metadata.end_time}
           />
           {hasMlcAISafetyCookbookResult && (
-            <MlcSafetyBaselineGrades {...props} />
+            <React.Suspense fallback={<div>Loading...</div>}>
+              <MlcSafetyBaselineGrades {...props} />
+            </React.Suspense>
           )}
           {fullResultsHeading}
           <p className="px-6 text-reportText text-[0.9rem]">
@@ -320,12 +327,14 @@ function Report(props: BenchmarkReportProps) {
               ) : null
             )}
             {hasMlcAISafetyCookbookResult && mlcAISafetyCookbook ? (
-              <MlcAISafetyCookbookReportCard
-                result={mlcAISafetyCookbookResult}
-                cookbook={mlcAISafetyCookbook}
-                endpointId={endpointId}
-                recipes={recipesInMlcAISafetyCookbook}
-              />
+              <React.Suspense fallback={<div>Loading...</div>}>
+                <MlcAISafetyCookbookReportCard
+                  result={mlcAISafetyCookbookResult}
+                  cookbook={mlcAISafetyCookbook}
+                  endpointId={endpointId}
+                  recipes={recipesInMlcAISafetyCookbook}
+                />
+              </React.Suspense>
             ) : null}
           </section>
           <footer className="flex justify-center pb-10">
