@@ -15,7 +15,7 @@ import {
 } from './constants';
 import { GradingLevelsMlcEnum } from './enums';
 import { gradeColorsMlc } from './gradeColors';
-import { RatingsInterpretation } from './ratingsInterpretation';
+import RatingsInterpretation from './ratingsInterpretation';
 import { getMlcRecipes } from './serverActions/getMlcRecipes';
 
 type BenchmarkReportProps = {

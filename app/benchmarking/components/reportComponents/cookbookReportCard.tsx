@@ -4,17 +4,16 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
 import { RecipeGradeBadge } from './badge';
 import { gradeColorsMoonshot } from './gradeColors';
-import { RecipeRatingResult } from './recipeRatingResult';
 
 type BenchmarkReportCookbookResultsProps = {
   result: CookbookResult;
   cookbook: Cookbook;
   endpointId: string;
-  recipes: Recipe[];
+  children?: React.ReactNode | React.ReactNode[];
 };
 
 function CookbookReportCard(props: BenchmarkReportCookbookResultsProps) {
-  const { result, cookbook, endpointId, recipes } = props;
+  const { result, cookbook, endpointId, children } = props;
   const evaluationSummary = result.overall_evaluation_summary.find(
     (summary) => summary.model_id === endpointId
   );
@@ -62,23 +61,7 @@ function CookbookReportCard(props: BenchmarkReportCookbookResultsProps) {
         className={`px-4 main-transition ${showSection ? 'main-visible' : ''}`}
         data-download="collapsible">
         <p className="mt-6 mb-10">{cookbook.description}</p>
-        <section className="grid grid-cols-1 gap-[50px]">
-          {result.recipes.map((recipeResult) => {
-            const recipeDetails = recipes.find(
-              (recipe) => recipe.id === recipeResult.id
-            );
-            return !recipeDetails ? (
-              <p>recipeDetails: No recipe details</p>
-            ) : (
-              <RecipeRatingResult
-                key={recipeResult.id}
-                result={recipeResult}
-                recipe={recipeDetails}
-                endpointId={endpointId}
-              />
-            );
-          })}
-        </section>
+        <section className="grid grid-cols-1 gap-[50px]">{children}</section>
       </main>
     </section>
   );

@@ -3,20 +3,21 @@ import { RecipeGradeBadge } from '@/app/benchmarking/components/reportComponents
 import { gradeColorsMlc } from '@/app/benchmarking/components/reportComponents/gradeColors';
 import { gradingLettersMlcMap } from '@/app/benchmarking/components/reportComponents/mlcReportComponents/constants';
 import { RangedBarChart } from '@/app/benchmarking/components/reportComponents/rangedBarChart';
+import { RawRecipeMetricsScoresTable } from '@/app/benchmarking/components/reportComponents/rawScoresTable';
 import {
   GradingScale,
-  RecipeResult,
+  RecipeEvaluationResult,
 } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
 
 type MlcAiSafetyRecipeRatingResultProps = {
-  result: RecipeResult;
+  result: RecipeEvaluationResult;
   recipe: Recipe;
   endpointId: string;
 };
 
-function MlcAiSafetyRecipeRatingResult(
+export default function MlcAiSafetyRecipeRatingResult(
   props: MlcAiSafetyRecipeRatingResultProps
 ) {
   const { result, recipe, endpointId } = props;
@@ -74,76 +75,11 @@ function MlcAiSafetyRecipeRatingResult(
       )}
 
       {showRawScores && (
-        <section className="mb-4">
-          <p className="text-[0.8rem]">Raw Scores</p>
-          <div className="border border-moongray-700 rounded-lg">
-            <table className="w-full text-sm text-left text-moongray-300">
-              <thead className="text-xs text-moongray-300">
-                <tr className="border-b border-moongray-700">
-                  <th
-                    scope="col"
-                    className="py-3 px-6 border-r border-moongray-700">
-                    Dataset
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-3 px-6 border-r border-moongray-700">
-                    Prompt Template
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-3 px-6 border-r border-moongray-700">
-                    Metric
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-3 px-6">
-                    Score
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {recipeDetails.map((detail) => {
-                  let stringifiedMetrics = '';
-                  try {
-                    stringifiedMetrics = JSON.stringify(
-                      detail.metrics,
-                      null,
-                      2
-                    );
-                  } catch (error) {
-                    console.log(error);
-                  }
-                  return (
-                    <tr key={detail.dataset_id}>
-                      <td className="py-3 px-6 border-r border-moongray-700 align-top">
-                        {detail.dataset_id}
-                      </td>
-                      <td className="py-3 px-6 border-r border-moongray-700 align-top">
-                        {detail.prompt_template_id}
-                      </td>
-                      <td className="py-3 px-6 border-r border-moongray-700 align-top">
-                        {recipe.metrics.map((metricName, idx) => {
-                          const name =
-                            idx < recipe.metrics.length - 1
-                              ? `${metricName}, `
-                              : metricName;
-                          return <span key={metricName}>{name}</span>;
-                        })}
-                      </td>
-                      <td className="py-3 px-6">
-                        <pre>{stringifiedMetrics}</pre>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </section>
+        <RawRecipeMetricsScoresTable
+          recipe={recipe}
+          resultPromptData={recipeDetails}
+        />
       )}
     </section>
   );
 }
-
-export { MlcAiSafetyRecipeRatingResult };

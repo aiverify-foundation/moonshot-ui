@@ -21,20 +21,20 @@ type CookbooksBenchmarkResult = {
 
 type CookbookResult = {
   id: string;
-  recipes: RecipeResult[];
+  recipes: RecipeEvaluationResult[];
   overall_evaluation_summary: OverallEvaluationSummary[];
   total_num_of_prompts: number;
 };
 
-type RecipeResult = {
+type RecipeEvaluationResult = {
   id: string;
-  details: RecipeDetail[];
+  details: RecipeResultPromptData[];
   evaluation_summary: EvaluationSummary[];
   grading_scale: GradingScale;
   total_num_of_prompts: number;
 };
 
-type RecipeDetail = {
+type RecipeResultPromptData = {
   model_id: string;
   dataset_id: string;
   prompt_template_id: string;
@@ -98,8 +98,8 @@ type CookbookCategoryLabels = Record<string, ('Q' | 'C' | 'T')[]>;
 export type {
   CookbooksBenchmarkResult,
   CookbookResult,
-  RecipeResult,
-  RecipeDetail,
+  RecipeEvaluationResult,
+  RecipeResultPromptData,
   RecipePromptData,
   Metric,
   EvaluationSummary,

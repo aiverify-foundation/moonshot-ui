@@ -5,7 +5,7 @@ import { gradingLettersMlcMap } from '@/app/benchmarking/components/reportCompon
 import { CookbookResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
-import { MlcAiSafetyRecipeRatingResult } from './mlcAiSafetyRecipeRatingResult';
+import MlcAiSafetyRecipeRatingResult from './mlcAiSafetyRecipeRatingResult';
 
 type BenchmarkReportCookbookResultsProps = {
   result: CookbookResult;

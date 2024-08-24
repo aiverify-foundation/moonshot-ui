@@ -5,12 +5,13 @@ import { gradingDescriptionsMlcMap, gradingLettersMlcMap } from './constants';
 import { GradingLevelsMlcEnum } from './enums';
 import { gradeColorsMlc } from './gradeColors';
 
-function RatingsInterpretation() {
+export default function RatingsInterpretation() {
   const [expandSafetyRatings, setExpandSafetyRatings] = React.useState(false);
   const [expandLimitations, setExpandLimitations] = React.useState(false);
   return (
     <>
-      <section className="bg-moongray-1000 rounded-lg p-6 flex flex-col mt-6">
+      <section
+        className={`bg-moongray-1000 rounded-lg p-6 flex flex-col mt-6 text-white ${!expandSafetyRatings ? 'hover:bg-moongray-950' : ''}`}>
         <hgroup
           data-download="collapsible-trigger"
           className="w-full cursor-pointer flex gap-4"
@@ -164,7 +165,8 @@ function RatingsInterpretation() {
         </div>
       </section>
 
-      <section className="bg-moongray-1000 rounded-lg p-6 flex flex-col mt-6">
+      <section
+        className={`bg-moongray-1000 rounded-lg p-6 flex flex-col mt-6 text-white ${!expandLimitations ? 'hover:bg-moongray-950' : ''}`}>
         <hgroup
           data-download="collapsible-trigger"
           className="flex gap-4 w-full cursor-pointer"
@@ -215,5 +217,3 @@ function RatingsInterpretation() {
     </>
   );
 }
-
-export { RatingsInterpretation };

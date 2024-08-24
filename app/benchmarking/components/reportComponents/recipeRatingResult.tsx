@@ -1,16 +1,17 @@
 import React from 'react';
 import {
   GradingScale,
-  RecipeResult,
+  RecipeEvaluationResult,
 } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
 import { RecipeGradeBadge } from './badge';
 import { gradeColorsMoonshot } from './gradeColors';
 import { RangedBarChart } from './rangedBarChart';
+import { RawRecipeMetricsScoresTable } from './rawScoresTable';
 
 type RecipeRatingResultProps = {
-  result: RecipeResult;
+  result: RecipeEvaluationResult;
   recipe: Recipe;
   endpointId: string;
 };
@@ -20,15 +21,17 @@ function RecipeRatingResult(props: RecipeRatingResultProps) {
   const recipeEvaluationSummary = result.evaluation_summary.find(
     (d) => d.model_id === endpointId
   );
-  const recipeDetails = result.details.filter((d) => d.model_id === endpointId);
+  const resultPromptData = result.details.filter(
+    (d) => d.model_id === endpointId
+  );
   const promptsCount = recipeEvaluationSummary
     ? recipeEvaluationSummary.num_of_prompts
     : '-';
   const gradingScale = result.grading_scale;
   const showRangedBarChart = recipeEvaluationSummary != undefined;
   const showRawScores =
-    recipeDetails &&
-    recipeDetails.length > 0 &&
+    resultPromptData &&
+    resultPromptData.length > 0 &&
     recipeEvaluationSummary &&
     recipeEvaluationSummary.grade === null;
 
@@ -66,73 +69,10 @@ function RecipeRatingResult(props: RecipeRatingResultProps) {
       )}
 
       {showRawScores && (
-        <section className="mb-4">
-          <p className="text-[0.8rem]">Raw Scores</p>
-          <div className="border border-moongray-700 rounded-lg">
-            <table className="w-full text-sm text-left text-moongray-300">
-              <thead className="text-xs text-moongray-300">
-                <tr className="border-b border-moongray-700">
-                  <th
-                    scope="col"
-                    className="py-3 px-6 border-r border-moongray-700">
-                    Dataset
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-3 px-6 border-r border-moongray-700">
-                    Prompt Template
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-3 px-6 border-r border-moongray-700">
-                    Metric
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-3 px-6">
-                    Score
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {recipeDetails.map((detail) => {
-                  let stringifiedMetrics = '';
-                  try {
-                    stringifiedMetrics = JSON.stringify(
-                      detail.metrics,
-                      null,
-                      2
-                    );
-                  } catch (error) {
-                    console.log(error);
-                  }
-                  return (
-                    <tr key={detail.dataset_id}>
-                      <td className="py-3 px-6 border-r border-moongray-700 align-top">
-                        {detail.dataset_id}
-                      </td>
-                      <td className="py-3 px-6 border-r border-moongray-700 align-top">
-                        {detail.prompt_template_id}
-                      </td>
-                      <td className="py-3 px-6 border-r border-moongray-700 align-top">
-                        {recipe.metrics.map((metricName, idx) => {
-                          const name =
-                            idx < recipe.metrics.length - 1
-                              ? `${metricName}, `
-                              : metricName;
-                          return <span key={metricName}>{name}</span>;
-                        })}
-                      </td>
-                      <td className="py-3 px-6">
-                        <pre>{stringifiedMetrics}</pre>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </section>
+        <RawRecipeMetricsScoresTable
+          recipe={recipe}
+          resultPromptData={resultPromptData}
+        />
       )}
     </section>
   );
