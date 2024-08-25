@@ -51,10 +51,15 @@ type RecipePromptData = {
 
 type Metric = {
   accuracy?: number;
+  refusal_rate?: number;
+  safe?: number;
+  unsafe?: number;
+  unknown?: number;
   grading_criteria: {
     accuracy?: number;
     attack_success_rate?: number;
     toxicity_rate?: number;
+    refusal_rate?: number;
   };
 };
 

@@ -23,6 +23,7 @@ function SquareBadge(props: {
 }) {
   return (
     <div
+      role="label"
       className="text-white flex justify-center items-center text-[1.5rem] w-[50px] h-[50px] rounded-lg text-center align-middle shrink-0"
       style={{
         backgroundColor: props.color,

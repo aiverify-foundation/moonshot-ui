@@ -111,7 +111,7 @@ type CookbookFormValues = {
 };
 
 type Recipe = {
-  attack_modules: unknown[];
+  attack_modules?: string[];
   categories: string[];
   datasets: string[];
   description: string;
@@ -126,7 +126,7 @@ type Recipe = {
     num_of_datasets_prompts: Record<string, number>;
     num_of_prompt_templates: number;
     num_of_metrics: number;
-    num_of_attack_modules: number;
+    num_of_attack_modules?: number;
   };
   tags: string[];
   total_prompt_in_recipe: number;

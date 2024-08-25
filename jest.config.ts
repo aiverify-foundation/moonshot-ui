@@ -28,6 +28,8 @@ const config: Config = {
     '!app/components/IconSVG/**',
     '!app/hooks/*',
     '!app/benchmarking/types/**',
+    '!app/lib/fetchApis/**',
+    '!app/**/_tests_/**',
   ],
   coverageReporters: ['text', 'text-summary'],
   moduleNameMapper: {
