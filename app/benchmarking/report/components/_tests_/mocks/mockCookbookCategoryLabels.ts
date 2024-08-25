@@ -1,4 +1,4 @@
-import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
+import { CookbookCategoryLabels } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 
 export const mockCookbookCategoryLabels: CookbookCategoryLabels = {
   'standard-cookbook-id': ['C'],

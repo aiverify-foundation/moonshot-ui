@@ -2,7 +2,7 @@ import React from 'react';
 import {
   GradingScale,
   RecipeEvaluationResult,
-} from '@/app/benchmarking/types/benchmarkReportTypes';
+} from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
 import { RecipeGradeBadge } from './badge';

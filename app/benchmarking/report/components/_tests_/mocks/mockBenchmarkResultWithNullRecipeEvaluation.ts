@@ -1,4 +1,4 @@
-import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
+import { CookbooksBenchmarkResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 
 export const mockBenchmarkResultWithNullRecipeEvaluation: CookbooksBenchmarkResult =
   {

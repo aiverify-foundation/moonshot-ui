@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
+import { CookbooksBenchmarkResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { downloadHtmlReport } from '@/app/benchmarking/utils/reportDownloader';
 import { Button, ButtonType } from '@/app/components/button';
 import { SelectInput } from '@/app/components/selectInput';

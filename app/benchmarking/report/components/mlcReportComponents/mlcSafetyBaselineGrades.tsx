@@ -1,7 +1,7 @@
 import React from 'react';
 import { SquareBadge } from '@/app/benchmarking/report/components/badge';
 import { extractCookbookResults } from '@/app/benchmarking/report/components/utils';
-import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
+import { CookbooksBenchmarkResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import {
   gradingDescriptionsMlcMap,

@@ -1,4 +1,4 @@
-import { RecipeResultPromptData } from '@/app/benchmarking/types/benchmarkReportTypes';
+import { RecipeResultPromptData } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 
 export function RawRecipeMetricsScoresTable({
   recipe,

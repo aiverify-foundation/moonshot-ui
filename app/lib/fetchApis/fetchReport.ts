@@ -1,4 +1,4 @@
-import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
+import { CookbooksBenchmarkResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { ErrorWithMessage } from '@/app/lib/error-utils';
 import { ApiResult, processResponse } from '@/app/lib/http-requests';
 import config from '@/moonshot.config';

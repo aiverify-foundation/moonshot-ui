@@ -7,7 +7,7 @@ import { RawRecipeMetricsScoresTable } from '@/app/benchmarking/report/component
 import {
   GradingScale,
   RecipeEvaluationResult,
-} from '@/app/benchmarking/types/benchmarkReportTypes';
+} from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
 

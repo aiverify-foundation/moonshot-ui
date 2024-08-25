@@ -2,8 +2,8 @@ import React from 'react';
 import {
   CookbookResult,
   CookbooksBenchmarkResult,
-} from '@/app/benchmarking/types/benchmarkReportTypes';
-import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
+} from '@/app/benchmarking/report/types/benchmarkReportTypes';
+import { CookbookCategoryLabels } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { calcTotalPromptsByEndpoint } from '@/app/benchmarking/utils/calcTotalPromptsByEndpoint';
 import { Button, ButtonType } from '@/app/components/button';
 import { CookbookReportCard } from './cookbookReportCard';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { CookbookResult } from '@/app/benchmarking/types/benchmarkReportTypes';
+import { CookbookResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
 import { RecipeGradeBadge } from './badge';

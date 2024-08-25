@@ -86,7 +86,7 @@ type EvaluationSummary = {
   model_id: string;
   num_of_prompts: number;
   avg_grade_value: number;
-  grade: GradingLevelsMlcEnum | string;
+  grade: GradingLevelsMlcEnum | string | null;
 };
 
 type OverallEvaluationSummary = {

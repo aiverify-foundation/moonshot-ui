@@ -1,4 +1,4 @@
-import { GradingColors } from '@/app/benchmarking/types/benchmarkReportTypes';
+import { GradingColors } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 
 export const gradeColorsMoonshot: GradingColors = {
   A: '#25A167',

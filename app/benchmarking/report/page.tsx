@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import React from 'react';
 import { ReportViewer } from '@/app/benchmarking/report/components/reportViewer';
-import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
-import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
+import { CookbookCategoryLabels } from '@/app/benchmarking/report/types/benchmarkReportTypes';
+import { CookbooksBenchmarkResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
 import { colors } from '@/app/customColors';
 import {

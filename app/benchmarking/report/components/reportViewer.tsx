@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
-import { CookbookCategoryLabels } from '@/app/benchmarking/types/benchmarkReportTypes';
+import { CookbooksBenchmarkResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
+import { CookbookCategoryLabels } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { HeaderControls } from './headerControls';
 import { Report } from './report';
 

@@ -1,7 +1,7 @@
 import {
   CookbookResult,
   CookbooksBenchmarkResult,
-} from '@/app/benchmarking/types/benchmarkReportTypes';
+} from '@/app/benchmarking/report/types/benchmarkReportTypes';
 
 /**
  * Extracts cookbook results from the benchmark result based on the provided cookbook IDs.
