@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
-import { downloadHtmlReport } from '@/app/benchmarking/utils/reportDownloader';
 import { Button, ButtonType } from '@/app/components/button';
 import { SelectInput } from '@/app/components/selectInput';
 import { colors } from '@/app/customColors';
@@ -8,10 +7,11 @@ import { colors } from '@/app/customColors';
 type HeaderControlsProps = {
   benchmarkResult: CookbooksBenchmarkResult;
   onEndpointChange: (endpointId: string) => void;
+  onBtnClick: () => void;
 };
 
 export function HeaderControls(props: HeaderControlsProps) {
-  const { benchmarkResult, onEndpointChange } = props;
+  const { benchmarkResult, onEndpointChange, onBtnClick } = props;
   const [selectedEndpointId, setSelectedEndpointId] = useState(
     benchmarkResult.metadata.endpoints[0]
   );
@@ -42,8 +42,8 @@ export function HeaderControls(props: HeaderControlsProps) {
 
       <Button
         mode={ButtonType.OUTLINE}
-        text="Download HTML Report"
-        onClick={() => downloadHtmlReport(benchmarkResult.metadata.id)}
+        text="Download Report"
+        onClick={onBtnClick}
         hoverBtnColor={colors.moongray[800]}
       />
     </section>

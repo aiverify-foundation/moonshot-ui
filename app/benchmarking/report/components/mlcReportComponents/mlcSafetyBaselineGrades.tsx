@@ -16,13 +16,18 @@ type MlcSafetyBaselineGradesProps = {
   benchmarkResult: CookbooksBenchmarkResult;
   endpointId: string;
   recipesInMlcAISafetyCookbook: Recipe[];
+  expanded?: boolean;
 };
 
 export default function MlcSafetyBaselineGrades(
   props: MlcSafetyBaselineGradesProps
 ) {
-  const { benchmarkResult, endpointId, recipesInMlcAISafetyCookbook } = props;
-
+  const {
+    benchmarkResult,
+    endpointId,
+    recipesInMlcAISafetyCookbook,
+    expanded = false,
+  } = props;
   if (recipesInMlcAISafetyCookbook.length === 0) {
     return <p className="text-white px-6">Recipes data is empty</p>;
   }
@@ -179,7 +184,7 @@ export default function MlcSafetyBaselineGrades(
           {mlcGrades}
         </section>
 
-        <RatingsInterpretation />
+        <RatingsInterpretation expanded={expanded} />
       </section>
     </article>
   );

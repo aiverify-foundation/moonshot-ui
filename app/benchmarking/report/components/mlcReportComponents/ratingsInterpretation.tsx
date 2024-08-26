@@ -5,9 +5,23 @@ import { gradingDescriptionsMlcMap, gradingLettersMlcMap } from './constants';
 import { GradingLevelsMlcEnum } from './enums';
 import { gradeColorsMlc } from './gradeColors';
 
-export default function RatingsInterpretation() {
-  const [expandSafetyRatings, setExpandSafetyRatings] = React.useState(false);
-  const [expandLimitations, setExpandLimitations] = React.useState(false);
+type RatingsInterpretationProps = {
+  expanded?: boolean;
+};
+
+export default function RatingsInterpretation(
+  props: RatingsInterpretationProps
+) {
+  const { expanded = false } = props;
+  const [expandSafetyRatings, setExpandSafetyRatings] =
+    React.useState(expanded);
+  const [expandLimitations, setExpandLimitations] = React.useState(expanded);
+
+  React.useEffect(() => {
+    setExpandSafetyRatings(expanded);
+    setExpandLimitations(expanded);
+  }, [expanded]);
+
   return (
     <>
       <section

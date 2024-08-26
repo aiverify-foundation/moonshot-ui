@@ -3,8 +3,6 @@ import React from 'react';
 import { ReportViewer } from '@/app/benchmarking/report/components/reportViewer';
 import { CookbookCategoryLabels } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
-import { MainSectionSurface } from '@/app/components/mainSectionSurface';
-import { colors } from '@/app/customColors';
 import {
   fetchCookbooks,
   fetchRecipes,
@@ -116,18 +114,12 @@ export default async function BenchmarkingReportPage(props: {
     }, {} as CookbookCategoryLabels);
 
   return (
-    <MainSectionSurface
-      closeLinkUrl="/benchmarking"
-      height="100%"
-      minHeight={750}
-      bgColor={colors.moongray['950']}>
-      <ReportViewer
-        benchmarkResult={bencmarkResult}
-        runnerNameAndDescription={runnerNameAndDescription}
-        cookbookCategoryLabels={cookbookCategoryLabels}
-        cookbooksInReport={cookbooksInReport}
-        recipes={recipes}
-      />
-    </MainSectionSurface>
+    <ReportViewer
+      benchmarkResult={bencmarkResult}
+      runnerNameAndDescription={runnerNameAndDescription}
+      cookbookCategoryLabels={cookbookCategoryLabels}
+      cookbooksInReport={cookbooksInReport}
+      recipes={recipes}
+    />
   );
 }

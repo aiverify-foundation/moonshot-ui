@@ -3,12 +3,21 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { SquareBadge } from './badge';
 import { gradeColorsMoonshot } from './gradeColors';
 
-export function StandardRatingsInterpretation({
-  children,
-}: {
+type StandardRatingsInterpretationProps = {
+  expanded?: boolean;
   children?: React.ReactNode;
-}) {
-  const [expandRatings, setExpandRatings] = React.useState(false);
+};
+
+export function StandardRatingsInterpretation(
+  props: StandardRatingsInterpretationProps
+) {
+  const { expanded = false, children } = props;
+  const [expandRatings, setExpandRatings] = React.useState(expanded);
+
+  React.useEffect(() => {
+    setExpandRatings(expanded);
+  }, [expanded]);
+
   return (
     <div className="px-6">
       <section

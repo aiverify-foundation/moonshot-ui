@@ -10,14 +10,19 @@ type BenchmarkReportCookbookResultsProps = {
   cookbook: Cookbook;
   endpointId: string;
   children?: React.ReactNode | React.ReactNode[];
+  expanded?: boolean;
 };
 
 function CookbookReportCard(props: BenchmarkReportCookbookResultsProps) {
-  const { result, cookbook, endpointId, children } = props;
+  const { result, cookbook, endpointId, children, expanded = false } = props;
   const evaluationSummary = result.overall_evaluation_summary.find(
     (summary) => summary.model_id === endpointId
   );
-  const [showSection, setShowSection] = React.useState(false);
+  const [showSection, setShowSection] = React.useState(expanded);
+
+  React.useEffect(() => {
+    setShowSection(expanded);
+  }, [expanded]);
 
   if (!evaluationSummary) {
     return <p>CookbookReportCard: No evaluation summary</p>;

@@ -12,16 +12,21 @@ type BenchmarkReportCookbookResultsProps = {
   cookbook: Cookbook;
   endpointId: string;
   recipes: Recipe[];
+  expanded?: boolean;
 };
 
 export default function MlcAISafetyCookbookReportCard(
   props: BenchmarkReportCookbookResultsProps
 ) {
-  const { result, cookbook, endpointId, recipes } = props;
+  const { result, cookbook, endpointId, recipes, expanded = false } = props;
   const evaluationSummary = result.overall_evaluation_summary.find(
     (summary) => summary.model_id === endpointId
   );
-  const [showSection, setShowSection] = React.useState(false);
+  const [showSection, setShowSection] = React.useState(expanded);
+
+  React.useEffect(() => {
+    setShowSection(expanded);
+  }, [expanded]);
 
   if (!evaluationSummary) {
     return <p>CookbookReportCard: No evaluation summary for {cookbook.name}</p>;
