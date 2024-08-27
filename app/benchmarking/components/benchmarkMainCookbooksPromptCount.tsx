@@ -1,50 +1,30 @@
 import { useCookbooks } from '@/app/benchmarking/contexts/cookbooksContext';
+import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
 import { useAppSelector } from '@/lib/redux';
 import config from '@/moonshot.config';
 import { BenchmarkNewSessionViews } from './enums';
+import { RequiredEndpoints } from './requiredEndpoints';
+
+const requiredEndpoints = [
+  'Together Llama Guard 7B Assistant',
+  'Together Llama3 8B Chat HF',
+  'LLM Judge - OpenAI GPT4',
+];
 
 type Props = {
   changeView: (view: BenchmarkNewSessionViews) => void;
 };
-
-const enableEstimatedTime = false;
 
 function BenchmarkMainCookbooksPromptCount({ changeView }: Props) {
   const [allCookbooks, _] = useCookbooks();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
   );
-  const { totalHours, totalMinutes, totalPrompts } =
-    calcTotalPromptsAndEstimatedTime(
-      selectedCookbooks,
-      config.estimatedPromptResponseTime
-    );
-
-  const timeDisplay = enableEstimatedTime && (
-    <div className="flex flex-col gap-2">
-      <h3 className="text-[3.5rem] font-bolder tracking-wide leading-[3rem] text-white mb-0">
-        {totalHours}
-        <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300">
-          hrs
-        </span>
-        {totalMinutes}
-        <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300">
-          mins
-        </span>
-      </h3>
-      <p className="text-[1.1rem] leading-[1.1rem] text-moongray-300 pl-1 ">
-        <span className="text-moonpurplelight">Estimated Time</span> <br />{' '}
-        <span className="text-[0.9rem]">
-          assuming{' '}
-          <span className="decoration-1 underline">
-            {config.estimatedPromptResponseTime}s
-          </span>{' '}
-          per prompt
-        </span>
-      </p>
-    </div>
+  const { totalPrompts } = calcTotalPromptsAndEstimatedTime(
+    selectedCookbooks,
+    config.estimatedPromptResponseTime
   );
 
   return (
@@ -66,22 +46,17 @@ function BenchmarkMainCookbooksPromptCount({ changeView }: Props) {
       </h2>
       <section className="relative flex flex-nowrap h-full gap-[100px] py-7">
         {!allCookbooks.length ? (
-          <div className="ring">
-            Loading
-            <span />
-          </div>
+          <LoadingAnimation />
         ) : (
-          <>
-            <div className="flex flex-col gap-2">
-              <h3 className="text-[3.5rem] font-bolder tracking-wide leading-[3rem] text-white mb-0">
-                {totalPrompts}
-              </h3>
-              <p className="text-[1.1rem] leading-[1.1rem] text-moonpurplelight pl-1 text-center">
-                Prompts
-              </p>
-            </div>
-            {timeDisplay}
-          </>
+          <div className="flex flex-col gap-2">
+            <h3 className="text-[3.5rem] font-bolder tracking-wide leading-[3rem] text-white mb-0 text-center">
+              {totalPrompts}
+            </h3>
+            <p className="text-[1.1rem] leading-[1.1rem] text-moonpurplelight pl-1 text-center">
+              Prompts
+            </p>
+            <RequiredEndpoints requiredEndpoints={requiredEndpoints} />
+          </div>
         )}
       </section>
     </section>
