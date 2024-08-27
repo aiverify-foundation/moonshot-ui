@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { SquareBadge } from './badge';
 import { gradeColorsMoonshot } from './gradeColors';
-import { ReportViewerContext } from './reportViewer';
+import { PrintingContext } from './reportViewer';
 
 type StandardRatingsInterpretationProps = {
   expanded?: boolean;
@@ -14,13 +14,12 @@ export function StandardRatingsInterpretation(
 ) {
   const { expanded = false, children } = props;
   const [expandRatings, setExpandRatings] = React.useState(expanded);
-  const { disableExpandAnimation } = React.useContext(ReportViewerContext);
+  const { prePrintingFlagEnabled } = React.useContext(PrintingContext);
 
   React.useEffect(() => {
     setExpandRatings(expanded);
   }, [expanded]);
 
-  console.log(disableExpandAnimation);
   return (
     <div className="px-6 mt-6">
       <section
@@ -38,7 +37,7 @@ export function StandardRatingsInterpretation(
         </hgroup>
         <div
           className={`text-reportText 
-            ${disableExpandAnimation ? 'no-expand-transition' : 'main-transition'} 
+            ${prePrintingFlagEnabled ? 'no-expand-transition' : 'main-transition'} 
             ${expandRatings ? 'main-visible' : ''}`}
           data-download="collapsible">
           <p className="mt-6">

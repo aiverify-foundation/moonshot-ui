@@ -39,7 +39,6 @@ type BenchmarkReportProps = {
   cookbookCategoryLabels: CookbookCategoryLabels;
   recipes: Recipe[];
   expanded?: boolean;
-  overflowY?: React.CSSProperties['overflowY'];
 };
 
 function LoadingText() {
@@ -56,7 +55,6 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
       cookbookCategoryLabels,
       recipes,
       expanded = false,
-      overflowY = 'auto',
     } = props;
     const downloadUrl = `/api/v1/benchmarks/results/${benchmarkResult.metadata.id}?download=true`;
     const totalPrompts = React.useMemo(
@@ -122,8 +120,7 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
         <div
           ref={ref}
           id="report-content"
-          className="h-full overflow-x-hidden custom-scrollbar"
-          style={{ overflowY }}>
+          className="h-full overflow-x-hidden custom-scrollbar">
           <article className="flex flex-col gap-8 bg-moongray-800">
             <ReportHeading
               runnerNameAndDescription={runnerNameAndDescription}

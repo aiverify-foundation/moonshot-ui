@@ -2,7 +2,7 @@ import React from 'react';
 import { RecipeGradeBadge } from '@/app/benchmarking/report/components/badge';
 import { gradeColorsMlc } from '@/app/benchmarking/report/components/gradeColors';
 import { gradingLettersMlcMap } from '@/app/benchmarking/report/components/mlcReportComponents/constants';
-import { ReportViewerContext } from '@/app/benchmarking/report/components/reportViewer';
+import { PrintingContext } from '@/app/benchmarking/report/components/reportViewer';
 import { CookbookResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
@@ -24,7 +24,7 @@ export default function MlcAISafetyCookbookReportCard(
     (summary) => summary.model_id === endpointId
   );
   const [showSection, setShowSection] = React.useState(expanded);
-  const { disableExpandAnimation } = React.useContext(ReportViewerContext);
+  const { prePrintingFlagEnabled } = React.useContext(PrintingContext);
 
   React.useEffect(() => {
     setShowSection(expanded);
@@ -75,7 +75,7 @@ export default function MlcAISafetyCookbookReportCard(
       </header>
       <main
         className={`px-4 
-          ${disableExpandAnimation ? 'no-expand-transition' : 'main-transition'} 
+          ${prePrintingFlagEnabled ? 'no-expand-transition' : 'main-transition'} 
           ${showSection ? 'main-visible' : ''}`}
         data-download="collapsible">
         <p className="mt-6 mb-10">{cookbook.description}</p>

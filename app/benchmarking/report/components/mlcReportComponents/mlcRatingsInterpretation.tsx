@@ -1,6 +1,6 @@
 import React from 'react';
 import { SquareBadge } from '@/app/benchmarking/report/components/badge';
-import { ReportViewerContext } from '@/app/benchmarking/report/components/reportViewer';
+import { PrintingContext } from '@/app/benchmarking/report/components/reportViewer';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { gradingDescriptionsMlcMap, gradingLettersMlcMap } from './constants';
 import { GradingLevelsMlcEnum } from './enums';
@@ -17,7 +17,7 @@ export default function MlcRatingsInterpretation(
   const [expandSafetyRatings, setExpandSafetyRatings] =
     React.useState(expanded);
   const [expandLimitations, setExpandLimitations] = React.useState(expanded);
-  const { disableExpandAnimation } = React.useContext(ReportViewerContext);
+  const { prePrintingFlagEnabled } = React.useContext(PrintingContext);
 
   React.useEffect(() => {
     setExpandSafetyRatings(expanded);
@@ -44,7 +44,7 @@ export default function MlcRatingsInterpretation(
           />
         </hgroup>
         <div
-          className={`${disableExpandAnimation ? 'no-expand-transition' : 'main-transition'} 
+          className={`${prePrintingFlagEnabled ? 'no-expand-transition' : 'main-transition'} 
             ${expandSafetyRatings ? 'main-visible' : ''}`}
           data-download="collapsible">
           <p className="mt-6">
@@ -200,7 +200,7 @@ export default function MlcRatingsInterpretation(
           />
         </hgroup>
         <div
-          className={`${disableExpandAnimation ? 'no-expand-transition' : 'main-transition'} 
+          className={`${prePrintingFlagEnabled ? 'no-expand-transition' : 'main-transition'} 
             ${expandLimitations ? 'main-visible' : ''}`}
           data-download="collapsible">
           <p className="mt-6">

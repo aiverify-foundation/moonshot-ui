@@ -17,16 +17,15 @@ type ReportViewerProps = {
   recipes: Recipe[];
 };
 
-const ReportViewerContext = React.createContext({
-  isPrinting: false,
-  disableExpandAnimation: false,
+const PrintingContext = React.createContext({
+  prePrintingFlagEnabled: false,
 });
 
 function ReportViewer(props: ReportViewerProps) {
   const { benchmarkResult, runnerNameAndDescription } = props;
-  const [disableExpandAnimation, setDisableExpandAnimation] =
+  const [prePrintingFlagEnabled, setDisableExpandAnimation] =
     React.useState(false);
-  const [isPrinting, setIsPrinting] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(false);
   const [selectedEndpointId, setSelectedEndpointId] = React.useState(
     benchmarkResult.metadata.endpoints[0]
   );
@@ -40,7 +39,7 @@ function ReportViewer(props: ReportViewerProps) {
       image: { type: 'png' },
       jsPDF: { format: 'a4', orientation: 'portrait' },
     });
-    setIsPrinting(false);
+    setExpanded(false);
     setDisableExpandAnimation(false);
   }
 
@@ -49,7 +48,7 @@ function ReportViewer(props: ReportViewerProps) {
       setDisableExpandAnimation(true);
     });
     flushSync(() => {
-      setIsPrinting(true);
+      setExpanded(true);
     });
     setTimeout(() => {
       printReport();
@@ -68,19 +67,17 @@ function ReportViewer(props: ReportViewerProps) {
           onEndpointChange={setSelectedEndpointId}
           onBtnClick={handleHeaderBtnClick}
         />
-        <ReportViewerContext.Provider
-          value={{ isPrinting, disableExpandAnimation }}>
+        <PrintingContext.Provider value={{ prePrintingFlagEnabled }}>
           <Report
             {...props}
             endpointId={selectedEndpointId}
             ref={reportRef}
-            expanded={isPrinting}
-            overflowY={isPrinting ? 'visible' : 'auto'}
+            expanded={expanded}
           />
-        </ReportViewerContext.Provider>
+        </PrintingContext.Provider>
       </div>
     </MainSectionSurface>
   );
 }
 
-export { ReportViewer, ReportViewerContext };
+export { ReportViewer, PrintingContext };
