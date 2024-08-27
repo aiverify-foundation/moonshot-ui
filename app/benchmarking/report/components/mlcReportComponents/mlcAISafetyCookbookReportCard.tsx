@@ -35,7 +35,7 @@ export default function MlcAISafetyCookbookReportCard(
   }
 
   return (
-    <section className="bg-moongray-1000 rounded-lg">
+    <section className="bg-moongray-1000 rounded-lg break-before-page">
       <header
         data-download="collapsible-trigger"
         className={`flex justify-between items-center bg-moongray-800 p-4 

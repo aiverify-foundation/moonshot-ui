@@ -181,18 +181,15 @@ export default function MlcRatingsInterpretation(
           </section>
         </div>
       </section>
-
+      {prePrintingFlagEnabled && <div className="break-before-page h-[40px]" />}
       <section
-        className={`bg-moongray-1000 rounded-lg p-6 flex flex-col mt-6 text-white ${!expandLimitations ? 'hover:bg-moongray-950' : ''}`}>
+        className={`bg-moongray-1000 rounded-lg p-6 flex flex-col mt-6 text-white
+        ${!expandLimitations ? 'hover:bg-moongray-950' : ''}`}>
         <hgroup
           data-download="collapsible-trigger"
           className="flex gap-4 w-full cursor-pointer"
           onClick={() => setExpandLimitations(!expandLimitations)}>
-          <h2
-            className="text-white text-[1.5rem]"
-            onClick={() => setExpandLimitations(!expandLimitations)}>
-            Limitations
-          </h2>
+          <h2 className="text-white text-[1.5rem]">Limitations</h2>
           <Icon
             name={
               expandLimitations ? IconName.WideArrowUp : IconName.WideArrowDown

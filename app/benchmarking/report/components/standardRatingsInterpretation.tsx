@@ -106,7 +106,7 @@ export function StandardRatingsInterpretation(
                 </p>
               </figcaption>
             </figure>
-            <figure className="flex gap-4">
+            <figure className="flex gap-4 break-before-page">
               <SquareBadge
                 size={60}
                 textSize="2rem"

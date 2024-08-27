@@ -73,7 +73,7 @@ export default function MlcSafetyBaselineGrades(
             : recipesInMlcAISafetyCookbook[idx].name;
           return (
             <figure
-              className="flex gap-4 justify-between"
+              className={`flex gap-4 justify-between ${idx === 5 ? 'break-before-page' : ''}`}
               key={recipeResult.id}>
               <figcaption>
                 <h5 className="text-[0.9rem] text-white font-bold pb-1">
@@ -108,7 +108,7 @@ export default function MlcSafetyBaselineGrades(
   return (
     <article
       className="h-full w-full text-[0.9rem] bg-moongray-9400
-      rounded-lg text-reportText">
+      rounded-lg text-reportText break-before-page">
       <header
         className="bg-moongray-1000 px-6 py-8"
         style={{ backgroundColor: '#202020' }}>

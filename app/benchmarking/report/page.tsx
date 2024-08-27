@@ -10,6 +10,8 @@ import {
   fetchRunnerHeading,
 } from '@/app/lib/fetchApis';
 import { ApiResult } from '@/app/lib/http-requests';
+import { MainSectionSurface } from '@/app/components/mainSectionSurface';
+import { colors } from '@/app/customColors';
 export const dynamic = 'force-dynamic';
 
 export default async function BenchmarkingReportPage(props: {
@@ -114,12 +116,18 @@ export default async function BenchmarkingReportPage(props: {
     }, {} as CookbookCategoryLabels);
 
   return (
-    <ReportViewer
-      benchmarkResult={bencmarkResult}
-      runnerNameAndDescription={runnerNameAndDescription}
-      cookbookCategoryLabels={cookbookCategoryLabels}
-      cookbooksInReport={cookbooksInReport}
-      recipes={recipes}
-    />
+    <MainSectionSurface
+      closeLinkUrl="/benchmarking"
+      height="100%"
+      minHeight={750}
+      bgColor={colors.moongray['950']}>
+      <ReportViewer
+        benchmarkResult={bencmarkResult}
+        runnerNameAndDescription={runnerNameAndDescription}
+        cookbookCategoryLabels={cookbookCategoryLabels}
+        cookbooksInReport={cookbooksInReport}
+        recipes={recipes}
+      />
+    </MainSectionSurface>
   );
 }

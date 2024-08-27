@@ -7,7 +7,7 @@ export function ReportFullResultHeader({
 }: ReportFullResultHeaderProps) {
   return (
     <>
-      <header className="bg-moongray-1000 px-6 py-8">
+      <header className="bg-moongray-1000 px-6 py-8 break-before-page">
         <hgroup>
           {showSectionLabel && <p className="text-fuchsia-400">Section 2</p>}
           <h2 className="text-[1.8rem] text-white flex">Full Results</h2>

@@ -169,27 +169,37 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
                     endpointId={endpointId}
                     expanded={expanded}>
                     {standardCookbookResults[idx].recipes.map(
-                      (recipeResult) => {
+                      (recipeResult, i) => {
                         const recipe = recipes.find(
                           (recipe) => recipe.id === recipeResult.id
                         );
                         return recipe ? (
                           MLC_RECIPE_IDS.includes(recipe.id) ? (
                             <React.Suspense fallback={<LoadingText />}>
-                              <MlcAiSafetyRecipeRatingResult
+                              <>
+                                {i > 0 && i % 2 === 0 && (
+                                  <div className="break-before-page h-[40px]" />
+                                )}
+                                <MlcAiSafetyRecipeRatingResult
+                                  key={recipeResult.id}
+                                  result={recipeResult}
+                                  recipe={recipe}
+                                  endpointId={endpointId}
+                                />
+                              </>
+                            </React.Suspense>
+                          ) : (
+                            <>
+                              {i > 0 && i % 2 === 0 && (
+                                <div className="break-before-page h-[40px]" />
+                              )}
+                              <RecipeRatingResult
                                 key={recipeResult.id}
                                 result={recipeResult}
                                 recipe={recipe}
                                 endpointId={endpointId}
                               />
-                            </React.Suspense>
-                          ) : (
-                            <RecipeRatingResult
-                              key={recipeResult.id}
-                              result={recipeResult}
-                              recipe={recipe}
-                              endpointId={endpointId}
-                            />
+                            </>
                           )
                         ) : (
                           <p>No recipe details for {recipeResult.id}</p>
@@ -207,21 +217,28 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
                     endpointId={endpointId}
                     recipes={recipesInMlcAISafetyCookbook}
                     expanded={expanded}>
-                    {mlcAISafetyCookbookResult.recipes.map((recipeResult) => {
-                      const recipeDetails = recipes.find(
-                        (recipe) => recipe.id === recipeResult.id
-                      );
-                      return recipeDetails ? (
-                        <MlcAiSafetyRecipeRatingResult
-                          key={recipeResult.id}
-                          result={recipeResult}
-                          recipe={recipeDetails}
-                          endpointId={endpointId}
-                        />
-                      ) : (
-                        <p>No recipe details for {recipeResult.id}</p>
-                      );
-                    })}
+                    {mlcAISafetyCookbookResult.recipes.map(
+                      (recipeResult, i) => {
+                        const recipeDetails = recipes.find(
+                          (recipe) => recipe.id === recipeResult.id
+                        );
+                        return recipeDetails ? (
+                          <>
+                            {i > 0 && i % 2 === 0 && (
+                              <div className="break-before-page h-[40px]" />
+                            )}
+                            <MlcAiSafetyRecipeRatingResult
+                              key={recipeResult.id}
+                              result={recipeResult}
+                              recipe={recipeDetails}
+                              endpointId={endpointId}
+                            />
+                          </>
+                        ) : (
+                          <p>No recipe details for {recipeResult.id}</p>
+                        );
+                      }
+                    )}
                   </MlcAISafetyCookbookReportCard>
                 </React.Suspense>
               ) : null}

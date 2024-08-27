@@ -23,7 +23,7 @@ const PrintingContext = React.createContext({
 
 function ReportViewer(props: ReportViewerProps) {
   const { benchmarkResult, runnerNameAndDescription } = props;
-  const [prePrintingFlagEnabled, setDisableExpandAnimation] =
+  const [prePrintingFlagEnabled, setPrePrintingFlagEnabled] =
     React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
   const [selectedEndpointId, setSelectedEndpointId] = React.useState(
@@ -36,16 +36,18 @@ function ReportViewer(props: ReportViewerProps) {
     const report = reportRef.current;
     await html2pdfjs(report, {
       filename: `report-${runnerNameAndDescription.name}-${selectedEndpointId}.pdf`,
+      html2canvas: { scale: 1.5 },
       image: { type: 'png' },
       jsPDF: { format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: 'css' },
     });
     setExpanded(false);
-    setDisableExpandAnimation(false);
+    setPrePrintingFlagEnabled(false);
   }
 
   function handleHeaderBtnClick() {
     flushSync(() => {
-      setDisableExpandAnimation(true);
+      setPrePrintingFlagEnabled(true);
     });
     flushSync(() => {
       setExpanded(true);
@@ -56,27 +58,21 @@ function ReportViewer(props: ReportViewerProps) {
   }
 
   return (
-    <MainSectionSurface
-      closeLinkUrl="/benchmarking"
-      height="100%"
-      minHeight={750}
-      bgColor={colors.moongray['950']}>
-      <div className="relative flex flex-col gap-5 items-center h-full">
-        <HeaderControls
-          benchmarkResult={benchmarkResult}
-          onEndpointChange={setSelectedEndpointId}
-          onBtnClick={handleHeaderBtnClick}
+    <div className="relative flex flex-col gap-5 items-center h-full">
+      <HeaderControls
+        benchmarkResult={benchmarkResult}
+        onEndpointChange={setSelectedEndpointId}
+        onBtnClick={handleHeaderBtnClick}
+      />
+      <PrintingContext.Provider value={{ prePrintingFlagEnabled }}>
+        <Report
+          {...props}
+          endpointId={selectedEndpointId}
+          ref={reportRef}
+          expanded={expanded}
         />
-        <PrintingContext.Provider value={{ prePrintingFlagEnabled }}>
-          <Report
-            {...props}
-            endpointId={selectedEndpointId}
-            ref={reportRef}
-            expanded={expanded}
-          />
-        </PrintingContext.Provider>
-      </div>
-    </MainSectionSurface>
+      </PrintingContext.Provider>
+    </div>
   );
 }
 
