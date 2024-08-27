@@ -4,6 +4,7 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
 import { RecipeGradeBadge } from './badge';
 import { gradeColorsMoonshot } from './gradeColors';
+import { ReportViewerContext } from './reportViewer';
 
 type BenchmarkReportCookbookResultsProps = {
   result: CookbookResult;
@@ -19,6 +20,7 @@ function CookbookReportCard(props: BenchmarkReportCookbookResultsProps) {
     (summary) => summary.model_id === endpointId
   );
   const [showSection, setShowSection] = React.useState(expanded);
+  const { disableExpandAnimation } = React.useContext(ReportViewerContext);
 
   React.useEffect(() => {
     setShowSection(expanded);
@@ -63,7 +65,9 @@ function CookbookReportCard(props: BenchmarkReportCookbookResultsProps) {
         </div>
       </header>
       <main
-        className={`px-4 main-transition ${showSection ? 'main-visible' : ''}`}
+        className={`px-4 
+          ${disableExpandAnimation ? 'no-expand-transition' : 'main-transition'} 
+          ${showSection ? 'main-visible' : ''}`}
         data-download="collapsible">
         <p className="mt-6 mb-10">{cookbook.description}</p>
         <section className="grid grid-cols-1 gap-[50px]">{children}</section>

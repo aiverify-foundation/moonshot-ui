@@ -2,10 +2,10 @@ import React from 'react';
 import { RecipeGradeBadge } from '@/app/benchmarking/report/components/badge';
 import { gradeColorsMlc } from '@/app/benchmarking/report/components/gradeColors';
 import { gradingLettersMlcMap } from '@/app/benchmarking/report/components/mlcReportComponents/constants';
+import { ReportViewerContext } from '@/app/benchmarking/report/components/reportViewer';
 import { CookbookResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
-import MlcAiSafetyRecipeRatingResult from './mlcAiSafetyRecipeRatingResult';
 
 type BenchmarkReportCookbookResultsProps = {
   result: CookbookResult;
@@ -13,16 +13,18 @@ type BenchmarkReportCookbookResultsProps = {
   endpointId: string;
   recipes: Recipe[];
   expanded?: boolean;
+  children?: React.ReactNode | React.ReactNode[];
 };
 
 export default function MlcAISafetyCookbookReportCard(
   props: BenchmarkReportCookbookResultsProps
 ) {
-  const { result, cookbook, endpointId, recipes, expanded = false } = props;
+  const { result, cookbook, endpointId, expanded = false, children } = props;
   const evaluationSummary = result.overall_evaluation_summary.find(
     (summary) => summary.model_id === endpointId
   );
   const [showSection, setShowSection] = React.useState(expanded);
+  const { disableExpandAnimation } = React.useContext(ReportViewerContext);
 
   React.useEffect(() => {
     setShowSection(expanded);
@@ -72,26 +74,12 @@ export default function MlcAISafetyCookbookReportCard(
         </div>
       </header>
       <main
-        className={`px-4 main-transition ${showSection ? 'main-visible' : ''}`}
+        className={`px-4 
+          ${disableExpandAnimation ? 'no-expand-transition' : 'main-transition'} 
+          ${showSection ? 'main-visible' : ''}`}
         data-download="collapsible">
         <p className="mt-6 mb-10">{cookbook.description}</p>
-        <section className="grid grid-cols-1 gap-[50px]">
-          {result.recipes.map((recipeResult) => {
-            const recipeDetails = recipes.find(
-              (recipe) => recipe.id === recipeResult.id
-            );
-            return !recipeDetails ? (
-              <p>recipeDetails: No recipe details</p>
-            ) : (
-              <MlcAiSafetyRecipeRatingResult
-                key={recipeResult.id}
-                result={recipeResult}
-                recipe={recipeDetails}
-                endpointId={endpointId}
-              />
-            );
-          })}
-        </section>
+        <section className="grid grid-cols-1 gap-[50px]">{children}</section>
       </main>
     </section>
   );

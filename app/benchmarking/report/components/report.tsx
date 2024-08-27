@@ -125,48 +125,40 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
           className="h-full overflow-x-hidden custom-scrollbar"
           style={{ overflowY }}>
           <article className="flex flex-col gap-8 bg-moongray-800">
-            <section className="pdf-page bg-moongray-800">
-              <ReportHeading
-                runnerNameAndDescription={runnerNameAndDescription}
-              />
-              <RunSummary
-                resultId={benchmarkResult.metadata.id}
-                cookbooksInReport={cookbooksInReport}
-                cookbookCategoryLabels={cookbookCategoryLabels}
-                endpointId={endpointId}
-                totalPrompts={totalPrompts}
-                startTime={benchmarkResult.metadata.start_time}
-                endTime={benchmarkResult.metadata.end_time}
-              />
-            </section>
+            <ReportHeading
+              runnerNameAndDescription={runnerNameAndDescription}
+            />
+            <RunSummary
+              resultId={benchmarkResult.metadata.id}
+              cookbooksInReport={cookbooksInReport}
+              cookbookCategoryLabels={cookbookCategoryLabels}
+              endpointId={endpointId}
+              totalPrompts={totalPrompts}
+              startTime={benchmarkResult.metadata.start_time}
+              endTime={benchmarkResult.metadata.end_time}
+            />
             {hasMlcAISafetyCookbookResult && (
               <React.Suspense fallback={<div>Loading...</div>}>
-                <section className="pdf-page bg-moongray-800">
-                  <MlcSafetyBaselineGrades
-                    benchmarkResult={benchmarkResult}
-                    endpointId={endpointId}
-                    recipesInMlcAISafetyCookbook={recipesInMlcAISafetyCookbook}
-                  />
-                </section>
-                <section className="pdf-page px-6 bg-moongray-800">
-                  <MlcRatingsInterpretation expanded={expanded} />
-                </section>
+                <MlcSafetyBaselineGrades
+                  benchmarkResult={benchmarkResult}
+                  endpointId={endpointId}
+                  recipesInMlcAISafetyCookbook={recipesInMlcAISafetyCookbook}
+                />
+                <MlcRatingsInterpretation expanded={expanded} />
               </React.Suspense>
             )}
-            <section className="pdf-page bg-moongray-800">
-              <ReportFullResultHeader
-                showSectionLabel={hasMlcAISafetyCookbookResult}
-              />
-              {standardCookbooksHasMlcRecipes ? (
-                <StandardRatingsInterpretation expanded={expanded}>
-                  <React.Suspense fallback={<LoadingText />}>
-                    <MlcRatingsInterpretation expanded={expanded} />
-                  </React.Suspense>
-                </StandardRatingsInterpretation>
-              ) : (
-                <StandardRatingsInterpretation expanded={expanded} />
-              )}
-            </section>
+            <ReportFullResultHeader
+              showSectionLabel={hasMlcAISafetyCookbookResult}
+            />
+            {standardCookbooksHasMlcRecipes ? (
+              <StandardRatingsInterpretation expanded={expanded}>
+                <React.Suspense fallback={<LoadingText />}>
+                  <MlcRatingsInterpretation expanded={expanded} />
+                </React.Suspense>
+              </StandardRatingsInterpretation>
+            ) : (
+              <StandardRatingsInterpretation expanded={expanded} />
+            )}
 
             <section
               className="h-full w-full text-moongray-300 text-[0.9rem]
@@ -184,24 +176,26 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
                         const recipe = recipes.find(
                           (recipe) => recipe.id === recipeResult.id
                         );
-                        return !recipe ? (
-                          <p>No recipe details for {recipeResult.id}</p>
-                        ) : MLC_RECIPE_IDS.includes(recipe.id) ? (
-                          <React.Suspense fallback={<LoadingText />}>
-                            <MlcAiSafetyRecipeRatingResult
+                        return recipe ? (
+                          MLC_RECIPE_IDS.includes(recipe.id) ? (
+                            <React.Suspense fallback={<LoadingText />}>
+                              <MlcAiSafetyRecipeRatingResult
+                                key={recipeResult.id}
+                                result={recipeResult}
+                                recipe={recipe}
+                                endpointId={endpointId}
+                              />
+                            </React.Suspense>
+                          ) : (
+                            <RecipeRatingResult
                               key={recipeResult.id}
                               result={recipeResult}
                               recipe={recipe}
                               endpointId={endpointId}
                             />
-                          </React.Suspense>
+                          )
                         ) : (
-                          <RecipeRatingResult
-                            key={recipeResult.id}
-                            result={recipeResult}
-                            recipe={recipe}
-                            endpointId={endpointId}
-                          />
+                          <p>No recipe details for {recipeResult.id}</p>
                         );
                       }
                     )}
@@ -215,8 +209,23 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
                     cookbook={mlcAISafetyCookbook}
                     endpointId={endpointId}
                     recipes={recipesInMlcAISafetyCookbook}
-                    expanded={expanded}
-                  />
+                    expanded={expanded}>
+                    {mlcAISafetyCookbookResult.recipes.map((recipeResult) => {
+                      const recipeDetails = recipes.find(
+                        (recipe) => recipe.id === recipeResult.id
+                      );
+                      return recipeDetails ? (
+                        <MlcAiSafetyRecipeRatingResult
+                          key={recipeResult.id}
+                          result={recipeResult}
+                          recipe={recipeDetails}
+                          endpointId={endpointId}
+                        />
+                      ) : (
+                        <p>No recipe details for {recipeResult.id}</p>
+                      );
+                    })}
+                  </MlcAISafetyCookbookReportCard>
                 </React.Suspense>
               ) : null}
             </section>

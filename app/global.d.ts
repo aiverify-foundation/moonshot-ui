@@ -362,3 +362,11 @@ type BookMark = {
   prompt_template?: string;
   bookmark_time: string;
 };
+
+declare module 'html2pdf.js' {
+  const html2pdf: (
+    element: HTMLDivElement,
+    options: Record<string, unknown>
+  ) => Promise<void>;
+  export = html2pdf;
+}

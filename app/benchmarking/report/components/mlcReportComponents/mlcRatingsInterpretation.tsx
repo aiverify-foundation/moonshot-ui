@@ -1,5 +1,6 @@
 import React from 'react';
 import { SquareBadge } from '@/app/benchmarking/report/components/badge';
+import { ReportViewerContext } from '@/app/benchmarking/report/components/reportViewer';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { gradingDescriptionsMlcMap, gradingLettersMlcMap } from './constants';
 import { GradingLevelsMlcEnum } from './enums';
@@ -16,6 +17,7 @@ export default function MlcRatingsInterpretation(
   const [expandSafetyRatings, setExpandSafetyRatings] =
     React.useState(expanded);
   const [expandLimitations, setExpandLimitations] = React.useState(expanded);
+  const { disableExpandAnimation } = React.useContext(ReportViewerContext);
 
   React.useEffect(() => {
     setExpandSafetyRatings(expanded);
@@ -23,7 +25,7 @@ export default function MlcRatingsInterpretation(
   }, [expanded]);
 
   return (
-    <>
+    <div className="flex flex-col gap-1 px-6">
       <section
         className={`bg-moongray-1000 rounded-lg p-6 flex flex-col mt-6 text-white ${!expandSafetyRatings ? 'hover:bg-moongray-950' : ''}`}>
         <hgroup
@@ -42,7 +44,8 @@ export default function MlcRatingsInterpretation(
           />
         </hgroup>
         <div
-          className={`main-transition ${expandSafetyRatings ? 'main-visible' : ''}`}
+          className={`${disableExpandAnimation ? 'no-expand-transition' : 'main-transition'} 
+            ${expandSafetyRatings ? 'main-visible' : ''}`}
           data-download="collapsible">
           <p className="mt-6">
             Grades of moderate-low risk or worse are relative to accessible
@@ -197,7 +200,8 @@ export default function MlcRatingsInterpretation(
           />
         </hgroup>
         <div
-          className={`main-transition ${expandLimitations ? 'main-visible' : ''}`}
+          className={`${disableExpandAnimation ? 'no-expand-transition' : 'main-transition'} 
+            ${expandLimitations ? 'main-visible' : ''}`}
           data-download="collapsible">
           <p className="mt-6">
             <span className="font-bold">Negative Predictive Power:</span> The
@@ -228,6 +232,6 @@ export default function MlcRatingsInterpretation(
           </p>
         </div>
       </section>
-    </>
+    </div>
   );
 }

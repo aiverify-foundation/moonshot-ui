@@ -352,6 +352,12 @@ input[type="checkbox"]:checked::before {
   opacity: 0; /* Start with opacity 0 */
 }
 
+.no-expand-transition {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+}
+
 .main-visible {
   max-height: 20000px; /* Adjust max-height to fit content or set to a large number */
   opacity: 1;
