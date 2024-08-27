@@ -4,8 +4,6 @@ import React from 'react';
 import { flushSync } from 'react-dom';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { CookbookCategoryLabels } from '@/app/benchmarking/report/types/benchmarkReportTypes';
-import { MainSectionSurface } from '@/app/components/mainSectionSurface';
-import { colors } from '@/app/customColors';
 import { HeaderControls } from './headerControls';
 import { Report } from './report';
 
@@ -63,6 +61,7 @@ function ReportViewer(props: ReportViewerProps) {
         benchmarkResult={benchmarkResult}
         onEndpointChange={setSelectedEndpointId}
         onBtnClick={handleHeaderBtnClick}
+        disabled={prePrintingFlagEnabled}
       />
       <PrintingContext.Provider value={{ prePrintingFlagEnabled }}>
         <Report

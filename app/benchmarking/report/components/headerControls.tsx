@@ -8,10 +8,11 @@ type HeaderControlsProps = {
   benchmarkResult: CookbooksBenchmarkResult;
   onEndpointChange: (endpointId: string) => void;
   onBtnClick: () => void;
+  disabled: boolean;
 };
 
 export function HeaderControls(props: HeaderControlsProps) {
-  const { benchmarkResult, onEndpointChange, onBtnClick } = props;
+  const { benchmarkResult, onEndpointChange, onBtnClick, disabled } = props;
   const [selectedEndpointId, setSelectedEndpointId] = useState(
     benchmarkResult.metadata.endpoints[0]
   );
@@ -37,14 +38,16 @@ export function HeaderControls(props: HeaderControlsProps) {
           value={selectedEndpointId}
           onChange={handleEndpointChange}
           style={{ marginBottom: 0, width: 400 }}
+          disabled={disabled}
         />
       </div>
 
       <Button
         mode={ButtonType.OUTLINE}
-        text="Download Report"
+        text={disabled ? 'Downloading...' : 'Download Report'}
         onClick={onBtnClick}
         hoverBtnColor={colors.moongray[800]}
+        disabled={disabled}
       />
     </section>
   );

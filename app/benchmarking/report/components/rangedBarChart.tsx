@@ -65,7 +65,9 @@ function RangedBarChart(props: RangedBarChartProps) {
                 backgroundColor: gradeColors[grade as keyof typeof gradeColors],
               }}
             />
-            <p className="text-center font-semibold mt-1">{grade}</p>
+            <p className="text-center font-semibold text-[0.85rem] mt-1">
+              {grade}
+            </p>
             <p className="text-center">
               {range[0]} - {range[1]}
             </p>
