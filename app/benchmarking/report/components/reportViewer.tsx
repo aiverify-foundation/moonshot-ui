@@ -35,13 +35,20 @@ function ReportViewer(props: ReportViewerProps) {
       await delay(500);
       if (!reportRef.current) return;
       const report = reportRef.current;
-      html2pdf(report, {
+      const pages = report.getElementsByClassName('pdf-page');
+      html2pdf(pages, {
         jsPDF: {
           orientation: 'p',
           format: 'a4',
         },
         imageQuality: 1,
         imageType: 'png',
+        margin: {
+          top: 12,
+          right: 12,
+          bottom: 12,
+          left: 12,
+        },
         output: `report-${runnerNameAndDescription.name}-${selectedEndpointId}.pdf`,
         success: function (pdf) {
           pdf.save(this.output);

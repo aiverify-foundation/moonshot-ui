@@ -12,7 +12,8 @@ import {
   MLC_RECIPE_IDS,
 } from './mlcReportComponents/constants';
 import { RecipeRatingResult } from './recipeRatingResult';
-import { ReportLogo } from './reportLogo';
+import { ReportFullResultHeader } from './reportFullResultHeader';
+import { ReportHeading } from './reportHeading';
 import { RunSummary } from './runSummary';
 import { StandardRatingsInterpretation } from './standardRatingsInterpretation';
 import { hasAnyOfSpecificRecipes } from './utils';
@@ -24,7 +25,7 @@ const MlcAISafetyCookbookReportCard = React.lazy(
   () => import('./mlcReportComponents/mlcAISafetyCookbookReportCard')
 );
 const MlcRatingsInterpretation = React.lazy(
-  () => import('./mlcReportComponents/ratingsInterpretation')
+  () => import('./mlcReportComponents/mlcRatingsInterpretation')
 );
 const MlcAiSafetyRecipeRatingResult = React.lazy(
   () => import('./mlcReportComponents/mlcAiSafetyRecipeRatingResult')
@@ -114,75 +115,62 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
       new Set(recipesInMlcAISafetyCookbook)
     );
 
-    const reportHeader = (
-      <hgroup className="p-6 pb-0 text-reportText">
-        <ReportLogo
-          width={280}
-          className="mb-10"
-        />
-        <h1 className="text-[2.3rem] text-white mb-2">Benchmark Report</h1>
-        <p className="mb-3 font-bold">{runnerNameAndDescription.name}</p>
-        <p className="mb-5">{runnerNameAndDescription.description}</p>
-      </hgroup>
-    );
-
-    const fullResultsHeading = (
-      <header className="bg-moongray-1000 px-6 py-8">
-        <hgroup>
-          {hasMlcAISafetyCookbookResult && (
-            <p className="text-fuchsia-400">Section 2</p>
-          )}
-          <h2 className="text-[1.8rem] text-white flex">Full Results</h2>
-        </hgroup>
-      </header>
-    );
-
     return (
-      <section className="flex-1 h-full border border-white rounded-lg overflow-hidden pr-[2px] py-[2px]">
+      <div
+        className="flex-1 h-full border border-white
+        rounded-lg overflow-hidden pr-[2px] py-[2px]">
         <div
           ref={ref}
           id="report-content"
           className="h-full overflow-x-hidden custom-scrollbar"
           style={{ overflowY }}>
           <article className="flex flex-col gap-8 bg-moongray-800">
-            {reportHeader}
-            <RunSummary
-              resultId={benchmarkResult.metadata.id}
-              cookbooksInReport={cookbooksInReport}
-              cookbookCategoryLabels={cookbookCategoryLabels}
-              endpointId={endpointId}
-              totalPrompts={totalPrompts}
-              startTime={benchmarkResult.metadata.start_time}
-              endTime={benchmarkResult.metadata.end_time}
-            />
+            <section className="pdf-page bg-moongray-800">
+              <ReportHeading
+                runnerNameAndDescription={runnerNameAndDescription}
+              />
+              <RunSummary
+                resultId={benchmarkResult.metadata.id}
+                cookbooksInReport={cookbooksInReport}
+                cookbookCategoryLabels={cookbookCategoryLabels}
+                endpointId={endpointId}
+                totalPrompts={totalPrompts}
+                startTime={benchmarkResult.metadata.start_time}
+                endTime={benchmarkResult.metadata.end_time}
+              />
+            </section>
             {hasMlcAISafetyCookbookResult && (
               <React.Suspense fallback={<div>Loading...</div>}>
-                <MlcSafetyBaselineGrades
-                  benchmarkResult={benchmarkResult}
-                  endpointId={endpointId}
-                  recipesInMlcAISafetyCookbook={recipesInMlcAISafetyCookbook}
-                  expanded={expanded}
-                />
-              </React.Suspense>
-            )}
-            {fullResultsHeading}
-            <p className="px-6 text-reportText text-[0.9rem]">
-              Each cookbook dedicated to testing a specific area can contain
-              multiple recipes, each testing different subsets of that area. The
-              overall rating for the tested area is determined by considering
-              the lowest rating obtained among these recipes. Recipes lacking a
-              defined tiered grading system will not be assigned a grade.
-            </p>
-            {standardCookbooksHasMlcRecipes ? (
-              <React.Suspense fallback={<LoadingText />}>
-                <StandardRatingsInterpretation expanded={expanded}>
+                <section className="pdf-page bg-moongray-800">
+                  <MlcSafetyBaselineGrades
+                    benchmarkResult={benchmarkResult}
+                    endpointId={endpointId}
+                    recipesInMlcAISafetyCookbook={recipesInMlcAISafetyCookbook}
+                  />
+                </section>
+                <section className="pdf-page px-6 bg-moongray-800">
                   <MlcRatingsInterpretation expanded={expanded} />
-                </StandardRatingsInterpretation>
+                </section>
               </React.Suspense>
-            ) : (
-              <StandardRatingsInterpretation expanded={expanded} />
             )}
-            <section className="h-full w-full text-moongray-300 text-[0.9rem] bg-moongray-800 rounded-lg px-6 flex flex-col gap-4">
+            <section className="pdf-page bg-moongray-800">
+              <ReportFullResultHeader
+                showSectionLabel={hasMlcAISafetyCookbookResult}
+              />
+              {standardCookbooksHasMlcRecipes ? (
+                <StandardRatingsInterpretation expanded={expanded}>
+                  <React.Suspense fallback={<LoadingText />}>
+                    <MlcRatingsInterpretation expanded={expanded} />
+                  </React.Suspense>
+                </StandardRatingsInterpretation>
+              ) : (
+                <StandardRatingsInterpretation expanded={expanded} />
+              )}
+            </section>
+
+            <section
+              className="h-full w-full text-moongray-300 text-[0.9rem]
+                bg-moongray-800 rounded-lg px-6 flex flex-col gap-4">
               {standardCookbooks.map((cookbook, idx) =>
                 standardCookbookResults[idx] ? (
                   <CookbookReportCard
@@ -247,7 +235,7 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
             </footer>
           </article>
         </div>
-      </section>
+      </div>
     );
   }
 );

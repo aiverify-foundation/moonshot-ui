@@ -9,7 +9,7 @@ type RatingsInterpretationProps = {
   expanded?: boolean;
 };
 
-export default function RatingsInterpretation(
+export default function MlcRatingsInterpretation(
   props: RatingsInterpretationProps
 ) {
   const { expanded = false } = props;
@@ -219,7 +219,7 @@ export default function RatingsInterpretation(
             been informed by existing research, and operational Trust & Safety
             in industry, they are not real prompts.
           </p>
-          <p className="mt-6">
+          <p className="mt-6 mb-2">
             <span className="font-bold">Significant Variance:</span> There is
             considerable variance in test outcomes relative to actual behavior,
             due to selection of prompts from an infinite space of possible

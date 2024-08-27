@@ -10,24 +10,17 @@ import {
 } from './constants';
 import { GradingLevelsMlcEnum } from './enums';
 import { gradeColorsMlc } from './gradeColors';
-import RatingsInterpretation from './ratingsInterpretation';
 
 type MlcSafetyBaselineGradesProps = {
   benchmarkResult: CookbooksBenchmarkResult;
   endpointId: string;
   recipesInMlcAISafetyCookbook: Recipe[];
-  expanded?: boolean;
 };
 
 export default function MlcSafetyBaselineGrades(
   props: MlcSafetyBaselineGradesProps
 ) {
-  const {
-    benchmarkResult,
-    endpointId,
-    recipesInMlcAISafetyCookbook,
-    expanded = false,
-  } = props;
+  const { benchmarkResult, endpointId, recipesInMlcAISafetyCookbook } = props;
   if (recipesInMlcAISafetyCookbook.length === 0) {
     return <p className="text-white px-6">Recipes data is empty</p>;
   }
@@ -183,8 +176,6 @@ export default function MlcSafetyBaselineGrades(
 
           {mlcGrades}
         </section>
-
-        <RatingsInterpretation expanded={expanded} />
       </section>
     </article>
   );

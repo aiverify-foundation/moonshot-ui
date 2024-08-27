@@ -1,4 +1,10 @@
 @tailwind base;
+@layer base {
+  img {
+    /* this is needed to correct alignments in the pdf generation that uses html2canvas */
+    @apply inline-block;
+  }
+}
 @tailwind components;
 @tailwind utilities;
 
