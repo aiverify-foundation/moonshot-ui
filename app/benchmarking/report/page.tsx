@@ -3,6 +3,8 @@ import React from 'react';
 import { ReportViewer } from '@/app/benchmarking/report/components/reportViewer';
 import { CookbookCategoryLabels } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
+import { MainSectionSurface } from '@/app/components/mainSectionSurface';
+import { colors } from '@/app/customColors';
 import {
   fetchCookbooks,
   fetchRecipes,
@@ -10,8 +12,6 @@ import {
   fetchRunnerHeading,
 } from '@/app/lib/fetchApis';
 import { ApiResult } from '@/app/lib/http-requests';
-import { MainSectionSurface } from '@/app/components/mainSectionSurface';
-import { colors } from '@/app/customColors';
 export const dynamic = 'force-dynamic';
 
 export default async function BenchmarkingReportPage(props: {
