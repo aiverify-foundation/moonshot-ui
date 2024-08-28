@@ -6,7 +6,7 @@ import { formatDate } from '@/app/lib/date-utils';
 import tailwindConfig from '@/tailwind.config';
 const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 
-type EndpointSelectViewProps = {
+type EndpointSelectorProps = {
   totalSelected: number;
   selectedModels: LLMEndpoint[];
   onModelClick: (model: LLMEndpoint) => void;
@@ -14,7 +14,7 @@ type EndpointSelectViewProps = {
   onCreateClick: () => void;
 };
 
-function EndpointSelectVew(props: EndpointSelectViewProps) {
+function EndpointSelector(props: EndpointSelectorProps) {
   const {
     totalSelected,
     selectedModels,
@@ -124,4 +124,4 @@ function EndpointSelectVew(props: EndpointSelectViewProps) {
   );
 }
 
-export { EndpointSelectVew };
+export { EndpointSelector };

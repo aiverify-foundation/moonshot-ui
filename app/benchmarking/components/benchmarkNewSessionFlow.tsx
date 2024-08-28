@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useLayoutEffect, useState } from 'react';
 import { CookbooksSelection } from '@/app/benchmarking/components/cookbooksSelection';
-import { EndpointSelectVew } from '@/app/benchmarking/components/endpointsSelector';
+import { EndpointSelector } from '@/app/benchmarking/components/endpointsSelector';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
@@ -22,6 +22,12 @@ import { BenchmarkDefaultSelection } from './benchmarkDefaultSelection';
 import { BenchmarkMainCookbooksPromptCount } from './benchmarkMainCookbooksPromptCount';
 import BenchmarkRunForm from './benchmarkRunForm';
 import { BenchmarkNewSessionViews } from './enums';
+
+const requiredEndpoints = [
+  'Together Llama Guard 7B Assistant',
+  'Together Llama3 8B Chat HF',
+  'LLM Judge - OpenAI GPT4',
+];
 
 const flowSteps = ['Your LLM', 'Recommended Tests', 'Connect Endpoint', 'Run'];
 
@@ -45,6 +51,8 @@ function BenchmarkNewSessionFlow() {
     true,
   ]);
   const [showExitModal, setShowExitModal] = useState(false);
+  const [showRequiredEndpointsModal, setShowRequiredEndpointsModal] =
+    useState(false);
 
   function changeView<T = undefined>(view: BenchmarkNewSessionViews, data?: T) {
     if (view === BenchmarkNewSessionViews.EDIT_ENDPOINT_FORM) {
@@ -65,7 +73,8 @@ function BenchmarkNewSessionFlow() {
       return;
     }
     if (currentView === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
-      setCurrentView(BenchmarkNewSessionViews.BENCHMARK_RUN_FORM);
+      setShowRequiredEndpointsModal(true);
+      // setCurrentView(BenchmarkNewSessionViews.BENCHMARK_RUN_FORM);
       return;
     }
   }
@@ -152,7 +161,7 @@ function BenchmarkNewSessionFlow() {
       stepIndex = 2;
       if (selectedModels.length === 0) disableNextBtn = true;
       view = (
-        <EndpointSelectVew
+        <EndpointSelector
           selectedModels={selectedModels}
           totalSelected={selectedModels.length}
           onModelClick={handleModelClick}
@@ -222,6 +231,39 @@ function BenchmarkNewSessionFlow() {
             <br />
             You should complete this workflow before exiting.
           </p>
+        </Modal>
+      )}
+      {showRequiredEndpointsModal && (
+        <Modal
+          width={600}
+          height={300}
+          heading="Required Endpoints"
+          bgColor={colors.moongray['800']}
+          textColor="#FFFFFF"
+          primaryBtnLabel="Yes"
+          secondaryBtnLabel="No"
+          enableScreenOverlay
+          onCloseIconClick={() => setShowRequiredEndpointsModal(false)}
+          onSecondaryBtnClick={() => setShowRequiredEndpointsModal(false)}
+          onPrimaryBtnClick={() => setShowRequiredEndpointsModal(false)}>
+          <div className="flex gap-4 items-start mt-4">
+            <Icon
+              size={30}
+              name={IconName.OutlineBox}
+              color={colors.moonpurplelight}
+              style={{ marginTop: 4 }}
+            />
+            <h3 className="text-[1rem] font-medium tracking-wide justify-center text-moonpurplelight">
+              Have you entered API key(s) for the following endpoint(s) to run
+              the selected test(s)?
+            </h3>
+          </div>
+
+          <ul className="text-white mt-4 p-4">
+            {requiredEndpoints.map((endpoint) => (
+              <li key={endpoint}>{endpoint}</li>
+            ))}
+          </ul>
         </Modal>
       )}
       <CookbooksProvider>
