@@ -801,7 +801,7 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
               <div
                 class="flex items-center justify-center text-white text-[1.5rem] w-[50px] h-[50px] rounded-lg"
                 role="label"
-                style="background-color: rgb(196, 128, 94); font-size: 2rem; width: 60px; height: 60px;"
+                style="background-color: rgb(196, 128, 94); font-size: 2rem; width: 60px; height: 60px; flex-shrink: 0;"
               >
                 H
               </div>
@@ -825,7 +825,7 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
               <div
                 class="flex items-center justify-center text-white text-[1.5rem] w-[50px] h-[50px] rounded-lg"
                 role="label"
-                style="background-color: rgb(161, 146, 39); font-size: 2rem; width: 60px; height: 60px;"
+                style="background-color: rgb(161, 146, 39); font-size: 2rem; width: 60px; height: 60px; flex-shrink: 0;"
               >
                 MH
               </div>
@@ -849,7 +849,7 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
               <div
                 class="flex items-center justify-center text-white text-[1.5rem] w-[50px] h-[50px] rounded-lg"
                 role="label"
-                style="background-color: rgb(123, 148, 189); font-size: 2rem; width: 60px; height: 60px;"
+                style="background-color: rgb(123, 148, 189); font-size: 2rem; width: 60px; height: 60px; flex-shrink: 0;"
               >
                 M
               </div>
@@ -873,7 +873,7 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
               <div
                 class="flex items-center justify-center text-white text-[1.5rem] w-[50px] h-[50px] rounded-lg"
                 role="label"
-                style="background-color: rgb(102, 156, 68); font-size: 2rem; width: 60px; height: 60px;"
+                style="background-color: rgb(102, 156, 68); font-size: 2rem; width: 60px; height: 60px; flex-shrink: 0;"
               >
                 ML
               </div>
@@ -897,7 +897,7 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
               <div
                 class="flex items-center justify-center text-white text-[1.5rem] w-[50px] h-[50px] rounded-lg"
                 role="label"
-                style="background-color: rgb(37, 161, 103); font-size: 2rem; width: 60px; height: 60px;"
+                style="background-color: rgb(37, 161, 103); font-size: 2rem; width: 60px; height: 60px; flex-shrink: 0;"
               >
                 L
               </div>
