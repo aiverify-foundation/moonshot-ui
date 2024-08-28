@@ -27,6 +27,7 @@ const config: Config = {
     '!app/components/window.tsx',
     '!app/components/IconSVG/**',
     '!app/hooks/*',
+    '!app/benchmarking/types/**',
   ],
   coverageReporters: ['text', 'text-summary'],
   moduleNameMapper: {
