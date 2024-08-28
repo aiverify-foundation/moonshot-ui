@@ -5,9 +5,15 @@ import React, { CSSProperties, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { TextInput } from '@/app/components/textInput';
+import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
 import { SelectedCookbooksPills } from './selectedCookbooksPills';
 
+const endpoints = [
+  'Together Llama Guard 7B Assistant',
+  'Together Llama3 8B Chat HF',
+  'LLM Judge - OpenAI GPT4',
+];
 interface CustomStyle extends CSSProperties {
   WebkitLineClamp?: string;
   WebkitBoxOrient?: 'vertical';
@@ -93,6 +99,27 @@ function CookbooksViewList({
               <div className="flex gap-2 mb-2 items-start">
                 <Icon name={IconName.Book} />
                 <h4 className="text-[1rem] font-semibold">{cookbook.name}</h4>
+                {cookbook.id == 'mlc-ai-safety' && (
+                  <Tooltip
+                    position={TooltipPosition.right}
+                    offsetLeft={10}
+                    content={
+                      <div className="p-4">
+                        <h3 className="text-black font-bold mb-2">Requires</h3>
+                        <ul className="text-gray-700">
+                          {endpoints.map((endpoint) => (
+                            <li key={endpoint}>{endpoint}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    }>
+                    <Icon
+                      size={25}
+                      name={IconName.SolidBox}
+                      color={colors.moonpurplelight}
+                    />
+                  </Tooltip>
+                )}
               </div>
               <p
                 className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis text-moongray-400"
