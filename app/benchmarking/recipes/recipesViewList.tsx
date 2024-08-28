@@ -11,7 +11,13 @@ import { TextInput } from '@/app/components/textInput';
 import { colors } from '@/app/customColors';
 import { Step } from './enums';
 import { SelectedRecipesPills } from './selectedRecipesPills';
+import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 
+const endpoints = [
+  'Together Llama Guard 7B Assistant',
+  'Together Llama3 8B Chat HF',
+  'LLM Judge - OpenAI GPT4',
+];
 interface CustomStyle extends React.CSSProperties {
   WebkitLineClamp?: string;
   WebkitBoxOrient?: 'vertical';
@@ -167,6 +173,29 @@ function RecipesViewList({
                       <h4 className="text-[1rem] font-semibold">
                         {recipe.name}
                       </h4>
+                      {recipe.id == 'mlc-vcr' && (
+                        <Tooltip
+                          position={TooltipPosition.right}
+                          offsetLeft={10}
+                          content={
+                            <div className="p-4">
+                              <h3 className="text-black font-bold mb-2">
+                                Requires
+                              </h3>
+                              <ul className="text-gray-700">
+                                {endpoints.map((endpoint) => (
+                                  <li key={endpoint}>{endpoint}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          }>
+                          <Icon
+                            size={25}
+                            name={IconName.SolidBox}
+                            color={colors.moonpurplelight}
+                          />
+                        </Tooltip>
+                      )}
                     </div>
                     <p
                       className="text-[0.8rem] h-[40px] overflow-hidden text-moongray-400"
