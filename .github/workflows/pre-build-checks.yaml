@@ -42,7 +42,7 @@ jobs:
       - name: Set Branch Variable (pull_request)
         if: github.event_name == 'pull_request'
         run: |
-          echo "BRANCH=${{ github.ref_name }}" >> "$GITHUB_ENV"
+          echo "BRANCH=${{ github.event.pull_request.head.ref }}" >> "$GITHUB_ENV"
 
       - name: Set Branch Variable (workflow_dispatch)
         if: github.event_name == 'workflow_dispatch'
