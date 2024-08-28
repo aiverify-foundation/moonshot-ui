@@ -22,9 +22,12 @@ function Notifications() {
     refetchOnMountOrArgChange: true,
   });
   const runnerIds = Object.keys(allTestStatus) || [];
-  const { data: runners = [] } = useGetAllRunnersQuery(undefined, {
-    refetchOnMountOrArgChange: true,
-  });
+  const { data: runners = [], refetch: refetchRunners } = useGetAllRunnersQuery(
+    undefined,
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   const statusNotificationsRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -45,6 +48,9 @@ function Notifications() {
   }, [allTestStatus]);
 
   useEffect(() => {
+    if (showStatusPanel) {
+      refetchRunners();
+    }
     function handleOutsideClick(event: MouseEvent) {
       if (
         statusNotificationsRef.current &&
