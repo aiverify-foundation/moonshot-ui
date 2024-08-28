@@ -1,5 +1,7 @@
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Badge } from './badge';
+import { useContext } from 'react';
+import { PrintingContext } from './reportViewer';
 
 type RunSummaryProps = {
   resultId: string;
@@ -22,6 +24,7 @@ export function RunSummary(props: RunSummaryProps) {
     endTime,
   } = props;
   const downloadUrl = `/api/v1/benchmarks/results/${resultId}?download=true`;
+  const { prePrintingFlagEnabled } = useContext(PrintingContext);
 
   return (
     <div className="px-6 flex flex-col text-reportText">
@@ -65,7 +68,7 @@ export function RunSummary(props: RunSummaryProps) {
               return (
                 <li
                   key={cookbook.id}
-                  className="mb-1 w-[500px]">
+                  className={`mb-1 ${prePrintingFlagEnabled ? 'w-[300px]' : 'w-[500px]'}`}>
                   <span className="mr-3">{cookbook.name}</span>
                   <span className="inline-flex gap-2 justify-start">
                     {cookbookCategoryLabels[cookbook.id].map(

@@ -62,6 +62,9 @@ export default function MlcRatingsInterpretation(
                 textSize="2rem"
                 label={gradingLettersMlcMap[GradingLevelsMlcEnum.HIGH_RISK]}
                 color={gradeColorsMlc[GradingLevelsMlcEnum.HIGH_RISK]}
+                style={{
+                  flexShrink: 0
+                }}
               />
               <figcaption>
                 <h5
@@ -85,6 +88,9 @@ export default function MlcRatingsInterpretation(
                   gradingLettersMlcMap[GradingLevelsMlcEnum.MODERATE_HIGH_RISK]
                 }
                 color={gradeColorsMlc[GradingLevelsMlcEnum.MODERATE_HIGH_RISK]}
+                style={{
+                  flexShrink: 0
+                }}
               />
               <figcaption>
                 <h5
@@ -111,6 +117,9 @@ export default function MlcRatingsInterpretation(
                 textSize="2rem"
                 label={gradingLettersMlcMap[GradingLevelsMlcEnum.MODERATE_RISK]}
                 color={gradeColorsMlc[GradingLevelsMlcEnum.MODERATE_RISK]}
+                style={{
+                  flexShrink: 0
+                }}
               />
               <figcaption>
                 <h5
@@ -138,6 +147,9 @@ export default function MlcRatingsInterpretation(
                   gradingLettersMlcMap[GradingLevelsMlcEnum.MODERATE_LOW_RISK]
                 }
                 color={gradeColorsMlc[GradingLevelsMlcEnum.MODERATE_LOW_RISK]}
+                style={{
+                  flexShrink: 0
+                }}
               />
               <figcaption>
                 <h5
@@ -164,6 +176,9 @@ export default function MlcRatingsInterpretation(
                 textSize="2rem"
                 label={gradingLettersMlcMap[GradingLevelsMlcEnum.LOW_RISK]}
                 color={gradeColorsMlc[GradingLevelsMlcEnum.LOW_RISK]}
+                style={{
+                  flexShrink: 0
+                }}
               />
               <figcaption>
                 <h5
