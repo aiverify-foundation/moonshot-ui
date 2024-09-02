@@ -12,7 +12,6 @@ import {
   resetBenchmarkCookbooks,
   resetBenchmarkModels,
   useAppDispatch,
-  useAppSelector,
 } from '@/lib/redux';
 
 const initialFormValues: BenchmarkRunFormValues = {
@@ -38,22 +37,16 @@ const validationSchema = object().shape({
 });
 
 type BenchmarkRunFormProps = {
-  defaultSelectedCookbooks?: Cookbook[];
-  defaultSelectedEndpoints?: LLMEndpoint[];
+  selectedCookbooks: Cookbook[];
+  selectedEndpoints: LLMEndpoint[];
 };
 
 function BenchmarkRunForm({
-  defaultSelectedCookbooks,
-  defaultSelectedEndpoints,
+  selectedCookbooks,
+  selectedEndpoints,
 }: BenchmarkRunFormProps) {
   const [disableRunBtn, setDisableRunBtn] = React.useState(false);
   const dispatch = useAppDispatch();
-  const selectedCookbooks = useAppSelector(
-    (state) => state.benchmarkCookbooks.entities
-  );
-  const selectedEndpoints = useAppSelector(
-    (state) => state.benchmarkModels.entities
-  );
   const formik = useFormik({
     initialValues: initialFormValues,
     validationSchema: validationSchema,
@@ -83,20 +76,16 @@ function BenchmarkRunForm({
   useEffect(() => {
     formik.setFieldValue(
       'inputs',
-      defaultSelectedCookbooks
-        ? defaultSelectedCookbooks.map((cb) => cb.id)
-        : selectedCookbooks.map((cb) => cb.id)
+      selectedCookbooks.map((cb) => cb.id)
     );
-  }, [selectedCookbooks, defaultSelectedCookbooks]);
+  }, [selectedCookbooks]);
 
   useEffect(() => {
     formik.setFieldValue(
       'endpoints',
-      defaultSelectedEndpoints
-        ? defaultSelectedEndpoints.map((ep) => ep.id)
-        : selectedEndpoints.map((ep) => ep.id)
+      selectedEndpoints.map((ep) => ep.id)
     );
-  }, [selectedEndpoints, defaultSelectedEndpoints]);
+  }, [selectedEndpoints]);
 
   return (
     <section className="flex flex-col items-center justify-center min-h-[300px] gap-5">

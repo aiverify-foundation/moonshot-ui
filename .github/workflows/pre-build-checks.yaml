@@ -43,20 +43,22 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           echo "BRANCH=${{ github.event.pull_request.head.ref }}" >> "$GITHUB_ENV"
+          echo "PR_NUM=#${{ github.event.pull_request.number }}" >> "$GITHUB_ENV"
 
       - name: Set Branch Variable (workflow_dispatch)
         if: github.event_name == 'workflow_dispatch'
         run: |
           echo "BRANCH=${{ inputs.branch_to_test }}" >> "$GITHUB_ENV"
+          echo "PR_NUM=#0" >> "$GITHUB_ENV"
 
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v3
         with:
           ref: ${{ env.BRANCH }}
           submodules: recursive
 
       # Install dependencies
-      - name: Setup Node.js
+      - name: Setup node.js 20.x
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
@@ -66,8 +68,8 @@ jobs:
           npm install --omit=dev
           npx license-checker --summary --out licenses-found.txt -y
           npm install -D
-          npm i -D badge-maker
-          npm i -D eslint-formatter-html
+          npm i -D jest jest-html-reporter jest-json-reporter ts-jest @jest/globals badge-maker
+          npm i -D eslint eslint-formatter-html @typescript-eslint/eslint-plugin @typescript-eslint/parser
           cp .env.local .env
           npm run build
 
@@ -85,13 +87,15 @@ jobs:
           set +e
           sudo timedatectl set-timezone Asia/Singapore
           npm run coverage
-          exit_code_jest=$?
-          node .ci/createBadges.mjs test
-          node .ci/createBadges.mjs coverage
+          source .ci/gen_pre_build_summ.sh test
+          test_status=$?
+          source .ci/gen_pre_build_summ.sh coverage
+          coverage_status=$?
+          echo "UNIT_TESTS_STATUS=$UNITTEST_SUMMARY" >> $GITHUB_ENV
+          echo "CODE_COVERAGE_STATUS=$COVERAGE_SUMMARY" >> $GITHUB_ENV
           set -e
-          if [ $exit_code_jest -ne 0 ]; then
-            echo "jest failed, exiting..."
-            exit $exit_code_jest
+          if [ $test_status -ne 0 ] || [ $coverage_status -ne 0 ]; then
+            exit 1
           fi
 
       # lint
@@ -103,12 +107,11 @@ jobs:
           exit_code_lint=$?
           npm run lint-html-report
           npm run lint-json-report
-          node .ci/createBadges.mjs lint
+          source .ci/gen_pre_build_summ.sh lint
+          lint_status=$?
+          echo "CODE_QUALITY_STATUS=$LINT_SUMMARY" >> $GITHUB_ENV
           set -e
-          if [ $exit_code_lint -ne 0 ]; then
-            echo "lint failed, exiting..."
-            exit $exit_code_lint
-          fi
+          exit $lint_status
 
       # npm audit
       - name: Dependency analysis - vulnerabilities & licenses
@@ -123,13 +126,32 @@ jobs:
           cat licenses-found.txt >> license-report.txt
           cat license-report.txt
           cp license-report.txt licenses-found.txt
-          node .ci/createBadges.mjs dependency        
-          node .ci/createBadges.mjs license
+          source .ci/gen_pre_build_summ.sh dependency
+          dep_status=$?
+          source .ci/gen_pre_build_summ.sh license
+          lic_status=$?
+          echo "DEPENDENCY_STATUS=$DEPENDENCY_SUMMARY" >> $GITHUB_ENV
+          echo "LICENSE_STATUS=$LICENSE_SUMMARY" >> $GITHUB_ENV
           set -e
-          if [ $exit_code_audit -ne 0 ]; then
-            echo "npm audit failed, exiting..."
-            exit $exit_code_audit
+          if [ $dep_status -ne 0 ] || [ $lic_status -ne 0 ]; then
+            exit 1
           fi
+
+      # Send slack notification
+      - name: Send slack notification
+        if: ${{ ! cancelled() }}
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          payload: |
+            {
+              "workflow": "${{ github.repository }} | ${{ github.workflow }} | ${{ env.PR_NUM }}",
+              "status": "${{ job.status }}",
+              "details": "${{ env.UNIT_TESTS_STATUS }} | ${{ env.CODE_COVERAGE_STATUS }} | ${{ env.CODE_QUALITY_STATUS }} | ${{ env.DEPENDENCY_STATUS }} | ${{ env.LICENSE_STATUS }}",
+              "ref": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
 
 #      ### Publish reports to ci dashboard ###
 #

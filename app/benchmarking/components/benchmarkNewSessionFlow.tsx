@@ -141,12 +141,20 @@ function BenchmarkNewSessionFlow() {
       stepIndex = 0;
       if (selectedCookbooks.length === 0) disableNextBtn = true;
       view = (
-        <BenchmarkDefaultSelection setHiddenNavButtons={setHiddenNavButtons} />
+        <BenchmarkDefaultSelection
+          selectedCookbooks={selectedCookbooks}
+          setHiddenNavButtons={setHiddenNavButtons}
+        />
       );
       break;
     case BenchmarkNewSessionViews.RECOMMENDED_TESTS:
       stepIndex = 1;
-      view = <BenchmarkMainCookbooksPromptCount changeView={changeView} />;
+      view = (
+        <BenchmarkMainCookbooksPromptCount
+          selectedCookbooks={selectedCookbooks}
+          changeView={changeView}
+        />
+      );
       break;
     case BenchmarkNewSessionViews.ENDPOINTS_SELECTION:
       stepIndex = 2;
@@ -200,7 +208,12 @@ function BenchmarkNewSessionFlow() {
     case BenchmarkNewSessionViews.BENCHMARK_RUN_FORM:
       stepIndex = 3;
       surfaceColor = colors.moongray['950'];
-      view = <BenchmarkRunForm />;
+      view = (
+        <BenchmarkRunForm
+          selectedCookbooks={selectedCookbooks}
+          selectedEndpoints={selectedModels}
+        />
+      );
       break;
   }
 
@@ -243,7 +256,11 @@ function BenchmarkNewSessionFlow() {
               className="flex flex-col gap-5 justify-center w-full"
               style={{ height: 'calc(100% - 33px)' }}>
               {!hiddenNavButtons[0] && (
-                <div className="flex justify-center">
+                <div
+                  role="button"
+                  className="flex justify-center"
+                  onClick={previousViewHandler}
+                  aria-label="Previous View">
                   <Icon
                     name={IconName.WideArrowUp}
                     size={28}
@@ -254,8 +271,11 @@ function BenchmarkNewSessionFlow() {
               {view}
               {!hiddenNavButtons[1] && (
                 <div
+                  role="button"
                   className="flex justify-center"
-                  style={{ opacity: disableNextBtn ? 0.3 : 1 }}>
+                  style={{ opacity: disableNextBtn ? 0.3 : 1 }}
+                  onClick={disableNextBtn ? undefined : nextViewHandler}
+                  aria-label="Next View">
                   <Icon
                     name={IconName.WideArrowDown}
                     size={28}

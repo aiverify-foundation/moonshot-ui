@@ -8,7 +8,6 @@ const createJestConfig = nextJest({
 
 // Add any custom config to be passed to Jest
 const config: Config = {
-  coverageProvider: 'v8',
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   prettierPath: require.resolve('prettier-2'),
@@ -28,7 +27,19 @@ const config: Config = {
     '!app/components/IconSVG/**',
     '!app/hooks/*',
   ],
-  coverageReporters: ['text', 'text-summary'],
+  coverageProvider: 'v8',
+  collectCoverage: true,
+  coverageThreshold: {
+    global: {
+      branches: 50,
+      functions: 50,
+      lines: 50,
+      statements: 50,
+    },
+  },
+  coverageReporters: ['html', 'text', 'json-summary'],
+  reporters: ['default', ['jest-html-reporter', { pageTitle: 'Test Report' }]],
+  testResultsProcessor: './node_modules/jest-json-reporter',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
     '^@/app/components/(.*)$': '<rootDir>/app/components/$1',
