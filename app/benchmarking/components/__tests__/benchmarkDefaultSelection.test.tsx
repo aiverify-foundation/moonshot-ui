@@ -4,7 +4,6 @@ import { BenchmarkDefaultSelection } from '@/app/benchmarking/components/benchma
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import {
-  useAppSelector,
   useAppDispatch,
   addBenchmarkCookbooks,
   removeBenchmarkCookbooks,
@@ -87,6 +86,7 @@ describe('BenchmarkDefaultSelection', () => {
     render(
       <CookbooksProvider>
         <BenchmarkDefaultSelection
+          selectedCookbooks={[]}
           setHiddenNavButtons={mockSetHiddenNavButtons}
         />
       </CookbooksProvider>
@@ -97,9 +97,6 @@ describe('BenchmarkDefaultSelection', () => {
   it('should render cookbooks for selection', async () => {
     const mockNoneAlreadySelectedCookbooksFromState: Cookbook[] = [];
     const baseLineCookbooksFromConfig = mockCookbooks[0];
-    (useAppSelector as jest.Mock).mockImplementation(
-      () => mockNoneAlreadySelectedCookbooksFromState
-    );
     (useAppDispatch as jest.Mock).mockImplementation(
       () => mockDispatchUpdateSelectedCookbooksInState
     );
@@ -121,6 +118,7 @@ describe('BenchmarkDefaultSelection', () => {
     render(
       <CookbooksProvider>
         <BenchmarkDefaultSelection
+          selectedCookbooks={mockNoneAlreadySelectedCookbooksFromState}
           setHiddenNavButtons={mockSetHiddenNavButtons}
         />
       </CookbooksProvider>
@@ -150,9 +148,6 @@ describe('BenchmarkDefaultSelection', () => {
     const mockOneAlreadySelectedCookbooksFromState: Cookbook[] = [
       mockCookbooks[0],
     ];
-    (useAppSelector as jest.Mock).mockImplementation(
-      () => mockOneAlreadySelectedCookbooksFromState
-    );
     (useAppDispatch as jest.Mock).mockImplementation(
       () => mockDispatchUpdateSelectedCookbooksInState
     );
@@ -163,6 +158,7 @@ describe('BenchmarkDefaultSelection', () => {
     render(
       <CookbooksProvider>
         <BenchmarkDefaultSelection
+          selectedCookbooks={mockOneAlreadySelectedCookbooksFromState}
           setHiddenNavButtons={mockSetHiddenNavButtons}
         />
       </CookbooksProvider>

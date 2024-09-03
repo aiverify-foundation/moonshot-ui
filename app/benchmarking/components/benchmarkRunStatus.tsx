@@ -79,7 +79,6 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
 
   React.useEffect(() => {
     return () => {
-      console.debug('Unmount status. Closing event source');
       closeEventSource();
     };
   }, []);

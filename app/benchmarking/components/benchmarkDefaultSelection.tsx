@@ -12,21 +12,21 @@ import {
   addBenchmarkCookbooks,
   removeBenchmarkCookbooks,
   useAppDispatch,
-  useAppSelector,
 } from '@/lib/redux';
 import config from '@/moonshot.config';
 
 type Props = {
+  selectedCookbooks: Cookbook[];
   setHiddenNavButtons: React.Dispatch<React.SetStateAction<[boolean, boolean]>>;
 };
 
-function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
+function BenchmarkDefaultSelection({
+  selectedCookbooks,
+  setHiddenNavButtons,
+}: Props) {
   const dispatch = useAppDispatch();
   const [_, setAllCookbooks, isFirstCookbooksFetch, setIsFirstCookbooksFetch] =
     useCookbooks();
-  const selectedCookbooks = useAppSelector(
-    (state) => state.benchmarkCookbooks.entities
-  );
   const {
     data: defaultCookbooksForSelection,
     isFetching: isFetchingDefaultCookbooksForSelection,

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import React from 'react';
-import { BenchmarkRunStatus } from '@/app/benchmarking/components/bechmarkRunStatus';
+import { BenchmarkRunStatus } from '@/app/benchmarking/components/benchmarkRunStatus';
 import { ErrorWithMessage } from '@/app/lib/error-utils';
 import { ApiResult, processResponse } from '@/app/lib/http-requests';
 import config from '@/moonshot.config';

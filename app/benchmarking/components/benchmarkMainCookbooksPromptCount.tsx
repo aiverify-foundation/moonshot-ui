@@ -1,21 +1,21 @@
 import { useCookbooks } from '@/app/benchmarking/contexts/cookbooksContext';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
-import { useAppSelector } from '@/lib/redux';
 import config from '@/moonshot.config';
 import { BenchmarkNewSessionViews } from './enums';
 
 type Props = {
+  selectedCookbooks: Cookbook[];
   changeView: (view: BenchmarkNewSessionViews) => void;
 };
 
 const enableEstimatedTime = false;
 
-function BenchmarkMainCookbooksPromptCount({ changeView }: Props) {
+function BenchmarkMainCookbooksPromptCount({
+  selectedCookbooks,
+  changeView,
+}: Props) {
   const [allCookbooks, _] = useCookbooks();
-  const selectedCookbooks = useAppSelector(
-    (state) => state.benchmarkCookbooks.entities
-  );
   const { totalHours, totalMinutes, totalPrompts } =
     calcTotalPromptsAndEstimatedTime(
       selectedCookbooks,
