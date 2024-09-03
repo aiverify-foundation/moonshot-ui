@@ -20,10 +20,17 @@ async function processResponse<T>(
   if (response.ok) {
     return result;
   } else {
+    let error = '';
+    if (result.data && result.data.error) {
+      error = result.data.error;
+    } else if (result.data && result.data.detail) {
+      error = result.data.detail;
+    }
+
     return toErrorWithMessage({
       status: response.status,
       statusText: response.statusText,
-      error: result.data && result.data.error ? result.data.error : undefined,
+      error,
     });
   }
 }
