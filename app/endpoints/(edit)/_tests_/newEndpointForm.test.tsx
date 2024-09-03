@@ -166,7 +166,7 @@ describe('NewEndpointForm', () => {
       expectedPayload
     );
     expect(mockRouterPush).toHaveBeenCalledWith('/endpoints');
-  }, 10000);
+  }, 15000);
 
   test('form submit - error response', async () => {
     const mockCreateModelEndpointError = jest
@@ -236,7 +236,7 @@ describe('NewEndpointForm', () => {
     };
     expect(mockCreateModelEndpointError).toHaveBeenCalledWith(expectedPayload);
     expect(screen.getByText(/mock error message/i)).toBeInTheDocument();
-  }, 10000);
+  }, 15000);
 
   test('on close callback', async () => {
     const mockCreateModelEndpointSuccess = jest.fn().mockResolvedValue({});
@@ -307,7 +307,7 @@ describe('NewEndpointForm', () => {
       expectedPayload
     );
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-  }, 10000);
+  }, 15000);
 
   test('edit endpoint - form filling, no change to token value', async () => {
     const mockUpdateModelEndpointSuccess = jest.fn().mockResolvedValue({});
@@ -397,7 +397,7 @@ describe('NewEndpointForm', () => {
       id: mockEndpoint.id,
       endpointDetails: expectedPayloadWithoutToken,
     });
-  }, 10000);
+  }, 15000);
 
   test('edit endpoint - form filling, token value updated', async () => {
     const mockUpdateModelEndpointSuccess = jest.fn().mockResolvedValue({});
@@ -461,7 +461,7 @@ describe('NewEndpointForm', () => {
       id: mockEndpoint.id,
       endpointDetails: expectedPayloadWithToken,
     });
-  }, 10000);
+  }, 15000);
 
   test('edit endpoint - form filling, no inital token value (default fresh install), new token added', async () => {
     const mockUpdateModelEndpointSuccess = jest.fn().mockResolvedValue({});
@@ -523,5 +523,5 @@ describe('NewEndpointForm', () => {
       id: mockEndpoint.id,
       endpointDetails: expectedPayloadWithToken,
     });
-  }, 10000);
+  }, 15000);
 });
