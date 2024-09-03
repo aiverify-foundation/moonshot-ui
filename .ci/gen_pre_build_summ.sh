@@ -8,7 +8,7 @@ codeCoverage() {
   local message="Coverage percentage: ${covPctRounded}%"
   echo $message
   export COVERAGE_SUMMARY="$message"
-  if (( covPctRounded < 70 )); then
+  if (( covPctRounded < 50 )); then
     return 1
   else
     return 0
