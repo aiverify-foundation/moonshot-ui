@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export default async function CookbooksPage() {
   const result = await fetchCookbooks();
   if ('message' in result) {
-    throw result.message;
+    throw result;
   }
 
   return <CookbooksMain cookbooks={(result as ApiResult<Cookbook[]>).data} />;

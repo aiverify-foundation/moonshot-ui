@@ -10,12 +10,12 @@ export const dynamic = 'force-dynamic';
 export default async function RecipesPage() {
   const rcResult = await fetchRecipes({ count: true });
   if ('message' in rcResult) {
-    throw rcResult.message;
+    throw rcResult;
   }
 
   const cbResult = await fetchCookbooks({ count: true });
   if ('message' in cbResult) {
-    throw cbResult.message;
+    throw cbResult;
   }
 
   return (
