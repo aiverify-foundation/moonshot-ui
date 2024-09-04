@@ -50,8 +50,14 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
         />
       </header>
       <p>{cookbook.description}</p>
-      <footer className="flex justify-between">
-        <p>{cookbook.total_prompt_in_cookbook} prompts</p>
+      <footer className="flex justify-between mt-4">
+        <div className="flex flex-col">
+          <p>{cookbook.total_prompt_in_cookbook} prompts</p>
+          <p>
+            {cookbook.total_dataset_in_cookbook}&nbsp;
+            {cookbook.total_dataset_in_cookbook > 1 ? 'Datasets' : 'Dataset'}
+          </p>
+        </div>
         <span
           className="decoration-1 underline cursor-pointer hover:text-moonwine-500"
           onClick={(e) => {

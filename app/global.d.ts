@@ -102,6 +102,7 @@ type Cookbook = {
   description: string;
   recipes: string[];
   total_prompt_in_cookbook: number;
+  total_dataset_in_cookbook: number;
 };
 
 type CookbookFormValues = {
