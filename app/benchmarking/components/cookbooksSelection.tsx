@@ -4,7 +4,6 @@ import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { PopupSurface } from '@/app/components/popupSurface';
 import { TabsMenu, TabItem } from '@/app/components/tabsMenu';
 import { colors } from '@/app/customColors';
-import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import {
   addBenchmarkCookbooks,
@@ -16,6 +15,13 @@ import {
 import config from '@/moonshot.config';
 import { CookbookSelectionItem } from './cookbookSelectionItem';
 
+const descQuality =
+  "Quality evaluates the model's ability to consistently produce content that meets general correctness and application-specific standards.";
+const descCapability =
+  "Capability assesses the AI model's ability to perform within the context of the unique requirements and challenges of a particular domain or task.";
+const descTrustAndSafety =
+  'Trust & Safety addresses the reliability, ethical considerations, and inherent risks of the AI model. It also examines potential scenarios where the AI system could be used maliciously or unethically.';
+
 const CookbookAbout = dynamic(
   () => import('./cookbookAbout').then((mod) => mod.CookbookAbout),
   {
@@ -23,8 +29,6 @@ const CookbookAbout = dynamic(
     ssr: true,
   }
 );
-
-const enableEstimatedTime = false;
 
 const tabItems: TabItem<string[]>[] = config.cookbookCategoriesTabs.map(
   (item) => ({
@@ -84,11 +88,6 @@ function CookbooksSelection(props: Props) {
     }
   );
 
-  const { totalHours, totalMinutes } = calcTotalPromptsAndEstimatedTime(
-    selectedCookbooks,
-    config.estimatedPromptResponseTime
-  );
-
   function handleTabClick(tab: TabItem<string[]>) {
     setActiveTab(tab);
   }
@@ -105,17 +104,14 @@ function CookbooksSelection(props: Props) {
     setCookbookDetails(cb);
   }
 
-  let categoryDesc = '';
-  if (activeTab.id === 'quality') {
-    categoryDesc =
-      "Quality evaluates the model's ability to consistently produce content that meets general correctness and application-specific standards.";
-  } else if (activeTab.id === 'capability') {
-    categoryDesc =
-      "Capability assesses the AI model's ability to perform within the context of the unique requirements and challenges of a particular domain or task.";
-  } else if (activeTab.id === 'trustAndSafety') {
-    categoryDesc =
-      'Trust & Safety addresses the reliability, ethical considerations, and inherent risks of the AI model. It also examines potential scenarios where the AI system could be used maliciously or unethically.';
-  }
+  const categoryDesc =
+    activeTab.id === 'quality'
+      ? descQuality
+      : activeTab.id === 'capability'
+        ? descCapability
+        : activeTab.id === 'trustAndSafety'
+          ? descTrustAndSafety
+          : '';
 
   useEffect(() => {
     if (!cookbooks) return;
@@ -126,35 +122,6 @@ function CookbooksSelection(props: Props) {
       dispatch(updateBenchmarkCookbooks(selectedCookbooksWithCounts));
     }
   }, [cookbooks]);
-
-  const timeDisplay = enableEstimatedTime && (
-    <div className="flex gap-5">
-      <div className="flex flex-col justify-center">
-        <div className="text-[1rem] leading-[1.1rem] text-end">
-          Estimated time
-        </div>
-        <div className="text-[0.8rem] leading-[1.1rem] text-moongray-300 text-end">
-          assuming{' '}
-          <span className="decoration-1 underline">
-            {config.estimatedPromptResponseTime}s
-          </span>{' '}
-          per prompt
-        </div>
-      </div>
-      <div className="flex">
-        <h3 className="text-[2.4rem] font-bolder tracking-wide leading-[3rem] text-white mb-0">
-          {totalHours}
-          <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300 mr-2">
-            hrs
-          </span>
-          {totalMinutes}
-          <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300">
-            mins
-          </span>
-        </h3>
-      </div>
-    </div>
-  );
 
   return (
     <div className="flex flex-col pt-4 w-full h-full">
@@ -212,7 +179,6 @@ function CookbooksSelection(props: Props) {
               )}
             </ul>
             <footer className="flex justify-end items-center bg-moonpurple p-2 px-5 rounded-b-2xl w-full text-white h-[52px] shrink-0">
-              {timeDisplay}
               {selectedCookbooks.length > 0 && (
                 <span
                   role="button"
