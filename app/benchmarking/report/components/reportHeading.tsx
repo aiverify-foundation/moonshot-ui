@@ -14,8 +14,10 @@ export function ReportHeading({
         className="mb-10"
       />
       <h1 className="text-[2.3rem] text-white mb-2">Benchmark Report</h1>
-      <p className="mb-3 font-bold">{runnerNameAndDescription.name}</p>
-      <p className="mb-5">{runnerNameAndDescription.description}</p>
+      <p className="mb-3 font-bold break-words">
+        {runnerNameAndDescription.name}
+      </p>
+      <p className="mb-5 break-words">{runnerNameAndDescription.description}</p>
     </hgroup>
   );
 }

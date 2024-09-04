@@ -214,12 +214,12 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
         Benchmark Report
       </h1>
       <p
-        class="mb-3 font-bold"
+        class="mb-3 font-bold break-words"
       >
         mlc test 2
       </p>
       <p
-        class="mb-5"
+        class="mb-5 break-words"
       />
     </hgroup>
     <div
@@ -1394,7 +1394,7 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
           data-download="collapsible"
         >
           <p
-            class="mt-6 mb-10"
+            class="mt-6 mb-10 break-words"
           >
             Mock Description
           </p>

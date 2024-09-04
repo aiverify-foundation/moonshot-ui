@@ -116,7 +116,7 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
     return (
       <div
         className="flex-1 h-full border border-white
-        rounded-lg overflow-hidden pr-[2px] py-[2px]">
+        rounded-lg overflow-hidden pr-[2px] py-[2px] max-w-[1120px]">
         <div
           ref={ref}
           id="report-content"

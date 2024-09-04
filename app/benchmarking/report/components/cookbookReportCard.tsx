@@ -69,7 +69,7 @@ function CookbookReportCard(props: BenchmarkReportCookbookResultsProps) {
           ${prePrintingFlagEnabled ? 'no-expand-transition' : 'main-transition'} 
           ${showSection ? 'main-visible' : ''}`}
         data-download="collapsible">
-        <p className="mt-6 mb-10">{cookbook.description}</p>
+        <p className="mt-6 mb-10 break-words">{cookbook.description}</p>
         <section className="grid grid-cols-1 gap-[50px]">{children}</section>
       </main>
     </section>
