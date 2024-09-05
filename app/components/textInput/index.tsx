@@ -12,7 +12,7 @@ type TextInputProps = {
   id?: string;
   name: string;
   label?: string;
-  description?: string;
+  description?: React.ReactNode;
   placeholder?: string;
   type?: 'text' | 'password';
   disabled?: boolean;
@@ -24,6 +24,7 @@ type TextInputProps = {
   style?: React.CSSProperties;
   inputStyles?: React.CSSProperties;
   labelStyles?: React.CSSProperties;
+  descriptionStyles?: React.CSSProperties;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
   onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
@@ -47,6 +48,7 @@ function TextInput(props: TextInputProps) {
     style,
     inputStyles,
     labelStyles,
+    descriptionStyles,
     onChange,
     onBlur,
     onKeyDown,
@@ -78,7 +80,11 @@ function TextInput(props: TextInputProps) {
           </div>
         ) : null}
         {description ? (
-          <div className={styles.description}>{description}</div>
+          <div
+            className={styles.description}
+            style={descriptionStyles}>
+            {description}
+          </div>
         ) : null}
         <input
           id={id}
