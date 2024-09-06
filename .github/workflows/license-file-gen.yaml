@@ -26,9 +26,6 @@ on:
         required: true
         default: 'main'
         type: string
-  push:
-    branches:
-      - ci-workflow-dev
 
 jobs:
   license-file-gen:
