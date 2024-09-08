@@ -47,6 +47,11 @@ const config: MoonshotConfig = {
       label: 'Trust & Safety',
       categoryNames: ['Trust & Safety'],
     },
+    {
+      id: 'others',
+      label: 'Others',
+      categoryNames: ['exclude:capability', 'exclude:Trust & Safety'],
+    },
   ],
   estimatedPromptResponseTime: 1, // seconds
   webAPI: {
