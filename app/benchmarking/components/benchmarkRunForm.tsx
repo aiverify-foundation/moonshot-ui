@@ -73,10 +73,8 @@ function BenchmarkRunForm({
           onCloseIconClick={() => setShowErrorModal(false)}
           onPrimaryBtnClick={() => setShowErrorModal(false)}>
           <div className="flex flex-col gap-2 items-start">
-            {formState.formErrors ? (
+            {formState.formErrors && (
               <FormStateErrorList formErrors={formState.formErrors} />
-            ) : (
-              'An unknown error occurred'
             )}
           </div>
         </Modal>

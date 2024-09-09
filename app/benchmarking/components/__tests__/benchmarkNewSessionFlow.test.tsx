@@ -2,9 +2,9 @@ import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BenchmarkNewSessionFlow } from '@/app/benchmarking/components/benchmarkNewSessionFlow';
 import { useModelsList } from '@/app/hooks/useLLMEndpointList';
-import { useRunBenchmarkMutation } from '@/app/services/benchmark-api-service';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
+import { useFormState, useFormStatus } from 'react-dom';
 
 const mockCookbooks = [
   {
@@ -47,6 +47,15 @@ const mockEndpoints: LLMEndpoint[] = [
     params: { param2: 'value2' },
   },
 ];
+
+jest.mock('react-dom', () => {
+  const actualReactDom = jest.requireActual('react-dom');
+  return {
+    ...actualReactDom,
+    useFormState: jest.fn(),
+    useFormStatus: jest.fn(),
+  };
+});
 
 jest.mock('@/lib/redux', () => ({
   addBenchmarkModels: jest.fn(),
@@ -98,10 +107,6 @@ it('should go to next view when next button is clicked', async () => {
     error: null,
   }));
   (useAppDispatch as jest.Mock).mockImplementation(() => jest.fn());
-  (useRunBenchmarkMutation as jest.Mock).mockReturnValue([
-    jest.fn(),
-    { isLoading: false },
-  ]);
 
   const { rerender } = render(<BenchmarkNewSessionFlow />);
   const nextViewButton = screen.getByRole('button', { name: /Next View/i });

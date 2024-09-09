@@ -1,7 +1,7 @@
 'use server';
 import { redirect } from 'next/navigation';
 import { ZodError, z } from 'zod';
-import { parseFastAPIError } from '@/app/lib/parseFastAPIError';
+import { parseFastAPIError } from '@/actions/helpers/parseFastAPIError';
 import { BenchmarkCollectionType } from '@/app/types/enums';
 import config from '@/moonshot.config';
 import { formatZodSchemaErrors } from './helpers/formatZodSchemaErrors';

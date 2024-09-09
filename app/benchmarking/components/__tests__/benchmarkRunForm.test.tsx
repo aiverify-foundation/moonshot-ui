@@ -1,5 +1,6 @@
 import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useFormState, useFormStatus } from 'react-dom';
 import BenchmarkRunForm from '@/app/benchmarking/components/benchmarkRunForm';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
 import {
@@ -7,7 +8,6 @@ import {
   resetBenchmarkModels,
   useAppDispatch,
 } from '@/lib/redux';
-import { useFormState, useFormStatus } from 'react-dom';
 
 jest.mock('react-dom', () => {
   const actualReactDom = jest.requireActual('react-dom');
@@ -102,11 +102,8 @@ describe('BenchmarkRunForm', () => {
     random_seed: 0,
   };
   const mockFormAction = 'unused'; // we are not asserting anything on the server action. Set it to a string instead to suppress jest from reporting invalid value prop error
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
 
-  test('renders form initial state', async () => {
+  beforeAll(() => {
     const mockUseFormState: jest.Mock = jest.fn().mockImplementation(() => {
       return [
         mockFormState,
@@ -115,19 +112,45 @@ describe('BenchmarkRunForm', () => {
     });
     (useFormState as jest.Mock).mockImplementation(mockUseFormState);
     (useFormStatus as jest.Mock).mockImplementation(() => ({ pending: false }));
+  });
 
-    renderWithProviders(
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should renders form initial state', async () => {
+    const { container } = renderWithProviders(
       <BenchmarkRunForm
         selectedCookbooks={mockCookbooks}
         selectedEndpoints={mockEndpoints}
       />
     );
-    screen.debug();
-    expect(screen.getAllByRole('textbox', { name: 'inputs' })).toHaveLength(2);
+    for (const cookbook of mockCookbooks) {
+      expect(
+        container.querySelector(`input[value=${cookbook.id}`)
+      ).toBeDefined();
+    }
+    for (const endpoint of mockEndpoints) {
+      expect(
+        container.querySelector(`input[value=${endpoint.id}`)
+      ).toBeDefined();
+    }
+    expect(container.querySelector('input[name="random_seed"]')).toHaveValue(
+      String(mockFormState.random_seed)
+    );
+    expect(
+      container.querySelector('input[name="runner_processing_module"]')
+    ).toHaveValue(mockFormState.runner_processing_module);
+    expect(container.querySelector('input[name="system_prompt"]')).toHaveValue(
+      mockFormState.system_prompt
+    );
     expect(screen.getByRole('button', { name: /Run/i })).toBeDisabled();
+    await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
+    await userEvent.type(screen.getByLabelText(/Run a smaller set/i), '5');
+    expect(screen.getByRole('button', { name: /Run/i })).toBeEnabled();
   });
 
-  test.skip('form validation and submission', async () => {
+  it('should clear selected cookbooks and endpoints when form is submitted and display form errors', async () => {
     const mockDispatch = jest.fn();
     (useAppDispatch as jest.Mock).mockImplementation(() => mockDispatch);
     const mockResetBenchmarkCookbooks = jest.fn();
@@ -138,72 +161,55 @@ describe('BenchmarkRunForm', () => {
     (resetBenchmarkModels as unknown as jest.Mock).mockImplementation(
       mockResetBenchmarkModels
     );
-    const mockRunBenchmarkSuccess = jest.fn().mockResolvedValue({
-      data: {
-        id: 'br-id-1',
-        name: 'Test Run',
-        description: 'Test description',
-        status: 'pending',
-      },
-    });
-    await act(async () =>
-      renderWithProviders(
+
+    const { rerender } = renderWithProviders(
+      <BenchmarkRunForm
+        selectedCookbooks={mockCookbooks}
+        selectedEndpoints={mockEndpoints}
+      />
+    );
+
+    await act(async () => {
+      (useFormStatus as jest.Mock).mockImplementation(() => ({
+        pending: true,
+      }));
+      rerender(
         <BenchmarkRunForm
           selectedCookbooks={mockCookbooks}
           selectedEndpoints={mockEndpoints}
         />
-      )
-    );
-
-    const runButton = screen.getByRole('button', { name: /Run/i });
-
-    await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
-    await userEvent.clear(screen.getByLabelText(/Run a smaller set/i));
-    await userEvent.type(screen.getByLabelText(/Run a smaller set/i), '5');
-
-    expect(runButton).toBeEnabled();
-
-    await userEvent.click(runButton);
-
-    expect(mockRunBenchmarkSuccess).toHaveBeenCalledWith({
-      benchmarkRunInputData: {
-        description: '',
-        endpoints: ['ep-id-1', 'ep-id-2'],
-        inputs: ['cb-id-1', 'cb-id-2'],
-        num_of_prompts: '5',
-        random_seed: '0',
-        run_name: 'Test Run',
-        runner_processing_module: 'benchmarking',
-        system_prompt: '',
-      },
-      collectionType: 'cookbook',
+      );
     });
     expect(mockDispatch).toHaveBeenCalledTimes(2);
     expect(mockDispatch).toHaveBeenCalledWith(mockResetBenchmarkCookbooks());
     expect(mockDispatch).toHaveBeenCalledWith(mockResetBenchmarkModels());
-  });
 
-  test.skip('form submission with error', async () => {
-    const mockRunBenchmarkError = jest.fn().mockResolvedValue({
-      error: 'Error',
-    });
-
-    await act(async () =>
-      renderWithProviders(
+    const mockFormStateWithErrors: FormState<BenchmarkRunFormValues> = {
+      ...mockFormState,
+      formStatus: 'error',
+      formErrors: {
+        run_name: ['mock error 1'],
+        num_of_prompts: ['mock error 2'],
+        description: ['mock error 3'],
+      },
+    };
+    await act(async () => {
+      const mockUseFormState: jest.Mock = jest.fn().mockImplementation(() => {
+        return [
+          mockFormStateWithErrors,
+          mockFormAction, // use a dummy string to prevent jest from complaining
+        ];
+      });
+      (useFormState as jest.Mock).mockImplementation(mockUseFormState);
+      rerender(
         <BenchmarkRunForm
           selectedCookbooks={mockCookbooks}
           selectedEndpoints={mockEndpoints}
         />
-      )
-    );
-
-    const runButton = screen.getByRole('button', { name: /Run/i });
-
-    await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
-    await userEvent.type(screen.getByLabelText(/Run a smaller set/i), '5');
-    await userEvent.click(runButton);
-
-    expect(mockRunBenchmarkError).toHaveBeenCalled();
-    // TODO - assert show error modal
+      );
+    });
+    expect(screen.getAllByText('mock error 1')).toHaveLength(2);
+    expect(screen.getAllByText('mock error 2')).toHaveLength(2);
+    expect(screen.getAllByText('mock error 3')).toHaveLength(2);
   });
 });
