@@ -1,40 +1,50 @@
 'use server';
+import { redirect } from 'next/navigation';
 import { ZodError, z } from 'zod';
+import { parseFastAPIError } from '@/app/lib/parseFastAPIError';
 import { BenchmarkCollectionType } from '@/app/types/enums';
 import config from '@/moonshot.config';
 import { formatZodSchemaErrors } from './helpers/formatZodSchemaErrors';
-import { redirect } from 'next/navigation';
 
 const runSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
+  run_name: z.string().min(1, 'Name is required'),
   description: z.string().optional(),
-  numOfPrompts: z.preprocess(
+  num_of_prompts: z.preprocess(
     (val) => Number(val),
     z.number().min(1, 'Number of prompts must be at least 1')
   ),
   inputs: z.array(z.string()).min(1, 'At least one cookbook is required'),
   endpoints: z.array(z.string()).min(1, 'At least one endpoint is required'),
+  random_seed: z.preprocess(
+    (val) => Number(val),
+    z.number().min(0, 'Random seed must be at least 0')
+  ),
+  runner_processing_module: z
+    .string()
+    .min(1, 'Runner processing module is required'),
+  system_prompt: z.string(),
 });
 
 export async function createRun(
-  prevState: FormState<BenchmarkRunFormValues>,
+  _: FormState<BenchmarkRunFormValues>,
   formData: FormData
 ) {
   let newRunData: z.infer<typeof runSchema>;
 
   try {
     newRunData = runSchema.parse({
-      run_name: formData.get('name'),
+      run_name: formData.get('run_name'),
       description: formData.get('description'),
-      num_of_prompts: formData.get('numOfPrompts'),
+      num_of_prompts: formData.get('num_of_prompts'),
       inputs: formData.getAll('inputs'),
       endpoints: formData.getAll('endpoints'),
+      random_seed: formData.get('random_seed'),
+      runner_processing_module: formData.get('runner_processing_module'),
+      system_prompt: formData.get('system_prompt'),
     });
   } catch (error) {
     return formatZodSchemaErrors(error as ZodError);
   }
-
-  newRunData.random_seed = formData.get('randomSeed');
 
   const response = await fetch(
     `${config.webAPI.hostURL}${config.webAPI.basePathBenchmarks}?type=${BenchmarkCollectionType.COOKBOOK}`,
@@ -48,21 +58,39 @@ export async function createRun(
   );
 
   const responseBody = await response.json();
-  const errors: string[] = [];
   if (responseBody.error) {
-    errors.push(responseBody.error);
-  } else if (responseBody.detail) {
-    errors.push(responseBody.detail);
+    const parsedErrors = parseFastAPIError(responseBody.error);
+    if (Object.keys(parsedErrors).length > 0) {
+      return {
+        formStatus: 'error',
+        formErrors: parsedErrors,
+      };
+    }
+    try {
+      return {
+        formStatus: 'error',
+        formErrors: {
+          error: [JSON.stringify(responseBody.error)],
+        },
+      };
+    } catch {
+      return {
+        formStatus: 'error',
+        formErrors: {
+          error: ['Failed to parse error'],
+        },
+      };
+    }
   }
 
   if (!response.ok || responseBody.success === false) {
     return {
       formStatus: 'error',
       formErrors: {
-        error: (errors.length && errors) || ['An unknown error occurred'],
+        error: ['Failed to parse error'],
       },
     };
   }
 
-  redirect(`/benchmarking/session/run?runner_id=${responseBody.data.id}`);
+  redirect(`/benchmarking/session/run?runner_id=${responseBody.id}`);
 }

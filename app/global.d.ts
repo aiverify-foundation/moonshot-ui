@@ -165,7 +165,7 @@ type BenchmarkRunFormValues = {
   runner_processing_module: 'benchmarking';
   inputs: string[];
   endpoints: string[];
-  random_seed: string;
+  random_seed: number;
 };
 
 type RedteamRunFormValues = {
@@ -355,4 +355,10 @@ type BookMark = {
   context_strategy?: string;
   prompt_template?: string;
   bookmark_time: string;
+};
+
+type FastAPIError = {
+  type: string;
+  loc: string[];
+  msg: string;
 };
