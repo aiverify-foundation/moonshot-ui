@@ -40,6 +40,7 @@ function BenchmarkRunForm({
   const [numOfPrompts, setNumOfPrompts] = React.useState('');
   const [showErrorModal, setShowErrorModal] = React.useState(false);
   const [isPending, startTransition] = React.useTransition();
+  const [isRunAll, setIsRunAll] = React.useState(false);
   const [recipesStats, setRecipesStats] = React.useState<RecipeStats[]>([]);
   const [formState, formAction] = useFormState<
     FormState<BenchmarkRunFormValues>,
@@ -77,10 +78,6 @@ function BenchmarkRunForm({
       );
     }, [recipesStats, numOfPrompts]);
 
-  function handleNumOfPromptsChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setNumOfPrompts(e.target.value);
-  }
-
   React.useEffect(() => {
     if (formState.formStatus === 'error') {
       setShowErrorModal(true);
@@ -105,6 +102,14 @@ function BenchmarkRunForm({
       });
     });
   }, [selectedCookbooks]);
+
+  function handleNumOfPromptsChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setNumOfPrompts(e.target.value);
+  }
+
+  function handleRunAllChange(isChecked: boolean) {
+    setIsRunAll(isChecked);
+  }
 
   const disableRunBtn =
     !name ||
@@ -227,10 +232,11 @@ function BenchmarkRunForm({
                 </Tooltip>
               </div>
               <TextInput
+                disabled={isRunAll}
                 type="number"
                 min={1}
                 id="num_of_prompts"
-                name="num_of_prompts"
+                name={isRunAll ? '' : 'num_of_prompts'}
                 label="Run a smaller set"
                 labelStyles={{
                   fontSize: '1rem',
@@ -268,7 +274,11 @@ function BenchmarkRunForm({
                     ({numOfPromptsGrandTotal} prompts)
                   </span>
                 </p>
-                <ToggleSwitch />
+                <ToggleSwitch
+                  onChange={handleRunAllChange}
+                  name={isRunAll ? 'num_of_prompts' : undefined}
+                  value={isRunAll ? '0' : undefined}
+                />
               </div>
             </div>
 

@@ -3,16 +3,15 @@
 import { useState } from 'react';
 
 interface ToggleSwitchProps {
+  name?: string;
   label?: string;
+  value?: string;
   initialState?: boolean;
   onChange?: (isChecked: boolean) => void;
 }
 
-export default function ToggleSwitch(
-  { label, initialState = false, onChange }: ToggleSwitchProps = {
-    label: 'Toggle',
-  }
-) {
+export default function ToggleSwitch(props: ToggleSwitchProps) {
+  const { name, label, value, initialState = false, onChange } = props;
   const [isChecked, setIsChecked] = useState(initialState);
 
   const handleToggle = () => {
@@ -36,6 +35,14 @@ export default function ToggleSwitch(
         />
       </div>
       {label && <div className="ml-3 text-gray-700 font-medium">{label}</div>}
+      <input
+        type="checkbox"
+        checked={isChecked}
+        onChange={handleToggle}
+        value={value}
+        name={name}
+        style={{ display: 'none' }}
+      />
     </label>
   );
 }
