@@ -49,9 +49,9 @@ const mockEndpoints: LLMEndpoint[] = [
 ];
 
 jest.mock('react-dom', () => {
-  const actualReactDom = jest.requireActual('react-dom');
+  const actualReactDomApis = jest.requireActual('react-dom');
   return {
-    ...actualReactDom,
+    ...actualReactDomApis,
     useFormState: jest.fn(),
     useFormStatus: jest.fn(),
   };
@@ -87,8 +87,33 @@ jest.mock('@/app/services/benchmark-api-service', () => ({
   useRunBenchmarkMutation: jest.fn(),
 }));
 
+const mockFormState: FormState<BenchmarkRunFormValues> = {
+  formStatus: 'initial',
+  formErrors: undefined,
+  run_name: '',
+  description: '',
+  inputs: [],
+  endpoints: [],
+  num_of_prompts: 1,
+  system_prompt: '',
+  runner_processing_module: 'benchmarking',
+  random_seed: 0,
+};
+const mockFormAction = 'unused'; // we are not asserting anything on the server action. Set it to a string instead to suppress jest from reporting invalid value prop error
+
+beforeAll(() => {
+  const mockUseFormState: jest.Mock = jest.fn().mockImplementation(() => {
+    return [
+      mockFormState,
+      mockFormAction, // use a dummy string to prevent jest from complaining
+    ];
+  });
+  (useFormState as jest.Mock).mockImplementation(mockUseFormState);
+  (useFormStatus as jest.Mock).mockImplementation(() => ({ pending: false }));
+});
+
 it('should go to next view when next button is clicked', async () => {
-  let callCount = 1;
+  let callCount = 1; // this counter and the mock implementation below are a bit of a hack to test the flow - relying on the Nth time useAppSelector is called, it returns the expected value
   (useAppSelector as jest.Mock).mockImplementation(() => {
     if (callCount === 1) {
       callCount++;
