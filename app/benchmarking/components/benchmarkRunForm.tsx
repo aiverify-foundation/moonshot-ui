@@ -62,7 +62,7 @@ function BenchmarkRunForm({
       }
       return [acc[0] + totalBasePrompts, acc[1] + userInputGrandTotalPrompts];
     }, [0, 0]);
-  }, [recipesStats]);
+  }, [recipesStats, numOfPrompts]);
 
   // const numOfPromptsGrandTotal = React.useMemo(() => {
   //   return recipesStats.reduce((acc, stats) => {
