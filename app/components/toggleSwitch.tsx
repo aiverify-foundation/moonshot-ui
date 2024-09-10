@@ -14,19 +14,23 @@ export default function ToggleSwitch(props: ToggleSwitchProps) {
   const { name, label, value, initialState = false, onChange } = props;
   const [isChecked, setIsChecked] = useState(initialState);
 
-  const handleToggle = () => {
+  function handleCheckboxClick(e: React.MouseEvent<HTMLInputElement>) {
+    e.stopPropagation();
+  }
+
+  function toggle() {
     const newState = !isChecked;
     setIsChecked(newState);
     if (onChange) {
       onChange(newState);
     }
-  };
+  }
 
   return (
     <label className="flex items-center cursor-pointer">
       <div
         className="relative"
-        onClick={handleToggle}>
+        onClick={toggle}>
         <div
           className={`w-10 h-6 bg-gray-300 rounded-full shadow-inner transition-colors duration-300 ease-in-out ${isChecked ? 'bg-moonpurplelight' : ''}`}
         />
@@ -38,7 +42,7 @@ export default function ToggleSwitch(props: ToggleSwitchProps) {
       <input
         type="checkbox"
         checked={isChecked}
-        onChange={handleToggle}
+        onClick={handleCheckboxClick}
         value={value}
         name={name}
         style={{ display: 'none' }}

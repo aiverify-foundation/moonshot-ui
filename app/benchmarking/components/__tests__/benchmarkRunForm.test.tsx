@@ -185,31 +185,29 @@ describe('BenchmarkRunForm', () => {
         selectedEndpoints={mockEndpoints}
       />
     );
-    for (const cookbook of mockCookbooks) {
-      expect(
-        container.querySelector(`input[value=${cookbook.id}`)
-      ).toBeDefined();
-    }
-    for (const endpoint of mockEndpoints) {
-      expect(
-        container.querySelector(`input[value=${endpoint.id}`)
-      ).toBeDefined();
-    }
-    expect(container.querySelector('input[name="random_seed"]')).toHaveValue(
-      String(mockFormState.random_seed)
-    );
-    expect(
-      container.querySelector('input[name="runner_processing_module"]')
-    ).toHaveValue(mockFormState.runner_processing_module);
-    expect(container.querySelector('input[name="system_prompt"]')).toHaveValue(
-      mockFormState.system_prompt
-    );
+    const form = container.querySelector('form');
+    expect(form).toHaveFormValues({
+      num_of_prompts: null,
+      inputs: mockCookbooks.map((cb) => cb.id),
+      endpoints: mockEndpoints.map((ep) => ep.id),
+      random_seed: mockFormState.random_seed,
+      runner_processing_module: mockFormState.runner_processing_module,
+      system_prompt: mockFormState.system_prompt,
+    });
     expect(screen.getByRole('button', { name: /Run/i })).toBeDisabled();
     await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
     await userEvent.type(
       screen.getByLabelText(/Run a smaller set/i),
       userInputNumOfPrompts.toString()
     );
+    expect(form).toHaveFormValues({
+      num_of_prompts: userInputNumOfPrompts,
+      inputs: mockCookbooks.map((cb) => cb.id),
+      endpoints: mockEndpoints.map((ep) => ep.id),
+      random_seed: mockFormState.random_seed,
+      runner_processing_module: mockFormState.runner_processing_module,
+      system_prompt: mockFormState.system_prompt,
+    });
     expect(screen.getByRole('button', { name: /Run/i })).toBeEnabled();
     expect(
       screen.getByText(new RegExp(`${grandTotalPrompts}`))

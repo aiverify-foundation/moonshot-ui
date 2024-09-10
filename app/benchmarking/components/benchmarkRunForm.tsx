@@ -108,16 +108,17 @@ function BenchmarkRunForm({
   }
 
   function handleRunAllChange(isChecked: boolean) {
+    setNumOfPrompts(isChecked ? '0' : '');
     setIsRunAll(isChecked);
   }
 
   const disableRunBtn =
     !name ||
     numOfPrompts.trim() === '' ||
-    (numOfPrompts.trim() !== '' && Number(numOfPrompts) < 1);
+    (!isRunAll && numOfPrompts.trim() !== '' && Number(numOfPrompts) < 1);
 
   let numOfPromptsError = formState.formErrors?.num_of_prompts?.[0];
-  if (numOfPrompts.trim() !== '' && Number(numOfPrompts) < 1) {
+  if (!isRunAll && numOfPrompts.trim() !== '' && Number(numOfPrompts) < 1) {
     numOfPromptsError = 'Number of prompts must be greater than 0';
   }
 
@@ -168,9 +169,10 @@ function BenchmarkRunForm({
               />
             ))}
             <input
-              type="hidden"
+              type="number"
               name="random_seed"
               value={initialFormValues.random_seed}
+              style={{ display: 'none' }}
             />
             <input
               type="hidden"
@@ -244,7 +246,7 @@ function BenchmarkRunForm({
                 }}
                 inputStyles={{ height: 38 }}
                 onChange={handleNumOfPromptsChange}
-                value={numOfPrompts}
+                value={isRunAll ? '' : numOfPrompts}
                 error={numOfPromptsError}
                 placeholder="Number of prompts per recipe. E.g. 5"
                 description={
@@ -254,9 +256,11 @@ function BenchmarkRunForm({
                       run a smaller number of prompts from each recipe to do a
                       sanity check.
                     </p>
-                    <p>
+                    <p style={{ opacity: isRunAll ? 0.5 : 1 }}>
                       Number of prompts that will be run:{' '}
-                      {userInputNumOfPromptsGrandTotal}
+                      {isRunAll
+                        ? numOfPromptsGrandTotal
+                        : userInputNumOfPromptsGrandTotal}
                     </p>
                   </div>
                 }
