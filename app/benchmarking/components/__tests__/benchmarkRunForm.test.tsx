@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { useFormState, useFormStatus } from 'react-dom';
 import BenchmarkRunForm from '@/app/benchmarking/components/benchmarkRunForm';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
+import { getRecipesStatsById } from '@/actions/getRecipesStatsById';
 import {
   resetBenchmarkCookbooks,
   resetBenchmarkModels,
@@ -23,6 +24,58 @@ jest.mock('@/lib/redux', () => ({
   resetBenchmarkModels: jest.fn(),
   useAppDispatch: jest.fn(),
 }));
+
+jest.mock('@/actions/getRecipesStatsById');
+
+const mockRecipesStats: RecipeStats[] = [
+  {
+    num_of_datasets_prompts: {
+      dataset1: 100,
+      dataset2: 200,
+    },
+    num_of_tags: 3,
+    num_of_datasets: 2,
+    num_of_prompt_templates: 0,
+    num_of_metrics: 2,
+    num_of_attack_modules: 1,
+  },
+  {
+    num_of_datasets_prompts: {
+      dataset1: 300,
+      dataset2: 400,
+      dataset3: 500,
+    },
+    num_of_tags: 5,
+    num_of_datasets: 3,
+    num_of_prompt_templates: 2,
+    num_of_metrics: 3,
+    num_of_attack_modules: 2,
+  },
+];
+
+// stats0 has 0 prompt templates, so not multiplying by num_of_prompt_templates
+const totalPromptsForStat0 =
+  (mockRecipesStats[0].num_of_datasets_prompts.dataset1 +
+    mockRecipesStats[0].num_of_datasets_prompts.dataset2) *
+  mockRecipesStats[0].num_of_metrics;
+const totalPromptForStat1 =
+  (mockRecipesStats[1].num_of_datasets_prompts.dataset1 +
+    mockRecipesStats[1].num_of_datasets_prompts.dataset2 +
+    mockRecipesStats[1].num_of_datasets_prompts.dataset3) *
+  mockRecipesStats[1].num_of_prompt_templates *
+  mockRecipesStats[1].num_of_metrics;
+const grandTotalPrompts = totalPromptsForStat0 + totalPromptForStat1;
+
+const userInputNumOfPrompts = 5;
+
+const userInputBasedTotalPrompts =
+  userInputNumOfPrompts *
+    mockRecipesStats[0].num_of_datasets *
+    mockRecipesStats[0].num_of_metrics +
+  userInputNumOfPrompts *
+    mockRecipesStats[1].num_of_prompt_templates *
+    mockRecipesStats[1].num_of_metrics *
+    mockRecipesStats[1].num_of_datasets;
 
 const mockCookbooks: Cookbook[] = [
   {
@@ -115,13 +168,17 @@ describe('BenchmarkRunForm', () => {
     });
     (useFormState as jest.Mock).mockImplementation(mockUseFormState);
     (useFormStatus as jest.Mock).mockImplementation(() => ({ pending: false }));
+    (getRecipesStatsById as jest.Mock).mockResolvedValue({
+      status: 'success',
+      data: mockRecipesStats,
+    });
   });
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should renders form initial state', async () => {
+  it('should render form initial state and display correct totals', async () => {
     const { container } = renderWithProviders(
       <BenchmarkRunForm
         selectedCookbooks={mockCookbooks}
@@ -149,8 +206,17 @@ describe('BenchmarkRunForm', () => {
     );
     expect(screen.getByRole('button', { name: /Run/i })).toBeDisabled();
     await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
-    await userEvent.type(screen.getByLabelText(/Run a smaller set/i), '5');
+    await userEvent.type(
+      screen.getByLabelText(/Run a smaller set/i),
+      userInputNumOfPrompts.toString()
+    );
     expect(screen.getByRole('button', { name: /Run/i })).toBeEnabled();
+    expect(
+      screen.getByText(new RegExp(`${grandTotalPrompts}`))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(new RegExp(`${userInputBasedTotalPrompts}`))
+    ).toBeInTheDocument();
   });
 
   it('should clear selected cookbooks and endpoints when form is submitted and display form errors', async () => {
@@ -211,7 +277,6 @@ describe('BenchmarkRunForm', () => {
         />
       );
     });
-    screen.debug();
     expect(screen.getAllByText('mock error 1')).toHaveLength(2);
     expect(screen.getAllByText('mock error 2')).toHaveLength(2);
     expect(screen.getAllByText('mock error 3')).toHaveLength(2);

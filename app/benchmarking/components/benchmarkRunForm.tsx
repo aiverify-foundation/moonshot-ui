@@ -46,37 +46,36 @@ function BenchmarkRunForm({
     FormData
   >(createRun, initialFormValues);
 
-  const [numOfPromptsGrandTotal, userInputNumOfPromptsGrandTotal] = React.useMemo(() => {
-    return recipesStats.reduce((acc, stats) => {
-      const totalBasePrompts = Object.values(stats.num_of_datasets_prompts).reduce((sum, value) => sum + value, 0);
-      const userInputTotalBasePrompts = Number(numOfPrompts) * stats.num_of_datasets;
-      let grandTotalPrompts = totalBasePrompts;
-      let userInputGrandTotalPrompts = userInputTotalBasePrompts;
-      if (stats.num_of_metrics > 0) {
-        grandTotalPrompts = grandTotalPrompts * stats.num_of_metrics;
-        userInputGrandTotalPrompts = userInputGrandTotalPrompts * stats.num_of_metrics;
-      }
-      if (stats.num_of_prompt_templates > 0) {
-        grandTotalPrompts = grandTotalPrompts * stats.num_of_prompt_templates;
-        userInputGrandTotalPrompts = userInputGrandTotalPrompts * stats.num_of_prompt_templates;
-      }
-      return [acc[0] + totalBasePrompts, acc[1] + userInputGrandTotalPrompts];
-    }, [0, 0]);
-  }, [recipesStats, numOfPrompts]);
-
-  // const numOfPromptsGrandTotal = React.useMemo(() => {
-  //   return recipesStats.reduce((acc, stats) => {
-  //     const totalBasePrompts = Object.values(stats.num_of_datasets_prompts).reduce((sum, value) => sum + value, 0);
-  //     let grandTotalPrompts = totalBasePrompts;
-  //     if (stats.num_of_metrics > 0) {
-  //       grandTotalPrompts = grandTotalPrompts * stats.num_of_metrics;
-  //     }
-  //     if (stats.num_of_prompt_templates > 0) {
-  //       grandTotalPrompts = grandTotalPrompts * stats.num_of_prompt_templates;
-  //     }
-  //     return acc + totalBasePrompts;
-  //   }, 0);
-  // }, [recipesStats]);
+  const [numOfPromptsGrandTotal, userInputNumOfPromptsGrandTotal] =
+    React.useMemo(() => {
+      return recipesStats.reduce(
+        (acc, stats) => {
+          const totalBasePrompts = Object.values(
+            stats.num_of_datasets_prompts
+          ).reduce((sum, value) => sum + value, 0);
+          const userInputTotalBasePrompts =
+            Number(numOfPrompts) * stats.num_of_datasets;
+          let grandTotalPrompts = totalBasePrompts;
+          let userInputGrandTotalPrompts = userInputTotalBasePrompts;
+          if (stats.num_of_metrics > 0) {
+            grandTotalPrompts = grandTotalPrompts * stats.num_of_metrics;
+            userInputGrandTotalPrompts =
+              userInputGrandTotalPrompts * stats.num_of_metrics;
+          }
+          if (stats.num_of_prompt_templates > 0) {
+            grandTotalPrompts =
+              grandTotalPrompts * stats.num_of_prompt_templates;
+            userInputGrandTotalPrompts =
+              userInputGrandTotalPrompts * stats.num_of_prompt_templates;
+          }
+          return [
+            acc[0] + grandTotalPrompts,
+            acc[1] + userInputGrandTotalPrompts,
+          ];
+        },
+        [0, 0]
+      );
+    }, [recipesStats, numOfPrompts]);
 
   function handleNumOfPromptsChange(e: React.ChangeEvent<HTMLInputElement>) {
     setNumOfPrompts(e.target.value);
@@ -101,7 +100,6 @@ function BenchmarkRunForm({
           console.log(result.message);
           setRecipesStats([]);
         } else {
-          console.log(result.data);
           setRecipesStats(result.data);
         }
       });
@@ -250,7 +248,10 @@ function BenchmarkRunForm({
                       run a smaller number of prompts from each recipe to do a
                       sanity check.
                     </p>
-                    <p>Number of prompts that will be run: {userInputNumOfPromptsGrandTotal}</p>
+                    <p>
+                      Number of prompts that will be run:{' '}
+                      {userInputNumOfPromptsGrandTotal}
+                    </p>
                   </div>
                 }
                 descriptionStyles={{
@@ -263,7 +264,9 @@ function BenchmarkRunForm({
               <div className="flex justify-between">
                 <p className="text-moonpurplelight">
                   Run All{' '}
-                  <span className="text-moongray-400">({numOfPromptsGrandTotal} prompts)</span>
+                  <span className="text-moongray-400">
+                    ({numOfPromptsGrandTotal} prompts)
+                  </span>
                 </p>
                 <ToggleSwitch />
               </div>
