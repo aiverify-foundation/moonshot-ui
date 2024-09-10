@@ -111,6 +111,15 @@ type CookbookFormValues = {
   recipes: string[];
 };
 
+type RecipeStats = {
+  num_of_tags: number;
+  num_of_datasets: number;
+  num_of_datasets_prompts: Record<string, number>;
+  num_of_prompt_templates: number;
+  num_of_metrics: number;
+  num_of_attack_modules: number;
+};
+
 type Recipe = {
   attack_modules: unknown[];
   categories: string[];
@@ -121,14 +130,7 @@ type Recipe = {
   metrics: string[];
   name: string;
   prompt_templates: string[];
-  stats: {
-    num_of_tags: number;
-    num_of_datasets: number;
-    num_of_datasets_prompts: Record<string, number>;
-    num_of_prompt_templates: number;
-    num_of_metrics: number;
-    num_of_attack_modules: number;
-  };
+  stats: RecipeStats;
   tags: string[];
   total_prompt_in_recipe: number;
 };

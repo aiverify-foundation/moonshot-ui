@@ -16,7 +16,7 @@
     "tsc": "tsc --noEmit",
     "test": "jest",
     "coverage": "npx jest --silent",
-    "test:watch": "jest --watch --coverageReporters=text",
+    "test:watch": "jest --watch --coverageReporters=text --coverageReporters=text-summary --verbose",
     "test:coverage": "jest --coverage",
     "test:cov:dev": "jest --coverage --coverageReporters=text --coverageReporters=text-summary"
   },

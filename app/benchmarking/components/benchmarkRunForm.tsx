@@ -1,6 +1,7 @@
 import React from 'react';
 import { useFormState } from 'react-dom';
 import { createRun } from '@/actions/createRun';
+import { getRecipesStatsById } from '@/actions/getRecipesStatsById';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { FormStateErrorList } from '@/app/components/formStateErrorList';
 import { Modal } from '@/app/components/modal';
@@ -37,6 +38,8 @@ function BenchmarkRunForm({
   const [description, setDescription] = React.useState('');
   const [numOfPrompts, setNumOfPrompts] = React.useState('');
   const [showErrorModal, setShowErrorModal] = React.useState(false);
+  const [isPending, startTransition] = React.useTransition();
+  const [recipesStats, setRecipesStats] = React.useState<RecipeStats[]>([]);
 
   const [formState, formAction] = useFormState<
     FormState<BenchmarkRunFormValues>,
@@ -50,7 +53,34 @@ function BenchmarkRunForm({
     }
   }, [formState]);
 
-  const disableRunBtn = !name || !numOfPrompts;
+  React.useEffect(() => {
+    startTransition(() => {
+      getRecipesStatsById(
+        selectedCookbooks.reduce((allRecipes, cookbook) => {
+          allRecipes.push(...cookbook.recipes);
+          return allRecipes;
+        }, [] as string[])
+      ).then((result) => {
+        if (result.status === 'error') {
+          console.log(result.message);
+          setRecipesStats([]);
+        } else {
+          console.log(result.data);
+          setRecipesStats(result.data);
+        }
+      });
+    });
+  }, [selectedCookbooks]);
+
+  const disableRunBtn =
+    !name ||
+    numOfPrompts.trim() === '' ||
+    (numOfPrompts.trim() !== '' && Number(numOfPrompts) < 1);
+
+  let numOfPromptsError = formState.formErrors?.num_of_prompts?.[0];
+  if (numOfPrompts.trim() !== '' && Number(numOfPrompts) < 1) {
+    numOfPromptsError = 'Number of prompts must be greater than 0';
+  }
 
   return (
     <>
@@ -163,6 +193,8 @@ function BenchmarkRunForm({
                 </Tooltip>
               </div>
               <TextInput
+                type="number"
+                min={1}
                 id="num_of_prompts"
                 name="num_of_prompts"
                 label="Run a smaller set"
@@ -173,7 +205,7 @@ function BenchmarkRunForm({
                 inputStyles={{ height: 38 }}
                 onChange={(e) => setNumOfPrompts(e.target.value)}
                 value={numOfPrompts}
-                error={formState.formErrors?.num_of_prompts?.[0]}
+                error={numOfPromptsError}
                 placeholder="Number of prompts per recipe. E.g. 5"
                 description={
                   <div className="flex flex-col gap-2">

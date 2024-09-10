@@ -14,7 +14,9 @@ type TextInputProps = {
   label?: string;
   description?: React.ReactNode;
   placeholder?: string;
-  type?: 'text' | 'password';
+  type?: 'text' | 'password' | 'number';
+  min?: number;
+  max?: number;
   disabled?: boolean;
   error?: string;
   value?: string;
@@ -39,6 +41,8 @@ function TextInput(props: TextInputProps) {
     description,
     placeholder,
     type = 'text',
+    min,
+    max,
     disabled,
     error,
     maxLength,
@@ -92,6 +96,8 @@ function TextInput(props: TextInputProps) {
           disabled={disabled}
           type={type}
           name={name}
+          min={min}
+          max={max}
           placeholder={placeholder}
           value={value}
           maxLength={maxLength}

@@ -31,7 +31,7 @@ const mockCookbooks: Cookbook[] = [
     description: 'Mock description',
     recipes: ['rc-id-1'],
     total_prompt_in_cookbook: 10,
-    total_dataset_in_cookbook: 10,
+    total_dataset_in_cookbook: 2,
   },
   {
     id: 'cb-id-2',
@@ -39,7 +39,7 @@ const mockCookbooks: Cookbook[] = [
     description: 'Mock description',
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
-    total_dataset_in_cookbook: 20,
+    total_dataset_in_cookbook: 3,
   },
 ];
 
@@ -101,7 +101,10 @@ describe('BenchmarkRunForm', () => {
     runner_processing_module: 'benchmarking',
     random_seed: 0,
   };
-  const mockFormAction = 'unused'; // we are not asserting anything on the server action. Set it to a string instead to suppress jest from reporting invalid value prop error
+
+  //We are not asserting anything on the form action. In React, form action is a reference to a function (server action).
+  //Set it to a string to suppress jest from reporting invalid value prop error
+  const mockFormAction = 'unused';
 
   beforeAll(() => {
     const mockUseFormState: jest.Mock = jest.fn().mockImplementation(() => {
@@ -208,8 +211,27 @@ describe('BenchmarkRunForm', () => {
         />
       );
     });
+    screen.debug();
     expect(screen.getAllByText('mock error 1')).toHaveLength(2);
     expect(screen.getAllByText('mock error 2')).toHaveLength(2);
     expect(screen.getAllByText('mock error 3')).toHaveLength(2);
+  });
+
+  it('should validate num of prompts', async () => {
+    (useFormStatus as jest.Mock).mockImplementation(() => ({
+      pending: false,
+    }));
+    renderWithProviders(
+      <BenchmarkRunForm
+        selectedCookbooks={mockCookbooks}
+        selectedEndpoints={mockEndpoints}
+      />
+    );
+    await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
+    await userEvent.type(screen.getByLabelText(/Run a smaller set/i), '0');
+    expect(screen.getByRole('button', { name: /Run/i })).toBeDisabled();
+    expect(
+      screen.getByText(/Number of prompts must be greater than 0/i)
+    ).toBeInTheDocument();
   });
 });
