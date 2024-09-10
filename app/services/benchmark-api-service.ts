@@ -1,16 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
-import { BenchmarkCollectionType } from '@/app/types/enums';
 import {
   proxyPathBenchmarksExec,
   proxyPathBenchmarksGetResults,
 } from './constants';
 import { getHostAndPort } from './host';
-
-interface ExtendedBenchmarkRunFormValues {
-  benchmarkRunInputData: BenchmarkRunFormValues;
-  collectionType: BenchmarkCollectionType;
-}
 
 const [host, port] = getHostAndPort();
 
