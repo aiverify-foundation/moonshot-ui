@@ -1,9 +1,9 @@
 import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useFormState, useFormStatus } from 'react-dom';
+import { getRecipesStatsById } from '@/actions/getRecipesStatsById';
 import BenchmarkRunForm from '@/app/benchmarking/components/benchmarkRunForm';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
-import { getRecipesStatsById } from '@/actions/getRecipesStatsById';
 
 jest.mock('react-dom', () => {
   const actualReactDom = jest.requireActual('react-dom');

@@ -1,6 +1,7 @@
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useFormState, useFormStatus } from 'react-dom';
+import { getRecipesStatsById } from '@/actions/getRecipesStatsById';
 import { BenchmarkNewSessionFlow } from '@/app/benchmarking/components/benchmarkNewSessionFlow';
 import { useModelsList } from '@/app/hooks/useLLMEndpointList';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
@@ -85,9 +86,8 @@ jest.mock('@/app/services/llm-endpoint-api-service', () => ({
   useCreateLLMEndpointMutation: jest.fn(),
   useUpdateLLMEndpointMutation: jest.fn(),
 }));
-jest.mock('@/app/services/benchmark-api-service', () => ({
-  useRunBenchmarkMutation: jest.fn(),
-}));
+
+jest.mock('@/actions/getRecipesStatsById');
 
 const mockFormState: FormState<BenchmarkRunFormValues> = {
   formStatus: 'initial',
@@ -102,7 +102,36 @@ const mockFormState: FormState<BenchmarkRunFormValues> = {
   random_seed: '0',
   run_all: 'false',
 };
-const mockFormAction = 'unused'; // we are not asserting anything on the server action. Set it to a string instead to suppress jest from reporting invalid value prop error
+
+//We are not asserting anything on the form action. In React, form action is a reference to a function (server action). There is no way to stub the action.
+//Set it to a string to suppress jest from reporting invalid value prop error.
+const mockFormAction = 'unused';
+
+const mockRecipesStats: RecipeStats[] = [
+  {
+    num_of_datasets_prompts: {
+      dataset1: 100,
+      dataset2: 200,
+    },
+    num_of_tags: 3,
+    num_of_datasets: 2,
+    num_of_prompt_templates: 0,
+    num_of_metrics: 2,
+    num_of_attack_modules: 1,
+  },
+  {
+    num_of_datasets_prompts: {
+      dataset1: 300,
+      dataset2: 400,
+      dataset3: 500,
+    },
+    num_of_tags: 5,
+    num_of_datasets: 3,
+    num_of_prompt_templates: 2,
+    num_of_metrics: 3,
+    num_of_attack_modules: 2,
+  },
+];
 
 beforeAll(() => {
   const mockUseFormState: jest.Mock = jest.fn().mockImplementation(() => {
@@ -113,10 +142,14 @@ beforeAll(() => {
   });
   (useFormState as jest.Mock).mockImplementation(mockUseFormState);
   (useFormStatus as jest.Mock).mockImplementation(() => ({ pending: false }));
+  (getRecipesStatsById as jest.Mock).mockResolvedValue({
+    status: 'success',
+    data: mockRecipesStats,
+  });
 });
 
 it('should go to next view when next button is clicked', async () => {
-  let callCount = 1; // this counter and the mock implementation below are a bit of a hack to test the flow - relying on the Nth time useAppSelector is called, it returns the expected value
+  let callCount = 1; // relying on the Nth time useAppSelector is called, it returns the expected value
   (useAppSelector as jest.Mock).mockImplementation(() => {
     if (callCount === 1) {
       callCount++;
