@@ -6,17 +6,13 @@ interface ToggleSwitchProps {
   name?: string;
   label?: string;
   value?: string;
-  initialState?: boolean;
+  defaultChecked?: boolean;
   onChange?: (isChecked: boolean) => void;
 }
 
 export default function ToggleSwitch(props: ToggleSwitchProps) {
-  const { name, label, value, initialState = false, onChange } = props;
-  const [isChecked, setIsChecked] = useState(initialState);
-
-  function handleCheckboxClick(e: React.MouseEvent<HTMLInputElement>) {
-    e.stopPropagation();
-  }
+  const { name, label, value, defaultChecked = false, onChange } = props;
+  const [isChecked, setIsChecked] = useState(defaultChecked);
 
   function toggle() {
     const newState = !isChecked;
@@ -29,6 +25,7 @@ export default function ToggleSwitch(props: ToggleSwitchProps) {
   return (
     <label className="flex items-center cursor-pointer">
       <div
+        role="toggle-switch"
         className="relative"
         onClick={toggle}>
         <div
@@ -40,10 +37,10 @@ export default function ToggleSwitch(props: ToggleSwitchProps) {
       </div>
       {label && <div className="ml-3 text-gray-700 font-medium">{label}</div>}
       <input
+        readOnly
         type="checkbox"
-        checked={isChecked}
-        onClick={handleCheckboxClick}
-        value={value}
+        defaultChecked={isChecked}
+        defaultValue={value}
         name={name}
         style={{ display: 'none' }}
       />

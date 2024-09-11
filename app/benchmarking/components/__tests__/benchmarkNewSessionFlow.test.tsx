@@ -96,10 +96,11 @@ const mockFormState: FormState<BenchmarkRunFormValues> = {
   description: '',
   inputs: [],
   endpoints: [],
-  num_of_prompts: 1,
+  num_of_prompts: '',
   system_prompt: '',
   runner_processing_module: 'benchmarking',
-  random_seed: 0,
+  random_seed: '0',
+  run_all: 'false',
 };
 const mockFormAction = 'unused'; // we are not asserting anything on the server action. Set it to a string instead to suppress jest from reporting invalid value prop error
 

@@ -4,11 +4,6 @@ import { useFormState, useFormStatus } from 'react-dom';
 import BenchmarkRunForm from '@/app/benchmarking/components/benchmarkRunForm';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
 import { getRecipesStatsById } from '@/actions/getRecipesStatsById';
-import {
-  resetBenchmarkCookbooks,
-  resetBenchmarkModels,
-  useAppDispatch,
-} from '@/lib/redux';
 
 jest.mock('react-dom', () => {
   const actualReactDom = jest.requireActual('react-dom');
@@ -53,26 +48,31 @@ const mockRecipesStats: RecipeStats[] = [
   },
 ];
 
-// stats0 has 0 prompt templates, so not multiplying by num_of_prompt_templates
+// formula: total_prompt_in_cookbook * num_of_metrics + num_of_prompt_templates
+
+// mock mockRecipesStats[0] has 0 prompt templates, so not multiplying by num_of_prompt_templates
 const totalPromptsForStat0 =
   (mockRecipesStats[0].num_of_datasets_prompts.dataset1 +
     mockRecipesStats[0].num_of_datasets_prompts.dataset2) *
   mockRecipesStats[0].num_of_metrics;
+
+// mock mockRecipesStats[1] has 2 prompt templates, so multiplying by num_of_prompt_templates
 const totalPromptForStat1 =
   (mockRecipesStats[1].num_of_datasets_prompts.dataset1 +
     mockRecipesStats[1].num_of_datasets_prompts.dataset2 +
     mockRecipesStats[1].num_of_datasets_prompts.dataset3) *
   mockRecipesStats[1].num_of_prompt_templates *
   mockRecipesStats[1].num_of_metrics;
-const grandTotalPrompts = totalPromptsForStat0 + totalPromptForStat1;
 
-const userInputNumOfPrompts = 5;
+const GRAND_TOTAL_PROMPTS = totalPromptsForStat0 + totalPromptForStat1;
 
-const userInputBasedTotalPrompts =
-  userInputNumOfPrompts *
+const USER_INPUT_NUM_OF_PROMPTS = 5;
+
+const SMALLER_SET_TOTAL_PROMPTS =
+  USER_INPUT_NUM_OF_PROMPTS *
     mockRecipesStats[0].num_of_datasets *
     mockRecipesStats[0].num_of_metrics +
-  userInputNumOfPrompts *
+  USER_INPUT_NUM_OF_PROMPTS *
     mockRecipesStats[1].num_of_prompt_templates *
     mockRecipesStats[1].num_of_metrics *
     mockRecipesStats[1].num_of_datasets;
@@ -149,14 +149,15 @@ describe('BenchmarkRunForm', () => {
     description: '',
     inputs: [],
     endpoints: [],
-    num_of_prompts: 1,
+    num_of_prompts: '',
     system_prompt: '',
     runner_processing_module: 'benchmarking',
-    random_seed: 0,
+    random_seed: '0',
+    run_all: 'false',
   };
 
-  //We are not asserting anything on the form action. In React, form action is a reference to a function (server action).
-  //Set it to a string to suppress jest from reporting invalid value prop error
+  //We are not asserting anything on the form action. In React, form action is a reference to a function (server action). There is no way to stub the action.
+  //Set it to a string to suppress jest from reporting invalid value prop error.
   const mockFormAction = 'unused';
 
   beforeAll(() => {
@@ -178,7 +179,7 @@ describe('BenchmarkRunForm', () => {
     jest.clearAllMocks();
   });
 
-  it('should render form initial state and display correct totals', async () => {
+  it('should render form initial state and display correct "Run All" totals', async () => {
     const { container } = renderWithProviders(
       <BenchmarkRunForm
         selectedCookbooks={mockCookbooks}
@@ -190,45 +191,74 @@ describe('BenchmarkRunForm', () => {
       num_of_prompts: null,
       inputs: mockCookbooks.map((cb) => cb.id),
       endpoints: mockEndpoints.map((ep) => ep.id),
-      random_seed: mockFormState.random_seed,
+      random_seed: Number(mockFormState.random_seed),
       runner_processing_module: mockFormState.runner_processing_module,
       system_prompt: mockFormState.system_prompt,
+      run_all: false,
     });
     expect(screen.getByRole('button', { name: /Run/i })).toBeDisabled();
     await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
-    await userEvent.type(
-      screen.getByLabelText(/Run a smaller set/i),
-      userInputNumOfPrompts.toString()
-    );
-    expect(form).toHaveFormValues({
-      num_of_prompts: userInputNumOfPrompts,
-      inputs: mockCookbooks.map((cb) => cb.id),
-      endpoints: mockEndpoints.map((ep) => ep.id),
-      random_seed: mockFormState.random_seed,
-      runner_processing_module: mockFormState.runner_processing_module,
-      system_prompt: mockFormState.system_prompt,
-    });
-    expect(screen.getByRole('button', { name: /Run/i })).toBeEnabled();
     expect(
-      screen.getByText(new RegExp(`${grandTotalPrompts}`))
+      screen.getByText(/will be run: 0/i)
     ).toBeInTheDocument();
     expect(
-      screen.getByText(new RegExp(`${userInputBasedTotalPrompts}`))
+      screen.getByText(new RegExp(`${GRAND_TOTAL_PROMPTS}`))
     ).toBeInTheDocument();
   });
 
-  it('should clear selected cookbooks and endpoints when form is submitted and display form errors', async () => {
-    const mockDispatch = jest.fn();
-    (useAppDispatch as jest.Mock).mockImplementation(() => mockDispatch);
-    const mockResetBenchmarkCookbooks = jest.fn();
-    const mockResetBenchmarkModels = jest.fn();
-    (resetBenchmarkCookbooks as unknown as jest.Mock).mockImplementation(
-      mockResetBenchmarkCookbooks
+  it('should display correct "Run a smaller set" totals', async () => {
+    const { container } = renderWithProviders(
+      <BenchmarkRunForm
+        selectedCookbooks={mockCookbooks}
+        selectedEndpoints={mockEndpoints}
+      />
     );
-    (resetBenchmarkModels as unknown as jest.Mock).mockImplementation(
-      mockResetBenchmarkModels
+    await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
+    await userEvent.type(
+      screen.getByLabelText(/Run a smaller set/i),
+      USER_INPUT_NUM_OF_PROMPTS.toString()
     );
+    const form = container.querySelector('form');
+    expect(form).toHaveFormValues({
+      num_of_prompts: USER_INPUT_NUM_OF_PROMPTS,
+      inputs: mockCookbooks.map((cb) => cb.id),
+      endpoints: mockEndpoints.map((ep) => ep.id),
+      random_seed: Number(mockFormState.random_seed),
+      runner_processing_module: mockFormState.runner_processing_module,
+      system_prompt: mockFormState.system_prompt,
+      run_all: false,
+    });
+    expect(screen.getByRole('button', { name: /Run/i })).toBeEnabled();
+    expect(
+      screen.getByText(new RegExp(`${GRAND_TOTAL_PROMPTS}`))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(new RegExp(`${SMALLER_SET_TOTAL_PROMPTS}`))
+    ).toBeInTheDocument();
+  });
 
+  it('should not set num_of_prompts when "Run All" is checked', async () => {
+    const { container } = renderWithProviders(
+      <BenchmarkRunForm
+        selectedCookbooks={mockCookbooks}
+        selectedEndpoints={mockEndpoints}
+      />
+    );
+    await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
+    await userEvent.click(screen.getByRole('toggle-switch'));
+    const form = container.querySelector('form');
+    expect(form).toHaveFormValues({
+      inputs: mockCookbooks.map((cb) => cb.id),
+      endpoints: mockEndpoints.map((ep) => ep.id),
+      random_seed: Number(mockFormState.random_seed),
+      runner_processing_module: mockFormState.runner_processing_module,
+      system_prompt: mockFormState.system_prompt,
+      run_all: true,
+    });
+    expect(screen.getByRole('button', { name: /Run/i })).toBeEnabled();
+  });
+
+  it('should display form errors', async () => {
     const { rerender } = renderWithProviders(
       <BenchmarkRunForm
         selectedCookbooks={mockCookbooks}
@@ -247,9 +277,6 @@ describe('BenchmarkRunForm', () => {
         />
       );
     });
-    expect(mockDispatch).toHaveBeenCalledTimes(2);
-    expect(mockDispatch).toHaveBeenCalledWith(mockResetBenchmarkCookbooks());
-    expect(mockDispatch).toHaveBeenCalledWith(mockResetBenchmarkModels());
 
     const mockFormStateWithErrors: FormState<BenchmarkRunFormValues> = {
       ...mockFormState,
@@ -294,7 +321,7 @@ describe('BenchmarkRunForm', () => {
     await userEvent.type(screen.getByLabelText(/Run a smaller set/i), '0');
     expect(screen.getByRole('button', { name: /Run/i })).toBeDisabled();
     expect(
-      screen.getByText(/Number of prompts must be greater than 0/i)
+      screen.getByText(/.* must be greater than 0/i)
     ).toBeInTheDocument();
   });
 });

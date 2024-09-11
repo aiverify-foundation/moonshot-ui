@@ -11,7 +11,6 @@ import ToggleSwitch from '@/app/components/toggleSwitch';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
 import { RunButton } from './runButton';
-import { STATUS_CODES } from 'http';
 
 const initialFormValues: FormState<BenchmarkRunFormValues> = {
   formStatus: 'initial',
@@ -20,10 +19,11 @@ const initialFormValues: FormState<BenchmarkRunFormValues> = {
   description: '',
   inputs: [],
   endpoints: [],
-  num_of_prompts: 1,
+  num_of_prompts: '',
   system_prompt: '',
   runner_processing_module: 'benchmarking',
-  random_seed: 0,
+  random_seed: '0',
+  run_all: 'false',
 };
 
 type BenchmarkRunFormProps = {
@@ -37,7 +37,7 @@ function BenchmarkRunForm({
 }: BenchmarkRunFormProps) {
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
-  const [numOfPrompts, setNumOfPrompts] = React.useState('');
+  const [numOfPromptsInput, setNumOfPromptsInput] = React.useState('');
   const [showErrorModal, setShowErrorModal] = React.useState(false);
   const [isPending, startTransition] = React.useTransition();
   const [isRunAll, setIsRunAll] = React.useState(false);
@@ -47,6 +47,8 @@ function BenchmarkRunForm({
     FormData
   >(createRun, initialFormValues);
 
+  const coercedNumOfPromptsInput = Number(numOfPromptsInput);
+
   const [numOfPromptsGrandTotal, userInputNumOfPromptsGrandTotal] =
     React.useMemo(() => {
       return recipesStats.reduce(
@@ -54,8 +56,8 @@ function BenchmarkRunForm({
           const totalBasePrompts = Object.values(
             stats.num_of_datasets_prompts
           ).reduce((sum, value) => sum + value, 0);
-          const userInputTotalBasePrompts =
-            Number(numOfPrompts) * stats.num_of_datasets;
+          const userInputTotalBasePrompts = !isNaN(coercedNumOfPromptsInput) ?
+            coercedNumOfPromptsInput * stats.num_of_datasets : 0;
           let grandTotalPrompts = totalBasePrompts;
           let userInputGrandTotalPrompts = userInputTotalBasePrompts;
           if (stats.num_of_metrics > 0) {
@@ -74,9 +76,9 @@ function BenchmarkRunForm({
             acc[1] + userInputGrandTotalPrompts,
           ];
         },
-        [0, 0]
+        [0, 0] as [number, number]
       );
-    }, [recipesStats, numOfPrompts]);
+    }, [recipesStats, numOfPromptsInput]);
 
   React.useEffect(() => {
     if (formState.formStatus === 'error') {
@@ -104,22 +106,22 @@ function BenchmarkRunForm({
   }, [selectedCookbooks]);
 
   function handleNumOfPromptsChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setNumOfPrompts(e.target.value);
+    setNumOfPromptsInput(e.target.value);
   }
 
   function handleRunAllChange(isChecked: boolean) {
-    setNumOfPrompts(isChecked ? '0' : '');
+    setNumOfPromptsInput(isChecked ? '0' : '');
     setIsRunAll(isChecked);
   }
 
   const disableRunBtn =
     !name ||
-    numOfPrompts.trim() === '' ||
-    (!isRunAll && numOfPrompts.trim() !== '' && Number(numOfPrompts) < 1);
+    isNaN(coercedNumOfPromptsInput) ||
+    (!isRunAll && !isNaN(coercedNumOfPromptsInput) && coercedNumOfPromptsInput < 1);
 
   let numOfPromptsError = formState.formErrors?.num_of_prompts?.[0];
-  if (!isRunAll && numOfPrompts.trim() !== '' && Number(numOfPrompts) < 1) {
-    numOfPromptsError = 'Number of prompts must be greater than 0';
+  if (!isRunAll && numOfPromptsInput.trim() !== '' && coercedNumOfPromptsInput < 1) {
+    numOfPromptsError = 'Number of prompts per recipe must be greater than 0';
   }
 
   return (
@@ -154,35 +156,40 @@ function BenchmarkRunForm({
           <form action={formAction}>
             {selectedCookbooks.map((cookbook) => (
               <input
+                readOnly
                 key={cookbook.id}
                 type="hidden"
                 name="inputs"
-                value={cookbook.id}
+                defaultValue={cookbook.id}
               />
             ))}
             {selectedEndpoints.map((endpoint) => (
               <input
+                readOnly
                 key={endpoint.id}
                 type="hidden"
                 name="endpoints"
-                value={endpoint.id}
+                defaultValue={endpoint.id}
               />
             ))}
             <input
+              readOnly
               type="number"
               name="random_seed"
-              value={initialFormValues.random_seed}
+              defaultValue={initialFormValues.random_seed}
               style={{ display: 'none' }}
             />
             <input
+              readOnly
               type="hidden"
               name="runner_processing_module"
-              value={initialFormValues.runner_processing_module}
+              defaultValue={initialFormValues.runner_processing_module}
             />
             <input
+              readOnly
               type="hidden"
               name="system_prompt"
-              value={initialFormValues.system_prompt}
+              defaultValue={initialFormValues.system_prompt}
             />
             <TextInput
               id="run_name"
@@ -246,7 +253,7 @@ function BenchmarkRunForm({
                 }}
                 inputStyles={{ height: 38 }}
                 onChange={handleNumOfPromptsChange}
-                value={isRunAll ? '' : numOfPrompts}
+                value={isRunAll ? '' : numOfPromptsInput}
                 error={numOfPromptsError}
                 placeholder="Number of prompts per recipe. E.g. 5"
                 description={
@@ -258,8 +265,9 @@ function BenchmarkRunForm({
                     </p>
                     <p style={{ opacity: isRunAll ? 0.5 : 1 }}>
                       Number of prompts that will be run:{' '}
-                      {isRunAll
-                        ? numOfPromptsGrandTotal
+                      {isPending ? 'calculating...' :
+                        isRunAll
+                          ? numOfPromptsGrandTotal
                         : userInputNumOfPromptsGrandTotal}
                     </p>
                   </div>
@@ -271,17 +279,16 @@ function BenchmarkRunForm({
                   marginBottom: '0.5rem',
                 }}
               />
-              <div className="flex justify-between">
+              <div className="flex justify-left gap-2">
                 <p className="text-moonpurplelight">
                   Run All{' '}
-                  <span className="text-moongray-400">
-                    ({numOfPromptsGrandTotal} prompts)
+                  <span className={`${isRunAll ? 'text-white' : 'text-moongray-400'}`}>
+                    ({isPending ? 'calculating...' : numOfPromptsGrandTotal} prompts)
                   </span>
                 </p>
                 <ToggleSwitch
+                  name="run_all"
                   onChange={handleRunAllChange}
-                  name={isRunAll ? 'num_of_prompts' : undefined}
-                  value={isRunAll ? '0' : undefined}
                 />
               </div>
             </div>

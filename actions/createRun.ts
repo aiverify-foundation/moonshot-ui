@@ -23,6 +23,7 @@ const runSchema = z.object({
     .string()
     .min(1, 'Runner processing module is required'),
   system_prompt: z.string(),
+  run_all: z.preprocess((val) => val === 'true', z.boolean()),
 });
 
 export async function createRun(
@@ -30,8 +31,10 @@ export async function createRun(
   formData: FormData
 ) {
   let newRunData: z.infer<typeof runSchema>;
+  let runAll = false;
 
   try {
+    runAll = formData.get('run_all') === 'true';
     newRunData = runSchema.parse({
       run_name: formData.get('run_name'),
       description: formData.get('description'),
@@ -44,6 +47,10 @@ export async function createRun(
     });
   } catch (error) {
     return formatZodSchemaErrors(error as ZodError);
+  }
+
+  if (runAll) {
+    newRunData.num_of_prompts = 0;
   }
 
   const response = await fetch(
