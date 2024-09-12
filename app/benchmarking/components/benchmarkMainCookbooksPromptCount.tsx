@@ -2,7 +2,6 @@ import { useCookbooks } from '@/app/benchmarking/contexts/cookbooksContext';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
 import config from '@/moonshot.config';
-import { BenchmarkNewSessionViews } from './enums';
 
 type Props = {
   selectedCookbooks: Cookbook[];

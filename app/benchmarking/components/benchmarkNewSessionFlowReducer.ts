@@ -8,7 +8,9 @@ type Action = {
     | 'EDIT_MODEL_CLICK'
     | 'CLOSE_MODEL_FORM'
     | 'COOKBOOK_SELECTION_CLICK'
-    | 'MORE_COOKBOOKS_LINK_CLICK';
+    | 'MORE_COOKBOOKS_LINK_CLICK'
+    | 'CLOSE_MORE_COOKBOOKS'
+    | 'MODEL_SELECTION_CLICK';
   cookbooksLength?: number;
   modelsLength?: number;
   modelToEdit?: LLMEndpoint;
@@ -80,7 +82,8 @@ export function benchmarkNewSessionFlowReducer(
           stepIndex: state.stepIndex - 1,
           view: BenchmarkNewSessionViews.ENDPOINTS_SELECTION,
           hidePrevBtn: false,
-          disableNextBtn: action.cookbooksLength === 0,
+          hideNextBtn: false,
+          disableNextBtn: action.modelsLength === 0,
         };
       }
       if (state.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
@@ -114,22 +117,48 @@ export function benchmarkNewSessionFlowReducer(
         disableNextBtn: true,
         disablePrevBtn: true,
       };
+    case 'MODEL_SELECTION_CLICK':
+      return {
+        ...state,
+        disableNextBtn: action.modelsLength === 0,
+      };
+    case 'CLOSE_MORE_COOKBOOKS':
+      return {
+        ...state,
+        view: BenchmarkNewSessionViews.RECOMMENDED_TESTS,
+        hideNextBtn: false,
+        hidePrevBtn: false,
+        disableNextBtn: false,
+        disablePrevBtn: false,
+      };
     case 'CREATE_MODEL_CLICK':
       return {
         ...state,
         view: BenchmarkNewSessionViews.NEW_ENDPOINT_FORM,
+        hideNextBtn: true,
+        hidePrevBtn: true,
+        disableNextBtn: true,
+        disablePrevBtn: true,
       };
     case 'EDIT_MODEL_CLICK':
       return {
         ...state,
         view: BenchmarkNewSessionViews.EDIT_ENDPOINT_FORM,
         modelToEdit: action.modelToEdit,
+        hideNextBtn: true,
+        hidePrevBtn: true,
+        disableNextBtn: true,
+        disablePrevBtn: true,
       };
     case 'CLOSE_MODEL_FORM':
       return {
         ...state,
         view: BenchmarkNewSessionViews.ENDPOINTS_SELECTION,
         modelToEdit: undefined,
+        hideNextBtn: false,
+        hidePrevBtn: false,
+        disableNextBtn: action.modelsLength === 0,
+        disablePrevBtn: false,
       };
     default:
       return state;

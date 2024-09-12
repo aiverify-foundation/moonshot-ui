@@ -71,8 +71,16 @@ function BenchmarkNewSessionFlow() {
   function handleModelClick(model: LLMEndpoint) {
     if (selectedModels.find((endpoint) => endpoint.id === model.id)) {
       appDispatch(removeBenchmarkModels([model]));
+      dispatch({
+        type: 'MODEL_SELECTION_CLICK',
+        modelsLength: selectedModels.length - 1,
+      });
     } else {
       appDispatch(addBenchmarkModels([model]));
+      dispatch({
+        type: 'MODEL_SELECTION_CLICK',
+        modelsLength: selectedModels.length + 1,
+      });
     }
   }
 
@@ -137,7 +145,12 @@ function BenchmarkNewSessionFlow() {
       surfaceColor = colors.moongray['800'];
       view = (
         <NewEndpointForm
-          onClose={() => dispatch({ type: 'CLOSE_MODEL_FORM' })}
+          onClose={() =>
+            dispatch({
+              type: 'CLOSE_MODEL_FORM',
+              modelsLength: selectedModels.length,
+            })
+          }
         />
       );
       break;
@@ -152,7 +165,11 @@ function BenchmarkNewSessionFlow() {
       break;
     case BenchmarkNewSessionViews.COOKBOOKS_SELECTION:
       surfaceColor = colors.moongray['800'];
-      view = <CookbooksSelection onClose={() => null} />;
+      view = (
+        <CookbooksSelection
+          onClose={() => dispatch({ type: 'CLOSE_MORE_COOKBOOKS' })}
+        />
+      );
       break;
     case BenchmarkNewSessionViews.BENCHMARK_RUN_FORM:
       surfaceColor = colors.moongray['950'];
@@ -166,7 +183,7 @@ function BenchmarkNewSessionFlow() {
   }
 
   return (
-    <>
+    <React.Fragment>
       {showExitModal && (
         <Modal
           heading="Exit this workflow?"
@@ -204,38 +221,41 @@ function BenchmarkNewSessionFlow() {
               className="flex flex-col gap-5 justify-center w-full"
               style={{ height: 'calc(100% - 33px)' }}>
               {!flowState.hidePrevBtn && (
-                <div
-                  role="button"
-                  className="flex justify-center"
-                  aria-label="Previous View">
-                  <Icon
-                    name={IconName.WideArrowUp}
-                    size={28}
-                    onClick={handlePreviousIconClick}
-                  />
+                <div className="flex justify-center">
+                  <div
+                    role="button"
+                    className="flex justify-center hover:opacity-70"
+                    aria-label="Previous View"
+                    onClick={handlePreviousIconClick}>
+                    <Icon
+                      name={IconName.WideArrowUp}
+                      size={28}
+                    />
+                  </div>
                 </div>
               )}
               {view}
               {!flowState.hideNextBtn && (
-                <div
-                  role="button"
-                  className="flex justify-center"
-                  style={{ opacity: flowState.disableNextBtn ? 0.3 : 1 }}
-                  aria-label="Next View">
-                  <Icon
-                    name={IconName.WideArrowDown}
-                    size={28}
+                <div className="flex justify-center">
+                  <div
+                    role="button"
+                    className={`flex justify-center ${flowState.disableNextBtn && 'opacity-30'} ${!flowState.disableNextBtn && 'hover:opacity-60'}`}
+                    aria-label="Next View"
                     onClick={
                       flowState.disableNextBtn ? undefined : handleNextIconClick
-                    }
-                  />
+                    }>
+                    <Icon
+                      name={IconName.WideArrowDown}
+                      size={28}
+                    />
+                  </div>
                 </div>
               )}
             </div>
           </div>
         </MainSectionSurface>
       </CookbooksProvider>
-    </>
+    </React.Fragment>
   );
 }
 
