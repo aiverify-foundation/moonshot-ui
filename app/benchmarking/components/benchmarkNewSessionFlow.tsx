@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import React, { useLayoutEffect, useState } from 'react';
+import React from 'react';
 import { CookbooksSelection } from '@/app/benchmarking/components/cookbooksSelection';
 import { EndpointSelectVew } from '@/app/benchmarking/components/endpointsSelector';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
@@ -20,69 +20,42 @@ import {
 } from '@/lib/redux';
 import { BenchmarkDefaultSelection } from './benchmarkDefaultSelection';
 import { BenchmarkMainCookbooksPromptCount } from './benchmarkMainCookbooksPromptCount';
+import {
+  benchmarkNewSessionFlowReducer,
+  initialState,
+} from './benchmarkNewSessionFlowReducer';
 import BenchmarkRunForm from './benchmarkRunForm';
 import { BenchmarkNewSessionViews } from './enums';
 
-const flowSteps = ['Your LLM', 'Recommended Tests', 'Connect Endpoint', 'Run'];
-
 function BenchmarkNewSessionFlow() {
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const appDispatch = useAppDispatch();
+  const [flowState, dispatch] = React.useReducer(
+    benchmarkNewSessionFlowReducer,
+    initialState
+  );
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
   );
   const selectedModels = useAppSelector(
     (state) => state.benchmarkModels.entities
   );
-  const [currentView, setCurrentView] = useState<BenchmarkNewSessionViews>(
-    BenchmarkNewSessionViews.TOPICS_SELECTION
-  );
-  const [endpointToEdit, setEndpointToEdit] = useState<
-    LLMEndpoint | undefined
-  >();
-  const [hiddenNavButtons, setHiddenNavButtons] = useState<[boolean, boolean]>([
-    true,
-    true,
-  ]);
-  const [showExitModal, setShowExitModal] = useState(false);
+  const [showExitModal, setShowExitModal] = React.useState(false);
 
-  function changeView<T = undefined>(view: BenchmarkNewSessionViews, data?: T) {
-    if (view === BenchmarkNewSessionViews.EDIT_ENDPOINT_FORM) {
-      setEndpointToEdit(data as LLMEndpoint);
-    }
-    setCurrentView(view);
+  function handleNextIconClick() {
+    dispatch({
+      type: 'NEXT_BTN_CLICK',
+      cookbooksLength: selectedCookbooks.length,
+      modelsLength: selectedModels.length,
+    });
   }
 
-  function nextViewHandler() {
-    if (currentView === BenchmarkNewSessionViews.RECOMMENDED_TESTS) {
-      setCurrentView(BenchmarkNewSessionViews.ENDPOINTS_SELECTION);
-      return;
-    }
-    if (currentView === BenchmarkNewSessionViews.TOPICS_SELECTION) {
-      if (selectedCookbooks.length > 0) {
-        setCurrentView(BenchmarkNewSessionViews.RECOMMENDED_TESTS);
-      }
-      return;
-    }
-    if (currentView === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
-      setCurrentView(BenchmarkNewSessionViews.BENCHMARK_RUN_FORM);
-      return;
-    }
-  }
-
-  function previousViewHandler() {
-    if (currentView === BenchmarkNewSessionViews.RECOMMENDED_TESTS) {
-      setCurrentView(BenchmarkNewSessionViews.TOPICS_SELECTION);
-      return;
-    }
-    if (currentView === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
-      setCurrentView(BenchmarkNewSessionViews.RECOMMENDED_TESTS);
-      return;
-    }
-    if (currentView === BenchmarkNewSessionViews.BENCHMARK_RUN_FORM) {
-      setCurrentView(BenchmarkNewSessionViews.ENDPOINTS_SELECTION);
-      return;
-    }
+  function handlePreviousIconClick() {
+    dispatch({
+      type: 'PREV_BTN_CLICK',
+      cookbooksLength: selectedCookbooks.length,
+      modelsLength: selectedModels.length,
+    });
   }
 
   function handleOnCloseIconClick() {
@@ -90,123 +63,98 @@ function BenchmarkNewSessionFlow() {
   }
 
   function handleExitWorkflow() {
-    dispatch(resetBenchmarkCookbooks());
-    dispatch(resetBenchmarkModels());
+    appDispatch(resetBenchmarkCookbooks());
+    appDispatch(resetBenchmarkModels());
     router.push('/benchmarking');
   }
 
   function handleModelClick(model: LLMEndpoint) {
     if (selectedModels.find((endpoint) => endpoint.id === model.id)) {
-      dispatch(removeBenchmarkModels([model]));
+      appDispatch(removeBenchmarkModels([model]));
     } else {
-      dispatch(addBenchmarkModels([model]));
+      appDispatch(addBenchmarkModels([model]));
     }
   }
 
-  let stepIndex = 0;
-  let disableNextBtn = false;
+  function handleEditModelClick(model: LLMEndpoint) {
+    dispatch({
+      type: 'EDIT_MODEL_CLICK',
+      modelToEdit: model,
+    });
+  }
+
+  function handleCreateModelClick() {
+    dispatch({
+      type: 'CREATE_MODEL_CLICK',
+    });
+  }
+
   let surfaceColor = colors.moongray['950'];
   let view: React.ReactElement | undefined;
 
-  useLayoutEffect(() => {
-    if (
-      currentView === BenchmarkNewSessionViews.TOPICS_SELECTION ||
-      currentView === BenchmarkNewSessionViews.COOKBOOKS_SELECTION
-    ) {
-      setHiddenNavButtons([true, true]);
-      return;
-    }
-    if (
-      currentView === BenchmarkNewSessionViews.RECOMMENDED_TESTS ||
-      currentView === BenchmarkNewSessionViews.ENDPOINTS_SELECTION
-    ) {
-      setHiddenNavButtons([false, false]);
-      return;
-    }
-    if (
-      currentView === BenchmarkNewSessionViews.NEW_ENDPOINT_FORM ||
-      currentView === BenchmarkNewSessionViews.EDIT_ENDPOINT_FORM
-    ) {
-      setHiddenNavButtons([true, true]);
-      return;
-    }
-    if (currentView === BenchmarkNewSessionViews.BENCHMARK_RUN_FORM) {
-      setHiddenNavButtons([false, true]);
-      return;
-    }
-  }, [currentView]);
-
-  switch (currentView) {
+  switch (flowState.view) {
     case BenchmarkNewSessionViews.TOPICS_SELECTION:
-      stepIndex = 0;
-      if (selectedCookbooks.length === 0) disableNextBtn = true;
       view = (
         <BenchmarkDefaultSelection
           selectedCookbooks={selectedCookbooks}
-          setHiddenNavButtons={setHiddenNavButtons}
+          onCookbookSelected={() =>
+            dispatch({
+              type: 'COOKBOOK_SELECTION_CLICK',
+              cookbooksLength: selectedCookbooks.length + 1,
+            })
+          }
+          onCookbookUnselected={() =>
+            dispatch({
+              type: 'COOKBOOK_SELECTION_CLICK',
+              cookbooksLength: selectedCookbooks.length - 1,
+            })
+          }
         />
       );
       break;
     case BenchmarkNewSessionViews.RECOMMENDED_TESTS:
-      stepIndex = 1;
       view = (
         <BenchmarkMainCookbooksPromptCount
           selectedCookbooks={selectedCookbooks}
-          changeView={changeView}
+          onCookbooksLinkClick={() =>
+            dispatch({ type: 'MORE_COOKBOOKS_LINK_CLICK' })
+          }
         />
       );
       break;
     case BenchmarkNewSessionViews.ENDPOINTS_SELECTION:
-      stepIndex = 2;
-      if (selectedModels.length === 0) disableNextBtn = true;
       view = (
         <EndpointSelectVew
           selectedModels={selectedModels}
           totalSelected={selectedModels.length}
           onModelClick={handleModelClick}
-          onEditClick={(model) =>
-            changeView(BenchmarkNewSessionViews.EDIT_ENDPOINT_FORM, model)
-          }
-          onCreateClick={() =>
-            changeView(BenchmarkNewSessionViews.NEW_ENDPOINT_FORM)
-          }
+          onEditClick={handleEditModelClick}
+          onCreateClick={handleCreateModelClick}
         />
       );
       break;
     case BenchmarkNewSessionViews.NEW_ENDPOINT_FORM:
-      stepIndex = 2;
       surfaceColor = colors.moongray['800'];
       view = (
         <NewEndpointForm
-          onClose={() =>
-            changeView(BenchmarkNewSessionViews.ENDPOINTS_SELECTION)
-          }
+          onClose={() => dispatch({ type: 'CLOSE_MODEL_FORM' })}
         />
       );
       break;
     case BenchmarkNewSessionViews.EDIT_ENDPOINT_FORM:
-      stepIndex = 2;
       surfaceColor = colors.moongray['800'];
       view = (
         <NewEndpointForm
-          endpointToEdit={endpointToEdit}
-          onClose={() =>
-            changeView(BenchmarkNewSessionViews.ENDPOINTS_SELECTION)
-          }
+          endpointToEdit={flowState.modelToEdit}
+          onClose={() => dispatch({ type: 'CLOSE_MODEL_FORM' })}
         />
       );
       break;
     case BenchmarkNewSessionViews.COOKBOOKS_SELECTION:
-      stepIndex = 1;
       surfaceColor = colors.moongray['800'];
-      view = (
-        <CookbooksSelection
-          onClose={() => changeView(BenchmarkNewSessionViews.RECOMMENDED_TESTS)}
-        />
-      );
+      view = <CookbooksSelection onClose={() => null} />;
       break;
     case BenchmarkNewSessionViews.BENCHMARK_RUN_FORM:
-      stepIndex = 3;
       surfaceColor = colors.moongray['950'];
       view = (
         <BenchmarkRunForm
@@ -248,38 +196,38 @@ function BenchmarkNewSessionFlow() {
               <SimpleStepsIndicator
                 textColor={colors.moongray[300]}
                 stepColor={colors.moonpurplelight}
-                steps={flowSteps}
-                currentStepIndex={stepIndex}
+                steps={flowState.steps}
+                currentStepIndex={flowState.stepIndex}
               />
             </div>
             <div
               className="flex flex-col gap-5 justify-center w-full"
               style={{ height: 'calc(100% - 33px)' }}>
-              {!hiddenNavButtons[0] && (
+              {!flowState.hidePrevBtn && (
                 <div
                   role="button"
                   className="flex justify-center"
-                  onClick={previousViewHandler}
                   aria-label="Previous View">
                   <Icon
                     name={IconName.WideArrowUp}
                     size={28}
-                    onClick={previousViewHandler}
+                    onClick={handlePreviousIconClick}
                   />
                 </div>
               )}
               {view}
-              {!hiddenNavButtons[1] && (
+              {!flowState.hideNextBtn && (
                 <div
                   role="button"
                   className="flex justify-center"
-                  style={{ opacity: disableNextBtn ? 0.3 : 1 }}
-                  onClick={disableNextBtn ? undefined : nextViewHandler}
+                  style={{ opacity: flowState.disableNextBtn ? 0.3 : 1 }}
                   aria-label="Next View">
                   <Icon
                     name={IconName.WideArrowDown}
                     size={28}
-                    onClick={disableNextBtn ? undefined : nextViewHandler}
+                    onClick={
+                      flowState.disableNextBtn ? undefined : handleNextIconClick
+                    }
                   />
                 </div>
               )}

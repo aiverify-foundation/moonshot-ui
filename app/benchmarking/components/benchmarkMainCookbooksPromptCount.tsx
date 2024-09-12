@@ -6,14 +6,14 @@ import { BenchmarkNewSessionViews } from './enums';
 
 type Props = {
   selectedCookbooks: Cookbook[];
-  changeView: (view: BenchmarkNewSessionViews) => void;
+  onCookbooksLinkClick: () => void;
 };
 
 const enableEstimatedTime = false;
 
 function BenchmarkMainCookbooksPromptCount({
   selectedCookbooks,
-  changeView,
+  onCookbooksLinkClick,
 }: Props) {
   const [allCookbooks, _] = useCookbooks();
   const { totalHours, totalMinutes, totalPrompts } =
@@ -56,9 +56,7 @@ function BenchmarkMainCookbooksPromptCount({
           content="See Details">
           <span
             className="decoration-2 underline hover:text-moonpurplelight cursor-pointer px-2"
-            onClick={() =>
-              changeView(BenchmarkNewSessionViews.COOKBOOKS_SELECTION)
-            }>
+            onClick={onCookbooksLinkClick}>
             these cookbooks
           </span>
         </Tooltip>{' '}
