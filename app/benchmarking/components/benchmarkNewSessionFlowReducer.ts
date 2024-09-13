@@ -17,6 +17,7 @@ type Action = {
 };
 
 type FlowState = {
+  isThreeStepsFlow: boolean;
   steps: string[];
   stepIndex: number;
   view: BenchmarkNewSessionViews;
@@ -31,6 +32,7 @@ const flowSteps = ['Your LLM', 'Recommended Tests', 'Connect Endpoint', 'Run'];
 const threeStepsFlowSteps = ['Recommended Tests', 'Connect Endpoint', 'Run'];
 
 export const initialState: FlowState = {
+  isThreeStepsFlow: false,
   steps: flowSteps,
   stepIndex: 0,
   view: BenchmarkNewSessionViews.TOPICS_SELECTION,
@@ -42,10 +44,11 @@ export const initialState: FlowState = {
 };
 
 export const threeStepsFlowInitialState: FlowState = {
+  isThreeStepsFlow: true,
   steps: threeStepsFlowSteps,
   stepIndex: 0,
-  view: BenchmarkNewSessionViews.TOPICS_SELECTION,
-  hideNextBtn: false,
+  view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
+  hideNextBtn: true,
   hidePrevBtn: true,
   enableNextBtn: false,
   disableNextBtn: false,
@@ -86,6 +89,19 @@ export function benchmarkNewSessionFlowReducer(
           disableNextBtn: true,
         };
       }
+      if (
+        state.view === BenchmarkNewSessionViews.COOKBOOKS_SELECTION &&
+        state.isThreeStepsFlow
+      ) {
+        return {
+          ...state,
+          stepIndex: state.stepIndex + 1,
+          view: BenchmarkNewSessionViews.ENDPOINTS_SELECTION,
+          hidePrevBtn: false,
+          hideNextBtn: false,
+          disableNextBtn: action.modelsLength === 0,
+        };
+      }
     case 'PREV_BTN_CLICK':
       if (state.view === BenchmarkNewSessionViews.BENCHMARK_RUN_FORM) {
         return {
@@ -102,6 +118,9 @@ export function benchmarkNewSessionFlowReducer(
           ...state,
           stepIndex: state.stepIndex - 1,
           view: BenchmarkNewSessionViews.RECOMMENDED_TESTS,
+          hidePrevBtn: state.isThreeStepsFlow ? true : false,
+          disablePrevBtn: state.isThreeStepsFlow ? true : false,
+          hideNextBtn: false,
           disableNextBtn: false,
         };
       }
@@ -138,9 +157,9 @@ export function benchmarkNewSessionFlowReducer(
         ...state,
         view: BenchmarkNewSessionViews.RECOMMENDED_TESTS,
         hideNextBtn: false,
-        hidePrevBtn: false,
+        hidePrevBtn: state.isThreeStepsFlow ? true : false,
         disableNextBtn: false,
-        disablePrevBtn: false,
+        disablePrevBtn: state.isThreeStepsFlow ? true : false,
       };
     case 'CREATE_MODEL_CLICK':
       return {

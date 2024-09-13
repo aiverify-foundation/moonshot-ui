@@ -1,5 +1,9 @@
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+import {
+  updateAllCookbooks,
+  useCookbooks,
+} from '@/app/benchmarking/contexts/cookbooksContext';
 import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { PopupSurface } from '@/app/components/popupSurface';
 import { TabsMenu, TabItem } from '@/app/components/tabsMenu';
@@ -35,11 +39,12 @@ const tabItems: TabItem<string[]>[] = config.cookbookCategoriesTabs.map(
 );
 
 type Props = {
+  isThreeStepsFlow: boolean;
   onClose: () => void;
 };
 
 function CookbooksSelection(props: Props) {
-  const { onClose } = props;
+  const { onClose, isThreeStepsFlow } = props;
   const dispatch = useAppDispatch();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
@@ -48,6 +53,17 @@ function CookbooksSelection(props: Props) {
   const [cookbookDetails, setCookbookDetails] = useState<
     Cookbook | undefined
   >();
+
+  const [_, setAllCookbooks, isFirstCookbooksFetch, setIsFirstCookbooksFetch] =
+    useCookbooks();
+
+  const { data: allCookbooks, isFetching: isFetchingAllCookbooks } =
+    useGetCookbooksQuery(
+      {
+        count: true,
+      },
+      { skip: !isThreeStepsFlow || !isFirstCookbooksFetch }
+    );
 
   const excludedCategories = activeTab.data
     ? activeTab.data.reduce<string[]>((acc, cat) => {
@@ -83,6 +99,14 @@ function CookbooksSelection(props: Props) {
         (!excludedCategories || excludedCategories.length === 0),
     }
   );
+
+  useEffect(() => {
+    if (!isThreeStepsFlow || isFetchingAllCookbooks) return;
+    if (isFirstCookbooksFetch && allCookbooks) {
+      updateAllCookbooks(setAllCookbooks, allCookbooks);
+      setIsFirstCookbooksFetch(false);
+    }
+  }, [isThreeStepsFlow, isFetchingAllCookbooks, allCookbooks]);
 
   const { totalHours, totalMinutes } = calcTotalPromptsAndEstimatedTime(
     selectedCookbooks,

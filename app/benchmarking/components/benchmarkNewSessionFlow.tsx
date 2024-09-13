@@ -23,6 +23,7 @@ import { BenchmarkMainCookbooksPromptCount } from './benchmarkMainCookbooksPromp
 import {
   benchmarkNewSessionFlowReducer,
   initialState,
+  threeStepsFlowInitialState,
 } from './benchmarkNewSessionFlowReducer';
 import BenchmarkRunForm from './benchmarkRunForm';
 import { BenchmarkNewSessionViews } from './enums';
@@ -37,7 +38,7 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
   const appDispatch = useAppDispatch();
   const [flowState, dispatch] = React.useReducer(
     benchmarkNewSessionFlowReducer,
-    initialState
+    threeStepsFlow ? threeStepsFlowInitialState : initialState
   );
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
@@ -172,7 +173,12 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
       surfaceColor = colors.moongray['800'];
       view = (
         <CookbooksSelection
-          onClose={() => dispatch({ type: 'CLOSE_MORE_COOKBOOKS' })}
+          isThreeStepsFlow={flowState.isThreeStepsFlow}
+          onClose={() =>
+            dispatch({
+              type: 'CLOSE_MORE_COOKBOOKS',
+            })
+          }
         />
       );
       break;
