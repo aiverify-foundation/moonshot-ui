@@ -223,3 +223,39 @@ it('should show more cookbooks screen', async () => {
   // back at recommended tests screen
   expect(screen.getByText(/these cookbooks/i)).toBeInTheDocument();
 });
+
+it('should show the shorter three stepsflow', async () => {
+  let callCount = 1;
+  (useAppSelector as jest.Mock).mockImplementation(() => {
+    if (callCount === 1) {
+      callCount++;
+      return [mockCookbooks[0]];
+    }
+    callCount--;
+    return [];
+  });
+  (useGetCookbooksQuery as jest.Mock).mockReturnValue({
+    data: mockCookbooks,
+    isFetching: false,
+  });
+  (useModelsList as jest.Mock).mockImplementation(() => ({
+    models: mockEndpoints,
+    isLoading: false,
+    error: null,
+  }));
+  (useAppDispatch as jest.Mock).mockImplementation(() => jest.fn());
+  (useRunBenchmarkMutation as jest.Mock).mockReturnValue([
+    jest.fn(),
+    { isLoading: false },
+  ]);
+
+  render(<BenchmarkNewSessionFlow threeStepsFlow />);
+  const nextButton = screen.getByRole('button', { name: /Next View/i });
+  // more cookbooks screen
+  expect(
+    screen.getByRole('button', { name: /capability/i })
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole('button', { name: /trust & safety/i })
+  ).toBeInTheDocument();
+});

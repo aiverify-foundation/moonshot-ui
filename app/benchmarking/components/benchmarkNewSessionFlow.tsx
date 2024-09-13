@@ -27,7 +27,12 @@ import {
 import BenchmarkRunForm from './benchmarkRunForm';
 import { BenchmarkNewSessionViews } from './enums';
 
-function BenchmarkNewSessionFlow() {
+type BenchmarkNewSessionFlowProps = {
+  threeStepsFlow?: boolean;
+};
+
+function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
+  const { threeStepsFlow = false } = props;
   const router = useRouter();
   const appDispatch = useAppDispatch();
   const [flowState, dispatch] = React.useReducer(

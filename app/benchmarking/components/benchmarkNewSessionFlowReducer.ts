@@ -28,6 +28,7 @@ type FlowState = {
 };
 
 const flowSteps = ['Your LLM', 'Recommended Tests', 'Connect Endpoint', 'Run'];
+const threeStepsFlowSteps = ['Recommended Tests', 'Connect Endpoint', 'Run'];
 
 export const initialState: FlowState = {
   steps: flowSteps,
@@ -40,6 +41,16 @@ export const initialState: FlowState = {
   modelToEdit: undefined,
 };
 
+export const threeStepsFlowInitialState: FlowState = {
+  steps: threeStepsFlowSteps,
+  stepIndex: 0,
+  view: BenchmarkNewSessionViews.TOPICS_SELECTION,
+  hideNextBtn: false,
+  hidePrevBtn: true,
+  enableNextBtn: false,
+  disableNextBtn: false,
+  modelToEdit: undefined,
+};
 export function benchmarkNewSessionFlowReducer(
   state: FlowState,
   action: Action
