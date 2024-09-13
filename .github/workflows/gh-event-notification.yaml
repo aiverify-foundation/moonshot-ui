@@ -11,20 +11,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Get PR or Issue details
-      id: details
+
+    - name: Get Issue details
+      if: ${{ github.event_name == 'issues' }}
+      id: issue_details
+      env:
+        TITLE: ${{ github.event.issue.title }}
       run: |
-        if [ "${{ github.event_name }}" == "issues" ]; then
-          echo "type=issue" >> $GITHUB_ENV
-          echo "title=${{ github.event.issue.title }}" >> $GITHUB_ENV
-          echo "user=${{ github.event.issue.user.login }}" >> $GITHUB_ENV
-          echo "url=${{ github.event.issue.html_url }}" >> $GITHUB_ENV
-        else
-          echo "type=pull_request" >> $GITHUB_ENV
-          echo "title=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
-          echo "user=${{ github.event.pull_request.user.login }}" >> $GITHUB_ENV
-          echo "url=${{ github.event.pull_request.html_url }}" >> $GITHUB_ENV
-        fi
+        echo "type=issue" >> $GITHUB_ENV
+        echo "title=$TITLE" >> $GITHUB_ENV
+        echo "user=${{ github.event.issue.user.login }}" >> $GITHUB_ENV
+        echo "url=${{ github.event.issue.html_url }}" >> $GITHUB_ENV
+        echo "repo=${{ github.repository }}" >> $GITHUB_ENV
+
+    - name: Get PR details
+      if: ${{ github.event_name == 'pull_request' }}
+      id: pr_details
+      env:
+        TITLE: ${{ github.event.pull_request.title }}
+      run: |
+        echo "type=pull_request" >> $GITHUB_ENV
+        echo "title=$TITLE" >> $GITHUB_ENV
+        echo "user=${{ github.event.pull_request.user.login }}" >> $GITHUB_ENV
+        echo "url=${{ github.event.pull_request.html_url }}" >> $GITHUB_ENV
         echo "repo=${{ github.repository }}" >> $GITHUB_ENV
 
     - name: Send notification to Slack
