@@ -11,6 +11,14 @@ import {
   useAppSelector,
 } from '@/lib/redux';
 
+jest.mock('@/moonshot.config', () => ({
+  __esModule: true,
+  default: {
+    ...jest.requireActual('@/moonshot.config').default,
+    cookbooksOrder: ['cb-id-2', 'cb-id-3'],
+  },
+}));
+
 jest.mock('@/lib/redux', () => ({
   addBenchmarkCookbooks: jest.fn(),
   removeBenchmarkCookbooks: jest.fn(),
@@ -92,15 +100,17 @@ describe('CookbooksSelection', () => {
     jest.clearAllMocks();
   });
 
-  test('renders cookbooks selection correctly', () => {
+  it('should display cookbooks in the correct order', () => {
     const mockAlreadySelectedCookbooks = [mockCookbooks[0], mockCookbooks[2]];
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockAlreadySelectedCookbooks
     );
     renderWithProviders(<CookbooksSelection onClose={mockOnClose} />);
-    expect(screen.getByText(/Mock Cookbook One/i)).toBeInTheDocument();
-    expect(screen.getByText(/Mock Cookbook Two/i)).toBeInTheDocument();
-    expect(screen.getByText(/Mock Cookbook Three/i)).toBeInTheDocument();
+    const cookbookItems = screen.getAllByRole('cookbookcard');
+    expect(cookbookItems).toHaveLength(mockCookbooks.length);
+    expect(cookbookItems[0]).toHaveTextContent(mockCookbooks[1].name);
+    expect(cookbookItems[1]).toHaveTextContent(mockCookbooks[2].name);
+    expect(cookbookItems[2]).toHaveTextContent(mockCookbooks[0].name);
     expect(
       screen.getByRole('checkbox', {
         name: `Select ${mockCookbooks[0].id}`,
@@ -122,7 +132,7 @@ describe('CookbooksSelection', () => {
     );
   });
 
-  test('selects and deselects a cookbook', async () => {
+  it('should select and deselect a cookbook', async () => {
     const mockNoSelectedCookbooks: Cookbook[] = [];
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockNoSelectedCookbooks
@@ -149,7 +159,7 @@ describe('CookbooksSelection', () => {
     expect(cookbookOneCheckbox).not.toBeChecked();
   });
 
-  test('closes the selection view', async () => {
+  it('should close the selection view', async () => {
     const mockAlreadySelectedCookbooks = [mockCookbooks[0], mockCookbooks[2]];
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockAlreadySelectedCookbooks

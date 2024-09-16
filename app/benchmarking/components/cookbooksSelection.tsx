@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { PopupSurface } from '@/app/components/popupSurface';
 import { TabsMenu, TabItem } from '@/app/components/tabsMenu';
@@ -83,6 +83,20 @@ function CookbooksSelection(props: Props) {
         (!excludedCategories || excludedCategories.length === 0),
     }
   );
+
+  const orderedCookbooks = React.useMemo(() => {
+    if (!cookbooks) return [];
+    const order = config.cookbooksOrder;
+    const ordered = [...cookbooks].sort((a, b) => {
+      const indexA = order.indexOf(a.id);
+      const indexB = order.indexOf(b.id);
+      if (indexA === -1 && indexB === -1) return 0;
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
+      return indexA - indexB;
+    });
+    return ordered;
+  }, [cookbooks]);
 
   const { totalHours, totalMinutes } = calcTotalPromptsAndEstimatedTime(
     selectedCookbooks,
@@ -195,7 +209,7 @@ function CookbooksSelection(props: Props) {
               {isFetching || !cookbooks ? (
                 <LoadingAnimation />
               ) : (
-                cookbooks.map((cookbook) => {
+                orderedCookbooks.map((cookbook) => {
                   const selected = selectedCookbooks.some(
                     (t) => t.id === cookbook.id
                   );

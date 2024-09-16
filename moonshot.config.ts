@@ -1,12 +1,12 @@
 type MoonshotConfig = {
   baselineSelectedCookbooks: string[];
-  defaultCookbooksForSelection: string[];
   estimatedPromptResponseTime: number;
   cookbookCategoriesTabs: {
     id: string;
     label: string;
     categoryNames: string[];
   }[];
+  cookbooksOrder: string[];
   webAPI: {
     hostURL: string;
     basePathSessions: string;
@@ -29,17 +29,7 @@ const config: MoonshotConfig = {
     'common-risk-easy',
     'common-risk-hard',
   ],
-  defaultCookbooksForSelection: [
-    'mlc-ai-safety',
-    'common-risk-easy',
-    'common-risk-hard',
-    'chinese-safety-cookbook',
-    'tamil-language-cookbook',
-    'leaderboard-cookbook',
-    'legal-summarisation',
-    'medical-llm-leaderboard',
-    'singapore-context',
-  ],
+  cookbooksOrder: ['singapore-context', 'mlc-ai-safety'],
   cookbookCategoriesTabs: [
     { id: 'capability', label: 'Capability', categoryNames: ['capability'] },
     {
