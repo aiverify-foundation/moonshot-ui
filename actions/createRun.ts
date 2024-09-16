@@ -6,36 +6,49 @@ import { BenchmarkCollectionType } from '@/app/types/enums';
 import config from '@/moonshot.config';
 import { formatZodSchemaErrors } from './helpers/formatZodSchemaErrors';
 
-const runSchema = z.object({
-  run_name: z.string().min(1, 'Name is required'),
-  description: z.string().optional(),
-  num_of_prompts: z.preprocess(
-    (val) => Number(val),
-    z.number().min(1, 'Number of prompts must be at least 1')
-  ),
-  inputs: z.array(z.string()).min(1, 'At least one cookbook is required'),
-  endpoints: z.array(z.string()).min(1, 'At least one endpoint is required'),
-  random_seed: z.preprocess(
-    (val) => Number(val),
-    z.number().min(0, 'Random seed must be at least 0')
-  ),
-  runner_processing_module: z
-    .string()
-    .min(1, 'Runner processing module is required'),
-  system_prompt: z.string(),
-  run_all: z.preprocess((val) => val === 'true', z.boolean()),
-});
-
 export async function createRun(
   _: FormState<BenchmarkRunFormValues>,
   formData: FormData
 ) {
-  let newRunData: z.infer<typeof runSchema>;
   let runAll = false;
-
   try {
     runAll = formData.get('run_all') === 'true';
-    newRunData = runSchema.parse({
+  } catch (error) {
+    return {
+      formStatus: 'error',
+      formErrors: {
+        error: ['Failed to parse run_all'],
+      },
+    };
+  }
+
+  // Dynamically create the schema based on runAll
+  const dynamicRunSchema = z.object({
+    run_name: z.string().min(1, 'Name is required'),
+    description: z.string().optional(),
+    num_of_prompts: z.preprocess(
+      (val) => Number(val),
+      runAll
+        ? z.number()
+        : z.number().min(1, 'Number of prompts must be at least 1')
+    ),
+    inputs: z.array(z.string()).min(1, 'At least one cookbook is required'),
+    endpoints: z.array(z.string()).min(1, 'At least one endpoint is required'),
+    random_seed: z.preprocess(
+      (val) => Number(val),
+      z.number().min(0, 'Random seed must be at least 0')
+    ),
+    runner_processing_module: z
+      .string()
+      .min(1, 'Runner processing module is required'),
+    system_prompt: z.string(),
+    run_all: z.preprocess((val) => val === 'true', z.boolean()),
+  });
+
+  let newRunData: z.infer<typeof dynamicRunSchema>;
+
+  try {
+    newRunData = dynamicRunSchema.parse({
       run_name: formData.get('run_name'),
       description: formData.get('description'),
       num_of_prompts: formData.get('num_of_prompts'),

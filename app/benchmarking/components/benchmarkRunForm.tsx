@@ -305,6 +305,7 @@ function BenchmarkRunForm({
                 <ToggleSwitch
                   name="run_all"
                   onChange={handleRunAllChange}
+                  value={isRunAll ? 'true' : undefined}
                 />
               </div>
             </div>
