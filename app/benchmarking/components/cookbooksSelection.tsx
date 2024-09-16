@@ -69,7 +69,7 @@ function CookbooksSelection(props: Props) {
         )
       : activeTab.data;
 
-  const { data: cookbooks, isFetching } = useGetCookbooksQuery(
+  const { data: cookbooks = [], isFetching } = useGetCookbooksQuery(
     {
       categories:
         selectedCategories && selectedCategories.length > 0
@@ -159,8 +159,10 @@ function CookbooksSelection(props: Props) {
             style={{ height: 'calc(100% - 50px)' }}>
             <p className="text-white px-8">{categoryDesc}</p>
             <ul className="flex flex-row flex-wrap grow gap-[2%] w-[100%] overflow-y-auto custom-scrollbar px-8">
-              {isFetching || !cookbooks ? (
+              {isFetching ? (
                 <LoadingAnimation />
+              ) : cookbooks.length === 0 ? (
+                <div className="text-white">No cookbooks found</div>
               ) : (
                 cookbooks.map((cookbook) => {
                   const selected = selectedCookbooks.some(
