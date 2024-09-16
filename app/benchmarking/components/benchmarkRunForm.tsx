@@ -56,8 +56,9 @@ function BenchmarkRunForm({
           const totalBasePrompts = Object.values(
             stats.num_of_datasets_prompts
           ).reduce((sum, value) => sum + value, 0);
-          const userInputTotalBasePrompts = !isNaN(coercedNumOfPromptsInput) ?
-            coercedNumOfPromptsInput * stats.num_of_datasets : 0;
+          const userInputTotalBasePrompts = !isNaN(coercedNumOfPromptsInput)
+            ? coercedNumOfPromptsInput * stats.num_of_datasets
+            : 0;
           let grandTotalPrompts = totalBasePrompts;
           let userInputGrandTotalPrompts = userInputTotalBasePrompts;
           if (stats.num_of_metrics > 0) {
@@ -117,11 +118,23 @@ function BenchmarkRunForm({
   const disableRunBtn =
     !name ||
     isNaN(coercedNumOfPromptsInput) ||
-    (!isRunAll && !isNaN(coercedNumOfPromptsInput) && coercedNumOfPromptsInput < 1);
+    (!isRunAll &&
+      !isNaN(coercedNumOfPromptsInput) &&
+      coercedNumOfPromptsInput < 1);
 
   let numOfPromptsError = formState.formErrors?.num_of_prompts?.[0];
-  if (!isRunAll && numOfPromptsInput.trim() !== '' && coercedNumOfPromptsInput < 1) {
+  if (
+    !isRunAll &&
+    numOfPromptsInput.trim() !== '' &&
+    coercedNumOfPromptsInput < 1
+  ) {
     numOfPromptsError = 'Number of prompts per recipe must be greater than 0';
+  } else if (
+    !isRunAll &&
+    numOfPromptsInput.trim() !== '' &&
+    userInputNumOfPromptsGrandTotal > numOfPromptsGrandTotal
+  ) {
+    numOfPromptsError = `Total number of prompts that will be run should be smaller than actual total number of prompts which is ${numOfPromptsGrandTotal}`;
   }
 
   return (
@@ -265,10 +278,11 @@ function BenchmarkRunForm({
                     </p>
                     <p style={{ opacity: isRunAll ? 0.5 : 1 }}>
                       Number of prompts that will be run:{' '}
-                      {isPending ? 'calculating...' :
-                        isRunAll
+                      {isPending
+                        ? 'calculating...'
+                        : isRunAll
                           ? numOfPromptsGrandTotal
-                        : userInputNumOfPromptsGrandTotal}
+                          : userInputNumOfPromptsGrandTotal}
                     </p>
                   </div>
                 }
@@ -282,8 +296,10 @@ function BenchmarkRunForm({
               <div className="flex justify-left gap-2">
                 <p className="text-moonpurplelight">
                   Run All{' '}
-                  <span className={`${isRunAll ? 'text-white' : 'text-moongray-400'}`}>
-                    ({isPending ? 'calculating...' : numOfPromptsGrandTotal} prompts)
+                  <span
+                    className={`${isRunAll ? 'text-white' : 'text-moongray-400'}`}>
+                    ({isPending ? 'calculating...' : numOfPromptsGrandTotal}{' '}
+                    prompts)
                   </span>
                 </p>
                 <ToggleSwitch
