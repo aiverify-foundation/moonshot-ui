@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { Button, ButtonType } from '@/app/components/button';
 import { colors } from '@/app/customColors';
+import config from '@/moonshot.config';
 
 type CookbookSelectionItemProps = {
   cookbook: Cookbook;
@@ -49,6 +51,18 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
           checked={isSelected}
         />
       </header>
+      <div className="flex flex-wrap gap-2 my-2">
+        {config.cookbookTags[cookbook.id]?.map((tagName) => (
+          <Button
+            key={tagName}
+            mode={ButtonType.OUTLINE}
+            text={tagName}
+            size="sm"
+            btnColor={colors.moonpurple}
+            hoverBtnColor={colors.moonpurple}
+          />
+        ))}
+      </div>
       <p>{cookbook.description}</p>
       <footer className="flex justify-between">
         <p>{cookbook.total_prompt_in_cookbook} prompts</p>
