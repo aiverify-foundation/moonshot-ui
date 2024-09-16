@@ -8,7 +8,6 @@ import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { PopupSurface } from '@/app/components/popupSurface';
 import { TabsMenu, TabItem } from '@/app/components/tabsMenu';
 import { colors } from '@/app/customColors';
-import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import {
   addBenchmarkCookbooks,
@@ -27,8 +26,6 @@ const CookbookAbout = dynamic(
     ssr: true,
   }
 );
-
-const enableEstimatedTime = false;
 
 const tabItems: TabItem<string[]>[] = config.cookbookCategoriesTabs.map(
   (item) => ({
@@ -81,7 +78,7 @@ function CookbooksSelection(props: Props) {
         )
       : activeTab.data;
 
-  const { data: cookbooks, isFetching } = useGetCookbooksQuery(
+  const { data: cookbooks = [], isFetching } = useGetCookbooksQuery(
     {
       categories:
         selectedCategories && selectedCategories.length > 0
@@ -107,11 +104,6 @@ function CookbooksSelection(props: Props) {
       setIsFirstCookbooksFetch(false);
     }
   }, [isThreeStepsFlow, isFetchingAllCookbooks, allCookbooks]);
-
-  const { totalHours, totalMinutes } = calcTotalPromptsAndEstimatedTime(
-    selectedCookbooks,
-    config.estimatedPromptResponseTime
-  );
 
   function handleTabClick(tab: TabItem<string[]>) {
     setActiveTab(tab);
@@ -151,35 +143,6 @@ function CookbooksSelection(props: Props) {
     }
   }, [cookbooks]);
 
-  const timeDisplay = enableEstimatedTime && (
-    <div className="flex gap-5">
-      <div className="flex flex-col justify-center">
-        <div className="text-[1rem] leading-[1.1rem] text-end">
-          Estimated time
-        </div>
-        <div className="text-[0.8rem] leading-[1.1rem] text-moongray-300 text-end">
-          assuming{' '}
-          <span className="decoration-1 underline">
-            {config.estimatedPromptResponseTime}s
-          </span>{' '}
-          per prompt
-        </div>
-      </div>
-      <div className="flex">
-        <h3 className="text-[2.4rem] font-bolder tracking-wide leading-[3rem] text-white mb-0">
-          {totalHours}
-          <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300 mr-2">
-            hrs
-          </span>
-          {totalMinutes}
-          <span className="text-[1.1rem] leading-[1.1rem] text-moongray-300">
-            mins
-          </span>
-        </h3>
-      </div>
-    </div>
-  );
-
   return (
     <div className="flex flex-col pt-4 w-full h-full">
       {cookbookDetails ? (
@@ -216,8 +179,10 @@ function CookbooksSelection(props: Props) {
             style={{ height: 'calc(100% - 50px)' }}>
             <p className="text-white px-8">{categoryDesc}</p>
             <ul className="flex flex-row flex-wrap grow gap-[2%] w-[100%] overflow-y-auto custom-scrollbar px-8">
-              {isFetching || !cookbooks ? (
+              {isFetching ? (
                 <LoadingAnimation />
+              ) : cookbooks.length === 0 ? (
+                <div className="text-white">No cookbooks found</div>
               ) : (
                 cookbooks.map((cookbook) => {
                   const selected = selectedCookbooks.some(
@@ -236,7 +201,6 @@ function CookbooksSelection(props: Props) {
               )}
             </ul>
             <footer className="flex justify-end items-center bg-moonpurple p-2 px-5 rounded-b-2xl w-full text-white h-[52px] shrink-0">
-              {timeDisplay}
               {selectedCookbooks.length > 0 && (
                 <span
                   role="button"
