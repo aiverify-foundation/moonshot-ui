@@ -44,6 +44,10 @@ const config: Config = {
     '^@/(.*)$': '<rootDir>/$1',
     '^@/app/components/(.*)$': '<rootDir>/app/components/$1',
   },
+  watchPathIgnorePatterns: [
+    '<rootDir>/test-report.html',
+    '<rootDir>/test-results.json',
+  ],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
