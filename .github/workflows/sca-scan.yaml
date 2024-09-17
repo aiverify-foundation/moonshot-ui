@@ -26,8 +26,8 @@ jobs:
 
     steps:
 
-    - name: Checkout Code (Pull_Request_Review)
-      # if: github.event_name == 'pull_request_review'
+    - name: Checkout Code (Pull_Request)
+      # if: github.event_name == 'pull_request'
       uses: actions/checkout@v3
       with:
           ref: ${{ github.event.pull_request.head.ref }}
@@ -40,8 +40,8 @@ jobs:
       with:
           ref: ${{ inputs.branch_to_test }}
 
-    - name: Set Branch Variable (Pull_Request_Review)
-      # if: github.event_name == 'pull_request_review'
+    - name: Set Branch Variable (Pull_Request)
+      # if: github.event_name == 'pull_request'
       run: |
           echo "BRANCH=branch" >> "$GITHUB_ENV"
 
@@ -50,7 +50,15 @@ jobs:
       run: |
           echo "BRANCH=${{ inputs.branch_to_test }}" >> "$GITHUB_ENV"
 
-    - name: Install & Scan MOONSHOT UI
+    - name: Install & Scan MOONSHOT UI (Pull_Request)
+      if: github.event_name == 'pull_request'
+      run: |
+          npm install
+          bash <(curl -s -L https://detect.synopsys.com/detect9.sh) --blackduck.url=https://blackduck.aipo-imda.net/ --blackduck.api.token=${{ secrets.BLACKDUCK_TOKEN }} --detect.detector.search.depth=10 --detect.project.name=aiverify-moonshot-ui --detect.project.version.name=$BRANCH --detect.source.path=. --detect.code.location.name="aiverify-moonshot-ui_$BRANCH" --detect.excluded.directories=/tests --blackduck.trust.cert=true --detect.blackduck.scan.mode=RAPID
+          cd ../
+
+    - name: Install & Scan MOONSHOT UI (Workflow_Dispatch)
+      if: github.event_name == 'workflow_dispatch'
       run: |
           npm install
           bash <(curl -s -L https://detect.synopsys.com/detect9.sh) --blackduck.url=https://blackduck.aipo-imda.net/ --blackduck.api.token=${{ secrets.BLACKDUCK_TOKEN }} --detect.detector.search.depth=10 --detect.project.name=aiverify-moonshot-ui --detect.project.version.name=$BRANCH --detect.source.path=. --detect.code.location.name="aiverify-moonshot-ui_$BRANCH" --detect.excluded.directories=/tests --blackduck.trust.cert=true

@@ -58,7 +58,7 @@ function EntryBanners() {
               />
             </Link>
             <Link
-              href="/benchmarking/session/new"
+              href="/benchmarking/session/new?skip_topics=true"
               onClick={handleStartNewRunClick}>
               <ActionCard
                 title="Evaluate"

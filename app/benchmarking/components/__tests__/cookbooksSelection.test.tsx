@@ -114,8 +114,12 @@ describe('CookbooksSelection', () => {
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockAlreadySelectedCookbooks
     );
-
-    renderWithProviders(<CookbooksSelection onClose={mockOnClose} />);
+    renderWithProviders(
+      <CookbooksSelection
+        isThreeStepsFlow={false}
+        onClose={mockOnClose}
+      />
+    );
     expect(screen.getByText(/Mock Cookbook One/i)).toBeInTheDocument();
     expect(screen.getByText(/Mock Cookbook Two/i)).toBeInTheDocument();
     expect(screen.getByText(/Mock Cookbook Three/i)).toBeInTheDocument();
@@ -149,9 +153,15 @@ describe('CookbooksSelection', () => {
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockNoSelectedCookbooks
     );
-    renderWithProviders(<CookbooksSelection onClose={mockOnClose} />, {
-      initialCookbooks: mockCookbooks,
-    });
+    renderWithProviders(
+      <CookbooksSelection
+        isThreeStepsFlow={false}
+        onClose={mockOnClose}
+      />,
+      {
+        initialCookbooks: mockCookbooks,
+      }
+    );
 
     const cookbookOneCheckbox = screen.getByRole('checkbox', {
       name: `Select ${mockCookbooks[0].id}`,
@@ -176,9 +186,15 @@ describe('CookbooksSelection', () => {
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockAlreadySelectedCookbooks
     );
-    renderWithProviders(<CookbooksSelection onClose={mockOnClose} />, {
-      initialCookbooks: mockCookbooks,
-    });
+    renderWithProviders(
+      <CookbooksSelection
+        isThreeStepsFlow={false}
+        onClose={mockOnClose}
+      />,
+      {
+        initialCookbooks: mockCookbooks,
+      }
+    );
 
     const closeButton = screen.getByRole('button', { name: /ok/i });
     await userEvent.click(closeButton);
