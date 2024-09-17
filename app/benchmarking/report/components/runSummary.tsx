@@ -1,6 +1,6 @@
+import { useContext } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Badge } from './badge';
-import { useContext } from 'react';
 import { PrintingContext } from './reportViewer';
 
 type RunSummaryProps = {

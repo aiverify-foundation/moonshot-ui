@@ -21,6 +21,7 @@ export default function SessionsLayout({
             src="/aivmoonshot-logo.svg"
             height={80}
             width={310}
+            priority
             alt="AIVerify Moonshot Logo"
           />
         </Link>
