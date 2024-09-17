@@ -17,12 +17,14 @@ import config from '@/moonshot.config';
 
 type Props = {
   selectedCookbooks: Cookbook[];
-  setHiddenNavButtons: React.Dispatch<React.SetStateAction<[boolean, boolean]>>;
+  onCookbookSelected: () => void;
+  onCookbookUnselected: () => void;
 };
 
 function BenchmarkDefaultSelection({
   selectedCookbooks,
-  setHiddenNavButtons,
+  onCookbookSelected,
+  onCookbookUnselected,
 }: Props) {
   const dispatch = useAppDispatch();
   const [_, setAllCookbooks, isFirstCookbooksFetch, setIsFirstCookbooksFetch] =
@@ -37,8 +39,10 @@ function BenchmarkDefaultSelection({
   function handleCookbookBtnClick(cb: Cookbook) {
     if (selectedCookbooks.some((t) => t.id === cb.id)) {
       dispatch(removeBenchmarkCookbooks([cb]));
+      onCookbookUnselected();
     } else {
       dispatch(addBenchmarkCookbooks([cb]));
+      onCookbookSelected();
     }
   }
 
@@ -46,9 +50,6 @@ function BenchmarkDefaultSelection({
     if (isFetchingDefaultCookbooksForSelection || !defaultCookbooksForSelection)
       return;
     updateAllCookbooks(setAllCookbooks, defaultCookbooksForSelection);
-    if (defaultCookbooksForSelection.length > 0) {
-      setHiddenNavButtons([true, false]);
-    }
     if (isFirstCookbooksFetch === true) {
       const preselectedCookbooks: Cookbook[] = config.baselineSelectedCookbooks
         .map((id) => defaultCookbooksForSelection?.find((cb) => cb.id === id))

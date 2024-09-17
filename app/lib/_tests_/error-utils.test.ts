@@ -1,4 +1,8 @@
-import { isErrorWithMessage, toErrorWithMessage } from '@/app/lib/error-utils';
+import {
+  isErrorWithMessage,
+  isApiError,
+  toErrorWithMessage,
+} from '@/app/lib/error-utils';
 
 test('should return true, given Error instance using new keyword', () => {
   const error = new Error('mock error');
@@ -63,4 +67,55 @@ test('should return error with message, given non Error instance - object withou
   const result = toErrorWithMessage(errorObject);
   expect(result).not.toBe(errorObject);
   expect(result.message).not.toBeUndefined();
+});
+
+test('should return true, given an object with valid ApiError structure', () => {
+  const apiError = {
+    status: 500,
+    data: {
+      detail: 'Not Found',
+    },
+  };
+  const result = isApiError(apiError);
+  expect(result).toBe(true);
+});
+
+test('should return false, given an object without data property', () => {
+  const apiError = {
+    status: 500,
+  };
+  const result = isApiError(apiError);
+  expect(result).toBe(false);
+});
+
+test('should return false, given an object with data property but without detail', () => {
+  const apiError = {
+    status: 500,
+    data: {},
+  };
+  const result = isApiError(apiError);
+  expect(result).toBe(false);
+});
+
+test('should return false, given an object with data property but detail is not a string', () => {
+  const apiError = {
+    status: 500,
+    data: {
+      detail: 123,
+    },
+  };
+  const result = isApiError(apiError);
+  expect(result).toBe(false);
+});
+
+test('should return false, given a non-object value', () => {
+  const apiError = 'Not Found';
+  const result = isApiError(apiError);
+  expect(result).toBe(false);
+});
+
+test('should return false, given a null value', () => {
+  const apiError = null;
+  const result = isApiError(apiError);
+  expect(result).toBe(false);
 });

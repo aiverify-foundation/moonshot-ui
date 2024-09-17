@@ -45,6 +45,7 @@ export async function fetchCookbooks(params?: inputParams) {
       next: {
         tags: ['cookbooks-collection'],
       },
+      cache: 'no-store',
     }
   );
   const result = await processResponse<Cookbook[]>(response);

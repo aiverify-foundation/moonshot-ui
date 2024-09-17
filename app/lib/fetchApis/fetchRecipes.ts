@@ -34,10 +34,7 @@ export async function fetchRecipes(params?: recipesInputParams) {
   const response = await fetch(
     `${config.webAPI.hostURL}${config.webAPI.basePathRecipes}?${urlQueryParams}`,
     {
-      method: 'GET',
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
+      cache: 'no-store',
     }
   );
   const result = await processResponse<Recipe[]>(response);
