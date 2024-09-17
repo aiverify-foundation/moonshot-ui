@@ -7,6 +7,9 @@ type MoonshotConfig = {
     label: string;
     categoryNames: string[];
   }[];
+  cookbookTags: {
+    [cookbookId: string]: string[];
+  };
   webAPI: {
     hostURL: string;
     basePathSessions: string;
@@ -40,6 +43,45 @@ const config: MoonshotConfig = {
     'medical-llm-leaderboard',
     'singapore-context',
   ],
+  cookbookTags: {
+    'common-risk-easy': [
+      'Bias',
+      'Toxicity',
+      'General knowledge',
+      'Common sense morality',
+      'Jailbreak',
+    ],
+    'common-risk-hard': [
+      'Bias',
+      'Toxicity',
+      'General knowledge',
+      'Common sense morality',
+      'Jailbreak',
+    ],
+    'legal-summarisation': ['Summarisation', 'Legal'],
+    'leaderboard-cookbook': [
+      'MMLU',
+      'Truthfulness',
+      'Common sense reasoning',
+      'Science',
+      'Math',
+    ],
+    'medical-llm-leaderboard': ['Medical board exam'],
+    'mlc-ai-safety': [
+      'Dangerous or violent recommendations',
+      'Child abuse and exploitation',
+      'Hate',
+      'Non-violent crimes',
+      'Sex-related crimes',
+      'Suicide and self harm',
+    ],
+    'singapore-context': ['General knowledge', 'Singapore'],
+    'tamil-language-cookbook': [
+      'Tamil comprehension',
+      'Tamil generation',
+      'Tamil literature',
+    ],
+  },
   cookbookCategoriesTabs: [
     { id: 'capability', label: 'Capability', categoryNames: ['capability'] },
     {

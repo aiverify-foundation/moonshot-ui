@@ -11,6 +11,17 @@ import {
   useAppSelector,
 } from '@/lib/redux';
 
+jest.mock('@/moonshot.config', () => ({
+  __esModule: true,
+  default: {
+    ...jest.requireActual('@/moonshot.config').default,
+    cookbookTags: {
+      'cb-id-1': ['tag1', 'tag2'],
+      'cb-id-2': ['tag3', 'tag4'],
+    },
+  },
+}));
+
 jest.mock('@/lib/redux', () => ({
   addBenchmarkCookbooks: jest.fn(),
   removeBenchmarkCookbooks: jest.fn(),
@@ -18,6 +29,7 @@ jest.mock('@/lib/redux', () => ({
   useAppDispatch: jest.fn(),
   useAppSelector: jest.fn(),
 }));
+
 jest.mock('@/app/services/cookbook-api-service', mockCookbookApiService);
 
 function mockCookbookApiService() {
@@ -68,6 +80,11 @@ describe('CookbooksSelection', () => {
   const mockAddBenchmarkCookbooks = jest.fn();
   const mockUpdateBenchmarkCookbooks = jest.fn();
 
+  const mockCookbookTags = {
+    'cb-id-1': ['tag1', 'tag2'],
+    'cb-id-2': ['tag3', 'tag4'],
+  };
+
   beforeAll(() => {
     function useMockGetCookbooksQuery() {
       return {
@@ -92,7 +109,7 @@ describe('CookbooksSelection', () => {
     jest.clearAllMocks();
   });
 
-  test('renders cookbooks selection correctly', () => {
+  it('should display cookbooks selection correctly', () => {
     const mockAlreadySelectedCookbooks = [mockCookbooks[0], mockCookbooks[2]];
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockAlreadySelectedCookbooks
@@ -106,6 +123,10 @@ describe('CookbooksSelection', () => {
     expect(screen.getByText(/Mock Cookbook One/i)).toBeInTheDocument();
     expect(screen.getByText(/Mock Cookbook Two/i)).toBeInTheDocument();
     expect(screen.getByText(/Mock Cookbook Three/i)).toBeInTheDocument();
+    const tagNames = Object.values(mockCookbookTags).flat();
+    for (const tag of tagNames) {
+      expect(screen.getByText(tag)).toBeInTheDocument();
+    }
     expect(
       screen.getByRole('checkbox', {
         name: `Select ${mockCookbooks[0].id}`,
@@ -127,7 +148,7 @@ describe('CookbooksSelection', () => {
     );
   });
 
-  test('selects and deselects a cookbook', async () => {
+  it('should select and deselect a cookbook', async () => {
     const mockNoSelectedCookbooks: Cookbook[] = [];
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockNoSelectedCookbooks
@@ -160,7 +181,7 @@ describe('CookbooksSelection', () => {
     expect(cookbookOneCheckbox).not.toBeChecked();
   });
 
-  test('closes the selection view', async () => {
+  it('should close the selection view', async () => {
     const mockAlreadySelectedCookbooks = [mockCookbooks[0], mockCookbooks[2]];
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockAlreadySelectedCookbooks
