@@ -41,7 +41,7 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
       <header className="flex flex-basis-[100%] justify-between">
         <div className="flex gap-2 text-white">
           <Icon name={IconName.Book} />
-          <h3 className="font-bold">{cookbook.name}</h3>
+          <h3 className="font-bold capitalize">{cookbook.name}</h3>
         </div>
         <input
           readOnly
