@@ -31,7 +31,7 @@ export default function BenchmarkingHomePage() {
           benchmark with moonshot
         </h3>
         <Link
-          href="/benchmarking/session/new"
+          href="/benchmarking/session/new?skip_topics=true"
           style={{ width: '40%' }}
           onClick={handleStartNewRunClick}>
           <SubmenuButton

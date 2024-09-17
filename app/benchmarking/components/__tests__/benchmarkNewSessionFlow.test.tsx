@@ -54,6 +54,7 @@ jest.mock('@/lib/redux', () => ({
   removeBenchmarkModels: jest.fn(),
   resetBenchmarkCookbooks: jest.fn(),
   resetBenchmarkModels: jest.fn(),
+  updateBenchmarkCookbooks: jest.fn(),
   useAppDispatch: jest.fn(),
   useAppSelector: jest.fn(),
 }));
@@ -78,7 +79,7 @@ jest.mock('@/app/services/benchmark-api-service', () => ({
   useRunBenchmarkMutation: jest.fn(),
 }));
 
-it('should go to next view when next button is clicked', async () => {
+it('should show correct views when next or back icons are clicked', async () => {
   let callCount = 1;
   (useAppSelector as jest.Mock).mockImplementation(() => {
     if (callCount === 1) {
@@ -103,23 +104,39 @@ it('should go to next view when next button is clicked', async () => {
     { isLoading: false },
   ]);
 
-  const { rerender } = render(<BenchmarkNewSessionFlow />);
-  const nextViewButton = screen.getByRole('button', { name: /Next View/i });
-  expect(nextViewButton).toBeInTheDocument();
+  render(<BenchmarkNewSessionFlow />);
+  const nextButton = screen.getByRole('button', { name: /Next View/i });
+
+  // topics selection screen
   expect(screen.getByText(mockCookbooks[0].name)).toBeInTheDocument();
   expect(screen.getByText(mockCookbooks[1].name)).toBeInTheDocument();
+  await userEvent.click(nextButton);
 
-  await userEvent.click(nextViewButton);
+  // recommended tests screen
   expect(
     screen.getByText(mockCookbooks[0].total_prompt_in_cookbook)
   ).toBeInTheDocument();
+  await userEvent.click(nextButton);
 
-  await userEvent.click(nextViewButton);
+  // endpoints selection screen
   expect(screen.getByText(mockEndpoints[0].name)).toBeInTheDocument();
   expect(screen.getByText(mockEndpoints[1].name)).toBeInTheDocument();
   expect(
     screen.getByRole('checkbox', { name: /Select Endpoint 1/i })
   ).not.toBeChecked();
+  await userEvent.click(
+    screen.getByRole('checkbox', { name: /Select Endpoint 1/i })
+  );
+  expect(
+    screen.getByRole('checkbox', { name: /Select Endpoint 1/i })
+  ).toBeChecked();
+  await userEvent.click(nextButton);
+
+  // benchmark run form screen
+  expect(screen.getByRole('button', { name: /run/i })).toBeInTheDocument();
+
+  // prepare to go back
+  const prevButton = screen.getByRole('button', { name: /Previous View/i });
 
   // simulate 1 endpoint selected
   callCount = 1;
@@ -132,12 +149,173 @@ it('should go to next view when next button is clicked', async () => {
     callCount--;
     return [mockEndpoints[0]];
   });
-  await act(async () => {
-    rerender(<BenchmarkNewSessionFlow />);
-  });
+  await userEvent.click(prevButton);
+
+  // back at endpoints selection screen
   expect(
     screen.getByRole('checkbox', { name: /Select Endpoint 1/i })
   ).toBeChecked();
-  await userEvent.click(nextViewButton);
+  await userEvent.click(prevButton);
+
+  // recommended tests screen
+  expect(
+    screen.getByText(mockCookbooks[0].total_prompt_in_cookbook)
+  ).toBeInTheDocument();
+
+  await userEvent.click(prevButton);
+
+  // back at topics selection screen
+  expect(screen.getByText(mockCookbooks[0].name)).toBeInTheDocument();
+  expect(screen.getByText(mockCookbooks[1].name)).toBeInTheDocument();
+});
+
+it('should show more cookbooks screen', async () => {
+  let callCount = 1;
+  (useAppSelector as jest.Mock).mockImplementation(() => {
+    if (callCount === 1) {
+      callCount++;
+      return [mockCookbooks[0]];
+    }
+    callCount--;
+    return [];
+  });
+  (useGetCookbooksQuery as jest.Mock).mockReturnValue({
+    data: mockCookbooks,
+    isFetching: false,
+  });
+  (useModelsList as jest.Mock).mockImplementation(() => ({
+    models: mockEndpoints,
+    isLoading: false,
+    error: null,
+  }));
+  (useAppDispatch as jest.Mock).mockImplementation(() => jest.fn());
+  (useRunBenchmarkMutation as jest.Mock).mockReturnValue([
+    jest.fn(),
+    { isLoading: false },
+  ]);
+
+  render(<BenchmarkNewSessionFlow />);
+  const nextButton = screen.getByRole('button', { name: /Next View/i });
+
+  // topics selection screen
+  expect(screen.getByText(mockCookbooks[0].name)).toBeInTheDocument();
+  expect(screen.getByText(mockCookbooks[1].name)).toBeInTheDocument();
+  await userEvent.click(nextButton);
+
+  // recommended tests screen
+  expect(
+    screen.getByText(mockCookbooks[0].total_prompt_in_cookbook)
+  ).toBeInTheDocument();
+
+  await userEvent.click(screen.getByText(/these cookbooks/i));
+
+  // more cookbooks screen
+  expect(
+    screen.getByRole('button', { name: /capability/i })
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole('button', { name: /trust & safety/i })
+  ).toBeInTheDocument();
+  expect(screen.getByText(mockCookbooks[1].name)).toBeInTheDocument();
+
+  await userEvent.click(screen.getByRole('button', { name: /ok/i }));
+
+  // back at recommended tests screen
+  expect(screen.getByText(/these cookbooks/i)).toBeInTheDocument();
+});
+
+it('should show the shorter three stepsflow', async () => {
+  (useAppSelector as jest.Mock).mockImplementation(() => []); // simulate no cookbooks selected
+  (useGetCookbooksQuery as jest.Mock).mockReturnValue({
+    data: mockCookbooks,
+    isFetching: false,
+  });
+  (useModelsList as jest.Mock).mockImplementation(() => ({
+    models: mockEndpoints,
+    isLoading: false,
+    error: null,
+  }));
+  (useAppDispatch as jest.Mock).mockImplementation(() => jest.fn());
+  (useRunBenchmarkMutation as jest.Mock).mockReturnValue([
+    jest.fn(),
+    { isLoading: false },
+  ]);
+
+  const { rerender } = render(<BenchmarkNewSessionFlow threeStepsFlow />);
+  // more cookbooks screen
+  expect(
+    screen.getByRole('button', { name: /capability/i })
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole('button', { name: /trust & safety/i })
+  ).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /ok/i })).toBeFalsy();
+
+  await userEvent.click(
+    screen.getByRole('checkbox', { name: `Select ${mockCookbooks[0].id}` })
+  );
+  expect(
+    screen.getByRole('checkbox', { name: `Select ${mockCookbooks[0].id}` })
+  ).toBeChecked();
+
+  // simulate select cookbook
+  await act(async () => {
+    (useAppSelector as jest.Mock).mockReset();
+    (useAppSelector as jest.Mock).mockImplementation(() => [mockCookbooks[0]]);
+    rerender(<BenchmarkNewSessionFlow threeStepsFlow />);
+  });
+  await userEvent.click(screen.getByRole('button', { name: /ok/i }));
+
+  // back to recommended tests screen
+  expect(
+    screen.getByText(mockCookbooks[0].total_prompt_in_cookbook)
+  ).toBeInTheDocument();
+
+  // reset useAppSelector mock to return empty array for selected endpoints
+  (useAppSelector as jest.Mock).mockReset();
+  (useAppSelector as jest.Mock).mockImplementation(() => []);
+  const nextButton = screen.getByRole('button', { name: /Next View/i });
+  await userEvent.click(nextButton);
+
+  // endpoints selection screen
+  expect(screen.getByText(mockEndpoints[0].name)).toBeInTheDocument();
+  expect(screen.getByText(mockEndpoints[1].name)).toBeInTheDocument();
+  expect(
+    screen.getByRole('checkbox', { name: /Select Endpoint 1/i })
+  ).not.toBeChecked();
+  await userEvent.click(
+    screen.getByRole('checkbox', { name: /Select Endpoint 1/i })
+  );
+  expect(
+    screen.getByRole('checkbox', { name: /Select Endpoint 1/i })
+  ).toBeChecked();
+  await userEvent.click(nextButton);
+
+  // benchmark run form screen
   expect(screen.getByRole('button', { name: /run/i })).toBeInTheDocument();
+
+  const prevButton = screen.getByRole('button', { name: /Previous View/i });
+  await userEvent.click(prevButton);
+
+  // back at endpoints selection screen
+  expect(screen.getByText(mockEndpoints[0].name)).toBeInTheDocument();
+  expect(screen.getByText(mockEndpoints[1].name)).toBeInTheDocument();
+
+  // mock selected cookbook and model and go back
+  let callCount = 1;
+  (useAppSelector as jest.Mock).mockReset();
+  (useAppSelector as jest.Mock).mockImplementation(() => {
+    if (callCount === 1) {
+      callCount++;
+      return [mockCookbooks[0]];
+    }
+    callCount--;
+    return [mockEndpoints[0]];
+  });
+  await userEvent.click(prevButton);
+
+  // back at recommended tests screen
+  expect(
+    screen.getByText(mockCookbooks[0].total_prompt_in_cookbook)
+  ).toBeInTheDocument();
 });
