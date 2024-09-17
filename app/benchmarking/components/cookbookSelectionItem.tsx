@@ -25,6 +25,7 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
 
   return (
     <li
+      role="cookbookcard"
       className="flex flex-col gap-2 border rounded-lg p-6 cursor-pointer border-moongray-800
       text-white hover:bg-moongray-800 hover:border-moonwine-700 text-[0.9rem] mb-[15px]"
       style={{

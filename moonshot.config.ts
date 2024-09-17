@@ -1,12 +1,12 @@
 type MoonshotConfig = {
   baselineSelectedCookbooks: string[];
-  defaultCookbooksForSelection: string[];
   estimatedPromptResponseTime: number;
   cookbookCategoriesTabs: {
     id: string;
     label: string;
     categoryNames: string[];
   }[];
+  cookbooksOrder: string[];
   cookbookTags: {
     [cookbookId: string]: string[];
   };
@@ -32,17 +32,7 @@ const config: MoonshotConfig = {
     'common-risk-easy',
     'common-risk-hard',
   ],
-  defaultCookbooksForSelection: [
-    'mlc-ai-safety',
-    'common-risk-easy',
-    'common-risk-hard',
-    'chinese-safety-cookbook',
-    'tamil-language-cookbook',
-    'leaderboard-cookbook',
-    'legal-summarisation',
-    'medical-llm-leaderboard',
-    'singapore-context',
-  ],
+  cookbooksOrder: ['singapore-context', 'mlc-ai-safety'],
   cookbookTags: {
     'common-risk-easy': [
       'Bias',

@@ -15,6 +15,7 @@ jest.mock('@/moonshot.config', () => ({
   __esModule: true,
   default: {
     ...jest.requireActual('@/moonshot.config').default,
+    cookbooksOrder: ['cb-id-2', 'cb-id-3'],
     cookbookTags: {
       'cb-id-1': ['tag1', 'tag2'],
       'cb-id-2': ['tag3', 'tag4'],
@@ -109,7 +110,7 @@ describe('CookbooksSelection', () => {
     jest.clearAllMocks();
   });
 
-  it('should display cookbooks selection correctly', () => {
+  it('should display cookbooks in the correct order', () => {
     const mockAlreadySelectedCookbooks = [mockCookbooks[0], mockCookbooks[2]];
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockAlreadySelectedCookbooks
@@ -120,9 +121,11 @@ describe('CookbooksSelection', () => {
         onClose={mockOnClose}
       />
     );
-    expect(screen.getByText(/Mock Cookbook One/i)).toBeInTheDocument();
-    expect(screen.getByText(/Mock Cookbook Two/i)).toBeInTheDocument();
-    expect(screen.getByText(/Mock Cookbook Three/i)).toBeInTheDocument();
+    const cookbookItems = screen.getAllByRole('cookbookcard');
+    expect(cookbookItems).toHaveLength(mockCookbooks.length);
+    expect(cookbookItems[0]).toHaveTextContent(mockCookbooks[1].name);
+    expect(cookbookItems[1]).toHaveTextContent(mockCookbooks[2].name);
+    expect(cookbookItems[2]).toHaveTextContent(mockCookbooks[0].name);
     const tagNames = Object.values(mockCookbookTags).flat();
     for (const tag of tagNames) {
       expect(screen.getByText(tag)).toBeInTheDocument();

@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   updateAllCookbooks,
   useCookbooks,
@@ -97,6 +97,20 @@ function CookbooksSelection(props: Props) {
     }
   );
 
+  const orderedCookbooks = React.useMemo(() => {
+    if (!cookbooks) return [];
+    const order = config.cookbooksOrder;
+    const ordered = [...cookbooks].sort((a, b) => {
+      const indexA = order.indexOf(a.id);
+      const indexB = order.indexOf(b.id);
+      if (indexA === -1 && indexB === -1) return 0;
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
+      return indexA - indexB;
+    });
+    return ordered;
+  }, [cookbooks]);
+
   useEffect(() => {
     if (!isThreeStepsFlow || isFetchingAllCookbooks) return;
     if (isFirstCookbooksFetch && allCookbooks) {
@@ -184,7 +198,7 @@ function CookbooksSelection(props: Props) {
               ) : cookbooks.length === 0 ? (
                 <div className="text-white">No cookbooks found</div>
               ) : (
-                cookbooks.map((cookbook) => {
+                orderedCookbooks.map((cookbook) => {
                   const selected = selectedCookbooks.some(
                     (t) => t.id === cookbook.id
                   );
