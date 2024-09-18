@@ -1,5 +1,9 @@
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  updateAllCookbooks,
+  useCookbooks,
+} from '@/app/benchmarking/contexts/cookbooksContext';
 import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { PopupSurface } from '@/app/components/popupSurface';
 import { TabsMenu, TabItem } from '@/app/components/tabsMenu';
@@ -39,11 +43,12 @@ const tabItems: TabItem<string[]>[] = config.cookbookCategoriesTabs.map(
 );
 
 type Props = {
+  isThreeStepsFlow: boolean;
   onClose: () => void;
 };
 
 function CookbooksSelection(props: Props) {
-  const { onClose } = props;
+  const { onClose, isThreeStepsFlow } = props;
   const dispatch = useAppDispatch();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
@@ -52,6 +57,17 @@ function CookbooksSelection(props: Props) {
   const [cookbookDetails, setCookbookDetails] = useState<
     Cookbook | undefined
   >();
+
+  const [_, setAllCookbooks, isFirstCookbooksFetch, setIsFirstCookbooksFetch] =
+    useCookbooks();
+
+  const { data: allCookbooks, isFetching: isFetchingAllCookbooks } =
+    useGetCookbooksQuery(
+      {
+        count: true,
+      },
+      { skip: !isThreeStepsFlow || !isFirstCookbooksFetch }
+    );
 
   const excludedCategories = activeTab.data
     ? activeTab.data.reduce<string[]>((acc, cat) => {
@@ -87,6 +103,28 @@ function CookbooksSelection(props: Props) {
         (!excludedCategories || excludedCategories.length === 0),
     }
   );
+
+  const orderedCookbooks = React.useMemo(() => {
+    if (!cookbooks) return [];
+    const order = config.cookbooksOrder;
+    const ordered = [...cookbooks].sort((a, b) => {
+      const indexA = order.indexOf(a.id);
+      const indexB = order.indexOf(b.id);
+      if (indexA === -1 && indexB === -1) return 0;
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
+      return indexA - indexB;
+    });
+    return ordered;
+  }, [cookbooks]);
+
+  useEffect(() => {
+    if (!isThreeStepsFlow || isFetchingAllCookbooks) return;
+    if (isFirstCookbooksFetch && allCookbooks) {
+      updateAllCookbooks(setAllCookbooks, allCookbooks);
+      setIsFirstCookbooksFetch(false);
+    }
+  }, [isThreeStepsFlow, isFetchingAllCookbooks, allCookbooks]);
 
   function handleTabClick(tab: TabItem<string[]>) {
     setActiveTab(tab);
@@ -164,7 +202,7 @@ function CookbooksSelection(props: Props) {
               ) : cookbooks.length === 0 ? (
                 <div className="text-white">No cookbooks found</div>
               ) : (
-                cookbooks.map((cookbook) => {
+                orderedCookbooks.map((cookbook) => {
                   const selected = selectedCookbooks.some(
                     (t) => t.id === cookbook.id
                   );

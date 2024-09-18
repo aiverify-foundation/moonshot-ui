@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { BenchmarkMainCookbooksPromptCount } from '@/app/benchmarking/components/benchmarkMainCookbooksPromptCount';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
 
@@ -10,7 +11,7 @@ function mockRedux() {
   };
 }
 
-const mockChangeView = jest.fn();
+const mockCookbooksLinkClick = jest.fn();
 
 const mockCookbooks: Cookbook[] = [
   {
@@ -48,24 +49,24 @@ describe('BenchmarkMainCookbooksPromptCount', () => {
     jest.clearAllMocks();
   });
 
-  test('shows loading animation', () => {
+  it('should show loading animation', () => {
     const mockOneAlreadySelectedCookbooksFromState: Cookbook[] = mockCookbooks;
     renderWithProviders(
       <BenchmarkMainCookbooksPromptCount
         selectedCookbooks={mockOneAlreadySelectedCookbooksFromState}
-        changeView={mockChangeView}
+        onCookbooksLinkClick={mockCookbooksLinkClick}
       />
     );
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
-  test('shows 30 prompts', () => {
+  it('should show 30 prompts', () => {
     const mockOneAlreadySelectedCookbooksFromState: Cookbook[] = mockCookbooks;
     const mockAllCookbooks = mockCookbooks;
     renderWithProviders(
       <BenchmarkMainCookbooksPromptCount
         selectedCookbooks={mockOneAlreadySelectedCookbooksFromState}
-        changeView={mockChangeView}
+        onCookbooksLinkClick={mockCookbooksLinkClick}
       />,
       { initialCookbooks: mockAllCookbooks }
     );
@@ -73,17 +74,30 @@ describe('BenchmarkMainCookbooksPromptCount', () => {
     expect(screen.getByText(/30/i)).toBeInTheDocument();
   });
 
-  test('shows 20 prompts', () => {
+  it('should show 20 prompts', () => {
     const mockOneAlreadySelectedCookbooksFromState = [mockCookbooks[1]];
     const mockAllCookbooks = mockCookbooks;
     renderWithProviders(
       <BenchmarkMainCookbooksPromptCount
         selectedCookbooks={mockOneAlreadySelectedCookbooksFromState}
-        changeView={mockChangeView}
+        onCookbooksLinkClick={mockCookbooksLinkClick}
       />,
       { initialCookbooks: mockAllCookbooks }
     );
 
     expect(screen.getByText(/20/i)).toBeInTheDocument();
+  });
+
+  it('should call onCookbooksLinkClick', async () => {
+    const mockOneAlreadySelectedCookbooksFromState = mockCookbooks;
+    renderWithProviders(
+      <BenchmarkMainCookbooksPromptCount
+        selectedCookbooks={mockOneAlreadySelectedCookbooksFromState}
+        onCookbooksLinkClick={mockCookbooksLinkClick}
+      />
+    );
+    const link = screen.getByText(/these cookbooks/i);
+    await userEvent.click(link);
+    expect(mockCookbooksLinkClick).toHaveBeenCalledTimes(1);
   });
 });

@@ -12,8 +12,8 @@ function ResponseTalkBubble(props: ResposneTalkBubbleProps) {
   const borderStyle = `1px solid ${borderColor}`;
   return (
     <>
-      <h1 className="max-w-[90%] flex flex-col text-left pl-2 text-sm text-white">
-        AI
+      <h1 className="max-w-[90%] flex flex-col text-left pl-2 pt-2 text-sm text-white pb-1">
+        Response
       </h1>
       <Chat.TalkBubble
         backgroundColor={colors.chatBubbleWhite}
