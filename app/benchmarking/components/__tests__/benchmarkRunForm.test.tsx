@@ -198,9 +198,7 @@ describe('BenchmarkRunForm', () => {
     });
     expect(screen.getByRole('button', { name: /Run/i })).toBeDisabled();
     await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
-    expect(
-      screen.getByText(/will be run: 0/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/will be run: 0/i)).toBeInTheDocument();
     expect(
       screen.getByText(new RegExp(`${GRAND_TOTAL_PROMPTS}`))
     ).toBeInTheDocument();
@@ -320,8 +318,11 @@ describe('BenchmarkRunForm', () => {
     await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
     await userEvent.type(screen.getByLabelText(/Run a smaller set/i), '0');
     expect(screen.getByRole('button', { name: /Run/i })).toBeDisabled();
-    expect(
-      screen.getByText(/.* must be greater than 0/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/.* must be greater than 0/i)).toBeInTheDocument();
+    expect(screen.getByText(/will be run: 0/i)).toBeInTheDocument();
+    await userEvent.type(screen.getByLabelText(/Run a smaller set/i), '1.5');
+    expect(screen.getByRole('button', { name: /Run/i })).toBeDisabled();
+    expect(screen.getByText(/.* must be an integer/i)).toBeInTheDocument();
+    expect(screen.getByText(/will be run: 0/i)).toBeInTheDocument();
   });
 });

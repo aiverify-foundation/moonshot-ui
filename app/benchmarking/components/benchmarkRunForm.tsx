@@ -56,9 +56,13 @@ function BenchmarkRunForm({
           const totalBasePrompts = Object.values(
             stats.num_of_datasets_prompts
           ).reduce((sum, value) => sum + value, 0);
-          const userInputTotalBasePrompts = !isNaN(coercedNumOfPromptsInput)
-            ? coercedNumOfPromptsInput * stats.num_of_datasets
-            : 0;
+          const userInputTotalBasePrompts =
+            !isNaN(coercedNumOfPromptsInput) &&
+            coercedNumOfPromptsInput > 0 &&
+            Number.isInteger(coercedNumOfPromptsInput) &&
+            !numOfPromptsInput.includes('.')
+              ? coercedNumOfPromptsInput * stats.num_of_datasets
+              : 0;
           let grandTotalPrompts = totalBasePrompts;
           let userInputGrandTotalPrompts = userInputTotalBasePrompts;
           if (stats.num_of_metrics > 0) {
@@ -120,7 +124,9 @@ function BenchmarkRunForm({
     isNaN(coercedNumOfPromptsInput) ||
     (!isRunAll &&
       !isNaN(coercedNumOfPromptsInput) &&
-      coercedNumOfPromptsInput < 1);
+      coercedNumOfPromptsInput < 1) ||
+    !Number.isInteger(coercedNumOfPromptsInput) ||
+    numOfPromptsInput.includes('.');
 
   let numOfPromptsError = formState.formErrors?.num_of_prompts?.[0];
   if (
@@ -135,6 +141,12 @@ function BenchmarkRunForm({
     userInputNumOfPromptsGrandTotal > numOfPromptsGrandTotal
   ) {
     numOfPromptsError = `Total number of prompts that will be run should be smaller than actual total number of prompts which is ${numOfPromptsGrandTotal}`;
+  } else if (
+    !isRunAll &&
+    numOfPromptsInput.trim() !== '' &&
+    !Number.isInteger(coercedNumOfPromptsInput)
+  ) {
+    numOfPromptsError = 'Number of prompts per recipe must be an integer';
   }
 
   return (

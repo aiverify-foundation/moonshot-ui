@@ -255,10 +255,6 @@ it('should show more cookbooks screen', async () => {
     error: null,
   }));
   (useAppDispatch as jest.Mock).mockImplementation(() => jest.fn());
-  (useRunBenchmarkMutation as jest.Mock).mockReturnValue([
-    jest.fn(),
-    { isLoading: false },
-  ]);
 
   render(<BenchmarkNewSessionFlow />);
   const nextButton = screen.getByRole('button', { name: /Next View/i });
@@ -302,10 +298,6 @@ it('should show the shorter three stepsflow', async () => {
     error: null,
   }));
   (useAppDispatch as jest.Mock).mockImplementation(() => jest.fn());
-  (useRunBenchmarkMutation as jest.Mock).mockReturnValue([
-    jest.fn(),
-    { isLoading: false },
-  ]);
 
   const { rerender } = render(<BenchmarkNewSessionFlow threeStepsFlow />);
   // more cookbooks screen
