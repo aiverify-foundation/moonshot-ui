@@ -11,6 +11,18 @@ import {
   useAppSelector,
 } from '@/lib/redux';
 
+jest.mock('@/moonshot.config', () => ({
+  __esModule: true,
+  default: {
+    ...jest.requireActual('@/moonshot.config').default,
+    cookbooksOrder: ['cb-id-2', 'cb-id-3'],
+    cookbookTags: {
+      'cb-id-1': ['tag1', 'tag2'],
+      'cb-id-2': ['tag3', 'tag4'],
+    },
+  },
+}));
+
 jest.mock('@/lib/redux', () => ({
   addBenchmarkCookbooks: jest.fn(),
   removeBenchmarkCookbooks: jest.fn(),
@@ -18,6 +30,7 @@ jest.mock('@/lib/redux', () => ({
   useAppDispatch: jest.fn(),
   useAppSelector: jest.fn(),
 }));
+
 jest.mock('@/app/services/cookbook-api-service', mockCookbookApiService);
 
 function mockCookbookApiService() {
@@ -68,6 +81,11 @@ describe('CookbooksSelection', () => {
   const mockAddBenchmarkCookbooks = jest.fn();
   const mockUpdateBenchmarkCookbooks = jest.fn();
 
+  const mockCookbookTags = {
+    'cb-id-1': ['tag1', 'tag2'],
+    'cb-id-2': ['tag3', 'tag4'],
+  };
+
   beforeAll(() => {
     function useMockGetCookbooksQuery() {
       return {
@@ -92,15 +110,26 @@ describe('CookbooksSelection', () => {
     jest.clearAllMocks();
   });
 
-  test('renders cookbooks selection correctly', () => {
+  it('should display cookbooks in the correct order', () => {
     const mockAlreadySelectedCookbooks = [mockCookbooks[0], mockCookbooks[2]];
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockAlreadySelectedCookbooks
     );
-    renderWithProviders(<CookbooksSelection onClose={mockOnClose} />);
-    expect(screen.getByText(/Mock Cookbook One/i)).toBeInTheDocument();
-    expect(screen.getByText(/Mock Cookbook Two/i)).toBeInTheDocument();
-    expect(screen.getByText(/Mock Cookbook Three/i)).toBeInTheDocument();
+    renderWithProviders(
+      <CookbooksSelection
+        isThreeStepsFlow={false}
+        onClose={mockOnClose}
+      />
+    );
+    const cookbookItems = screen.getAllByRole('cookbookcard');
+    expect(cookbookItems).toHaveLength(mockCookbooks.length);
+    expect(cookbookItems[0]).toHaveTextContent(mockCookbooks[1].name);
+    expect(cookbookItems[1]).toHaveTextContent(mockCookbooks[2].name);
+    expect(cookbookItems[2]).toHaveTextContent(mockCookbooks[0].name);
+    const tagNames = Object.values(mockCookbookTags).flat();
+    for (const tag of tagNames) {
+      expect(screen.getByText(tag)).toBeInTheDocument();
+    }
     expect(
       screen.getByRole('checkbox', {
         name: `Select ${mockCookbooks[0].id}`,
@@ -122,14 +151,20 @@ describe('CookbooksSelection', () => {
     );
   });
 
-  test('selects and deselects a cookbook', async () => {
+  it('should select and deselect a cookbook', async () => {
     const mockNoSelectedCookbooks: Cookbook[] = [];
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockNoSelectedCookbooks
     );
-    renderWithProviders(<CookbooksSelection onClose={mockOnClose} />, {
-      initialCookbooks: mockCookbooks,
-    });
+    renderWithProviders(
+      <CookbooksSelection
+        isThreeStepsFlow={false}
+        onClose={mockOnClose}
+      />,
+      {
+        initialCookbooks: mockCookbooks,
+      }
+    );
 
     const cookbookOneCheckbox = screen.getByRole('checkbox', {
       name: `Select ${mockCookbooks[0].id}`,
@@ -149,14 +184,20 @@ describe('CookbooksSelection', () => {
     expect(cookbookOneCheckbox).not.toBeChecked();
   });
 
-  test('closes the selection view', async () => {
+  it('should close the selection view', async () => {
     const mockAlreadySelectedCookbooks = [mockCookbooks[0], mockCookbooks[2]];
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockAlreadySelectedCookbooks
     );
-    renderWithProviders(<CookbooksSelection onClose={mockOnClose} />, {
-      initialCookbooks: mockCookbooks,
-    });
+    renderWithProviders(
+      <CookbooksSelection
+        isThreeStepsFlow={false}
+        onClose={mockOnClose}
+      />,
+      {
+        initialCookbooks: mockCookbooks,
+      }
+    );
 
     const closeButton = screen.getByRole('button', { name: /ok/i });
     await userEvent.click(closeButton);

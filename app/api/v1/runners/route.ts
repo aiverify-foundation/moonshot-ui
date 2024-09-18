@@ -5,12 +5,18 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const response = await fetch(
-    `${config.webAPI.hostURL}${config.webAPI.basePathRunners}`
+    `${config.webAPI.hostURL}${config.webAPI.basePathRunners}`,
+    {
+      cache: 'no-store',
+    }
   );
   const runners: RunnerWebApiModel[] = await response.json();
   const runnerPromises = runners.map(async (runner) => {
     const runnerDetailsResponse = await fetch(
-      `${config.webAPI.hostURL}${config.webAPI.basePathRunners}/${runner.id}/runs/1`
+      `${config.webAPI.hostURL}${config.webAPI.basePathRunners}/${runner.id}/runs/1`,
+      {
+        cache: 'no-store',
+      }
     );
     const runnerDetails: RunnerDetailWebApiModel =
       await runnerDetailsResponse.json();

@@ -31,11 +31,10 @@ function mockCookbookApiService() {
   };
 }
 
-const mockSetHiddenNavButtons = jest.fn();
-
 let mockDispatchUpdateSelectedCookbooksInState: jest.Mock;
 let mockAddCookbooksMutation: jest.Mock;
 let mockRemoveCookbooksMutation: jest.Mock;
+const mockHandleSelectorUnselect = jest.fn();
 
 const mockCookbooks = [
   {
@@ -87,7 +86,8 @@ describe('BenchmarkDefaultSelection', () => {
       <CookbooksProvider>
         <BenchmarkDefaultSelection
           selectedCookbooks={[]}
-          setHiddenNavButtons={mockSetHiddenNavButtons}
+          onCookbookSelected={mockHandleSelectorUnselect}
+          onCookbookUnselected={mockHandleSelectorUnselect}
         />
       </CookbooksProvider>
     );
@@ -119,7 +119,8 @@ describe('BenchmarkDefaultSelection', () => {
       <CookbooksProvider>
         <BenchmarkDefaultSelection
           selectedCookbooks={mockNoneAlreadySelectedCookbooksFromState}
-          setHiddenNavButtons={mockSetHiddenNavButtons}
+          onCookbookSelected={mockHandleSelectorUnselect}
+          onCookbookUnselected={mockHandleSelectorUnselect}
         />
       </CookbooksProvider>
     );
@@ -142,6 +143,7 @@ describe('BenchmarkDefaultSelection', () => {
       mockCookbooks[0],
     ]);
     expect(mockDispatchUpdateSelectedCookbooksInState).toHaveBeenCalledTimes(2);
+    expect(mockHandleSelectorUnselect).toHaveBeenCalledTimes(1);
   });
 
   it('should render selected cookbook button with color', async () => {
@@ -159,7 +161,8 @@ describe('BenchmarkDefaultSelection', () => {
       <CookbooksProvider>
         <BenchmarkDefaultSelection
           selectedCookbooks={mockOneAlreadySelectedCookbooksFromState}
-          setHiddenNavButtons={mockSetHiddenNavButtons}
+          onCookbookSelected={mockHandleSelectorUnselect}
+          onCookbookUnselected={mockHandleSelectorUnselect}
         />
       </CookbooksProvider>
     );
@@ -173,5 +176,6 @@ describe('BenchmarkDefaultSelection', () => {
     expect(mockRemoveCookbooksMutation).toHaveBeenNthCalledWith(1, [
       clickedCookbook,
     ]);
+    expect(mockHandleSelectorUnselect).toHaveBeenCalledTimes(1);
   });
 });

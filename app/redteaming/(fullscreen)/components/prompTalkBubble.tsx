@@ -6,6 +6,7 @@ import { colors } from '@/app/customColors';
 import { PromptBubbleInfo } from './prompt-bubble-info';
 
 export type PromptTalkBubbleProps = {
+  bubbleTitle: string;
   isHovered: boolean;
   enableTooltip: boolean;
   duration: string;
@@ -17,6 +18,7 @@ export type PromptTalkBubbleProps = {
 
 function PromptTalkBubble(props: PromptTalkBubbleProps) {
   const {
+    bubbleTitle = 'You',
     isHovered,
     enableTooltip,
     duration,
@@ -47,7 +49,9 @@ function PromptTalkBubble(props: PromptTalkBubbleProps) {
 
   return (
     <>
-      <h1 className="flex flex-col text-right pr-2 text-sm text-white">You</h1>
+      <h1 className="flex flex-col text-right pr-2 text-sm text-white pb-1">
+        {bubbleTitle}
+      </h1>
       <div className="self-end snap-top max-w-[90%]">
         <div className="flex items-center">
           <div className="flex gap-2">
