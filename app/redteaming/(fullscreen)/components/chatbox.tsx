@@ -154,7 +154,7 @@ const ChatBox = React.forwardRef(
           <div
             className="flex flex-col p-2"
             role="status">
-            <div className="flex flex-col text-right pr-2 text-xs text-white">
+            <div className="flex flex-col text-right pr-2 text-xs text-white pb-1">
               You
             </div>
             <Chat.TalkBubble
@@ -163,8 +163,8 @@ const ChatBox = React.forwardRef(
               styles={inProgressPromptStyle}>
               {inProgressPromptText}
             </Chat.TalkBubble>
-            <div className="flex flex-col text-left pl-2 text-xs text-white">
-              AI
+            <div className="flex flex-col text-left pl-2 text-xs text-white pb-1">
+              Response
             </div>
             <div className="flex justify-start mr-4">
               <Chat.LoadingAnimation
