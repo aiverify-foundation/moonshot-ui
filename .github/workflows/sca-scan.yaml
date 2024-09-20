@@ -60,8 +60,11 @@ jobs:
     - name: Install & Scan MOONSHOT UI (Workflow_Dispatch)
       if: github.event_name == 'workflow_dispatch'
       run: |
-          npm install
-          bash <(curl -s -L https://detect.synopsys.com/detect9.sh) --blackduck.url=https://blackduck.aipo-imda.net/ --blackduck.api.token=${{ secrets.BLACKDUCK_TOKEN }} --detect.detector.search.depth=10 --detect.project.name=aiverify-moonshot-ui --detect.project.version.name=$BRANCH --detect.source.path=. --detect.code.location.name="aiverify-moonshot-ui_$BRANCH" --detect.excluded.directories=/tests --blackduck.trust.cert=true --detect.notices.report=true --detect.notices.report.path=.
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+          bash <(curl -s -L https://detect.synopsys.com/detect9.sh) --blackduck.url=https://blackduck.aipo-imda.net/ --blackduck.api.token=${{ secrets.BLACKDUCK_TOKEN }} --detect.detector.search.depth=10 --detect.project.name=aiverify-moonshot-ui --detect.project.version.name=$BRANCH --detect.source.path=. --detect.code.location.name="aiverify-moonshot-data_$BRANCH" --detect.excluded.directories=/tests --blackduck.trust.cert=true --detect.excluded.detector.types=POETRY --detect.notices.report=true --detect.notices.report.path=.
+          mv aiverify_moonshot_ui_main_Black_Duck_Notices_Report.txt LICENSE.md
 
     - name: Configure GIT (Workflow_Dispatch)
       if: github.event_name == 'workflow_dispatch'
@@ -80,7 +83,7 @@ jobs:
       if: github.event_name == 'workflow_dispatch'
       run: |
           git add .
-          git commit -m "Update Notices"
+          git commit -m "Update LICENSE.md"
           git push -f -u origin HEAD
       shell: bash
 
@@ -89,7 +92,7 @@ jobs:
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-          gh pr create --title "Update License for Moonshot UI" --body "This PR updates adds License File for Moonshot UI" --base main --head notices
+          gh pr create --title "Update LICENSE.md for Moonshot UI" --body "This PR updates License File for Moonshot UI" --base main --head notices
       shell: bash
 
     - name: Merge PR (Workflow_Dispatch)
