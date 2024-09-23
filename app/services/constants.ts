@@ -10,3 +10,5 @@ export const proxyPathMetrics = `${basePath}/api/v1/metrics`;
 export const proxyPathAttackModules = `${basePath}/api/v1/attack-modules`;
 export const proxyPathRunners = `${basePath}/api/v1/runners`;
 export const proxyPathSseStream = `${basePath}/api/v1/stream`;
+export const proxyPathCookbooks = `${basePath}/api/v1/cookbooks`;
+export const proxyPathEndpoints = `${basePath}/api/v1/endpoints`;
