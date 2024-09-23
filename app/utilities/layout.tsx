@@ -1,9 +1,9 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import LeftNav from '@/app/components/leftNav';
 import { MicroLayout } from '@/app/components/microLayout';
 import Notifications from '@/app/components/notifications';
+import { SvgImage } from '@/app/components/svgImage';
 
 export default function BenchmarkingLayout({
   children,
@@ -17,7 +17,7 @@ export default function BenchmarkingLayout({
       </nav>
       <header className="flex justify-between items-center px-4 mb-5">
         <Link href="/">
-          <Image
+          <SvgImage
             src="/aivmoonshot-logo.svg"
             height={80}
             width={310}
