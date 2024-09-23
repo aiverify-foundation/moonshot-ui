@@ -44,6 +44,7 @@ function Notifications() {
   }, [eventData]);
 
   useEffect(() => {
+    if (runnerIds.length === 0) return;
     setStatuses(allTestStatus);
   }, [allTestStatus]);
 
