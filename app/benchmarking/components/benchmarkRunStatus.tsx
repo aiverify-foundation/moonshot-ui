@@ -11,6 +11,7 @@ import { PopupSurface } from '@/app/components/popupSurface';
 import { colors } from '@/app/customColors';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { useCancelBenchmarkMutation } from '@/app/services/benchmark-api-service';
+import { proxyPathSseStream } from '@/app/services/constants';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import { useGetLLMEndpointsQuery } from '@/app/services/llm-endpoint-api-service';
 import { useGetRunnerByIdQuery } from '@/app/services/runner-api-service';
@@ -26,7 +27,7 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
   const [eventData, closeEventSource] = useEventSource<
     TestStatus,
     AppEventTypes
-  >('/api/v1/stream', AppEventTypes.BENCHMARK_UPDATE);
+  >(proxyPathSseStream, AppEventTypes.BENCHMARK_UPDATE);
   const { data = {}, isLoading } = useGetAllStatusQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
