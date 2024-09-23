@@ -1,8 +1,8 @@
-import { basePathMetric, hostURL } from '@/app/api/constants';
+import config from '@/moonshot.config';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const response = await fetch(`${hostURL}${basePathMetric}`, {
+  const response = await fetch(`${config.webAPI.hostURL}${config.webAPI.basePathMetrics}`, {
     method: 'GET',
   });
   return response;
