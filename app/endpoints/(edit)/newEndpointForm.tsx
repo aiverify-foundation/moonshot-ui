@@ -410,7 +410,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
 
             <TextInput
               name="token"
-              label="Token"
+              label="Token*"
               labelStyles={labelStyle}
               inputStyles={tokenInputStyle}
               onChange={formik.handleChange}
@@ -481,7 +481,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
             />
 
             <TextArea
-              label="Other Parameters"
+              label="Other Parameters*"
               name="params"
               onChange={handleParamsChange}
               value={formik.values.params}
