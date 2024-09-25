@@ -204,7 +204,9 @@ const ChatboxSlideLayout = React.forwardRef(
                         chatBoxControlsMap.delete(id);
                       }
                     }}
-                    windowId={getWindowId(id)}
+                    windowId={getWindowId(
+                      `${chatSession.session.session_id}-${id}`
+                    )}
                     chatHistory={
                       chatSession.chat_records
                         ? chatSession.chat_records[id]
