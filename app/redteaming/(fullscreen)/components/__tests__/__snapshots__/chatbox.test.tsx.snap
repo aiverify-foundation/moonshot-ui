@@ -40,9 +40,9 @@ exports[`Chatbox render chatbox containing prompt and response talk bubbles 1`] 
             class="flex flex-col p-2"
           >
             <h1
-              class="flex flex-col text-right pr-2 text-sm text-white"
+              class="flex flex-col text-right pr-2 text-sm text-white pb-1"
             >
-              You
+              Automated red teaming agent
             </h1>
             <div
               class="self-end snap-top max-w-[90%]"
@@ -95,9 +95,9 @@ exports[`Chatbox render chatbox containing prompt and response talk bubbles 1`] 
               </div>
             </div>
             <h1
-              class="max-w-[90%] flex flex-col text-left pl-2 text-sm text-white"
+              class="max-w-[90%] flex flex-col text-left pl-2 pt-2 text-sm text-white pb-1"
             >
-              AI
+              Response
             </h1>
             <div
               style="text-align: left; color: rgb(0, 0, 0); padding: 12px 16px; font-size: 14px; background-color: rgb(221, 221, 221); margin: 0px 0px 0px 0px; border-radius: 14px; min-width: 35%; border: 1px solid #2563eb;"
@@ -109,9 +109,9 @@ exports[`Chatbox render chatbox containing prompt and response talk bubbles 1`] 
             class="flex flex-col p-2"
           >
             <h1
-              class="flex flex-col text-right pr-2 text-sm text-white"
+              class="flex flex-col text-right pr-2 text-sm text-white pb-1"
             >
-              You
+              Automated red teaming agent
             </h1>
             <div
               class="self-end snap-top max-w-[90%]"
@@ -164,9 +164,9 @@ exports[`Chatbox render chatbox containing prompt and response talk bubbles 1`] 
               </div>
             </div>
             <h1
-              class="max-w-[90%] flex flex-col text-left pl-2 text-sm text-white"
+              class="max-w-[90%] flex flex-col text-left pl-2 pt-2 text-sm text-white pb-1"
             >
-              AI
+              Response
             </h1>
             <div
               style="text-align: left; color: rgb(0, 0, 0); padding: 12px 16px; font-size: 14px; background-color: rgb(221, 221, 221); margin: 0px 0px 0px 0px; border-radius: 14px; min-width: 35%; border: 1px solid transparent;"

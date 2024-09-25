@@ -74,7 +74,7 @@ const ChatboxFreeLayout = React.forwardRef(
 
     useEffect(() => {
       resetChatboxPositions(false);
-    }, []);
+    }, [chatSession.session.session_id]);
 
     useEffect(() => {
       setTimeout(() => {
@@ -90,7 +90,9 @@ const ChatboxFreeLayout = React.forwardRef(
     return (
       <>
         {chatSession.session.endpoints.map((id: string, index: number) => {
-          const isMinimized = minizedChats.includes(getWindowId(id));
+          const isMinimized = minizedChats.includes(
+            getWindowId(`${chatSession.session.session_id}-${id}`)
+          );
           const left = index * 20;
           const chatboxStyle = isMinimized
             ? { ...minimizedStyle, left }
@@ -100,7 +102,9 @@ const ChatboxFreeLayout = React.forwardRef(
                     'transform 0.3s ease-in-out, top 0.5s ease-in-out, left 0.5s ease-in-out',
                 }
               : { borderRadius: '0.5rem' };
-          return windowsMap[getWindowId(id)] ? (
+          return windowsMap[
+            getWindowId(`${chatSession.session.session_id}-${id}`)
+          ] ? (
             <ChatBox
               key={id}
               disableCloseIcon={
@@ -119,11 +123,20 @@ const ChatboxFreeLayout = React.forwardRef(
                   chatBoxControlsMap.delete(id);
                 }
               }}
-              windowId={getWindowId(id)}
+              windowId={getWindowId(`${chatSession.session.session_id}-${id}`)}
               title={id}
-              initialXY={getWindowXYById(windowsMap, id)}
-              initialSize={getWindowSizeById(windowsMap, id)}
-              initialScrollTop={getWindowScrollTopById(windowsMap, id)}
+              initialXY={getWindowXYById(
+                windowsMap,
+                `${chatSession.session.session_id}-${id}`
+              )}
+              initialSize={getWindowSizeById(
+                windowsMap,
+                `${chatSession.session.session_id}-${id}`
+              )}
+              initialScrollTop={getWindowScrollTopById(
+                windowsMap,
+                `${chatSession.session.session_id}-${id}`
+              )}
               chatHistory={
                 chatSession.chat_records
                   ? chatSession.chat_records[id] || []
@@ -137,9 +150,15 @@ const ChatboxFreeLayout = React.forwardRef(
               onWindowChange={handleOnWindowChange}
               styles={chatboxStyle}
               headerStyle={chatboxHeaderStyle}
-              onCloseClick={handleMinimizeClick(getWindowId(id))}
+              onCloseClick={handleMinimizeClick(
+                getWindowId(`${chatSession.session.session_id}-${id}`)
+              )}
               onWholeWindowClick={
-                isMinimized ? handleMaximizeClick(getWindowId(id)) : undefined
+                isMinimized
+                  ? handleMaximizeClick(
+                      getWindowId(`${chatSession.session.session_id}-${id}`)
+                    )
+                  : undefined
               }
               onCreatePromptBookmarkClick={handleCreatePromptBookmarkClick}
             />

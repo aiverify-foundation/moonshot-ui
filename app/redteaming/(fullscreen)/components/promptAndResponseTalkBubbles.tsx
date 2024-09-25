@@ -17,7 +17,7 @@ type PromptAndResponseBubblesProps = {
 };
 
 function PromptAndResponseBubbles(props: PromptAndResponseBubblesProps) {
-  const { response, ...promptProps } = props;
+  const { response, attackModule, ...promptProps } = props;
   const [isHovered, setIsHovered] = React.useState(false);
   function handleMouseEnter() {
     setIsHovered(true);
@@ -46,6 +46,7 @@ function PromptAndResponseBubbles(props: PromptAndResponseBubblesProps) {
       onMouseLeave={handleMouseLeave}>
       <PromptTalkBubble
         {...promptProps}
+        bubbleTitle={attackModule ? 'Automated red teaming agent' : 'You'}
         isHovered={isHovered}
         onBookmarkIconClick={handleBookmarkIconClick}
       />
