@@ -4,6 +4,7 @@ import React from 'react';
 import { flushSync } from 'react-dom';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { CookbookCategoryLabels } from '@/app/benchmarking/report/types/benchmarkReportTypes';
+import { isWebkit } from '@/app/benchmarking/utils/isWebkit';
 import { HeaderControls } from './headerControls';
 import { Report } from './report';
 
@@ -44,15 +45,22 @@ function ReportViewer(props: ReportViewerProps) {
   }
 
   function handleHeaderBtnClick() {
+    function setBrowserZoom(zoomLevel: number) {
+      document.body.style.zoom = `${zoomLevel}%`;
+    }
+    setBrowserZoom(100);
     flushSync(() => {
       setPrePrintingFlagEnabled(true);
     });
     flushSync(() => {
       setExpanded(true);
     });
-    setTimeout(() => {
-      printReport();
-    }, 0);
+    setTimeout(
+      () => {
+        printReport();
+      },
+      isWebkit() ? 1000 : 0
+    );
   }
 
   return (
