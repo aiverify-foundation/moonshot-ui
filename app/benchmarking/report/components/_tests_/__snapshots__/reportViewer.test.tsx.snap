@@ -226,7 +226,7 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
       class="px-6 flex flex-col text-reportText"
     >
       <section
-        class="grid grid-cols-2 grid-rows-2 gap-4 mb-16"
+        class="grid grid-cols-2 grid-rows-2 gap-4 mb-10"
       >
         <div>
           <h5
@@ -270,7 +270,7 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
         </div>
       </section>
       <section
-        class="mb-16"
+        class="mb-1"
       >
         <h2
           class="text-[1.8rem] text-white mb-8"
@@ -342,6 +342,7 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
               >
                 <div
                   class="inline-block bg-moongray-200 text-fuchsia-400 text-[0.8rem] w-[25px] h-[18px] rounded-[45%] text-center"
+                  style="font-weight: bold;"
                 >
                   C
                 </div>
@@ -360,6 +361,7 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
               >
                 <div
                   class="inline-block bg-moongray-200 text-fuchsia-400 text-[0.8rem] w-[25px] h-[18px] rounded-[45%] text-center"
+                  style="font-weight: bold;"
                 >
                   T
                 </div>
@@ -368,63 +370,63 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
           </ol>
         </div>
       </section>
+    </div>
+    <section
+      class="text-[0.9rem] px-6 text-reportText "
+    >
       <section
-        class="text-[0.9rem]"
+        class="bg-[#202020] rounded-lg p-6"
       >
-        <section
-          class="bg-[#202020] rounded-lg p-6"
+        <h3
+          class="text-white pb-6"
         >
-          <h3
-            class="text-white pb-6"
-          >
-            Legend
-          </h3>
-          <p
-            class="pb-6"
-          >
-            <span
-              class="font-bold text-fuchsia-400 "
-            >
-              Q - Quality
-            </span>
-             evaluates the model's ability to consistently produce content that meets general correctness and application-specific standards.
-          </p>
-          <p
-            class="pb-6"
-          >
-            <span
-              class="font-bold text-fuchsia-400 "
-            >
-              C - Capability
-            </span>
-             assesses the AI model's ability to perform within the context of the unique requirements and challenges of a particular domain or task.
-          </p>
-          <p
-            class="pb-6"
-          >
-            <span
-              class="font-bold text-fuchsia-400 "
-            >
-              T - Trust & Safety
-            </span>
-             addresses the reliability, ethical considerations, and inherent risks of the AI model. It also examines potential scenarios where the AI system could be used maliciously or unethically.
-          </p>
-        </section>
+          Legend
+        </h3>
         <p
-          class="p-6"
-          data-download="hide"
+          class="pb-6"
         >
-          This report summarises the results for the benchmark tests ran on the endpoint. For the full detailed test results,  
-          <a
-            class="text-fuchsia-400"
-            href="/api/v1/benchmarks/results/mock-benchmark-result-with-mlc-cookbook?download=true"
+          <span
+            class="font-bold text-fuchsia-400 "
           >
-            Download the JSON file here
-          </a>
-          .
+            Q - Quality
+          </span>
+           evaluates the model's ability to consistently produce content that meets general correctness and application-specific standards.
+        </p>
+        <p
+          class="pb-6"
+        >
+          <span
+            class="font-bold text-fuchsia-400 "
+          >
+            C - Capability
+          </span>
+           assesses the AI model's ability to perform within the context of the unique requirements and challenges of a particular domain or task.
+        </p>
+        <p
+          class="pb-6"
+        >
+          <span
+            class="font-bold text-fuchsia-400 "
+          >
+            T - Trust & Safety
+          </span>
+           addresses the reliability, ethical considerations, and inherent risks of the AI model. It also examines potential scenarios where the AI system could be used maliciously or unethically.
         </p>
       </section>
-    </div>
+      <p
+        class="p-6"
+        data-download="hide"
+      >
+        This report summarises the results for the benchmark tests ran on the endpoint. For the full detailed test results,  
+        <a
+          class="text-fuchsia-400"
+          href="/api/v1/benchmarks/results/mock-benchmark-result-with-mlc-cookbook?download=true"
+        >
+          Download the JSON file here
+        </a>
+        .
+      </p>
+    </section>
     <article
       class="h-full w-full text-[0.9rem] bg-moongray-9400 rounded-lg text-reportText break-before-page"
     >
