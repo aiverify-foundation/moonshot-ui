@@ -40,7 +40,7 @@ const config: Config = {
       statements: 50,
     },
   },
-  coverageReporters: ['html', 'text', 'json-summary'],
+  coverageReporters: ['html', 'text', 'json-summary', 'text-summary'],
   reporters: ['default', ['jest-html-reporter', { pageTitle: 'Test Report' }]],
   testResultsProcessor: './node_modules/jest-json-reporter',
   moduleNameMapper: {

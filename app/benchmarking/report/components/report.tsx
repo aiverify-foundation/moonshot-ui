@@ -6,6 +6,7 @@ import {
 import { CookbookCategoryLabels } from '@/app/benchmarking/report/types/benchmarkReportTypes';
 import { calcTotalPromptsByEndpoint } from '@/app/benchmarking/utils/calcTotalPromptsByEndpoint';
 import { Button, ButtonType } from '@/app/components/button';
+import { CookbookLabelLegend } from './cookbookLabelLegend';
 import { CookbookReportCard } from './cookbookReportCard';
 import {
   MLC_AI_SAFETY_COOKBOOK_ID,
@@ -126,7 +127,6 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
               runnerNameAndDescription={runnerNameAndDescription}
             />
             <RunSummary
-              resultId={benchmarkResult.metadata.id}
               cookbooksInReport={cookbooksInReport}
               cookbookCategoryLabels={cookbookCategoryLabels}
               endpointId={endpointId}
@@ -134,6 +134,7 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
               startTime={benchmarkResult.metadata.start_time}
               endTime={benchmarkResult.metadata.end_time}
             />
+            <CookbookLabelLegend resultId={benchmarkResult.metadata.id} />
             {hasMlcAISafetyCookbookResult && (
               <React.Suspense fallback={<div>Loading...</div>}>
                 <MlcSafetyBaselineGrades

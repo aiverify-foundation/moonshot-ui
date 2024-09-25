@@ -35,9 +35,9 @@ function ReportViewer(props: ReportViewerProps) {
     const report = reportRef.current;
     await html2pdfjs(report, {
       filename: `report-${runnerNameAndDescription.name}-${selectedEndpointId}.pdf`,
-      html2canvas: { scale: 1.5 },
-      image: { type: 'jpeg', quality: 1 },
-      jsPDF: { format: 'a4', orientation: 'portrait' },
+      html2canvas: { scale: 2 },
+      image: { type: 'jpeg', quality: 0.98 },
+      jsPDF: { format: 'a4', orientation: 'portrait', unit: 'in' },
       pagebreak: { mode: 'css' },
     });
     setExpanded(false);
@@ -45,10 +45,6 @@ function ReportViewer(props: ReportViewerProps) {
   }
 
   function handleHeaderBtnClick() {
-    function setBrowserZoom(zoomLevel: number) {
-      document.body.style.zoom = `${zoomLevel}%`;
-    }
-    setBrowserZoom(100);
     flushSync(() => {
       setPrePrintingFlagEnabled(true);
     });
