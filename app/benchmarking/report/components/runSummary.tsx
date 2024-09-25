@@ -6,7 +6,7 @@ import { PrintingContext } from './reportViewer';
 type RunSummaryProps = {
   cookbooksInReport: Cookbook[];
   cookbookCategoryLabels: Record<string, string[]>;
-  endpointId: string;
+  endpointName: string;
   totalPrompts: number;
   startTime: string;
   endTime: string;
@@ -16,7 +16,7 @@ export function RunSummary(props: RunSummaryProps) {
   const {
     cookbooksInReport,
     cookbookCategoryLabels,
-    endpointId,
+    endpointName,
     totalPrompts,
     startTime,
     endTime,
@@ -27,8 +27,8 @@ export function RunSummary(props: RunSummaryProps) {
     <div className="px-6 flex flex-col text-reportText">
       <section className="grid grid-cols-2 grid-rows-2 gap-4 mb-10">
         <div>
-          <h5 className="font-bold text-white">Model Endpoints</h5>
-          <p>{endpointId}</p>
+          <h5 className="font-bold text-white">Model Endpoint</h5>
+          <p>{endpointName}</p>
         </div>
         <div>
           <h5 className="font-bold text-white">Number of prompts ran</h5>

@@ -11,6 +11,7 @@ import {
   fetchReport,
   fetchRunnerHeading,
 } from '@/app/lib/fetchApis';
+import { fetchEndpoints } from '@/app/lib/fetchApis/fetchEndpoint';
 import { ApiResult } from '@/app/lib/http-requests';
 export const dynamic = 'force-dynamic';
 
@@ -24,6 +25,7 @@ export default async function BenchmarkingReportPage(props: {
     fetchCookbooks({ categories: ['Capability'], count: false }),
     fetchCookbooks({ categories: ['Trust & Safety'], count: false }),
     fetchRecipes({ count: true }),
+    fetchEndpoints(),
   ];
   const [
     reportResponse,
@@ -32,6 +34,7 @@ export default async function BenchmarkingReportPage(props: {
     performanceCookbooksResponse,
     securityCookbooksResponse,
     recipesResponse,
+    endpointsResponse,
   ] = await Promise.all(fetchPromises);
   await Promise.all(fetchPromises);
 
@@ -63,6 +66,10 @@ export default async function BenchmarkingReportPage(props: {
     throw new Error(recipesResponse.message);
   }
 
+  if ('message' in endpointsResponse) {
+    throw new Error(endpointsResponse.message);
+  }
+
   const bencmarkResult = (reportResponse as ApiResult<CookbooksBenchmarkResult>)
     .data;
   const runnerNameAndDescription = (
@@ -90,6 +97,11 @@ export default async function BenchmarkingReportPage(props: {
     securityCookbooksResponse as ApiResult<Cookbook[]>
   ).data;
   const recipes = (recipesResponse as ApiResult<Recipe[]>).data;
+  const endpointsInReport = (
+    endpointsResponse as ApiResult<LLMEndpoint[]>
+  ).data.filter((endpoint) =>
+    bencmarkResult.metadata.endpoints.includes(endpoint.id)
+  );
 
   const cookbookCategoryLabels: CookbookCategoryLabels =
     bencmarkResult.metadata.cookbooks.reduce((acc, cookbookId) => {
@@ -127,6 +139,7 @@ export default async function BenchmarkingReportPage(props: {
         cookbookCategoryLabels={cookbookCategoryLabels}
         cookbooksInReport={cookbooksInReport}
         recipes={recipes}
+        endpoints={endpointsInReport}
       />
     </MainSectionSurface>
   );

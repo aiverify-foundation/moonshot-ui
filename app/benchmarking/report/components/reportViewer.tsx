@@ -14,6 +14,7 @@ type ReportViewerProps = {
   cookbookCategoryLabels: CookbookCategoryLabels;
   cookbooksInReport: Cookbook[];
   recipes: Recipe[];
+  endpoints: LLMEndpoint[];
 };
 
 const PrintingContext = React.createContext({
@@ -21,7 +22,7 @@ const PrintingContext = React.createContext({
 });
 
 function ReportViewer(props: ReportViewerProps) {
-  const { benchmarkResult, runnerNameAndDescription } = props;
+  const { benchmarkResult, runnerNameAndDescription, endpoints } = props;
   const [prePrintingFlagEnabled, setPrePrintingFlagEnabled] =
     React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
@@ -29,6 +30,10 @@ function ReportViewer(props: ReportViewerProps) {
     benchmarkResult.metadata.endpoints[0]
   );
   const reportRef = React.useRef<HTMLDivElement>(null);
+
+  const selectedEndpointName =
+    endpoints.find((endpoint) => endpoint.id === selectedEndpointId)?.name ||
+    selectedEndpointId;
 
   async function printReport() {
     if (!reportRef.current) return;
@@ -71,6 +76,7 @@ function ReportViewer(props: ReportViewerProps) {
         <Report
           {...props}
           endpointId={selectedEndpointId}
+          endpointName={selectedEndpointName}
           ref={reportRef}
           expanded={expanded}
         />

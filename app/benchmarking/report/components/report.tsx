@@ -35,6 +35,7 @@ const MlcAiSafetyRecipeRatingResult = React.lazy(
 type BenchmarkReportProps = {
   benchmarkResult: CookbooksBenchmarkResult;
   endpointId: string;
+  endpointName: string;
   runnerNameAndDescription: RunnerHeading;
   cookbooksInReport: Cookbook[];
   cookbookCategoryLabels: CookbookCategoryLabels;
@@ -52,6 +53,7 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
       benchmarkResult,
       runnerNameAndDescription,
       endpointId,
+      endpointName,
       cookbooksInReport,
       cookbookCategoryLabels,
       recipes,
@@ -129,7 +131,7 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
             <RunSummary
               cookbooksInReport={cookbooksInReport}
               cookbookCategoryLabels={cookbookCategoryLabels}
-              endpointId={endpointId}
+              endpointName={endpointName}
               totalPrompts={totalPrompts}
               startTime={benchmarkResult.metadata.start_time}
               endTime={benchmarkResult.metadata.end_time}
