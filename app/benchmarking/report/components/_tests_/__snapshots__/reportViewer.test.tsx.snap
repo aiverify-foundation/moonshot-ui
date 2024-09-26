@@ -232,10 +232,10 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
           <h5
             class="font-bold text-white"
           >
-            Model Endpoints
+            Model Endpoint
           </h5>
           <p>
-            endpoint-1
+            Endpoint 1
           </p>
         </div>
         <div>

@@ -12,6 +12,7 @@ import {
   mockCookbooksInReport,
   mockCookbooksInReportStandard,
 } from './mocks/mockCookbooksInReport';
+import { mockEndpointsInReport } from './mocks/mockEndpointsInReport';
 import { mockRecipes } from './mocks/mockRecipes';
 import { mockRunnerNameAndDescription } from './mocks/mockRunnerNameAndDescription';
 
@@ -25,6 +26,7 @@ it('renders report containing standard cookbook results and MLCommons AISafetyco
         cookbookCategoryLabels={mockCookbookCategoryLabels}
         cookbooksInReport={mockCookbooksInReport}
         recipes={mockRecipes}
+        endpoints={mockEndpointsInReport}
       />
     );
     container = result.container;
@@ -34,10 +36,9 @@ it('renders report containing standard cookbook results and MLCommons AISafetyco
     screen.getByText(mockRunnerNameAndDescription.name)
   ).toBeInTheDocument();
   expect(
-    screen.queryAllByText(
-      mockBenchmarkResultWithMLCCookbook.metadata.endpoints[0]
-    )
-  ).toHaveLength(2);
+    screen.getByText(mockBenchmarkResultWithMLCCookbook.metadata.endpoints[0])
+  ).toBeInTheDocument();
+  expect(screen.getByText(mockEndpointsInReport[0].name)).toBeInTheDocument();
   expect(screen.getByText(/section 1/i)).toBeInTheDocument();
   expect(screen.getByText(/Safety Baseline v0.5/i)).toBeInTheDocument();
   for (const cookbook of mockCookbooksInReport) {
@@ -57,10 +58,9 @@ it('renders report containing standard cookbook results and MLCommons AISafetyco
     screen.getByText(mockBenchmarkResultWithMLCCookbook.metadata.endpoints[1])
   );
   expect(
-    screen.queryAllByText(
-      mockBenchmarkResultWithMLCCookbook.metadata.endpoints[1]
-    )
-  ).toHaveLength(2);
+    screen.getByText(mockBenchmarkResultWithMLCCookbook.metadata.endpoints[1])
+  ).toBeInTheDocument();
+  expect(screen.getByText(mockEndpointsInReport[1].name)).toBeInTheDocument();
   expect(screen.queryAllByRole('label', { name: /^C$/ })).toHaveLength(3); // 1 in ratings description, 1 overall grade and 1 in the recipe grade
   expect(screen.queryAllByRole('label', { name: /^L$/ })).toHaveLength(17); // All mlc grades are mocked as L. 17 of them
 });
@@ -74,6 +74,7 @@ it('renders report containing standard cookbook results only', async () => {
         cookbookCategoryLabels={mockCookbookCategoryLabelsStandard}
         cookbooksInReport={mockCookbooksInReportStandard}
         recipes={mockRecipes}
+        endpoints={mockEndpointsInReport}
       />
     );
   });
@@ -110,6 +111,7 @@ it('should show raw scores when recipe evaluation is null', async () => {
         cookbookCategoryLabels={mockCookbookCategoryLabelsStandard}
         cookbooksInReport={mockCookbooksInReportStandard}
         recipes={mockRecipes}
+        endpoints={mockEndpointsInReport}
       />
     );
   });
