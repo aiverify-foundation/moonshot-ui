@@ -104,6 +104,14 @@ export async function createRun(
   }
 
   if (!response.ok || responseBody.success === false) {
+    if (responseBody.detail && typeof responseBody.detail === 'string') {
+      return {
+        formStatus: 'error',
+        formErrors: {
+          error: [responseBody.detail],
+        },
+      };
+    }
     return {
       formStatus: 'error',
       formErrors: {
