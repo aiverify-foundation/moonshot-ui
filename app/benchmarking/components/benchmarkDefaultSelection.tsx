@@ -12,21 +12,23 @@ import {
   addBenchmarkCookbooks,
   removeBenchmarkCookbooks,
   useAppDispatch,
-  useAppSelector,
 } from '@/lib/redux';
 import config from '@/moonshot.config';
 
 type Props = {
-  setHiddenNavButtons: React.Dispatch<React.SetStateAction<[boolean, boolean]>>;
+  selectedCookbooks: Cookbook[];
+  onCookbookSelected: () => void;
+  onCookbookUnselected: () => void;
 };
 
-function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
+function BenchmarkDefaultSelection({
+  selectedCookbooks,
+  onCookbookSelected,
+  onCookbookUnselected,
+}: Props) {
   const dispatch = useAppDispatch();
   const [_, setAllCookbooks, isFirstCookbooksFetch, setIsFirstCookbooksFetch] =
     useCookbooks();
-  const selectedCookbooks = useAppSelector(
-    (state) => state.benchmarkCookbooks.entities
-  );
   const {
     data: defaultCookbooksForSelection,
     isFetching: isFetchingDefaultCookbooksForSelection,
@@ -37,8 +39,10 @@ function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
   function handleCookbookBtnClick(cb: Cookbook) {
     if (selectedCookbooks.some((t) => t.id === cb.id)) {
       dispatch(removeBenchmarkCookbooks([cb]));
+      onCookbookUnselected();
     } else {
       dispatch(addBenchmarkCookbooks([cb]));
+      onCookbookSelected();
     }
   }
 
@@ -46,9 +50,6 @@ function BenchmarkDefaultSelection({ setHiddenNavButtons }: Props) {
     if (isFetchingDefaultCookbooksForSelection || !defaultCookbooksForSelection)
       return;
     updateAllCookbooks(setAllCookbooks, defaultCookbooksForSelection);
-    if (defaultCookbooksForSelection.length > 0) {
-      setHiddenNavButtons([true, false]);
-    }
     if (isFirstCookbooksFetch === true) {
       const preselectedCookbooks: Cookbook[] = config.baselineSelectedCookbooks
         .map((id) => defaultCookbooksForSelection?.find((cb) => cb.id === id))

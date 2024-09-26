@@ -132,8 +132,8 @@ function CookbooksMain({ cookbooks }: { cookbooks: Cookbook[] }) {
       surfaceColor = colors.moongray['950'];
       view = (
         <BenchmarkRunForm
-          defaultSelectedCookbooks={selectedCookbooks}
-          defaultSelectedEndpoints={selectedEndpoints}
+          selectedCookbooks={selectedCookbooks}
+          selectedEndpoints={selectedEndpoints}
         />
       );
       break;

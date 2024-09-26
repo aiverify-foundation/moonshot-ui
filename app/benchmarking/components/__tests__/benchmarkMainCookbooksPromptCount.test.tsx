@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { BenchmarkMainCookbooksPromptCount } from '@/app/benchmarking/components/benchmarkMainCookbooksPromptCount';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
-import { useAppSelector } from '@/lib/redux';
 
 jest.mock('@/lib/redux', mockRedux);
 
@@ -11,7 +11,7 @@ function mockRedux() {
   };
 }
 
-const mockChangeView = jest.fn();
+const mockCookbooksLinkClick = jest.fn();
 
 const mockCookbooks = [
   {
@@ -47,42 +47,55 @@ describe('BenchmarkMainCookbooksPromptCount', () => {
     jest.clearAllMocks();
   });
 
-  test('shows loading animation', () => {
+  it('should show loading animation', () => {
     const mockOneAlreadySelectedCookbooksFromState = mockCookbooks;
-    (useAppSelector as jest.Mock).mockImplementation(
-      () => mockOneAlreadySelectedCookbooksFromState
-    );
     renderWithProviders(
-      <BenchmarkMainCookbooksPromptCount changeView={mockChangeView} />
+      <BenchmarkMainCookbooksPromptCount
+        selectedCookbooks={mockOneAlreadySelectedCookbooksFromState}
+        onCookbooksLinkClick={mockCookbooksLinkClick}
+      />
     );
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
-  test('shows 30 prompts', () => {
+  it('should show 30 prompts', () => {
     const mockOneAlreadySelectedCookbooksFromState = mockCookbooks;
     const mockAllCookbooks = mockCookbooks;
-    (useAppSelector as jest.Mock).mockImplementation(
-      () => mockOneAlreadySelectedCookbooksFromState
-    );
     renderWithProviders(
-      <BenchmarkMainCookbooksPromptCount changeView={mockChangeView} />,
+      <BenchmarkMainCookbooksPromptCount
+        selectedCookbooks={mockOneAlreadySelectedCookbooksFromState}
+        onCookbooksLinkClick={mockCookbooksLinkClick}
+      />,
       { initialCookbooks: mockAllCookbooks }
     );
 
     expect(screen.getByText(/30/i)).toBeInTheDocument();
   });
 
-  test('shows 20 prompts', () => {
+  it('should show 20 prompts', () => {
     const mockOneAlreadySelectedCookbooksFromState = [mockCookbooks[1]];
     const mockAllCookbooks = mockCookbooks;
-    (useAppSelector as jest.Mock).mockImplementation(
-      () => mockOneAlreadySelectedCookbooksFromState
-    );
     renderWithProviders(
-      <BenchmarkMainCookbooksPromptCount changeView={mockChangeView} />,
+      <BenchmarkMainCookbooksPromptCount
+        selectedCookbooks={mockOneAlreadySelectedCookbooksFromState}
+        onCookbooksLinkClick={mockCookbooksLinkClick}
+      />,
       { initialCookbooks: mockAllCookbooks }
     );
 
     expect(screen.getByText(/20/i)).toBeInTheDocument();
+  });
+
+  it('should call onCookbooksLinkClick', async () => {
+    const mockOneAlreadySelectedCookbooksFromState = mockCookbooks;
+    renderWithProviders(
+      <BenchmarkMainCookbooksPromptCount
+        selectedCookbooks={mockOneAlreadySelectedCookbooksFromState}
+        onCookbooksLinkClick={mockCookbooksLinkClick}
+      />
+    );
+    const link = screen.getByText(/these cookbooks/i);
+    await userEvent.click(link);
+    expect(mockCookbooksLinkClick).toHaveBeenCalledTimes(1);
   });
 });

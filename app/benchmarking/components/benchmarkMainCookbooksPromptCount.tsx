@@ -2,9 +2,7 @@ import { useCookbooks } from '@/app/benchmarking/contexts/cookbooksContext';
 import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
-import { useAppSelector } from '@/lib/redux';
 import config from '@/moonshot.config';
-import { BenchmarkNewSessionViews } from './enums';
 import { RequiredEndpoints } from './requiredEndpoints';
 
 const requiredEndpoints = [
@@ -14,14 +12,15 @@ const requiredEndpoints = [
 ];
 
 type Props = {
-  changeView: (view: BenchmarkNewSessionViews) => void;
+  selectedCookbooks: Cookbook[];
+  onCookbooksLinkClick: () => void;
 };
 
-function BenchmarkMainCookbooksPromptCount({ changeView }: Props) {
+function BenchmarkMainCookbooksPromptCount({
+  selectedCookbooks,
+  onCookbooksLinkClick,
+}: Props) {
   const [allCookbooks, _] = useCookbooks();
-  const selectedCookbooks = useAppSelector(
-    (state) => state.benchmarkCookbooks.entities
-  );
   const { totalPrompts } = calcTotalPromptsAndEstimatedTime(
     selectedCookbooks,
     config.estimatedPromptResponseTime
@@ -36,9 +35,7 @@ function BenchmarkMainCookbooksPromptCount({ changeView }: Props) {
           content="See Details">
           <span
             className="decoration-2 underline hover:text-moonpurplelight cursor-pointer px-2"
-            onClick={() =>
-              changeView(BenchmarkNewSessionViews.COOKBOOKS_SELECTION)
-            }>
+            onClick={onCookbooksLinkClick}>
             these cookbooks
           </span>
         </Tooltip>{' '}

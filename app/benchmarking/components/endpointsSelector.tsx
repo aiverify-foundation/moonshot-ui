@@ -1,3 +1,4 @@
+import React from 'react';
 import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { SelectListItem } from '@/app/components/selectListItem';
@@ -22,7 +23,7 @@ function EndpointSelector(props: EndpointSelectorProps) {
     onEditClick,
     onCreateClick,
   } = props;
-  const { models, isLoading } = useModelsList();
+  const { models, isLoading } = useModelsList(); // todo - no need to abstract this hook. clean up
 
   return (
     <div className="flex flex-col pt-4 gap-8 pb-4 h-[80%]">

@@ -22,9 +22,12 @@ function Notifications() {
     refetchOnMountOrArgChange: true,
   });
   const runnerIds = Object.keys(allTestStatus) || [];
-  const { data: runners = [] } = useGetAllRunnersQuery(undefined, {
-    refetchOnMountOrArgChange: true,
-  });
+  const { data: runners = [], refetch: refetchRunners } = useGetAllRunnersQuery(
+    undefined,
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   const statusNotificationsRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -45,6 +48,9 @@ function Notifications() {
   }, [allTestStatus]);
 
   useEffect(() => {
+    if (showStatusPanel) {
+      refetchRunners();
+    }
     function handleOutsideClick(event: MouseEvent) {
       if (
         statusNotificationsRef.current &&
@@ -97,6 +103,7 @@ function Notifications() {
             <ul className="flex flex-col w-[240px] divide-y divide-moongray-800">
               {runnerIds.map((runnerId) => {
                 const runner = runners.find((runner) => runner.id === runnerId);
+                if (!runner) return null;
                 return (
                   <Link
                     href={`/benchmarking/session/run?runner_id=${runnerId}`}
@@ -109,7 +116,7 @@ function Notifications() {
                         transition: 'background-color 0.3s ease',
                       }}>
                       <p className="flex justify-between tracking-wider">
-                        <span>{runner ? runner.name : runnerId}</span>
+                        <span>{runner.name}</span>
                         <span>{statuses[runnerId].current_status}</span>
                       </p>
                       <div
