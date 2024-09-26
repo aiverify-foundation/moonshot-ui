@@ -68,7 +68,7 @@ npm start
 
 Check out our [Installation Guide](https://aiverify-foundation.github.io/moonshot/getting_started/quick_install/) for more details.
 
-If you are having installation issues, see the [Troubleshooting Guide](https://aiverify-foundation.github.io/moonshot/common_issues/).
+If you are having installation issues, see the [Troubleshooting Guide](https://aiverify-foundation.github.io/moonshot/faq/).
 
 ## User Guides
 
