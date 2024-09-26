@@ -102,7 +102,7 @@ type Cookbook = {
   description: string;
   recipes: string[];
   total_prompt_in_cookbook: number;
-  required_endpoints_in_cookbook: string[];
+  endpoint_required: string[];
 };
 
 type CookbookFormValues = {
@@ -131,7 +131,7 @@ type Recipe = {
   };
   tags: string[];
   total_prompt_in_recipe: number;
-  required_endpoints_in_recipe: string[];
+  endpoint_required: string[];
 };
 
 type RecipeFormValues = {
@@ -156,6 +156,7 @@ type AttackModule = {
   id: string;
   name: string;
   description: string;
+  endpoints: string[];
 };
 
 type BenchmarkRunFormValues = {
