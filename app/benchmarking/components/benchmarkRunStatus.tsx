@@ -1,5 +1,5 @@
 'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { ActionCard } from '@/app/components/actionCard/actionCard';
@@ -10,6 +10,7 @@ import { Modal } from '@/app/components/modal';
 import { PopupSurface } from '@/app/components/popupSurface';
 import { colors } from '@/app/customColors';
 import { useEventSource } from '@/app/hooks/use-eventsource';
+import { useModifiedRouter } from '@/app/hooks/useModifiedRouter';
 import { useCancelBenchmarkMutation } from '@/app/services/benchmark-api-service';
 import { proxyPathSseStream } from '@/app/services/constants';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
@@ -33,7 +34,7 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
   });
   const [triggerCancelBenchmark, { isLoading: isCancelling }] =
     useCancelBenchmarkMutation();
-  const router = useRouter();
+  const router = useModifiedRouter();
   const searchParams = useSearchParams();
   const runner_id = searchParams.get('runner_id');
   const { data: runnerData } = useGetRunnerByIdQuery(

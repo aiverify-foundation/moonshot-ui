@@ -1,6 +1,5 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
@@ -9,6 +8,7 @@ import { Modal } from '@/app/components/modal';
 import { PopupSurface } from '@/app/components/popupSurface';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { useEventSource } from '@/app/hooks/use-eventsource';
+import { useModifiedRouter } from '@/app/hooks/useModifiedRouter';
 import { toErrorWithMessage } from '@/app/lib/error-utils';
 import { getWindowId, getWindowXYById } from '@/app/lib/window-utils';
 import { Z_Index } from '@/app/redteaming/(fullscreen)/constants';
@@ -73,7 +73,7 @@ const streamPath = '/api/v1/redteaming/status';
 const ctxStrategyNumOfPrevPrompts = 5;
 
 function RedteamSessionChats(props: ActiveSessionProps) {
-  const router = useRouter();
+  const router = useModifiedRouter();
   const dispatch = useAppDispatch();
   const windowsMap = useAppSelector((state) => state.windows.map);
   const { sessionData } = props;

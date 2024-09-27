@@ -1,6 +1,5 @@
 'use client';
 import { useFormik } from 'formik';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState, useRef, memo, useMemo } from 'react';
 import { object, string, number, boolean } from 'yup';
 import { Icon, IconName } from '@/app/components/IconSVG';
@@ -13,6 +12,7 @@ import { SelectInput, SelectOption } from '@/app/components/selectInput';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
 import { colors } from '@/app/customColors';
+import { useModifiedRouter } from '@/app/hooks/useModifiedRouter';
 import { toErrorWithMessage } from '@/app/lib/error-utils';
 import { useGetAllConnectorsQuery } from '@/app/services/connector-api-service';
 import {
@@ -96,7 +96,7 @@ enum TokenInputMode {
 }
 
 function NewEndpointForm(props: NewEndpointFormProps) {
-  const router = useRouter();
+  const router = useModifiedRouter();
   const isFirstRender = useRef(true);
   const { onClose, disablePopupLayout, endpointToEdit } = props;
   const [showMoreConfig, setShowMoreConfig] = useState(false);

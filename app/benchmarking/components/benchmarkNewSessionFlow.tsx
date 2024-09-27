@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import { CookbooksSelection } from '@/app/benchmarking/components/cookbooksSelection';
 import { EndpointSelectVew } from '@/app/benchmarking/components/endpointsSelector';
@@ -10,6 +9,7 @@ import { Modal } from '@/app/components/modal';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { colors } from '@/app/customColors';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
+import { useModifiedRouter } from '@/app/hooks/useModifiedRouter';
 import {
   addBenchmarkModels,
   removeBenchmarkModels,
@@ -34,7 +34,7 @@ type BenchmarkNewSessionFlowProps = {
 
 function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
   const { threeStepsFlow = false } = props;
-  const router = useRouter();
+  const router = useModifiedRouter();
   const appDispatch = useAppDispatch();
   const [flowState, dispatch] = React.useReducer(
     benchmarkNewSessionFlowReducer,

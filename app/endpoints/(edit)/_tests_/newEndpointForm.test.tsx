@@ -1,7 +1,7 @@
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useRouter } from 'next/navigation';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
+import { useModifiedRouter } from '@/app/hooks/useModifiedRouter';
 import { useGetAllConnectorsQuery } from '@/app/services/connector-api-service';
 import {
   useCreateLLMEndpointMutation,
@@ -29,7 +29,7 @@ describe('NewEndpointForm', () => {
   const mockRouterRefresh = jest.fn();
 
   beforeAll(() => {
-    (useRouter as jest.Mock).mockImplementation(() => ({
+    (useModifiedRouter as jest.Mock).mockImplementation(() => ({
       push: mockRouterPush,
       refresh: mockRouterRefresh,
     }));

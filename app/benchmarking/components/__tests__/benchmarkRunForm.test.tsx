@@ -1,8 +1,8 @@
 import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useRouter } from 'next/navigation';
 import BenchmarkRunForm from '@/app/benchmarking/components/benchmarkRunForm';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
+import { useModifiedRouter } from '@/app/hooks/useModifiedRouter';
 import { useRunBenchmarkMutation } from '@/app/services/benchmark-api-service';
 import {
   resetBenchmarkCookbooks,
@@ -90,7 +90,7 @@ describe('BenchmarkRunForm', () => {
   const mockRouterPush = jest.fn();
 
   beforeAll(() => {
-    (useRouter as jest.Mock).mockImplementation(() => ({
+    (useModifiedRouter as jest.Mock).mockImplementation(() => ({
       push: mockRouterPush,
     }));
     (useRunBenchmarkMutation as jest.Mock).mockImplementation(() => [
