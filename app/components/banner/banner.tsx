@@ -1,8 +1,8 @@
 'use client';
-import Link from 'next/link';
 import { PropsWithChildren, ReactNode } from 'react';
 import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { CustomLink } from '@/app/components/customLink';
 import styles from './styles/banner.module.css';
 
 type BannerProps = {
@@ -40,7 +40,7 @@ function Banner(props: PropsWithChildren<BannerProps>) {
           style={{ color: textColor }}>
           {bannerText}
         </p>
-        <Link
+        <CustomLink
           href="/benchmarking/session/new"
           onClick={onBtnClick}>
           <Button
@@ -53,7 +53,7 @@ function Banner(props: PropsWithChildren<BannerProps>) {
             text={buttonText}
             rightIconName={IconName.ArrowRight}
           />
-        </Link>
+        </CustomLink>
       </figcaption>
     </figure>
   );

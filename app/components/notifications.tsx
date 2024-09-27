@@ -1,7 +1,7 @@
 'use client';
-import Link from 'next/link';
 import React, { useEffect } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { CustomLink } from '@/app/components/customLink';
 import { colors } from '@/app/customColors';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { proxyPathSseStream } from '@/app/services/constants';
@@ -107,7 +107,7 @@ function Notifications() {
                 const runner = runners.find((runner) => runner.id === runnerId);
                 if (!runner) return null;
                 return (
-                  <Link
+                  <CustomLink
                     href={`/benchmarking/session/run?runner_id=${runnerId}`}
                     key={runnerId}>
                     <li
@@ -141,7 +141,7 @@ function Notifications() {
                         }}
                       />
                     </li>
-                  </Link>
+                  </CustomLink>
                 );
               })}
             </ul>

@@ -1,10 +1,10 @@
 'use client';
-import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { ActionCard } from '@/app/components/actionCard/actionCard';
 import { Button, ButtonType } from '@/app/components/button';
+import { CustomLink } from '@/app/components/customLink';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
 import { Modal } from '@/app/components/modal';
 import { PopupSurface } from '@/app/components/popupSurface';
@@ -202,7 +202,7 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
             TestStatusProgress.COMPLETED ||
             statuses[runner_id].current_status ===
               TestStatusProgress.CANCELLED) && (
-            <Link href={`/benchmarking/report?id=${runner_id}`}>
+            <CustomLink href={`/benchmarking/report?id=${runner_id}`}>
               <Button
                 width={150}
                 mode={ButtonType.OUTLINE}
@@ -212,7 +212,7 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
                 pressedBtnColor={colors.moongray[900]}
                 text="View Report"
               />
-            </Link>
+            </CustomLink>
           )}
 
         {statuses &&
@@ -367,7 +367,7 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
                     While waiting for these to run, you can
                   </p>
                   <div className="col-span-3 grid grid-cols-3 gap-[1.7%] w-[90%]">
-                    <Link href="/redteaming/sessions/new">
+                    <CustomLink href="/redteaming/sessions/new">
                       <ActionCard
                         height={240}
                         iconSize={35}
@@ -378,8 +378,8 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
                         iconName={IconName.Spacesuit}
                         actionText="Start Red Teaming"
                       />
-                    </Link>
-                    <Link href="/benchmarking/cookbooks/new">
+                    </CustomLink>
+                    <CustomLink href="/benchmarking/cookbooks/new">
                       <ActionCard
                         height={240}
                         iconSize={35}
@@ -390,7 +390,7 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
                         iconName={IconName.Book}
                         actionText="Select Recipes"
                       />
-                    </Link>
+                    </CustomLink>
                     <div className="flex flex-col gap-2 justify-center">
                       <Button
                         rightIconName={IconName.ArrowRight}

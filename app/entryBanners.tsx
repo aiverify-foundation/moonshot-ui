@@ -1,9 +1,9 @@
 'use client';
-import Link from 'next/link';
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { ActionCard } from '@/app/components/actionCard/actionCard';
 import { Banner } from '@/app/components/banner/banner';
+import { CustomLink } from '@/app/components/customLink';
 import { colors } from '@/app/customColors';
 import {
   resetBenchmarkCookbooks,
@@ -45,7 +45,7 @@ function EntryBanners() {
       <section>
         <div className="grid grid-cols-3 gap-2">
           <div className="col-span-3 grid grid-cols-3 gap-[1.7%]">
-            <Link
+            <CustomLink
               href="/redteaming/sessions/new"
               onClick={handleStartNewRunClick}>
               <ActionCard
@@ -56,8 +56,8 @@ function EntryBanners() {
                 iconName={IconName.Spacesuit}
                 actionText="Start Red Teaming"
               />
-            </Link>
-            <Link
+            </CustomLink>
+            <CustomLink
               href="/benchmarking/session/new?skip_topics=true"
               onClick={handleStartNewRunClick}>
               <ActionCard
@@ -68,8 +68,8 @@ function EntryBanners() {
                 iconName={IconName.CheckList}
                 actionText="Run Benchmarks"
               />
-            </Link>
-            <Link href="/benchmarking/cookbooks/new">
+            </CustomLink>
+            <CustomLink href="/benchmarking/cookbooks/new">
               <ActionCard
                 title="Create"
                 description="cookbooks"
@@ -78,7 +78,7 @@ function EntryBanners() {
                 iconName={IconName.Book}
                 actionText="Select Recipes"
               />
-            </Link>
+            </CustomLink>
           </div>
         </div>
       </section>
