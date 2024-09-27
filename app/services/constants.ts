@@ -12,3 +12,5 @@ export const proxyPathRunners = `${basePath}/api/v1/runners`;
 export const proxyPathSseStream = `${basePath}/api/v1/stream`;
 export const proxyPathCookbooks = `${basePath}/api/v1/cookbooks`;
 export const proxyPathEndpoints = `${basePath}/api/v1/endpoints`;
+export const proxyPathRecipes = `${basePath}/api/v1/recipes`;
+export const proxyPathPromptTemplates = `${basePath}/api/v1/prompt-templates`;

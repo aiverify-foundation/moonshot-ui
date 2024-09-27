@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { proxyPathRecipes } from './constants';
 import { getHostAndPort } from './host';
 
 type inputParams = {
@@ -18,7 +19,7 @@ type urlQueryParams =
   | undefined;
 
 const [host, port] = getHostAndPort();
-const path = 'api/v1/recipes';
+const path = proxyPathRecipes;
 const recipeApi = createApi({
   reducerPath: 'recipeApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),

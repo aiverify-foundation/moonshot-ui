@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { proxyPathPromptTemplates } from './constants';
 import { getHostAndPort } from './host';
 
 const [host, port] = getHostAndPort();
@@ -7,7 +8,7 @@ const promptTemplateApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
     getAllPromptTemplates: builder.query<PromptTemplate[], void>({
-      query: () => 'api/v1/prompt-templates',
+      query: () => proxyPathPromptTemplates,
       keepUnusedDataFor: 600,
     }),
   }),
