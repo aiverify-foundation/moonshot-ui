@@ -7,8 +7,9 @@ export const redirectRoute = (
   path: string,
   tagsToRevalidate: string[] = []
 ) => {
+  const modifiedPath = `${process.env.NEXT_PUBLIC_BASE_PATH}${path}`;
   tagsToRevalidate.forEach((tag) => {
     revalidateTag(tag);
   });
-  redirect(path);
+  redirect(modifiedPath);
 };
