@@ -113,7 +113,7 @@ describe('CookbooksSelection', () => {
     jest.clearAllMocks();
   });
 
-  it('should display cookbooks in the correct order', () => {
+  it('should display cookbooks in the correct order and render required endpoints tooltip', () => {
     const mockAlreadySelectedCookbooks = [mockCookbooks[0], mockCookbooks[2]];
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockAlreadySelectedCookbooks
@@ -152,6 +152,13 @@ describe('CookbooksSelection', () => {
     expect(mockDispatch).toHaveBeenCalledWith(
       updateBenchmarkCookbooks([mockCookbooks[0], mockCookbooks[2]])
     );
+    mockCookbooks.forEach((cookbook) => {
+      if (cookbook.endpoint_required && cookbook.endpoint_required.length) {
+        cookbook.endpoint_required.forEach((endpoint) => {
+          expect(screen.getByText(endpoint)).toBeInTheDocument();
+        });
+      }
+    });
   });
 
   it('should select and deselect a cookbook', async () => {
