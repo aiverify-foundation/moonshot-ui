@@ -13,11 +13,6 @@ import { colors } from '@/app/customColors';
 import { Step } from './enums';
 import { SelectedRecipesPills } from './selectedRecipesPills';
 
-const endpoints = [
-  'Together Llama Guard 7B Assistant',
-  'Together Llama3 8B Chat HF',
-  'LLM Judge - OpenAI GPT4',
-];
 interface CustomStyle extends React.CSSProperties {
   WebkitLineClamp?: string;
   WebkitBoxOrient?: 'vertical';
@@ -173,26 +168,29 @@ function RecipesViewList({
                       <h4 className="text-[1rem] font-semibold">
                         {recipe.name}
                       </h4>
-                      {recipe.id == 'mlc-vcr' && (
+                      {recipe.endpoint_required?.length && (
                         <Tooltip
                           position={TooltipPosition.right}
                           offsetLeft={10}
                           content={
-                            <div className="p-4">
+                            <div className="p-1 pt-0">
                               <h3 className="text-black font-bold mb-2">
                                 Requires
                               </h3>
                               <ul className="text-gray-700">
-                                {endpoints.map((endpoint) => (
+                                {recipe.endpoint_required.map((endpoint) => (
                                   <li key={endpoint}>{endpoint}</li>
                                 ))}
                               </ul>
                             </div>
                           }>
                           <Icon
-                            size={25}
+                            size={22}
                             name={IconName.SolidBox}
                             color={colors.moonpurplelight}
+                            style={{
+                              marginLeft: 5,
+                            }}
                           />
                         </Tooltip>
                       )}
@@ -212,7 +210,7 @@ function RecipesViewList({
           <section
             className="text-white border border-moonwine-500 p-4 rounded-md 
             overflow-y-auto custom-scrollbar bg-moongray-800">
-            <div className="flex gap-2 mb-4">
+            <div className="flex gap-2 mb-4 items-start">
               <Icon
                 name={IconName.File}
                 size={24}
@@ -220,6 +218,30 @@ function RecipesViewList({
               <h3 className="text-[1.2rem] font-semibold">
                 {selectedRecipe.name}
               </h3>
+              {selectedRecipe.endpoint_required?.length && (
+                <Tooltip
+                  position={TooltipPosition.bottom}
+                  offsetTop={14}
+                  content={
+                    <div className="p-1 pt-0">
+                      <h3 className="text-black font-bold mb-2">Requires</h3>
+                      <ul className="text-gray-700">
+                        {selectedRecipe.endpoint_required.map((endpoint) => (
+                          <li key={endpoint}>{endpoint}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  }>
+                  <Icon
+                    size={22}
+                    name={IconName.SolidBox}
+                    color={colors.moonpurplelight}
+                    style={{
+                      marginTop: 2,
+                    }}
+                  />
+                </Tooltip>
+              )}
             </div>
             <p className="text-[0.95rem] mb-4">{selectedRecipe.description}</p>
             <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">

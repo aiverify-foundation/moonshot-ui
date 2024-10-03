@@ -53,7 +53,7 @@ const mockRecipes: Recipe[] = [
       },
     },
     total_prompt_in_recipe: 20,
-    endpoint_required: null,
+    endpoint_required: ['endpoint-1', 'endpoint-2'],
   },
 ];
 const mockCookbooks: Cookbook[] = [
@@ -114,8 +114,8 @@ describe('RecipesViewList', () => {
     jest.clearAllMocks();
   });
 
-  describe('View / Search / Select Recipes', () => {
-    test('show first recipe details by default', () => {
+  describe('View / Search / Select Recipes and render required endpoints tooltips', () => {
+    test('show first recipe details by default', async () => {
       render(
         <RecipesViewList
           recipes={mockRecipes}
@@ -126,6 +126,23 @@ describe('RecipesViewList', () => {
       expect(screen.getAllByText(mockRecipes[0].name)).toHaveLength(2);
       expect(screen.getAllByText(mockRecipes[0].description)).toHaveLength(2);
       expect(screen.getAllByText(mockRecipes[1].name)).toHaveLength(1);
+      mockRecipes.forEach((recipe) => {
+        if (recipe.endpoint_required?.length) {
+          recipe.endpoint_required.forEach((endpoint) => {
+            expect(screen.getByText(endpoint)).toBeInTheDocument();
+          });
+        }
+      });
+      await userEvent.click(
+        screen.getByRole('checkbox', { name: `Select ${mockRecipes[1].name}` })
+      );
+      mockRecipes.forEach((recipe) => {
+        if (recipe.endpoint_required?.length) {
+          recipe.endpoint_required.forEach((endpoint) => {
+            expect(screen.getAllByText(endpoint)).toHaveLength(2);
+          });
+        }
+      });
     });
 
     test('show recipe details when recipe id is in url', () => {
