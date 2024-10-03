@@ -28,12 +28,6 @@ import {
 import BenchmarkRunForm from './benchmarkRunForm';
 import { BenchmarkNewSessionViews } from './enums';
 
-const requiredEndpoints = [
-  'Together Llama Guard 7B Assistant',
-  'Together Llama3 8B Chat HF',
-  'LLM Judge - OpenAI GPT4',
-];
-
 type BenchmarkNewSessionFlowProps = {
   threeStepsFlow?: boolean;
 };
@@ -53,10 +47,24 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
     (state) => state.benchmarkModels.entities
   );
   const [showExitModal, setShowExitModal] = React.useState(false);
-  const [showRequiredEndpointsModal, setShowRequiredEndpointsModal] =
-    React.useState(false);
 
   function handleNextIconClick() {
+    if (flowState.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
+      const requiredEndpoints = selectedCookbooks.reduce((acc, cookbook) => {
+        if (cookbook.endpoint_required && cookbook.endpoint_required.length) {
+          acc = [...acc, ...cookbook.endpoint_required];
+        }
+        return acc;
+      }, [] as string[]);
+      dispatch({
+        type: 'NEXT_BTN_CLICK',
+        cookbooksLength: selectedCookbooks.length,
+        modelsLength: selectedModels.length,
+        requiredEndpoints,
+      });
+      return;
+    }
+
     dispatch({
       type: 'NEXT_BTN_CLICK',
       cookbooksLength: selectedCookbooks.length,
@@ -221,20 +229,30 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
           </p>
         </Modal>
       )}
-      {showRequiredEndpointsModal && (
+      {flowState.requiredEndpoints?.length && (
         <Modal
           width={600}
-          height={300}
-          heading="Required Endpoints"
+          height={280}
+          heading=""
           bgColor={colors.moongray['800']}
           textColor="#FFFFFF"
           primaryBtnLabel="Yes"
           secondaryBtnLabel="No"
           enableScreenOverlay
-          onCloseIconClick={() => setShowRequiredEndpointsModal(false)}
-          onSecondaryBtnClick={() => setShowRequiredEndpointsModal(false)}
-          onPrimaryBtnClick={() => setShowRequiredEndpointsModal(false)}>
-          <div className="flex gap-4 items-start mt-4">
+          hideCloseIcon
+          onSecondaryBtnClick={() =>
+            dispatch({
+              type: 'CLOSE_REQUIRED_ENDPOINTS_MODAL',
+              requiredEndpointsTokensFilled: false,
+            })
+          }
+          onPrimaryBtnClick={() =>
+            dispatch({
+              type: 'CLOSE_REQUIRED_ENDPOINTS_MODAL',
+              requiredEndpointsTokensFilled: true,
+            })
+          }>
+          <div className="flex gap-4 items-start mt-1">
             <Icon
               size={30}
               name={IconName.OutlineBox}
@@ -247,8 +265,8 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
             </h3>
           </div>
 
-          <ul className="text-white mt-4 p-4">
-            {requiredEndpoints.map((endpoint) => (
+          <ul className="text-white mt-4 p-4 list-disc list-inside h-[120px] overflow-y-auto custom-scrollbar">
+            {flowState.requiredEndpoints.map((endpoint) => (
               <li key={endpoint}>{endpoint}</li>
             ))}
           </ul>
