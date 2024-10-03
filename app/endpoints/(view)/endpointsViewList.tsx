@@ -1,9 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { CustomLink } from '@/app/components/customLink';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
 import { colors } from '@/app/customColors';
 import { formatDate } from '@/app/lib/date-utils';
@@ -27,7 +27,7 @@ function EndpointsViewList({ endpoints, children }: EndpointsViewListProps) {
       <div className="relative h-full">
         <header className="flex gap-5 w-full mb-3 justify-between items-end">
           <h1 className="text-[1.6rem] text-white mt-3">Endpoints</h1>
-          <Link href={`/endpoints/new`}>
+          <CustomLink href={`/endpoints/new`}>
             <Button
               size="md"
               mode={ButtonType.OUTLINE}
@@ -35,7 +35,7 @@ function EndpointsViewList({ endpoints, children }: EndpointsViewListProps) {
               text="Create New Endpoint"
               hoverBtnColor={colors.moongray[800]}
             />
-          </Link>
+          </CustomLink>
         </header>
         <main
           className="grid grid-cols-2 gap-5"
@@ -56,7 +56,7 @@ function EndpointsViewList({ endpoints, children }: EndpointsViewListProps) {
                       backgroundColor: colors.moongray['700'],
                     }),
                   }}>
-                  <Link
+                  <CustomLink
                     href={`/endpoints/${endpoint.id}`}
                     className="block p-6"
                     onClick={() => setSelectedEndpointId(endpoint.id)}>
@@ -79,7 +79,7 @@ function EndpointsViewList({ endpoints, children }: EndpointsViewListProps) {
                     <p className="text-[0.8rem] text-moongray-300 text-right">
                       Added on {formatDate(endpoint.created_date)}
                     </p>
-                  </Link>
+                  </CustomLink>
                 </li>
               );
             })}
@@ -87,7 +87,7 @@ function EndpointsViewList({ endpoints, children }: EndpointsViewListProps) {
           {children}
         </main>
         <footer className="absolute bottom-0 w-full flex justify-end gap-4">
-          <Link href={`/endpoints/${selectedEndpointId}/edit`}>
+          <CustomLink href={`/endpoints/${selectedEndpointId}/edit`}>
             <Button
               size="lg"
               mode={ButtonType.PRIMARY}
@@ -95,7 +95,7 @@ function EndpointsViewList({ endpoints, children }: EndpointsViewListProps) {
               hoverBtnColor={colors.moongray[1000]}
               pressedBtnColor={colors.moongray[900]}
             />
-          </Link>
+          </CustomLink>
         </footer>
       </div>
     </MainSectionSurface>

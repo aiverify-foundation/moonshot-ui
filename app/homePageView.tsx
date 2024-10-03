@@ -1,8 +1,8 @@
-import Image from 'next/image';
 import React from 'react';
 import LeftNav from '@/app/components/leftNav';
 import Notifications from '@/app/components/notifications';
 import { MicroLayout } from './components/microLayout';
+import { SvgImage } from './components/svgImage';
 import { EntryBanners } from './entryBanners';
 
 function HomePageView() {
@@ -12,7 +12,7 @@ function HomePageView() {
         <LeftNav />
       </nav>
       <header className="flex justify-between items-center px-4 mb-5">
-        <Image
+        <SvgImage
           src="/aivmoonshot-logo.svg"
           height={80}
           width={310}

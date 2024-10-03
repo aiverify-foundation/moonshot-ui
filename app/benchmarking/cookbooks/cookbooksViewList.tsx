@@ -1,9 +1,9 @@
 'use client';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import React, { CSSProperties, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { CustomLink } from '@/app/components/customLink';
 import { TextInput } from '@/app/components/textInput';
 import { colors } from '@/app/customColors';
 import { SelectedCookbooksPills } from './selectedCookbooksPills';
@@ -110,7 +110,7 @@ function CookbooksViewList({
     <div className="h-full">
       <header className="flex gap-5 w-full mb-3 justify-between items-end">
         <h1 className="text-[1.6rem] text-white mt-3">Cookbooks</h1>
-        <Link href={`/benchmarking/cookbooks/new`}>
+        <CustomLink href={`/benchmarking/cookbooks/new`}>
           <Button
             size="md"
             mode={ButtonType.OUTLINE}
@@ -118,7 +118,7 @@ function CookbooksViewList({
             text="Create New Cookbook"
             hoverBtnColor={colors.moongray[800]}
           />
-        </Link>
+        </CustomLink>
       </header>
       <main
         className="flex gap-5 mb-3"

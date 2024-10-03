@@ -1,12 +1,12 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Modal } from '@/app/components/modal';
 import { colors } from '@/app/customColors';
+import { useModifiedRouter } from '@/app/hooks/useModifiedRouter';
 
 export default function CustomErrorModal({ errorMsg }: { errorMsg: string }) {
-  const router = useRouter();
+  const router = useModifiedRouter();
 
   return (
     <Modal

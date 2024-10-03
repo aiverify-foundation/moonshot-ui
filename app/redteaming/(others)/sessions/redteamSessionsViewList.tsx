@@ -1,10 +1,11 @@
 'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import React, { CSSProperties, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
 import { colors } from '@/app/customColors';
+import { useModifiedRouter } from '@/app/hooks/useModifiedRouter';
 
 interface CustomStyle extends CSSProperties {
   webkitLineClamp?: string;
@@ -17,7 +18,7 @@ const ellipsisStyle: CustomStyle = {
 };
 
 function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
-  const router = useRouter();
+  const router = useModifiedRouter();
   const searchParams = useSearchParams();
   const [selectedSession, setSelectedSession] = useState<Session>(() => {
     const id = searchParams.get('id');

@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { proxyPathEndpoints } from './constants';
 import { getHostAndPort } from './host';
 
 const [host, port] = getHostAndPort();
@@ -7,7 +8,7 @@ const llmEndpointApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
   endpoints: (builder) => ({
     getLLMEndpoints: builder.query<LLMEndpoint[], void>({
-      query: () => 'api/v1/endpoints',
+      query: () => proxyPathEndpoints,
       keepUnusedDataFor: 0,
     }),
     createLLMEndpoint: builder.mutation<
@@ -29,7 +30,7 @@ const llmEndpointApi = createApi({
           body = endpointDetails;
         }
         return {
-          url: 'api/v1/endpoints',
+          url: proxyPathEndpoints,
           method: 'POST',
           body,
         };
@@ -54,7 +55,7 @@ const llmEndpointApi = createApi({
           body = endpointDetails;
         }
         return {
-          url: `api/v1/endpoints/${id}`,
+          url: `${proxyPathEndpoints}/${id}`,
           method: 'PUT',
           body,
         };

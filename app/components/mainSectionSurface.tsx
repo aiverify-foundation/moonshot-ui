@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { CustomLink } from '@/app/components/customLink';
 
 type MainSectionSurfaceProps = {
   children: React.ReactNode;
@@ -29,14 +29,14 @@ function MainSectionSurface(props: MainSectionSurfaceProps) {
         style={{ height: 32 }}>
         <div className="absolute top-0 right-0">
           {closeLinkUrl ? (
-            <Link
+            <CustomLink
               href={closeLinkUrl}
               className="hover:opacity-50 active:opacity-25">
               <Icon
                 name={IconName.Close}
                 size={32}
               />
-            </Link>
+            </CustomLink>
           ) : onCloseIconClick ? (
             <Icon
               name={IconName.Close}

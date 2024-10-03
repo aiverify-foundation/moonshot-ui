@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { basePathCookbooks, hostURL } from '@/app/api/constants';
+import config from '@/moonshot.config';
 export const dynamic = 'force-dynamic';
 
 export async function PUT(request: NextRequest) {
@@ -12,7 +12,7 @@ export async function PUT(request: NextRequest) {
     });
   }
   const response = await fetch(
-    `${hostURL}${basePathCookbooks}/${cookbook_id}`,
+    `${config.webAPI.hostURL}${config.webAPI.basePathCookbooks}/${cookbook_id}`,
     {
       method: 'PUT',
     }
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
     });
   }
   const response = await fetch(
-    `${hostURL}${basePathCookbooks}/${cookbook_id}?include_history=true`
+    `${config.webAPI.hostURL}${config.webAPI.basePathCookbooks}/${cookbook_id}?include_history=true`
   );
   return response;
 }

@@ -1,10 +1,10 @@
 'use client'; // Error components must be Client Components
 
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Modal } from '@/app/components/modal';
 import { colors } from '@/app/customColors';
+import { useModifiedRouter } from '@/app/hooks/useModifiedRouter';
 
 export default function Error({
   error,
@@ -13,7 +13,7 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  const router = useRouter();
+  const router = useModifiedRouter();
   useEffect(() => {
     // Log the error to an error reporting service
     console.error(error);

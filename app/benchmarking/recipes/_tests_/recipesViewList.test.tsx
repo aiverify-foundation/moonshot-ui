@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useFormState } from 'react-dom';
 import { updateCookbookRecipes } from '@/actions/updateCookbookRecipes';
 import { Step } from '@/app/benchmarking/recipes/enums';

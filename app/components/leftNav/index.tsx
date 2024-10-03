@@ -1,7 +1,7 @@
 'use client';
-import Link from 'next/link';
 import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { CustomLink } from '@/app/components/customLink';
 import { colors } from '@/app/customColors';
 
 type menuItem =
@@ -19,7 +19,7 @@ function LeftNav({ activeItem }: LeftNavProps) {
   return (
     <ul className="flex flex-col gap-10">
       <li className="flex justify-center">
-        <Link
+        <CustomLink
           href="/endpoints"
           onMouseEnter={() => setHoveredItem('endpoints')}
           onMouseLeave={() => setHoveredItem(undefined)}
@@ -40,10 +40,10 @@ function LeftNav({ activeItem }: LeftNavProps) {
             name={IconName.OutlineBox}
             size={40}
           />
-        </Link>
+        </CustomLink>
       </li>
       <li className="flex justify-center">
-        <Link
+        <CustomLink
           href="/benchmarking"
           onMouseEnter={() => setHoveredItem('benchmarking')}
           onMouseLeave={() => setHoveredItem(undefined)}
@@ -65,10 +65,10 @@ function LeftNav({ activeItem }: LeftNavProps) {
             name={IconName.CheckList}
             size={40}
           />
-        </Link>
+        </CustomLink>
       </li>
       <li className="flex justify-center">
-        <Link
+        <CustomLink
           href="/redteaming"
           onMouseEnter={() => setHoveredItem('redteaming')}
           onMouseLeave={() => setHoveredItem(undefined)}
@@ -89,10 +89,10 @@ function LeftNav({ activeItem }: LeftNavProps) {
             name={IconName.Spacesuit}
             size={40}
           />
-        </Link>
+        </CustomLink>
       </li>
       <li>
-        <Link
+        <CustomLink
           href="/history"
           onMouseEnter={() => setHoveredItem('history')}
           onMouseLeave={() => setHoveredItem(undefined)}
@@ -113,10 +113,10 @@ function LeftNav({ activeItem }: LeftNavProps) {
             name={IconName.HistoryClock}
             size={40}
           />
-        </Link>
+        </CustomLink>
       </li>
       <li className="flex justify-center">
-        <Link
+        <CustomLink
           href="/utilities"
           onMouseEnter={() => setHoveredItem('utils')}
           onMouseLeave={() => setHoveredItem(undefined)}
@@ -137,7 +137,7 @@ function LeftNav({ activeItem }: LeftNavProps) {
             name={IconName.Tools}
             size={40}
           />
-        </Link>
+        </CustomLink>
       </li>
     </ul>
   );

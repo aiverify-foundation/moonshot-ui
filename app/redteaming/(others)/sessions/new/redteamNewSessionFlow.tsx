@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import React, { useLayoutEffect, useState } from 'react';
 import { EndpointSelectVew } from '@/app/benchmarking/components/endpointsSelector';
 import { Icon, IconName } from '@/app/components/IconSVG';
@@ -9,6 +8,7 @@ import { Modal } from '@/app/components/modal';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { colors } from '@/app/customColors';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
+import { useModifiedRouter } from '@/app/hooks/useModifiedRouter';
 import { AttackModuleSelectView } from '@/app/redteaming/(fullscreen)/components/attackModuleSelector';
 import {
   addRedteamModels,
@@ -29,7 +29,7 @@ const flowSteps = [
 ];
 
 function RedteamNewSessionFlow() {
-  const router = useRouter();
+  const router = useModifiedRouter();
   const dispatch = useAppDispatch();
   const selectedModels = useAppSelector(
     (state) => state.redteamModels.entities

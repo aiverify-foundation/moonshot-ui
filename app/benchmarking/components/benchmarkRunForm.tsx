@@ -1,11 +1,11 @@
 import { useFormik } from 'formik';
-import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { object, string, number, array } from 'yup';
 import { Button, ButtonType } from '@/app/components/button';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
 import { colors } from '@/app/customColors';
+import { useModifiedRouter } from '@/app/hooks/useModifiedRouter';
 import { useRunBenchmarkMutation } from '@/app/services/benchmark-api-service';
 import { BenchmarkCollectionType } from '@/app/types/enums';
 import {
@@ -58,7 +58,7 @@ function BenchmarkRunForm({
     },
   });
   const [runBenchmark, { isLoading }] = useRunBenchmarkMutation();
-  const router = useRouter();
+  const router = useModifiedRouter();
 
   async function createBenchmarkRun(data: BenchmarkRunFormValues) {
     const response = await runBenchmark({

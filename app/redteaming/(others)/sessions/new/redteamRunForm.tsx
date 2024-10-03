@@ -1,11 +1,11 @@
 import { useFormik } from 'formik';
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { object, string, array } from 'yup';
 import { Button, ButtonType } from '@/app/components/button';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
 import { colors } from '@/app/customColors';
+import { useModifiedRouter } from '@/app/hooks/useModifiedRouter';
 import { useCreateSessionMutation } from '@/app/services/session-api-service';
 import {
   resetAttackModule,
@@ -28,7 +28,7 @@ const validationSchema = object().shape({
 });
 
 function RedteamRunForm() {
-  const router = useRouter();
+  const router = useModifiedRouter();
   const dispatch = useAppDispatch();
   const attackModule = useAppSelector((state) => state.attackModule.entity);
   const selectedEndpoints = useAppSelector(

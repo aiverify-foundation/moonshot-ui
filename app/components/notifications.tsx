@@ -1,9 +1,10 @@
 'use client';
-import Link from 'next/link';
 import React, { useEffect } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { CustomLink } from '@/app/components/customLink';
 import { colors } from '@/app/customColors';
 import { useEventSource } from '@/app/hooks/use-eventsource';
+import { proxyPathSseStream } from '@/app/services/constants';
 import { useGetAllRunnersQuery } from '@/app/services/runner-api-service';
 import { useGetAllStatusQuery } from '@/app/services/status-api-service';
 import { AppEventTypes, TestStatusProgress } from '@/app/types/enums';
@@ -17,7 +18,7 @@ function Notifications() {
   const [eventData, closeEventSource] = useEventSource<
     TestStatus,
     AppEventTypes
-  >('/api/v1/stream', AppEventTypes.BENCHMARK_UPDATE);
+  >(proxyPathSseStream, AppEventTypes.BENCHMARK_UPDATE);
   const { data: allTestStatus = {} } = useGetAllStatusQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
@@ -44,6 +45,7 @@ function Notifications() {
   }, [eventData]);
 
   useEffect(() => {
+    if (runnerIds.length === 0) return;
     setStatuses(allTestStatus);
   }, [allTestStatus]);
 
@@ -105,7 +107,7 @@ function Notifications() {
                 const runner = runners.find((runner) => runner.id === runnerId);
                 if (!runner) return null;
                 return (
-                  <Link
+                  <CustomLink
                     href={`/benchmarking/session/run?runner_id=${runnerId}`}
                     key={runnerId}>
                     <li
@@ -139,7 +141,7 @@ function Notifications() {
                         }}
                       />
                     </li>
-                  </Link>
+                  </CustomLink>
                 );
               })}
             </ul>

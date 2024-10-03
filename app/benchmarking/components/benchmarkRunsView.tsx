@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import React, { CSSProperties } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { CustomLink } from '@/app/components/customLink';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
 import { colors } from '@/app/customColors';
 import { formatDateFromTimestamp } from '@/app/lib/date-utils';
@@ -48,7 +48,7 @@ function BenchmarkRunsView({
       <div className="relative h-full">
         <header className="flex gap-5 mb-3 justify-between items-end w-full">
           <h1 className="text-[1.6rem] text-white mt-3">Past Benchmark Runs</h1>
-          <Link href="/benchmarking/session/new">
+          <CustomLink href="/benchmarking/session/new">
             <Button
               size="md"
               mode={ButtonType.OUTLINE}
@@ -56,7 +56,7 @@ function BenchmarkRunsView({
               text="Start New Run"
               hoverBtnColor={colors.moongray[800]}
             />
-          </Link>
+          </CustomLink>
         </header>
         <main
           className="grid grid-cols-2 gap-5"
@@ -158,7 +158,7 @@ function BenchmarkRunsView({
         </main>
         <footer className="absolute bottom-0 w-full flex justify-end gap-4">
           {resultIds.includes(selectedRunner.id) && (
-            <Link href={`/benchmarking/report?id=${selectedRunner.id}`}>
+            <CustomLink href={`/benchmarking/report?id=${selectedRunner.id}`}>
               <Button
                 size="lg"
                 mode={ButtonType.PRIMARY}
@@ -166,7 +166,7 @@ function BenchmarkRunsView({
                 hoverBtnColor={colors.moongray[1000]}
                 pressedBtnColor={colors.moongray[900]}
               />
-            </Link>
+            </CustomLink>
           )}
         </footer>
       </div>

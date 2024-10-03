@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { proxyPathCookbooks } from './constants';
 import { getHostAndPort } from './host';
 
 type inputParams = {
@@ -20,7 +21,7 @@ type urlQueryParams =
   | undefined;
 
 const [host, port] = getHostAndPort();
-const path = 'api/v1/cookbooks';
+const path = proxyPathCookbooks;
 const cookbookApi = createApi({
   reducerPath: 'cookbookApi',
   baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),

@@ -1,9 +1,9 @@
-import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react';
+import { CustomLink } from '@/app/components/customLink';
 import LeftNav from '@/app/components/leftNav';
 import { MicroLayout } from '@/app/components/microLayout';
 import Notifications from '@/app/components/notifications';
+import { SvgImage } from '@/app/components/svgImage';
 
 export default function SessionsLayout({
   children,
@@ -16,14 +16,14 @@ export default function SessionsLayout({
         <LeftNav activeItem="redteaming" />
       </nav>
       <header className="flex justify-between items-center px-4 mb-5">
-        <Link href="/">
-          <Image
+        <CustomLink href="/">
+          <SvgImage
             src="/aivmoonshot-logo.svg"
             height={80}
             width={310}
             alt="AIVerify Moonshot Logo"
           />
-        </Link>
+        </CustomLink>
         <Notifications />
       </header>
       <main className="h-full">

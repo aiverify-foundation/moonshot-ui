@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import BenchmarkRunForm from '@/app/benchmarking/components/benchmarkRunForm';
 import { EndpointSelectVew } from '@/app/benchmarking/components/endpointsSelector';
@@ -10,6 +9,7 @@ import { Modal } from '@/app/components/modal';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { colors } from '@/app/customColors';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
+import { useModifiedRouter } from '@/app/hooks/useModifiedRouter';
 
 const stepTitles = ['Select Cookbooks', 'Connect Endpoint', 'Run'];
 enum FlowSteps {
@@ -23,7 +23,7 @@ enum EndpointFormViews {
 }
 
 function CookbooksMain({ cookbooks }: { cookbooks: Cookbook[] }) {
-  const router = useRouter();
+  const router = useModifiedRouter();
   const [currentStep, setCurrentStep] = React.useState(
     FlowSteps.SelectCookbooks
   );

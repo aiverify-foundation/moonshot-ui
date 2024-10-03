@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { basePathRecipes, hostURL } from '@/app/api/constants';
+import config from '@/moonshot.config';
 
 export async function DELETE(request: NextRequest) {
   let recipe_id: string;
@@ -11,7 +11,7 @@ export async function DELETE(request: NextRequest) {
     });
   }
   const response = await fetch(
-    `${hostURL}${basePathRecipes}/${recipe_id}`,
+    `${config.webAPI.hostURL}${config.webAPI.basePathRecipes}/${recipe_id}`,
     {
       method: 'DELETE',
     }
