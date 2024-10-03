@@ -43,6 +43,7 @@ const mockCookbooks = [
     description: 'Mock description',
     recipes: ['rc-id-1'],
     total_prompt_in_cookbook: 10,
+    endpoint_required: ['endpoint-1', 'endpoint-2'],
   },
   {
     id: 'cb-id-2',
@@ -50,6 +51,7 @@ const mockCookbooks = [
     description: 'Mock description',
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
+    endpoint_required: null,
   },
 ];
 

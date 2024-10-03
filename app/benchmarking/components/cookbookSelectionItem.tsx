@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
-import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { Button, ButtonType } from '@/app/components/button';
+import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
 
 const endpoints = [
@@ -21,7 +21,7 @@ type CookbookSelectionItemProps = {
 function CookbookSelectionItem(props: CookbookSelectionItemProps) {
   const { cookbook, selected, onSelect, onAboutClick } = props;
   const [isSelected, setIsSelected] = useState(selected);
-  const requiredEndpoints = cookbook.required_endpoints_in_cookbook;
+  const requiredEndpoints = cookbook.endpoint_required;
   function handleClick(
     e: React.MouseEvent | React.ChangeEvent<HTMLInputElement>
   ) {

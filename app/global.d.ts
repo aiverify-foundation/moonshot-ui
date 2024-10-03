@@ -102,7 +102,7 @@ type Cookbook = {
   description: string;
   recipes: string[];
   total_prompt_in_cookbook: number;
-  endpoint_required: string[];
+  endpoint_required: string[] | null;
 };
 
 type CookbookFormValues = {
@@ -131,7 +131,7 @@ type Recipe = {
   };
   tags: string[];
   total_prompt_in_recipe: number;
-  endpoint_required: string[];
+  endpoint_required: string[] | null;
 };
 
 type RecipeFormValues = {

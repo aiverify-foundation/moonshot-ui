@@ -20,6 +20,7 @@ const mockCookbooks = [
     description: 'Mock description',
     recipes: ['rc-id-1'],
     total_prompt_in_cookbook: 10,
+    endpoint_required: ['required-endpoint-1', 'required-endpoint-2'],
   },
   {
     id: 'cb-id-2',
@@ -27,6 +28,7 @@ const mockCookbooks = [
     description: 'Mock description',
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
+    endpoint_required: null,
   },
 ];
 
@@ -58,7 +60,7 @@ describe('BenchmarkMainCookbooksPromptCount', () => {
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
-  it('should show 30 prompts', () => {
+  it('should show 30 prompts and required endpoints', () => {
     const mockOneAlreadySelectedCookbooksFromState = mockCookbooks;
     const mockAllCookbooks = mockCookbooks;
     renderWithProviders(
@@ -70,6 +72,13 @@ describe('BenchmarkMainCookbooksPromptCount', () => {
     );
 
     expect(screen.getByText(/30/i)).toBeInTheDocument();
+    mockCookbooks.forEach((cookbook) => {
+      if (cookbook.endpoint_required && cookbook.endpoint_required.length) {
+        cookbook.endpoint_required.forEach((endpoint) => {
+          expect(screen.getByText(endpoint)).toBeInTheDocument();
+        });
+      }
+    });
   });
 
   it('should show 20 prompts', () => {

@@ -13,6 +13,7 @@ const mockCookbook = {
   description: 'Mock description',
   recipes: ['rc-id-1', 'rc-id-2'],
   total_prompt_in_cookbook: 10,
+  endpoint_required: null,
 };
 
 const mockRecipes = [
@@ -21,12 +22,14 @@ const mockRecipes = [
     name: 'Mock Recipe One',
     description: 'Mock description one',
     total_prompt_in_recipe: 5,
+    endpoint_required: ['endpoint-1', 'endpoint-2'],
   },
   {
     id: 'rc-id-2',
     name: 'Mock Recipe Two',
     description: 'Mock description two',
     total_prompt_in_recipe: 5,
+    endpoint_required: ['endpoint-1', 'endpoint-2'],
   },
 ];
 

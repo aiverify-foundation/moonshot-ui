@@ -5,12 +5,6 @@ import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
 import config from '@/moonshot.config';
 import { RequiredEndpoints } from './requiredEndpoints';
 
-const requiredEndpoints = [
-  'Together Llama Guard 7B Assistant',
-  'Together Llama3 8B Chat HF',
-  'LLM Judge - OpenAI GPT4',
-];
-
 type Props = {
   selectedCookbooks: Cookbook[];
   onCookbooksLinkClick: () => void;
@@ -25,6 +19,12 @@ function BenchmarkMainCookbooksPromptCount({
     selectedCookbooks,
     config.estimatedPromptResponseTime
   );
+  const requiredEndpoints = selectedCookbooks.reduce((acc, cookbook) => {
+    if (cookbook.endpoint_required && cookbook.endpoint_required.length) {
+      return [...acc, ...cookbook.endpoint_required];
+    }
+    return acc;
+  }, [] as string[]);
 
   return (
     <section className="flex flex-col items-center justify-center min-h-[300px] gap-5">
@@ -52,7 +52,9 @@ function BenchmarkMainCookbooksPromptCount({
             <p className="text-[1.1rem] leading-[1.1rem] text-moonpurplelight pl-1 text-center">
               Prompts
             </p>
-            <RequiredEndpoints requiredEndpoints={requiredEndpoints} />
+            {requiredEndpoints.length > 0 && (
+              <RequiredEndpoints requiredEndpoints={requiredEndpoints} />
+            )}
           </div>
         )}
       </section>

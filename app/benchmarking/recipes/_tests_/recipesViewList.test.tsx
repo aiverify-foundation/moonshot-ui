@@ -29,6 +29,7 @@ const mockRecipes: Recipe[] = [
       },
     },
     total_prompt_in_recipe: 10,
+    endpoint_required: null,
   },
   {
     id: 'rc-id-2',
@@ -52,6 +53,7 @@ const mockRecipes: Recipe[] = [
       },
     },
     total_prompt_in_recipe: 20,
+    endpoint_required: null,
   },
 ];
 const mockCookbooks: Cookbook[] = [
@@ -61,6 +63,7 @@ const mockCookbooks: Cookbook[] = [
     description: 'Mock description',
     recipes: ['rc-id-1'],
     total_prompt_in_cookbook: 10,
+    endpoint_required: null,
   },
   {
     id: 'cb-id-2',
@@ -68,6 +71,7 @@ const mockCookbooks: Cookbook[] = [
     description: 'Mock description',
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
+    endpoint_required: null,
   },
 ];
 

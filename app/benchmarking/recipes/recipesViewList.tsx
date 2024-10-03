@@ -8,10 +8,10 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { Modal } from '@/app/components/modal';
 import { TextInput } from '@/app/components/textInput';
+import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
 import { Step } from './enums';
 import { SelectedRecipesPills } from './selectedRecipesPills';
-import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 
 const endpoints = [
   'Together Llama Guard 7B Assistant',
