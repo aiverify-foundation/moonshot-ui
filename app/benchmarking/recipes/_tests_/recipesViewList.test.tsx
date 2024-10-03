@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useFormState } from 'react-dom';
 import { updateCookbookRecipes } from '@/actions/updateCookbookRecipes';
 import { Step } from '@/app/benchmarking/recipes/enums';
 import { RecipesViewList } from '@/app/benchmarking/recipes/recipesViewList';
-import { useModifiedRouter } from '@/app/hooks/useModifiedRouter';
 
 const mockRecipes: Recipe[] = [
   {
@@ -99,7 +99,7 @@ describe('RecipesViewList', () => {
   const mockGetParam: jest.Mock = jest.fn();
 
   beforeAll(() => {
-    (useModifiedRouter as jest.Mock).mockImplementation(() => ({
+    (useRouter as jest.Mock).mockImplementation(() => ({
       router: mockRouter,
     }));
     (useSearchParams as jest.Mock).mockImplementation(() => ({
