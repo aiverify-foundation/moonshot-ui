@@ -26,6 +26,9 @@ const config: Config = {
     '!app/components/window.tsx',
     '!app/components/IconSVG/**',
     '!app/hooks/*',
+    '!app/benchmarking/types/**',
+    '!app/lib/fetchApis/**',
+    '!app/**/_tests_/**',
   ],
   coverageProvider: 'v8',
   collectCoverage: true,
@@ -37,7 +40,7 @@ const config: Config = {
       statements: 50,
     },
   },
-  coverageReporters: ['html', 'text', 'json-summary'],
+  coverageReporters: ['html', 'text', 'json-summary', 'text-summary'],
   reporters: ['default', ['jest-html-reporter', { pageTitle: 'Test Report' }]],
   testResultsProcessor: './node_modules/jest-json-reporter',
   moduleNameMapper: {

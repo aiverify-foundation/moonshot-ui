@@ -7,6 +7,7 @@ type MainSectionSurfaceProps = {
   bgColor?: string;
   height?: React.CSSProperties['height'];
   minHeight?: React.CSSProperties['minHeight'];
+  contentHeight?: React.CSSProperties['height'];
   onCloseIconClick?: () => void;
   closeLinkUrl?: string;
 };
@@ -17,6 +18,7 @@ function MainSectionSurface(props: MainSectionSurfaceProps) {
     minHeight,
     closeLinkUrl,
     onCloseIconClick,
+    contentHeight = 'calc(100% - 32px)',
     children,
     bgColor,
   } = props;
@@ -46,7 +48,7 @@ function MainSectionSurface(props: MainSectionSurfaceProps) {
           ) : null}
         </div>
       </header>
-      <section style={{ height: 'calc(100% - 32px)' }}>{children}</section>
+      <section style={{ height: contentHeight }}>{children}</section>
     </div>
   );
 }

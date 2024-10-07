@@ -1,10 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { BenchmarkCollectionType } from '@/app/types/enums';
-import {
-  proxyPathBenchmarksExec,
-  proxyPathBenchmarksGetResults,
-} from './constants';
+import { proxyPathBenchmarksExec } from './constants';
 import { getHostAndPort } from './host';
 
 interface ExtendedBenchmarkRunFormValues {
@@ -34,27 +30,9 @@ const benchmarkRunApi = createApi({
         method: 'POST',
       }),
     }),
-    getBenchmarksResult: builder.query<
-      CookbooksBenchmarkResult,
-      { id?: string }
-    >({
-      query: ({ id }) => ({
-        url: `${proxyPathBenchmarksGetResults}/${id}`,
-        method: 'GET',
-      }),
-    }),
   }),
 });
 
-const {
-  useRunBenchmarkMutation,
-  useGetBenchmarksResultQuery,
-  useCancelBenchmarkMutation,
-} = benchmarkRunApi;
+const { useRunBenchmarkMutation, useCancelBenchmarkMutation } = benchmarkRunApi;
 
-export {
-  benchmarkRunApi,
-  useRunBenchmarkMutation,
-  useGetBenchmarksResultQuery,
-  useCancelBenchmarkMutation,
-};
+export { benchmarkRunApi, useRunBenchmarkMutation, useCancelBenchmarkMutation };

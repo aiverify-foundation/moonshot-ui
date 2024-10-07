@@ -1,6 +1,6 @@
 import React from 'react';
-import { GradingLevelsMlcEnum } from '@/app/benchmarking/components/enums';
-import { GradingColors } from '@/app/benchmarking/types/benchmarkReportTypes';
+import { GradingColors } from '@/app/benchmarking/report/types/benchmarkReportTypes';
+import { GradingLevelsMlcEnum } from './mlcReportComponents/enums';
 
 function Badge(props: { label: string; style?: React.CSSProperties }) {
   return (
@@ -23,7 +23,8 @@ function SquareBadge(props: {
 }) {
   return (
     <div
-      className="text-white flex justify-center items-center text-[1.5rem] w-[50px] h-[50px] rounded-lg text-center align-middle shrink-0"
+      role="label"
+      className="flex items-center justify-center text-white text-[1.5rem] w-[50px] h-[50px] rounded-lg"
       style={{
         backgroundColor: props.color,
         fontSize: props.textSize,
@@ -38,7 +39,7 @@ function SquareBadge(props: {
 }
 
 function RecipeGradeBadge(props: {
-  grade: string | GradingLevelsMlcEnum;
+  grade: string | GradingLevelsMlcEnum | null;
   customLetter?: string;
   gradeColors: GradingColors;
   textSize: React.CSSProperties['fontSize'];
@@ -46,7 +47,7 @@ function RecipeGradeBadge(props: {
   size: React.CSSProperties['width'];
 }) {
   const letter =
-    props.customLetter != undefined ? props.customLetter : props.grade;
+    props.customLetter != undefined ? props.customLetter : props.grade || '-';
   return (
     <SquareBadge
       label={props.grade === null ? '-' : letter}

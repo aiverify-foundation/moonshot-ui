@@ -1,4 +1,4 @@
-import { GradingLevelsMlcEnum } from '@/app/benchmarking/components/enums';
+import { GradingLevelsMlcEnum } from '@/app/benchmarking/report/components/mlcReportComponents/enums';
 
 type CookbooksBenchmarkResult = {
   metadata: {
@@ -21,20 +21,20 @@ type CookbooksBenchmarkResult = {
 
 type CookbookResult = {
   id: string;
-  recipes: RecipeResult[];
+  recipes: RecipeEvaluationResult[];
   overall_evaluation_summary: OverallEvaluationSummary[];
   total_num_of_prompts: number;
 };
 
-type RecipeResult = {
+type RecipeEvaluationResult = {
   id: string;
-  details: RecipeDetail[];
+  details: RecipeResultPromptData[];
   evaluation_summary: EvaluationSummary[];
   grading_scale: GradingScale;
   total_num_of_prompts: number;
 };
 
-type RecipeDetail = {
+type RecipeResultPromptData = {
   model_id: string;
   dataset_id: string;
   prompt_template_id: string;
@@ -51,10 +51,15 @@ type RecipePromptData = {
 
 type Metric = {
   accuracy?: number;
+  refusal_rate?: number;
+  safe?: number;
+  unsafe?: number;
+  unknown?: number;
   grading_criteria: {
     accuracy?: number;
     attack_success_rate?: number;
     toxicity_rate?: number;
+    refusal_rate?: number;
   };
 };
 
@@ -81,7 +86,7 @@ type EvaluationSummary = {
   model_id: string;
   num_of_prompts: number;
   avg_grade_value: number;
-  grade: GradingLevelsMlcEnum | string;
+  grade: GradingLevelsMlcEnum | string | null;
 };
 
 type OverallEvaluationSummary = {
@@ -91,15 +96,19 @@ type OverallEvaluationSummary = {
 
 type GradingScale = Record<string, number[]>;
 
-export type GradingColors = Record<GradingLevelsMlcEnum | string, string>;
+type GradingColors = Record<GradingLevelsMlcEnum | string, string>;
+
+type CookbookCategoryLabels = Record<string, ('Q' | 'C' | 'T')[]>;
 
 export type {
   CookbooksBenchmarkResult,
   CookbookResult,
-  RecipeResult,
-  RecipeDetail,
+  RecipeEvaluationResult,
+  RecipeResultPromptData,
   RecipePromptData,
   Metric,
   EvaluationSummary,
   GradingScale,
+  GradingColors,
+  CookbookCategoryLabels,
 };
