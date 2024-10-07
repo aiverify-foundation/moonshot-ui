@@ -39,8 +39,15 @@ function ReportViewer(props: ReportViewerProps) {
     if (!reportRef.current) return;
     const report = reportRef.current;
     await html2pdfjs(report, {
+      margin: 0,
       filename: `report-${runnerNameAndDescription.name}-${selectedEndpointId}.pdf`,
-      html2canvas: { scale: 2 },
+      html2canvas: {
+        scale: 2,
+        y: 0,
+        x: 0,
+        scrollY: 0,
+        scrollX: 0,
+      },
       image: { type: 'jpeg', quality: 0.98 },
       jsPDF: { format: 'a4', orientation: 'portrait', unit: 'in' },
       pagebreak: { mode: 'css' },

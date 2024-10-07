@@ -37,7 +37,9 @@ function RangedBarChart(props: RangedBarChartProps) {
           backgroundColor: '#9A9A9A',
         }}
       />
-      <p className="text-center">No tiered grading defined for this recipe</p>
+      <p className="text-center">
+        No tiered grading defined for this recipe. View raw scores below.
+      </p>
     </div>
   ) : (
     <div className="relative flex w-full gap-2">

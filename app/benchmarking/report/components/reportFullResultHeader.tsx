@@ -6,8 +6,8 @@ export function ReportFullResultHeader({
   showSectionLabel,
 }: ReportFullResultHeaderProps) {
   return (
-    <>
-      <header className="bg-moongray-1000 px-6 py-8 break-before-page">
+    <section className="break-before-page">
+      <header className="bg-moongray-1000 px-6 py-8">
         <hgroup>
           {showSectionLabel && <p className="text-fuchsia-400">Section 2</p>}
           <h2 className="text-[1.8rem] text-white flex">Full Results</h2>
@@ -20,6 +20,6 @@ export function ReportFullResultHeader({
         obtained among these recipes. Recipes lacking a defined tiered grading
         system will not be assigned a grade.
       </p>
-    </>
+    </section>
   );
 }

@@ -25,7 +25,8 @@ export function RunSummary(props: RunSummaryProps) {
 
   return (
     <div className="px-6 flex flex-col text-reportText">
-      <section className="grid grid-cols-2 grid-rows-2 gap-4 mb-10">
+      <section
+        className={`grid grid-cols-2 grid-rows-2 gap-4 mb-10 ${prePrintingFlagEnabled ? 'mb-6' : 'mb-10'}`}>
         <div>
           <h5 className="font-bold text-white">Model Endpoint</h5>
           <p>{endpointName}</p>

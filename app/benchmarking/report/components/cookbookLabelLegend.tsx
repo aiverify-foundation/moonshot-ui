@@ -2,18 +2,14 @@ import React from 'react';
 
 type CookbookLabelLegendProps = {
   resultId: string;
-  pageBreakBefore?: boolean;
 };
 
 export function CookbookLabelLegend(props: CookbookLabelLegendProps) {
-  const { resultId, pageBreakBefore } = props;
+  const { resultId } = props;
   const downloadUrl = `/api/v1/benchmarks/results/${resultId}?download=true`;
 
   return (
-    <section
-      className={`text-[0.9rem] px-6 text-reportText ${
-        pageBreakBefore ? 'break-before-page' : ''
-      }`}>
+    <section className="text-[0.9rem] px-6 text-reportText">
       <section className="bg-[#202020] rounded-lg p-6">
         <h3 className="text-white pb-6">Legend</h3>
         <p className="pb-6">
