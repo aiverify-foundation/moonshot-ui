@@ -44,10 +44,10 @@ export default function MlcAiSafetyRecipeRatingResult(
       </header>
       <main className="p-4 grid grid-cols-3 items-start justify-items-end">
         <div className="col-span-2">
-          <p className="mb-3">{recipe.description}</p>
-          <p className="text-[0.8rem]">
+          <div className="mb-3">{recipe.description}</div>
+          <div className="text-[0.8rem]">
             {promptsCount} out of {recipe.total_prompt_in_recipe} tested
-          </p>
+          </div>
         </div>
         {recipeEvaluationSummary && (
           <RecipeGradeBadge

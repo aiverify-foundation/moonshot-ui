@@ -44,7 +44,7 @@ type BenchmarkReportProps = {
 };
 
 function LoadingText() {
-  return <p className="text-white px-6">Loading...</p>;
+  return <div className="text-white px-6">Loading...</div>;
 }
 
 const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
@@ -151,11 +151,12 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
               showSectionLabel={hasMlcAISafetyCookbookResult}
             />
             {standardCookbooksHasMlcRecipes ? (
-              <StandardRatingsInterpretation expanded={expanded}>
+              <React.Fragment>
+                <StandardRatingsInterpretation expanded={expanded} />
                 <React.Suspense fallback={<LoadingText />}>
                   <MlcRatingsInterpretation expanded={expanded} />
                 </React.Suspense>
-              </StandardRatingsInterpretation>
+              </React.Fragment>
             ) : (
               <StandardRatingsInterpretation expanded={expanded} />
             )}
@@ -205,7 +206,7 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
                             </>
                           )
                         ) : (
-                          <p>No recipe details for {recipeResult.id}</p>
+                          <div>No recipe details for {recipeResult.id}</div>
                         );
                       }
                     )}
@@ -238,7 +239,7 @@ const Report = React.forwardRef<HTMLDivElement, BenchmarkReportProps>(
                             />
                           </>
                         ) : (
-                          <p>No recipe details for {recipeResult.id}</p>
+                          <div>No recipe details for {recipeResult.id}</div>
                         );
                       }
                     )}

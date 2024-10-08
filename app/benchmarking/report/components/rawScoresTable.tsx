@@ -23,7 +23,7 @@ export function RawRecipeMetricsScoresTable({
 
   return (
     <section className="mb-4 break-before-page">
-      <p className="text-[0.9rem] mb-1">Raw Scores</p>
+      <div className="text-[0.9rem] mb-1">Raw Scores</div>
       <div className="border border-moongray-700 rounded-lg">
         <table className="w-full text-sm text-left text-moongray-300">
           <thead className="text-xs text-moongray-300">

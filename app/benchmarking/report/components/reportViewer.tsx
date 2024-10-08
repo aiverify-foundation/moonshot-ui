@@ -1,5 +1,5 @@
 'use client';
-import html2pdfjs from 'html2pdf.js';
+import html3pdf from 'html3pdf';
 import React from 'react';
 import { flushSync } from 'react-dom';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
@@ -38,20 +38,15 @@ function ReportViewer(props: ReportViewerProps) {
   async function printReport() {
     if (!reportRef.current) return;
     const report = reportRef.current;
-    await html2pdfjs(report, {
-      margin: 0,
-      filename: `report-${runnerNameAndDescription.name}-${selectedEndpointId}.pdf`,
-      html2canvas: {
-        scale: 2,
-        y: 0,
-        x: 0,
-        scrollY: 0,
-        scrollX: 0,
-      },
-      image: { type: 'jpeg', quality: 0.98 },
-      jsPDF: { format: 'a4', orientation: 'portrait', unit: 'in' },
-      pagebreak: { mode: 'css' },
-    });
+    await html3pdf()
+      .set({
+        margin: 0.2,
+        filename: `report-${runnerNameAndDescription.name}-${selectedEndpointId}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        jsPDF: { format: 'a4', orientation: 'portrait' },
+      })
+      .from(report)
+      .save();
     setExpanded(false);
     setPrePrintingFlagEnabled(false);
   }
@@ -59,15 +54,13 @@ function ReportViewer(props: ReportViewerProps) {
   function handleHeaderBtnClick() {
     flushSync(() => {
       setPrePrintingFlagEnabled(true);
-    });
-    flushSync(() => {
       setExpanded(true);
     });
     setTimeout(
       () => {
         printReport();
       },
-      isWebkit() ? 1000 : 0
+      isWebkit() ? 1000 : 0 // scheduling issue that causes the report to be printed before the page is fully expanded, in webkit browsers
     );
   }
 

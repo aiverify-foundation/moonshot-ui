@@ -22,7 +22,7 @@ export default function MlcSafetyBaselineGrades(
 ) {
   const { benchmarkResult, endpointId, recipesInMlcAISafetyCookbook } = props;
   if (recipesInMlcAISafetyCookbook.length === 0) {
-    return <p className="text-white px-6">Recipes data is empty</p>;
+    return <div className="text-white px-6">Recipes data is empty</div>;
   }
 
   // 👉 This component displays results for Safety Baseline v0.5. The results must be based on ONLY 1 cookbook - 'mlc-ai-safety'.
@@ -79,9 +79,9 @@ export default function MlcSafetyBaselineGrades(
                 <h5 className="text-[0.9rem] text-white font-bold pb-1">
                   {name}
                 </h5>
-                <p className="text-[0.8rem] leading-tight">
+                <div className="text-[0.8rem] leading-tight">
                   {recipesInMlcAISafetyCookbook[idx].description}
-                </p>
+                </div>
               </figcaption>
               <div>
                 <SquareBadge
@@ -102,7 +102,7 @@ export default function MlcSafetyBaselineGrades(
         })}
       </section>
     ) : (
-      <p>No recipes found</p>
+      <div>No recipes found</div>
     );
 
   return (
@@ -113,7 +113,7 @@ export default function MlcSafetyBaselineGrades(
         className="bg-moongray-1000 px-6 py-8"
         style={{ backgroundColor: '#202020' }}>
         <hgroup>
-          <p className="text-fuchsia-400">Section 1</p>
+          <div className="text-fuchsia-400">Section 1</div>
           <h2 className="text-[1.8rem] text-white flex">
             <span className="text-[1.5rem] mr-2">Results for</span>
             <Icon name={IconName.Book} />
@@ -136,18 +136,18 @@ export default function MlcSafetyBaselineGrades(
               name={IconName.Warning}
               size={40}
             />
-            <p>
+            <div>
               The AI Verify x MLCommons AI Safety Baseline Benchmark v0.5 is a
               proof of concept only. Results are not intended to indicate actual
               levels of AI system safety.
-            </p>
+            </div>
           </div>
 
-          <p className="py-8">
+          <div className="py-8">
             The overall safety rating for an Endpoint is calculated by taking
             the worst of the per-hazard safety ratings: a model is only as safe
             as its weakest area.
-          </p>
+          </div>
 
           {mlsCookbookResultOverallGrade ? (
             <figure
@@ -167,9 +167,9 @@ export default function MlcSafetyBaselineGrades(
                   }}>
                   {mlsCookbookResultOverallGrade.overall_grade}
                 </h5>
-                <p className="text-[0.8rem] leading-tight">
+                <div className="text-[0.8rem] leading-tight">
                   {overallGradeDescription}
-                </p>
+                </div>
               </figcaption>
             </figure>
           ) : null}

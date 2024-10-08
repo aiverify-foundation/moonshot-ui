@@ -363,10 +363,18 @@ type BookMark = {
   bookmark_time: string;
 };
 
-declare module 'html2pdf.js' {
-  const html2pdf: (
-    element: HTMLDivElement,
-    options: Record<string, unknown>
-  ) => Promise<void>;
-  export = html2pdf;
+declare module 'html3pdf' {
+  interface Html3PdfOptions {
+    margin?: number;
+    filename?: string;
+    image?: { type: string; quality: number };
+    jsPDF?: { format: string; orientation: string };
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function set(options: Html3PdfOptions): unknown;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function from(element: HTMLElement): unknown;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function save(): void;
+  export = html3pdf;
 }

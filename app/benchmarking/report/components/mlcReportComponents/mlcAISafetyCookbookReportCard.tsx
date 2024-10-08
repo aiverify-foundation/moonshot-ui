@@ -31,7 +31,9 @@ export default function MlcAISafetyCookbookReportCard(
   }, [expanded]);
 
   if (!evaluationSummary) {
-    return <p>CookbookReportCard: No evaluation summary for {cookbook.name}</p>;
+    return (
+      <div>CookbookReportCard: No evaluation summary for {cookbook.name}</div>
+    );
   }
 
   return (
@@ -78,7 +80,7 @@ export default function MlcAISafetyCookbookReportCard(
           ${prePrintingFlagEnabled ? 'no-expand-transition' : 'main-transition'} 
           ${showSection ? 'main-visible' : ''}`}
         data-download="collapsible">
-        <p className="mt-6 mb-10">{cookbook.description}</p>
+        <div className="mt-6 mb-10">{cookbook.description}</div>
         <section className="grid grid-cols-1 gap-[50px]">{children}</section>
       </main>
     </section>

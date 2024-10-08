@@ -26,22 +26,22 @@ export function RunSummary(props: RunSummaryProps) {
   return (
     <div className="px-6 flex flex-col text-reportText">
       <section
-        className={`grid grid-cols-2 grid-rows-2 gap-4 mb-10 ${prePrintingFlagEnabled ? 'mb-6' : 'mb-10'}`}>
+        className={`grid grid-cols-2 grid-rows-2 gap-4 ${prePrintingFlagEnabled ? 'mb-6' : 'mb-10'}`}>
         <div>
           <h5 className="font-bold text-white">Model Endpoint</h5>
-          <p>{endpointName}</p>
+          <div>{endpointName}</div>
         </div>
         <div>
           <h5 className="font-bold text-white">Number of prompts ran</h5>
-          <p>{totalPrompts}</p>
+          <div>{totalPrompts}</div>
         </div>
         <div>
           <h5 className="font-bold text-white">Started on</h5>
-          <p>{startTime}</p>
+          <div>{startTime}</div>
         </div>
         <div>
           <h5 className="font-bold text-white">Completed on</h5>
-          <p>{endTime}</p>
+          <div>{endTime}</div>
         </div>
       </section>
 
@@ -51,11 +51,11 @@ export function RunSummary(props: RunSummaryProps) {
           <hgroup>
             <div className="flex items-start gap-2">
               <Icon name={IconName.Book} />
-              <p className="w-[80%]">
+              <div className="w-[80%]">
                 Moonshot offers <span className="font-bold">cookbooks</span>{' '}
                 containing recipes (benchmark tests) that evaluate comparable
                 areas.
-              </p>
+              </div>
             </div>
           </hgroup>
 

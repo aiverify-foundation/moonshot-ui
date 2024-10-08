@@ -24,7 +24,7 @@
     "@reduxjs/toolkit": "2.0.1",
     "clsx": "2.0.0",
     "formik": "2.4.5",
-    "html2pdf.js": "^0.10.2",
+    "html3pdf": "^0.12.2",
     "next": "14.2.3",
     "react": "18",
     "react-dom": "18",
