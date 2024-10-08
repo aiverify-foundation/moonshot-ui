@@ -5,11 +5,19 @@ import { act } from 'react-dom/test-utils';
 import { BenchmarkRunStatus } from '@/app/benchmarking/components/benchmarkRunStatus';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { useCancelBenchmarkMutation } from '@/app/services/benchmark-api-service';
-// import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
-// import { useGetLLMEndpointsQuery } from '@/app/services/llm-endpoint-api-service';
-// import { useGetRunnerByIdQuery } from '@/app/services/runner-api-service';
 import { useGetAllStatusQuery } from '@/app/services/status-api-service';
 import { TestStatusProgress } from '@/app/types/enums';
+import {
+  resetBenchmarkCookbooks,
+  resetBenchmarkModels,
+  useAppDispatch,
+} from '@/lib/redux';
+
+jest.mock('@/lib/redux', () => ({
+  resetBenchmarkCookbooks: jest.fn(),
+  resetBenchmarkModels: jest.fn(),
+  useAppDispatch: jest.fn(),
+}));
 
 const mockTestStatuses: TestStatuses = {
   'runner-id-1': {
@@ -101,14 +109,6 @@ const mockEndpoints: LLMEndpoint[] = [
   },
 ];
 
-jest.mock('@/lib/redux', () => ({
-  addBenchmarkCookbooks: jest.fn(),
-  removeBenchmarkCookbooks: jest.fn(),
-  updateBenchmarkCookbooks: jest.fn(),
-  useAppDispatch: jest.fn(),
-  useAppSelector: jest.fn(),
-}));
-
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn().mockImplementation(jest.fn()),
   useSearchParams: jest.fn().mockImplementation(() => ({
@@ -152,7 +152,21 @@ it('should display the "in progress" status and test details', async () => {
     data: mockTestStatuses,
     isLoading: false,
   }));
+  const mockDispatch = jest.fn();
+  (useAppDispatch as jest.Mock).mockImplementation(() => mockDispatch);
+  const mockResetBenchmarkCookbooks = jest.fn();
+  const mockResetBenchmarkModels = jest.fn();
+  (resetBenchmarkCookbooks as unknown as jest.Mock).mockImplementation(
+    mockResetBenchmarkCookbooks
+  );
+  (resetBenchmarkModels as unknown as jest.Mock).mockImplementation(
+    mockResetBenchmarkModels
+  );
   render(<BenchmarkRunStatus allStatuses={mockTestStatuses} />);
+
+  expect(mockDispatch).toHaveBeenCalledTimes(2);
+  expect(mockDispatch).toHaveBeenCalledWith(mockResetBenchmarkCookbooks());
+  expect(mockDispatch).toHaveBeenCalledWith(mockResetBenchmarkModels());
 
   expect(screen.getByText(/running tests/i)).toBeInTheDocument();
   expect(
@@ -187,6 +201,17 @@ it('should display the "in progress" status and test details', async () => {
   cleanup();
   expect(mockCloseEventSource).toHaveBeenCalled();
 });
+
+  const mockDispatch = jest.fn();
+  (useAppDispatch as jest.Mock).mockImplementation(() => mockDispatch);
+  const mockResetBenchmarkCookbooks = jest.fn();
+  const mockResetBenchmarkModels = jest.fn();
+  (resetBenchmarkCookbooks as unknown as jest.Mock).mockImplementation(
+    mockResetBenchmarkCookbooks
+  );
+  (resetBenchmarkModels as unknown as jest.Mock).mockImplementation(
+    mockResetBenchmarkModels
+  );
 
 it('should display the "completed" status', async () => {
   const completedTestData = {

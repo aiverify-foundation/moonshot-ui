@@ -225,10 +225,6 @@ function RecipesViewList({
                     );
                   })}
             </p>
-            <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">Prompts</h4>
-            <p className="text-[0.95rem] mb-4 text-moongray-300">
-              {selectedRecipe.total_prompt_in_recipe}
-            </p>
             <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">Metrics</h4>
             <p className="text-[0.95rem] mb-4 text-moongray-300">
               {selectedRecipe.metrics.length === 0
@@ -242,6 +238,14 @@ function RecipesViewList({
                       </span>
                     );
                   })}
+            </p>
+            <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">Number of Prompts</h4>
+            <p className="text-[0.95rem] mb-4 text-moongray-300">
+              {selectedRecipe.total_prompt_in_recipe}
+            </p>
+            <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">Number of Datasets</h4>
+            <p className="text-[0.95rem] mb-4 text-moongray-300">
+              {selectedRecipe.stats.num_of_datasets}
             </p>
           </section>
           <SelectedRecipesPills

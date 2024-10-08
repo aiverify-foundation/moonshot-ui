@@ -11,7 +11,7 @@ type ModalProps = {
   bgColor: React.CSSProperties['backgroundColor'];
   textColor: React.CSSProperties['color'];
   headingColor?: React.CSSProperties['color'];
-  heading: string;
+  heading: React.ReactNode;
   hideCloseIcon?: boolean;
   children: React.ReactNode;
   enableScreenOverlay: boolean;
