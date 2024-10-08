@@ -19,6 +19,13 @@ import {
 import config from '@/moonshot.config';
 import { CookbookSelectionItem } from './cookbookSelectionItem';
 
+const descQuality =
+  "Quality evaluates the model's ability to consistently produce content that meets general correctness and application-specific standards.";
+const descCapability =
+  "Capability assesses the AI model's ability to perform within the context of the unique requirements and challenges of a particular domain or task.";
+const descTrustAndSafety =
+  'Trust & Safety addresses the reliability, ethical considerations, and inherent risks of the AI model. It also examines potential scenarios where the AI system could be used maliciously or unethically.';
+
 const CookbookAbout = dynamic(
   () => import('./cookbookAbout').then((mod) => mod.CookbookAbout),
   {
@@ -135,17 +142,14 @@ function CookbooksSelection(props: Props) {
     setCookbookDetails(cb);
   }
 
-  let categoryDesc = '';
-  if (activeTab.id === 'quality') {
-    categoryDesc =
-      "Quality evaluates the model's ability to consistently produce content that meets general correctness and application-specific standards.";
-  } else if (activeTab.id === 'capability') {
-    categoryDesc =
-      "Capability assesses the AI model's ability to perform within the context of the unique requirements and challenges of a particular domain or task.";
-  } else if (activeTab.id === 'trustAndSafety') {
-    categoryDesc =
-      'Trust & Safety addresses the reliability, ethical considerations, and inherent risks of the AI model. It also examines potential scenarios where the AI system could be used maliciously or unethically.';
-  }
+  const categoryDesc =
+    activeTab.id === 'quality'
+      ? descQuality
+      : activeTab.id === 'capability'
+        ? descCapability
+        : activeTab.id === 'trustAndSafety'
+          ? descTrustAndSafety
+          : '';
 
   useEffect(() => {
     if (!cookbooks) return;

@@ -14,6 +14,7 @@ const mockCookbooks: Cookbook[] = [
     description: 'Mock description one',
     recipes: ['rc-id-1'],
     total_prompt_in_cookbook: 10,
+    total_dataset_in_cookbook: 1,
   },
   {
     id: 'cb-id-2',
@@ -21,6 +22,7 @@ const mockCookbooks: Cookbook[] = [
     description: 'Mock description two',
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
+    total_dataset_in_cookbook: 2,
   },
 ];
 

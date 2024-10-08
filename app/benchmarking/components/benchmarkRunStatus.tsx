@@ -16,6 +16,11 @@ import { useGetLLMEndpointsQuery } from '@/app/services/llm-endpoint-api-service
 import { useGetRunnerByIdQuery } from '@/app/services/runner-api-service';
 import { useGetAllStatusQuery } from '@/app/services/status-api-service';
 import { AppEventTypes, TestStatusProgress } from '@/app/types/enums';
+import {
+  resetBenchmarkCookbooks,
+  resetBenchmarkModels,
+  useAppDispatch,
+} from '@/lib/redux';
 
 function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
   const [showRunDetails, setShowRunDetails] = React.useState(false);
@@ -33,6 +38,7 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
   const [triggerCancelBenchmark, { isLoading: isCancelling }] =
     useCancelBenchmarkMutation();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
   const runner_id = searchParams.get('runner_id');
   const { data: runnerData } = useGetRunnerByIdQuery(
@@ -78,6 +84,8 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
   }, [isLoading]);
 
   React.useEffect(() => {
+    dispatch(resetBenchmarkCookbooks());
+    dispatch(resetBenchmarkModels());
     return () => {
       closeEventSource();
     };
