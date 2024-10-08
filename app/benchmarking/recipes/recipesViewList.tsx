@@ -169,7 +169,7 @@ function RecipesViewList({
                       </h4>
                     </div>
                     <p
-                      className="text-[0.8rem] h-[40px] overflow-hidden text-moongray-400"
+                      className="text-[0.8rem] h-[40px] overflow-hidden text-moongray-400 break-all break-words"
                       style={ellipsisStyle}>
                       {recipe.description}
                     </p>

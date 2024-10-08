@@ -95,7 +95,7 @@ function CookbooksViewList({
                 <h4 className="text-[1rem] font-semibold">{cookbook.name}</h4>
               </div>
               <p
-                className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis text-moongray-400"
+                className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis text-moongray-400 break-all break-words"
                 style={ellipsisStyle}>
                 {cookbook.description}
               </p>
@@ -163,7 +163,7 @@ function CookbooksViewList({
                 {selectedCookbook.name}
               </h3>
             </div>
-            <p className="text-[0.95rem] text-moongray-300">
+            <p className="text-[0.95rem] text-moongray-300 break-all break-words">
               {selectedCookbook.description}
             </p>
             <h4 className="text-[1.15rem] font-semibold mt-10 mb-1">Recipes</h4>
