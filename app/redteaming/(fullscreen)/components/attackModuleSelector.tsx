@@ -57,13 +57,11 @@ function AttackModuleSelectView(props: AttackModuleSelectViewProps) {
                     hideCheckbox
                     bgColor={isSelected ? colors.moonwine[950] : undefined}
                     className="pt-7 items-start h-[180px] overflow-y-hidden">
-                    <div>
-                      <p
-                        className="text-[0.8rem] h-[120px] text-moongray-400 overflow-y-hidden
+                    <p
+                      className="text-[0.8rem] h-[120px] text-moongray-400 overflow-y-hidden
                         hover:overflow-y-auto custom-scrollbar"
-                        dangerouslySetInnerHTML={{ __html: description }}
-                      />
-                    </div>
+                      dangerouslySetInnerHTML={{ __html: description }}
+                    />
                   </SelectListItem>
                 );
               })}
