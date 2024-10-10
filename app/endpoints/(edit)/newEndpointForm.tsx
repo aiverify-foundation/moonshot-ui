@@ -56,6 +56,7 @@ const validationSchema = object().shape({
   connector_type: string().required('Connector Type is required'),
   max_calls_per_second: string().required('Max calls Per Second is required'),
   max_concurrency: string().required('Max Concurrency is required'),
+  model: string(),
   params: string()
     .min(1, 'Other Parameters is required')
     .required('Other Parameters is required'),
