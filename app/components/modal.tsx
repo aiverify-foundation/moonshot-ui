@@ -20,7 +20,7 @@ type ModalProps = {
   secondaryBtnLabel?: string;
   onPrimaryBtnClick?: () => void;
   onSecondaryBtnClick?: () => void;
-  onCloseIconClick: () => void;
+  onCloseIconClick?: () => void;
 };
 
 function Modal(props: ModalProps) {
@@ -66,17 +66,19 @@ function Modal(props: ModalProps) {
           color: textColor,
           boxShadow: '0 0 10px rgba(0,0,0,.5)',
         }}>
-        <header
-          className="flex justify-between mb-3"
-          style={{ color: headingColor }}>
-          <h1 className="text-[1.4rem] font-normal">{heading}</h1>
-          {!hideCloseIcon ? (
-            <Icon
-              name={IconName.Close}
-              onClick={onCloseIconClick}
-            />
-          ) : null}
-        </header>
+        {(heading || !hideCloseIcon) && (
+          <header
+            className="flex justify-between mb-3"
+            style={{ color: headingColor }}>
+            <h1 className="text-[1.4rem] font-normal">{heading}</h1>
+            {!hideCloseIcon ? (
+              <Icon
+                name={IconName.Close}
+                onClick={onCloseIconClick}
+              />
+            ) : null}
+          </header>
+        )}
         <main style={{ height: 'calc(100% - 20px' }}>{children}</main>
         {(onSecondaryBtnClick || onPrimaryBtnClick) && (
           <footer className="absolute bottom-0 left-0 flex justify-end items-center gap-2 p-4 w-full mt-4">

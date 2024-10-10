@@ -1,6 +1,6 @@
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { EndpointSelectVew } from '@/app/benchmarking/components/endpointsSelector';
+import { EndpointSelector } from '@/app/benchmarking/components/endpointsSelector';
 import { useModelsList } from '@/app/hooks/useLLMEndpointList';
 
 const mockEndpoints: LLMEndpoint[] = [
@@ -49,7 +49,7 @@ describe('EndpointSelector', () => {
     }));
 
     render(
-      <EndpointSelectVew
+      <EndpointSelector
         totalSelected={0}
         selectedModels={[]}
         onModelClick={mockModelClickHandler}
@@ -69,7 +69,7 @@ describe('EndpointSelector', () => {
     }));
 
     render(
-      <EndpointSelectVew
+      <EndpointSelector
         totalSelected={0}
         selectedModels={[]}
         onModelClick={mockModelClickHandler}
@@ -90,7 +90,7 @@ describe('EndpointSelector', () => {
     }));
 
     render(
-      <EndpointSelectVew
+      <EndpointSelector
         totalSelected={0}
         selectedModels={[mockEndpoints[1]]}
         onModelClick={mockModelClickHandler}

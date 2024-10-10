@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import React, { useLayoutEffect, useState } from 'react';
-import { EndpointSelectVew } from '@/app/benchmarking/components/endpointsSelector';
+import { EndpointSelector } from '@/app/benchmarking/components/endpointsSelector';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
@@ -141,7 +141,7 @@ function RedteamNewSessionFlow() {
       stepIndex = 0;
       showSkipButton = false;
       view = (
-        <EndpointSelectVew
+        <EndpointSelector
           selectedModels={selectedModels}
           totalSelected={selectedModels.length}
           onModelClick={handleModelClick}
