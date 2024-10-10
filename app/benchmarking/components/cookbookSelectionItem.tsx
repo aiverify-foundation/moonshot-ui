@@ -39,9 +39,12 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
           : {}),
       }}
       onClick={handleClick}>
-      <header className="flex flex-basis-[100%] justify-between">
-        <div className="flex gap-2 text-white">
-          <Icon name={IconName.Book} />
+      <header className="flex flex-basis-[100%] justify-between gap-2">
+        <div className="flex gap-2 text-white items-start">
+          <Icon
+            name={IconName.Book}
+            style={{ marginTop: 2 }}
+          />
           <h3 className="font-bold capitalize">{cookbook.name}</h3>
         </div>
         <input
@@ -64,7 +67,7 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
           />
         ))}
       </div>
-      <p>{cookbook.description}</p>
+      <p className="break-all break-words">{cookbook.description}</p>
       <footer className="flex justify-between">
         <p>{cookbook.total_prompt_in_cookbook} prompts</p>
         <span
