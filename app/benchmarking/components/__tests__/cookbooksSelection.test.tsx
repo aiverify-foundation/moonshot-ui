@@ -39,13 +39,14 @@ function mockCookbookApiService() {
   };
 }
 
-const mockCookbooks = [
+const mockCookbooks: Cookbook[] = [
   {
     id: 'cb-id-1',
     name: 'Mock Cookbook One',
     description: 'Mock description',
     recipes: ['rc-id-1'],
     total_prompt_in_cookbook: 10,
+    total_dataset_in_cookbook: 1,
     endpoint_required: ['endpoint-1', 'endpoint-2'],
   },
   {
@@ -54,6 +55,7 @@ const mockCookbooks = [
     description: 'Mock description',
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
+    total_dataset_in_cookbook: 2,
     endpoint_required: null,
   },
   {
@@ -62,6 +64,7 @@ const mockCookbooks = [
     description: 'Mock description',
     recipes: ['rc-id-3'],
     total_prompt_in_cookbook: 30,
+    total_dataset_in_cookbook: 30,
     endpoint_required: null,
   },
 ];

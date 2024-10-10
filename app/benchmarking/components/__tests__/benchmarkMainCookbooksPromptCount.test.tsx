@@ -13,13 +13,14 @@ function mockRedux() {
 
 const mockCookbooksLinkClick = jest.fn();
 
-const mockCookbooks = [
+const mockCookbooks: Cookbook[] = [
   {
     id: 'cb-id-1',
     name: 'Mock Cookbook One',
     description: 'Mock description',
     recipes: ['rc-id-1'],
     total_prompt_in_cookbook: 10,
+    total_dataset_in_cookbook: 1,
     endpoint_required: ['required-endpoint-1', 'required-endpoint-2'],
   },
   {
@@ -28,6 +29,7 @@ const mockCookbooks = [
     description: 'Mock description',
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
+    total_dataset_in_cookbook: 2,
     endpoint_required: null,
   },
 ];
@@ -50,7 +52,7 @@ describe('BenchmarkMainCookbooksPromptCount', () => {
   });
 
   it('should show loading animation', () => {
-    const mockOneAlreadySelectedCookbooksFromState = mockCookbooks;
+    const mockOneAlreadySelectedCookbooksFromState: Cookbook[] = mockCookbooks;
     renderWithProviders(
       <BenchmarkMainCookbooksPromptCount
         selectedCookbooks={mockOneAlreadySelectedCookbooksFromState}
@@ -61,7 +63,7 @@ describe('BenchmarkMainCookbooksPromptCount', () => {
   });
 
   it('should show 30 prompts and required endpoints', () => {
-    const mockOneAlreadySelectedCookbooksFromState = mockCookbooks;
+    const mockOneAlreadySelectedCookbooksFromState: Cookbook[] = mockCookbooks;
     const mockAllCookbooks = mockCookbooks;
     renderWithProviders(
       <BenchmarkMainCookbooksPromptCount
