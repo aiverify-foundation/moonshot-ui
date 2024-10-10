@@ -12,6 +12,7 @@ type Props<T> = {
   iconName: IconName;
   children?: React.ReactNode;
   style?: React.CSSProperties;
+  className?: string;
 };
 
 function SelectListItem<T>(props: Props<T>) {
@@ -26,6 +27,7 @@ function SelectListItem<T>(props: Props<T>) {
     checked = false,
     children,
     style,
+    className,
   } = props;
   const [isChecked, setIsChecked] = useState(checked);
 
@@ -41,14 +43,13 @@ function SelectListItem<T>(props: Props<T>) {
 
   return (
     <li
-      className="flex gap-2 border bg-moongray-950 rounded-xl
+      className={`flex gap-2 border bg-moongray-950 rounded-xl
           p-4 px-6 items-center cursor-pointer
-        hover:bg-moongray-800 hover:border-moonwine-700 mb-[15px]"
+        hover:bg-moongray-800 hover:border-moonwine-700 mb-[15px]
+          transition-colors duration-200 ease-in-out basis-[49%] ${className}`}
       style={{
-        flexBasis: '49%',
         height,
         backgroundColor: bgColor,
-        transition: 'background-color 0.2s ease-in-out',
         ...style,
       }}
       onClick={handleClick}>
