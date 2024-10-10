@@ -4,7 +4,7 @@ import { CookbooksMain } from './cookbooksMain';
 export const dynamic = 'force-dynamic';
 
 export default async function CookbooksPage() {
-  const result = await fetchCookbooks();
+  const result = await fetchCookbooks({ count: true });
   if ('message' in result) {
     throw result;
   }

@@ -1,18 +1,20 @@
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useFormState, useFormStatus } from 'react-dom';
+import { getRecipesStatsById } from '@/actions/getRecipesStatsById';
 import { BenchmarkNewSessionFlow } from '@/app/benchmarking/components/benchmarkNewSessionFlow';
 import { useModelsList } from '@/app/hooks/useLLMEndpointList';
-import { useRunBenchmarkMutation } from '@/app/services/benchmark-api-service';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
 import { useAppDispatch, useAppSelector } from '@/lib/redux';
 
-const mockCookbooks = [
+const mockCookbooks: Cookbook[] = [
   {
     id: 'cb-id-1',
     name: 'Mock Cookbook One',
     description: 'Mock description',
     recipes: ['rc-id-1'],
     total_prompt_in_cookbook: 10,
+    total_dataset_in_cookbook: 1,
   },
   {
     id: 'cb-id-2',
@@ -20,6 +22,7 @@ const mockCookbooks = [
     description: 'Mock description',
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
+    total_dataset_in_cookbook: 2,
   },
 ];
 
@@ -48,6 +51,15 @@ const mockEndpoints: LLMEndpoint[] = [
   },
 ];
 
+jest.mock('react-dom', () => {
+  const actualReactDomApis = jest.requireActual('react-dom');
+  return {
+    ...actualReactDomApis,
+    useFormState: jest.fn(),
+    useFormStatus: jest.fn(),
+  };
+});
+
 jest.mock('@/lib/redux', () => ({
   addBenchmarkModels: jest.fn(),
   addBenchmarkCookbooks: jest.fn(),
@@ -75,12 +87,70 @@ jest.mock('@/app/services/llm-endpoint-api-service', () => ({
   useCreateLLMEndpointMutation: jest.fn(),
   useUpdateLLMEndpointMutation: jest.fn(),
 }));
-jest.mock('@/app/services/benchmark-api-service', () => ({
-  useRunBenchmarkMutation: jest.fn(),
-}));
+
+jest.mock('@/actions/getRecipesStatsById');
+
+const mockFormState: FormState<BenchmarkRunFormValues> = {
+  formStatus: 'initial',
+  formErrors: undefined,
+  run_name: '',
+  description: '',
+  inputs: [],
+  endpoints: [],
+  num_of_prompts: '',
+  system_prompt: '',
+  runner_processing_module: 'benchmarking',
+  random_seed: '0',
+  run_all: 'false',
+};
+
+//We are not asserting anything on the form action. In React, form action is a reference to a function (server action). There is no way to stub the action.
+//Set it to a string to suppress jest from reporting invalid value prop error.
+const mockFormAction = 'unused';
+
+const mockRecipesStats: RecipeStats[] = [
+  {
+    num_of_datasets_prompts: {
+      dataset1: 100,
+      dataset2: 200,
+    },
+    num_of_tags: 3,
+    num_of_datasets: 2,
+    num_of_prompt_templates: 0,
+    num_of_metrics: 2,
+    num_of_attack_modules: 1,
+  },
+  {
+    num_of_datasets_prompts: {
+      dataset1: 300,
+      dataset2: 400,
+      dataset3: 500,
+    },
+    num_of_tags: 5,
+    num_of_datasets: 3,
+    num_of_prompt_templates: 2,
+    num_of_metrics: 3,
+    num_of_attack_modules: 2,
+  },
+];
+
+beforeAll(() => {
+  const mockUseFormState: jest.Mock = jest.fn().mockImplementation(() => {
+    return [
+      mockFormState,
+      mockFormAction, // use a dummy string to prevent jest from complaining
+    ];
+  });
+  (useFormState as jest.Mock).mockImplementation(mockUseFormState);
+  (useFormStatus as jest.Mock).mockImplementation(() => ({ pending: false }));
+  (getRecipesStatsById as jest.Mock).mockResolvedValue({
+    status: 'success',
+    data: mockRecipesStats,
+  });
+});
 
 it('should show correct views when next or back icons are clicked', async () => {
-  let callCount = 1;
+  let callCount = 1; // relying on the Nth time useAppSelector is called, it returns the expected value
   (useAppSelector as jest.Mock).mockImplementation(() => {
     if (callCount === 1) {
       callCount++;
@@ -99,10 +169,6 @@ it('should show correct views when next or back icons are clicked', async () => 
     error: null,
   }));
   (useAppDispatch as jest.Mock).mockImplementation(() => jest.fn());
-  (useRunBenchmarkMutation as jest.Mock).mockReturnValue([
-    jest.fn(),
-    { isLoading: false },
-  ]);
 
   render(<BenchmarkNewSessionFlow />);
   const nextButton = screen.getByRole('button', { name: /Next View/i });
@@ -189,10 +255,6 @@ it('should show more cookbooks screen', async () => {
     error: null,
   }));
   (useAppDispatch as jest.Mock).mockImplementation(() => jest.fn());
-  (useRunBenchmarkMutation as jest.Mock).mockReturnValue([
-    jest.fn(),
-    { isLoading: false },
-  ]);
 
   render(<BenchmarkNewSessionFlow />);
   const nextButton = screen.getByRole('button', { name: /Next View/i });
@@ -236,10 +298,6 @@ it('should show the shorter three stepsflow', async () => {
     error: null,
   }));
   (useAppDispatch as jest.Mock).mockImplementation(() => jest.fn());
-  (useRunBenchmarkMutation as jest.Mock).mockReturnValue([
-    jest.fn(),
-    { isLoading: false },
-  ]);
 
   const { rerender } = render(<BenchmarkNewSessionFlow threeStepsFlow />);
   // more cookbooks screen

@@ -34,9 +34,14 @@ function CookbookAbout({ cookbook, checked, onSelectChange }: Props) {
         <p className="text-[0.9rem] text-moongray-200">
           {cookbook.description}
         </p>
-        <p className="text-moongray-200">
-          {cookbook.total_prompt_in_cookbook} prompts
-        </p>
+        <div>
+          <p className="text-moongray-200">
+            {cookbook.total_prompt_in_cookbook} prompts
+          </p>
+          <p className="text-moongray-200">
+            Total Number of Datasets: {cookbook.total_dataset_in_cookbook}
+          </p>
+        </div>
       </div>
       <div className="flex-1 flex flex-col gap-3">
         <h4 className="">{cookbook.recipes.length} Recipes in this cookbook</h4>
@@ -56,9 +61,17 @@ function CookbookAbout({ cookbook, checked, onSelectChange }: Props) {
                     <h3 className="font-bold">{recipe.name}</h3>
                   </div>
                   <p className="text-[0.9rem]">{recipe.description}</p>
-                  <p className="text-[0.9rem]">
-                    {recipe.total_prompt_in_recipe} Prompts
-                  </p>
+                  <div>
+                    <p className="text-[0.9rem]">
+                      {recipe.total_prompt_in_recipe} Prompts
+                    </p>
+                    <p className="text-[0.9rem]">
+                      {recipe.stats.num_of_datasets}{' '}
+                      {recipe.stats.num_of_datasets > 1
+                        ? 'Datasets'
+                        : 'Dataset'}
+                    </p>
+                  </div>
                 </li>
               ))}
           </ul>
