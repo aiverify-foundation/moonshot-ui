@@ -6,10 +6,10 @@ import {
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
 import { RecipeGradeBadge } from './badge';
-import { gradeColorsMoonshot, gradeColorsRisk } from './gradeColors';
+import { gradeColorsMoonshot, gradeColorsRiskLevel } from './gradeColors';
+import { gradingLettersRiskLevelMap } from './mlcReportComponents/constants';
 import { RangedBarChart } from './rangedBarChart';
 import { RawRecipeMetricsScoresTable } from './rawScoresTable';
-import { gradingLettersRiskLevelMap } from './mlcReportComponents/constants';
 
 type RecipeRatingResultProps = {
   result: RecipeEvaluationResult;
@@ -39,11 +39,11 @@ function RecipeRatingResult(props: RecipeRatingResultProps) {
   let gradeColors = gradeColorsMoonshot;
   let isRistLevelGrading = false;
   if (
-    Object.keys(gradeColorsRisk)
+    Object.keys(gradeColorsRiskLevel)
       .join()
       .includes(Object.keys(gradingScale).join())
   ) {
-    gradeColors = gradeColorsRisk;
+    gradeColors = gradeColorsRiskLevel;
     isRistLevelGrading = true;
   }
 
@@ -54,7 +54,7 @@ function RecipeRatingResult(props: RecipeRatingResultProps) {
         <h3 className="ml-2 text-white font-bold text-[1rem]">{recipe.name}</h3>
       </header>
       <main className="p-4 grid grid-cols-3 items-start justify-items-end">
-        <div className="col-span-2">
+        <div className="col-span-2 justify-self-start">
           <div className="mb-3">{recipe.description}</div>
           <div className="text-[0.8rem]">
             {promptsCount} out of {recipe.total_prompt_in_recipe} tested

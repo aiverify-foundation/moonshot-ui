@@ -3,8 +3,9 @@ import { CookbookResult } from '@/app/benchmarking/report/types/benchmarkReportT
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
 import { RecipeGradeBadge } from './badge';
-import { gradeColorsMoonshot } from './gradeColors';
+import { gradeColorsMoonshot, gradeColorsRiskLevel } from './gradeColors';
 import { PrintingContext } from './reportViewer';
+import { gradingLettersRiskLevelMap } from './mlcReportComponents/constants';
 
 type BenchmarkReportCookbookResultsProps = {
   result: CookbookResult;
@@ -21,6 +22,16 @@ function CookbookReportCard(props: BenchmarkReportCookbookResultsProps) {
   );
   const [showSection, setShowSection] = React.useState(expanded);
   const { prePrintingFlagEnabled } = React.useContext(PrintingContext);
+
+  let gradeColors = gradeColorsMoonshot;
+  let isRiskLevelGrading = false;
+  if (
+    evaluationSummary &&
+    Object.keys(gradeColorsRiskLevel).includes(evaluationSummary.overall_grade)
+  ) {
+    gradeColors = gradeColorsRiskLevel;
+    isRiskLevelGrading = true;
+  }
 
   React.useEffect(() => {
     setShowSection(expanded);
@@ -39,7 +50,7 @@ function CookbookReportCard(props: BenchmarkReportCookbookResultsProps) {
         ${showSection ? 'rounded-b-none' : 'rounded-b-lg'}`}
         style={{
           transition: 'background-color 0.3s ease-in-out',
-          border: `1px solid ${gradeColorsMoonshot[evaluationSummary.overall_grade as keyof typeof gradeColorsMoonshot]}`,
+          border: `1px solid ${gradeColors[evaluationSummary.overall_grade]}`,
         }}
         onClick={() => setShowSection(!showSection)}>
         <div className="flex items-center gap-2">
@@ -56,7 +67,14 @@ function CookbookReportCard(props: BenchmarkReportCookbookResultsProps) {
           {evaluationSummary && (
             <RecipeGradeBadge
               grade={evaluationSummary.overall_grade}
-              gradeColors={gradeColorsMoonshot}
+              customLetter={
+                isRiskLevelGrading && evaluationSummary.overall_grade
+                  ? gradingLettersRiskLevelMap[
+                      evaluationSummary.overall_grade as keyof typeof gradingLettersRiskLevelMap
+                    ]
+                  : undefined
+              }
+              gradeColors={gradeColors}
               size={35}
               textSize="1rem"
               textColor={colors.white}
