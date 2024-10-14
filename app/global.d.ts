@@ -102,12 +102,22 @@ type Cookbook = {
   description: string;
   recipes: string[];
   total_prompt_in_cookbook: number;
+  total_dataset_in_cookbook: number;
 };
 
 type CookbookFormValues = {
   name: string;
   description?: string;
   recipes: string[];
+};
+
+type RecipeStats = {
+  num_of_tags: number;
+  num_of_datasets: number;
+  num_of_datasets_prompts: Record<string, number>;
+  num_of_prompt_templates: number;
+  num_of_metrics: number;
+  num_of_attack_modules: number;
 };
 
 type Recipe = {
@@ -120,14 +130,7 @@ type Recipe = {
   metrics: string[];
   name: string;
   prompt_templates: string[];
-  stats: {
-    num_of_tags: number;
-    num_of_datasets: number;
-    num_of_datasets_prompts: Record<string, number>;
-    num_of_prompt_templates: number;
-    num_of_metrics: number;
-    num_of_attack_modules: number;
-  };
+  stats: RecipeStats;
   tags: string[];
   total_prompt_in_recipe: number;
 };
@@ -165,6 +168,7 @@ type BenchmarkRunFormValues = {
   inputs: string[];
   endpoints: string[];
   random_seed: string;
+  run_all: string;
 };
 
 type RedteamRunFormValues = {
@@ -354,4 +358,10 @@ type BookMark = {
   context_strategy?: string;
   prompt_template?: string;
   bookmark_time: string;
+};
+
+type FastAPIError = {
+  type: string;
+  loc: string[];
+  msg: string;
 };

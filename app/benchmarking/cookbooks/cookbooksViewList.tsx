@@ -178,6 +178,14 @@ function CookbooksViewList({
                 );
               })}
             </p>
+            <h4 className="text-[1.15rem] font-semibold mt-10 mb-1">Number of Prompts</h4>
+            <p className="text-[0.95rem] text-moongray-300">
+              {selectedCookbook.total_prompt_in_cookbook}
+            </p>
+            <h4 className="text-[1.15rem] font-semibold mt-10 mb-1">Number of Datasets</h4>
+            <p className="text-[0.95rem] text-moongray-300">
+              {selectedCookbook.total_dataset_in_cookbook}
+            </p>
           </section>
           <SelectedCookbooksPills
             checkedCookbooks={checkedCookbooks}

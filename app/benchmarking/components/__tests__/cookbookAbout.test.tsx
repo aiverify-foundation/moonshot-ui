@@ -13,6 +13,7 @@ const mockCookbook = {
   description: 'Mock description',
   recipes: ['rc-id-1', 'rc-id-2'],
   total_prompt_in_cookbook: 10,
+  total_dataset_in_cookbook: 1,
 };
 
 const mockRecipes = [
@@ -21,12 +22,18 @@ const mockRecipes = [
     name: 'Mock Recipe One',
     description: 'Mock description one',
     total_prompt_in_recipe: 5,
+    stats: {
+      num_of_datasets: 1,
+    },
   },
   {
     id: 'rc-id-2',
     name: 'Mock Recipe Two',
     description: 'Mock description two',
     total_prompt_in_recipe: 5,
+    stats: {
+      num_of_datasets: 2,
+    },
   },
 ];
 
