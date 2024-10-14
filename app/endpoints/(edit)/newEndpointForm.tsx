@@ -208,7 +208,6 @@ function NewEndpointForm(props: NewEndpointFormProps) {
   const hasEmptyFields =
     formik.values.name.trim() === '' ||
     formik.values.connector_type.trim() === '' ||
-    formik.values.model.trim() === '' ||
     formik.values.params?.trim() === '' ||
     formik.values.token?.trim() === '';
 
