@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { CookbooksSelection } from '@/app/benchmarking/components/cookbooksSelection';
-import { EndpointSelectVew } from '@/app/benchmarking/components/endpointsSelector';
+import { EndpointSelector } from '@/app/benchmarking/components/endpointsSelector';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
@@ -49,6 +49,22 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
   const [showExitModal, setShowExitModal] = React.useState(false);
 
   function handleNextIconClick() {
+    if (flowState.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
+      const requiredEndpoints = selectedCookbooks.reduce((acc, cookbook) => {
+        if (cookbook.endpoint_required && cookbook.endpoint_required.length) {
+          acc = [...acc, ...cookbook.endpoint_required];
+        }
+        return acc;
+      }, [] as string[]);
+      dispatch({
+        type: 'NEXT_BTN_CLICK',
+        cookbooksLength: selectedCookbooks.length,
+        modelsLength: selectedModels.length,
+        requiredEndpoints,
+      });
+      return;
+    }
+
     dispatch({
       type: 'NEXT_BTN_CLICK',
       cookbooksLength: selectedCookbooks.length,
@@ -138,7 +154,7 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
       break;
     case BenchmarkNewSessionViews.ENDPOINTS_SELECTION:
       view = (
-        <EndpointSelectVew
+        <EndpointSelector
           selectedModels={selectedModels}
           totalSelected={selectedModels.length}
           onModelClick={handleModelClick}
@@ -211,6 +227,49 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
             <br />
             You should complete this workflow before exiting.
           </p>
+        </Modal>
+      )}
+      {flowState.requiredEndpoints?.length && (
+        <Modal
+          width={600}
+          height={280}
+          heading=""
+          bgColor={colors.moongray['800']}
+          textColor="#FFFFFF"
+          primaryBtnLabel="Yes"
+          secondaryBtnLabel="No"
+          enableScreenOverlay
+          hideCloseIcon
+          onSecondaryBtnClick={() =>
+            dispatch({
+              type: 'CLOSE_REQUIRED_ENDPOINTS_MODAL',
+              requiredEndpointsTokensFilled: false,
+            })
+          }
+          onPrimaryBtnClick={() =>
+            dispatch({
+              type: 'CLOSE_REQUIRED_ENDPOINTS_MODAL',
+              requiredEndpointsTokensFilled: true,
+            })
+          }>
+          <div className="flex gap-4 items-start mt-1">
+            <Icon
+              size={30}
+              name={IconName.OutlineBox}
+              color={colors.moonpurplelight}
+              style={{ marginTop: 4 }}
+            />
+            <h3 className="text-[1rem] font-medium tracking-wide justify-center text-moonpurplelight">
+              Have you entered API key(s) for the following endpoint(s) to run
+              the selected test(s)?
+            </h3>
+          </div>
+
+          <ul className="text-white mt-4 p-4 list-disc list-inside h-[120px] overflow-y-auto custom-scrollbar">
+            {flowState.requiredEndpoints.map((endpoint) => (
+              <li key={endpoint}>{endpoint}</li>
+            ))}
+          </ul>
         </Modal>
       )}
       <CookbooksProvider>

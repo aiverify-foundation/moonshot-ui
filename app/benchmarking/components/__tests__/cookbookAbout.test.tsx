@@ -14,6 +14,7 @@ const mockCookbook = {
   recipes: ['rc-id-1', 'rc-id-2'],
   total_prompt_in_cookbook: 10,
   total_dataset_in_cookbook: 1,
+  endpoint_required: null,
 };
 
 const mockRecipes = [
@@ -25,6 +26,7 @@ const mockRecipes = [
     stats: {
       num_of_datasets: 1,
     },
+    endpoint_required: ['endpoint-1', 'endpoint-2'],
   },
   {
     id: 'rc-id-2',
@@ -34,6 +36,7 @@ const mockRecipes = [
     stats: {
       num_of_datasets: 2,
     },
+    endpoint_required: ['endpoint-1', 'endpoint-2'],
   },
 ];
 
