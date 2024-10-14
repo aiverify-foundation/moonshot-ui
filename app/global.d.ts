@@ -103,6 +103,7 @@ type Cookbook = {
   recipes: string[];
   total_prompt_in_cookbook: number;
   total_dataset_in_cookbook: number;
+  endpoint_required: string[] | null;
 };
 
 type CookbookFormValues = {
@@ -133,6 +134,7 @@ type Recipe = {
   stats: RecipeStats;
   tags: string[];
   total_prompt_in_recipe: number;
+  endpoint_required: string[] | null;
 };
 
 type RecipeFormValues = {
@@ -157,6 +159,7 @@ type AttackModule = {
   id: string;
   name: string;
   description: string;
+  endpoints: string[];
 };
 
 type BenchmarkRunFormValues = {

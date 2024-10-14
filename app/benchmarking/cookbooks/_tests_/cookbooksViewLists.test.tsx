@@ -15,6 +15,7 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-1'],
     total_prompt_in_cookbook: 10,
     total_dataset_in_cookbook: 1,
+    endpoint_required: null,
   },
   {
     id: 'cb-id-2',
@@ -23,6 +24,7 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
     total_dataset_in_cookbook: 2,
+    endpoint_required: ['required-endpoint-1', 'required-endpoint-2'],
   },
 ];
 
@@ -41,8 +43,8 @@ describe('CookbooksViewList', () => {
     mockGetParam.mockReturnValue(undefined);
   });
 
-  describe('View / Search / Select Cookbook', () => {
-    test('show first cookbook details by default', () => {
+  describe('View / Search / Select Cookbook and render required endpoints tooltips', () => {
+    test('show first cookbook details by default', async () => {
       render(
         <CookbooksViewList
           cookbooks={mockCookbooks}
@@ -50,6 +52,25 @@ describe('CookbooksViewList', () => {
         />
       );
       expect(screen.getAllByText(mockCookbooks[0].name)).toHaveLength(2);
+      mockCookbooks.forEach((cookbook) => {
+        if (cookbook.endpoint_required?.length) {
+          cookbook.endpoint_required.forEach((endpoint) => {
+            expect(screen.getByText(endpoint)).toBeInTheDocument();
+          });
+        }
+      });
+      await userEvent.click(
+        screen.getByRole('checkbox', {
+          name: `Select ${mockCookbooks[1].name}`,
+        })
+      );
+      mockCookbooks.forEach((cookbook) => {
+        if (cookbook.endpoint_required?.length) {
+          cookbook.endpoint_required.forEach((endpoint) => {
+            expect(screen.getAllByText(endpoint)).toHaveLength(2);
+          });
+        }
+      });
     });
 
     test('show selected cookbook details when cookbook id is in url query parameter', () => {
