@@ -82,7 +82,7 @@ type LLMEndpoint = {
   max_calls_per_second: number;
   max_concurrency: number;
   created_date: string;
-  model: string;
+  model?: string;
   params?: Record<string, string | number | boolean>;
 };
 
@@ -92,7 +92,7 @@ type LLMEndpointFormValues = {
   name: string;
   uri: string;
   token: string | undefined;
-  model: string;
+  model?: string;
   max_calls_per_second: string;
   max_concurrency: string;
   params?: string;
