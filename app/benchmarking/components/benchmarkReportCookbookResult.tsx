@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { CookbookResult } from '@/app/benchmarking/types/benchmarkReportTypes';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { LoadingAnimation } from '@/app/components/loadingAnimation';
@@ -56,7 +56,7 @@ function BenchmarkReportCookbookResult(
         onClick={() => setShowSection(!showSection)}>
         <div className="flex items-center gap-2">
           <Icon name={IconName.Book} />
-          <h3 className="font-semibold text-white text-[1.2rem]">
+          <h3 className="font-semibold text-white text-[1.2rem] max-w-[700px] overflow-hidden overflow-ellipsis mr-4">
             {cookbook.name}
           </h3>
           <Icon

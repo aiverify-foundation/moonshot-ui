@@ -540,7 +540,7 @@ function BenchmarkReportSectionOne(props: BenchmarkReportProps) {
                 return !cookbookDetails ? null : (
                   <li
                     key={`${cookbook}-${idx}`}
-                    className="mb-1 w-[500px]">
+                    className="mb-1 w-[500px] overflow-hidden overflow-ellipsis">
                     <span className="mr-3">{cookbookDetails.name}</span>
                     <span className="inline-flex gap-2 justify-start">
                       {categories.map((categoryLetter) => (
