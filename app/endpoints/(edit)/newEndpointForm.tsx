@@ -30,6 +30,7 @@ const initialFormValues: LLMEndpointFormValues = {
   token: '',
   max_calls_per_second: '10',
   max_concurrency: '1',
+  model: '',
   params: `{
       "timeout": 300,
       "allow_retries": true,
@@ -44,7 +45,6 @@ const paramsSchema = object().shape({
   allow_retries: boolean(),
   num_of_retries: number(),
   temperature: number(),
-  model: string().required('Parameter "Model" is required'),
 });
 
 const validationSchema = object().shape({
@@ -129,6 +129,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
           token: endpointToEdit.token,
           max_calls_per_second: endpointToEdit.max_calls_per_second.toString(),
           max_concurrency: endpointToEdit.max_concurrency.toString(),
+          model: endpointToEdit.model,
           params: JSON.stringify(endpointToEdit.params, null, 2),
         }
       : initialFormValues;
@@ -207,6 +208,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
   const hasEmptyFields =
     formik.values.name.trim() === '' ||
     formik.values.connector_type.trim() === '' ||
+    formik.values.model.trim() === '' ||
     formik.values.params?.trim() === '' ||
     formik.values.token?.trim() === '';
 
@@ -334,6 +336,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
       name: data.name,
       uri: data.uri,
       token: data.token,
+      model: data.model,
       max_calls_per_second: data.max_calls_per_second,
       max_concurrency: data.max_concurrency,
       params: data.params,
@@ -479,6 +482,22 @@ function NewEndpointForm(props: NewEndpointFormProps) {
               value={formik.values.max_concurrency}
               labelStyles={labelStyle}
               inputStyle={inputStyle}
+            />
+
+            <TextInput
+              name="model"
+              label="Model"
+              labelStyles={labelStyle}
+              inputStyles={inputStyle}
+              onChange={formik.handleChange}
+              value={formik.values.model}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.model && formik.errors.model
+                  ? formik.errors.model
+                  : undefined
+              }
+              placeholder="Model of the model endpoint"
             />
 
             <TextArea
