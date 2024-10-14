@@ -4,8 +4,8 @@ import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
 import { RecipeGradeBadge } from './badge';
 import { gradeColorsMoonshot, gradeColorsRiskLevel } from './gradeColors';
-import { PrintingContext } from './reportViewer';
 import { gradingLettersRiskLevelMap } from './mlcReportComponents/constants';
+import { PrintingContext } from './reportViewer';
 
 type BenchmarkReportCookbookResultsProps = {
   result: CookbookResult;

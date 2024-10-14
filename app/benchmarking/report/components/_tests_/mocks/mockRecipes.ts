@@ -40,6 +40,7 @@ export const mockRecipes: Recipe[] = [
       },
     },
     total_prompt_in_recipe: 276,
+    endpoint_required: null,
   },
   {
     id: 'mlc-vcr',
@@ -69,6 +70,7 @@ export const mockRecipes: Recipe[] = [
       },
     },
     total_prompt_in_recipe: 5110,
+    endpoint_required: null,
   },
   {
     id: 'mlc-scr',
@@ -98,6 +100,7 @@ export const mockRecipes: Recipe[] = [
       },
     },
     total_prompt_in_recipe: 2050,
+    endpoint_required: null,
   },
   {
     id: 'mlc-cbr',
@@ -127,6 +130,7 @@ export const mockRecipes: Recipe[] = [
       },
     },
     total_prompt_in_recipe: 2290,
+    endpoint_required: null,
   },
   {
     id: 'mlc-nvc',
@@ -156,6 +160,7 @@ export const mockRecipes: Recipe[] = [
       },
     },
     total_prompt_in_recipe: 2530,
+    endpoint_required: null,
   },
   {
     id: 'mlc-cae',
@@ -185,6 +190,7 @@ export const mockRecipes: Recipe[] = [
       },
     },
     total_prompt_in_recipe: 2050,
+    endpoint_required: null,
   },
   {
     id: 'mlc-ssh',
@@ -214,6 +220,7 @@ export const mockRecipes: Recipe[] = [
       },
     },
     total_prompt_in_recipe: 1810,
+    endpoint_required: null,
   },
   {
     id: 'mlc-hat',
@@ -243,6 +250,7 @@ export const mockRecipes: Recipe[] = [
       },
     },
     total_prompt_in_recipe: 27250,
+    endpoint_required: null,
   },
   {
     id: 'singapore-safety',
@@ -271,5 +279,6 @@ export const mockRecipes: Recipe[] = [
       },
     },
     total_prompt_in_recipe: 59,
+    endpoint_required: null,
   },
 ];

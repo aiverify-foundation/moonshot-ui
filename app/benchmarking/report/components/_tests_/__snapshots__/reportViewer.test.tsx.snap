@@ -1450,7 +1450,7 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
                 class="p-4 grid grid-cols-3 items-start justify-items-end"
               >
                 <div
-                  class="col-span-2"
+                  class="col-span-2 justify-self-start"
                 >
                   <div
                     class="mb-3"

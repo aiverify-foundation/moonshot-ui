@@ -17,11 +17,6 @@ const benchmarkRunApi = createApi({
   }),
 });
 
-const { useGetBenchmarksResultQuery, useCancelBenchmarkMutation } =
-  benchmarkRunApi;
+const { useCancelBenchmarkMutation } = benchmarkRunApi;
 
-export {
-  benchmarkRunApi,
-  useGetBenchmarksResultQuery,
-  useCancelBenchmarkMutation,
-};
+export { benchmarkRunApi, useCancelBenchmarkMutation };
