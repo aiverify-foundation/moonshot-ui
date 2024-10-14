@@ -6,9 +6,10 @@ import {
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { colors } from '@/app/customColors';
 import { RecipeGradeBadge } from './badge';
-import { gradeColorsMoonshot } from './gradeColors';
+import { gradeColorsMoonshot, gradeColorsRisk } from './gradeColors';
 import { RangedBarChart } from './rangedBarChart';
 import { RawRecipeMetricsScoresTable } from './rawScoresTable';
+import { gradingLettersRiskLevelMap } from './mlcReportComponents/constants';
 
 type RecipeRatingResultProps = {
   result: RecipeEvaluationResult;
@@ -35,6 +36,17 @@ function RecipeRatingResult(props: RecipeRatingResultProps) {
     recipeEvaluationSummary &&
     recipeEvaluationSummary.grade === null;
 
+  let gradeColors = gradeColorsMoonshot;
+  let isRistLevelGrading = false;
+  if (
+    Object.keys(gradeColorsRisk)
+      .join()
+      .includes(Object.keys(gradingScale).join())
+  ) {
+    gradeColors = gradeColorsRisk;
+    isRistLevelGrading = true;
+  }
+
   return (
     <section className="flex flex-col gap-2">
       <header className="flex items-center">
@@ -51,7 +63,14 @@ function RecipeRatingResult(props: RecipeRatingResultProps) {
         {recipeEvaluationSummary && (
           <RecipeGradeBadge
             grade={recipeEvaluationSummary.grade}
-            gradeColors={gradeColorsMoonshot}
+            customLetter={
+              isRistLevelGrading && recipeEvaluationSummary.grade
+                ? gradingLettersRiskLevelMap[
+                    recipeEvaluationSummary.grade as keyof typeof gradingLettersRiskLevelMap
+                  ]
+                : undefined
+            }
+            gradeColors={gradeColors}
             size={65}
             textSize="2rem"
             textColor={colors.white}
@@ -63,7 +82,7 @@ function RecipeRatingResult(props: RecipeRatingResultProps) {
           <RangedBarChart
             gradingScale={gradingScale as GradingScale}
             gradeValue={recipeEvaluationSummary.avg_grade_value}
-            gradeColors={gradeColorsMoonshot}
+            gradeColors={gradeColors}
           />
         </section>
       )}

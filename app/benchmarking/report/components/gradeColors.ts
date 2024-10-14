@@ -9,6 +9,15 @@ export const gradeColorsMoonshot: GradingColors = {
   '-': '#2d2b2f',
 };
 
+export const gradeColorsRisk: GradingColors = {
+  'Low Risk': '#25A167',
+  'Moderate-Low Risk': '#669C44',
+  'Moderate Risk': '#7B94BD',
+  'Moderate-High Risk': '#A19227',
+  'High Risk': '#C4805E',
+  '-': '#2d2b2f',
+};
+
 export const gradeColorsMlc: GradingColors = {
   'Low Risk': '#25A167',
   'Moderate-Low Risk': '#669C44',

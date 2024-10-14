@@ -11,6 +11,15 @@ export const MLC_RECIPE_IDS = [
   'mlc-vcr',
 ];
 
+export const gradingLettersRiskLevelMap: Record<GradingLevelsMlcEnum, string> =
+  {
+    'Low Risk': 'L',
+    'Moderate-Low Risk': 'ML',
+    'Moderate Risk': 'M',
+    'Moderate-High Risk': 'MH',
+    'High Risk': 'H',
+  };
+
 export const gradingLettersMlcMap: Record<GradingLevelsMlcEnum, string> = {
   'Low Risk': 'L',
   'Moderate-Low Risk': 'ML',
