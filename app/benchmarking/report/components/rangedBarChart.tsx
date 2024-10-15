@@ -1,7 +1,7 @@
 import {
   GradingColors,
   GradingScale,
-} from '@/app/benchmarking/types/benchmarkReportTypes';
+} from '@/app/benchmarking/report/types/benchmarkReportTypes';
 
 type RangedBarChartProps = {
   gradingScale: GradingScale;
@@ -37,7 +37,9 @@ function RangedBarChart(props: RangedBarChartProps) {
           backgroundColor: '#9A9A9A',
         }}
       />
-      <p className="text-center">No tiered grading defined for this recipe</p>
+      <div className="text-center">
+        No tiered grading defined for this recipe. View raw scores below.
+      </div>
     </div>
   ) : (
     <div className="relative flex w-full gap-2">
@@ -65,10 +67,12 @@ function RangedBarChart(props: RangedBarChartProps) {
                 backgroundColor: gradeColors[grade as keyof typeof gradeColors],
               }}
             />
-            <p className="text-center font-semibold mt-1">{grade}</p>
-            <p className="text-center">
+            <div className="text-center font-semibold text-[0.85rem] mt-1">
+              {grade}
+            </div>
+            <div className="text-center">
               {range[0]} - {range[1]}
-            </p>
+            </div>
           </div>
         );
       })}

@@ -1,4 +1,3 @@
-import { CSSProperties } from 'react';
 import { IconName } from '@/app/components/IconSVG';
 import { SelectListItem } from '@/app/components/selectListItem';
 import { useGetAllAttackModulesQuery } from '@/app/services/attack-modules-api-service';
