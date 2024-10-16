@@ -34,7 +34,7 @@ function CookbookAbout({ cookbook, checked, onSelectChange }: Props) {
           />
           <p className="text-[0.9rem]">Run this cookbook</p>
         </div>
-        <p className="text-[0.9rem] text-moongray-200">
+        <p className="text-[0.9rem] text-moongray-200 break-words overflow-hidden max-w-[500px]">
           {cookbook.description}
         </p>
         <div>
