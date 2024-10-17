@@ -211,7 +211,7 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
 
   return (
     <React.Fragment>
-      {/* {showExitModal && (
+      {showExitModal && (
         <Modal
           heading="Exit this workflow?"
           bgColor={colors.moongray['800']}
@@ -228,7 +228,7 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
             You should complete this workflow before exiting.
           </p>
         </Modal>
-      )}*/}
+      )}
       {flowState.requiredEndpoints && flowState.requiredEndpoints.length > 0 ? (
         <Modal
           width={600}
