@@ -41,12 +41,13 @@ async function fetchBenchmarkRuns(): Promise<
 
   try {
     const mergedRunners = await Promise.all(runnerPromises);
-    const filteredBenchmarkRunners = mergedRunners.filter(
-      (runner) =>
-        'runner_args' in runner &&
-        runner.runner_args.runner_processing_module == 'benchmarking'
+    const filteredCookbookBenchmarkRunners = mergedRunners.filter(
+      (response) =>
+        'runner_args' in response &&
+        response.runner_args.runner_processing_module == 'benchmarking' &&
+        'cookbooks' in response.runner_args
     );
-    return { status: 200, data: filteredBenchmarkRunners as Runner[] };
+    return { status: 200, data: filteredCookbookBenchmarkRunners as Runner[] };
   } catch (error) {
     const errorWithMsg = toErrorWithMessage(error);
     return errorWithMsg;
