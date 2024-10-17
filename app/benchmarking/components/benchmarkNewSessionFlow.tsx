@@ -229,7 +229,7 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
           </p>
         </Modal>
       )}
-      {flowState.requiredEndpoints?.length && (
+      {flowState.requiredEndpoints && flowState.requiredEndpoints.length > 0 ? (
         <Modal
           width={600}
           height={280}
@@ -271,7 +271,7 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
             ))}
           </ul>
         </Modal>
-      )}
+      ) : null}
       <CookbooksProvider>
         <MainSectionSurface
           onCloseIconClick={handleOnCloseIconClick}

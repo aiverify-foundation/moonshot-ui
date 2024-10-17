@@ -65,11 +65,6 @@ function BenchmarkRunForm({
               : 0;
           let grandTotalPrompts = totalBasePrompts;
           let userInputGrandTotalPrompts = userInputTotalBasePrompts;
-          if (stats.num_of_metrics > 0) {
-            grandTotalPrompts = grandTotalPrompts * stats.num_of_metrics;
-            userInputGrandTotalPrompts =
-              userInputGrandTotalPrompts * stats.num_of_metrics;
-          }
           if (stats.num_of_prompt_templates > 0) {
             grandTotalPrompts =
               grandTotalPrompts * stats.num_of_prompt_templates;
@@ -255,7 +250,7 @@ function BenchmarkRunForm({
                       <h4 className="font-bold">How is it calculated</h4>
                       <p>
                         Total Prompts = (Prompt indicated x Number of Datasets x
-                        metrics x Prompt Templates)
+                        Prompt Templates)
                       </p>
                     </div>
                   }>
