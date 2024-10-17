@@ -12,13 +12,12 @@ async function fetchBenchmarkRuns(): Promise<
     `${config.webAPI.hostURL}${config.webAPI.basePathRunners}`,
     { cache: 'no-store' }
   );
-  const result = await processResponse<RunnerWebApiModel[]>(response);
-  if ('error' in result) {
-    throw result.error;
+  const result: ApiResult<RunnerWebApiModel[]> | ErrorWithMessage =
+    await processResponse<RunnerWebApiModel[]>(response);
+  if ('message' in result) {
+    return result;
   }
-  const runners: RunnerWebApiModel[] = (
-    result as ApiResult<RunnerWebApiModel[]>
-  ).data;
+  const runners = result.data;
   const runnerPromises = runners.map(async (runner) => {
     try {
       const runnerDetailsResponse = await fetch(
@@ -27,29 +26,28 @@ async function fetchBenchmarkRuns(): Promise<
       const result = await processResponse<RunnerDetailWebApiModel>(
         runnerDetailsResponse
       );
-      if ('error' in result) {
-        throw Promise.reject(result.error);
+      if ('message' in result) {
+        return result;
       }
       return {
         ...runner,
-        ...(result as ApiResult<RunnerDetailWebApiModel>).data,
+        ...result.data,
         database_file: undefined,
-      } as Runner;
+      };
     } catch (error) {
-      throw Promise.reject(error);
+      return toErrorWithMessage(error);
     }
   });
 
   try {
     const mergedRunners = await Promise.all(runnerPromises);
-    const filteredBenchmarkRunners = mergedRunners.filter(
-      (runner) =>
-        runner.runner_args &&
-        runner.runner_args.runner_processing_module == 'benchmarking'
+    const filteredCookbookBenchmarkRunners = mergedRunners.filter(
+      (response) =>
+        'runner_args' in response &&
+        response.runner_args.runner_processing_module == 'benchmarking' &&
+        'cookbooks' in response.runner_args
     );
-    return { status: 200, data: filteredBenchmarkRunners } as ApiResult<
-      Runner[]
-    >;
+    return { status: 200, data: filteredCookbookBenchmarkRunners as Runner[] };
   } catch (error) {
     const errorWithMsg = toErrorWithMessage(error);
     return errorWithMsg;
@@ -64,27 +62,27 @@ async function fetchBenchmarkResultIds(): Promise<
     { cache: 'no-store' }
   );
   const result = await processResponse<string[]>(response);
-  if ('error' in result) {
-    throw result.error;
+  if ('message' in result) {
+    return result;
   }
   return result;
 }
 
-export default async function CookbooksPage() {
+export default async function BenchmarkRunsPage() {
   const result = await fetchBenchmarkRuns();
-  if ('error' in result) {
-    throw result.error;
+  if ('message' in result) {
+    throw result.message;
   }
 
   const idsResult = await fetchBenchmarkResultIds();
-  if ('error' in idsResult) {
-    throw idsResult.error;
+  if ('message' in idsResult) {
+    throw idsResult.message;
   }
 
   return (
     <BenchmarkRunsView
-      runners={(result as ApiResult<Runner[]>).data}
-      resultIds={(idsResult as ApiResult<string[]>).data}
+      runners={result.data}
+      resultIds={idsResult.data}
     />
   );
 }

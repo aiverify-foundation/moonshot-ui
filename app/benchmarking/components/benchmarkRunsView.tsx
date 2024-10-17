@@ -128,6 +128,7 @@ function BenchmarkRunsView({
             </h4>
             <p className="text-[0.95rem] text-moongray-300">
               {selectedRunner.runner_args &&
+                'cookbooks' in selectedRunner.runner_args &&
                 selectedRunner.runner_args.cookbooks.map(
                   (cookbook, idx, cookbooks) => {
                     return (

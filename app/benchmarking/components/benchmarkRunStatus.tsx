@@ -52,7 +52,9 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
   const { data: cookbooksData } = useGetCookbooksQuery(
     {
       ids:
-        runnerData && runnerData.runner_args
+        runnerData &&
+        runnerData.runner_args &&
+        'cookbooks' in runnerData.runner_args
           ? runnerData.runner_args.cookbooks
           : [],
     },
