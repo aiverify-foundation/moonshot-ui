@@ -35,8 +35,7 @@ const initialFormValues: LLMEndpointFormValues = {
       "timeout": 300,
       "allow_retries": true,
       "num_of_retries": 3,
-      "temperature": 0.5,
-      "model": ""
+      "temperature": 0.5
   }`,
 };
 
