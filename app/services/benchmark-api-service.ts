@@ -1,9 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { CookbooksBenchmarkResult } from '@/app/benchmarking/types/benchmarkReportTypes';
-import {
-  proxyPathBenchmarksExec,
-  proxyPathBenchmarksGetResults,
-} from './constants';
+import { proxyPathBenchmarksExec } from './constants';
 import { getHostAndPort } from './host';
 
 const [host, port] = getHostAndPort();
@@ -18,23 +14,9 @@ const benchmarkRunApi = createApi({
         method: 'POST',
       }),
     }),
-    getBenchmarksResult: builder.query<
-      CookbooksBenchmarkResult,
-      { id?: string }
-    >({
-      query: ({ id }) => ({
-        url: `${proxyPathBenchmarksGetResults}/${id}`,
-        method: 'GET',
-      }),
-    }),
   }),
 });
 
-const { useGetBenchmarksResultQuery, useCancelBenchmarkMutation } =
-  benchmarkRunApi;
+const { useCancelBenchmarkMutation } = benchmarkRunApi;
 
-export {
-  benchmarkRunApi,
-  useGetBenchmarksResultQuery,
-  useCancelBenchmarkMutation,
-};
+export { benchmarkRunApi, useCancelBenchmarkMutation };
