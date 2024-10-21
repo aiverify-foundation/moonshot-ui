@@ -1,9 +1,15 @@
 import { RedteamingNewSessionViews } from './enums';
 
 type Action = {
-  type: 'NEXT_BTN_CLICK' | 'PREV_BTN_CLICK' | 'SKIP_BTN_CLICK';
+  type:
+    | 'NEXT_BTN_CLICK'
+    | 'PREV_BTN_CLICK'
+    | 'SKIP_BTN_CLICK'
+    | 'ENDPOINTS_SELECTION_CHANGE'
+    | 'ATTACK_SELECTION_CHANGE';
   modelToEdit?: LLMEndpoint;
-  modelsLength?: number;
+  modelsLength: number;
+  attackSelected: boolean;
 };
 
 type FlowState = {
@@ -12,7 +18,6 @@ type FlowState = {
   view: RedteamingNewSessionViews;
   hideNextBtn: boolean;
   hidePrevBtn: boolean;
-  enableNextBtn: boolean;
   disableNextBtn: boolean;
   disablePrevBtn: boolean;
   showSkipBtn: boolean;
@@ -25,7 +30,6 @@ export const initialState: FlowState = {
   view: RedteamingNewSessionViews.ENDPOINTS_SELECTION,
   hideNextBtn: false,
   hidePrevBtn: true,
-  enableNextBtn: false,
   disableNextBtn: true,
   disablePrevBtn: true,
   showSkipBtn: false,
@@ -43,10 +47,21 @@ export function redteamNewSessionFlowReducer(
           ...state,
           view: RedteamingNewSessionViews.ATTACK_SELECTION,
           hidePrevBtn: false,
+          hideNextBtn: !action.attackSelected,
+          disablePrevBtn: false,
+          disableNextBtn: !action.attackSelected,
+          showSkipBtn: !action.attackSelected,
+        };
+      }
+      if (state.view === RedteamingNewSessionViews.ATTACK_SELECTION) {
+        return {
+          ...state,
+          view: RedteamingNewSessionViews.RUN_FORM,
+          hidePrevBtn: false,
           hideNextBtn: true,
           disablePrevBtn: false,
-          disableNextBtn: false,
-          showSkipBtn: true,
+          disableNextBtn: true,
+          showSkipBtn: false,
         };
       }
     case 'PREV_BTN_CLICK':
@@ -61,6 +76,18 @@ export function redteamNewSessionFlowReducer(
           showSkipBtn: false,
         };
       }
+    case 'ENDPOINTS_SELECTION_CHANGE':
+      return {
+        ...state,
+        disableNextBtn: action.modelsLength === 0,
+      };
+    case 'ATTACK_SELECTION_CHANGE':
+      return {
+        ...state,
+        hideNextBtn: !action.attackSelected,
+        disableNextBtn: !action.attackSelected,
+        showSkipBtn: !action.attackSelected,
+      };
     case 'SKIP_BTN_CLICK':
       if (state.view === RedteamingNewSessionViews.ATTACK_SELECTION) {
         return {

@@ -48,19 +48,37 @@ function RedteamNewSessionFlow() {
   >();
   const [showExitModal, setShowExitModal] = useState(false);
 
-  function handleNextBtnClick() {
-    dispatch({ type: 'NEXT_BTN_CLICK', modelsLength: selectedModels.length });
+  function handleNextIconClick() {
+    dispatch({
+      type: 'NEXT_BTN_CLICK',
+      modelsLength: selectedModels.length,
+      attackSelected: selectedAttack !== undefined,
+    });
   }
 
   function handlePreviousBtnClick() {
-    dispatch({ type: 'PREV_BTN_CLICK', modelsLength: selectedModels.length });
+    dispatch({
+      type: 'PREV_BTN_CLICK',
+      modelsLength: selectedModels.length,
+      attackSelected: selectedAttack !== undefined,
+    });
   }
 
   function handleModelClick(model: LLMEndpoint) {
     if (selectedModels.find((endpoint) => endpoint.id === model.id)) {
       appDispatch(removeRedteamModels([model]));
+      dispatch({
+        type: 'ENDPOINTS_SELECTION_CHANGE',
+        modelsLength: selectedModels.length - 1,
+        attackSelected: selectedAttack !== undefined,
+      });
     } else {
       appDispatch(addRedteamModels([model]));
+      dispatch({
+        type: 'ENDPOINTS_SELECTION_CHANGE',
+        modelsLength: selectedModels.length + 1,
+        attackSelected: selectedAttack !== undefined,
+      });
     }
   }
 
@@ -76,18 +94,30 @@ function RedteamNewSessionFlow() {
 
   function handleAttackClick(attack: AttackModule) {
     if (!selectedAttack) {
-      dispatch(setAttackModule(attack));
+      appDispatch(setAttackModule(attack));
+      dispatch({
+        type: 'ATTACK_SELECTION_CHANGE',
+        modelsLength: selectedModels.length,
+        attackSelected: true,
+      });
       return;
     }
     if (selectedAttack.id === attack.id) {
-      dispatch(resetAttackModule());
-      return;
+      appDispatch(resetAttackModule());
+      dispatch({
+        type: 'ATTACK_SELECTION_CHANGE',
+        modelsLength: selectedModels.length,
+        attackSelected: false,
+      });
     }
-    dispatch(setAttackModule(attack));
   }
 
   function handleSkipAttackBtnClick() {
-    dispatch({ type: 'SKIP_BTN_CLICK' });
+    dispatch({
+      type: 'SKIP_BTN_CLICK',
+      modelsLength: selectedModels.length,
+      attackSelected: selectedAttack !== undefined,
+    });
   }
 
   let surfaceColor = colors.moongray['950'];
@@ -123,7 +153,6 @@ function RedteamNewSessionFlow() {
         <AttackModuleSelectView
           selectedAttack={selectedAttack}
           onAttackClick={handleAttackClick}
-          onSkipClick={handleSkipAttackBtnClick}
         />
       );
       break;
@@ -189,8 +218,10 @@ function RedteamNewSessionFlow() {
               <div className="flex justify-center">
                 <div
                   role="button"
-                  onClick={handleNextBtnClick}
-                  className="flex justify-center hover:opacity-70"
+                  onClick={
+                    flowState.disableNextBtn ? undefined : handleNextIconClick
+                  }
+                  className={`flex justify-center ${flowState.disableNextBtn ? 'opacity-30' : ''} ${!flowState.disableNextBtn ? 'hover:opacity-60' : ''}`}
                   aria-label="Next View">
                   <Icon
                     name={IconName.WideArrowDown}
@@ -205,7 +236,7 @@ function RedteamNewSessionFlow() {
                   mode={ButtonType.OUTLINE}
                   size="md"
                   text="Skip for now"
-                  aria-label="skip attack modules selection"
+                  aria-label="skip"
                   hoverBtnColor={colors.moongray[800]}
                   onClick={handleSkipAttackBtnClick}
                 />
