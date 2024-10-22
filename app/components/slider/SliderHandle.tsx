@@ -16,9 +16,11 @@ export function SliderHandle({ children }: { children?: React.ReactNode }) {
       const startValue = value;
 
       const onMouseMove = (moveEvent: MouseEvent) => {
+        if (!handle.parentElement) return;
         const dx = moveEvent.clientX - startX;
         const range = max - min;
-        const newValue = startValue + (dx / handle.parentElement!.clientWidth) * range;
+        const newValue =
+          startValue + (dx / handle.parentElement.clientWidth) * range;
         const steppedValue = Math.round((newValue - min) / step) * step + min;
         onChange(Math.min(max, Math.max(min, steppedValue)));
       };
@@ -48,8 +50,7 @@ export function SliderHandle({ children }: { children?: React.ReactNode }) {
           backgroundColor: handleColor,
           '--color-primary-200': handleColor ? `${handleColor}33` : undefined, // Add 20% opacity to the handle color for the hover effect
         } as React.CSSProperties
-      }
-    >
+      }>
       {children}
     </div>
   );

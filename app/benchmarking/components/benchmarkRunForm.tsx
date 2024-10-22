@@ -5,13 +5,15 @@ import { getRecipesStatsById } from '@/actions/getRecipesStatsById';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { FormStateErrorList } from '@/app/components/formStateErrorList';
 import { Modal } from '@/app/components/modal';
+import { Slider } from '@/app/components/slider/Slider';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
 import ToggleSwitch from '@/app/components/toggleSwitch';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
 import { RunButton } from './runButton';
-import { Slider } from '@/app/components/slider/Slider';
+
+const MemoizedToggleSwitch = React.memo(ToggleSwitch);
 
 const initialFormValues: FormState<BenchmarkRunFormValues> = {
   formStatus: 'initial',
@@ -38,7 +40,7 @@ function BenchmarkRunForm({
 }: BenchmarkRunFormProps) {
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
-  const [numOfPromptsInput, setNumOfPromptsInput] = React.useState('');
+  const [percentageOfPrompts, setPercentageOfPrompts] = React.useState(1);
   const [showErrorModal, setShowErrorModal] = React.useState(false);
   const [isPending, startTransition] = React.useTransition();
   const [isRunAll, setIsRunAll] = React.useState(false);
@@ -48,38 +50,37 @@ function BenchmarkRunForm({
     FormData
   >(createRun, initialFormValues);
 
-  const coercedNumOfPromptsInput = Number(numOfPromptsInput);
+  const decimalFraction = percentageOfPrompts / 100;
 
   const [numOfPromptsGrandTotal, userInputNumOfPromptsGrandTotal] =
     React.useMemo(() => {
       return recipesStats.reduce(
         (acc, stats) => {
-          const totalBasePrompts = Object.values(
+          const totalPromptsFromAllDatasets = Object.values(
             stats.num_of_datasets_prompts
           ).reduce((sum, value) => sum + value, 0);
-          const userInputTotalBasePrompts =
-            !isNaN(coercedNumOfPromptsInput) &&
-            coercedNumOfPromptsInput > 0 &&
-            Number.isInteger(coercedNumOfPromptsInput) &&
-            !numOfPromptsInput.includes('.')
-              ? coercedNumOfPromptsInput * stats.num_of_datasets
-              : 0;
-          let grandTotalPrompts = totalBasePrompts;
-          let userInputGrandTotalPrompts = userInputTotalBasePrompts;
-          if (stats.num_of_prompt_templates > 0) {
-            grandTotalPrompts =
-              grandTotalPrompts * stats.num_of_prompt_templates;
-            userInputGrandTotalPrompts =
-              userInputGrandTotalPrompts * stats.num_of_prompt_templates;
-          }
+          const grandTotalPromptsToRun =
+            stats.num_of_prompt_templates > 0
+              ? totalPromptsFromAllDatasets * stats.num_of_prompt_templates
+              : totalPromptsFromAllDatasets;
+          const userInputTotalPromptsToRun =
+            stats.num_of_prompt_templates > 0
+              ? decimalFraction *
+                totalPromptsFromAllDatasets *
+                stats.num_of_prompt_templates
+              : decimalFraction * totalPromptsFromAllDatasets;
           return [
-            acc[0] + grandTotalPrompts,
-            acc[1] + userInputGrandTotalPrompts,
+            acc[0] + grandTotalPromptsToRun,
+            acc[1] + userInputTotalPromptsToRun,
           ];
         },
         [0, 0] as [number, number]
       );
-    }, [recipesStats, numOfPromptsInput]);
+    }, [recipesStats, percentageOfPrompts]);
+
+  const roundedUserInputNumOfPromptsGrandTotal = Math.round(
+    userInputNumOfPromptsGrandTotal
+  );
 
   React.useEffect(() => {
     if (formState.formStatus === 'error') {
@@ -106,44 +107,21 @@ function BenchmarkRunForm({
     });
   }, [selectedCookbooks]);
 
-  function handleNumOfPromptsChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setNumOfPromptsInput(e.target.value);
+  function handleSliderValueChange(value: number) {
+    setPercentageOfPrompts(value);
+    if (value === 100) {
+      setIsRunAll(true);
+    } else {
+      setIsRunAll(false);
+    }
   }
 
-  function handleRunAllChange(isChecked: boolean) {
-    setNumOfPromptsInput(isChecked ? '0' : '');
+  const handleRunAllChange = React.useCallback((isChecked: boolean) => {
+    setPercentageOfPrompts(isChecked ? 100 : percentageOfPrompts);
     setIsRunAll(isChecked);
-  }
+  }, []);
 
-  const disableRunBtn =
-    !name ||
-    isNaN(coercedNumOfPromptsInput) ||
-    (!isRunAll &&
-      !isNaN(coercedNumOfPromptsInput) &&
-      coercedNumOfPromptsInput < 1) ||
-    !Number.isInteger(coercedNumOfPromptsInput) ||
-    numOfPromptsInput.includes('.');
-
-  let numOfPromptsError = formState.formErrors?.num_of_prompts?.[0];
-  if (
-    !isRunAll &&
-    numOfPromptsInput.trim() !== '' &&
-    coercedNumOfPromptsInput < 1
-  ) {
-    numOfPromptsError = 'Number of prompts per recipe must be greater than 0';
-  } else if (
-    !isRunAll &&
-    numOfPromptsInput.trim() !== '' &&
-    userInputNumOfPromptsGrandTotal > numOfPromptsGrandTotal
-  ) {
-    numOfPromptsError = `Total number of prompts that will be run should be smaller than actual total number of prompts which is ${numOfPromptsGrandTotal}`;
-  } else if (
-    !isRunAll &&
-    numOfPromptsInput.trim() !== '' &&
-    !Number.isInteger(coercedNumOfPromptsInput)
-  ) {
-    numOfPromptsError = 'Number of prompts per recipe must be an integer';
-  }
+  const disableRunBtn = !name;
 
   return (
     <>
@@ -249,10 +227,9 @@ function BenchmarkRunForm({
                     offsetLeft={10}
                     content={
                       <div>
-                        <h4 className="font-bold">How is it calculated</h4>
                         <p>
-                          Total Prompts = (Prompt indicated x Number of Datasets
-                          x Prompt Templates)
+                          Before running the full set of prompts, you may want
+                          to run a smaller set as a sanity check.
                         </p>
                       </div>
                     }>
@@ -266,11 +243,16 @@ function BenchmarkRunForm({
                   Run a smaller set
                 </Slider.Label>
                 <p className="text-moongray-400">
-                  Before running the full recommended set, you may want to run a
-                  smaller number of prompts from each recipe to do a sanity
-                  check.
+                  Select the percentage of prompts you want to run from the
+                  cookbook(s) selected.
                 </p>
-                <Slider className="mt-[45px] mb-[10px]">
+                <Slider
+                  min={1}
+                  max={100}
+                  initialValue={isRunAll ? 100 : undefined}
+                  className="mt-[45px] mb-[10px]"
+                  valueSuffix="%"
+                  onChange={handleSliderValueChange}>
                   <Slider.Track />
                   <Slider.ProgressTrack />
                   <Slider.Handle>
@@ -287,7 +269,7 @@ function BenchmarkRunForm({
                     ? 'calculating...'
                     : isRunAll
                       ? numOfPromptsGrandTotal
-                      : userInputNumOfPromptsGrandTotal}
+                      : roundedUserInputNumOfPromptsGrandTotal}
                 </p>
               </div>
               <div className="flex justify-left gap-2 mb-8">
@@ -299,10 +281,12 @@ function BenchmarkRunForm({
                     prompts)
                   </span>
                 </p>
-                <ToggleSwitch
+                <MemoizedToggleSwitch
                   name="run_all"
                   onChange={handleRunAllChange}
                   value={isRunAll ? 'true' : undefined}
+                  defaultChecked={percentageOfPrompts === 100}
+                  disabled={percentageOfPrompts === 100}
                 />
               </div>
             </div>

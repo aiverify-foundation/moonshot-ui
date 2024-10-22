@@ -13,6 +13,7 @@ type SliderContextType = {
   trackClassName?: string;
   progressTrackClassName?: string;
   handleClassName?: string;
+  valueSuffix?: string;
   onChange: (value: number) => void;
 };
 
@@ -25,7 +26,9 @@ export function SliderProvider({
   value: SliderContextType;
   children: React.ReactNode;
 }) {
-  return <SliderContext.Provider value={value}>{children}</SliderContext.Provider>;
+  return (
+    <SliderContext.Provider value={value}>{children}</SliderContext.Provider>
+  );
 }
 
 export function useSliderContext() {

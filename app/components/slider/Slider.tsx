@@ -1,18 +1,18 @@
 import clsx from 'clsx';
 import React, { useState, useCallback } from 'react';
+import { SlideLabel } from './SlideLabel';
 import { SliderProvider } from './SliderContext';
 import { SliderHandle } from './SliderHandle';
 import { SliderProgressTrack } from './SliderProgressTrack';
 import { SliderTrack } from './SliderTrack';
 import { SliderValue } from './SliderValue';
 import styles from './styles/Slider.module.css';
-import { SlideLabel } from './SlideLabel';
 
 export interface SliderProps {
   min?: number;
   max?: number;
   step?: number;
-  defaultValue?: number;
+  initialValue?: number;
   trackColor?: string;
   handleColor?: string;
   progressColor?: string;
@@ -23,6 +23,7 @@ export interface SliderProps {
   trackClassName?: string;
   progressTrackClassName?: string;
   handleClassName?: string;
+  valueSuffix?: string;
   onChange?: (value: number) => void;
 }
 
@@ -31,7 +32,7 @@ export function Slider(props: SliderProps) {
     min = 0,
     max = 100,
     step = 1,
-    defaultValue = min,
+    initialValue = min,
     trackColor,
     handleColor,
     progressColor,
@@ -42,17 +43,26 @@ export function Slider(props: SliderProps) {
     trackClassName,
     progressTrackClassName = 'bg-primary-100',
     handleClassName,
+    valueSuffix,
     onChange,
   } = props;
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState(initialValue);
   const handleChange = useCallback(
     (newValue: number) => {
-      setValue(Math.min(max, Math.max(min, newValue)));
+      setValue(newValue);
       onChange?.(newValue);
     },
-    [min, max, onChange]
+    [min, onChange]
   );
+
+  React.useEffect(() => {
+    if (initialValue !== undefined && initialValue !== min) {
+      setValue(initialValue);
+    }
+  }, [initialValue, min]);
+
   const classNames = clsx(styles.slider, className);
+
   return (
     <SliderProvider
       value={{
@@ -68,6 +78,7 @@ export function Slider(props: SliderProps) {
         trackClassName,
         progressTrackClassName,
         handleClassName,
+        valueSuffix,
         onChange: handleChange,
       }}>
       <div
