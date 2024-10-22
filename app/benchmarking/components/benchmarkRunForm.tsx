@@ -11,6 +11,7 @@ import ToggleSwitch from '@/app/components/toggleSwitch';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
 import { RunButton } from './runButton';
+import { Slider } from '@/app/components/slider/Slider';
 
 const initialFormValues: FormState<BenchmarkRunFormValues> = {
   formStatus: 'initial',
@@ -241,66 +242,55 @@ function BenchmarkRunForm({
             />
 
             <div className="relative flex flex-col">
-              <div className="absolute top-[2px] left-[140px]">
-                <Tooltip
-                  position={TooltipPosition.right}
-                  offsetLeft={10}
-                  content={
-                    <div>
-                      <h4 className="font-bold">How is it calculated</h4>
-                      <p>
-                        Total Prompts = (Prompt indicated x Number of Datasets x
-                        Prompt Templates)
-                      </p>
+              <div className="w-full flex flex-col">
+                <div className="absolute top-[2px] left-[140px]">
+                  <Tooltip
+                    position={TooltipPosition.right}
+                    offsetLeft={10}
+                    content={
+                      <div>
+                        <h4 className="font-bold">How is it calculated</h4>
+                        <p>
+                          Total Prompts = (Prompt indicated x Number of Datasets
+                          x Prompt Templates)
+                        </p>
+                      </div>
+                    }>
+                    <Icon
+                      name={IconName.Alert}
+                      color={colors.moonpurplelight}
+                    />
+                  </Tooltip>
+                </div>
+                <Slider.Label className="!text-moonpurplelight">
+                  Run a smaller set
+                </Slider.Label>
+                <p className="text-moongray-400">
+                  Before running the full recommended set, you may want to run a
+                  smaller number of prompts from each recipe to do a sanity
+                  check.
+                </p>
+                <Slider className="mt-[45px] mb-[10px]">
+                  <Slider.Track />
+                  <Slider.ProgressTrack />
+                  <Slider.Handle>
+                    <div className="absolute left-[50%] top-[-220%] transform -translate-x-1/2">
+                      <Slider.Value />
                     </div>
-                  }>
-                  <Icon
-                    name={IconName.Alert}
-                    color={colors.moonpurplelight}
-                  />
-                </Tooltip>
+                  </Slider.Handle>
+                </Slider>
+                <p
+                  className={`text-white text-[0.9rem] mb-[10px]
+                  ${isRunAll ? 'opacity-50' : 'opacity-100'}`}>
+                  Number of prompts that will be run:{' '}
+                  {isPending
+                    ? 'calculating...'
+                    : isRunAll
+                      ? numOfPromptsGrandTotal
+                      : userInputNumOfPromptsGrandTotal}
+                </p>
               </div>
-              <TextInput
-                disabled={isRunAll}
-                type="number"
-                min={1}
-                id="num_of_prompts"
-                name={isRunAll ? '' : 'num_of_prompts'}
-                label="Run a smaller set"
-                labelStyles={{
-                  fontSize: '1rem',
-                  color: colors.moonpurplelight,
-                }}
-                inputStyles={{ height: 38 }}
-                onChange={handleNumOfPromptsChange}
-                value={isRunAll ? '' : numOfPromptsInput}
-                error={numOfPromptsError}
-                placeholder="Number of prompts per recipe. E.g. 5"
-                description={
-                  <div className="flex flex-col gap-2">
-                    <p className="text-moongray-400">
-                      Before running the full recommended set, you may want to
-                      run a smaller number of prompts from each recipe to do a
-                      sanity check.
-                    </p>
-                    <p style={{ opacity: isRunAll ? 0.5 : 1 }}>
-                      Number of prompts that will be run:{' '}
-                      {isPending
-                        ? 'calculating...'
-                        : isRunAll
-                          ? numOfPromptsGrandTotal
-                          : userInputNumOfPromptsGrandTotal}
-                    </p>
-                  </div>
-                }
-                descriptionStyles={{
-                  fontSize: '0.9rem',
-                  color: colors.white,
-                  marginTop: '0.5rem',
-                  marginBottom: '0.5rem',
-                }}
-              />
-              <div className="flex justify-left gap-2">
+              <div className="flex justify-left gap-2 mb-8">
                 <p className="text-moonpurplelight">
                   Run All{' '}
                   <span
