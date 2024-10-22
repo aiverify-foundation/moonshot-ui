@@ -12,7 +12,6 @@ interface ToggleSwitchProps {
 }
 
 export default function ToggleSwitch(props: ToggleSwitchProps) {
-  console.log('ToggleSwitch');
   const {
     name,
     label,

@@ -51,11 +51,12 @@ function BenchmarkRunForm({
   >(createRun, initialFormValues);
 
   const decimalFraction = percentageOfPrompts / 100;
-
+  let totalNumberOfDatasets = 0; // todo - remove
   const [numOfPromptsGrandTotal, userInputNumOfPromptsGrandTotal] =
     React.useMemo(() => {
       return recipesStats.reduce(
         (acc, stats) => {
+          totalNumberOfDatasets += stats.num_of_datasets;
           const totalPromptsFromAllDatasets = Object.values(
             stats.num_of_datasets_prompts
           ).reduce((sum, value) => sum + value, 0);
@@ -122,6 +123,7 @@ function BenchmarkRunForm({
   }, []);
 
   const disableRunBtn = !name;
+  console.log(totalNumberOfDatasets);
 
   return (
     <>
@@ -189,6 +191,12 @@ function BenchmarkRunForm({
               type="hidden"
               name="system_prompt"
               defaultValue={initialFormValues.system_prompt}
+            />
+            <input
+              readOnly
+              type="hidden"
+              name="num_of_prompts"
+              defaultValue={roundedUserInputNumOfPromptsGrandTotal}
             />
             <TextInput
               id="run_name"
