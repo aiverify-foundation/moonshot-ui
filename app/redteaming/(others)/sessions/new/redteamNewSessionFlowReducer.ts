@@ -76,6 +76,17 @@ export function redteamNewSessionFlowReducer(
           showSkipBtn: false,
         };
       }
+      if (state.view === RedteamingNewSessionViews.RUN_FORM) {
+        return {
+          ...state,
+          view: RedteamingNewSessionViews.ATTACK_SELECTION,
+          hidePrevBtn: false,
+          hideNextBtn: !action.attackSelected,
+          disablePrevBtn: false,
+          disableNextBtn: !action.attackSelected,
+          showSkipBtn: !action.attackSelected,
+        };
+      }
     case 'ENDPOINTS_SELECTION_CHANGE':
       return {
         ...state,

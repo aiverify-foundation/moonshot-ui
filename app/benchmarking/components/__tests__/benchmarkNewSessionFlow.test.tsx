@@ -200,7 +200,7 @@ it('should show correct views when next or back icons are clicked (No cookbooks 
   ).toBeChecked();
   await userEvent.click(nextButton);
 
-  // benchmark run form screen
+  // redteam run form screen
   expect(screen.getByRole('button', { name: /run/i })).toBeInTheDocument();
 
   // prepare to go back
