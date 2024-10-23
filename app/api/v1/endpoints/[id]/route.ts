@@ -21,6 +21,7 @@ export async function PUT(request: NextRequest) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
+      cache: 'no-store',
     }
   );
   return response;
