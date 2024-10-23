@@ -4,7 +4,11 @@ import { useFormState, useFormStatus } from 'react-dom';
 import { useModelsList } from '@/app/hooks/useLLMEndpointList';
 import { RedteamNewSessionFlow } from '@/app/redteaming/(others)/sessions/new/redteamNewSessionFlow';
 import { useGetAllAttackModulesQuery } from '@/app/services/attack-modules-api-service';
-import { useCreateSessionMutation } from '@/app/services/session-api-service';
+import { useGetAllConnectorsQuery } from '@/app/services/connector-api-service';
+import {
+  useCreateLLMEndpointMutation,
+  useUpdateLLMEndpointMutation,
+} from '@/app/services/llm-endpoint-api-service';
 import {
   addRedteamModels,
   removeRedteamModels,
@@ -13,7 +17,6 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '@/lib/redux';
-// import { useGetAllConnectorsQuery } from '@/app/services/connector-api-service';
 
 const mockEndpoints: LLMEndpoint[] = [
   {
@@ -147,7 +150,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-it.skip('should select/unselect endpoint, go to attack modules selection screen when next button is clicked', async () => {
+it('should select/unselect endpoint, go to attack modules selection screen when next button is clicked', async () => {
   let callCount = 1;
   // relying on the Nth time useAppSelector is called, it returns the expected value. useAppSelector is called twice in the component.
   // first call returns selectedModels. second call returns selectedAttack
@@ -228,7 +231,7 @@ it.skip('should select/unselect endpoint, go to attack modules selection screen 
 
 it('should select/unselect attack module, go to run form screen when next button is clicked', async () => {
   let callCount = 1;
-  // simulate 1 endpoint selected, attack module is undefined (not selected)
+  // no endpoint selected, attack module is undefined (not selected)
   (useAppSelector as jest.Mock).mockImplementation(() => {
     if (callCount === 1) {
       callCount++;
@@ -296,17 +299,125 @@ it('should select/unselect attack module, go to run form screen when next button
       callCount--;
       return undefined;
     });
-    (useCreateSessionMutation as jest.Mock).mockImplementation(() => [
-      jest.fn(),
-      { isLoading: false },
-    ]);
 
     rerender(<RedteamNewSessionFlow />);
   });
 
-  // go to next screen
+  // select attack module
   await userEvent.click(screen.getByText(mockAttackModules[0].name));
-  // screen.debug(undefined, 1000000);
+
+  // simulate attack module selected
+  await act(() => {
+    let callCount = 1;
+    // attack module selected
+    (useAppSelector as jest.Mock).mockReset();
+    (useAppSelector as jest.Mock).mockImplementation(() => {
+      if (callCount === 1) {
+        callCount++;
+        return [mockEndpoints[0]];
+      }
+      callCount--;
+      return mockAttackModules[0];
+    });
+
+    rerender(<RedteamNewSessionFlow />);
+  });
   await userEvent.click(screen.getByRole('button', { name: /next view/i }));
-  // expect(screen.getByRole('button', { name: /start/i })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /run/i })).toBeInTheDocument();
+
+  // test going back to attack module selection screen
+  await userEvent.click(screen.getByRole('button', { name: /previous view/i }));
+  expect(screen.getByText(mockAttackModules[0].name)).toBeInTheDocument();
+
+  // test going back to endpoint selection screen
+  await userEvent.click(screen.getByRole('button', { name: /previous view/i }));
+  expect(screen.getByText(mockEndpoints[0].name)).toBeInTheDocument();
+});
+
+it('should show new endpoint form', async () => {
+  const mockCreateModelEndpoint = jest.fn();
+  const mockUpdateModelEndpoint = jest.fn();
+  const mockConnectors = ['connector1', 'connector2'];
+  let callCount = 1;
+  // no endpoint selected, attack module is undefined (not selected)
+  (useAppSelector as jest.Mock).mockImplementation(() => {
+    if (callCount === 1) {
+      callCount++;
+      return [];
+    }
+    callCount--;
+    return undefined;
+  });
+  (useGetAllConnectorsQuery as jest.Mock).mockImplementation(() => ({
+    data: mockConnectors,
+    loading: false,
+  }));
+  (useCreateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
+    mockCreateModelEndpoint,
+    { isLoading: false },
+  ]);
+  (useUpdateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
+    mockUpdateModelEndpoint,
+    { isLoading: false },
+  ]);
+
+  const mockSetAttackModule: jest.Mock = jest.fn();
+  (setAttackModule as unknown as jest.Mock).mockImplementation(
+    mockSetAttackModule
+  );
+  const mockResetAttackModule: jest.Mock = jest.fn();
+  (resetAttackModule as unknown as jest.Mock).mockImplementation(
+    mockResetAttackModule
+  );
+
+  render(<RedteamNewSessionFlow />);
+  await userEvent.click(
+    screen.getByRole('button', { name: /create new endpoint/i })
+  );
+  expect(screen.getByText('Create New Endpoint')).toBeInTheDocument();
+});
+
+it('should show edit endpoint form', async () => {
+  const mockCreateModelEndpoint = jest.fn();
+  const mockUpdateModelEndpoint = jest.fn();
+  const mockConnectors = ['connector1', 'connector2'];
+  let callCount = 1;
+  // no endpoint selected, attack module is undefined (not selected)
+  (useAppSelector as jest.Mock).mockImplementation(() => {
+    if (callCount === 1) {
+      callCount++;
+      return [];
+    }
+    callCount--;
+    return undefined;
+  });
+  (useGetAllConnectorsQuery as jest.Mock).mockImplementation(() => ({
+    data: mockConnectors,
+    loading: false,
+  }));
+  (useCreateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
+    mockCreateModelEndpoint,
+    { isLoading: false },
+  ]);
+  (useUpdateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
+    mockUpdateModelEndpoint,
+    { isLoading: false },
+  ]);
+
+  const mockSetAttackModule: jest.Mock = jest.fn();
+  (setAttackModule as unknown as jest.Mock).mockImplementation(
+    mockSetAttackModule
+  );
+  const mockResetAttackModule: jest.Mock = jest.fn();
+  (resetAttackModule as unknown as jest.Mock).mockImplementation(
+    mockResetAttackModule
+  );
+
+  render(<RedteamNewSessionFlow />);
+  await userEvent.click(
+    screen.getByRole('button', { name: `Edit ${mockEndpoints[0].name}` })
+  );
+  expect(
+    screen.getByText(`Update ${mockEndpoints[0].name}`)
+  ).toBeInTheDocument();
 });

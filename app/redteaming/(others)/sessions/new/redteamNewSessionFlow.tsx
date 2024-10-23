@@ -35,6 +35,7 @@ const flowSteps = [
 function RedteamNewSessionFlow() {
   const router = useRouter();
   const appDispatch = useAppDispatch();
+  const [showExitModal, setShowExitModal] = useState(false);
   const [flowState, dispatch] = React.useReducer(
     redteamNewSessionFlowReducer,
     initialState
@@ -43,10 +44,6 @@ function RedteamNewSessionFlow() {
     (state) => state.redteamModels.entities
   );
   const selectedAttack = useAppSelector((state) => state.attackModule.entity);
-  const [endpointToEdit, setEndpointToEdit] = useState<
-    LLMEndpoint | undefined
-  >();
-  const [showExitModal, setShowExitModal] = useState(false);
 
   useEffect(() => {
     return () => {

@@ -23,10 +23,11 @@ function RedteamRunForm() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [showErrorModal, setShowErrorModal] = useState(false);
-  const attackModule = useAppSelector((state) => state.attackModule.entity);
+  // The order of these 2 selectors is important. Test specs rely on this order for mocks.
   const selectedEndpoints = useAppSelector(
     (state) => state.redteamModels.entities
   );
+  const attackModule = useAppSelector((state) => state.attackModule.entity);
   const [formState, formAction] = useFormState<
     FormState<RedteamRunFormValues>,
     FormData
