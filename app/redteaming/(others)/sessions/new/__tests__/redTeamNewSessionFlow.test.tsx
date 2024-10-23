@@ -60,18 +60,13 @@ const mockAttackModules: AttackModule[] = [
   },
 ];
 
-const mockFormState: FormState<BenchmarkRunFormValues> = {
+const mockFormState: FormState<RedteamRunFormValues> = {
   formStatus: 'initial',
   formErrors: undefined,
-  run_name: '',
+  name: '',
   description: '',
-  inputs: [],
   endpoints: [],
-  num_of_prompts: '',
-  system_prompt: '',
-  runner_processing_module: 'benchmarking',
-  random_seed: '0',
-  run_all: 'false',
+  attack_module: undefined,
 };
 
 //We are not asserting anything on the form action. In React, form action is a reference to a function (server action). There is no way to stub the action.
