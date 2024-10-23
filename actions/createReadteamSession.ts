@@ -10,21 +10,29 @@ const redTeamNewSessionSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   description: z.string().optional(),
   endpoints: z.array(z.string()).min(1, 'At least one endpoint is required'),
-  attack_module: z.string().optional(),
+  attack_module: z.string().optional().nullable(),
 });
 
 export async function createReadteamSession(
   _: FormState<RedteamRunFormValues>,
   formData: FormData
 ) {
-  const formValues = Object.fromEntries(formData);
+  const formValues = {
+    name: formData.get('name'),
+    description: formData.get('description'),
+    endpoints: formData.getAll('endpoints'),
+    attack_module: formData.get('attack_module'),
+  };
   const result = redTeamNewSessionSchema.safeParse(formValues);
+  if (result.data?.attack_module === null) {
+    delete result.data.attack_module;
+  }
   if (!result.success) {
     return formatZodSchemaErrors(result.error);
   }
 
   const response = await fetch(
-    `${config.webAPI.hostURL}${config.webAPI.basePathBenchmarks}`,
+    `${config.webAPI.hostURL}${config.webAPI.basePathSessions}`,
     {
       method: 'POST',
       headers: {
@@ -77,7 +85,7 @@ export async function createReadteamSession(
     };
   }
 
-  const data: SessionData = responseBody.data;
+  const data: SessionData = responseBody;
 
   redirect(`/redteaming/sessions/${data.session.session_id}`);
 }

@@ -6,7 +6,10 @@ type Action = {
     | 'PREV_BTN_CLICK'
     | 'SKIP_BTN_CLICK'
     | 'ENDPOINTS_SELECTION_CHANGE'
-    | 'ATTACK_SELECTION_CHANGE';
+    | 'ATTACK_SELECTION_CHANGE'
+    | 'CREATE_MODEL_CLICK'
+    | 'EDIT_MODEL_CLICK'
+    | 'CLOSE_MODEL_FORM';
   modelToEdit?: LLMEndpoint;
   modelsLength: number;
   attackSelected: boolean;
@@ -104,13 +107,42 @@ export function redteamNewSessionFlowReducer(
         return {
           ...state,
           view: RedteamingNewSessionViews.RUN_FORM,
-          hidePrevBtn: true,
-          hideNextBtn: false,
+          hidePrevBtn: false,
+          hideNextBtn: true,
           disablePrevBtn: false,
           disableNextBtn: false,
           showSkipBtn: false,
         };
       }
+    case 'CREATE_MODEL_CLICK':
+      return {
+        ...state,
+        view: RedteamingNewSessionViews.NEW_ENDPOINT_FORM,
+        hideNextBtn: true,
+        hidePrevBtn: true,
+        disableNextBtn: true,
+        disablePrevBtn: true,
+      };
+    case 'EDIT_MODEL_CLICK':
+      return {
+        ...state,
+        view: RedteamingNewSessionViews.EDIT_ENDPOINT_FORM,
+        modelToEdit: action.modelToEdit,
+        hideNextBtn: true,
+        hidePrevBtn: true,
+        disableNextBtn: true,
+        disablePrevBtn: true,
+      };
+    case 'CLOSE_MODEL_FORM':
+      return {
+        ...state,
+        view: RedteamingNewSessionViews.ENDPOINTS_SELECTION,
+        modelToEdit: undefined,
+        hideNextBtn: false,
+        hidePrevBtn: false,
+        disableNextBtn: action.modelsLength === 0,
+        disablePrevBtn: false,
+      };
     default:
       return state;
   }

@@ -125,7 +125,7 @@ function RedteamRunForm() {
               placeholder="Describe this session. E.g., purpose of the session"
             />
 
-            <div className="flex grow gap-2 justify-center items-end mt-3">
+            <div className="flex grow gap-2 justify-center items-end mt-10">
               <RunButton disabled={disableRunBtn} />
             </div>
           </form>

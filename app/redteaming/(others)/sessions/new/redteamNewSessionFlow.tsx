@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { EndpointSelector } from '@/app/benchmarking/components/endpointsSelector';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
@@ -48,6 +48,13 @@ function RedteamNewSessionFlow() {
   >();
   const [showExitModal, setShowExitModal] = useState(false);
 
+  useEffect(() => {
+    return () => {
+      appDispatch(resetRedteamModels());
+      appDispatch(resetAttackModule());
+    };
+  }, []);
+
   function handleNextIconClick() {
     dispatch({
       type: 'NEXT_BTN_CLICK',
@@ -80,6 +87,23 @@ function RedteamNewSessionFlow() {
         attackSelected: selectedAttack !== undefined,
       });
     }
+  }
+
+  function handleEditModelClick(model: LLMEndpoint) {
+    dispatch({
+      type: 'EDIT_MODEL_CLICK',
+      modelToEdit: model,
+      modelsLength: selectedModels.length,
+      attackSelected: selectedAttack !== undefined,
+    });
+  }
+
+  function handleCreateModelClick() {
+    dispatch({
+      type: 'CREATE_MODEL_CLICK',
+      modelsLength: selectedModels.length,
+      attackSelected: selectedAttack !== undefined,
+    });
   }
 
   function handleOnCloseIconClick() {
@@ -130,21 +154,37 @@ function RedteamNewSessionFlow() {
           selectedModels={selectedModels}
           totalSelected={selectedModels.length}
           onModelClick={handleModelClick}
-          onEditClick={(model) => null}
-          onCreateClick={() => null}
+          onEditClick={handleEditModelClick}
+          onCreateClick={handleCreateModelClick}
         />
       );
       break;
     case RedteamingNewSessionViews.NEW_ENDPOINT_FORM:
       surfaceColor = colors.moongray['800'];
-      view = <NewEndpointForm onClose={() => null} />;
+      view = (
+        <NewEndpointForm
+          onClose={() =>
+            dispatch({
+              type: 'CLOSE_MODEL_FORM',
+              modelsLength: selectedModels.length,
+              attackSelected: selectedAttack !== undefined,
+            })
+          }
+        />
+      );
       break;
     case RedteamingNewSessionViews.EDIT_ENDPOINT_FORM:
       surfaceColor = colors.moongray['800'];
       view = (
         <NewEndpointForm
-          endpointToEdit={endpointToEdit}
-          onClose={() => null}
+          endpointToEdit={flowState.modelToEdit}
+          onClose={() =>
+            dispatch({
+              type: 'CLOSE_MODEL_FORM',
+              modelsLength: selectedModels.length,
+              attackSelected: selectedAttack !== undefined,
+            })
+          }
         />
       );
       break;
