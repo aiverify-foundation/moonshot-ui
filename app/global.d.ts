@@ -103,6 +103,7 @@ type Cookbook = {
   recipes: string[];
   total_prompt_in_cookbook: number;
   total_dataset_in_cookbook: number;
+  endpoint_required: string[] | null;
 };
 
 type CookbookFormValues = {
@@ -117,11 +118,11 @@ type RecipeStats = {
   num_of_datasets_prompts: Record<string, number>;
   num_of_prompt_templates: number;
   num_of_metrics: number;
-  num_of_attack_modules: number;
+  num_of_attack_modules?: number;
 };
 
 type Recipe = {
-  attack_modules: unknown[];
+  attack_modules?: string[];
   categories: string[];
   datasets: string[];
   description: string;
@@ -133,6 +134,7 @@ type Recipe = {
   stats: RecipeStats;
   tags: string[];
   total_prompt_in_recipe: number;
+  endpoint_required: string[] | null;
 };
 
 type RecipeFormValues = {
@@ -157,6 +159,8 @@ type AttackModule = {
   id: string;
   name: string;
   description: string;
+  endpoints: string[];
+  configurations: Record<string, string | number>;
 };
 
 type BenchmarkRunFormValues = {
@@ -297,6 +301,13 @@ type CookbookMetadata = {
   estTotalPromptResponseTime: number;
 };
 
+type RunnerHeading = {
+  id: string;
+  name: string;
+  description: string;
+  endpoints: string[];
+};
+
 type Runner = {
   id: string;
   run_id?: number;
@@ -359,6 +370,22 @@ type BookMark = {
   prompt_template?: string;
   bookmark_time: string;
 };
+
+declare module 'html3pdf' {
+  interface Html3PdfOptions {
+    margin?: number;
+    filename?: string;
+    image?: { type: string; quality: number };
+    jsPDF?: { format: string; orientation: string };
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function set(options: Html3PdfOptions): unknown;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function from(element: HTMLElement): unknown;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function save(): void;
+  export = html3pdf;
+}
 
 type FastAPIError = {
   type: string;

@@ -7,7 +7,6 @@ const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 type AttackModuleSelectViewProps = {
   selectedAttack?: AttackModule;
   onAttackClick: (attack: AttackModule) => void;
-  onSkipClick?: () => void;
 };
 
 function AttackModuleSelectView(props: AttackModuleSelectViewProps) {
@@ -55,13 +54,10 @@ function AttackModuleSelectView(props: AttackModuleSelectViewProps) {
                     item={attack}
                     hideCheckbox
                     bgColor={isSelected ? colors.moonwine[950] : undefined}
-                    style={{
-                      alignItems: 'flex-start',
-                      height: 180,
-                      overflowY: 'hidden',
-                    }}>
+                    className="pt-7 items-start h-[180px] overflow-y-hidden">
                     <p
-                      className="text-[0.8rem] text-moongray-400"
+                      className="text-[0.8rem] h-[120px] text-moongray-400 overflow-y-hidden
+                        hover:overflow-y-auto custom-scrollbar"
                       dangerouslySetInnerHTML={{ __html: description }}
                     />
                   </SelectListItem>

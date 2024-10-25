@@ -10,10 +10,13 @@ type Action = {
     | 'COOKBOOK_SELECTION_CLICK'
     | 'MORE_COOKBOOKS_LINK_CLICK'
     | 'CLOSE_MORE_COOKBOOKS'
-    | 'MODEL_SELECTION_CLICK';
+    | 'MODEL_SELECTION_CLICK'
+    | 'CLOSE_REQUIRED_ENDPOINTS_MODAL';
   cookbooksLength?: number;
   modelsLength?: number;
   modelToEdit?: LLMEndpoint;
+  requiredEndpoints?: string[];
+  requiredEndpointsTokensFilled?: boolean;
 };
 
 type FlowState = {
@@ -25,7 +28,9 @@ type FlowState = {
   hidePrevBtn: boolean;
   enableNextBtn: boolean;
   disableNextBtn: boolean;
+  disablePrevBtn: boolean;
   modelToEdit: LLMEndpoint | undefined;
+  requiredEndpoints?: string[];
 };
 
 const flowSteps = ['Your LLM', 'Recommended Tests', 'Connect Endpoint', 'Run'];
@@ -40,7 +45,9 @@ export const initialState: FlowState = {
   hidePrevBtn: true,
   enableNextBtn: false,
   disableNextBtn: false,
+  disablePrevBtn: false,
   modelToEdit: undefined,
+  requiredEndpoints: undefined,
 };
 
 export const threeStepsFlowInitialState: FlowState = {
@@ -52,12 +59,13 @@ export const threeStepsFlowInitialState: FlowState = {
   hidePrevBtn: true,
   enableNextBtn: false,
   disableNextBtn: false,
+  disablePrevBtn: false,
   modelToEdit: undefined,
 };
 export function benchmarkNewSessionFlowReducer(
   state: FlowState,
   action: Action
-) {
+): FlowState {
   switch (action.type) {
     case 'NEXT_BTN_CLICK':
       if (state.view === BenchmarkNewSessionViews.TOPICS_SELECTION) {
@@ -81,12 +89,21 @@ export function benchmarkNewSessionFlowReducer(
         };
       }
       if (state.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
+        const hideNextBtn =
+          action.requiredEndpoints && action.requiredEndpoints.length > 0
+            ? false
+            : true;
         return {
           ...state,
-          stepIndex: state.stepIndex + 1,
-          view: BenchmarkNewSessionViews.BENCHMARK_RUN_FORM,
-          hideNextBtn: true,
-          disableNextBtn: true,
+          stepIndex: action.requiredEndpoints?.length
+            ? state.stepIndex
+            : state.stepIndex + 1,
+          view: action.requiredEndpoints?.length
+            ? BenchmarkNewSessionViews.ENDPOINTS_SELECTION
+            : BenchmarkNewSessionViews.BENCHMARK_RUN_FORM,
+          requiredEndpoints: action.requiredEndpoints,
+          hideNextBtn: hideNextBtn,
+          disableNextBtn: hideNextBtn,
         };
       }
       if (
@@ -190,7 +207,22 @@ export function benchmarkNewSessionFlowReducer(
         disableNextBtn: action.modelsLength === 0,
         disablePrevBtn: false,
       };
-    default:
-      return state;
+    case 'CLOSE_REQUIRED_ENDPOINTS_MODAL':
+      if (action.requiredEndpointsTokensFilled) {
+        return {
+          ...state,
+          stepIndex: state.stepIndex + 1,
+          view: BenchmarkNewSessionViews.BENCHMARK_RUN_FORM,
+          requiredEndpoints: undefined,
+          disableNextBtn: true,
+          hideNextBtn: true,
+        };
+      }
+      return {
+        ...state,
+        requiredEndpoints: undefined,
+        hideNextBtn: false,
+        hidePrevBtn: false,
+      };
   }
 }

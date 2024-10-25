@@ -28,6 +28,7 @@ type ButtonProps = {
   size?: 'sm' | 'md' | 'lg';
   width?: React.CSSProperties['width'];
   alignContent?: 'center' | 'flex-start' | 'flex-end';
+  ariaLabel?: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
@@ -49,6 +50,7 @@ function Button(props: ButtonProps) {
     size = 'md',
     width,
     alignContent,
+    ariaLabel,
     onClick = () => null,
   } = props;
   const [isHovered, setIsHovered] = useState(false);
@@ -83,6 +85,7 @@ function Button(props: ButtonProps) {
 
   return (
     <button
+      aria-label={ariaLabel}
       type={type}
       disabled={disabled}
       className={cssClass}

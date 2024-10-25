@@ -15,6 +15,7 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-1'],
     total_prompt_in_cookbook: 10,
     total_dataset_in_cookbook: 1,
+    endpoint_required: null,
   },
   {
     id: 'cb-id-2',
@@ -23,6 +24,7 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
     total_dataset_in_cookbook: 2,
+    endpoint_required: ['endpoint-id-1'],
   },
 ];
 
@@ -149,7 +151,7 @@ beforeAll(() => {
   });
 });
 
-it('should show correct views when next or back icons are clicked', async () => {
+it('should show correct views when next or back icons are clicked (No cookbooks with required endpoints selected)', async () => {
   let callCount = 1; // relying on the Nth time useAppSelector is called, it returns the expected value
   (useAppSelector as jest.Mock).mockImplementation(() => {
     if (callCount === 1) {
@@ -198,8 +200,9 @@ it('should show correct views when next or back icons are clicked', async () => 
   ).toBeChecked();
   await userEvent.click(nextButton);
 
-  // benchmark run form screen
+  // redteam run form screen
   expect(screen.getByRole('button', { name: /run/i })).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /next view/i })).toBeNull();
 
   // prepare to go back
   const prevButton = screen.getByRole('button', { name: /Previous View/i });
@@ -233,6 +236,90 @@ it('should show correct views when next or back icons are clicked', async () => 
   // back at topics selection screen
   expect(screen.getByText(mockCookbooks[0].name)).toBeInTheDocument();
   expect(screen.getByText(mockCookbooks[1].name)).toBeInTheDocument();
+});
+
+it('should show required endpoints reminder modal when next is clicked (cookbooks with required endpoints selected)', async () => {
+  let callCount = 1;
+  (useAppSelector as jest.Mock).mockImplementation(() => {
+    if (callCount === 1) {
+      callCount++;
+      return [mockCookbooks[1]]; // cookbook with required endpoints
+    }
+    callCount--;
+    return [];
+  });
+  (useGetCookbooksQuery as jest.Mock).mockReturnValue({
+    data: mockCookbooks,
+    isFetching: false,
+  });
+  (useModelsList as jest.Mock).mockImplementation(() => ({
+    models: mockEndpoints,
+    isLoading: false,
+    error: null,
+  }));
+  (useAppDispatch as jest.Mock).mockImplementation(() => jest.fn());
+
+  render(<BenchmarkNewSessionFlow />);
+  const nextButton = screen.getByRole('button', { name: /Next View/i });
+
+  // topics selection screen
+  await userEvent.click(nextButton);
+
+  // recommended tests screen
+  expect(
+    screen.getByText(mockCookbooks[1].total_prompt_in_cookbook)
+  ).toBeInTheDocument();
+  await userEvent.click(nextButton);
+
+  // endpoints selection screen
+  await userEvent.click(
+    screen.getByRole('checkbox', { name: /Select Endpoint 1/i })
+  );
+  await userEvent.click(nextButton);
+
+  // required endpoints reminder modal
+  mockCookbooks[1].endpoint_required?.forEach((endpoint) => {
+    expect(screen.getByText(endpoint)).toBeInTheDocument();
+  });
+  await userEvent.click(screen.getByRole('button', { name: /No/i }));
+
+  // remain on endpoints selection screen
+  expect(
+    screen.getByRole('checkbox', { name: /Select Endpoint 1/i })
+  ).toBeChecked();
+  await userEvent.click(nextButton);
+
+  // click no on required endpoints reminder modal
+  await userEvent.click(screen.getByRole('button', { name: /No/i }));
+  await userEvent.click(nextButton);
+
+  // click yes on required endpoints reminder modal
+  await userEvent.click(screen.getByRole('button', { name: /Yes/i }));
+
+  // benchmark run form screen
+  expect(screen.getByRole('button', { name: /run/i })).toBeInTheDocument();
+
+  // prepare to go back
+  const prevButton = screen.getByRole('button', { name: /Previous View/i });
+
+  // simulate 1 endpoint selected
+  callCount = 1;
+  (useAppSelector as jest.Mock).mockReset();
+  (useAppSelector as jest.Mock).mockImplementation(() => {
+    if (callCount === 1) {
+      callCount++;
+      return [mockCookbooks[0]];
+    }
+    callCount--;
+    return [mockEndpoints[0]];
+  });
+  await userEvent.click(prevButton);
+
+  // back at endpoints selection screen
+  expect(
+    screen.getByRole('checkbox', { name: /Select Endpoint 1/i })
+  ).toBeChecked();
+  await userEvent.click(prevButton);
 });
 
 it('should show more cookbooks screen', async () => {

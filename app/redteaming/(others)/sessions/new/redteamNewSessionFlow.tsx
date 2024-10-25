@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import React, { useLayoutEffect, useState } from 'react';
-import { EndpointSelectVew } from '@/app/benchmarking/components/endpointsSelector';
+import React, { useEffect, useState } from 'react';
+import { EndpointSelector } from '@/app/benchmarking/components/endpointsSelector';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
@@ -20,6 +20,10 @@ import {
   useAppSelector,
 } from '@/lib/redux';
 import { RedteamingNewSessionViews } from './enums';
+import {
+  initialState,
+  redteamNewSessionFlowReducer,
+} from './redteamNewSessionFlowReducer';
 import { RedteamRunForm } from './redteamRunForm';
 
 const flowSteps = [
@@ -30,61 +34,73 @@ const flowSteps = [
 
 function RedteamNewSessionFlow() {
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const appDispatch = useAppDispatch();
+  const [showExitModal, setShowExitModal] = useState(false);
+  const [flowState, dispatch] = React.useReducer(
+    redteamNewSessionFlowReducer,
+    initialState
+  );
   const selectedModels = useAppSelector(
     (state) => state.redteamModels.entities
   );
   const selectedAttack = useAppSelector((state) => state.attackModule.entity);
-  const [currentView, setCurrentView] = useState<RedteamingNewSessionViews>(
-    RedteamingNewSessionViews.ENDPOINTS_SELECTION
-  );
-  const [endpointToEdit, setEndpointToEdit] = useState<
-    LLMEndpoint | undefined
-  >();
-  const [hiddenNavButtons, setHiddenNavButtons] = useState<[boolean, boolean]>([
-    true,
-    true,
-  ]);
-  const [showExitModal, setShowExitModal] = useState(false);
 
-  function changeView<T = undefined>(
-    view: RedteamingNewSessionViews,
-    data?: T
-  ) {
-    if (view === RedteamingNewSessionViews.EDIT_ENDPOINT_FORM) {
-      setEndpointToEdit(data as LLMEndpoint);
-    }
-    setCurrentView(view);
+  useEffect(() => {
+    return () => {
+      appDispatch(resetRedteamModels());
+      appDispatch(resetAttackModule());
+    };
+  }, []);
+
+  function handleNextIconClick() {
+    dispatch({
+      type: 'NEXT_BTN_CLICK',
+      modelsLength: selectedModels.length,
+      attackSelected: selectedAttack !== undefined,
+    });
   }
 
-  function nextViewHandler() {
-    if (currentView === RedteamingNewSessionViews.ENDPOINTS_SELECTION) {
-      setCurrentView(RedteamingNewSessionViews.ATTACK_SELECTION);
-      return;
-    }
-    if (currentView === RedteamingNewSessionViews.ATTACK_SELECTION) {
-      setCurrentView(RedteamingNewSessionViews.RUN_FORM);
-      return;
-    }
-  }
-
-  function previousViewHandler() {
-    if (currentView === RedteamingNewSessionViews.RUN_FORM) {
-      setCurrentView(RedteamingNewSessionViews.ATTACK_SELECTION);
-      return;
-    }
-    if (currentView === RedteamingNewSessionViews.ATTACK_SELECTION) {
-      setCurrentView(RedteamingNewSessionViews.ENDPOINTS_SELECTION);
-      return;
-    }
+  function handlePreviousBtnClick() {
+    dispatch({
+      type: 'PREV_BTN_CLICK',
+      modelsLength: selectedModels.length,
+      attackSelected: selectedAttack !== undefined,
+    });
   }
 
   function handleModelClick(model: LLMEndpoint) {
     if (selectedModels.find((endpoint) => endpoint.id === model.id)) {
-      dispatch(removeRedteamModels([model]));
+      appDispatch(removeRedteamModels([model]));
+      dispatch({
+        type: 'ENDPOINTS_SELECTION_CHANGE',
+        modelsLength: selectedModels.length - 1,
+        attackSelected: selectedAttack !== undefined,
+      });
     } else {
-      dispatch(addRedteamModels([model]));
+      appDispatch(addRedteamModels([model]));
+      dispatch({
+        type: 'ENDPOINTS_SELECTION_CHANGE',
+        modelsLength: selectedModels.length + 1,
+        attackSelected: selectedAttack !== undefined,
+      });
     }
+  }
+
+  function handleEditModelClick(model: LLMEndpoint) {
+    dispatch({
+      type: 'EDIT_MODEL_CLICK',
+      modelToEdit: model,
+      modelsLength: selectedModels.length,
+      attackSelected: selectedAttack !== undefined,
+    });
+  }
+
+  function handleCreateModelClick() {
+    dispatch({
+      type: 'CREATE_MODEL_CLICK',
+      modelsLength: selectedModels.length,
+      attackSelected: selectedAttack !== undefined,
+    });
   }
 
   function handleOnCloseIconClick() {
@@ -92,111 +108,92 @@ function RedteamNewSessionFlow() {
   }
 
   function handleExitWorkflow() {
-    dispatch(resetRedteamModels());
-    dispatch(resetAttackModule());
+    appDispatch(resetRedteamModels());
+    appDispatch(resetAttackModule());
     router.push('/');
   }
 
   function handleAttackClick(attack: AttackModule) {
     if (!selectedAttack) {
-      dispatch(setAttackModule(attack));
+      appDispatch(setAttackModule(attack));
+      dispatch({
+        type: 'ATTACK_SELECTION_CHANGE',
+        modelsLength: selectedModels.length,
+        attackSelected: true,
+      });
       return;
     }
     if (selectedAttack.id === attack.id) {
-      dispatch(resetAttackModule());
-      return;
+      appDispatch(resetAttackModule());
+      dispatch({
+        type: 'ATTACK_SELECTION_CHANGE',
+        modelsLength: selectedModels.length,
+        attackSelected: false,
+      });
     }
-    dispatch(setAttackModule(attack));
   }
 
-  let stepIndex = 0;
+  function handleSkipAttackBtnClick() {
+    dispatch({
+      type: 'SKIP_BTN_CLICK',
+      modelsLength: selectedModels.length,
+      attackSelected: selectedAttack !== undefined,
+    });
+  }
+
   let surfaceColor = colors.moongray['950'];
   let view: React.ReactElement | undefined;
-  let showSkipButton = false;
 
-  useLayoutEffect(() => {
-    if (currentView === RedteamingNewSessionViews.ENDPOINTS_SELECTION) {
-      setHiddenNavButtons([true, false]);
-      return;
-    }
-    if (
-      currentView === RedteamingNewSessionViews.NEW_ENDPOINT_FORM ||
-      currentView === RedteamingNewSessionViews.EDIT_ENDPOINT_FORM
-    ) {
-      setHiddenNavButtons([true, true]);
-      return;
-    }
-    if (currentView === RedteamingNewSessionViews.ATTACK_SELECTION) {
-      setHiddenNavButtons([false, selectedAttack ? false : true]);
-      return;
-    }
-    if (currentView === RedteamingNewSessionViews.RUN_FORM) {
-      setHiddenNavButtons([false, true]);
-      return;
-    }
-  }, [currentView, selectedAttack]);
-
-  switch (currentView) {
+  switch (flowState.view) {
     case RedteamingNewSessionViews.ENDPOINTS_SELECTION:
-      stepIndex = 0;
-      showSkipButton = false;
       view = (
-        <EndpointSelectVew
+        <EndpointSelector
           selectedModels={selectedModels}
           totalSelected={selectedModels.length}
           onModelClick={handleModelClick}
-          onEditClick={(model) =>
-            changeView(RedteamingNewSessionViews.EDIT_ENDPOINT_FORM, model)
-          }
-          onCreateClick={() =>
-            changeView(RedteamingNewSessionViews.NEW_ENDPOINT_FORM)
-          }
+          onEditClick={handleEditModelClick}
+          onCreateClick={handleCreateModelClick}
         />
       );
       break;
     case RedteamingNewSessionViews.NEW_ENDPOINT_FORM:
-      stepIndex = 0;
-      showSkipButton = false;
       surfaceColor = colors.moongray['800'];
       view = (
         <NewEndpointForm
           onClose={() =>
-            changeView(RedteamingNewSessionViews.ENDPOINTS_SELECTION)
+            dispatch({
+              type: 'CLOSE_MODEL_FORM',
+              modelsLength: selectedModels.length,
+              attackSelected: selectedAttack !== undefined,
+            })
           }
         />
       );
       break;
     case RedteamingNewSessionViews.EDIT_ENDPOINT_FORM:
-      stepIndex = 0;
-      showSkipButton = false;
       surfaceColor = colors.moongray['800'];
       view = (
         <NewEndpointForm
-          endpointToEdit={endpointToEdit}
+          endpointToEdit={flowState.modelToEdit}
           onClose={() =>
-            changeView(RedteamingNewSessionViews.ENDPOINTS_SELECTION)
+            dispatch({
+              type: 'CLOSE_MODEL_FORM',
+              modelsLength: selectedModels.length,
+              attackSelected: selectedAttack !== undefined,
+            })
           }
         />
       );
       break;
     case RedteamingNewSessionViews.ATTACK_SELECTION:
-      stepIndex = 1;
-      showSkipButton = !selectedAttack;
       view = (
         <AttackModuleSelectView
           selectedAttack={selectedAttack}
           onAttackClick={handleAttackClick}
-          onSkipClick={
-            !selectedAttack
-              ? () => changeView(RedteamingNewSessionViews.RUN_FORM)
-              : undefined
-          }
         />
       );
       break;
     case RedteamingNewSessionViews.RUN_FORM:
-      stepIndex = 2;
-      showSkipButton = false;
       surfaceColor = colors.moongray['950'];
       view = <RedteamRunForm />;
       break;
@@ -233,42 +230,52 @@ function RedteamNewSessionFlow() {
               textColor={colors.moongray[300]}
               stepColor={colors.moonpurplelight}
               steps={flowSteps}
-              currentStepIndex={stepIndex}
+              currentStepIndex={flowState.stepIndex}
             />
           </div>
           <div
             className="flex flex-col gap-5 justify-center w-full"
             style={{ height: 'calc(100% - 33px)' }}>
-            {!hiddenNavButtons[0] && (
+            {!flowState.hidePrevBtn && (
               <div className="flex justify-center">
-                <Icon
-                  name={IconName.WideArrowUp}
-                  size={28}
-                  onClick={previousViewHandler}
-                />
+                <div
+                  role="button"
+                  onClick={handlePreviousBtnClick}
+                  className="flex justify-center hover:opacity-70"
+                  aria-label="Previous View">
+                  <Icon
+                    name={IconName.WideArrowUp}
+                    size={28}
+                  />
+                </div>
               </div>
             )}
             {view}
-            {!hiddenNavButtons[1] && (
+            {!flowState.hideNextBtn && (
               <div className="flex justify-center">
-                <Icon
-                  name={IconName.WideArrowDown}
-                  disabled={selectedModels.length === 0}
-                  size={28}
+                <div
+                  role="button"
                   onClick={
-                    selectedModels.length > 0 ? nextViewHandler : undefined
+                    flowState.disableNextBtn ? undefined : handleNextIconClick
                   }
-                />
+                  className={`flex justify-center ${flowState.disableNextBtn ? 'opacity-30' : ''} ${!flowState.disableNextBtn ? 'hover:opacity-60' : ''}`}
+                  aria-label="Next View">
+                  <Icon
+                    name={IconName.WideArrowDown}
+                    size={28}
+                  />
+                </div>
               </div>
             )}
-            {showSkipButton && (
+            {flowState.showSkipBtn && (
               <div className="flex justify-center">
                 <Button
                   mode={ButtonType.OUTLINE}
                   size="md"
                   text="Skip for now"
+                  aria-label="skip"
                   hoverBtnColor={colors.moongray[800]}
-                  onClick={nextViewHandler}
+                  onClick={handleSkipAttackBtnClick}
                 />
               </div>
             )}
