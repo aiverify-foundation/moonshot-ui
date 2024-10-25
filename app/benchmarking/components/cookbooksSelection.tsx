@@ -27,7 +27,9 @@ const descTrustAndSafety =
   'Trust & Safety addresses the reliability, ethical considerations, and inherent risks of the AI model. It also examines potential scenarios where the AI system could be used maliciously or unethically.';
 
 const CookbookAbout = dynamic(
-  () => import('./cookbookAbout').then((mod) => mod.CookbookAbout),
+  () => import('./cookbookAbout').then((mod) => ({
+    default: mod.CookbookAbout
+  })),
   {
     loading: () => <LoadingAnimation />,
     ssr: true,

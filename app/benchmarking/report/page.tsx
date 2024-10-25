@@ -16,11 +16,11 @@ import { ApiResult } from '@/app/lib/http-requests';
 export const dynamic = 'force-dynamic';
 
 export default async function BenchmarkingReportPage(props: {
-  searchParams: { id: string };
+  searchParams: Promise<{ id: string }>;
 }) {
   const fetchPromises = [
-    fetchReport(props.searchParams.id),
-    fetchRunnerHeading(props.searchParams.id),
+    fetchReport((await props.searchParams).id),
+    fetchRunnerHeading((await props.searchParams).id),
     fetchCookbooks({ categories: ['Quality'], count: false }),
     fetchCookbooks({ categories: ['Capability'], count: false }),
     fetchCookbooks({ categories: ['Trust & Safety'], count: false }),

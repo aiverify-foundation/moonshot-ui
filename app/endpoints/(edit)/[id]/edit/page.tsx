@@ -13,11 +13,12 @@ async function fetchOneEndpoint(id: string) {
   return result;
 }
 
-export default async function CreateNewEndpointPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function CreateNewEndpointPage(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const params = await props.params;
   const result = await fetchOneEndpoint(params.id);
   if (isErrorWithMessage(result)) {
     throw result;

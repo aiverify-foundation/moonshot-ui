@@ -22,9 +22,9 @@ async function fetchSessionData(id: string) {
 }
 
 export default async function BenchmarkNewSessionFlowPage(props: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const result = await fetchSessionData(props.params.id);
+  const result = await fetchSessionData((await props.params).id);
   if (isErrorWithMessage(result)) {
     throw result.message;
   }

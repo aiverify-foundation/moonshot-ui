@@ -13,11 +13,12 @@ async function fetchEndpoints(id: string) {
   return result;
 }
 
-export default async function EndpointsHomepage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function EndpointsHomepage(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const params = await props.params;
   const result = await fetchEndpoints(params.id);
   if ('error' in result) {
     notFound();
