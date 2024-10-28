@@ -89,6 +89,10 @@ export function benchmarkNewSessionFlowReducer(
         };
       }
       if (state.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
+        const hideNextBtn =
+          action.requiredEndpoints && action.requiredEndpoints.length > 0
+            ? false
+            : true;
         return {
           ...state,
           stepIndex: action.requiredEndpoints?.length
@@ -98,6 +102,8 @@ export function benchmarkNewSessionFlowReducer(
             ? BenchmarkNewSessionViews.ENDPOINTS_SELECTION
             : BenchmarkNewSessionViews.BENCHMARK_RUN_FORM,
           requiredEndpoints: action.requiredEndpoints,
+          hideNextBtn: hideNextBtn,
+          disableNextBtn: hideNextBtn,
         };
       }
       if (
@@ -208,6 +214,8 @@ export function benchmarkNewSessionFlowReducer(
           stepIndex: state.stepIndex + 1,
           view: BenchmarkNewSessionViews.BENCHMARK_RUN_FORM,
           requiredEndpoints: undefined,
+          disableNextBtn: true,
+          hideNextBtn: true,
         };
       }
       return {
