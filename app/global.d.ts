@@ -162,6 +162,7 @@ type AttackModule = {
   name: string;
   description: string;
   endpoints: string[];
+  configurations: Record<string, string | number>;
 };
 
 type BenchmarkRunFormValues = {
