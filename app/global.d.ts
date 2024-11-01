@@ -310,6 +310,23 @@ type RunnerHeading = {
   endpoints: string[];
 };
 
+type CookbooksRunnerArgs = {
+  cookbooks: string[];
+  num_of_prompts: number;
+  random_seed: number;
+  system_prompt: string;
+  runner_processing_module: string;
+  result_processing_module: string;
+};
+type RecipesRunnerArgs = {
+  recipes: string[];
+  num_of_prompts: number;
+  random_seed: number;
+  system_prompt: string;
+  runner_processing_module: string;
+  result_processing_module: string;
+};
+
 type Runner = {
   id: string;
   run_id?: number;
@@ -317,14 +334,7 @@ type Runner = {
   name: string;
   endpoints: string[];
   description: string;
-  runner_args?: {
-    cookbooks: string[];
-    num_of_prompts: number;
-    random_seed: number;
-    system_prompt: string;
-    runner_processing_module: string;
-    result_processing_module: string;
-  };
+  runner_args?: CookbooksRunnerArgs | RecipesRunnerArgs;
   start_time?: number;
 };
 
