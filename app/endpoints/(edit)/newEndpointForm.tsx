@@ -2,7 +2,7 @@
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useRef, memo, useMemo } from 'react';
-import { object, string, number, boolean } from 'yup';
+import { object, string, number } from 'yup';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { LoadingAnimation } from '@/app/components/loadingAnimation';
