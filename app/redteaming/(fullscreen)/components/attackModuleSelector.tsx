@@ -7,7 +7,6 @@ const colors = tailwindConfig.theme?.extend?.colors as CustomColors;
 type AttackModuleSelectViewProps = {
   selectedAttack?: AttackModule;
   onAttackClick: (attack: AttackModule) => void;
-  onSkipClick?: () => void;
 };
 
 function AttackModuleSelectView(props: AttackModuleSelectViewProps) {

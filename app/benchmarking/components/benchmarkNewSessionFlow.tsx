@@ -229,7 +229,7 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
           </p>
         </Modal>
       )}
-      {flowState.requiredEndpoints?.length && (
+      {flowState.requiredEndpoints && flowState.requiredEndpoints.length > 0 ? (
         <Modal
           width={600}
           height={280}
@@ -271,7 +271,7 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
             ))}
           </ul>
         </Modal>
-      )}
+      ) : null}
       <CookbooksProvider>
         <MainSectionSurface
           onCloseIconClick={handleOnCloseIconClick}
@@ -309,7 +309,8 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
                 <div className="flex justify-center">
                   <div
                     role="button"
-                    className={`flex justify-center ${flowState.disableNextBtn ? 'opacity-30' : ''} ${!flowState.disableNextBtn ? 'hover:opacity-60' : ''}`}
+                    className={`flex justify-center ${flowState.disableNextBtn ? 'opacity-30 cursor-default' : ''} 
+                      ${!flowState.disableNextBtn ? 'hover:opacity-60 cursor-pointer' : ''}`}
                     aria-label="Next View"
                     onClick={
                       flowState.disableNextBtn ? undefined : handleNextIconClick

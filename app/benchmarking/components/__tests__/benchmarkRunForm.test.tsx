@@ -52,29 +52,24 @@ const mockRecipesStats: RecipeStats[] = [
 
 // mock mockRecipesStats[0] has 0 prompt templates, so not multiplying by num_of_prompt_templates
 const totalPromptsForStat0 =
-  (mockRecipesStats[0].num_of_datasets_prompts.dataset1 +
-    mockRecipesStats[0].num_of_datasets_prompts.dataset2) *
-  mockRecipesStats[0].num_of_metrics;
+  mockRecipesStats[0].num_of_datasets_prompts.dataset1 +
+  mockRecipesStats[0].num_of_datasets_prompts.dataset2;
 
 // mock mockRecipesStats[1] has 2 prompt templates, so multiplying by num_of_prompt_templates
 const totalPromptForStat1 =
   (mockRecipesStats[1].num_of_datasets_prompts.dataset1 +
     mockRecipesStats[1].num_of_datasets_prompts.dataset2 +
     mockRecipesStats[1].num_of_datasets_prompts.dataset3) *
-  mockRecipesStats[1].num_of_prompt_templates *
-  mockRecipesStats[1].num_of_metrics;
+  mockRecipesStats[1].num_of_prompt_templates;
 
 const GRAND_TOTAL_PROMPTS = totalPromptsForStat0 + totalPromptForStat1;
 
 const USER_INPUT_NUM_OF_PROMPTS = 5;
 
 const SMALLER_SET_TOTAL_PROMPTS =
-  USER_INPUT_NUM_OF_PROMPTS *
-    mockRecipesStats[0].num_of_datasets *
-    mockRecipesStats[0].num_of_metrics +
+  USER_INPUT_NUM_OF_PROMPTS * mockRecipesStats[0].num_of_datasets +
   USER_INPUT_NUM_OF_PROMPTS *
     mockRecipesStats[1].num_of_prompt_templates *
-    mockRecipesStats[1].num_of_metrics *
     mockRecipesStats[1].num_of_datasets;
 
 const mockCookbooks: Cookbook[] = [

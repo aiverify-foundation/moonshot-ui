@@ -84,6 +84,7 @@ function EndpointSelector(props: EndpointSelectorProps) {
                     </p>
                     <Button
                       text="Edit"
+                      ariaLabel={`Edit ${model.name}`}
                       width={70}
                       mode={ButtonType.OUTLINE}
                       size="sm"
