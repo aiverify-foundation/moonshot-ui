@@ -33,16 +33,14 @@ const initialFormValues: LLMEndpointFormValues = {
   model: '',
   params: `{
       "timeout": 300,
-      "allow_retries": true,
-      "num_of_retries": 3,
+      "max_attempts": 3,
       "temperature": 0.5
   }`,
 };
 
 const paramsSchema = object().shape({
   timeout: number().positive('Timeout must be a positive number'),
-  allow_retries: boolean(),
-  num_of_retries: number(),
+  max_attempts: number(),
   temperature: number(),
 });
 
@@ -208,7 +206,8 @@ function NewEndpointForm(props: NewEndpointFormProps) {
     formik.values.name.trim() === '' ||
     formik.values.connector_type.trim() === '' ||
     formik.values.params?.trim() === '' ||
-    formik.values.token?.trim() === '';
+    formik.values.token?.trim() === '' ||
+    formik.values.model?.trim() === '';
 
   const tokenTextboxValue = useMemo(() => {
     // note - backend api returns empty string if token is not set; it returns string of asterisks masking the token if token exists
@@ -395,6 +394,22 @@ function NewEndpointForm(props: NewEndpointFormProps) {
             />
 
             <TextInput
+              name="model"
+              label="Model"
+              labelStyles={labelStyle}
+              inputStyles={inputStyle}
+              onChange={formik.handleChange}
+              value={formik.values.model}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.model && formik.errors.model
+                  ? formik.errors.model
+                  : undefined
+              }
+              placeholder="Model of the model endpoint"
+            />
+
+            <TextInput
               name="uri"
               label="URI"
               labelStyles={labelStyle}
@@ -480,22 +495,6 @@ function NewEndpointForm(props: NewEndpointFormProps) {
               value={formik.values.max_concurrency}
               labelStyles={labelStyle}
               inputStyle={inputStyle}
-            />
-
-            <TextInput
-              name="model"
-              label="Model"
-              labelStyles={labelStyle}
-              inputStyles={inputStyle}
-              onChange={formik.handleChange}
-              value={formik.values.model}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.model && formik.errors.model
-                  ? formik.errors.model
-                  : undefined
-              }
-              placeholder="Model of the model endpoint"
             />
 
             <TextArea
