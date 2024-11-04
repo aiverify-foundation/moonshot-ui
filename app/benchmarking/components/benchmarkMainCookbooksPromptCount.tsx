@@ -2,6 +2,7 @@ import { useCookbooks } from '@/app/benchmarking/contexts/cookbooksContext';
 import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { calcTotalPromptsAndEstimatedTime } from '@/app/lib/cookbookUtils';
+import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 import config from '@/moonshot.config';
 import { RequiredEndpoints } from './requiredEndpoints';
 
@@ -20,10 +21,10 @@ function BenchmarkMainCookbooksPromptCount({
     config.estimatedPromptResponseTime
   );
   const requiredEndpoints = selectedCookbooks.reduce((acc, cookbook) => {
-    if (cookbook.required_config?.endpoints?.length) {
-      return [...acc, ...cookbook.required_config.endpoints];
-    }
-    return acc;
+    return [
+      ...acc,
+      ...getEndpointsFromRequiredConfig(cookbook.required_config),
+    ];
   }, [] as string[]);
 
   return (

@@ -10,6 +10,7 @@ import { Modal } from '@/app/components/modal';
 import { TextInput } from '@/app/components/textInput';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
+import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 import { Step } from './enums';
 import { SelectedRecipesPills } from './selectedRecipesPills';
 
@@ -40,6 +41,9 @@ function RecipesViewList({
     }
     return recipes.find((att) => att.id === id) || recipes[0];
   });
+  const selectedRecipeRequiredEndpoints = getEndpointsFromRequiredConfig(
+    selectedRecipe.required_config
+  );
   const [selectedCookbook, setSelectedCookbook] = React.useState<Cookbook>(
     () => cookbooks[0]
   );
@@ -142,6 +146,9 @@ function RecipesViewList({
           <ul className="divide-y divide-moongray-700 pr-1 overflow-y-auto custom-scrollbar">
             {filteredRecipes.map((recipe) => {
               const isSelected = recipe.id === selectedRecipe.id;
+              const requiredEndpoints = getEndpointsFromRequiredConfig(
+                recipe.required_config
+              );
               return (
                 <li
                   key={recipe.id}
@@ -168,7 +175,7 @@ function RecipesViewList({
                       <h4 className="text-[1rem] font-semibold">
                         {recipe.name}
                       </h4>
-                      {recipe.required_config?.endpoints?.length && (
+                      {requiredEndpoints.length && (
                         <Tooltip
                           position={TooltipPosition.right}
                           offsetLeft={10}
@@ -178,11 +185,9 @@ function RecipesViewList({
                                 Requires
                               </h3>
                               <ul className="text-gray-700">
-                                {recipe.required_config.endpoints.map(
-                                  (endpoint) => (
-                                    <li key={endpoint}>{endpoint}</li>
-                                  )
-                                )}
+                                {requiredEndpoints.map((endpoint) => (
+                                  <li key={endpoint}>{endpoint}</li>
+                                ))}
                               </ul>
                             </div>
                           }>
@@ -220,7 +225,7 @@ function RecipesViewList({
               <h3 className="text-[1.2rem] font-semibold">
                 {selectedRecipe.name}
               </h3>
-              {selectedRecipe.required_config?.endpoints?.length && (
+              {selectedRecipeRequiredEndpoints.length && (
                 <Tooltip
                   position={TooltipPosition.bottom}
                   offsetTop={14}
@@ -228,11 +233,9 @@ function RecipesViewList({
                     <div className="p-1 pt-0">
                       <h3 className="text-black font-bold mb-2">Requires</h3>
                       <ul className="text-gray-700">
-                        {selectedRecipe.required_config.endpoints.map(
-                          (endpoint) => (
-                            <li key={endpoint}>{endpoint}</li>
-                          )
-                        )}
+                        {selectedRecipeRequiredEndpoints.map((endpoint) => (
+                          <li key={endpoint}>{endpoint}</li>
+                        ))}
                       </ul>
                     </div>
                   }>

@@ -7,6 +7,7 @@ import { Button, ButtonType } from '@/app/components/button';
 import { TextInput } from '@/app/components/textInput';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
+import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 import { SelectedCookbooksPills } from './selectedCookbooksPills';
 
 interface CustomStyle extends CSSProperties {
@@ -43,6 +44,10 @@ function CookbooksViewList({
     return cookbooks.find((cb) => cb.id === id) || cookbooks[0];
   });
 
+  const selectedCookbookRequiredEndpoints = getEndpointsFromRequiredConfig(
+    selectedCookbook.required_config
+  );
+
   const filteredCookbooks = cookbooks.filter((cb) =>
     cb.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -70,6 +75,9 @@ function CookbooksViewList({
     overflow-y-auto custom-scrollbar">
       {filteredCookbooks.map((cookbook) => {
         const isSelected = cookbook.id === selectedCookbook.id;
+        const requiredEndpoints = getEndpointsFromRequiredConfig(
+          cookbook.required_config
+        );
         return (
           <li
             key={cookbook.id}
@@ -94,7 +102,7 @@ function CookbooksViewList({
               <div className="flex gap-2 mb-2 items-start">
                 <Icon name={IconName.Book} />
                 <h4 className="text-[1rem] font-semibold">{cookbook.name}</h4>
-                {cookbook.required_config?.endpoints?.length && (
+                {requiredEndpoints.length && (
                   <Tooltip
                     position={TooltipPosition.right}
                     offsetLeft={10}
@@ -102,11 +110,9 @@ function CookbooksViewList({
                       <div className="p-1 pt-0">
                         <h3 className="text-black font-bold mb-2">Requires</h3>
                         <ul className="text-gray-700">
-                          {cookbook.required_config.endpoints.map(
-                            (endpoint) => (
-                              <li key={endpoint}>{endpoint}</li>
-                            )
-                          )}
+                          {requiredEndpoints.map((endpoint) => (
+                            <li key={endpoint}>{endpoint}</li>
+                          ))}
                         </ul>
                       </div>
                     }>
@@ -189,7 +195,7 @@ function CookbooksViewList({
               <h3 className="text-[1.2rem] font-semibold">
                 {selectedCookbook.name}
               </h3>
-              {selectedCookbook.required_config?.endpoints?.length && (
+              {selectedCookbookRequiredEndpoints.length && (
                 <Tooltip
                   position={TooltipPosition.bottom}
                   offsetTop={14}
@@ -197,11 +203,9 @@ function CookbooksViewList({
                     <div className="p-1 pt-0">
                       <h3 className="text-black font-bold mb-2">Requires</h3>
                       <ul className="text-gray-700">
-                        {selectedCookbook.required_config.endpoints.map(
-                          (endpoint) => (
-                            <li key={endpoint}>{endpoint}</li>
-                          )
-                        )}
+                        {selectedCookbookRequiredEndpoints.map((endpoint) => (
+                          <li key={endpoint}>{endpoint}</li>
+                        ))}
                       </ul>
                     </div>
                   }>

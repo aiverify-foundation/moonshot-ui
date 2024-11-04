@@ -1,8 +1,9 @@
-import { useState, useLayoutEffect, useEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
+import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 import config from '@/moonshot.config';
 
 type CookbookSelectionItemProps = {
@@ -15,8 +16,11 @@ type CookbookSelectionItemProps = {
 function CookbookSelectionItem(props: CookbookSelectionItemProps) {
   const { cookbook, selected, onSelect, onAboutClick } = props;
   const [isSelected, setIsSelected] = useState(selected);
-  const requiredEndpoints = cookbook.required_config;
+  const requiredEndpoints = getEndpointsFromRequiredConfig(
+    cookbook.required_config
+  );
   const [substringEndIndex, setSubstringEndIndex] = useState(40);
+
   function handleClick(
     e: React.MouseEvent | React.ChangeEvent<HTMLInputElement>
   ) {
@@ -76,28 +80,27 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
           ) : (
             <h3 className="font-bold ">{cookbook.name}</h3>
           )}
-          {requiredEndpoints?.endpoints &&
-            requiredEndpoints.endpoints?.length > 0 && (
-              <Tooltip
-                position={TooltipPosition.right}
-                offsetLeft={10}
-                content={
-                  <div className="p-1 pt-0">
-                    <h3 className="text-black font-bold mb-2">Requires</h3>
-                    <ul className="text-gray-700">
-                      {requiredEndpoints.endpoints.map((endpoint) => (
-                        <li key={endpoint}>{endpoint}</li>
-                      ))}
-                    </ul>
-                  </div>
-                }>
-                <Icon
-                  size={22}
-                  name={IconName.SolidBox}
-                  color={colors.moonpurplelight}
-                />
-              </Tooltip>
-            )}
+          {requiredEndpoints.length > 0 && (
+            <Tooltip
+              position={TooltipPosition.right}
+              offsetLeft={10}
+              content={
+                <div className="p-1 pt-0">
+                  <h3 className="text-black font-bold mb-2">Requires</h3>
+                  <ul className="text-gray-700">
+                    {requiredEndpoints.map((endpoint) => (
+                      <li key={endpoint}>{endpoint}</li>
+                    ))}
+                  </ul>
+                </div>
+              }>
+              <Icon
+                size={22}
+                name={IconName.SolidBox}
+                color={colors.moonpurplelight}
+              />
+            </Tooltip>
+          )}
         </div>
         <input
           readOnly

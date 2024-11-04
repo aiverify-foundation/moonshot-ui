@@ -48,7 +48,9 @@ const mockCookbooks: Cookbook[] = [
     total_prompt_in_cookbook: 10,
     total_dataset_in_cookbook: 1,
     required_config: {
-      configurations: {},
+      configurations: {
+        embeddings: ['embed-endpoint-1', 'endpoint-2'],
+      },
       endpoints: ['endpoint-1', 'endpoint-2'],
     },
   },
@@ -163,6 +165,13 @@ describe('CookbooksSelection', () => {
         cookbook.required_config.endpoints.forEach((endpoint) => {
           expect(screen.getByText(endpoint)).toBeInTheDocument();
         });
+      }
+      if (cookbook.required_config?.configurations?.embeddings?.length) {
+        cookbook.required_config.configurations.embeddings.forEach(
+          (endpoint) => {
+            expect(screen.getByText(endpoint)).toBeInTheDocument();
+          }
+        );
       }
     });
   });

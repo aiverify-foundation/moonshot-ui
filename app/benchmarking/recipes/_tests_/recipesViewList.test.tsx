@@ -54,7 +54,9 @@ const mockRecipes: Recipe[] = [
     },
     total_prompt_in_recipe: 20,
     required_config: {
-      configurations: {},
+      configurations: {
+        embeddings: ['embed-endpoint-1', 'embed-endpoint-2'],
+      },
       endpoints: ['endpoint-1', 'endpoint-2'],
     },
   },
@@ -137,6 +139,13 @@ describe('RecipesViewList', () => {
             expect(screen.getByText(endpoint)).toBeInTheDocument();
           });
         }
+        if (recipe.required_config?.configurations?.embeddings?.length) {
+          recipe.required_config.configurations.embeddings.forEach(
+            (endpoint) => {
+              expect(screen.getByText(endpoint)).toBeInTheDocument();
+            }
+          );
+        }
       });
       await userEvent.click(
         screen.getByRole('checkbox', { name: `Select ${mockRecipes[1].name}` })
@@ -146,6 +155,13 @@ describe('RecipesViewList', () => {
           recipe.required_config.endpoints.forEach((endpoint) => {
             expect(screen.getAllByText(endpoint)).toHaveLength(2);
           });
+        }
+        if (recipe.required_config?.configurations?.embeddings?.length) {
+          recipe.required_config.configurations.embeddings.forEach(
+            (endpoint) => {
+              expect(screen.getAllByText(endpoint)).toHaveLength(2);
+            }
+          );
         }
       });
     });

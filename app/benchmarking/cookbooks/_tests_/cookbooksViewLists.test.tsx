@@ -25,7 +25,9 @@ const mockCookbooks: Cookbook[] = [
     total_prompt_in_cookbook: 20,
     total_dataset_in_cookbook: 2,
     required_config: {
-      configurations: {},
+      configurations: {
+        embeddings: ['embed-endpoint-1', 'embed-endpoint-2'],
+      },
       endpoints: ['required-endpoint-1', 'required-endpoint-2'],
     },
   },
@@ -61,6 +63,13 @@ describe('CookbooksViewList', () => {
             expect(screen.getByText(endpoint)).toBeInTheDocument();
           });
         }
+        if (cookbook.required_config?.configurations?.embeddings?.length) {
+          cookbook.required_config.configurations.embeddings.forEach(
+            (endpoint) => {
+              expect(screen.getByText(endpoint)).toBeInTheDocument();
+            }
+          );
+        }
       });
       await userEvent.click(
         screen.getByRole('checkbox', {
@@ -72,6 +81,13 @@ describe('CookbooksViewList', () => {
           cookbook.required_config.endpoints.forEach((endpoint) => {
             expect(screen.getAllByText(endpoint)).toHaveLength(2);
           });
+        }
+        if (cookbook.required_config?.configurations?.embeddings?.length) {
+          cookbook.required_config.configurations.embeddings.forEach(
+            (endpoint) => {
+              expect(screen.getAllByText(endpoint)).toHaveLength(2);
+            }
+          );
         }
       });
     });

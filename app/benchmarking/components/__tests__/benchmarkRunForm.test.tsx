@@ -81,7 +81,9 @@ const mockCookbooks: Cookbook[] = [
     total_prompt_in_cookbook: 10,
     total_dataset_in_cookbook: 2,
     required_config: {
-      configurations: {},
+      configurations: {
+        embeddings: ['embed-endpoint-1', 'endpoint-2'],
+      },
       endpoints: ['endpoint-1', 'endpoint-2'],
     },
   },

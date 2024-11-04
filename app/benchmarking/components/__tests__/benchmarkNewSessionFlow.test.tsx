@@ -25,7 +25,9 @@ const mockCookbooks: Cookbook[] = [
     total_prompt_in_cookbook: 20,
     total_dataset_in_cookbook: 2,
     required_config: {
-      configurations: {},
+      configurations: {
+        embeddings: ['embed-endpoint-1', 'endpoint-2'],
+      },
       endpoints: ['endpoint-id-1'],
     },
   },
@@ -284,6 +286,11 @@ it('should show required endpoints reminder modal when next is clicked (cookbook
   mockCookbooks[1].required_config?.endpoints?.forEach((endpoint) => {
     expect(screen.getByText(endpoint)).toBeInTheDocument();
   });
+  mockCookbooks[1].required_config?.configurations?.embeddings?.forEach(
+    (endpoint) => {
+      expect(screen.getByText(endpoint)).toBeInTheDocument();
+    }
+  );
   await userEvent.click(screen.getByRole('button', { name: /No/i }));
 
   // remain on endpoints selection screen
