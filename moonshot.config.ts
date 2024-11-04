@@ -12,17 +12,17 @@ type MoonshotConfig = {
   };
   webAPI: {
     hostURL: string;
-    basePathSessions: string;
-    basePathPromptTemplates: string;
-    basePathConnectors: string;
-    basePathLLMEndpoints: string;
-    basePathCookbooks: string;
-    basePathContextStrategies: string;
-    basePathRecipes: string;
-    basePathBenchmarks: string;
-    basePathRunners: string;
-    basePathAttackModules: string;
-    basePathBookmarks: string;
+    basePathSessions: '/api/v1/sessions';
+    basePathPromptTemplates: '/api/v1/prompt-templates';
+    basePathConnectors: '/api/v1/connectors';
+    basePathLLMEndpoints: '/api/v1/llm-endpoints';
+    basePathCookbooks: '/api/v1/cookbooks';
+    basePathContextStrategies: '/api/v1/context-strategies';
+    basePathRecipes: '/api/v1/recipes';
+    basePathBenchmarks: '/api/v1/benchmarks';
+    basePathRunners: '/api/v1/runners';
+    basePathAttackModules: '/api/v1/attack-modules/metadata';
+    basePathBookmarks: '/api/v1/bookmarks';
   };
 };
 

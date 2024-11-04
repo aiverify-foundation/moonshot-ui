@@ -2,7 +2,7 @@
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useRef, memo, useMemo } from 'react';
-import { object, string, number, boolean } from 'yup';
+import { object, string, number } from 'yup';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { LoadingAnimation } from '@/app/components/loadingAnimation';
@@ -30,21 +30,18 @@ const initialFormValues: LLMEndpointFormValues = {
   token: '',
   max_calls_per_second: '10',
   max_concurrency: '1',
+  model: '',
   params: `{
       "timeout": 300,
-      "allow_retries": true,
-      "num_of_retries": 3,
-      "temperature": 0.5,
-      "model": ""
+      "max_attempts": 3,
+      "temperature": 0.5
   }`,
 };
 
 const paramsSchema = object().shape({
   timeout: number().positive('Timeout must be a positive number'),
-  allow_retries: boolean(),
-  num_of_retries: number(),
+  max_attempts: number(),
   temperature: number(),
-  model: string().required('Parameter "Model" is required'),
 });
 
 const validationSchema = object().shape({
@@ -56,6 +53,10 @@ const validationSchema = object().shape({
   connector_type: string().required('Connector Type is required'),
   max_calls_per_second: string().required('Max calls Per Second is required'),
   max_concurrency: string().required('Max Concurrency is required'),
+  model: string()
+    .min(1, 'Model is required')
+    .matches(/\S/, 'Model cannot be empty spaces')
+    .required('Model is required'),
   params: string()
     .min(1, 'Other Parameters is required')
     .required('Other Parameters is required'),
@@ -128,6 +129,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
           token: endpointToEdit.token,
           max_calls_per_second: endpointToEdit.max_calls_per_second.toString(),
           max_concurrency: endpointToEdit.max_concurrency.toString(),
+          model: endpointToEdit.model,
           params: JSON.stringify(endpointToEdit.params, null, 2),
         }
       : initialFormValues;
@@ -207,7 +209,8 @@ function NewEndpointForm(props: NewEndpointFormProps) {
     formik.values.name.trim() === '' ||
     formik.values.connector_type.trim() === '' ||
     formik.values.params?.trim() === '' ||
-    formik.values.token?.trim() === '';
+    formik.values.token?.trim() === '' ||
+    formik.values.model?.trim() === '';
 
   const tokenTextboxValue = useMemo(() => {
     // note - backend api returns empty string if token is not set; it returns string of asterisks masking the token if token exists
@@ -333,6 +336,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
       name: data.name,
       uri: data.uri,
       token: data.token,
+      model: data.model,
       max_calls_per_second: data.max_calls_per_second,
       max_concurrency: data.max_concurrency,
       params: data.params,
@@ -390,6 +394,22 @@ function NewEndpointForm(props: NewEndpointFormProps) {
                   ? formik.errors.connector_type
                   : undefined
               }
+            />
+
+            <TextInput
+              name="model"
+              label="Model*"
+              labelStyles={labelStyle}
+              inputStyles={inputStyle}
+              onChange={formik.handleChange}
+              value={formik.values.model}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.model && formik.errors.model
+                  ? formik.errors.model
+                  : undefined
+              }
+              placeholder="Model of the model endpoint"
             />
 
             <TextInput

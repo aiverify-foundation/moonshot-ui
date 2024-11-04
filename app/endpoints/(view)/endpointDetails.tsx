@@ -27,6 +27,10 @@ function EndpointDetails({ endpoint }: EndpointDetailsProps) {
       <p className="text-[0.95rem] text-moongray-300 mb-4">
         {endpoint.token || 'Not set'}
       </p>
+      <h4 className="text-[1rem] font-semibold mb-1">Model</h4>
+      <p className="text-[0.95rem] text-moongray-300 mb-4">
+        {endpoint.model || 'None'}
+      </p>
       <h4 className="text-[1rem] font-semibold mb-1">
         Max number of calls per second
       </h4>
