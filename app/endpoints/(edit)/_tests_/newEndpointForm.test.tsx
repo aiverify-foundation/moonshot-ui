@@ -51,53 +51,6 @@ describe('NewEndpointForm', () => {
     jest.clearAllMocks();
   });
 
-  test('other parameters textbox', async () => {
-    render(<NewEndpointForm />);
-
-    await userEvent.click(screen.getByText(/more configs/i));
-
-    const otherParamsTextbox = screen.getByRole('textbox', {
-      name: /other parameters/i,
-    });
-    const okButton = screen.getByRole('button', { name: /ok/i });
-    expect(
-      screen.getByRole('combobox', { name: /max calls per second .*/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('combobox', { name: /max concurrency .*/i })
-    ).toBeInTheDocument();
-    expect(otherParamsTextbox).toBeInTheDocument();
-
-    await userEvent.clear(otherParamsTextbox);
-    expect(okButton).toBeDisabled();
-
-    await userEvent.type(otherParamsTextbox, 'test');
-    expect(okButton).toBeEnabled();
-
-    await userEvent.click(okButton);
-    expect(screen.getByText(/.* is not valid JSON/i)).toBeInTheDocument();
-
-    const mockMissingModelParams = `{
-      "timeout": 300,
-      "allow_retries": true,
-      "num_of_retries": 3,
-      "temperature": 0.5,
-      "model": ""
-    }`;
-
-    // Escape { and [
-    const escapedMockMissingModelParams = mockMissingModelParams.replace(
-      /[{[]/g,
-      '$&$&'
-    );
-    await userEvent.clear(otherParamsTextbox);
-    await userEvent.type(otherParamsTextbox, escapedMockMissingModelParams);
-    await userEvent.click(okButton);
-    expect(
-      screen.getByText(/parameter \"model\" is required/i)
-    ).toBeInTheDocument();
-  });
-
   test('new endpoint - form filling, popup disabled, router redirect on submit success', async () => {
     const mockCreateModelEndpointSuccess = jest.fn().mockResolvedValue({});
     (useCreateLLMEndpointMutation as jest.Mock).mockImplementation(() => [
@@ -111,6 +64,7 @@ describe('NewEndpointForm', () => {
     const connectorSelect = screen.getByRole('combobox');
     const uriTextbox = screen.getByRole('textbox', { name: /uri/i });
     const tokenTextbox = screen.getByRole('textbox', { name: /token/i });
+    const modelTextbox = screen.getByRole('textbox', { name: /model/i });
 
     await userEvent.clear(nameTextbox);
     await userEvent.clear(uriTextbox);
@@ -125,14 +79,14 @@ describe('NewEndpointForm', () => {
     await userEvent.type(uriTextbox, 'mockuri');
     await userEvent.type(connectorSelect, mockConnectors[0]);
     await userEvent.type(connectorSelect, '{enter}');
+    expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
+    await userEvent.type(modelTextbox, 'mock-model');
     await userEvent.click(screen.getByText(/more configs/i));
 
     const mockValidParams = `{
       "timeout": 300,
-      "allow_retries": true,
-      "num_of_retries": 3,
-      "temperature": 0.5,
-      "model": "mock-model"
+      "max_attempts": 3,
+      "temperature": 0.5
     }`;
 
     const otherParamsTextbox = screen.getByRole('textbox', {
@@ -152,12 +106,11 @@ describe('NewEndpointForm', () => {
       max_calls_per_second: '10',
       max_concurrency: '1',
       name: 'mockname',
+      model: 'mock-model',
       params: `{
       \"timeout\": 300,
-      \"allow_retries\": true,
-      \"num_of_retries\": 3,
-      \"temperature\": 0.5,
-      \"model\": \"mock-model\"
+      \"max_attempts\": 3,
+      \"temperature\": 0.5
     }`,
       token: 'mocktoken',
       uri: 'mockuri',
@@ -183,6 +136,7 @@ describe('NewEndpointForm', () => {
     const connectorSelect = screen.getByRole('combobox');
     const uriTextbox = screen.getByRole('textbox', { name: /uri/i });
     const tokenTextbox = screen.getByRole('textbox', { name: /token/i });
+    const modelTextbox = screen.getByRole('textbox', { name: /model/i });
 
     await userEvent.clear(nameTextbox);
     await userEvent.clear(uriTextbox);
@@ -197,14 +151,13 @@ describe('NewEndpointForm', () => {
     await userEvent.type(uriTextbox, 'mockuri');
     await userEvent.type(connectorSelect, mockConnectors[0]);
     await userEvent.type(connectorSelect, '{enter}');
+    await userEvent.type(modelTextbox, 'mock-model');
     await userEvent.click(screen.getByText(/more configs/i));
 
     const mockValidParams = `{
       "timeout": 300,
-      "allow_retries": true,
-      "num_of_retries": 3,
-      "temperature": 0.5,
-      "model": "mock-model"
+      "max_attempts": 3,
+      "temperature": 0.5
     }`;
 
     const otherParamsTextbox = screen.getByRole('textbox', {
@@ -224,16 +177,17 @@ describe('NewEndpointForm', () => {
       max_calls_per_second: '10',
       max_concurrency: '1',
       name: 'mockname',
+      model: 'mock-model',
       params: `{
       \"timeout\": 300,
-      \"allow_retries\": true,
-      \"num_of_retries\": 3,
-      \"temperature\": 0.5,
-      \"model\": \"mock-model\"
+      \"max_attempts\": 3,
+      \"temperature\": 0.5
     }`,
       token: 'mocktoken',
       uri: 'mockuri',
     };
+
+    await userEvent.click(screen.getByRole('button', { name: /save/i }));
     expect(mockCreateModelEndpointError).toHaveBeenCalledWith(expectedPayload);
     expect(screen.getByText(/mock error message/i)).toBeInTheDocument();
   }, 15000);
@@ -252,6 +206,7 @@ describe('NewEndpointForm', () => {
     const connectorSelect = screen.getByRole('combobox');
     const uriTextbox = screen.getByRole('textbox', { name: /uri/i });
     const tokenTextbox = screen.getByRole('textbox', { name: /token/i });
+    const modelTextbox = screen.getByRole('textbox', { name: /model/i });
 
     await userEvent.clear(nameTextbox);
     await userEvent.clear(uriTextbox);
@@ -266,14 +221,13 @@ describe('NewEndpointForm', () => {
     await userEvent.type(uriTextbox, 'mockuri');
     await userEvent.type(connectorSelect, mockConnectors[0]);
     await userEvent.type(connectorSelect, '{enter}');
+    await userEvent.type(modelTextbox, 'mock-model');
     await userEvent.click(screen.getByText(/more configs/i));
 
     const mockValidParams = `{
       "timeout": 300,
-      "allow_retries": true,
-      "num_of_retries": 3,
-      "temperature": 0.5,
-      "model": "mock-model"
+      "max_attempts": 3,
+      "temperature": 0.5
     }`;
 
     const otherParamsTextbox = screen.getByRole('textbox', {
@@ -293,12 +247,11 @@ describe('NewEndpointForm', () => {
       max_calls_per_second: '10',
       max_concurrency: '1',
       name: 'mockname',
+      model: 'mock-model',
       params: `{
       \"timeout\": 300,
-      \"allow_retries\": true,
-      \"num_of_retries\": 3,
-      \"temperature\": 0.5,
-      \"model\": \"mock-model\"
+      \"max_attempts\": 3,
+      \"temperature\": 0.5
     }`,
       token: 'mocktoken',
       uri: 'mockuri',
@@ -324,6 +277,7 @@ describe('NewEndpointForm', () => {
       token: '*****',
       max_calls_per_second: 10,
       max_concurrency: 1,
+      model: 'mock-model',
       created_date: '2024-11-15T00:00:00.000Z',
       params: {
         timeout: 300,
@@ -340,6 +294,7 @@ describe('NewEndpointForm', () => {
       created_date: ___,
       max_calls_per_second,
       max_concurrency,
+      model,
       params,
       ...restOfMockEndpoint
     } = mockEndpoint;
@@ -349,6 +304,7 @@ describe('NewEndpointForm', () => {
       name: `${mockEndpoint.name}-edited`,
       max_calls_per_second: String(max_calls_per_second),
       max_concurrency: String(max_concurrency),
+      model: model,
       params: JSON.stringify(params, null, 2),
     };
 
@@ -414,11 +370,11 @@ describe('NewEndpointForm', () => {
       token: '*****',
       max_calls_per_second: 10,
       max_concurrency: 1,
+      model: 'mock-model',
       created_date: '2024-11-15T00:00:00.000Z',
       params: {
         timeout: 300,
-        allow_retries: true,
-        num_of_retries: 3,
+        max_attempts: 3,
         temperature: 0.5,
         model: 'mock-model',
       },
@@ -430,6 +386,7 @@ describe('NewEndpointForm', () => {
       created_date: ___,
       max_calls_per_second,
       max_concurrency,
+      model,
       params,
       ...restOfMockEndpoint
     } = mockEndpoint;
@@ -441,6 +398,7 @@ describe('NewEndpointForm', () => {
       name: `${mockEndpoint.name}-edited`,
       max_calls_per_second: String(max_calls_per_second),
       max_concurrency: String(max_concurrency),
+      model: model,
       params: JSON.stringify(params, null, 2),
     };
 
@@ -478,11 +436,11 @@ describe('NewEndpointForm', () => {
       token: '',
       max_calls_per_second: 10,
       max_concurrency: 1,
+      model: 'mock-model',
       created_date: '2024-11-15T00:00:00.000Z',
       params: {
         timeout: 300,
-        allow_retries: true,
-        num_of_retries: 3,
+        max_attempts: 3,
         temperature: 0.5,
         model: 'mock-model',
       },
@@ -494,6 +452,7 @@ describe('NewEndpointForm', () => {
       created_date: ___,
       max_calls_per_second,
       max_concurrency,
+      model,
       params,
       ...restOfMockEndpoint
     } = mockEndpoint;
@@ -505,6 +464,7 @@ describe('NewEndpointForm', () => {
       name: mockEndpoint.name,
       max_calls_per_second: String(max_calls_per_second),
       max_concurrency: String(max_concurrency),
+      model: model,
       params: JSON.stringify(params, null, 2),
     };
 
