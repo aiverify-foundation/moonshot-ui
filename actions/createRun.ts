@@ -10,27 +10,15 @@ export async function createRun(
   _: FormState<BenchmarkRunFormValues>,
   formData: FormData
 ) {
-  let runAll = false;
-  try {
-    runAll = formData.get('run_all') === 'true';
-  } catch (error) {
-    return {
-      formStatus: 'error',
-      formErrors: {
-        error: ['Failed to parse run_all'],
-      },
-    };
-  }
-
-  // Dynamically create the schema based on runAll
-  const dynamicRunSchema = z.object({
+  const benchmarkRunSchema = z.object({
     run_name: z.string().min(1, 'Name is required'),
     description: z.string().optional(),
-    num_of_prompts: z.preprocess(
+    prompt_selection_percentage: z.preprocess(
       (val) => Number(val),
-      runAll
-        ? z.number()
-        : z.number().min(1, 'Number of prompts must be at least 1')
+      z
+        .number()
+        .min(0, 'Prompt selection percentage must be at least 0')
+        .max(100, 'Prompt selection percentage must be at most 100')
     ),
     inputs: z.array(z.string()).min(1, 'At least one cookbook is required'),
     endpoints: z.array(z.string()).min(1, 'At least one endpoint is required'),
@@ -42,28 +30,21 @@ export async function createRun(
       .string()
       .min(1, 'Runner processing module is required'),
     system_prompt: z.string(),
-    run_all: z.preprocess((val) => val === 'true', z.boolean()),
   });
 
-  let newRunData: z.infer<typeof dynamicRunSchema>;
+  const result = benchmarkRunSchema.safeParse({
+    run_name: formData.get('run_name'),
+    description: formData.get('description'),
+    prompt_selection_percentage: formData.get('prompt_selection_percentage'),
+    inputs: formData.getAll('inputs'),
+    endpoints: formData.getAll('endpoints'),
+    random_seed: formData.get('random_seed'),
+    runner_processing_module: formData.get('runner_processing_module'),
+    system_prompt: formData.get('system_prompt'),
+  });
 
-  try {
-    newRunData = dynamicRunSchema.parse({
-      run_name: formData.get('run_name'),
-      description: formData.get('description'),
-      num_of_prompts: formData.get('num_of_prompts'),
-      inputs: formData.getAll('inputs'),
-      endpoints: formData.getAll('endpoints'),
-      random_seed: formData.get('random_seed'),
-      runner_processing_module: formData.get('runner_processing_module'),
-      system_prompt: formData.get('system_prompt'),
-    });
-  } catch (error) {
-    return formatZodSchemaErrors(error as ZodError);
-  }
-
-  if (runAll) {
-    newRunData.num_of_prompts = 0;
+  if (!result.success) {
+    return formatZodSchemaErrors(result.error as ZodError);
   }
 
   const response = await fetch(
@@ -73,7 +54,7 @@ export async function createRun(
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newRunData),
+      body: JSON.stringify(result.data),
     }
   );
 

@@ -165,13 +165,12 @@ type AttackModule = {
 type BenchmarkRunFormValues = {
   run_name: string;
   description: string;
-  num_of_prompts: string;
+  prompt_selection_percentage: string;
   system_prompt: string;
   runner_processing_module: 'benchmarking';
   inputs: string[];
   endpoints: string[];
   random_seed: string;
-  run_all: string;
 };
 
 type RedteamRunFormValues = {
