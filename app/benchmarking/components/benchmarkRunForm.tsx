@@ -22,11 +22,10 @@ const initialFormValues: FormState<BenchmarkRunFormValues> = {
   description: '',
   inputs: [],
   endpoints: [],
-  num_of_prompts: '',
+  prompt_selection_percentage: '1',
   system_prompt: '',
   runner_processing_module: 'benchmarking',
   random_seed: '0',
-  run_all: 'false',
 };
 
 type BenchmarkRunFormProps = {
@@ -77,7 +76,7 @@ function BenchmarkRunForm({
       );
     }, [recipesStats, percentageOfPrompts]);
 
-  const roundedUserInputNumOfPromptsGrandTotal = Math.round(
+  const roundedUserInputNumOfPromptsGrandTotal = Math.floor(
     userInputNumOfPromptsGrandTotal
   );
 
@@ -189,12 +188,6 @@ function BenchmarkRunForm({
               name="system_prompt"
               defaultValue={initialFormValues.system_prompt}
             />
-            <input
-              readOnly
-              type="hidden"
-              name="num_of_prompts"
-              defaultValue={roundedUserInputNumOfPromptsGrandTotal}
-            />
             <TextInput
               id="run_name"
               name="run_name"
@@ -265,6 +258,10 @@ function BenchmarkRunForm({
                       <Slider.Value />
                     </div>
                   </Slider.Handle>
+                  <Slider.Input
+                    name="prompt_selection_percentage"
+                    style={{ display: 'none' }}
+                  />
                 </Slider>
                 <p
                   className={`text-white text-[0.9rem] mb-[10px]

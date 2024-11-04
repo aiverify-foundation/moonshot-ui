@@ -14,6 +14,7 @@ type SliderContextType = {
   progressTrackClassName?: string;
   handleClassName?: string;
   valueSuffix?: string;
+  setValue: React.Dispatch<React.SetStateAction<number>>;
   onChange: (value: number) => void;
 };
 

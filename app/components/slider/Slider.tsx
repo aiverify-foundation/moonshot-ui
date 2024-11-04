@@ -3,6 +3,7 @@ import React, { useState, useCallback } from 'react';
 import { SlideLabel } from './SlideLabel';
 import { SliderProvider } from './SliderContext';
 import { SliderHandle } from './SliderHandle';
+import { SliderInput } from './SliderInput';
 import { SliderProgressTrack } from './SliderProgressTrack';
 import { SliderTrack } from './SliderTrack';
 import { SliderValue } from './SliderValue';
@@ -79,6 +80,7 @@ export function Slider(props: SliderProps) {
         progressTrackClassName,
         handleClassName,
         valueSuffix,
+        setValue,
         onChange: handleChange,
       }}>
       <div
@@ -93,5 +95,6 @@ export function Slider(props: SliderProps) {
 Slider.Track = SliderTrack;
 Slider.Handle = SliderHandle;
 Slider.Value = SliderValue;
+Slider.Input = SliderInput;
 Slider.Label = SlideLabel;
 Slider.ProgressTrack = SliderProgressTrack;
