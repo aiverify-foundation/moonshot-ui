@@ -168,7 +168,7 @@ function RecipesViewList({
                       <h4 className="text-[1rem] font-semibold">
                         {recipe.name}
                       </h4>
-                      {recipe.endpoint_required?.length && (
+                      {recipe.required_config?.endpoints?.length && (
                         <Tooltip
                           position={TooltipPosition.right}
                           offsetLeft={10}
@@ -178,9 +178,11 @@ function RecipesViewList({
                                 Requires
                               </h3>
                               <ul className="text-gray-700">
-                                {recipe.endpoint_required.map((endpoint) => (
-                                  <li key={endpoint}>{endpoint}</li>
-                                ))}
+                                {recipe.required_config.endpoints.map(
+                                  (endpoint) => (
+                                    <li key={endpoint}>{endpoint}</li>
+                                  )
+                                )}
                               </ul>
                             </div>
                           }>
@@ -218,7 +220,7 @@ function RecipesViewList({
               <h3 className="text-[1.2rem] font-semibold">
                 {selectedRecipe.name}
               </h3>
-              {selectedRecipe.endpoint_required?.length && (
+              {selectedRecipe.required_config?.endpoints?.length && (
                 <Tooltip
                   position={TooltipPosition.bottom}
                   offsetTop={14}
@@ -226,9 +228,11 @@ function RecipesViewList({
                     <div className="p-1 pt-0">
                       <h3 className="text-black font-bold mb-2">Requires</h3>
                       <ul className="text-gray-700">
-                        {selectedRecipe.endpoint_required.map((endpoint) => (
-                          <li key={endpoint}>{endpoint}</li>
-                        ))}
+                        {selectedRecipe.required_config.endpoints.map(
+                          (endpoint) => (
+                            <li key={endpoint}>{endpoint}</li>
+                          )
+                        )}
                       </ul>
                     </div>
                   }>
@@ -290,11 +294,15 @@ function RecipesViewList({
                     );
                   })}
             </p>
-            <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">Number of Prompts</h4>
+            <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">
+              Number of Prompts
+            </h4>
             <p className="text-[0.95rem] mb-4 text-moongray-300">
               {selectedRecipe.total_prompt_in_recipe}
             </p>
-            <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">Number of Datasets</h4>
+            <h4 className="text-[1.15rem] font-semibold mt-10 mb-2">
+              Number of Datasets
+            </h4>
             <p className="text-[0.95rem] mb-4 text-moongray-300">
               {selectedRecipe.stats.num_of_datasets}
             </p>

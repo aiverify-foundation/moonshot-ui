@@ -51,8 +51,8 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
   function handleNextIconClick() {
     if (flowState.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
       const requiredEndpoints = selectedCookbooks.reduce((acc, cookbook) => {
-        if (cookbook.endpoint_required && cookbook.endpoint_required.length) {
-          acc = [...acc, ...cookbook.endpoint_required];
+        if (cookbook.required_config?.endpoints?.length) {
+          acc = [...acc, ...cookbook.required_config.endpoints];
         }
         return acc;
       }, [] as string[]);

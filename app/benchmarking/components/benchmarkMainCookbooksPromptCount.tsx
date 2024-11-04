@@ -20,8 +20,8 @@ function BenchmarkMainCookbooksPromptCount({
     config.estimatedPromptResponseTime
   );
   const requiredEndpoints = selectedCookbooks.reduce((acc, cookbook) => {
-    if (cookbook.endpoint_required && cookbook.endpoint_required.length) {
-      return [...acc, ...cookbook.endpoint_required];
+    if (cookbook.required_config?.endpoints?.length) {
+      return [...acc, ...cookbook.required_config.endpoints];
     }
     return acc;
   }, [] as string[]);

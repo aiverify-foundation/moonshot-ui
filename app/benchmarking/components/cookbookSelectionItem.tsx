@@ -15,7 +15,7 @@ type CookbookSelectionItemProps = {
 function CookbookSelectionItem(props: CookbookSelectionItemProps) {
   const { cookbook, selected, onSelect, onAboutClick } = props;
   const [isSelected, setIsSelected] = useState(selected);
-  const requiredEndpoints = cookbook.endpoint_required;
+  const requiredEndpoints = cookbook.required_config;
   function handleClick(
     e: React.MouseEvent | React.ChangeEvent<HTMLInputElement>
   ) {
@@ -56,27 +56,28 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
           ) : (
             <h3 className="font-bold ">{cookbook.name}</h3>
           )}
-          {requiredEndpoints && requiredEndpoints.length > 0 && (
-            <Tooltip
-              position={TooltipPosition.right}
-              offsetLeft={10}
-              content={
-                <div className="p-1 pt-0">
-                  <h3 className="text-black font-bold mb-2">Requires</h3>
-                  <ul className="text-gray-700">
-                    {requiredEndpoints.map((endpoint) => (
-                      <li key={endpoint}>{endpoint}</li>
-                    ))}
-                  </ul>
-                </div>
-              }>
-              <Icon
-                size={22}
-                name={IconName.SolidBox}
-                color={colors.moonpurplelight}
-              />
-            </Tooltip>
-          )}
+          {requiredEndpoints?.endpoints &&
+            requiredEndpoints.endpoints?.length > 0 && (
+              <Tooltip
+                position={TooltipPosition.right}
+                offsetLeft={10}
+                content={
+                  <div className="p-1 pt-0">
+                    <h3 className="text-black font-bold mb-2">Requires</h3>
+                    <ul className="text-gray-700">
+                      {requiredEndpoints.endpoints.map((endpoint) => (
+                        <li key={endpoint}>{endpoint}</li>
+                      ))}
+                    </ul>
+                  </div>
+                }>
+                <Icon
+                  size={22}
+                  name={IconName.SolidBox}
+                  color={colors.moonpurplelight}
+                />
+              </Tooltip>
+            )}
         </div>
         <input
           readOnly

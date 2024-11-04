@@ -47,7 +47,10 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-1'],
     total_prompt_in_cookbook: 10,
     total_dataset_in_cookbook: 1,
-    endpoint_required: ['endpoint-1', 'endpoint-2'],
+    required_config: {
+      configurations: {},
+      endpoints: ['endpoint-1', 'endpoint-2'],
+    },
   },
   {
     id: 'cb-id-2',
@@ -56,7 +59,7 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
     total_dataset_in_cookbook: 2,
-    endpoint_required: null,
+    required_config: null,
   },
   {
     id: 'cb-id-3',
@@ -65,7 +68,7 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-3'],
     total_prompt_in_cookbook: 30,
     total_dataset_in_cookbook: 30,
-    endpoint_required: null,
+    required_config: null,
   },
 ];
 
@@ -156,8 +159,8 @@ describe('CookbooksSelection', () => {
       updateBenchmarkCookbooks([mockCookbooks[0], mockCookbooks[2]])
     );
     mockCookbooks.forEach((cookbook) => {
-      if (cookbook.endpoint_required && cookbook.endpoint_required.length) {
-        cookbook.endpoint_required.forEach((endpoint) => {
+      if (cookbook.required_config?.endpoints?.length) {
+        cookbook.required_config.endpoints.forEach((endpoint) => {
           expect(screen.getByText(endpoint)).toBeInTheDocument();
         });
       }
