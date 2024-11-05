@@ -330,7 +330,7 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
             style="color: rgb(255, 255, 255);"
           >
             <li
-              class="mb-1 w-[500px]"
+              class="mb-1 w-[500px] overflow-hidden overflow-ellipsis"
             >
               <span
                 class="mr-3"
@@ -349,7 +349,7 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
               </span>
             </li>
             <li
-              class="mb-1 w-[500px]"
+              class="mb-1 w-[500px] overflow-hidden overflow-ellipsis"
             >
               <span
                 class="mr-3"
@@ -1349,7 +1349,7 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
               </svg>
             </div>
             <h3
-              class="font-semibold text-white text-[1.2rem]"
+              class="font-semibold text-white text-[1.2rem] max-w-[700px] overflow-hidden overflow-ellipsis mr-4"
             >
               Mock Standard Cookbook Description
             </h3>
@@ -1640,7 +1640,7 @@ exports[`renders report containing standard cookbook results and MLCommons AISaf
               </svg>
             </div>
             <h3
-              class="font-semibold text-white text-[1.2rem]"
+              class="font-semibold text-white text-[1.2rem] max-w-[700px] overflow-hidden overflow-ellipsis mr-4"
             >
               MLCommons AI Safety Benchmarks v0.5 for General Chat Models
             </h3>
