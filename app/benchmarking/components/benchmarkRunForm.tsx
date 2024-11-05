@@ -50,23 +50,46 @@ function BenchmarkRunForm({
   >(createRun, initialFormValues);
 
   const decimalFraction = percentageOfPrompts / 100;
+  const calcPercentageAtEachDataset = true; // if true, percentage is applied to each dataset instead of applying to total prompts from all datasets
   const [numOfPromptsGrandTotal, userInputNumOfPromptsGrandTotal] =
     React.useMemo(() => {
       return recipesStats.reduce(
         (acc, stats) => {
+          let percentageCalculatedTotalPrompts = 0;
           const totalPromptsFromAllDatasets = Object.values(
             stats.num_of_datasets_prompts
-          ).reduce((sum, value) => sum + value, 0);
+          ).reduce((sum, value) => {
+            if (calcPercentageAtEachDataset) {
+              percentageCalculatedTotalPrompts += Math.floor(
+                value * decimalFraction
+              );
+            }
+            return sum + value;
+          }, 0);
           const grandTotalPromptsToRun =
             stats.num_of_prompt_templates > 0
               ? totalPromptsFromAllDatasets * stats.num_of_prompt_templates
               : totalPromptsFromAllDatasets;
-          const userInputTotalPromptsToRun =
-            stats.num_of_prompt_templates > 0
-              ? decimalFraction *
-                totalPromptsFromAllDatasets *
-                stats.num_of_prompt_templates
-              : decimalFraction * totalPromptsFromAllDatasets;
+          let userInputTotalPromptsToRun = 0;
+          if (stats.num_of_prompt_templates > 0) {
+            if (calcPercentageAtEachDataset) {
+              userInputTotalPromptsToRun =
+                percentageCalculatedTotalPrompts *
+                stats.num_of_prompt_templates;
+            } else {
+              userInputTotalPromptsToRun =
+                decimalFraction *
+                grandTotalPromptsToRun *
+                stats.num_of_prompt_templates;
+            }
+          } else {
+            if (calcPercentageAtEachDataset) {
+              userInputTotalPromptsToRun = percentageCalculatedTotalPrompts;
+            } else {
+              userInputTotalPromptsToRun =
+                decimalFraction * grandTotalPromptsToRun;
+            }
+          }
           return [
             acc[0] + grandTotalPromptsToRun,
             acc[1] + userInputTotalPromptsToRun,
