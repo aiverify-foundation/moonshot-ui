@@ -16,11 +16,11 @@ export function RequiredEndpoints(props: RequiredEndpointsProps) {
           size={24}
         />
         <h3 className="text-[1rem] font-medium tracking-wide justify-center text-moonpurplelight">
-          Requires the following endpoints
+          This benchmark requires the following LLM-as-a-judge:
         </h3>
       </div>
       <figcaption className="mt-4">
-        <ul className="text-white max-h-[100px] overflow-y-auto custom-scrollbar">
+        <ul className="text-white max-h-[100px] overflow-y-auto custom-scrollbar list-disc pl-4">
           {requiredEndpoints.map((endpoint) => (
             <li
               key={endpoint}
@@ -29,6 +29,9 @@ export function RequiredEndpoints(props: RequiredEndpointsProps) {
             </li>
           ))}
         </ul>
+        <p className="text-moonpurplelight mt-4">
+          Please input the token for the endpoint(s) before running.
+        </p>
       </figcaption>
     </figure>
   );

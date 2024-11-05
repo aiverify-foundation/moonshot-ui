@@ -102,18 +102,24 @@ function CookbooksViewList({
               <div className="flex gap-2 mb-2 items-start">
                 <Icon name={IconName.Book} />
                 <h4 className="text-[1rem] font-semibold">{cookbook.name}</h4>
-                {requiredEndpoints.length && (
+                {requiredEndpoints.length > 0 && (
                   <Tooltip
                     position={TooltipPosition.right}
                     offsetLeft={10}
                     content={
                       <div className="p-1 pt-0">
-                        <h3 className="text-black font-bold mb-2">Requires</h3>
-                        <ul className="text-gray-700">
+                        <h3 className="text-black font-bold mb-2">
+                          This benchmark requires the following LLM-as-a-judge:
+                        </h3>
+                        <ul className="text-moonpurple list-disc pl-4">
                           {requiredEndpoints.map((endpoint) => (
                             <li key={endpoint}>{endpoint}</li>
                           ))}
                         </ul>
+                        <p className="text-black mt-2">
+                          Please input the token for the endpoint(s) before
+                          running.
+                        </p>
                       </div>
                     }>
                     <Icon
@@ -195,27 +201,30 @@ function CookbooksViewList({
               <h3 className="text-[1.2rem] font-semibold">
                 {selectedCookbook.name}
               </h3>
-              {selectedCookbookRequiredEndpoints.length && (
+              {selectedCookbookRequiredEndpoints.length > 0 && (
                 <Tooltip
                   position={TooltipPosition.bottom}
-                  offsetTop={14}
+                  offsetLeft={10}
                   content={
                     <div className="p-1 pt-0">
-                      <h3 className="text-black font-bold mb-2">Requires</h3>
-                      <ul className="text-gray-700">
+                      <h3 className="text-black font-bold mb-2">
+                        This benchmark requires the following LLM-as-a-judge:
+                      </h3>
+                      <ul className="text-moonpurple list-disc pl-4">
                         {selectedCookbookRequiredEndpoints.map((endpoint) => (
                           <li key={endpoint}>{endpoint}</li>
                         ))}
                       </ul>
+                      <p className="text-black mt-2">
+                        Please input the token for the endpoint(s) before
+                        running.
+                      </p>
                     </div>
                   }>
                   <Icon
                     size={22}
                     name={IconName.SolidBox}
                     color={colors.moonpurplelight}
-                    style={{
-                      marginTop: 2,
-                    }}
                   />
                 </Tooltip>
               )}
