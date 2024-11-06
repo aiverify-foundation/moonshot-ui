@@ -77,7 +77,7 @@ function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
                     </h4>
                   </div>
                   <p
-                    className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis text-moongray-400"
+                    className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis text-moongray-400 break-all break-words"
                     style={ellipsisStyle}>
                     {session.description}
                   </p>
