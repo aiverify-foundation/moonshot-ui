@@ -103,6 +103,8 @@ function BenchmarkRunForm({
     userInputNumOfPromptsGrandTotal
   );
 
+  const prevPercentageValue = React.useRef(percentageOfPrompts);
+
   React.useEffect(() => {
     if (formState.formStatus === 'error') {
       setShowErrorModal(true);
@@ -128,17 +130,25 @@ function BenchmarkRunForm({
     });
   }, [selectedCookbooks]);
 
-  function handleSliderValueChange(value: number) {
+  function handleSliderMouseUp(value: number) {
+    console.log(value);
+    if (value === 100) return;
+    prevPercentageValue.current = value;
+  }
+
+  const handleSliderValueChange = (value: number) => {
     setPercentageOfPrompts(value);
     if (value === 100) {
       setIsRunAll(true);
     } else {
       setIsRunAll(false);
     }
-  }
+  };
 
   const handleRunAllChange = React.useCallback((isChecked: boolean) => {
-    setPercentageOfPrompts(isChecked ? 100 : percentageOfPrompts);
+    const prevValue =
+      prevPercentageValue.current !== 100 ? prevPercentageValue.current : 1;
+    setPercentageOfPrompts(isChecked ? 100 : prevValue);
     setIsRunAll(isChecked);
   }, []);
 
@@ -270,10 +280,11 @@ function BenchmarkRunForm({
                 <Slider
                   min={1}
                   max={100}
-                  initialValue={isRunAll ? 100 : undefined}
+                  initialValue={isRunAll ? 100 : percentageOfPrompts}
                   className="mt-[45px] mb-[10px]"
                   valueSuffix="%"
-                  onChange={handleSliderValueChange}>
+                  onChange={handleSliderValueChange}
+                  onMouseUp={handleSliderMouseUp}>
                   <Slider.Track />
                   <Slider.ProgressTrack />
                   <Slider.Handle>
@@ -311,7 +322,6 @@ function BenchmarkRunForm({
                   onChange={handleRunAllChange}
                   value={isRunAll ? 'true' : undefined}
                   defaultChecked={percentageOfPrompts === 100}
-                  disabled={percentageOfPrompts === 100}
                 />
               </div>
             </div>

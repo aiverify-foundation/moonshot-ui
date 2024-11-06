@@ -3,7 +3,8 @@ import { useSliderContext } from './SliderContext';
 import styles from './styles/Slider.module.css';
 
 export function SliderHandle({ children }: { children?: React.ReactNode }) {
-  const { min, max, step, value, onChange, handleColor } = useSliderContext();
+  const { min, max, step, value, onChange, handleColor, onMouseUp } =
+    useSliderContext();
   const handleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -15,7 +16,7 @@ export function SliderHandle({ children }: { children?: React.ReactNode }) {
       const startX = event.clientX;
       const startValue = value;
 
-      const onMouseMove = (moveEvent: MouseEvent) => {
+      const handleMouseMove = (moveEvent: MouseEvent) => {
         if (!handle.parentElement) return;
         const dx = moveEvent.clientX - startX;
         const range = max - min;
@@ -25,13 +26,22 @@ export function SliderHandle({ children }: { children?: React.ReactNode }) {
         onChange(Math.min(max, Math.max(min, steppedValue)));
       };
 
-      const onMouseUp = () => {
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
+      const handleMouseUp = (moveEvent: MouseEvent) => {
+        if (onMouseUp) {
+          if (!handle.parentElement) return;
+          const dx = moveEvent.clientX - startX;
+          const range = max - min;
+          const newValue =
+            startValue + (dx / handle.parentElement.clientWidth) * range;
+          const steppedValue = Math.round((newValue - min) / step) * step + min;
+          onMouseUp(Math.min(max, Math.max(min, steppedValue)));
+        }
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
       };
 
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
     };
 
     handle.addEventListener('mousedown', onMouseDown);

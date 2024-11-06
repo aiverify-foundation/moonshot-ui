@@ -16,6 +16,7 @@ type SliderContextType = {
   valueSuffix?: string;
   setValue: React.Dispatch<React.SetStateAction<number>>;
   onChange: (value: number) => void;
+  onMouseUp?: (value: number) => void;
 };
 
 const SliderContext = createContext<SliderContextType | undefined>(undefined);

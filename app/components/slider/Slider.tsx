@@ -26,6 +26,7 @@ export interface SliderProps {
   handleClassName?: string;
   valueSuffix?: string;
   onChange?: (value: number) => void;
+  onMouseUp?: (value: number) => void;
 }
 
 export function Slider(props: SliderProps) {
@@ -46,6 +47,7 @@ export function Slider(props: SliderProps) {
     handleClassName,
     valueSuffix,
     onChange,
+    onMouseUp,
   } = props;
   const [value, setValue] = useState(initialValue);
   const handleChange = useCallback(
@@ -57,7 +59,7 @@ export function Slider(props: SliderProps) {
   );
 
   React.useEffect(() => {
-    if (initialValue !== undefined && initialValue !== min) {
+    if (initialValue !== undefined) {
       setValue(initialValue);
     }
   }, [initialValue, min]);
@@ -82,6 +84,7 @@ export function Slider(props: SliderProps) {
         valueSuffix,
         setValue,
         onChange: handleChange,
+        onMouseUp: onMouseUp,
       }}>
       <div
         className={classNames}
