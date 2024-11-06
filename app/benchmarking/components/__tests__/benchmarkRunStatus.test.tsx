@@ -1,17 +1,21 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useSearchParams } from 'next/navigation';
-import { act } from 'react-dom/test-utils';
+import { act } from 'react';
+import { getRecipesStatsById } from '@/actions/getRecipesStatsById';
 import { BenchmarkRunStatus } from '@/app/benchmarking/components/benchmarkRunStatus';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { useCancelBenchmarkMutation } from '@/app/services/benchmark-api-service';
 import { useGetAllStatusQuery } from '@/app/services/status-api-service';
+
 import { TestStatusProgress } from '@/app/types/enums';
 import {
   resetBenchmarkCookbooks,
   resetBenchmarkModels,
   useAppDispatch,
 } from '@/lib/redux';
+
+jest.mock('@/actions/getRecipesStatsById');
 
 jest.mock('@/lib/redux', () => ({
   resetBenchmarkCookbooks: jest.fn(),
@@ -50,7 +54,7 @@ const mockTestStatuses: TestStatuses = {
   },
 };
 
-const noOfPrompts = 100;
+const USER_INPUT_PERCENTAGE_OF_PROMPTS = 5;
 const mockRunner: Runner = {
   id: 'runner-id-1',
   name: 'Mock Runner One',
@@ -58,7 +62,7 @@ const mockRunner: Runner = {
   description: 'Mock description for Runner One',
   runner_args: {
     cookbooks: ['cb-id-1', 'cb-id-2'],
-    num_of_prompts: noOfPrompts,
+    prompt_selection_percentage: USER_INPUT_PERCENTAGE_OF_PROMPTS,
     random_seed: 42,
     system_prompt: 'Mock system prompt',
     runner_processing_module: 'benchmarking',
@@ -66,6 +70,58 @@ const mockRunner: Runner = {
   },
   start_time: 1672531200,
 };
+
+const mockRecipesStats: RecipeStats[] = [
+  {
+    num_of_datasets_prompts: {
+      dataset1: 100,
+      dataset2: 200,
+    },
+    num_of_tags: 3,
+    num_of_datasets: 2,
+    num_of_prompt_templates: 0,
+    num_of_metrics: 2,
+    num_of_attack_modules: 1,
+  },
+  {
+    num_of_datasets_prompts: {
+      dataset1: 300,
+      dataset2: 400,
+      dataset3: 500,
+    },
+    num_of_tags: 5,
+    num_of_datasets: 3,
+    num_of_prompt_templates: 2,
+    num_of_metrics: 3,
+    num_of_attack_modules: 2,
+  },
+];
+
+const DECIMAL_FRACTION_OF_PROMPTS = USER_INPUT_PERCENTAGE_OF_PROMPTS / 100;
+const SMALLER_SET_TOTAL_PROMPTS =
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[0].num_of_datasets_prompts.dataset1 //mockRecipesStats[0] has 0 prompt templates
+  ) +
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[0].num_of_datasets_prompts.dataset2 //mockRecipesStats[0] has 0 prompt templates
+  ) +
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset1
+  ) *
+    mockRecipesStats[1].num_of_prompt_templates +
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset2
+  ) *
+    mockRecipesStats[1].num_of_prompt_templates +
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset3
+  ) *
+    mockRecipesStats[1].num_of_prompt_templates;
 
 const mockCookbooks = [
   {
@@ -142,6 +198,11 @@ jest.mock('@/app/services/status-api-service', () => ({
   useGetAllStatusQuery: jest.fn(),
 }));
 
+(getRecipesStatsById as jest.Mock).mockResolvedValue({
+  status: 'success',
+  data: mockRecipesStats,
+});
+
 it('should display the "in progress" status and test details', async () => {
   const mockCloseEventSource = jest.fn();
   (useEventSource as jest.Mock).mockReturnValue([null, mockCloseEventSource]);
@@ -181,7 +242,7 @@ it('should display the "in progress" status and test details', async () => {
   await userEvent.click(screen.getByText(/see details/i));
   expect(screen.getByText(mockRunner.name)).toBeInTheDocument();
   expect(
-    screen.getByText(new RegExp(`${noOfPrompts}`, 'i'))
+    screen.getByText(new RegExp(`${SMALLER_SET_TOTAL_PROMPTS}`, 'i'))
   ).toBeInTheDocument();
   for (const endpoint of mockRunner.endpoints) {
     expect(
@@ -202,16 +263,16 @@ it('should display the "in progress" status and test details', async () => {
   expect(mockCloseEventSource).toHaveBeenCalled();
 });
 
-  const mockDispatch = jest.fn();
-  (useAppDispatch as jest.Mock).mockImplementation(() => mockDispatch);
-  const mockResetBenchmarkCookbooks = jest.fn();
-  const mockResetBenchmarkModels = jest.fn();
-  (resetBenchmarkCookbooks as unknown as jest.Mock).mockImplementation(
-    mockResetBenchmarkCookbooks
-  );
-  (resetBenchmarkModels as unknown as jest.Mock).mockImplementation(
-    mockResetBenchmarkModels
-  );
+const mockDispatch = jest.fn();
+(useAppDispatch as jest.Mock).mockImplementation(() => mockDispatch);
+const mockResetBenchmarkCookbooks = jest.fn();
+const mockResetBenchmarkModels = jest.fn();
+(resetBenchmarkCookbooks as unknown as jest.Mock).mockImplementation(
+  mockResetBenchmarkCookbooks
+);
+(resetBenchmarkModels as unknown as jest.Mock).mockImplementation(
+  mockResetBenchmarkModels
+);
 
 it('should display the "completed" status', async () => {
   const completedTestData = {

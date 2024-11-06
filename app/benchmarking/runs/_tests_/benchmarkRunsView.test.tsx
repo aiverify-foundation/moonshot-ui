@@ -46,7 +46,7 @@ const mockRunners: Runner[] = [
     description: 'Description for Runner 1',
     runner_args: {
       cookbooks: ['cookbook1', 'cookbook2'],
-      num_of_prompts: 10,
+      prompt_selection_percentage: 10,
       random_seed: 123,
       system_prompt: 'System prompt for Runner 1',
       runner_processing_module: 'benchmarking',
@@ -61,7 +61,7 @@ const mockRunners: Runner[] = [
     description: 'Description for Runner 2',
     runner_args: {
       cookbooks: ['cookbook3', 'cookbook4'],
-      num_of_prompts: 20,
+      prompt_selection_percentage: 20,
       random_seed: 456,
       system_prompt: 'System prompt for Runner 2',
       runner_processing_module: 'benchmarking',

@@ -143,11 +143,11 @@ function BenchmarkRunsView({
             </p>
 
             <h4 className="text-[1.15rem] font-semibold mt-10 mb-1">
-              Prompts sent per Endpoint
+              Percentage of Prompts sent
             </h4>
             <p className="text-[0.95rem] text-moongray-300">
               {selectedRunner.runner_args &&
-                selectedRunner.runner_args.num_of_prompts}
+                selectedRunner.runner_args.prompt_selection_percentage}
             </p>
 
             {selectedRunner.start_time && (

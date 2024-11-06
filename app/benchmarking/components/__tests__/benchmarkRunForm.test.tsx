@@ -1,4 +1,4 @@
-import { render, screen, act, fireEvent } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useFormState, useFormStatus } from 'react-dom';
 import { getRecipesStatsById } from '@/actions/getRecipesStatsById';
@@ -65,11 +65,57 @@ const totalPromptForStat1 =
 const GRAND_TOTAL_PROMPTS = totalPromptsForStat0 + totalPromptForStat1;
 
 const USER_INPUT_PERCENTAGE_OF_PROMPTS = 5;
-
+const DECIMAL_FRACTION_OF_PROMPTS = USER_INPUT_PERCENTAGE_OF_PROMPTS / 100;
 const SMALLER_SET_TOTAL_PROMPTS =
-  (USER_INPUT_PERCENTAGE_OF_PROMPTS / 100) * GRAND_TOTAL_PROMPTS;
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[0].num_of_datasets_prompts.dataset1 //mockRecipesStats[0] has 0 prompt templates
+  ) +
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[0].num_of_datasets_prompts.dataset2 //mockRecipesStats[0] has 0 prompt templates
+  ) +
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset1
+  ) *
+    mockRecipesStats[1].num_of_prompt_templates +
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset2
+  ) *
+    mockRecipesStats[1].num_of_prompt_templates +
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset3
+  ) *
+    mockRecipesStats[1].num_of_prompt_templates;
 
-const ONE_PERCENT_TOTAL_PROMPTS = (1 / 100) * GRAND_TOTAL_PROMPTS;
+const ONE_PERCENT_DECIMAL_FRACTION = 1 / 100;
+const ONE_PERCENT_TOTAL_PROMPTS =
+  Math.floor(
+    ONE_PERCENT_DECIMAL_FRACTION *
+      mockRecipesStats[0].num_of_datasets_prompts.dataset1 //mockRecipesStats[0] has 0 prompt templates
+  ) +
+  Math.floor(
+    ONE_PERCENT_DECIMAL_FRACTION *
+      mockRecipesStats[0].num_of_datasets_prompts.dataset2
+  ) +
+  Math.floor(
+    ONE_PERCENT_DECIMAL_FRACTION *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset1
+  ) *
+    mockRecipesStats[1].num_of_prompt_templates +
+  Math.floor(
+    ONE_PERCENT_DECIMAL_FRACTION *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset2
+  ) *
+    mockRecipesStats[1].num_of_prompt_templates +
+  Math.floor(
+    ONE_PERCENT_DECIMAL_FRACTION *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset3
+  ) *
+    mockRecipesStats[1].num_of_prompt_templates;
 
 const mockCookbooks: Cookbook[] = [
   {

@@ -311,15 +311,7 @@ type RunnerHeading = {
 
 type CookbooksRunnerArgs = {
   cookbooks: string[];
-  num_of_prompts: number;
-  random_seed: number;
-  system_prompt: string;
-  runner_processing_module: string;
-  result_processing_module: string;
-};
-type RecipesRunnerArgs = {
-  recipes: string[];
-  num_of_prompts: number;
+  prompt_selection_percentage: number;
   random_seed: number;
   system_prompt: string;
   runner_processing_module: string;
@@ -333,7 +325,7 @@ type Runner = {
   name: string;
   endpoints: string[];
   description: string;
-  runner_args?: CookbooksRunnerArgs | RecipesRunnerArgs;
+  runner_args?: CookbooksRunnerArgs;
   start_time?: number;
 };
 
