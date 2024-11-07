@@ -615,7 +615,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     ) : null;
 
   return (
-    <>
+    <div className="h-[100vh] w-[100vw] p-2">
       {alertMessage && (
         <Modal
           heading={alertMessage.heading}
@@ -703,12 +703,10 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
       <PopupSurface
         onCloseIconClick={() => setShowCloseSessionConfirmation(true)}
-        height="calc(100vh - 30px)"
         style={{
+          height: '100%',
           backgroundColor: colors.moongray[800],
-          width: 'calc(100vw - 30px)',
           border: 'none',
-          margin: '0 auto',
         }}>
         <header className="flex relative justify-between pt-4">
           <hgroup className="flex flex-col left-6 pl-5">
@@ -826,7 +824,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
           </div>
         </>
       ) : null}
-    </>
+    </div>
   );
 }
 
