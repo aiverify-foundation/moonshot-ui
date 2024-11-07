@@ -13,7 +13,7 @@ function MicroLayout({
   minWidth = MIN_WIDTH,
 }: MicroLayoutProps) {
   return (
-    <div className="flex p-11 h-[800px] justify-center items-start">
+    <div className="flex p-11 h-full justify-center items-start">
       <div
         className="flex flex-nowrap basis-[70%] h-full justify-between relative gap-[0.5%]"
         style={{ maxWidth, minWidth }}>

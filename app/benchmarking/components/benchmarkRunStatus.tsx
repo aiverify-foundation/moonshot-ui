@@ -270,7 +270,6 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
       <MainSectionSurface
         onCloseIconClick={() => router.push('/benchmarking')}
         height="100%"
-        minHeight={750}
         bgColor={colors.moongray['950']}>
         <div className="flex flex-col items-center h-full gap-4">
           {showRunDetails && runnerData ? (

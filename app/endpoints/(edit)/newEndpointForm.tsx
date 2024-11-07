@@ -534,7 +534,6 @@ function NewEndpointForm(props: NewEndpointFormProps) {
       <MainSectionSurface
         closeLinkUrl="/endpoints"
         height="100%"
-        minHeight={750}
         bgColor={colors.moongray['950']}>
         {createModelEndpointIsLoding || updateModelEndpointIsLoding ? (
           <div className="relative w-full h-full">

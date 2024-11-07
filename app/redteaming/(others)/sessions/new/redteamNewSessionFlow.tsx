@@ -222,7 +222,6 @@ function RedteamNewSessionFlow() {
       <MainSectionSurface
         onCloseIconClick={handleOnCloseIconClick}
         height="100%"
-        minHeight={750}
         bgColor={surfaceColor}>
         <div className="flex flex-col items-center h-full">
           <div className="w-[700px] flex shrink-0 justify-center">
