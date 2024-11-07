@@ -4,15 +4,18 @@ type MicroLayoutProps = {
   children: React.ReactNode[];
 };
 
+const MAX_WIDTH = 1440;
+const MIN_WIDTH = 900;
+
 function MicroLayout({
   children,
-  maxWidth = 1440,
-  minWidth = 1024,
+  maxWidth = MAX_WIDTH,
+  minWidth = MIN_WIDTH,
 }: MicroLayoutProps) {
   return (
-    <div className="flex p-11 h-screen justify-center items-start">
+    <div className="flex p-11 h-[800px] justify-center items-start">
       <div
-        className="flex flex-nowrap basis-[70%] max-w-[1440px] min-w-[1024px] h-full justify-between relative gap-[0.5%]"
+        className="flex flex-nowrap basis-[70%] h-full justify-between relative gap-[0.5%]"
         style={{ maxWidth, minWidth }}>
         <div
           id="navContainer"
