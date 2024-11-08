@@ -16,12 +16,15 @@ function CookbookAbout({ cookbook, checked, onSelectChange }: Props) {
   return (
     <section className="flex flex-nowrap gap-5 text-white p-6 bg-moongray-800 h-full rounded-xl">
       <div className="flex-1 flex flex-col gap-5">
-        <div className="flex gap-4 pb-4">
+        <div className="flex gap-4 pb-4 overflow-hidden items-start">
           <Icon
             name={IconName.Book}
             size={25}
+            style={{ marginTop: 5 }}
           />
-          <h3 className="text-[1.4rem] font-bold">{cookbook.name}</h3>
+          <h3 className="text-[1.4rem] font-bold w-[500px] break-words max-h-[500px]">
+            {cookbook.name}
+          </h3>
         </div>
         <div className="flex gap-3">
           <input
@@ -31,7 +34,7 @@ function CookbookAbout({ cookbook, checked, onSelectChange }: Props) {
           />
           <p className="text-[0.9rem]">Run this cookbook</p>
         </div>
-        <p className="text-[0.9rem] text-moongray-200">
+        <p className="text-[0.9rem] text-moongray-200 break-words overflow-hidden max-w-[500px]">
           {cookbook.description}
         </p>
         <div>
