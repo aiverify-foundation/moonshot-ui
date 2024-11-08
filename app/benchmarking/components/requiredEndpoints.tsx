@@ -16,7 +16,7 @@ export function RequiredEndpoints(props: RequiredEndpointsProps) {
           size={24}
         />
         <h3 className="text-[1rem] font-medium tracking-wide justify-center text-moonpurplelight">
-          This benchmark requires the following LLM-as-a-judge:
+          This benchmark requires the following:
         </h3>
       </div>
       <figcaption className="mt-4">

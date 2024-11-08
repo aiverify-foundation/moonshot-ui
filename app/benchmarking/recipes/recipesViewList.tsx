@@ -182,8 +182,7 @@ function RecipesViewList({
                           content={
                             <div className="p-1 pt-0">
                               <h3 className="text-black font-bold mb-2">
-                                This benchmark requires the following
-                                LLM-as-a-judge:
+                                This benchmark requires the following:
                               </h3>
                               <ul className="text-moonpurple list-disc pl-4">
                                 {requiredEndpoints.map((endpoint) => (
@@ -234,7 +233,7 @@ function RecipesViewList({
                   content={
                     <div className="p-1 pt-0">
                       <h3 className="text-black font-bold mb-2">
-                        This benchmark requires the following LLM-as-a-judge:
+                        This benchmark requires the following:
                       </h3>
                       <ul className="text-moonpurple list-disc pl-4">
                         {selectedRecipeRequiredEndpoints.map((endpoint) => (
