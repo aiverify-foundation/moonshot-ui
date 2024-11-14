@@ -182,7 +182,7 @@ const ChatboxSlideLayout = React.forwardRef(
           style={{
             width: 'calc(3 * var(--chatwindow-width) + 2 * var(--gap-width))',
           }}>
-          {/* IMPORTANT - must contain only 1 child which is the carouself of chatboxes */}
+          {/* IMPORTANT - must contain only 1 child which is the carousel of chatboxes */}
           <div
             className="flex w-full h-full gap-x-[50px] transition-transform duration-300 ease-in-out"
             style={{
