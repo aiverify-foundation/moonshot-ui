@@ -99,8 +99,9 @@ function BenchmarkRunForm({
       );
     }, [recipesStats, percentageOfPrompts]);
 
-  const roundedUserInputNumOfPromptsGrandTotal = Math.floor(
-    userInputNumOfPromptsGrandTotal
+  const roundedUserInputNumOfPromptsGrandTotal = Math.max(
+    1,
+    Math.floor(userInputNumOfPromptsGrandTotal)
   );
 
   const prevPercentageValue = React.useRef(percentageOfPrompts);

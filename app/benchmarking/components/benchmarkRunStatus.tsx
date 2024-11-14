@@ -159,6 +159,11 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
     }, 0);
   }, [recipesStats, runnerData]);
 
+  const roundedUserInputNumOfPromptsGrandTotal = Math.max(
+    1,
+    Math.floor(userInputNumOfPromptsGrandTotal as number)
+  );
+
   const endpoints =
     endpointsData &&
     endpointsData.filter(
@@ -366,7 +371,7 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
                       <span className="text-moonwine-400 pr-2">
                         Number of prompts to run:
                       </span>
-                      {userInputNumOfPromptsGrandTotal}
+                      {roundedUserInputNumOfPromptsGrandTotal}
                     </p>
                   </div>
                 </header>
