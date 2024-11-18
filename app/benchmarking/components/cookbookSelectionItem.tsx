@@ -90,7 +90,7 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
         />
       </header>
       <div className="flex flex-wrap gap-2 my-2">
-        {config.cookbookTags[cookbook.id]?.map((tagName) => (
+        {cookbook.tags?.map((tagName) => (
           <Button
             key={tagName}
             mode={ButtonType.OUTLINE}
