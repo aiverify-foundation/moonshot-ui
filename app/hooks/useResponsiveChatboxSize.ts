@@ -5,26 +5,24 @@ export type SlideChatBoxDimensions = {
   width: number;
   height: number;
   gap: number;
+  noOfChatBoxesPerSlide: number;
 };
 
-// IMPORTANT: align the values of --chatwindow-width and --gap-width css variables in global.css
 function calculateChatboxSizes() {
-  console.log('recalculation of chatbox sizes');
   if (window.matchMedia('(min-width: 1195px)').matches) {
-    return { width: 420, height: 500, gap: 50 };
+    return { width: 420, height: 500, gap: 50, noOfChatBoxesPerSlide: 3 };
   }
 
   if (window.matchMedia('(max-width: 1194px)').matches) {
-    return { width: 320, height: 450, gap: 30 };
+    return { width: 320, height: 450, gap: 30, noOfChatBoxesPerSlide: 2 };
   }
 
-  return { width: 420, height: 550, gap: 50 };
+  return { width: 420, height: 550, gap: 50, noOfChatBoxesPerSlide: 3 };
 }
 
 export function useResponsiveChatboxSize(): SlideChatBoxDimensions {
-  const [{ width, height, gap }, setSizes] = useState<SlideChatBoxDimensions>(
-    () => calculateChatboxSizes()
-  );
+  const [{ width, height, gap, noOfChatBoxesPerSlide }, setSizes] =
+    useState<SlideChatBoxDimensions>(() => calculateChatboxSizes());
 
   useEffect(() => {
     const handleResize = debounce(() => {
@@ -35,5 +33,5 @@ export function useResponsiveChatboxSize(): SlideChatBoxDimensions {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  return { width, height, gap };
+  return { width, height, gap, noOfChatBoxesPerSlide };
 }

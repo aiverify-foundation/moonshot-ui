@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { useResponsiveChatboxSize } from '@/app/hooks/useResponsiveChatboxSize';
+import { cn } from '@/app/lib/cn';
 import { getWindowId } from '@/app/lib/window-utils';
 import { ChatBox, ChatBoxControls } from './chatbox';
 
@@ -12,6 +13,7 @@ type ChatSlideLayoutProps = {
   promptTemplates: PromptTemplate[];
   selectedPromptTemplate: PromptTemplate | undefined;
   promptText: string;
+  className?: string;
   handleOnWindowChange: (
     x: number,
     y: number,
@@ -108,11 +110,13 @@ const ChatboxSlideLayout = React.forwardRef(
       promptTemplates,
       selectedPromptTemplate,
       promptText,
+      className,
       handleOnWindowChange,
       handleCreatePromptBookmarkClick,
     } = props;
     const [currentBoxIndex, setCurrentBoxIndex] = useState(0);
-    const { width, height, gap } = useResponsiveChatboxSize();
+    const { width, height, gap, noOfChatBoxesPerSlide } =
+      useResponsiveChatboxSize();
     const [_, setHoveredIndex] = useState<number | null>(null);
     const chatBoxControlsMap = new Map<string, ChatBoxControls>();
     React.useImperativeHandle(ref, () => chatBoxControlsMap);
@@ -160,14 +164,18 @@ const ChatboxSlideLayout = React.forwardRef(
     }
 
     return (
-      <div className="relative w-full h-full gap-6 flex flex-col items-center">
+      <div
+        className={cn(
+          'relative w-full h-full gap-6 flex flex-col items-center',
+          className
+        )}>
         <section className="absolute w-full px-12 top-[45%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
           <SlidesNavBtns />
         </section>
         <main
-          className="flex overflow-hidden h-[500px] transform-gpu"
+          className="flex overflow-hidden h-[500px] ipad11Inch:h-[450px] transform-gpu"
           style={{
-            width: 'calc(3 * var(--chatwindow-width) + 2 * var(--gap-width))',
+            width: `calc(${noOfChatBoxesPerSlide} * ${width}px + ${noOfChatBoxesPerSlide - 1} * ${gap}px)`,
           }}>
           {/* IMPORTANT - must contain only 1 child which is the carousel of chatboxes */}
           <div

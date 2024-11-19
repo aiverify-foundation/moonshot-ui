@@ -9,6 +9,7 @@ import { Modal } from '@/app/components/modal';
 import { PopupSurface } from '@/app/components/popupSurface';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { useEventSource } from '@/app/hooks/use-eventsource';
+import { useIsTabletDevice } from '@/app/hooks/useIsTabletDevice';
 import { toErrorWithMessage } from '@/app/lib/error-utils';
 import { getWindowId, getWindowXYById } from '@/app/lib/window-utils';
 import { Z_Index } from '@/app/redteaming/(fullscreen)/constants';
@@ -73,6 +74,7 @@ const streamPath = '/api/v1/redteaming/status';
 const ctxStrategyNumOfPrevPrompts = 5;
 
 function RedteamSessionChats(props: ActiveSessionProps) {
+  const isTabletDevice = useIsTabletDevice();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const windowsMap = useAppSelector((state) => state.windows.map);
@@ -487,7 +489,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   }
 
   const optionsPanel = (
-    <div className="bg-moongray-600  w-[380px] absolute left-[115%] top-0 rounded-md p-2 shadow-lg">
+    <div className="bg-moongray-600 w-[380px] ipad11Inch:w-[320px] absolute left-[115%] ipad11Inch:left-[100%] top-0 rounded-md p-2 shadow-lg">
       {isChatControlsDisabled && (
         <div
           className="absolute gap-2 bg-moongray-950/50 w-full h-full z-10 flex justify-center items-center rounded-md"
@@ -724,7 +726,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
           <LoadingAnimation />
         ) : (
           <>
-            {layoutSwitch}
+            {!isTabletDevice ? layoutSwitch : null}
             {layoutMode === LayoutMode.SLIDE && promptTemplates && (
               <section className="flex flex-col w-full relative gap-4">
                 <div className="flex h-full">
@@ -740,6 +742,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                     handleCreatePromptBookmarkClick={
                       handleCreatePromptBookmarkClick
                     }
+                    className={isTabletDevice ? 'mt-12' : ''}
                   />
                 </div>
                 <BookmarksPanel
@@ -748,7 +751,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                   bottom={120}
                   defaultShowPanel={defaultShowBookmarksPanel}
                   onPanelClose={() => setDefaultShowBookmarksPanel(false)}
-                  left="20%"
+                  className="left-[20%] ipad11Inch:left-[7%]"
                 />
                 <div className="flex justify-center">
                   <div className="relative">

@@ -254,7 +254,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         id={id}
         ref={windowRef}
         onClick={onWholeWindowClick}
-        className={`absolute pt-0 text-white min-w-96 shadow-moongray-800 dark:shadow-moongray-900/30 bg-moongray-950 backdrop-blur-sm ${disableFadeIn ? '' : 'fadeScaleInAnimation'}`}
+        className={`absolute pt-0 text-white shadow-moongray-800 dark:shadow-moongray-900/30
+          bg-moongray-950 backdrop-blur-sm ${disableFadeIn ? '' : 'fadeScaleInAnimation'}`}
         style={{
           left: initialPosition ? initialPosition[0] : undefined,
           top: initialPosition ? initialPosition[1] : undefined,

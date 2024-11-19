@@ -71,6 +71,9 @@ const config: Config = {
           1000: '#4c2b5d',
         },
       },
+      screens: {
+        ipad11Inch: { max: '1194px' },
+      },
     },
   },
   plugins: [],
