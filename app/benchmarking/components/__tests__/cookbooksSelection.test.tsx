@@ -16,10 +16,6 @@ jest.mock('@/moonshot.config', () => ({
   default: {
     ...jest.requireActual('@/moonshot.config').default,
     cookbooksOrder: ['cb-id-2', 'cb-id-3'],
-    cookbookTags: {
-      'cb-id-1': ['tag1', 'tag2'],
-      'cb-id-2': ['tag3', 'tag4'],
-    },
   },
 }));
 
