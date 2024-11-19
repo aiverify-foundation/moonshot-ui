@@ -20,19 +20,20 @@
   --gap-width: 16px;
 }
 
-@media (min-width: 1180px) {
+@media (min-width: 1195px) {
   :root {
     --chatwindow-width: 420px;
     --gap-width: 50px;
   }
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1194px) {
   :root {
-    --chatwindow-width: 420px;
-    --gap-width: 15px;
+    --chatwindow-width: 320px;
+    --gap-width: 30px;
   }
 }
+
 
 @keyframes bounce {
   0%,

@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
+import { useResponsiveChatboxSize } from '@/app/hooks/useResponsiveChatboxSize';
 import { getWindowId } from '@/app/lib/window-utils';
 import { ChatBox, ChatBoxControls } from './chatbox';
-import {
-  SlideChatBoxDimensions,
-  getDefaultChatBoxSizes,
-} from './chatbox-slide-box-sizes';
 
 type ChatSlideLayoutProps = {
   chatSession: SessionData;
@@ -115,13 +112,7 @@ const ChatboxSlideLayout = React.forwardRef(
       handleCreatePromptBookmarkClick,
     } = props;
     const [currentBoxIndex, setCurrentBoxIndex] = useState(0);
-    const [{ width, height, gap }, setSizes] = useState<SlideChatBoxDimensions>(
-      {
-        width: 0,
-        height: 0,
-        gap: 0,
-      }
-    );
+    const { width, height, gap } = useResponsiveChatboxSize();
     const [_, setHoveredIndex] = useState<number | null>(null);
     const chatBoxControlsMap = new Map<string, ChatBoxControls>();
     React.useImperativeHandle(ref, () => chatBoxControlsMap);
@@ -167,10 +158,6 @@ const ChatboxSlideLayout = React.forwardRef(
         </div>
       );
     }
-
-    React.useEffect(() => {
-      setSizes(getDefaultChatBoxSizes());
-    }, []);
 
     return (
       <div className="relative w-full h-full gap-6 flex flex-col items-center">

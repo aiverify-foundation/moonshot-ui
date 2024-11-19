@@ -1,16 +1,15 @@
+import { MAX_LAYOUT_WIDTH, MIN_LAYOUT_WIDTH } from '@/app/constants';
+
 type MicroLayoutProps = {
   maxWidth?: number;
   minWidth?: number;
   children: React.ReactNode[];
 };
 
-const MAX_WIDTH = 1440;
-const MIN_WIDTH = 900;
-
 function MicroLayout({
   children,
-  maxWidth = MAX_WIDTH,
-  minWidth = MIN_WIDTH,
+  maxWidth = MAX_LAYOUT_WIDTH,
+  minWidth = MIN_LAYOUT_WIDTH,
 }: MicroLayoutProps) {
   return (
     <div className="flex p-11 h-full justify-center items-start">
