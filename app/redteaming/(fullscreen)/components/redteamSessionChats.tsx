@@ -10,6 +10,7 @@ import { PopupSurface } from '@/app/components/popupSurface';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { useIsTabletDevice } from '@/app/hooks/useIsTabletDevice';
+import { useResponsiveChatboxSize } from '@/app/hooks/useResponsiveChatboxSize';
 import { toErrorWithMessage } from '@/app/lib/error-utils';
 import { getWindowId, getWindowXYById } from '@/app/lib/window-utils';
 import { Z_Index } from '@/app/redteaming/(fullscreen)/constants';
@@ -80,6 +81,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   const windowsMap = useAppSelector((state) => state.windows.map);
   const { sessionData } = props;
   const { resetChatboxPositions } = useChatboxesPositionsUtils(sessionData);
+  const { promptBoxWidth } = useResponsiveChatboxSize();
   const [promptText, setPromptText] = useState('');
   const [isFetchingData, setIsFetchingData] = useState(true);
   const [liveAttackInProgress, setLiveAttackInProgress] = useState(false);
@@ -489,7 +491,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   }
 
   const optionsPanel = (
-    <div className="bg-moongray-600 w-[380px] ipad11Inch:w-[320px] absolute left-[115%] ipad11Inch:left-[100%] top-0 rounded-md p-2 shadow-lg">
+    <div className="bg-moongray-600 w-[380px] ipad11Inch:w-[320px] absolute left-[115%] ipad11Inch:left-[110%] top-0 rounded-md p-2 shadow-lg">
       {isChatControlsDisabled && (
         <div
           className="absolute gap-2 bg-moongray-950/50 w-full h-full z-10 flex justify-center items-center rounded-md"
@@ -751,7 +753,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                   bottom={120}
                   defaultShowPanel={defaultShowBookmarksPanel}
                   onPanelClose={() => setDefaultShowBookmarksPanel(false)}
-                  className="left-[20%] ipad11Inch:left-[7%]"
+                  className="left-[20%] ipad11Inch:left-[7%] ipadPro:left-[10%]"
                 />
                 <div className="flex justify-center">
                   <div className="relative">
@@ -763,10 +765,10 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                       draggable={false}
                       chatSession={activeSession}
                       promptTemplates={promptTemplates}
-                      activePromptTemplate={selectedPromptTemplate}
                       onSendClick={handleSendPromptClick}
                       onSelectPromptTemplate={handleSelectPromptTemplate}
                       onWindowChange={handleOnWindowChange}
+                      width={promptBoxWidth}
                       styles={{
                         position: 'relative',
                         backgroundColor: 'transparent',
@@ -803,12 +805,10 @@ function RedteamSessionChats(props: ActiveSessionProps) {
             initialXY={promptBoxInitialXY}
             chatSession={activeSession}
             promptTemplates={promptTemplates}
-            activePromptTemplate={selectedPromptTemplate}
             onCloseClick={() => null}
             onSendClick={handleSendPromptClick}
             onSelectPromptTemplate={handleSelectPromptTemplate}
             onWindowChange={handleOnWindowChange}
-            onCloseSessionCommand={() => null}
             styles={{
               backgroundColor: colors.moongray[700],
               borderRadius: '0.5rem',

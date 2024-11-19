@@ -20,6 +20,7 @@ type PromptBoxProps = {
   zIndex: number;
   name: string;
   initialXY?: [number, number];
+  width?: number;
   children?: React.ReactNode;
   styles?: React.CSSProperties;
   promptTemplates: PromptTemplate[];
@@ -37,7 +38,6 @@ type PromptBoxProps = {
   onCloseClick?: () => void;
   onSelectPromptTemplate: (item: PromptTemplate) => Promise<void>;
   onSendClick: (message: string) => void;
-  onCloseSessionCommand?: () => void;
 };
 
 function PromptBox(props: PromptBoxProps) {
@@ -46,6 +46,7 @@ function PromptBox(props: PromptBoxProps) {
     zIndex,
     promptTemplates,
     initialXY,
+    width = 500,
     draggable,
     disabled,
     onCloseClick,
@@ -153,7 +154,7 @@ function PromptBox(props: PromptBoxProps) {
       zIndex={zIndex}
       id={windowId}
       initialXY={initialXY}
-      initialWindowSize={[500, 190]}
+      initialWindowSize={[width, 190]}
       resizeable={false}
       draggable={draggable}
       disableCloseIcon

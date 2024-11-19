@@ -73,6 +73,7 @@ const config: Config = {
       },
       screens: {
         ipad11Inch: { max: '1194px' },
+        ipadPro: { max: '1366px' },
       },
     },
   },
