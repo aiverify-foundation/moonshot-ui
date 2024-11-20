@@ -277,16 +277,25 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
           onCloseIconClick={handleOnCloseIconClick}
           height="100%"
           minHeight={750}
-          bgColor={surfaceColor}>
+          bgColor={surfaceColor}
+          headerContent={
+            <SimpleStepsIndicator
+              textColor={colors.moongray[300]}
+              stepColor={colors.moonpurplelight}
+              steps={flowState.steps}
+              currentStepIndex={flowState.stepIndex}
+              className="!w-[80%]"
+            />
+          }>
           <div className="flex flex-col items-center h-full">
-            <div className="w-[700px] flex shrink-0 justify-center">
+            {/* <div className="w-[700px] flex shrink-0 justify-center">
               <SimpleStepsIndicator
                 textColor={colors.moongray[300]}
                 stepColor={colors.moonpurplelight}
                 steps={flowState.steps}
                 currentStepIndex={flowState.stepIndex}
               />
-            </div>
+            </div> */}
             <div
               className="flex flex-col gap-5 justify-center w-full"
               style={{ height: 'calc(100% - 33px)' }}>
