@@ -19,27 +19,19 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '@/lib/redux';
-import { BenchmarkDefaultSelection } from './benchmarkDefaultSelection';
-import { BenchmarkMainCookbooksPromptCount } from './benchmarkMainCookbooksPromptCount';
 import {
   benchmarkNewSessionFlowReducer,
   initialState,
-  threeStepsFlowInitialState,
 } from './benchmarkNewSessionFlowReducer';
 import BenchmarkRunForm from './benchmarkRunForm';
 import { BenchmarkNewSessionViews } from './enums';
 
-type BenchmarkNewSessionFlowProps = {
-  threeStepsFlow?: boolean;
-};
-
-function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
-  const { threeStepsFlow = false } = props;
+function BenchmarkNewSessionFlow() {
   const router = useRouter();
   const appDispatch = useAppDispatch();
   const [flowState, dispatch] = React.useReducer(
     benchmarkNewSessionFlowReducer,
-    threeStepsFlow ? threeStepsFlowInitialState : initialState
+    initialState
   );
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
@@ -124,38 +116,6 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
   let view: React.ReactElement | undefined;
 
   switch (flowState.view) {
-    case BenchmarkNewSessionViews.TOPICS_SELECTION:
-      view = (
-        <BenchmarkDefaultSelection
-          selectedCookbooks={selectedCookbooks}
-          onCookbookSelected={() =>
-            dispatch({
-              type: 'COOKBOOK_SELECTION_CLICK',
-              cookbooksLength: selectedCookbooks.length + 1,
-            })
-          }
-          onCookbookUnselected={() =>
-            dispatch({
-              type: 'COOKBOOK_SELECTION_CLICK',
-              cookbooksLength: selectedCookbooks.length - 1,
-            })
-          }
-        />
-      );
-      break;
-    case BenchmarkNewSessionViews.RECOMMENDED_TESTS:
-      view = (
-        <BenchmarkMainCookbooksPromptCount
-          selectedCookbooks={selectedCookbooks}
-          onCookbooksLinkClick={() =>
-            dispatch({
-              type: 'MORE_COOKBOOKS_LINK_CLICK',
-              cookbooksLength: selectedCookbooks.length,
-            })
-          }
-        />
-      );
-      break;
     case BenchmarkNewSessionViews.ENDPOINTS_SELECTION:
       view = (
         <EndpointSelector
@@ -192,7 +152,6 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
     case BenchmarkNewSessionViews.COOKBOOKS_SELECTION:
       view = (
         <CookbooksSelection
-          isThreeStepsFlow={flowState.isThreeStepsFlow}
           onClose={() =>
             dispatch({
               type: 'CLOSE_MORE_COOKBOOKS',

@@ -43,19 +43,13 @@ const tabItems: TabItem<string[]>[] = config.cookbookCategoriesTabs.map(
 );
 
 type Props = {
-  isThreeStepsFlow: boolean;
   onCookbookSelected: () => void;
   onCookbookUnselected: () => void;
   onClose: () => void;
 };
 
 function CookbooksSelection(props: Props) {
-  const {
-    onClose,
-    isThreeStepsFlow,
-    onCookbookSelected,
-    onCookbookUnselected,
-  } = props;
+  const { onClose, onCookbookSelected, onCookbookUnselected } = props;
   const dispatch = useAppDispatch();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
@@ -73,7 +67,7 @@ function CookbooksSelection(props: Props) {
       {
         count: true,
       },
-      { skip: !isThreeStepsFlow || !isFirstCookbooksFetch }
+      { skip: !isFirstCookbooksFetch }
     );
 
   const excludedCategories = activeTab.data
@@ -126,12 +120,12 @@ function CookbooksSelection(props: Props) {
   }, [cookbooks]);
 
   useEffect(() => {
-    if (!isThreeStepsFlow || isFetchingAllCookbooks) return;
+    if (isFetchingAllCookbooks) return;
     if (isFirstCookbooksFetch && allCookbooks) {
       updateAllCookbooks(setAllCookbooks, allCookbooks);
       setIsFirstCookbooksFetch(false);
     }
-  }, [isThreeStepsFlow, isFetchingAllCookbooks, allCookbooks]);
+  }, [isFetchingAllCookbooks, allCookbooks]);
 
   function handleTabClick(tab: TabItem<string[]>) {
     setActiveTab(tab);
