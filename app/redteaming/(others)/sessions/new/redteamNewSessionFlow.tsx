@@ -233,7 +233,7 @@ function RedteamNewSessionFlow() {
             />
           </div>
           <div
-            className="flex flex-col gap-5 justify-center w-full"
+            className="flex flex-col gap-5 ipad11Inch:gap-1 ipadPro:gap-1 justify-center w-full"
             style={{ height: 'calc(100% - 33px)' }}>
             {!flowState.hidePrevBtn && (
               <div className="flex justify-center">
