@@ -128,7 +128,6 @@ function BenchmarkNewSessionFlow() {
       );
       break;
     case BenchmarkNewSessionViews.NEW_ENDPOINT_FORM:
-      surfaceColor = colors.moongray['800'];
       view = (
         <NewEndpointForm
           onClose={() =>
@@ -141,7 +140,6 @@ function BenchmarkNewSessionFlow() {
       );
       break;
     case BenchmarkNewSessionViews.EDIT_ENDPOINT_FORM:
-      surfaceColor = colors.moongray['800'];
       view = (
         <NewEndpointForm
           endpointToEdit={flowState.modelToEdit}
