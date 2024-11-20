@@ -54,13 +54,9 @@ export function benchmarkNewSessionFlowReducer(
       if (state.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
         return {
           ...state,
-          stepIndex: action.requiredEndpoints?.length
-            ? state.stepIndex
-            : state.stepIndex + 1,
-          view: action.requiredEndpoints?.length
-            ? BenchmarkNewSessionViews.ENDPOINTS_SELECTION
-            : BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
-          requiredEndpoints: action.requiredEndpoints,
+          stepIndex: state.stepIndex + 1,
+          view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
+          requiredEndpoints: undefined,
           hideNextBtn: false,
           disableNextBtn: action.cookbooksLength === 0,
           hidePrevBtn: false,
