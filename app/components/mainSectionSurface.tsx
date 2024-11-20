@@ -8,13 +8,14 @@ type MainSectionSurfaceProps = {
   bgColor?: string;
   height?: React.CSSProperties['height'];
   minHeight?: React.CSSProperties['minHeight'];
-  contentHeight?: React.CSSProperties['height'];
+  bodyHeight?: React.CSSProperties['height'];
   headerHeight?: React.CSSProperties['height'];
   headerContent?: React.ReactNode;
-  onCloseIconClick?: () => void;
+  showHeaderDivider?: boolean;
   closeLinkUrl?: string;
   className?: string;
-  showHeaderDivider?: boolean;
+  bodyClassName?: string;
+  onCloseIconClick?: () => void;
 };
 
 function MainSectionSurface(props: MainSectionSurfaceProps) {
@@ -22,14 +23,15 @@ function MainSectionSurface(props: MainSectionSurfaceProps) {
     height,
     minHeight,
     closeLinkUrl,
-    onCloseIconClick,
-    contentHeight = 'calc(100% - 32px)',
+    bodyHeight = 'calc(100% - 32px)',
+    showHeaderDivider = false,
     headerHeight = 30,
     headerContent,
     children,
     bgColor,
     className,
-    showHeaderDivider = false,
+    bodyClassName,
+    onCloseIconClick,
   } = props;
 
   const CloseIcon = closeLinkUrl ? (
@@ -63,8 +65,8 @@ function MainSectionSurface(props: MainSectionSurfaceProps) {
         {headerContent}
       </header>
       <section
-        style={{ height: contentHeight }}
-        className="p-6">
+        style={{ height: bodyHeight }}
+        className={clsx('p-6', bodyClassName)}>
         {children}
       </section>
     </div>

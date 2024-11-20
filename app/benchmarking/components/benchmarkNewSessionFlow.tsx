@@ -5,6 +5,7 @@ import { CookbooksSelection } from '@/app/benchmarking/components/cookbooksSelec
 import { EndpointSelector } from '@/app/benchmarking/components/endpointsSelector';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { Button, ButtonType } from '@/app/components/button';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
 import { Modal } from '@/app/components/modal';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
@@ -278,8 +279,9 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
           minHeight={750}
           bgColor={surfaceColor}
           headerHeight={80}
-          contentHeight="calc(100% - 80px)"
+          bodyHeight="calc(100% - 80px)"
           showHeaderDivider
+          bodyClassName="!p-0"
           headerContent={
             <SimpleStepsIndicator
               textColor={colors.moongray[300]}
@@ -292,39 +294,46 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
           <div className="flex flex-col items-center h-full">
             <div
               className="flex flex-col gap-5 justify-center w-full"
-              style={{ height: 'calc(100% - 33px)' }}>
-              {!flowState.hidePrevBtn && (
-                <div className="flex justify-center">
-                  <div
-                    role="button"
-                    className="flex justify-center hover:opacity-70"
-                    aria-label="Previous View"
-                    onClick={handlePreviousIconClick}>
-                    <Icon
-                      name={IconName.WideArrowUp}
-                      size={28}
-                    />
-                  </div>
-                </div>
-              )}
+              style={{ height: 'calc(100% - 60px)' }}>
               {view}
-              {!flowState.hideNextBtn && (
-                <div className="flex justify-center">
-                  <div
-                    role="button"
-                    className={`flex justify-center ${flowState.disableNextBtn ? 'opacity-30 cursor-default' : ''} 
-                      ${!flowState.disableNextBtn ? 'hover:opacity-60 cursor-pointer' : ''}`}
-                    aria-label="Next View"
-                    onClick={
-                      flowState.disableNextBtn ? undefined : handleNextIconClick
-                    }>
-                    <Icon
-                      name={IconName.WideArrowDown}
-                      size={28}
-                    />
-                  </div>
-                </div>
-              )}
+            </div>
+            <div
+              className={`flex 
+                ${!flowState.hidePrevBtn && !flowState.hideNextBtn ? 'justify-between' : undefined} 
+                ${flowState.hidePrevBtn && !flowState.hideNextBtn ? 'justify-end' : undefined} 
+                ${!flowState.hidePrevBtn && flowState.hideNextBtn ? 'justify-start' : undefined} 
+                items-center w-full h-[60px] px-4
+             bg-moongray-950 shadow-[0_-2px_5px_-2px_rgba(0,0,0,0.3)] rounded-b-2xl`}>
+              {!flowState.hidePrevBtn ? (
+                <Button
+                  ariaLabel="Previous View"
+                  mode={ButtonType.TEXT}
+                  text="BACK"
+                  textSize="1.3rem"
+                  textColor={colors.moonpurplelight}
+                  leftIconName={IconName.ThinArrowLeft}
+                  iconSize={24}
+                  iconColor={colors.moonpurplelight}
+                  disabled={flowState.disablePrevBtn}
+                  onClick={handlePreviousIconClick}
+                />
+              ) : null}
+              {!flowState.hideNextBtn ? (
+                <Button
+                  ariaLabel="Next View"
+                  mode={ButtonType.TEXT}
+                  text="NEXT"
+                  textSize="1.3rem"
+                  textColor={colors.moonpurplelight}
+                  rightIconName={IconName.ThinArrowRight}
+                  iconSize={24}
+                  iconColor={colors.moonpurplelight}
+                  disabled={flowState.disableNextBtn}
+                  onClick={
+                    flowState.disableNextBtn ? undefined : handleNextIconClick
+                  }
+                />
+              ) : null}
             </div>
           </div>
         </MainSectionSurface>

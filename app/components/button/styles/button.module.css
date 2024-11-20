@@ -43,6 +43,10 @@
   padding: 0 0 0 0;
 }
 
+.btn_text:hover {
+  opacity: 0.6;
+}
+
 .btn_outline {
   border: 1px solid #FFFFFF;
   color: #FFFFFF;
