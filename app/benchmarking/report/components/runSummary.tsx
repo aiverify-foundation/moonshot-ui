@@ -66,7 +66,7 @@ export function RunSummary(props: RunSummaryProps) {
               return (
                 <li
                   key={cookbook.id}
-                  className={`mb-1 ${prePrintingFlagEnabled ? 'w-[300px]' : 'w-[500px]'}`}>
+                  className={`mb-1 ${prePrintingFlagEnabled ? 'w-[300px]' : 'w-[500px]'} overflow-hidden overflow-ellipsis`}>
                   <span className="mr-3">{cookbook.name}</span>
                   <span className="inline-flex gap-2 justify-start">
                     {cookbookCategoryLabels[cookbook.id].map(

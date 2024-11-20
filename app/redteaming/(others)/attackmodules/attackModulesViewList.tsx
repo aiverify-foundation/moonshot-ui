@@ -60,7 +60,7 @@ function AttackModulesViewList({ attacks }: { attacks: AttackModule[] }) {
                     <h4 className="text-[1rem] font-semibold">{attack.name}</h4>
                   </div>
                   <p
-                    className="text-[0.8rem] h-[40px] overflow-hidden text-moongray-400"
+                    className="text-[0.8rem] h-[40px] overflow-hidden text-moongray-400 break-all break-words"
                     style={ellipsisStyle}>
                     {description}
                   </p>

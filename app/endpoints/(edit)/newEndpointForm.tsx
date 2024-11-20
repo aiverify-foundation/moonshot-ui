@@ -53,10 +53,7 @@ const validationSchema = object().shape({
   connector_type: string().required('Connector Type is required'),
   max_calls_per_second: string().required('Max calls Per Second is required'),
   max_concurrency: string().required('Max Concurrency is required'),
-  model: string()
-    .min(1, 'Model is required')
-    .matches(/\S/, 'Model cannot be empty spaces')
-    .required('Model is required'),
+  model: string().min(1, 'Model is required'),
   params: string()
     .min(1, 'Other Parameters is required')
     .required('Other Parameters is required'),
@@ -209,8 +206,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
     formik.values.name.trim() === '' ||
     formik.values.connector_type.trim() === '' ||
     formik.values.params?.trim() === '' ||
-    formik.values.token?.trim() === '' ||
-    formik.values.model?.trim() === '';
+    formik.values.token?.trim() === '';
 
   const tokenTextboxValue = useMemo(() => {
     // note - backend api returns empty string if token is not set; it returns string of asterisks masking the token if token exists
@@ -399,7 +395,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
 
               <TextInput
                 name="model"
-                label="Model*"
+                label="Model"
                 labelStyles={labelStyle}
                 inputStyles={inputStyle}
                 onChange={formik.handleChange}
