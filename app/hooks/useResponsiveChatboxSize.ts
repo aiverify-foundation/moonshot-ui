@@ -18,6 +18,7 @@ const defaultChatElementSizes: SlideChatBoxDimensions = {
 };
 
 function chatElementSizesReducer() {
+  if (!window) return defaultChatElementSizes;
   if (window.matchMedia('(min-width: 1371px)').matches) {
     return {
       width: 420,
@@ -33,9 +34,9 @@ function chatElementSizesReducer() {
   ) {
     return {
       width: 340,
-      height: 500,
+      height: 350,
       gap: 35,
-      noOfChatBoxesPerSlide: 3,
+      noOfChatBoxesPerSlide: 2,
       promptBoxWidth: 420,
     };
   }
@@ -43,7 +44,7 @@ function chatElementSizesReducer() {
   if (window.matchMedia('(max-width: 1194px)').matches) {
     return {
       width: 320,
-      height: 450,
+      height: 350,
       gap: 30,
       noOfChatBoxesPerSlide: 2,
       promptBoxWidth: 400,

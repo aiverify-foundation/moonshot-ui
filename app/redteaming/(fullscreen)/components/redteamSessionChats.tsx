@@ -10,6 +10,7 @@ import { PopupSurface } from '@/app/components/popupSurface';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { useEventSource } from '@/app/hooks/use-eventsource';
 import { useIsTabletDevice } from '@/app/hooks/useIsTabletDevice';
+import { useOrientation } from '@/app/hooks/useOrientation';
 import { useResponsiveChatboxSize } from '@/app/hooks/useResponsiveChatboxSize';
 import { toErrorWithMessage } from '@/app/lib/error-utils';
 import { getWindowId, getWindowXYById } from '@/app/lib/window-utils';
@@ -118,6 +119,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     ArtStatus,
     AppEventTypes
   >(streamPath, AppEventTypes.REDTEAM_UPDATE);
+
+  const orientation = useOrientation();
 
   let layoutMode = useAppSelector((state) => state.chatLayoutMode.value);
 
@@ -355,7 +358,6 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   }
 
   function handleUseBookmarkClick(preparedPrompt: string) {
-    console.log(preparedPrompt);
     handleSendPromptClick(preparedPrompt);
   }
 
@@ -491,7 +493,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   }
 
   const optionsPanel = (
-    <div className="bg-moongray-600 w-[380px] ipad11Inch:w-[320px] absolute left-[115%] ipad11Inch:left-[110%] top-0 rounded-md p-2 shadow-lg">
+    <div className="bg-moongray-600 w-[380px] ipad11Inch:w-[350px] ipadPro:w-[350px] absolute left-[115%] ipad11Inch:left-[108%] ipadPro:left-[108%] top-0 rounded-md p-2 shadow-lg">
       {isChatControlsDisabled && (
         <div
           className="absolute gap-2 bg-moongray-950/50 w-full h-full z-10 flex justify-center items-center rounded-md"
@@ -620,6 +622,27 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
   return (
     <div className="h-[100vh] w-[100vw] p-2">
+      {orientation === 'portrait' && (
+        <Modal
+          heading="Change Orientation"
+          bgColor={colors.moongray['800']}
+          textColor="#FFFFFF"
+          primaryBtnLabel="Ok"
+          enableScreenOverlay
+          hideCloseIcon>
+          <div className="flex gap-2 items-start">
+            <Icon
+              name={IconName.Alert}
+              size={30}
+              color={colors.moongray[400]}
+              style={{ marginTop: '8px' }}
+            />
+            <p className="text-[1.1rem] pt-3">
+              Change to landscape mode for better user experience.
+            </p>
+          </div>
+        </Modal>
+      )}
       {alertMessage && (
         <Modal
           heading={alertMessage.heading}
@@ -744,7 +767,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                     handleCreatePromptBookmarkClick={
                       handleCreatePromptBookmarkClick
                     }
-                    className={isTabletDevice ? 'mt-12' : ''}
+                    className={isTabletDevice ? 'mt-0' : ''}
                   />
                 </div>
                 <BookmarksPanel
@@ -772,6 +795,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                       styles={{
                         position: 'relative',
                         backgroundColor: 'transparent',
+                        top: isTabletDevice ? -30 : 0,
                       }}
                     />
                     {optionsPanel}
