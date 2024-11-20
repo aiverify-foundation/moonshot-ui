@@ -186,7 +186,6 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
       );
       break;
     case BenchmarkNewSessionViews.COOKBOOKS_SELECTION:
-      surfaceColor = colors.moongray['800'];
       view = (
         <CookbooksSelection
           isThreeStepsFlow={flowState.isThreeStepsFlow}
