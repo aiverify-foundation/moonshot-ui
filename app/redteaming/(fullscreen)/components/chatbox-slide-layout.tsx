@@ -202,12 +202,17 @@ const ChatboxSlideLayout = React.forwardRef(
           className
         )}>
         <section className="absolute w-full px-12 top-[45%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
-          <SlidesNavBtns />
+          {chatSession.session.endpoints.length > noOfChatBoxesPerSlide ? (
+            <SlidesNavBtns />
+          ) : null}
         </section>
         <main
           className="flex overflow-hidden h-[500px] ipad11Inch:h-[350px] ipadPro:h-[350px] transform-gpu"
           style={{
-            width: `calc(${noOfChatBoxesPerSlide} * ${width}px + ${noOfChatBoxesPerSlide - 1} * ${gap}px)`,
+            width:
+              chatSession.session.endpoints.length >= noOfChatBoxesPerSlide
+                ? `calc(${noOfChatBoxesPerSlide} * ${width}px + ${noOfChatBoxesPerSlide - 1} * ${gap}px)`
+                : width,
           }}
           onTouchStart={(e: React.TouchEvent<HTMLElement>) =>
             handleTouchStart(e.nativeEvent)

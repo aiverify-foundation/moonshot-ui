@@ -432,7 +432,11 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     });
   };
 
-  if (activeSession && activeSession.session.endpoints.length < 4) {
+  if (
+    activeSession &&
+    activeSession.session.endpoints.length < 4 &&
+    !isTabletDevice
+  ) {
     layoutMode = LayoutMode.FREE;
   }
 
