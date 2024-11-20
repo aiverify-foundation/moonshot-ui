@@ -1,4 +1,5 @@
 export function useIsResponsiveBreakpoint() {
+  if (typeof window === 'undefined') return 'others';
   if (window.matchMedia('(min-width: 1371px)').matches) {
     return 'lg';
   }

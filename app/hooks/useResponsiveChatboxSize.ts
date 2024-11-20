@@ -18,7 +18,7 @@ const defaultChatElementSizes: SlideChatBoxDimensions = {
 };
 
 function chatElementSizesReducer() {
-  if (!window) return defaultChatElementSizes;
+  if (typeof window === 'undefined') return defaultChatElementSizes;
   if (window.matchMedia('(min-width: 1371px)').matches) {
     return {
       width: 420,
