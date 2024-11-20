@@ -31,12 +31,12 @@ type FlowState = {
   requiredEndpoints?: string[];
 };
 
-const flowSteps = ['Recommended Tests', 'Connect Endpoint', 'Run'];
+const flowSteps = ['Connect Endpoint', 'Select Tests', 'Run'];
 
 export const initialState: FlowState = {
   steps: flowSteps,
   stepIndex: 0,
-  view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
+  view: BenchmarkNewSessionViews.ENDPOINTS_SELECTION,
   hideNextBtn: false,
   hidePrevBtn: true,
   disableNextBtn: true,
@@ -51,22 +51,7 @@ export function benchmarkNewSessionFlowReducer(
 ): FlowState {
   switch (action.type) {
     case 'NEXT_BTN_CLICK':
-      if (state.view === BenchmarkNewSessionViews.COOKBOOKS_SELECTION) {
-        return {
-          ...state,
-          stepIndex: state.stepIndex + 1,
-          view: BenchmarkNewSessionViews.ENDPOINTS_SELECTION,
-          hidePrevBtn: false,
-          hideNextBtn: false,
-          disablePrevBtn: false,
-          disableNextBtn: action.modelsLength === 0,
-        };
-      }
       if (state.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
-        const hideNextBtn =
-          action.requiredEndpoints && action.requiredEndpoints.length > 0
-            ? false
-            : true;
         return {
           ...state,
           stepIndex: action.requiredEndpoints?.length
@@ -74,10 +59,23 @@ export function benchmarkNewSessionFlowReducer(
             : state.stepIndex + 1,
           view: action.requiredEndpoints?.length
             ? BenchmarkNewSessionViews.ENDPOINTS_SELECTION
-            : BenchmarkNewSessionViews.BENCHMARK_RUN_FORM,
+            : BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
           requiredEndpoints: action.requiredEndpoints,
-          hideNextBtn: hideNextBtn,
-          disableNextBtn: hideNextBtn,
+          hideNextBtn: false,
+          disableNextBtn: action.cookbooksLength === 0,
+          hidePrevBtn: false,
+          disablePrevBtn: false,
+        };
+      }
+      if (state.view === BenchmarkNewSessionViews.COOKBOOKS_SELECTION) {
+        return {
+          ...state,
+          stepIndex: state.stepIndex + 1,
+          view: BenchmarkNewSessionViews.BENCHMARK_RUN_FORM,
+          hidePrevBtn: false,
+          hideNextBtn: true,
+          disablePrevBtn: false,
+          disableNextBtn: true,
         };
       }
     case 'PREV_BTN_CLICK':
@@ -85,17 +83,17 @@ export function benchmarkNewSessionFlowReducer(
         return {
           ...state,
           stepIndex: state.stepIndex - 1,
-          view: BenchmarkNewSessionViews.ENDPOINTS_SELECTION,
+          view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
           hidePrevBtn: false,
           hideNextBtn: false,
-          disableNextBtn: action.modelsLength === 0,
+          disableNextBtn: false,
         };
       }
-      if (state.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
+      if (state.view === BenchmarkNewSessionViews.COOKBOOKS_SELECTION) {
         return {
           ...state,
           stepIndex: state.stepIndex - 1,
-          view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
+          view: BenchmarkNewSessionViews.ENDPOINTS_SELECTION,
           hidePrevBtn: true,
           disablePrevBtn: true,
           hideNextBtn: false,
