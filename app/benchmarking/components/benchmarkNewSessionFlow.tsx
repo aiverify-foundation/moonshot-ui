@@ -148,7 +148,10 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
         <BenchmarkMainCookbooksPromptCount
           selectedCookbooks={selectedCookbooks}
           onCookbooksLinkClick={() =>
-            dispatch({ type: 'MORE_COOKBOOKS_LINK_CLICK' })
+            dispatch({
+              type: 'MORE_COOKBOOKS_LINK_CLICK',
+              cookbooksLength: selectedCookbooks.length,
+            })
           }
         />
       );
@@ -193,6 +196,18 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
           onClose={() =>
             dispatch({
               type: 'CLOSE_MORE_COOKBOOKS',
+            })
+          }
+          onCookbookSelected={() =>
+            dispatch({
+              type: 'COOKBOOK_SELECTION_CLICK',
+              cookbooksLength: selectedCookbooks.length + 1,
+            })
+          }
+          onCookbookUnselected={() =>
+            dispatch({
+              type: 'COOKBOOK_SELECTION_CLICK',
+              cookbooksLength: selectedCookbooks.length - 1,
             })
           }
         />
@@ -299,9 +314,9 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
             </div>
             <div
               className={`flex 
-                ${!flowState.hidePrevBtn && !flowState.hideNextBtn ? 'justify-between' : undefined} 
-                ${flowState.hidePrevBtn && !flowState.hideNextBtn ? 'justify-end' : undefined} 
-                ${!flowState.hidePrevBtn && flowState.hideNextBtn ? 'justify-start' : undefined} 
+                ${!flowState.hidePrevBtn && !flowState.hideNextBtn ? 'justify-between' : ''} 
+                ${flowState.hidePrevBtn && !flowState.hideNextBtn ? 'justify-end' : ''} 
+                ${!flowState.hidePrevBtn && flowState.hideNextBtn ? 'justify-start' : ''} 
                 items-center w-full h-[60px] px-4
              bg-moongray-950 shadow-[0_-2px_5px_-2px_rgba(0,0,0,0.3)] rounded-b-2xl`}>
               {!flowState.hidePrevBtn ? (

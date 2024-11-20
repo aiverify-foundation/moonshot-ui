@@ -77,7 +77,11 @@ export function benchmarkNewSessionFlowReducer(
           disableNextBtn: action.cookbooksLength === 0,
         };
       }
-      if (state.view === BenchmarkNewSessionViews.RECOMMENDED_TESTS) {
+      if (
+        state.view === BenchmarkNewSessionViews.RECOMMENDED_TESTS ||
+        (state.view === BenchmarkNewSessionViews.COOKBOOKS_SELECTION &&
+          !state.isThreeStepsFlow)
+      ) {
         return {
           ...state,
           stepIndex: state.stepIndex + 1,
@@ -150,6 +154,16 @@ export function benchmarkNewSessionFlowReducer(
           disableNextBtn: action.cookbooksLength === 0,
         };
       }
+      if (state.view === BenchmarkNewSessionViews.COOKBOOKS_SELECTION) {
+        return {
+          ...state,
+          stepIndex: state.stepIndex,
+          view: BenchmarkNewSessionViews.RECOMMENDED_TESTS,
+          hidePrevBtn: false,
+          hideNextBtn: false,
+          disableNextBtn: action.cookbooksLength === 0,
+        };
+      }
     case 'COOKBOOK_SELECTION_CLICK':
       return {
         ...state,
@@ -160,9 +174,9 @@ export function benchmarkNewSessionFlowReducer(
         ...state,
         view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
         hideNextBtn: true,
-        hidePrevBtn: true,
+        hidePrevBtn: false,
         disableNextBtn: true,
-        disablePrevBtn: true,
+        disablePrevBtn: false,
       };
     case 'MODEL_SELECTION_CLICK':
       return {

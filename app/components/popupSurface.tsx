@@ -23,7 +23,7 @@ function PopupSurface(props: PopupSurfaceProps) {
   } = props;
   return (
     <div
-      className="relative flex flex-col w-full bg-moongray-950 rounded-2xl border border-moonpurple"
+      className="relative flex flex-col w-full bg-moongray-950 rounded-2xl"
       style={{ height, minHeight, padding, ...style }}>
       <header className="flex flex-col items-center relative">
         {headerContent}

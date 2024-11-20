@@ -44,11 +44,18 @@ const tabItems: TabItem<string[]>[] = config.cookbookCategoriesTabs.map(
 
 type Props = {
   isThreeStepsFlow: boolean;
+  onCookbookSelected: () => void;
+  onCookbookUnselected: () => void;
   onClose: () => void;
 };
 
 function CookbooksSelection(props: Props) {
-  const { onClose, isThreeStepsFlow } = props;
+  const {
+    onClose,
+    isThreeStepsFlow,
+    onCookbookSelected,
+    onCookbookUnselected,
+  } = props;
   const dispatch = useAppDispatch();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
@@ -133,8 +140,10 @@ function CookbooksSelection(props: Props) {
   function handleCookbookSelect(cb: Cookbook) {
     if (selectedCookbooks.some((t) => t.id === cb.id)) {
       dispatch(removeBenchmarkCookbooks([cb]));
+      onCookbookUnselected();
     } else {
       dispatch(addBenchmarkCookbooks([cb]));
+      onCookbookSelected();
     }
   }
 
@@ -177,21 +186,18 @@ function CookbooksSelection(props: Props) {
           />
         </PopupSurface>
       ) : (
-        <PopupSurface
-          height="100%"
-          headerContent={
-            <section className="flex items-center justify-flex-start gap-5 pt-4">
-              <TabsMenu
-                tabItems={tabItems}
-                barColor={colors.moongray['800']}
-                tabHoverColor={colors.moongray['700']}
-                selectedTabColor={colors.moonpurple}
-                textColor={colors.white}
-                activeTabId={activeTab.id}
-                onTabClick={handleTabClick}
-              />
-            </section>
-          }>
+        <React.Fragment>
+          <section className="flex items-center justify-center gap-5">
+            <TabsMenu
+              tabItems={tabItems}
+              barColor={colors.moongray['800']}
+              tabHoverColor={colors.moongray['700']}
+              selectedTabColor={colors.moonpurple}
+              textColor={colors.white}
+              activeTabId={activeTab.id}
+              onTabClick={handleTabClick}
+            />
+          </section>
           <section
             className="relative flex flex-col gap-7 pt-6 h-full"
             style={{ height: 'calc(100% - 50px)' }}>
@@ -218,18 +224,8 @@ function CookbooksSelection(props: Props) {
                 })
               )}
             </ul>
-            <footer className="flex justify-end items-center bg-moonpurple p-2 px-5 rounded-b-2xl w-full text-white h-[52px] shrink-0">
-              {selectedCookbooks.length > 0 && (
-                <span
-                  role="button"
-                  className="text-[1.5rem] decoration-1 underline text-white cursor-pointer"
-                  onClick={onClose}>
-                  OK
-                </span>
-              )}
-            </footer>
           </section>
-        </PopupSurface>
+        </React.Fragment>
       )}
     </div>
   );
