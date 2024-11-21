@@ -11,7 +11,9 @@ type Action = {
     | 'MORE_COOKBOOKS_LINK_CLICK'
     | 'CLOSE_MORE_COOKBOOKS'
     | 'MODEL_SELECTION_CLICK'
-    | 'CLOSE_REQUIRED_ENDPOINTS_MODAL';
+    | 'CLOSE_REQUIRED_ENDPOINTS_MODAL'
+    | 'SHOW_SURFACE_OVERLAY'
+    | 'HIDE_SURFACE_OVERLAY';
   cookbooksLength?: number;
   modelsLength?: number;
   modelToEdit?: LLMEndpoint;
@@ -29,6 +31,7 @@ type FlowState = {
   disablePrevBtn: boolean;
   modelToEdit: LLMEndpoint | undefined;
   requiredEndpoints?: string[];
+  showSurfaceOverlay?: boolean;
 };
 
 const flowSteps = ['Connect Endpoint', 'Select Tests', 'Run'];
@@ -43,6 +46,7 @@ export const initialState: FlowState = {
   disablePrevBtn: true,
   modelToEdit: undefined,
   requiredEndpoints: undefined,
+  showSurfaceOverlay: false,
 };
 
 export function benchmarkNewSessionFlowReducer(
@@ -61,6 +65,7 @@ export function benchmarkNewSessionFlowReducer(
           disableNextBtn: action.cookbooksLength === 0,
           hidePrevBtn: false,
           disablePrevBtn: false,
+          showSurfaceOverlay: false,
         };
       }
       if (state.view === BenchmarkNewSessionViews.COOKBOOKS_SELECTION) {
@@ -72,6 +77,7 @@ export function benchmarkNewSessionFlowReducer(
           hideNextBtn: true,
           disablePrevBtn: false,
           disableNextBtn: true,
+          showSurfaceOverlay: false,
         };
       }
     case 'PREV_BTN_CLICK':
@@ -83,6 +89,7 @@ export function benchmarkNewSessionFlowReducer(
           hidePrevBtn: false,
           hideNextBtn: false,
           disableNextBtn: false,
+          showSurfaceOverlay: false,
         };
       }
       if (state.view === BenchmarkNewSessionViews.COOKBOOKS_SELECTION) {
@@ -94,6 +101,7 @@ export function benchmarkNewSessionFlowReducer(
           disablePrevBtn: true,
           hideNextBtn: false,
           disableNextBtn: false,
+          showSurfaceOverlay: false,
         };
       }
     case 'COOKBOOK_SELECTION_CLICK':
@@ -160,6 +168,16 @@ export function benchmarkNewSessionFlowReducer(
         requiredEndpoints: undefined,
         hideNextBtn: false,
         hidePrevBtn: false,
+      };
+    case 'SHOW_SURFACE_OVERLAY':
+      return {
+        ...state,
+        showSurfaceOverlay: true,
+      };
+    case 'HIDE_SURFACE_OVERLAY':
+      return {
+        ...state,
+        showSurfaceOverlay: false,
       };
     default:
       return state;

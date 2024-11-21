@@ -45,11 +45,17 @@ const tabItems: TabItem<string[]>[] = config.cookbookCategoriesTabs.map(
 type Props = {
   onCookbookSelected: () => void;
   onCookbookUnselected: () => void;
-  onClose: () => void;
+  onCookbookAboutClick: () => void;
+  onCookbookAboutClose: () => void;
 };
 
 function CookbooksSelection(props: Props) {
-  const { onClose, onCookbookSelected, onCookbookUnselected } = props;
+  const {
+    onCookbookSelected,
+    onCookbookUnselected,
+    onCookbookAboutClick,
+    onCookbookAboutClose,
+  } = props;
   const dispatch = useAppDispatch();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
@@ -143,6 +149,12 @@ function CookbooksSelection(props: Props) {
 
   function handleAboutClick(cb: Cookbook) {
     setCookbookDetails(cb);
+    onCookbookAboutClick();
+  }
+
+  function handleCloseAbout() {
+    setCookbookDetails(undefined);
+    onCookbookAboutClose();
   }
 
   const categoryDesc =
@@ -165,12 +177,12 @@ function CookbooksSelection(props: Props) {
   }, [cookbooks]);
 
   return (
-    <div className="flex flex-col pt-4 w-full h-full">
+    <div className="flex flex-col pt-4 w-full h-full z-[100]">
       {cookbookDetails ? (
         <PopupSurface
           height="100%"
           padding="10px"
-          onCloseIconClick={() => setCookbookDetails(undefined)}>
+          onCloseIconClick={handleCloseAbout}>
           <CookbookAbout
             cookbook={cookbookDetails}
             onSelectChange={handleCookbookSelect}

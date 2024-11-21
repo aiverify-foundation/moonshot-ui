@@ -150,9 +150,14 @@ function BenchmarkNewSessionFlow() {
     case BenchmarkNewSessionViews.COOKBOOKS_SELECTION:
       view = (
         <CookbooksSelection
-          onClose={() =>
+          onCookbookAboutClose={() =>
             dispatch({
-              type: 'CLOSE_MORE_COOKBOOKS',
+              type: 'HIDE_SURFACE_OVERLAY',
+            })
+          }
+          onCookbookAboutClick={() =>
+            dispatch({
+              type: 'SHOW_SURFACE_OVERLAY',
             })
           }
           onCookbookSelected={() =>
@@ -254,6 +259,7 @@ function BenchmarkNewSessionFlow() {
           bodyHeight="calc(100% - 80px)"
           showHeaderDivider
           bodyClassName="!p-0"
+          showSurfaceOverlay={flowState.showSurfaceOverlay}
           headerContent={
             <SimpleStepsIndicator
               textColor={colors.moongray[300]}

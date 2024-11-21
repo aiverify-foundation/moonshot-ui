@@ -319,7 +319,7 @@ function BenchmarkRunForm({
 
             <RunButton
               disabled={disableRunBtn}
-              className="absolute bottom-[20px] right-[18px]"
+              className="absolute bottom-[8px] right-[18px]"
             />
           </form>
         </div>
