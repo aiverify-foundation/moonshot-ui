@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { Checkbox } from '@/app/components/checkbox';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
 import config from '@/moonshot.config';
@@ -46,47 +47,14 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
             name={IconName.Book}
             style={{ marginTop: 2 }}
           />
-          {cookbook.name.length > 40 ? (
-            <Tooltip
-              position={TooltipPosition.top}
-              content={cookbook.name}
-              offsetTop={-10}
-              offsetLeft={-30}>
-              <h3 className="font-bold ">
-                {`${cookbook.name.substring(0, 40)}...`}
-              </h3>
-            </Tooltip>
-          ) : (
-            <h3 className="font-bold ">{cookbook.name}</h3>
-          )}
-          {requiredEndpoints && requiredEndpoints.length > 0 && (
-            <Tooltip
-              position={TooltipPosition.right}
-              offsetLeft={10}
-              content={
-                <div className="p-1 pt-0">
-                  <h3 className="text-black font-bold mb-2">Requires</h3>
-                  <ul className="text-gray-700">
-                    {requiredEndpoints.map((endpoint) => (
-                      <li key={endpoint}>{endpoint}</li>
-                    ))}
-                  </ul>
-                </div>
-              }>
-              <Icon
-                size={22}
-                name={IconName.SolidBox}
-                color={colors.moonpurplelight}
-              />
-            </Tooltip>
-          )}
+          <h3 className="font-bold ">{cookbook.name}</h3>
         </div>
-        <input
-          readOnly
-          type="checkbox"
-          aria-label={`Select ${cookbook.id}`}
-          className="w-2 h-2 shrink-0"
+        <Checkbox
+          label=""
+          size="s"
+          ariaLabel={`Select ${cookbook.id}`}
           checked={isSelected}
+          onChange={handleClick}
         />
       </header>
       <div className="flex flex-wrap gap-2 my-2">
