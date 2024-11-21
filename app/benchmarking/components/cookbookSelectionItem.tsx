@@ -49,7 +49,9 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
                 name={IconName.Book}
                 style={{ marginTop: 2 }}
               />
-              <h3 className="font-bold ">{cookbook.name}</h3>
+              <h3 className="font-semibold text-[1rem] tracking-wide">
+                {cookbook.name}
+              </h3>
             </div>
             <Checkbox
               label=""
@@ -59,7 +61,7 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
               onChange={handleClick}
             />
           </header>
-          <div className="flex flex-wrap gap-2 my-2">
+          <div className="flex flex-wrap gap-2 mb-4 mt-6">
             {config.cookbookTags[cookbook.id]?.map((tagName) => (
               <Button
                 key={tagName}
