@@ -26,6 +26,7 @@ function Checkbox(props: CheckboxProps) {
     defaultChecked,
     disabled = false,
     error,
+    onChange,
   } = props;
   return (
     <div
@@ -57,6 +58,7 @@ function Checkbox(props: CheckboxProps) {
           value={value}
           defaultValue={defaultValue}
           disabled={disabled}
+          onChange={onChange}
         />
         {label}
       </label>

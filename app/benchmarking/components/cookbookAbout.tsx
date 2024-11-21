@@ -1,6 +1,10 @@
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { Button, ButtonType } from '@/app/components/button';
+import { Checkbox } from '@/app/components/checkbox';
 import { LoadingAnimation } from '@/app/components/loadingAnimation';
+import { colors } from '@/app/customColors';
 import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
+import config from '@/moonshot.config';
 
 type Props = {
   cookbook: Cookbook;
@@ -13,6 +17,8 @@ function CookbookAbout({ cookbook, checked, onSelectChange }: Props) {
     ids: cookbook.recipes,
     count: true,
   });
+  const requiredEndpoints = cookbook.endpoint_required;
+
   return (
     <section className="flex flex-nowrap gap-5 text-white p-6 bg-moongray-800 h-full rounded-xl">
       <div className="flex-1 flex flex-col gap-5">
@@ -27,22 +33,46 @@ function CookbookAbout({ cookbook, checked, onSelectChange }: Props) {
           </h3>
         </div>
         <div className="flex gap-3">
-          <input
-            type="checkbox"
+          <Checkbox
+            label="Run this cookbook"
+            size="l"
+            ariaLabel={`Select ${cookbook.id}`}
             checked={checked}
             onChange={() => onSelectChange(cookbook)}
           />
-          <p className="text-[0.9rem]">Run this cookbook</p>
+        </div>
+        <div className="flex flex-wrap gap-2 mb-4 mt-2">
+          {config.cookbookTags[cookbook.id]?.map((tagName) => (
+            <Button
+              key={tagName}
+              mode={ButtonType.OUTLINE}
+              text={tagName}
+              textSize="0.8rem"
+              size="sm"
+              btnColor={colors.moonpurple}
+              hoverBtnColor={colors.moonpurple}
+            />
+          ))}
         </div>
         <p className="text-[0.9rem] text-moongray-200 break-words overflow-hidden max-w-[500px]">
           {cookbook.description}
         </p>
         <div>
+          {requiredEndpoints ? (
+            <p className="text-moongray-200 mb-6">
+              <h3 className="font-semibold">Requires</h3>
+              <ul className="list-disc pl-5">
+                {requiredEndpoints.map((endpoint) => (
+                  <li key={endpoint}>{endpoint}</li>
+                ))}
+              </ul>
+            </p>
+          ) : null}
           <p className="text-moongray-200">
             {cookbook.total_prompt_in_cookbook} prompts
           </p>
           <p className="text-moongray-200">
-            Total Number of Datasets: {cookbook.total_dataset_in_cookbook}
+            {cookbook.total_dataset_in_cookbook} datasets
           </p>
         </div>
       </div>
