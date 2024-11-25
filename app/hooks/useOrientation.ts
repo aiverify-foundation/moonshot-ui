@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 function initializeOrientation() {
   if (typeof window === 'undefined') return 'landscape';
-  return window.screen.orientation.type.includes('portrait')
+  return window.screen?.orientation?.type.includes('portrait')
     ? 'portrait'
     : 'landscape';
 }
