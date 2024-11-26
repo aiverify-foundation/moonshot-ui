@@ -31,7 +31,7 @@ type FlowState = {
   requiredEndpoints?: string[];
 };
 
-const flowSteps = ['Connect Endpoint', 'Select Tests', 'Run'];
+export const flowSteps = ['Connect Endpoint', 'Select Tests', 'Run'];
 
 export const initialState: FlowState = {
   steps: flowSteps,
