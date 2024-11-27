@@ -5,6 +5,7 @@ import { cn } from '@/app/lib/cn';
 import styles from './styles/actionCard.module.css';
 
 type ActionCardProps = {
+  variant?: 'default' | 'compact';
   title: string;
   titleSize?: number;
   description?: string;
@@ -24,6 +25,7 @@ type ActionCardProps = {
 function ActionCard(props: ActionCardProps) {
   const screenSize = useIsResponsiveBreakpoint();
   const {
+    variant = 'default',
     title,
     titleSize,
     description,
@@ -44,7 +46,7 @@ function ActionCard(props: ActionCardProps) {
     <figure
       className={cn(
         styles.card,
-        `${screenSize === 'sm' || screenSize === 'md' ? '!h-[260px]' : ''}`,
+        `${variant === 'compact' && (screenSize === 'sm' || screenSize === 'md') ? '!h-[260px]' : ''}`,
         className
       )}
       style={{ backgroundColor: cardColor, height, ...style }}
@@ -58,7 +60,8 @@ function ActionCard(props: ActionCardProps) {
         <h2 style={{ color: textColor, fontSize: titleSize }}>{title}</h2>
         <p style={{ color: descriptionColor || textColor }}>{description}</p>
       </section>
-      <figcaption>
+      <figcaption
+        className={`${variant === 'compact' && (screenSize === 'sm' || screenSize === 'md') ? '!py-[10px]' : ''}`}>
         {actionText && (
           <>
             <p style={{ color: textColor }}>{actionText}</p>

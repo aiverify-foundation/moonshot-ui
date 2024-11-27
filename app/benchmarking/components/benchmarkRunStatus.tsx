@@ -385,10 +385,11 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
                   <div className="col-span-3 grid grid-cols-3 gap-[1.7%] w-[90%]">
                     <Link href="/redteaming/sessions/new">
                       <ActionCard
+                        variant="compact"
                         className={`${
                           screenSize === 'sm' || screenSize === 'md'
-                            ? '!h-[170px]'
-                            : '!h-[240px]'
+                            ? '!h-[170px] !p-[16px]'
+                            : '!h-[240px] !p-[16px]'
                         }`}
                         iconSize={
                           screenSize === 'sm' || screenSize === 'md' ? 28 : 35
@@ -403,10 +404,11 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
                     </Link>
                     <Link href="/benchmarking/cookbooks/new">
                       <ActionCard
+                        variant="compact"
                         className={`${
                           screenSize === 'sm' || screenSize === 'md'
-                            ? '!h-[170px]'
-                            : '!h-[240px]'
+                            ? '!h-[170px] !p-[16px]'
+                            : '!h-[240px] !p-[16px]'
                         }`}
                         iconSize={
                           screenSize === 'sm' || screenSize === 'md' ? 28 : 35
