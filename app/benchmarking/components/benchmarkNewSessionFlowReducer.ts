@@ -19,6 +19,7 @@ type Action = {
   modelToEdit?: LLMEndpoint;
   requiredEndpoints?: string[];
   requiredEndpointsTokensFilled?: boolean;
+  hasAddtionalRequirements?: boolean;
 };
 
 type FlowState = {
@@ -32,9 +33,16 @@ type FlowState = {
   modelToEdit: LLMEndpoint | undefined;
   requiredEndpoints?: string[];
   showSurfaceOverlay?: boolean;
+  showAdditionalRequirements?: boolean;
 };
 
 export const flowSteps = ['Connect Endpoint', 'Select Tests', 'Run'];
+export const flowStepsWithConfigRequirements = [
+  'Connect Endpoint',
+  'Select Tests',
+  'Configure Requirements',
+  'Run',
+];
 
 export const initialState: FlowState = {
   steps: flowSteps,
@@ -47,6 +55,7 @@ export const initialState: FlowState = {
   modelToEdit: undefined,
   requiredEndpoints: undefined,
   showSurfaceOverlay: false,
+  showAdditionalRequirements: false,
 };
 
 export function benchmarkNewSessionFlowReducer(
@@ -71,6 +80,9 @@ export function benchmarkNewSessionFlowReducer(
       if (state.view === BenchmarkNewSessionViews.COOKBOOKS_SELECTION) {
         return {
           ...state,
+          steps: action.hasAddtionalRequirements
+            ? flowStepsWithConfigRequirements
+            : flowSteps,
           stepIndex: state.stepIndex + 1,
           view: BenchmarkNewSessionViews.BENCHMARK_RUN_FORM,
           hidePrevBtn: false,
@@ -78,6 +90,7 @@ export function benchmarkNewSessionFlowReducer(
           disablePrevBtn: false,
           disableNextBtn: true,
           showSurfaceOverlay: false,
+          showAdditionalRequirements: action.hasAddtionalRequirements,
         };
       }
     case 'PREV_BTN_CLICK':

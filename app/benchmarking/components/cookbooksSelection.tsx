@@ -43,8 +43,8 @@ const tabItems: TabItem<string[]>[] = config.cookbookCategoriesTabs.map(
 );
 
 type Props = {
-  onCookbookSelected: () => void;
-  onCookbookUnselected: () => void;
+  onCookbookSelected: (cb: Cookbook) => void;
+  onCookbookUnselected: (cb: Cookbook) => void;
   onCookbookAboutClick: () => void;
   onCookbookAboutClose: () => void;
 };
@@ -140,10 +140,10 @@ function CookbooksSelection(props: Props) {
   function handleCookbookSelect(cb: Cookbook) {
     if (selectedCookbooks.some((t) => t.id === cb.id)) {
       dispatch(removeBenchmarkCookbooks([cb]));
-      onCookbookUnselected();
+      onCookbookUnselected(cb);
     } else {
       dispatch(addBenchmarkCookbooks([cb]));
-      onCookbookSelected();
+      onCookbookSelected(cb);
     }
   }
 

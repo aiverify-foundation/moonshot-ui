@@ -41,6 +41,17 @@ function BenchmarkNewSessionFlow() {
   );
   const [showExitModal, setShowExitModal] = React.useState(false);
 
+  const requiredEndpoints = React.useMemo(
+    () =>
+      selectedCookbooks.reduce((acc, cookbook) => {
+        if (cookbook.endpoint_required && cookbook.endpoint_required.length) {
+          acc = [...acc, ...cookbook.endpoint_required];
+        }
+        return acc;
+      }, [] as string[]),
+    [selectedCookbooks.length]
+  );
+
   function handleNextIconClick() {
     if (flowState.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
       const requiredEndpoints = selectedCookbooks.reduce((acc, cookbook) => {
@@ -164,14 +175,16 @@ function BenchmarkNewSessionFlow() {
             dispatch({
               type: 'COOKBOOK_SELECTION_CLICK',
               cookbooksLength: selectedCookbooks.length + 1,
+              hasAddtionalRequirements: requiredEndpoints.length > 0,
             })
           }
-          onCookbookUnselected={() =>
+          onCookbookUnselected={() => {
             dispatch({
               type: 'COOKBOOK_SELECTION_CLICK',
               cookbooksLength: selectedCookbooks.length - 1,
-            })
-          }
+              hasAddtionalRequirements: requiredEndpoints.length > 0,
+            });
+          }}
         />
       );
       break;
