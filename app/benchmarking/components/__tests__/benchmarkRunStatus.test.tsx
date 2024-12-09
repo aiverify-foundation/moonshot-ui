@@ -1,7 +1,6 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { act, cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useSearchParams } from 'next/navigation';
-import { act } from 'react';
 import { getRecipesStatsById } from '@/actions/getRecipesStatsById';
 import { BenchmarkRunStatus } from '@/app/benchmarking/components/benchmarkRunStatus';
 import { useEventSource } from '@/app/hooks/use-eventsource';
