@@ -18,7 +18,7 @@ type Action = {
   modelsLength?: number;
   modelToEdit?: LLMEndpoint;
   requiredEndpointsTokensFilled?: boolean;
-  hasAddtionalRequirements?: boolean;
+  hasAdditionalRequirements?: boolean;
 };
 
 type FlowState = {
@@ -79,7 +79,7 @@ export function benchmarkNewSessionFlowReducer(
       if (state.view === BenchmarkNewSessionViews.COOKBOOKS_SELECTION) {
         return {
           ...state,
-          steps: action.hasAddtionalRequirements
+          steps: action.hasAdditionalRequirements
             ? flowStepsWithConfigRequirements
             : flowSteps,
           stepIndex: state.stepIndex + 1,
@@ -89,7 +89,7 @@ export function benchmarkNewSessionFlowReducer(
           disablePrevBtn: false,
           disableNextBtn: true,
           showSurfaceOverlay: false,
-          showAdditionalRequirements: action.hasAddtionalRequirements,
+          showAdditionalRequirements: action.hasAdditionalRequirements,
         };
       }
     case 'PREV_BTN_CLICK':
@@ -119,7 +119,11 @@ export function benchmarkNewSessionFlowReducer(
     case 'COOKBOOK_SELECTION_CLICK':
       return {
         ...state,
+        steps: action.hasAdditionalRequirements
+          ? flowStepsWithConfigRequirements
+          : flowSteps,
         disableNextBtn: action.cookbooksLength === 0,
+        showAdditionalRequirements: action.hasAdditionalRequirements,
       };
     case 'MORE_COOKBOOKS_LINK_CLICK':
       return {

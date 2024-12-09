@@ -47,34 +47,33 @@ function BenchmarkNewSessionFlow() {
   );
   const [showExitModal, setShowExitModal] = React.useState(false);
 
-  const requiredEndpoints = React.useMemo(
+  const hasAdditionalRequirements = React.useMemo(
     () =>
       selectedCookbooks.reduce((acc, cookbook) => {
         if (cookbook.endpoint_required && cookbook.endpoint_required.length) {
           acc = [...acc, ...cookbook.endpoint_required];
         }
         return acc;
-      }, [] as string[]),
+      }, [] as string[]).length > 0,
     [selectedCookbooks.length]
   );
 
   function handleNextIconClick() {
-    if (flowState.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
-      const hasAddtionalRequirements =
-        countRequiredEndpoints(selectedCookbooks) > 0;
-      dispatch({
-        type: 'NEXT_BTN_CLICK',
-        cookbooksLength: selectedCookbooks.length,
-        modelsLength: selectedModels.length,
-        hasAddtionalRequirements,
-      });
-      return;
-    }
+    // if (flowState.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
+    //   dispatch({
+    //     type: 'NEXT_BTN_CLICK',
+    //     cookbooksLength: selectedCookbooks.length,
+    //     modelsLength: selectedModels.length,
+    //     hasAdditionalRequirements,
+    //   });
+    //   return;
+    // }
 
     dispatch({
       type: 'NEXT_BTN_CLICK',
       cookbooksLength: selectedCookbooks.length,
       modelsLength: selectedModels.length,
+      hasAdditionalRequirements,
     });
   }
 
@@ -113,12 +112,12 @@ function BenchmarkNewSessionFlow() {
   }
 
   function handleCookbookSelectedOrUnselected(selectedCookbooks: Cookbook[]) {
-    const hasAddtionalRequirements =
+    const hasAdditionalRequirements =
       countRequiredEndpoints(selectedCookbooks) > 0;
     dispatch({
       type: 'COOKBOOK_SELECTION_CLICK',
       cookbooksLength: selectedCookbooks.length,
-      hasAddtionalRequirements,
+      hasAdditionalRequirements,
     });
   }
 
