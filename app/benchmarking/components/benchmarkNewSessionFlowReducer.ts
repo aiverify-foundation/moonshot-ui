@@ -17,7 +17,6 @@ type Action = {
   cookbooksLength?: number;
   modelsLength?: number;
   modelToEdit?: LLMEndpoint;
-  requiredEndpoints?: string[];
   requiredEndpointsTokensFilled?: boolean;
   hasAddtionalRequirements?: boolean;
 };

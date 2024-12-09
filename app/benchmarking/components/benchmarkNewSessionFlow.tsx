@@ -26,6 +26,12 @@ import {
 import BenchmarkRunForm from './benchmarkRunForm';
 import { BenchmarkNewSessionViews } from './enums';
 
+function countRequiredEndpoints(selectedCookbooks: Cookbook[]) {
+  return selectedCookbooks.reduce((count, cookbook) => {
+    return count + (cookbook.endpoint_required?.length || 0);
+  }, 0);
+}
+
 function BenchmarkNewSessionFlow() {
   const router = useRouter();
   const appDispatch = useAppDispatch();
@@ -54,17 +60,13 @@ function BenchmarkNewSessionFlow() {
 
   function handleNextIconClick() {
     if (flowState.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
-      const requiredEndpoints = selectedCookbooks.reduce((acc, cookbook) => {
-        if (cookbook.endpoint_required && cookbook.endpoint_required.length) {
-          acc = [...acc, ...cookbook.endpoint_required];
-        }
-        return acc;
-      }, [] as string[]);
+      const hasAddtionalRequirements =
+        countRequiredEndpoints(selectedCookbooks) > 0;
       dispatch({
         type: 'NEXT_BTN_CLICK',
         cookbooksLength: selectedCookbooks.length,
         modelsLength: selectedModels.length,
-        requiredEndpoints,
+        hasAddtionalRequirements,
       });
       return;
     }
@@ -108,6 +110,16 @@ function BenchmarkNewSessionFlow() {
         modelsLength: selectedModels.length + 1,
       });
     }
+  }
+
+  function handleCookbookSelectedOrUnselected(selectedCookbooks: Cookbook[]) {
+    const hasAddtionalRequirements =
+      countRequiredEndpoints(selectedCookbooks) > 0;
+    dispatch({
+      type: 'COOKBOOK_SELECTION_CLICK',
+      cookbooksLength: selectedCookbooks.length,
+      hasAddtionalRequirements,
+    });
   }
 
   function handleEditModelClick(model: LLMEndpoint) {
@@ -171,20 +183,8 @@ function BenchmarkNewSessionFlow() {
               type: 'SHOW_SURFACE_OVERLAY',
             })
           }
-          onCookbookSelected={(updatedSelectedCookbooks) =>
-            dispatch({
-              type: 'COOKBOOK_SELECTION_CLICK',
-              cookbooksLength: updatedSelectedCookbooks.length,
-              hasAddtionalRequirements: requiredEndpoints.length > 0,
-            })
-          }
-          onCookbookUnselected={(updatedSelectedCookbooks) => {
-            dispatch({
-              type: 'COOKBOOK_SELECTION_CLICK',
-              cookbooksLength: updatedSelectedCookbooks.length,
-              hasAddtionalRequirements: requiredEndpoints.length > 0,
-            });
-          }}
+          onCookbookSelected={handleCookbookSelectedOrUnselected}
+          onCookbookUnselected={handleCookbookSelectedOrUnselected}
         />
       );
       break;
