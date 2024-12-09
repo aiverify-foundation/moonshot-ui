@@ -171,17 +171,17 @@ function BenchmarkNewSessionFlow() {
               type: 'SHOW_SURFACE_OVERLAY',
             })
           }
-          onCookbookSelected={() =>
+          onCookbookSelected={(updatedSelectedCookbooks) =>
             dispatch({
               type: 'COOKBOOK_SELECTION_CLICK',
-              cookbooksLength: selectedCookbooks.length + 1,
+              cookbooksLength: updatedSelectedCookbooks.length,
               hasAddtionalRequirements: requiredEndpoints.length > 0,
             })
           }
-          onCookbookUnselected={() => {
+          onCookbookUnselected={(updatedSelectedCookbooks) => {
             dispatch({
               type: 'COOKBOOK_SELECTION_CLICK',
-              cookbooksLength: selectedCookbooks.length - 1,
+              cookbooksLength: updatedSelectedCookbooks.length,
               hasAddtionalRequirements: requiredEndpoints.length > 0,
             });
           }}
