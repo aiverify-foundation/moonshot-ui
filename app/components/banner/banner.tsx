@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { PropsWithChildren, ReactNode } from 'react';
 import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { useIsResponsiveBreakpoint } from '@/app/hooks/useIsResponsiveBreakpoint';
+import { cn } from '@/app/lib/cn';
 import styles from './styles/banner.module.css';
 
 type BannerProps = {
@@ -14,6 +16,7 @@ type BannerProps = {
   buttonHoverColor?: string;
   buttonTextColor?: string;
   onBtnClick?: () => void;
+  className?: string;
 };
 
 function Banner(props: PropsWithChildren<BannerProps>) {
@@ -27,16 +30,27 @@ function Banner(props: PropsWithChildren<BannerProps>) {
     buttonTextColor = '#FFFFFF',
     onBtnClick,
     children,
+    className,
   } = props;
+
+  const screenSize = useIsResponsiveBreakpoint();
 
   return (
     <figure
-      className={styles.banner}
+      className={cn(
+        styles.banner,
+        `${screenSize === 'sm' || screenSize === 'md' ? '!p-10' : ''}`,
+        className
+      )}
       style={{ backgroundColor: bannerColor }}>
       {children}
       <figcaption className={styles.caption_container}>
         <p
-          className={styles.caption_text}
+          className={`${styles.caption_text} ${
+            screenSize === 'sm' || screenSize === 'md'
+              ? '!text-[1.2rem]'
+              : undefined
+          }`}
           style={{ color: textColor }}>
           {bannerText}
         </p>

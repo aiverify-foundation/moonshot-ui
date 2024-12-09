@@ -26,7 +26,6 @@ export default async function RecipesPage() {
     <MainSectionSurface
       closeLinkUrl="/"
       height="100%"
-      minHeight={750}
       bgColor={colors.moongray['950']}>
       <RecipesViewList
         recipes={(rcResult as ApiResult<Recipe[]>).data}
