@@ -160,7 +160,6 @@ function CookbooksMain({ cookbooks }: { cookbooks: Cookbook[] }) {
       <MainSectionSurface
         onCloseIconClick={handleOnCloseIconClick}
         height="100%"
-        minHeight={750}
         bgColor={surfaceColor}>
         {currentStep === FlowSteps.SelectCookbooks && (
           <CookbooksViewList

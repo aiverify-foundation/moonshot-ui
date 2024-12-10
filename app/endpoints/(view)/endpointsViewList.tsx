@@ -22,7 +22,6 @@ function EndpointsViewList({ endpoints, children }: EndpointsViewListProps) {
     <MainSectionSurface
       closeLinkUrl="/"
       height="100%"
-      minHeight={750}
       bgColor={colors.moongray['950']}>
       <div className="relative h-full">
         <header className="flex gap-5 w-full mb-3 justify-between items-end">

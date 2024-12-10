@@ -22,7 +22,6 @@ export default async function RecipesPage() {
     <MainSectionSurface
       closeLinkUrl="/"
       height="100%"
-      minHeight={750}
       bgColor={colors.moongray['950']}>
       <RecipesViewList
         defaultFirstStep={Step.ADD_TO_NEW_COOKBOOK}

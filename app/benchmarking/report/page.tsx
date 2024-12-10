@@ -131,7 +131,6 @@ export default async function BenchmarkingReportPage(props: {
     <MainSectionSurface
       closeLinkUrl="/benchmarking"
       height="100%"
-      minHeight={750}
       bgColor={colors.moongray['950']}>
       <ReportViewer
         benchmarkResult={bencmarkResult}

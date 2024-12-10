@@ -6,9 +6,7 @@ export async function GET() {
     `${config.webAPI.hostURL}${config.webAPI.basePathConnectors}`,
     {
       method: 'GET',
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
+      cache: 'no-store',
     }
   );
   return response;
