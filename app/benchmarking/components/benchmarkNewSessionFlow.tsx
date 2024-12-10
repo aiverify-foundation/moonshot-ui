@@ -59,16 +59,6 @@ function BenchmarkNewSessionFlow() {
   );
 
   function handleNextIconClick() {
-    // if (flowState.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
-    //   dispatch({
-    //     type: 'NEXT_BTN_CLICK',
-    //     cookbooksLength: selectedCookbooks.length,
-    //     modelsLength: selectedModels.length,
-    //     hasAdditionalRequirements,
-    //   });
-    //   return;
-    // }
-
     dispatch({
       type: 'NEXT_BTN_CLICK',
       cookbooksLength: selectedCookbooks.length,
