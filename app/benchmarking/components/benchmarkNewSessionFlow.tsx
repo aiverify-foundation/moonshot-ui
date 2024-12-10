@@ -248,7 +248,6 @@ function BenchmarkNewSessionFlow() {
         <MainSectionSurface
           onCloseIconClick={handleOnCloseIconClick}
           height="100%"
-          minHeight={750}
           bgColor={surfaceColor}
           headerHeight={80}
           bodyHeight="calc(100% - 80px)"
@@ -265,8 +264,8 @@ function BenchmarkNewSessionFlow() {
           }>
           <div className="flex flex-col items-center h-full">
             <div
-              className="flex flex-col gap-5 justify-center w-full"
-              style={{ height: 'calc(100% - 60px)' }}>
+              className="flex flex-col gap-5 ipad11Inch:gap-2 ipadPro:gap-2 justify-center w-full"
+              style={{ height: 'calc(100% - 33px)' }}>
               {view}
             </div>
             <div

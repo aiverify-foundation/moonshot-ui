@@ -3,7 +3,8 @@
 exports[`Chatbox render chatbox containing prompt and response talk bubbles 1`] = `
 <div>
   <div
-    class="absolute pt-0 text-white min-w-96 shadow-moongray-800 dark:shadow-moongray-900/30 bg-moongray-950 backdrop-blur-sm "
+    class="absolute pt-0 text-white shadow-moongray-800 dark:shadow-moongray-900/30
+          bg-moongray-950 "
     id="test-window"
     style="left: 0px; top: 0px; background-color: rgb(45, 43, 47); width: 300px; height: 400px;"
   >
@@ -25,7 +26,7 @@ exports[`Chatbox render chatbox containing prompt and response talk bubbles 1`] 
         </div>
       </div>
       <div
-        class="h-full px-4 overflow-x-hidden overflow-y-auto   bg-white size-full custom-scrollbar snap-mandatory"
+        class="h-full px-4 overflow-x-hidden overflow-y-auto   bg-white custom-scrollbar snap-mandatory"
         style="padding-left: 0px; padding-right: 0px; margin-left: 0.7rem; margin-right: 0.7rem;"
       >
         <div

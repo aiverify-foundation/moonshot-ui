@@ -181,7 +181,7 @@ function ViewBookmarksModal(props: ViewBookmarksModalProps) {
       top={-200}
       left={400}
       width={900}
-      height={640}
+      height={500}
       enableScreenOverlay
       overlayOpacity={0.8}
       bgColor={colors.moongray['800']}
