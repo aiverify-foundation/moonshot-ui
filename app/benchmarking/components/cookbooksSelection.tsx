@@ -49,7 +49,7 @@ type Props = {
 };
 
 function CookbooksSelection(props: Props) {
-  const { onClose, onCookbookSelected, onCookbookUnselected } = props;
+  const { onCookbookSelected, onCookbookUnselected } = props;
   const dispatch = useAppDispatch();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
