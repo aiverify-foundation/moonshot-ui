@@ -4,7 +4,6 @@ import { Button, ButtonType } from '@/app/components/button';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
 import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
-import config from '@/moonshot.config';
 
 type CookbookSelectionItemProps = {
   cookbook: Cookbook;

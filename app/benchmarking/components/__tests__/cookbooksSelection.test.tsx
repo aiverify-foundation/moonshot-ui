@@ -48,8 +48,8 @@ const mockCookbooks: Cookbook[] = [
         embeddings: ['embed-endpoint-1', 'endpoint-2'],
       },
       endpoints: ['endpoint-1', 'endpoint-2'],
-      tags: ['tag1', 'tag2'],
     },
+    tags: ['tag1', 'tag2'],
   },
   {
     id: 'cb-id-2',
