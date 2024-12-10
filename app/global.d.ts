@@ -98,6 +98,13 @@ type LLMEndpointFormValues = {
   params?: string;
 };
 
+type RequiredConfig = {
+  configurations: {
+    embeddings?: string[];
+  };
+  endpoints?: string[];
+};
+
 type Cookbook = {
   id: string;
   name: string;
@@ -105,7 +112,7 @@ type Cookbook = {
   recipes: string[];
   total_prompt_in_cookbook: number;
   total_dataset_in_cookbook: number;
-  endpoint_required: string[] | null;
+  required_config: RequiredConfig | null;
   tags?: string[];
   categories?: string[];
 };
@@ -138,7 +145,7 @@ type Recipe = {
   stats: RecipeStats;
   tags: string[];
   total_prompt_in_recipe: number;
-  endpoint_required: string[] | null;
+  required_config: RequiredConfig | null;
 };
 
 type RecipeFormValues = {

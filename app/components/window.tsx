@@ -254,7 +254,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
         id={id}
         ref={windowRef}
         onClick={onWholeWindowClick}
-        className={`absolute pt-0 text-white min-w-96 shadow-moongray-800 dark:shadow-moongray-900/30 bg-moongray-950 backdrop-blur-sm ${disableFadeIn ? '' : 'fadeScaleInAnimation'}`}
+        className={`absolute pt-0 text-white shadow-moongray-800 dark:shadow-moongray-900/30
+          bg-moongray-950 ${disableFadeIn ? '' : 'fadeScaleInAnimation'}`}
         style={{
           left: initialPosition ? initialPosition[0] : undefined,
           top: initialPosition ? initialPosition[1] : undefined,
@@ -290,7 +291,7 @@ const Window = forwardRef<HTMLDivElement, WindowProps>(
           <div
             ref={scrollDivRef}
             className="h-full px-4 overflow-x-hidden overflow-y-auto
-              bg-white size-full custom-scrollbar snap-mandatory"
+              bg-white custom-scrollbar snap-mandatory"
             style={{
               ...contentAreaStyles,
             }}

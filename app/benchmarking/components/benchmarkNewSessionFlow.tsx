@@ -10,6 +10,7 @@ import { Modal } from '@/app/components/modal';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { colors } from '@/app/customColors';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
+import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 import {
   addBenchmarkModels,
   removeBenchmarkModels,
@@ -51,10 +52,10 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
   function handleNextIconClick() {
     if (flowState.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
       const requiredEndpoints = selectedCookbooks.reduce((acc, cookbook) => {
-        if (cookbook.endpoint_required && cookbook.endpoint_required.length) {
-          acc = [...acc, ...cookbook.endpoint_required];
-        }
-        return acc;
+        return [
+          ...acc,
+          ...getEndpointsFromRequiredConfig(cookbook.required_config),
+        ];
       }, [] as string[]);
       dispatch({
         type: 'NEXT_BTN_CLICK',
@@ -276,7 +277,6 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
         <MainSectionSurface
           onCloseIconClick={handleOnCloseIconClick}
           height="100%"
-          minHeight={750}
           bgColor={surfaceColor}>
           <div className="flex flex-col items-center h-full">
             <div className="w-[700px] flex shrink-0 justify-center">
@@ -288,7 +288,7 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
               />
             </div>
             <div
-              className="flex flex-col gap-5 justify-center w-full"
+              className="flex flex-col gap-5 ipad11Inch:gap-2 ipadPro:gap-2 justify-center w-full"
               style={{ height: 'calc(100% - 33px)' }}>
               {!flowState.hidePrevBtn && (
                 <div className="flex justify-center">
