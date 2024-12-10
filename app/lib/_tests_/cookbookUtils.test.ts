@@ -8,7 +8,7 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['Recipe 1', 'Recipe 2'],
     total_prompt_in_cookbook: 5,
     total_dataset_in_cookbook: 1,
-    endpoint_required: null,
+    required_config: null,
   },
   {
     id: '2',
@@ -17,7 +17,7 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['Recipe 3', 'Recipe 4'],
     total_prompt_in_cookbook: 10,
     total_dataset_in_cookbook: 2,
-    endpoint_required: null,
+    required_config: null,
   },
   {
     id: '3',
@@ -26,7 +26,7 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['Recipe 5', 'Recipe 6'],
     total_prompt_in_cookbook: 15,
     total_dataset_in_cookbook: 3,
-    endpoint_required: null,
+    required_config: null,
   },
 ];
 
@@ -56,7 +56,7 @@ describe('calcTotalPromptsAndEstimatedTime', () => {
         recipes: ['Recipe 1', 'Recipe 2'],
         total_prompt_in_cookbook: 0,
         total_dataset_in_cookbook: 0,
-        endpoint_required: null,
+        required_config: null,
       },
       {
         id: '2',
@@ -65,7 +65,7 @@ describe('calcTotalPromptsAndEstimatedTime', () => {
         recipes: ['Recipe 3', 'Recipe 4'],
         total_prompt_in_cookbook: 0,
         total_dataset_in_cookbook: 0,
-        endpoint_required: null,
+        required_config: null,
       },
     ];
     const result = calcTotalPromptsAndEstimatedTime(cookbooksWithNoPrompts, 10);
