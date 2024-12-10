@@ -2,6 +2,7 @@ import React from 'react';
 import { IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { colors } from '@/app/customColors';
+import { cn } from '@/app/lib/cn';
 import { ViewBookmarksModal } from './viewBookmarksModal';
 
 function BookmarksPanel({
@@ -9,13 +10,15 @@ function BookmarksPanel({
   left,
   disabled,
   defaultShowPanel = false,
+  className,
   onUseBtnClick,
   onPanelClose,
 }: {
-  bottom: React.CSSProperties['top'];
-  left: React.CSSProperties['left'];
+  bottom?: React.CSSProperties['top'];
+  left?: React.CSSProperties['left'];
   disabled: boolean;
   defaultShowPanel?: boolean;
+  className?: string;
   onPanelClose?: () => void;
   onUseBtnClick: (preparedPrompt: string) => void;
 }) {
@@ -42,8 +45,10 @@ function BookmarksPanel({
 
   return (
     <div
-      className="bg-moongray-600 w-[220px] absolute rounded-md p-2 shadow-lg
-        flex gap-4"
+      className={cn(
+        'bg-moongray-600 w-[220px] absolute rounded-md p-2 shadow-lgflex gap-4',
+        className
+      )}
       style={{ bottom, left }}>
       {disabled && (
         <div

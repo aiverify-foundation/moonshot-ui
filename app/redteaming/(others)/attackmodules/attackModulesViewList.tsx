@@ -29,7 +29,6 @@ function AttackModulesViewList({ attacks }: { attacks: AttackModule[] }) {
     <MainSectionSurface
       closeLinkUrl="/"
       height="100%"
-      minHeight={750}
       bgColor={colors.moongray['950']}>
       <div className="relative h-full">
         <header className="flex gap-5 w-full mb-3 justify-between items-end">
@@ -61,7 +60,7 @@ function AttackModulesViewList({ attacks }: { attacks: AttackModule[] }) {
                     <h4 className="text-[1rem] font-semibold">{attack.name}</h4>
                   </div>
                   <p
-                    className="text-[0.8rem] h-[40px] overflow-hidden text-moongray-400"
+                    className="text-[0.8rem] h-[40px] overflow-hidden text-moongray-400 break-all break-words"
                     style={ellipsisStyle}>
                     {description}
                   </p>

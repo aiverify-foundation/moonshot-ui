@@ -35,7 +35,6 @@ function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
     <MainSectionSurface
       closeLinkUrl="/"
       height="100%"
-      minHeight={750}
       bgColor={colors.moongray['950']}>
       <div className="relative h-full">
         <header className="flex gap-5 w-full mb-3 justify-between items-end">
@@ -77,7 +76,7 @@ function RedteamSessionsViewList({ sessions }: { sessions: Session[] }) {
                     </h4>
                   </div>
                   <p
-                    className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis text-moongray-400"
+                    className="text-[0.8rem] h-[40px] overflow-hidden text-ellipsis text-moongray-400 break-all break-words"
                     style={ellipsisStyle}>
                     {session.description}
                   </p>

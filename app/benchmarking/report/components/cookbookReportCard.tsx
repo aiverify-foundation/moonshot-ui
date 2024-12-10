@@ -55,7 +55,7 @@ function CookbookReportCard(props: BenchmarkReportCookbookResultsProps) {
         onClick={() => setShowSection(!showSection)}>
         <div className="flex items-center gap-2">
           <Icon name={IconName.Book} />
-          <h3 className="font-semibold text-white text-[1.2rem]">
+          <h3 className="font-semibold text-white text-[1.2rem] max-w-[700px] overflow-hidden overflow-ellipsis mr-4">
             {cookbook.name}
           </h3>
           <Icon

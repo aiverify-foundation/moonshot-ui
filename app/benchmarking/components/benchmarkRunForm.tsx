@@ -172,8 +172,10 @@ function BenchmarkRunForm({
         </Modal>
       )}
       <section className="flex flex-col items-center justify-center min-h-[300px] gap-5">
-        <div className="flex flex-col w-[50%] gap-2">
-          <form action={formAction}>
+        <div className="flex flex-col w-[50%] ipad11Inch:w-[60%] ipadPro:w-[65%] gap-2">
+          <form
+            action={formAction}
+            className="ipad11Inch:h-[calc(300px)] ipadPro:h-[calc(300px)] overflow-y-auto custom-scrollbar ipad11Inch:p-2 ipadPro:p-2">
             {selectedCookbooks.map((cookbook) => (
               <input
                 readOnly

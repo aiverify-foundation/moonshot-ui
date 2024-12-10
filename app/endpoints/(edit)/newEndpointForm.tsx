@@ -2,7 +2,7 @@
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useRef, memo, useMemo } from 'react';
-import { object, string, number, boolean } from 'yup';
+import { object, string, number } from 'yup';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { LoadingAnimation } from '@/app/components/loadingAnimation';
@@ -30,21 +30,18 @@ const initialFormValues: LLMEndpointFormValues = {
   token: '',
   max_calls_per_second: '10',
   max_concurrency: '1',
+  model: '',
   params: `{
       "timeout": 300,
-      "allow_retries": true,
-      "num_of_retries": 3,
-      "temperature": 0.5,
-      "model": ""
+      "max_attempts": 3,
+      "temperature": 0.5
   }`,
 };
 
 const paramsSchema = object().shape({
   timeout: number().positive('Timeout must be a positive number'),
-  allow_retries: boolean(),
-  num_of_retries: number(),
+  max_attempts: number(),
   temperature: number(),
-  model: string().required('Parameter "Model" is required'),
 });
 
 const validationSchema = object().shape({
@@ -56,6 +53,7 @@ const validationSchema = object().shape({
   connector_type: string().required('Connector Type is required'),
   max_calls_per_second: string().required('Max calls Per Second is required'),
   max_concurrency: string().required('Max Concurrency is required'),
+  model: string().min(1, 'Model is required'),
   params: string()
     .min(1, 'Other Parameters is required')
     .required('Other Parameters is required'),
@@ -128,6 +126,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
           token: endpointToEdit.token,
           max_calls_per_second: endpointToEdit.max_calls_per_second.toString(),
           max_concurrency: endpointToEdit.max_concurrency.toString(),
+          model: endpointToEdit.model,
           params: JSON.stringify(endpointToEdit.params, null, 2),
         }
       : initialFormValues;
@@ -333,6 +332,7 @@ function NewEndpointForm(props: NewEndpointFormProps) {
       name: data.name,
       uri: data.uri,
       token: data.token,
+      model: data.model,
       max_calls_per_second: data.max_calls_per_second,
       max_concurrency: data.max_concurrency,
       params: data.params,
@@ -358,151 +358,171 @@ function NewEndpointForm(props: NewEndpointFormProps) {
           : 'Create New Endpoint'}
       </h2>
       {!showMoreConfig ? (
-        <div className="w-[100%] flex justify-between">
-          <div className="flex flex-col w-[50%] gap-2">
-            <TextInput
-              name="name"
-              label="Name*"
-              labelStyles={labelStyle}
-              inputStyles={inputStyle}
-              onChange={formik.handleChange}
-              value={formik.values.name}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.name && formik.errors.name
-                  ? formik.errors.name
-                  : undefined
-              }
-              placeholder="Name of the model"
-            />
+        <div className="w-[100%] flex justify-between h-[calc(100%-80px)] overflow-y-auto custom-scrollbar">
+          <div className="flex flex-col w-[100%] gap-2 pr-5 pb-5">
+            <div className="w-[50%]">
+              <TextInput
+                name="name"
+                label="Name*"
+                labelStyles={labelStyle}
+                inputStyles={inputStyle}
+                onChange={formik.handleChange}
+                value={formik.values.name}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.name && formik.errors.name
+                    ? formik.errors.name
+                    : undefined
+                }
+                placeholder="Name of the model"
+              />
 
-            <MemSelectInput
-              label="Connection Type*"
-              name="connector_type"
-              labelStyles={labelStyle}
-              inputStyle={inputStyle}
-              options={connectionTypeOptions}
-              onSyntheticChange={formik.handleChange}
-              value={formik.values.connector_type}
-              placeholder="Select the connector type"
-              error={
-                formik.touched.connector_type && formik.errors.connector_type
-                  ? formik.errors.connector_type
-                  : undefined
-              }
-            />
+              <MemSelectInput
+                label="Connection Type*"
+                name="connector_type"
+                labelStyles={labelStyle}
+                inputStyle={inputStyle}
+                options={connectionTypeOptions}
+                onSyntheticChange={formik.handleChange}
+                value={formik.values.connector_type}
+                placeholder="Select the connector type"
+                error={
+                  formik.touched.connector_type && formik.errors.connector_type
+                    ? formik.errors.connector_type
+                    : undefined
+                }
+              />
 
-            <TextInput
-              name="uri"
-              label="URI"
-              labelStyles={labelStyle}
-              inputStyles={inputStyle}
-              onChange={formik.handleChange}
-              value={formik.values.uri}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.uri && formik.errors.uri
-                  ? formik.errors.uri
-                  : undefined
-              }
-              placeholder="URI of the remote model endpoint"
-            />
+              <TextInput
+                name="model"
+                label="Model"
+                labelStyles={labelStyle}
+                inputStyles={inputStyle}
+                onChange={formik.handleChange}
+                value={formik.values.model}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.model && formik.errors.model
+                    ? formik.errors.model
+                    : undefined
+                }
+                placeholder="Model of the model endpoint"
+              />
 
-            <TextInput
-              name="token"
-              label="Token*"
-              labelStyles={labelStyle}
-              inputStyles={tokenInputStyle}
-              onChange={formik.handleChange}
-              value={tokenTextboxValue}
-              onBlur={handleTokenInputBlur}
-              onFocus={handleTokenInputFocus}
-              error={
-                formik.touched.token && formik.errors.token
-                  ? formik.errors.token
-                  : undefined
-              }
-              placeholder="Access token for the remote model endpoint"
-            />
+              <TextInput
+                name="uri"
+                label="URI"
+                labelStyles={labelStyle}
+                inputStyles={inputStyle}
+                onChange={formik.handleChange}
+                value={formik.values.uri}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.uri && formik.errors.uri
+                    ? formik.errors.uri
+                    : undefined
+                }
+                placeholder="URI of the remote model endpoint"
+              />
+
+              <TextInput
+                name="token"
+                label="Token*"
+                labelStyles={labelStyle}
+                inputStyles={tokenInputStyle}
+                onChange={formik.handleChange}
+                value={tokenTextboxValue}
+                onBlur={handleTokenInputBlur}
+                onFocus={handleTokenInputFocus}
+                error={
+                  formik.touched.token && formik.errors.token
+                    ? formik.errors.token
+                    : undefined
+                }
+                placeholder="Access token for the remote model endpoint"
+              />
+            </div>
             <p
               className="text-[0.95rem] text-white underline cursor-pointer pt-4"
               style={{ width: 'fit-content' }}
               onClick={() => setShowMoreConfig(true)}>
               More Configs
             </p>
-          </div>
-          <div className="flex grow gap-4 justify-end items-end">
-            <Button
-              width={120}
-              mode={ButtonType.OUTLINE}
-              size="lg"
-              type="button"
-              text="Cancel"
-              onClick={disablePopupLayout ? () => router.back() : onClose}
-              hoverBtnColor={colors.moongray[800]}
-              pressedBtnColor={colors.moongray[700]}
-            />
-            <Button
-              width={120}
-              disabled={hasEmptyFields || disableSaveBtn}
-              mode={ButtonType.PRIMARY}
-              size="lg"
-              type="submit"
-              text="Save"
-              onClick={() => formik.handleSubmit()}
-              hoverBtnColor={colors.moongray[1000]}
-              pressedBtnColor={colors.moongray[900]}
-            />
+            <div className="flex grow gap-4 justify-end items-end">
+              <Button
+                width={120}
+                mode={ButtonType.OUTLINE}
+                size="lg"
+                type="button"
+                text="Cancel"
+                onClick={disablePopupLayout ? () => router.back() : onClose}
+                hoverBtnColor={colors.moongray[800]}
+                pressedBtnColor={colors.moongray[700]}
+              />
+              <Button
+                width={120}
+                disabled={hasEmptyFields || disableSaveBtn}
+                mode={ButtonType.PRIMARY}
+                size="lg"
+                type="submit"
+                text="Save"
+                onClick={() => formik.handleSubmit()}
+                hoverBtnColor={colors.moongray[1000]}
+                pressedBtnColor={colors.moongray[900]}
+              />
+            </div>
           </div>
         </div>
       ) : (
-        <div className="w-[100%] flex justify-between">
-          <div className="flex flex-col w-[50%] gap-2">
-            <MemSelectInput
-              id="max_calls_per_second"
-              label="Max Calls Per Second"
-              name="max_calls_per_second"
-              options={maxCallsPerSecondOptions}
-              onSyntheticChange={formik.handleChange}
-              value={formik.values.max_calls_per_second}
-              labelStyles={labelStyle}
-              inputStyle={inputStyle}
-            />
+        <div className="w-[100%] flex justify-between h-[calc(100%-80px)] overflow-y-auto custom-scrollbar">
+          <div className="flex flex-col w-[100%] gap-2 pr-5 pb-5">
+            <div className="w-[50%]">
+              <MemSelectInput
+                id="max_calls_per_second"
+                label="Max Calls Per Second"
+                name="max_calls_per_second"
+                options={maxCallsPerSecondOptions}
+                onSyntheticChange={formik.handleChange}
+                value={formik.values.max_calls_per_second}
+                labelStyles={labelStyle}
+                inputStyle={inputStyle}
+              />
 
-            <MemSelectInput
-              id="max_concurrency"
-              label="Max Concurrency"
-              name="max_concurrency"
-              options={maxConcurrencyOptions}
-              onSyntheticChange={formik.handleChange}
-              value={formik.values.max_concurrency}
-              labelStyles={labelStyle}
-              inputStyle={inputStyle}
-            />
+              <MemSelectInput
+                id="max_concurrency"
+                label="Max Concurrency"
+                name="max_concurrency"
+                options={maxConcurrencyOptions}
+                onSyntheticChange={formik.handleChange}
+                value={formik.values.max_concurrency}
+                labelStyles={labelStyle}
+                inputStyle={inputStyle}
+              />
 
-            <TextArea
-              label="Other Parameters*"
-              name="params"
-              onChange={handleParamsChange}
-              value={formik.values.params}
-              error={formik.errors.params ? formik.errors.params : undefined}
-              placeholder="Additional parameters normally in JSON format"
-              labelStyles={labelStyle}
-              inputStyles={{ height: 200 }}
-            />
-          </div>
-          <div className="flex grow gap-2 justify-end items-end">
-            <Button
-              disabled={!formik.values.params}
-              width={120}
-              mode={ButtonType.OUTLINE}
-              size="lg"
-              type="button"
-              text="OK"
-              onClick={handleConfigOkClick}
-              hoverBtnColor={colors.moongray[800]}
-              pressedBtnColor={colors.moongray[700]}
-            />
+              <TextArea
+                label="Other Parameters*"
+                name="params"
+                onChange={handleParamsChange}
+                value={formik.values.params}
+                error={formik.errors.params ? formik.errors.params : undefined}
+                placeholder="Additional parameters normally in JSON format"
+                labelStyles={labelStyle}
+                inputStyles={{ height: 200 }}
+              />
+            </div>
+            <div className="flex grow gap-2 justify-end items-end">
+              <Button
+                disabled={!formik.values.params}
+                width={120}
+                mode={ButtonType.OUTLINE}
+                size="lg"
+                type="button"
+                text="OK"
+                onClick={handleConfigOkClick}
+                hoverBtnColor={colors.moongray[800]}
+                pressedBtnColor={colors.moongray[700]}
+              />
+            </div>
           </div>
         </div>
       )}
@@ -514,7 +534,6 @@ function NewEndpointForm(props: NewEndpointFormProps) {
       <MainSectionSurface
         closeLinkUrl="/endpoints"
         height="100%"
-        minHeight={750}
         bgColor={colors.moongray['950']}>
         {createModelEndpointIsLoding || updateModelEndpointIsLoding ? (
           <div className="relative w-full h-full">
