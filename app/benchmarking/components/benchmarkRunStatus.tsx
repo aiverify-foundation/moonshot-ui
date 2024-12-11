@@ -1,7 +1,8 @@
 'use client';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React from 'react';
+import React, { startTransition } from 'react';
+import { getRecipesStatsById } from '@/actions/getRecipesStatsById';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { ActionCard } from '@/app/components/actionCard/actionCard';
 import { Button, ButtonType } from '@/app/components/button';
@@ -26,6 +27,7 @@ import {
 function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
   const [showRunDetails, setShowRunDetails] = React.useState(false);
   const [isCancelBtnDisabled, setIsCancelBtnDisabled] = React.useState(false);
+  const [recipesStats, setRecipesStats] = React.useState<RecipeStats[]>([]);
   const [statuses, setStatuses] = React.useState<TestStatuses | undefined>(
     () => allStatuses
   );
@@ -94,6 +96,75 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
       closeEventSource();
     };
   }, []);
+
+  React.useEffect(() => {
+    if (!cookbooksData) return;
+    startTransition(() => {
+      getRecipesStatsById(
+        cookbooksData.reduce((allRecipes, cookbook) => {
+          allRecipes.push(...cookbook.recipes);
+          return allRecipes;
+        }, [] as string[])
+      ).then((result) => {
+        if (result.status === 'error') {
+          console.log(result.message);
+          setRecipesStats([]);
+        } else {
+          setRecipesStats(result.data);
+        }
+      });
+    });
+  }, [cookbooksData]);
+
+  const calcPercentageAtEachDataset = true;
+
+  const userInputNumOfPromptsGrandTotal = React.useMemo(() => {
+    if (runnerData?.runner_args?.prompt_selection_percentage == undefined)
+      return [0, 0];
+    const decimalFraction =
+      runnerData?.runner_args?.prompt_selection_percentage / 100;
+    return recipesStats.reduce((acc, stats) => {
+      let percentageCalculatedTotalPrompts = 0;
+      const totalPromptsFromAllDatasets = Object.values(
+        stats.num_of_datasets_prompts
+      ).reduce((sum, value) => {
+        if (calcPercentageAtEachDataset) {
+          percentageCalculatedTotalPrompts += Math.floor(
+            value * decimalFraction
+          );
+        }
+        return sum + value;
+      }, 0);
+      const grandTotalPromptsToRun =
+        stats.num_of_prompt_templates > 0
+          ? totalPromptsFromAllDatasets * stats.num_of_prompt_templates
+          : totalPromptsFromAllDatasets;
+      let userInputTotalPromptsToRun = 0;
+      if (stats.num_of_prompt_templates > 0) {
+        if (calcPercentageAtEachDataset) {
+          userInputTotalPromptsToRun =
+            percentageCalculatedTotalPrompts * stats.num_of_prompt_templates;
+        } else {
+          userInputTotalPromptsToRun =
+            decimalFraction *
+            grandTotalPromptsToRun *
+            stats.num_of_prompt_templates;
+        }
+      } else {
+        if (calcPercentageAtEachDataset) {
+          userInputTotalPromptsToRun = percentageCalculatedTotalPrompts;
+        } else {
+          userInputTotalPromptsToRun = decimalFraction * grandTotalPromptsToRun;
+        }
+      }
+      return acc + userInputTotalPromptsToRun;
+    }, 0);
+  }, [recipesStats, runnerData]);
+
+  const roundedUserInputNumOfPromptsGrandTotal = Math.max(
+    1,
+    Math.floor(userInputNumOfPromptsGrandTotal as number)
+  );
 
   const endpoints =
     endpointsData &&
@@ -301,8 +372,7 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
                       <span className="text-moonwine-400 pr-2">
                         Number of prompts to run:
                       </span>
-                      {runnerData.runner_args &&
-                        runnerData.runner_args.num_of_prompts}
+                      {roundedUserInputNumOfPromptsGrandTotal}
                     </p>
                   </div>
                 </header>

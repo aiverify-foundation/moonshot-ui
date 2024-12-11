@@ -64,7 +64,7 @@ export type RunnerWebApiModel = {
 export type RunnerDetailWebApiModel = {
   run_id: number;
   runner_id: string;
-  runner_args: CookbooksRunnerArgs | RecipesRunnerArgs;
+  runner_args: CookbooksRunnerArgs;
   endpoints: string[];
   start_time: number;
 };

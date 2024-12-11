@@ -48,7 +48,7 @@ const mockRecipesStats: RecipeStats[] = [
   },
 ];
 
-// formula: total_prompt_in_cookbook * num_of_metrics + num_of_prompt_templates
+// total prompts to run = total_prompt_in_cookbook * num_of_prompt_templates
 
 // mock mockRecipesStats[0] has 0 prompt templates, so not multiplying by num_of_prompt_templates
 const totalPromptsForStat0 =
@@ -64,13 +64,58 @@ const totalPromptForStat1 =
 
 const GRAND_TOTAL_PROMPTS = totalPromptsForStat0 + totalPromptForStat1;
 
-const USER_INPUT_NUM_OF_PROMPTS = 5;
-
+const USER_INPUT_PERCENTAGE_OF_PROMPTS = 5;
+const DECIMAL_FRACTION_OF_PROMPTS = USER_INPUT_PERCENTAGE_OF_PROMPTS / 100;
 const SMALLER_SET_TOTAL_PROMPTS =
-  USER_INPUT_NUM_OF_PROMPTS * mockRecipesStats[0].num_of_datasets +
-  USER_INPUT_NUM_OF_PROMPTS *
-    mockRecipesStats[1].num_of_prompt_templates *
-    mockRecipesStats[1].num_of_datasets;
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[0].num_of_datasets_prompts.dataset1 //mockRecipesStats[0] has 0 prompt templates
+  ) +
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[0].num_of_datasets_prompts.dataset2 //mockRecipesStats[0] has 0 prompt templates
+  ) +
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset1
+  ) *
+    mockRecipesStats[1].num_of_prompt_templates +
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset2
+  ) *
+    mockRecipesStats[1].num_of_prompt_templates +
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset3
+  ) *
+    mockRecipesStats[1].num_of_prompt_templates;
+
+const ONE_PERCENT_DECIMAL_FRACTION = 1 / 100;
+const ONE_PERCENT_TOTAL_PROMPTS =
+  Math.floor(
+    ONE_PERCENT_DECIMAL_FRACTION *
+      mockRecipesStats[0].num_of_datasets_prompts.dataset1 //mockRecipesStats[0] has 0 prompt templates
+  ) +
+  Math.floor(
+    ONE_PERCENT_DECIMAL_FRACTION *
+      mockRecipesStats[0].num_of_datasets_prompts.dataset2
+  ) +
+  Math.floor(
+    ONE_PERCENT_DECIMAL_FRACTION *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset1
+  ) *
+    mockRecipesStats[1].num_of_prompt_templates +
+  Math.floor(
+    ONE_PERCENT_DECIMAL_FRACTION *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset2
+  ) *
+    mockRecipesStats[1].num_of_prompt_templates +
+  Math.floor(
+    ONE_PERCENT_DECIMAL_FRACTION *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset3
+  ) *
+    mockRecipesStats[1].num_of_prompt_templates;
 
 const mockCookbooks: Cookbook[] = [
   {
@@ -151,11 +196,10 @@ describe('BenchmarkRunForm', () => {
     description: '',
     inputs: [],
     endpoints: [],
-    num_of_prompts: '',
+    prompt_selection_percentage: '1',
     system_prompt: '',
     runner_processing_module: 'benchmarking',
     random_seed: '0',
-    run_all: 'false',
   };
 
   //We are not asserting anything on the form action. In React, form action is a reference to a function (server action). There is no way to stub the action.
@@ -190,7 +234,9 @@ describe('BenchmarkRunForm', () => {
     );
     const form = container.querySelector('form');
     expect(form).toHaveFormValues({
-      num_of_prompts: null,
+      prompt_selection_percentage: Number(
+        mockFormState.prompt_selection_percentage
+      ),
       inputs: mockCookbooks.map((cb) => cb.id),
       endpoints: mockEndpoints.map((ep) => ep.id),
       random_seed: Number(mockFormState.random_seed),
@@ -198,9 +244,15 @@ describe('BenchmarkRunForm', () => {
       system_prompt: mockFormState.system_prompt,
       run_all: false,
     });
-    expect(screen.getByRole('button', { name: /Run/i })).toBeDisabled();
+    const runBtn = screen.getByRole('button', { name: /Run/i });
+    expect(runBtn).toBeDisabled();
     await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
-    expect(screen.getByText(/will be run: 0/i)).toBeInTheDocument();
+    expect(runBtn).toBeEnabled();
+    expect(
+      screen.getByText(
+        `Number of prompts that will be run: ${ONE_PERCENT_TOTAL_PROMPTS}`
+      )
+    ).toBeInTheDocument();
     expect(
       screen.getByText(new RegExp(`${GRAND_TOTAL_PROMPTS}`))
     ).toBeInTheDocument();
@@ -213,14 +265,19 @@ describe('BenchmarkRunForm', () => {
         selectedEndpoints={mockEndpoints}
       />
     );
+    const hiddenPercentInputField = container.querySelector(
+      'input[name="prompt_selection_percentage"]'
+    ) as HTMLInputElement;
+    hiddenPercentInputField.style.display = 'block'; // temporarily unhide percet input for testing
     await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
+    await userEvent.clear(hiddenPercentInputField);
     await userEvent.type(
-      screen.getByLabelText(/Run a smaller set/i),
-      USER_INPUT_NUM_OF_PROMPTS.toString()
+      hiddenPercentInputField,
+      USER_INPUT_PERCENTAGE_OF_PROMPTS.toString()
     );
     const form = container.querySelector('form');
     expect(form).toHaveFormValues({
-      num_of_prompts: USER_INPUT_NUM_OF_PROMPTS,
+      prompt_selection_percentage: USER_INPUT_PERCENTAGE_OF_PROMPTS,
       inputs: mockCookbooks.map((cb) => cb.id),
       endpoints: mockEndpoints.map((ep) => ep.id),
       random_seed: Number(mockFormState.random_seed),
@@ -228,34 +285,16 @@ describe('BenchmarkRunForm', () => {
       system_prompt: mockFormState.system_prompt,
       run_all: false,
     });
+    hiddenPercentInputField.style.display = 'none';
     expect(screen.getByRole('button', { name: /Run/i })).toBeEnabled();
     expect(
       screen.getByText(new RegExp(`${GRAND_TOTAL_PROMPTS}`))
     ).toBeInTheDocument();
     expect(
-      screen.getByText(new RegExp(`${SMALLER_SET_TOTAL_PROMPTS}`))
+      screen.getByText(
+        `Number of prompts that will be run: ${SMALLER_SET_TOTAL_PROMPTS}`
+      )
     ).toBeInTheDocument();
-  });
-
-  it('should not set num_of_prompts when "Run All" is checked', async () => {
-    const { container } = renderWithProviders(
-      <BenchmarkRunForm
-        selectedCookbooks={mockCookbooks}
-        selectedEndpoints={mockEndpoints}
-      />
-    );
-    await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
-    await userEvent.click(screen.getByRole('toggle-switch'));
-    const form = container.querySelector('form');
-    expect(form).toHaveFormValues({
-      inputs: mockCookbooks.map((cb) => cb.id),
-      endpoints: mockEndpoints.map((ep) => ep.id),
-      random_seed: Number(mockFormState.random_seed),
-      runner_processing_module: mockFormState.runner_processing_module,
-      system_prompt: mockFormState.system_prompt,
-      run_all: true,
-    });
-    expect(screen.getByRole('button', { name: /Run/i })).toBeEnabled();
   });
 
   it('should display form errors', async () => {
@@ -283,7 +322,7 @@ describe('BenchmarkRunForm', () => {
       formStatus: 'error',
       formErrors: {
         run_name: ['mock error 1'],
-        num_of_prompts: ['mock error 2'],
+        prompt_selection_percentage: ['mock error 2'],
         description: ['mock error 3'],
       },
     };
@@ -303,28 +342,7 @@ describe('BenchmarkRunForm', () => {
       );
     });
     expect(screen.getAllByText('mock error 1')).toHaveLength(2);
-    expect(screen.getAllByText('mock error 2')).toHaveLength(2);
+    expect(screen.getAllByText('mock error 2')).toHaveLength(1);
     expect(screen.getAllByText('mock error 3')).toHaveLength(2);
-  });
-
-  it('should validate num of prompts', async () => {
-    (useFormStatus as jest.Mock).mockImplementation(() => ({
-      pending: false,
-    }));
-    renderWithProviders(
-      <BenchmarkRunForm
-        selectedCookbooks={mockCookbooks}
-        selectedEndpoints={mockEndpoints}
-      />
-    );
-    await userEvent.type(screen.getByLabelText(/Name/i), 'Test Run');
-    await userEvent.type(screen.getByLabelText(/Run a smaller set/i), '0');
-    expect(screen.getByRole('button', { name: /Run/i })).toBeDisabled();
-    expect(screen.getByText(/.* must be greater than 0/i)).toBeInTheDocument();
-    expect(screen.getByText(/will be run: 0/i)).toBeInTheDocument();
-    await userEvent.type(screen.getByLabelText(/Run a smaller set/i), '1.5');
-    expect(screen.getByRole('button', { name: /Run/i })).toBeDisabled();
-    expect(screen.getByText(/.* must be an integer/i)).toBeInTheDocument();
-    expect(screen.getByText(/will be run: 0/i)).toBeInTheDocument();
   });
 });
