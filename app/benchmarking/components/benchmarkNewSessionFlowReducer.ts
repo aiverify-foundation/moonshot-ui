@@ -83,7 +83,9 @@ export function benchmarkNewSessionFlowReducer(
             ? flowStepsWithConfigRequirements
             : flowSteps,
           stepIndex: state.stepIndex + 1,
-          view: BenchmarkNewSessionViews.BENCHMARK_RUN_FORM,
+          view: action.hasAdditionalRequirements
+            ? BenchmarkNewSessionViews.CONFIGURE_ADDITIONAL_REQUIREMENTS
+            : BenchmarkNewSessionViews.BENCHMARK_RUN_FORM,
           hidePrevBtn: false,
           hideNextBtn: true,
           disablePrevBtn: false,

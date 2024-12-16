@@ -25,6 +25,7 @@ import {
 } from './benchmarkNewSessionFlowReducer';
 import BenchmarkRunForm from './benchmarkRunForm';
 import { BenchmarkNewSessionViews } from './enums';
+import { ConfigureAdditionalRequirements } from './configureAdditionalRequirements';
 
 function countRequiredEndpoints(selectedCookbooks: Cookbook[]) {
   return selectedCookbooks.reduce((count, cookbook) => {
@@ -176,6 +177,9 @@ function BenchmarkNewSessionFlow() {
           onCookbookUnselected={handleCookbookSelectedOrUnselected}
         />
       );
+      break;
+    case BenchmarkNewSessionViews.CONFIGURE_ADDITIONAL_REQUIREMENTS:
+      view = <ConfigureAdditionalRequirements />;
       break;
     case BenchmarkNewSessionViews.BENCHMARK_RUN_FORM:
       surfaceColor = colors.moongray['950'];
