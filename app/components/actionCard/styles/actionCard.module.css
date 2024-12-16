@@ -16,6 +16,28 @@
   transition: border-color 0.3s ease;
 }
 
+@media screen and (max-height: 834px) {
+  .card {
+    height: 300px;
+    padding: 8%;
+    gap: 1rem;
+  }
+
+  .card h2 {
+    font-size: 1.4rem;
+    line-height: 1.6rem;
+  }
+
+  .card p {
+    font-size: 0.9rem;
+  }
+
+  .card figcaption {
+    padding: 1.5rem 0;
+  }
+}
+
+
 .card:hover {
   border-color: #FFFFFF;
 }

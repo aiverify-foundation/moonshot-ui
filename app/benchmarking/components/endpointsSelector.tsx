@@ -28,11 +28,11 @@ function EndpointSelector(props: EndpointSelectorProps) {
   return (
     <div className="flex flex-col pt-4 gap-8 pb-4 h-[95%]">
       <section className="flex flex-col items-center gap-3">
-        <h2 className="text-[1.6rem] leading-[2rem] height-[2rem] font-medium tracking-wide text-white w-full text-center">
+        <h2 className="text-[1.6rem] ipad11Inch:text-[1.2rem] ipadPro:text-[1.2rem] leading-[2rem] height-[2rem] font-medium tracking-wide text-white w-full text-center">
           {totalSelected > 0 ? (
             <>
               <span
-                className="text-[2rem] pr-2"
+                className="text-[1.6rem] ipad11Inch:text-[1.2rem] ipadPro:text-[1.2rem] pr-2"
                 style={{ color: colors.moonpurplelight }}>
                 {totalSelected}
               </span>
@@ -55,7 +55,7 @@ function EndpointSelector(props: EndpointSelectorProps) {
           onClick={onCreateClick}
         />
       </section>
-      <div className="relative flex flex-col min-h-[300px] px-[10%] w-[100%] h-full items-center">
+      <div className="relative flex flex-col min-h-[200px] px-[10%] w-[100%] h-full items-center">
         {isLoading ? (
           <div className="ring">
             Loading

@@ -6,7 +6,7 @@ export const mockCookbooksInReport: Cookbook[] = [
     recipes: ['mock-recipe-id-1'],
     total_prompt_in_cookbook: 100,
     total_dataset_in_cookbook: 1,
-    endpoint_required: null,
+    required_config: null,
   },
   {
     id: 'mlc-ai-safety',
@@ -24,7 +24,7 @@ export const mockCookbooksInReport: Cookbook[] = [
     ],
     total_prompt_in_cookbook: 200,
     total_dataset_in_cookbook: 2,
-    endpoint_required: null,
+    required_config: null,
   },
 ];
 
@@ -36,7 +36,7 @@ export const mockCookbooksInReportStandard: Cookbook[] = [
     recipes: ['singapore-facts'],
     total_prompt_in_cookbook: 100,
     total_dataset_in_cookbook: 1,
-    endpoint_required: null,
+    required_config: null,
   },
   {
     id: 'standard-cookbook-id-2',
@@ -45,6 +45,6 @@ export const mockCookbooksInReportStandard: Cookbook[] = [
     recipes: ['singapore-facts'],
     total_prompt_in_cookbook: 100,
     total_dataset_in_cookbook: 1,
-    endpoint_required: null,
+    required_config: null,
   },
 ];
