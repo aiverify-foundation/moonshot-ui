@@ -118,6 +118,21 @@ export function benchmarkNewSessionFlowReducer(
           showSurfaceOverlay: false,
         };
       }
+      if (
+        state.view ===
+        BenchmarkNewSessionViews.CONFIGURE_ADDITIONAL_REQUIREMENTS
+      ) {
+        return {
+          ...state,
+          stepIndex: state.stepIndex - 1,
+          view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
+          hideNextBtn: false,
+          hidePrevBtn: false,
+          disableNextBtn: false,
+          disablePrevBtn: false,
+          showSurfaceOverlay: false,
+        };
+      }
     case 'COOKBOOK_SELECTION_CLICK':
       return {
         ...state,
