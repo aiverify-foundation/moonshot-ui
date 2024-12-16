@@ -567,10 +567,11 @@ function NewEndpointForm(props: NewEndpointFormProps) {
           </div>
         </Modal>
       )}
-      <div className="flex flex-col pt-4 w-full h-full">
+      <div className="flex flex-col p-4 w-full h-full">
         <PopupSurface
           height="100%"
-          onCloseIconClick={onClose}>
+          onCloseIconClick={onClose}
+          className="!bg-moongray-800">
           {isLoading || createModelEndpointIsLoding ? (
             <LoadingAnimation />
           ) : (
