@@ -9,6 +9,9 @@ import { Modal } from '@/app/components/modal';
 import { PopupSurface } from '@/app/components/popupSurface';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { useEventSource } from '@/app/hooks/use-eventsource';
+import { useIsTabletDevice } from '@/app/hooks/useIsTabletDevice';
+import { useOrientation } from '@/app/hooks/useOrientation';
+import { useResponsiveChatboxSize } from '@/app/hooks/useResponsiveChatboxSize';
 import { toErrorWithMessage } from '@/app/lib/error-utils';
 import { getWindowId, getWindowXYById } from '@/app/lib/window-utils';
 import { Z_Index } from '@/app/redteaming/(fullscreen)/constants';
@@ -73,11 +76,13 @@ const streamPath = '/api/v1/redteaming/status';
 const ctxStrategyNumOfPrevPrompts = 5;
 
 function RedteamSessionChats(props: ActiveSessionProps) {
+  const isTabletDevice = useIsTabletDevice();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const windowsMap = useAppSelector((state) => state.windows.map);
   const { sessionData } = props;
   const { resetChatboxPositions } = useChatboxesPositionsUtils(sessionData);
+  const { promptBoxWidth } = useResponsiveChatboxSize();
   const [promptText, setPromptText] = useState('');
   const [isFetchingData, setIsFetchingData] = useState(true);
   const [liveAttackInProgress, setLiveAttackInProgress] = useState(false);
@@ -114,6 +119,8 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     ArtStatus,
     AppEventTypes
   >(streamPath, AppEventTypes.REDTEAM_UPDATE);
+
+  const orientation = useOrientation();
 
   let layoutMode = useAppSelector((state) => state.chatLayoutMode.value);
 
@@ -351,7 +358,6 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   }
 
   function handleUseBookmarkClick(preparedPrompt: string) {
-    console.log(preparedPrompt);
     handleSendPromptClick(preparedPrompt);
   }
 
@@ -426,7 +432,11 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     });
   };
 
-  if (activeSession && activeSession.session.endpoints.length < 4) {
+  if (
+    activeSession &&
+    activeSession.session.endpoints.length < 4 &&
+    !isTabletDevice
+  ) {
     layoutMode = LayoutMode.FREE;
   }
 
@@ -487,7 +497,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
   }
 
   const optionsPanel = (
-    <div className="bg-moongray-600  w-[380px] absolute left-[115%] top-0 rounded-md p-2 shadow-lg">
+    <div className="bg-moongray-600 w-[380px] ipad11Inch:w-[350px] ipadPro:w-[350px] absolute left-[115%] ipad11Inch:left-[108%] ipadPro:left-[108%] top-0 rounded-md p-2 shadow-lg">
       {isChatControlsDisabled && (
         <div
           className="absolute gap-2 bg-moongray-950/50 w-full h-full z-10 flex justify-center items-center rounded-md"
@@ -615,7 +625,28 @@ function RedteamSessionChats(props: ActiveSessionProps) {
     ) : null;
 
   return (
-    <>
+    <div className="h-[100vh] w-[100vw] p-2">
+      {orientation === 'portrait' && (
+        <Modal
+          heading="Change Orientation"
+          bgColor={colors.moongray['800']}
+          textColor="#FFFFFF"
+          primaryBtnLabel="Ok"
+          enableScreenOverlay
+          hideCloseIcon>
+          <div className="flex gap-2 items-start">
+            <Icon
+              name={IconName.Alert}
+              size={30}
+              color={colors.moongray[400]}
+              style={{ marginTop: '8px' }}
+            />
+            <p className="text-[1.1rem] pt-3">
+              Change to landscape mode for better user experience.
+            </p>
+          </div>
+        </Modal>
+      )}
       {alertMessage && (
         <Modal
           heading={alertMessage.heading}
@@ -703,12 +734,10 @@ function RedteamSessionChats(props: ActiveSessionProps) {
 
       <PopupSurface
         onCloseIconClick={() => setShowCloseSessionConfirmation(true)}
-        height="calc(100vh - 30px)"
         style={{
+          height: '100%',
           backgroundColor: colors.moongray[800],
-          width: 'calc(100vw - 30px)',
           border: 'none',
-          margin: '0 auto',
         }}>
         <header className="flex relative justify-between pt-4">
           <hgroup className="flex flex-col left-6 pl-5">
@@ -726,7 +755,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
           <LoadingAnimation />
         ) : (
           <>
-            {layoutSwitch}
+            {!isTabletDevice ? layoutSwitch : null}
             {layoutMode === LayoutMode.SLIDE && promptTemplates && (
               <section className="flex flex-col w-full relative gap-4">
                 <div className="flex h-full">
@@ -742,6 +771,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                     handleCreatePromptBookmarkClick={
                       handleCreatePromptBookmarkClick
                     }
+                    className={isTabletDevice ? 'mt-0' : ''}
                   />
                 </div>
                 <BookmarksPanel
@@ -750,7 +780,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                   bottom={120}
                   defaultShowPanel={defaultShowBookmarksPanel}
                   onPanelClose={() => setDefaultShowBookmarksPanel(false)}
-                  left="20%"
+                  className="left-[20%] ipad11Inch:left-[7%] ipadPro:left-[10%]"
                 />
                 <div className="flex justify-center">
                   <div className="relative">
@@ -762,13 +792,14 @@ function RedteamSessionChats(props: ActiveSessionProps) {
                       draggable={false}
                       chatSession={activeSession}
                       promptTemplates={promptTemplates}
-                      activePromptTemplate={selectedPromptTemplate}
                       onSendClick={handleSendPromptClick}
                       onSelectPromptTemplate={handleSelectPromptTemplate}
                       onWindowChange={handleOnWindowChange}
+                      width={promptBoxWidth}
                       styles={{
                         position: 'relative',
                         backgroundColor: 'transparent',
+                        top: isTabletDevice ? -30 : 0,
                       }}
                     />
                     {optionsPanel}
@@ -802,12 +833,10 @@ function RedteamSessionChats(props: ActiveSessionProps) {
             initialXY={promptBoxInitialXY}
             chatSession={activeSession}
             promptTemplates={promptTemplates}
-            activePromptTemplate={selectedPromptTemplate}
             onCloseClick={() => null}
             onSendClick={handleSendPromptClick}
             onSelectPromptTemplate={handleSelectPromptTemplate}
             onWindowChange={handleOnWindowChange}
-            onCloseSessionCommand={() => null}
             styles={{
               backgroundColor: colors.moongray[700],
               borderRadius: '0.5rem',
@@ -826,7 +855,7 @@ function RedteamSessionChats(props: ActiveSessionProps) {
           </div>
         </>
       ) : null}
-    </>
+    </div>
   );
 }
 

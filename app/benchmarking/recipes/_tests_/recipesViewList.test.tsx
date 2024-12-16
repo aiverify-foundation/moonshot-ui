@@ -29,7 +29,7 @@ const mockRecipes: Recipe[] = [
       },
     },
     total_prompt_in_recipe: 10,
-    endpoint_required: null,
+    required_config: null,
   },
   {
     id: 'rc-id-2',
@@ -53,7 +53,12 @@ const mockRecipes: Recipe[] = [
       },
     },
     total_prompt_in_recipe: 20,
-    endpoint_required: ['endpoint-1', 'endpoint-2'],
+    required_config: {
+      configurations: {
+        embeddings: ['embed-endpoint-1', 'embed-endpoint-2'],
+      },
+      endpoints: ['endpoint-1', 'endpoint-2'],
+    },
   },
 ];
 const mockCookbooks: Cookbook[] = [
@@ -64,7 +69,7 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-1'],
     total_prompt_in_cookbook: 10,
     total_dataset_in_cookbook: 1,
-    endpoint_required: null,
+    required_config: null,
   },
   {
     id: 'cb-id-2',
@@ -73,7 +78,7 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
     total_dataset_in_cookbook: 2,
-    endpoint_required: null,
+    required_config: null,
   },
 ];
 
@@ -129,20 +134,34 @@ describe('RecipesViewList', () => {
       expect(screen.getAllByText(mockRecipes[0].description)).toHaveLength(2);
       expect(screen.getAllByText(mockRecipes[1].name)).toHaveLength(1);
       mockRecipes.forEach((recipe) => {
-        if (recipe.endpoint_required?.length) {
-          recipe.endpoint_required.forEach((endpoint) => {
+        if (recipe.required_config?.endpoints?.length) {
+          recipe.required_config.endpoints.forEach((endpoint) => {
             expect(screen.getByText(endpoint)).toBeInTheDocument();
           });
+        }
+        if (recipe.required_config?.configurations?.embeddings?.length) {
+          recipe.required_config.configurations.embeddings.forEach(
+            (endpoint) => {
+              expect(screen.getByText(endpoint)).toBeInTheDocument();
+            }
+          );
         }
       });
       await userEvent.click(
         screen.getByRole('checkbox', { name: `Select ${mockRecipes[1].name}` })
       );
       mockRecipes.forEach((recipe) => {
-        if (recipe.endpoint_required?.length) {
-          recipe.endpoint_required.forEach((endpoint) => {
+        if (recipe.required_config?.endpoints?.length) {
+          recipe.required_config.endpoints.forEach((endpoint) => {
             expect(screen.getAllByText(endpoint)).toHaveLength(2);
           });
+        }
+        if (recipe.required_config?.configurations?.embeddings?.length) {
+          recipe.required_config.configurations.embeddings.forEach(
+            (endpoint) => {
+              expect(screen.getAllByText(endpoint)).toHaveLength(2);
+            }
+          );
         }
       });
     });

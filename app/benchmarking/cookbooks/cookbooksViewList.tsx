@@ -7,6 +7,7 @@ import { Button, ButtonType } from '@/app/components/button';
 import { TextInput } from '@/app/components/textInput';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
+import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 import { SelectedCookbooksPills } from './selectedCookbooksPills';
 
 interface CustomStyle extends CSSProperties {
@@ -43,6 +44,10 @@ function CookbooksViewList({
     return cookbooks.find((cb) => cb.id === id) || cookbooks[0];
   });
 
+  const selectedCookbookRequiredEndpoints = getEndpointsFromRequiredConfig(
+    selectedCookbook.required_config
+  );
+
   const filteredCookbooks = cookbooks.filter((cb) =>
     cb.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -70,6 +75,9 @@ function CookbooksViewList({
     overflow-y-auto custom-scrollbar">
       {filteredCookbooks.map((cookbook) => {
         const isSelected = cookbook.id === selectedCookbook.id;
+        const requiredEndpoints = getEndpointsFromRequiredConfig(
+          cookbook.required_config
+        );
         return (
           <li
             key={cookbook.id}
@@ -94,18 +102,24 @@ function CookbooksViewList({
               <div className="flex gap-2 mb-2 items-start">
                 <Icon name={IconName.Book} />
                 <h4 className="text-[1rem] font-semibold">{cookbook.name}</h4>
-                {cookbook.endpoint_required?.length && (
+                {requiredEndpoints.length > 0 && (
                   <Tooltip
                     position={TooltipPosition.right}
                     offsetLeft={10}
                     content={
                       <div className="p-1 pt-0">
-                        <h3 className="text-black font-bold mb-2">Requires</h3>
-                        <ul className="text-gray-700">
-                          {cookbook.endpoint_required.map((endpoint) => (
+                        <h3 className="text-black font-bold mb-2">
+                          This benchmark requires the following:
+                        </h3>
+                        <ul className="text-moonpurple list-disc pl-4">
+                          {requiredEndpoints.map((endpoint) => (
                             <li key={endpoint}>{endpoint}</li>
                           ))}
                         </ul>
+                        <p className="text-black mt-2">
+                          Please input the token for the endpoint(s) before
+                          running.
+                        </p>
                       </div>
                     }>
                     <Icon
@@ -187,27 +201,30 @@ function CookbooksViewList({
               <h3 className="text-[1.2rem] font-semibold">
                 {selectedCookbook.name}
               </h3>
-              {selectedCookbook.endpoint_required?.length && (
+              {selectedCookbookRequiredEndpoints.length > 0 && (
                 <Tooltip
                   position={TooltipPosition.bottom}
-                  offsetTop={14}
+                  offsetLeft={10}
                   content={
                     <div className="p-1 pt-0">
-                      <h3 className="text-black font-bold mb-2">Requires</h3>
-                      <ul className="text-gray-700">
-                        {selectedCookbook.endpoint_required.map((endpoint) => (
+                      <h3 className="text-black font-bold mb-2">
+                        This benchmark requires the following:
+                      </h3>
+                      <ul className="text-moonpurple list-disc pl-4">
+                        {selectedCookbookRequiredEndpoints.map((endpoint) => (
                           <li key={endpoint}>{endpoint}</li>
                         ))}
                       </ul>
+                      <p className="text-black mt-2">
+                        Please input the token for the endpoint(s) before
+                        running.
+                      </p>
                     </div>
                   }>
                   <Icon
                     size={22}
                     name={IconName.SolidBox}
                     color={colors.moonpurplelight}
-                    style={{
-                      marginTop: 2,
-                    }}
                   />
                 </Tooltip>
               )}
@@ -227,11 +244,15 @@ function CookbooksViewList({
                 );
               })}
             </p>
-            <h4 className="text-[1.15rem] font-semibold mt-10 mb-1">Number of Prompts</h4>
+            <h4 className="text-[1.15rem] font-semibold mt-10 mb-1">
+              Number of Prompts
+            </h4>
             <p className="text-[0.95rem] text-moongray-300">
               {selectedCookbook.total_prompt_in_cookbook}
             </p>
-            <h4 className="text-[1.15rem] font-semibold mt-10 mb-1">Number of Datasets</h4>
+            <h4 className="text-[1.15rem] font-semibold mt-10 mb-1">
+              Number of Datasets
+            </h4>
             <p className="text-[0.95rem] text-moongray-300">
               {selectedCookbook.total_dataset_in_cookbook}
             </p>

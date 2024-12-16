@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
+import { useResponsiveChatboxSize } from '@/app/hooks/useResponsiveChatboxSize';
+import { cn } from '@/app/lib/cn';
 import { getWindowId } from '@/app/lib/window-utils';
 import { ChatBox, ChatBoxControls } from './chatbox';
-import {
-  SlideChatBoxDimensions,
-  getDefaultChatBoxSizes,
-} from './chatbox-slide-box-sizes';
 
 type ChatSlideLayoutProps = {
   chatSession: SessionData;
@@ -15,6 +13,7 @@ type ChatSlideLayoutProps = {
   promptTemplates: PromptTemplate[];
   selectedPromptTemplate: PromptTemplate | undefined;
   promptText: string;
+  className?: string;
   handleOnWindowChange: (
     x: number,
     y: number,
@@ -80,7 +79,7 @@ function SlidesIndexBtns(props: SlidesIndexBtnsProps) {
             offsetLeft={-3}>
             <div
               className={`${currentIndex === btnIndex - 1 ? 'w-3 h-3 scale-150' : 'w-3 h-3'}
-                rounded-full bg-white inline-block mr-2
+                rounded-full bg-white inline-block mr-2 ipad11Inch:mr-4 ipadPro:mr-4
                 hover:scale-150 transition-transform transform-gpu
                 ${currentIndex === btnIndex - 1 ? 'cursor-default' : 'cursor-pointer'}
                 border border-moongray-950`}
@@ -111,19 +110,16 @@ const ChatboxSlideLayout = React.forwardRef(
       promptTemplates,
       selectedPromptTemplate,
       promptText,
+      className,
       handleOnWindowChange,
       handleCreatePromptBookmarkClick,
     } = props;
     const [currentBoxIndex, setCurrentBoxIndex] = useState(0);
-    const [{ width, height, gap }, setSizes] = useState<SlideChatBoxDimensions>(
-      {
-        width: 0,
-        height: 0,
-        gap: 0,
-      }
-    );
+    const { width, height, gap, noOfChatBoxesPerSlide } =
+      useResponsiveChatboxSize();
     const [_, setHoveredIndex] = useState<number | null>(null);
     const chatBoxControlsMap = new Map<string, ChatBoxControls>();
+    const [touchStart, setTouchStart] = useState<number | null>(null);
     React.useImperativeHandle(ref, () => chatBoxControlsMap);
 
     function handleIndexBtnMouseOver(index: number) {
@@ -168,21 +164,63 @@ const ChatboxSlideLayout = React.forwardRef(
       );
     }
 
-    React.useEffect(() => {
-      setSizes(getDefaultChatBoxSizes());
+    const handleTouchStart = useCallback((e: TouchEvent) => {
+      setTouchStart(e.touches[0].clientX);
     }, []);
 
+    const handleTouchEnd = useCallback(
+      (e: TouchEvent) => {
+        if (touchStart === null) return;
+
+        const touchEnd = e.changedTouches[0].clientX;
+        const diff = touchStart - touchEnd;
+
+        // Minimum swipe distance threshold (in pixels)
+        const minSwipeDistance = 50;
+
+        if (Math.abs(diff) >= minSwipeDistance) {
+          if (diff > 0) {
+            // Swipe left - go to next slide
+            setCurrentBoxIndex((prevIndex) =>
+              Math.min(prevIndex + 1, chatSession.session.endpoints.length - 3)
+            );
+          } else {
+            // Swipe right - go to previous slide
+            setCurrentBoxIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+          }
+        }
+
+        setTouchStart(null);
+      },
+      [touchStart, chatSession.session.endpoints.length]
+    );
+
     return (
-      <div className="relative w-full h-full gap-6 flex flex-col items-center">
+      <div
+        className={cn(
+          'relative w-full h-full gap-6 flex flex-col items-center',
+          className
+        )}>
         <section className="absolute w-full px-12 top-[45%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
-          <SlidesNavBtns />
+          {chatSession.session.endpoints.length > noOfChatBoxesPerSlide ? (
+            <SlidesNavBtns />
+          ) : null}
         </section>
         <main
-          className="flex overflow-hidden h-[500px] transform-gpu"
+          className="flex overflow-hidden h-[500px] ipad11Inch:h-[350px] ipadPro:h-[350px] transform-gpu"
           style={{
-            width: 'calc(3 * var(--chatwindow-width) + 2 * var(--gap-width))',
-          }}>
-          {/* IMPORTANT - must contain only 1 child which is the carouself of chatboxes */}
+            width:
+              chatSession.session.endpoints.length >= noOfChatBoxesPerSlide
+                ? `calc(${noOfChatBoxesPerSlide} * ${width}px + ${noOfChatBoxesPerSlide - 1} * ${gap}px)`
+                : width,
+          }}
+          onTouchStart={(e: React.TouchEvent<HTMLElement>) =>
+            handleTouchStart(e.nativeEvent)
+          }
+          onTouchEnd={(e: React.TouchEvent<HTMLElement>) =>
+            handleTouchEnd(e.nativeEvent)
+          }>
+          {/* IMPORTANT - must contain only 1 child which is the carousel of chatboxes */}
           <div
             className="flex w-full h-full gap-x-[50px] transition-transform duration-300 ease-in-out"
             style={{
