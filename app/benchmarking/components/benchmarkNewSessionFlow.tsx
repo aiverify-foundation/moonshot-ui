@@ -25,12 +25,19 @@ import {
   initialState,
 } from './benchmarkNewSessionFlowReducer';
 import BenchmarkRunForm from './benchmarkRunForm';
-import { BenchmarkNewSessionViews } from './enums';
 import { ConfigureAdditionalRequirements } from './configureAdditionalRequirements';
+import { BenchmarkNewSessionViews } from './enums';
 
 function countRequiredEndpoints(selectedCookbooks: Cookbook[]) {
   return selectedCookbooks.reduce((count, cookbook) => {
-    return count + (cookbook.endpoint_required?.length || 0);
+    let accCount = count;
+    if (cookbook.required_config?.endpoints?.length) {
+      accCount += cookbook.required_config.endpoints.length;
+    }
+    if (cookbook.required_config?.configurations?.embeddings?.length) {
+      accCount += cookbook.required_config.configurations.embeddings.length;
+    }
+    return accCount;
   }, 0);
 }
 

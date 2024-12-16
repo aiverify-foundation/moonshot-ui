@@ -1,5 +1,4 @@
 import { act, render, screen } from '@testing-library/react';
-import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CookbooksSelection } from '@/app/benchmarking/components/cookbooksSelection';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
