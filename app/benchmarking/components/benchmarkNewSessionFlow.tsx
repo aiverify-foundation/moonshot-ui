@@ -187,7 +187,7 @@ function BenchmarkNewSessionFlow() {
       );
       break;
     case BenchmarkNewSessionViews.CONFIGURE_ADDITIONAL_REQUIREMENTS:
-      view = <ConfigureAdditionalRequirements />;
+      view = <ConfigureAdditionalRequirements cookbooks={selectedCookbooks} />;
       break;
     case BenchmarkNewSessionViews.BENCHMARK_RUN_FORM:
       surfaceColor = colors.moongray['950'];
