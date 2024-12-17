@@ -26,7 +26,7 @@ function EndpointSelector(props: EndpointSelectorProps) {
   const { models, isLoading } = useModelsList(); // todo - no need to abstract this hook. clean up
 
   return (
-    <div className="flex flex-col pt-4 gap-8 pb-4 h-[80%]">
+    <div className="flex flex-col pt-4 gap-8 pb-4 h-[95%]">
       <section className="flex flex-col items-center gap-3">
         <h2 className="text-[1.6rem] ipad11Inch:text-[1.2rem] ipadPro:text-[1.2rem] leading-[2rem] height-[2rem] font-medium tracking-wide text-white w-full text-center">
           {totalSelected > 0 ? (

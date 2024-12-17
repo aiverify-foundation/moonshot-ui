@@ -1,23 +1,33 @@
 'use client';
 
 import { useFormStatus } from 'react-dom';
+import { IconName } from '@/app/components/IconSVG';
 import { Button } from '@/app/components/button';
 import { ButtonType } from '@/app/components/button';
 import { colors } from '@/app/customColors';
 
-function RunButton({ disabled }: { disabled: boolean }) {
+function RunButton({
+  disabled,
+  className,
+}: {
+  disabled: boolean;
+  className?: string;
+}) {
   const { pending } = useFormStatus();
   return (
-    <Button
-      mode={ButtonType.PRIMARY}
-      disabled={disabled || pending}
-      size="lg"
-      width={pending ? 160 : 120}
-      type="submit"
-      text={pending ? 'Please wait...' : 'Run'}
-      hoverBtnColor={colors.moongray[950]}
-      pressedBtnColor={colors.moongray[900]}
-    />
+    <div className={className}>
+      <Button
+        type="submit"
+        disabled={disabled || pending}
+        mode={ButtonType.TEXT}
+        text={pending ? 'Please wait...' : 'RUN'}
+        textSize="1.3rem"
+        textColor={colors.moonpurplelight}
+        rightIconName={!pending ? IconName.ThinArrowRight : undefined}
+        iconSize={24}
+        iconColor={colors.moonpurplelight}
+      />
+    </div>
   );
 }
 

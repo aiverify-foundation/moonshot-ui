@@ -20,64 +20,38 @@ type Action = {
 };
 
 type FlowState = {
-  isThreeStepsFlow: boolean;
   steps: string[];
   stepIndex: number;
   view: BenchmarkNewSessionViews;
   hideNextBtn: boolean;
   hidePrevBtn: boolean;
-  enableNextBtn: boolean;
   disableNextBtn: boolean;
   disablePrevBtn: boolean;
   modelToEdit: LLMEndpoint | undefined;
   requiredEndpoints?: string[];
 };
 
-const flowSteps = ['Your LLM', 'Recommended Tests', 'Connect Endpoint', 'Run'];
-const threeStepsFlowSteps = ['Recommended Tests', 'Connect Endpoint', 'Run'];
+const flowSteps = ['Recommended Tests', 'Connect Endpoint', 'Run'];
 
 export const initialState: FlowState = {
-  isThreeStepsFlow: false,
   steps: flowSteps,
   stepIndex: 0,
-  view: BenchmarkNewSessionViews.TOPICS_SELECTION,
+  view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
   hideNextBtn: false,
   hidePrevBtn: true,
-  enableNextBtn: false,
-  disableNextBtn: false,
-  disablePrevBtn: false,
+  disableNextBtn: true,
+  disablePrevBtn: true,
   modelToEdit: undefined,
   requiredEndpoints: undefined,
 };
 
-export const threeStepsFlowInitialState: FlowState = {
-  isThreeStepsFlow: true,
-  steps: threeStepsFlowSteps,
-  stepIndex: 0,
-  view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
-  hideNextBtn: true,
-  hidePrevBtn: true,
-  enableNextBtn: false,
-  disableNextBtn: false,
-  disablePrevBtn: false,
-  modelToEdit: undefined,
-};
 export function benchmarkNewSessionFlowReducer(
   state: FlowState,
   action: Action
 ): FlowState {
   switch (action.type) {
     case 'NEXT_BTN_CLICK':
-      if (state.view === BenchmarkNewSessionViews.TOPICS_SELECTION) {
-        return {
-          ...state,
-          stepIndex: state.stepIndex + 1,
-          view: BenchmarkNewSessionViews.RECOMMENDED_TESTS,
-          hidePrevBtn: false,
-          disableNextBtn: action.cookbooksLength === 0,
-        };
-      }
-      if (state.view === BenchmarkNewSessionViews.RECOMMENDED_TESTS) {
+      if (state.view === BenchmarkNewSessionViews.COOKBOOKS_SELECTION) {
         return {
           ...state,
           stepIndex: state.stepIndex + 1,
@@ -106,19 +80,6 @@ export function benchmarkNewSessionFlowReducer(
           disableNextBtn: hideNextBtn,
         };
       }
-      if (
-        state.view === BenchmarkNewSessionViews.COOKBOOKS_SELECTION &&
-        state.isThreeStepsFlow
-      ) {
-        return {
-          ...state,
-          stepIndex: state.stepIndex + 1,
-          view: BenchmarkNewSessionViews.ENDPOINTS_SELECTION,
-          hidePrevBtn: false,
-          hideNextBtn: false,
-          disableNextBtn: action.modelsLength === 0,
-        };
-      }
     case 'PREV_BTN_CLICK':
       if (state.view === BenchmarkNewSessionViews.BENCHMARK_RUN_FORM) {
         return {
@@ -134,20 +95,11 @@ export function benchmarkNewSessionFlowReducer(
         return {
           ...state,
           stepIndex: state.stepIndex - 1,
-          view: BenchmarkNewSessionViews.RECOMMENDED_TESTS,
-          hidePrevBtn: state.isThreeStepsFlow ? true : false,
-          disablePrevBtn: state.isThreeStepsFlow ? true : false,
+          view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
+          hidePrevBtn: true,
+          disablePrevBtn: true,
           hideNextBtn: false,
           disableNextBtn: false,
-        };
-      }
-      if (state.view === BenchmarkNewSessionViews.RECOMMENDED_TESTS) {
-        return {
-          ...state,
-          stepIndex: state.stepIndex - 1,
-          view: BenchmarkNewSessionViews.TOPICS_SELECTION,
-          hidePrevBtn: true,
-          disableNextBtn: action.cookbooksLength === 0,
         };
       }
     case 'COOKBOOK_SELECTION_CLICK':
@@ -160,23 +112,14 @@ export function benchmarkNewSessionFlowReducer(
         ...state,
         view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
         hideNextBtn: true,
-        hidePrevBtn: true,
+        hidePrevBtn: false,
         disableNextBtn: true,
-        disablePrevBtn: true,
+        disablePrevBtn: false,
       };
     case 'MODEL_SELECTION_CLICK':
       return {
         ...state,
         disableNextBtn: action.modelsLength === 0,
-      };
-    case 'CLOSE_MORE_COOKBOOKS':
-      return {
-        ...state,
-        view: BenchmarkNewSessionViews.RECOMMENDED_TESTS,
-        hideNextBtn: false,
-        hidePrevBtn: state.isThreeStepsFlow ? true : false,
-        disableNextBtn: false,
-        disablePrevBtn: state.isThreeStepsFlow ? true : false,
       };
     case 'CREATE_MODEL_CLICK':
       return {
@@ -224,5 +167,7 @@ export function benchmarkNewSessionFlowReducer(
         hideNextBtn: false,
         hidePrevBtn: false,
       };
+    default:
+      return state;
   }
 }

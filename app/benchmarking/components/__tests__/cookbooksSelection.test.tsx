@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CookbooksSelection } from '@/app/benchmarking/components/cookbooksSelection';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
@@ -87,6 +87,8 @@ function renderWithProviders(
 describe('CookbooksSelection', () => {
   const mockDispatch = jest.fn();
   const mockOnClose = jest.fn();
+  const mockOnCookbookSelected = jest.fn();
+  const mockOnCookbookUnselected = jest.fn();
   const mockAddBenchmarkCookbooks = jest.fn();
   const mockUpdateBenchmarkCookbooks = jest.fn();
 
@@ -121,8 +123,9 @@ describe('CookbooksSelection', () => {
     );
     renderWithProviders(
       <CookbooksSelection
-        isThreeStepsFlow={false}
         onClose={mockOnClose}
+        onCookbookSelected={mockOnCookbookSelected}
+        onCookbookUnselected={mockOnCookbookUnselected}
       />
     );
     const cookbookItems = screen.getAllByRole('cookbookcard');
@@ -174,10 +177,11 @@ describe('CookbooksSelection', () => {
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockNoSelectedCookbooks
     );
-    renderWithProviders(
+    const { rerender } = renderWithProviders(
       <CookbooksSelection
-        isThreeStepsFlow={false}
         onClose={mockOnClose}
+        onCookbookSelected={mockOnCookbookSelected}
+        onCookbookUnselected={mockOnCookbookUnselected}
       />,
       {
         initialCookbooks: mockCookbooks,
@@ -193,32 +197,26 @@ describe('CookbooksSelection', () => {
     expect(mockDispatch).toHaveBeenCalledWith(
       addBenchmarkCookbooks([mockCookbooks[0]])
     );
+    expect(mockOnCookbookSelected).toHaveBeenCalledTimes(1);
     expect(cookbookOneCheckbox).toBeChecked();
 
+    await act(async () => {
+      (useAppSelector as jest.Mock).mockImplementation(
+        () => [mockCookbooks[0]] // simulate 1 cookbook selected
+      );
+      rerender(
+        <CookbooksSelection
+          onClose={mockOnClose}
+          onCookbookSelected={mockOnCookbookSelected}
+          onCookbookUnselected={mockOnCookbookUnselected}
+        />
+      );
+    });
     await userEvent.click(cookbookOneCheckbox);
     expect(mockDispatch).toHaveBeenCalledWith(
       removeBenchmarkCookbooks([mockCookbooks[0]])
     );
+    expect(mockOnCookbookUnselected).toHaveBeenCalledTimes(1);
     expect(cookbookOneCheckbox).not.toBeChecked();
-  });
-
-  it('should close the selection view', async () => {
-    const mockAlreadySelectedCookbooks = [mockCookbooks[0], mockCookbooks[2]];
-    (useAppSelector as jest.Mock).mockImplementation(
-      () => mockAlreadySelectedCookbooks
-    );
-    renderWithProviders(
-      <CookbooksSelection
-        isThreeStepsFlow={false}
-        onClose={mockOnClose}
-      />,
-      {
-        initialCookbooks: mockCookbooks,
-      }
-    );
-
-    const closeButton = screen.getByRole('button', { name: /ok/i });
-    await userEvent.click(closeButton);
-    expect(mockOnClose).toHaveBeenCalled();
   });
 });
