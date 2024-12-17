@@ -6,12 +6,13 @@ import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequir
 type ConfigureRequirementsItemCardProps = {
   cookbook: Cookbook;
   onConfigureModelClick?: () => void;
+  onAboutClick: (cookbook: Cookbook) => void;
 };
 
 function ConfigureRequirementsItemCard(
   props: ConfigureRequirementsItemCardProps
 ) {
-  const { cookbook, onConfigureModelClick } = props;
+  const { cookbook, onConfigureModelClick, onAboutClick } = props;
   const requiredEndpoints = getEndpointsFromRequiredConfig(
     cookbook.required_config
   );
@@ -30,7 +31,7 @@ function ConfigureRequirementsItemCard(
             mode={ButtonType.LINK}
             size="lg"
             text="About"
-            onClick={onConfigureModelClick}
+            onClick={() => onAboutClick(cookbook)}
           />
         </div>
         {requiredEndpoints.length > 0 ? (

@@ -187,7 +187,21 @@ function BenchmarkNewSessionFlow() {
       );
       break;
     case BenchmarkNewSessionViews.CONFIGURE_ADDITIONAL_REQUIREMENTS:
-      view = <ConfigureAdditionalRequirements cookbooks={selectedCookbooks} />;
+      view = (
+        <ConfigureAdditionalRequirements
+          cookbooks={selectedCookbooks}
+          onCookbookAboutClose={() =>
+            dispatch({
+              type: 'HIDE_SURFACE_OVERLAY',
+            })
+          }
+          onCookbookAboutClick={() =>
+            dispatch({
+              type: 'SHOW_SURFACE_OVERLAY',
+            })
+          }
+        />
+      );
       break;
     case BenchmarkNewSessionViews.BENCHMARK_RUN_FORM:
       surfaceColor = colors.moongray['950'];
