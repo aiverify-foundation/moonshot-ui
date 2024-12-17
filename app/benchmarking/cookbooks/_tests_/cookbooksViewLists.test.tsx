@@ -15,7 +15,7 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-1'],
     total_prompt_in_cookbook: 10,
     total_dataset_in_cookbook: 1,
-    endpoint_required: null,
+    required_config: null,
   },
   {
     id: 'cb-id-2',
@@ -24,7 +24,12 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
     total_dataset_in_cookbook: 2,
-    endpoint_required: ['required-endpoint-1', 'required-endpoint-2'],
+    required_config: {
+      configurations: {
+        embeddings: ['embed-endpoint-1', 'embed-endpoint-2'],
+      },
+      endpoints: ['required-endpoint-1', 'required-endpoint-2'],
+    },
   },
 ];
 
@@ -53,10 +58,17 @@ describe('CookbooksViewList', () => {
       );
       expect(screen.getAllByText(mockCookbooks[0].name)).toHaveLength(2);
       mockCookbooks.forEach((cookbook) => {
-        if (cookbook.endpoint_required?.length) {
-          cookbook.endpoint_required.forEach((endpoint) => {
+        if (cookbook.required_config?.endpoints?.length) {
+          cookbook.required_config.endpoints.forEach((endpoint) => {
             expect(screen.getByText(endpoint)).toBeInTheDocument();
           });
+        }
+        if (cookbook.required_config?.configurations?.embeddings?.length) {
+          cookbook.required_config.configurations.embeddings.forEach(
+            (endpoint) => {
+              expect(screen.getByText(endpoint)).toBeInTheDocument();
+            }
+          );
         }
       });
       await userEvent.click(
@@ -65,10 +77,17 @@ describe('CookbooksViewList', () => {
         })
       );
       mockCookbooks.forEach((cookbook) => {
-        if (cookbook.endpoint_required?.length) {
-          cookbook.endpoint_required.forEach((endpoint) => {
+        if (cookbook.required_config?.endpoints?.length) {
+          cookbook.required_config.endpoints.forEach((endpoint) => {
             expect(screen.getAllByText(endpoint)).toHaveLength(2);
           });
+        }
+        if (cookbook.required_config?.configurations?.embeddings?.length) {
+          cookbook.required_config.configurations.embeddings.forEach(
+            (endpoint) => {
+              expect(screen.getAllByText(endpoint)).toHaveLength(2);
+            }
+          );
         }
       });
     });

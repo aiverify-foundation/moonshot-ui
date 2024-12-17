@@ -15,7 +15,7 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-1'],
     total_prompt_in_cookbook: 10,
     total_dataset_in_cookbook: 1,
-    endpoint_required: null,
+    required_config: null,
   },
   {
     id: 'cb-id-2',
@@ -24,7 +24,12 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
     total_dataset_in_cookbook: 2,
-    endpoint_required: ['endpoint-id-1'],
+    required_config: {
+      configurations: {
+        embeddings: ['embed-endpoint-1', 'endpoint-2'],
+      },
+      endpoints: ['endpoint-id-1'],
+    },
   },
 ];
 

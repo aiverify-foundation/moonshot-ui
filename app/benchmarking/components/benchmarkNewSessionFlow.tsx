@@ -11,6 +11,7 @@ import { Modal } from '@/app/components/modal';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
 import { colors } from '@/app/customColors';
 import { NewEndpointForm } from '@/app/endpoints/(edit)/newEndpointForm';
+import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 import {
   addBenchmarkModels,
   removeBenchmarkModels,
@@ -44,10 +45,10 @@ function BenchmarkNewSessionFlow() {
   function handleNextIconClick() {
     if (flowState.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
       const requiredEndpoints = selectedCookbooks.reduce((acc, cookbook) => {
-        if (cookbook.endpoint_required && cookbook.endpoint_required.length) {
-          acc = [...acc, ...cookbook.endpoint_required];
-        }
-        return acc;
+        return [
+          ...acc,
+          ...getEndpointsFromRequiredConfig(cookbook.required_config),
+        ];
       }, [] as string[]);
       dispatch({
         type: 'NEXT_BTN_CLICK',
