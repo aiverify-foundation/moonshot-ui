@@ -113,6 +113,8 @@ type Cookbook = {
   total_prompt_in_cookbook: number;
   total_dataset_in_cookbook: number;
   required_config: RequiredConfig | null;
+  tags?: string[];
+  categories?: string[];
 };
 
 type CookbookFormValues = {
