@@ -5,6 +5,7 @@ import { CookbooksSelection } from '@/app/benchmarking/components/cookbooksSelec
 import { EndpointSelector } from '@/app/benchmarking/components/endpointsSelector';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
 import { Icon, IconName } from '@/app/components/IconSVG';
+import { Button, ButtonType } from '@/app/components/button';
 import { MainSectionSurface } from '@/app/components/mainSectionSurface';
 import { Modal } from '@/app/components/modal';
 import SimpleStepsIndicator from '@/app/components/simpleStepsIndicator';
@@ -19,27 +20,19 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '@/lib/redux';
-import { BenchmarkDefaultSelection } from './benchmarkDefaultSelection';
-import { BenchmarkMainCookbooksPromptCount } from './benchmarkMainCookbooksPromptCount';
 import {
   benchmarkNewSessionFlowReducer,
   initialState,
-  threeStepsFlowInitialState,
 } from './benchmarkNewSessionFlowReducer';
 import BenchmarkRunForm from './benchmarkRunForm';
 import { BenchmarkNewSessionViews } from './enums';
 
-type BenchmarkNewSessionFlowProps = {
-  threeStepsFlow?: boolean;
-};
-
-function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
-  const { threeStepsFlow = false } = props;
+function BenchmarkNewSessionFlow() {
   const router = useRouter();
   const appDispatch = useAppDispatch();
   const [flowState, dispatch] = React.useReducer(
     benchmarkNewSessionFlowReducer,
-    threeStepsFlow ? threeStepsFlowInitialState : initialState
+    initialState
   );
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
@@ -124,35 +117,6 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
   let view: React.ReactElement | undefined;
 
   switch (flowState.view) {
-    case BenchmarkNewSessionViews.TOPICS_SELECTION:
-      view = (
-        <BenchmarkDefaultSelection
-          selectedCookbooks={selectedCookbooks}
-          onCookbookSelected={() =>
-            dispatch({
-              type: 'COOKBOOK_SELECTION_CLICK',
-              cookbooksLength: selectedCookbooks.length + 1,
-            })
-          }
-          onCookbookUnselected={() =>
-            dispatch({
-              type: 'COOKBOOK_SELECTION_CLICK',
-              cookbooksLength: selectedCookbooks.length - 1,
-            })
-          }
-        />
-      );
-      break;
-    case BenchmarkNewSessionViews.RECOMMENDED_TESTS:
-      view = (
-        <BenchmarkMainCookbooksPromptCount
-          selectedCookbooks={selectedCookbooks}
-          onCookbooksLinkClick={() =>
-            dispatch({ type: 'MORE_COOKBOOKS_LINK_CLICK' })
-          }
-        />
-      );
-      break;
     case BenchmarkNewSessionViews.ENDPOINTS_SELECTION:
       view = (
         <EndpointSelector
@@ -165,7 +129,6 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
       );
       break;
     case BenchmarkNewSessionViews.NEW_ENDPOINT_FORM:
-      surfaceColor = colors.moongray['800'];
       view = (
         <NewEndpointForm
           onClose={() =>
@@ -178,7 +141,6 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
       );
       break;
     case BenchmarkNewSessionViews.EDIT_ENDPOINT_FORM:
-      surfaceColor = colors.moongray['800'];
       view = (
         <NewEndpointForm
           endpointToEdit={flowState.modelToEdit}
@@ -187,13 +149,23 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
       );
       break;
     case BenchmarkNewSessionViews.COOKBOOKS_SELECTION:
-      surfaceColor = colors.moongray['800'];
       view = (
         <CookbooksSelection
-          isThreeStepsFlow={flowState.isThreeStepsFlow}
           onClose={() =>
             dispatch({
               type: 'CLOSE_MORE_COOKBOOKS',
+            })
+          }
+          onCookbookSelected={() =>
+            dispatch({
+              type: 'COOKBOOK_SELECTION_CLICK',
+              cookbooksLength: selectedCookbooks.length + 1,
+            })
+          }
+          onCookbookUnselected={() =>
+            dispatch({
+              type: 'COOKBOOK_SELECTION_CLICK',
+              cookbooksLength: selectedCookbooks.length - 1,
             })
           }
         />
@@ -277,51 +249,63 @@ function BenchmarkNewSessionFlow(props: BenchmarkNewSessionFlowProps) {
         <MainSectionSurface
           onCloseIconClick={handleOnCloseIconClick}
           height="100%"
-          bgColor={surfaceColor}>
+          bgColor={surfaceColor}
+          headerHeight={80}
+          bodyHeight="calc(100% - 80px)"
+          showHeaderDivider
+          bodyClassName="!p-0"
+          headerContent={
+            <SimpleStepsIndicator
+              textColor={colors.moongray[300]}
+              stepColor={colors.moonpurplelight}
+              steps={flowState.steps}
+              currentStepIndex={flowState.stepIndex}
+              className="!w-[80%]"
+            />
+          }>
           <div className="flex flex-col items-center h-full">
-            <div className="w-[700px] flex shrink-0 justify-center">
-              <SimpleStepsIndicator
-                textColor={colors.moongray[300]}
-                stepColor={colors.moonpurplelight}
-                steps={flowState.steps}
-                currentStepIndex={flowState.stepIndex}
-              />
-            </div>
             <div
               className="flex flex-col gap-5 ipad11Inch:gap-2 ipadPro:gap-2 justify-center w-full"
               style={{ height: 'calc(100% - 33px)' }}>
-              {!flowState.hidePrevBtn && (
-                <div className="flex justify-center">
-                  <div
-                    role="button"
-                    className="flex justify-center hover:opacity-70"
-                    aria-label="Previous View"
-                    onClick={handlePreviousIconClick}>
-                    <Icon
-                      name={IconName.WideArrowUp}
-                      size={28}
-                    />
-                  </div>
-                </div>
-              )}
               {view}
-              {!flowState.hideNextBtn && (
-                <div className="flex justify-center">
-                  <div
-                    role="button"
-                    className={`flex justify-center ${flowState.disableNextBtn ? 'opacity-30 cursor-default' : ''} 
-                      ${!flowState.disableNextBtn ? 'hover:opacity-60 cursor-pointer' : ''}`}
-                    aria-label="Next View"
-                    onClick={
-                      flowState.disableNextBtn ? undefined : handleNextIconClick
-                    }>
-                    <Icon
-                      name={IconName.WideArrowDown}
-                      size={28}
-                    />
-                  </div>
-                </div>
-              )}
+            </div>
+            <div
+              className={`flex 
+                ${!flowState.hidePrevBtn && !flowState.hideNextBtn ? 'justify-between' : ''} 
+                ${flowState.hidePrevBtn && !flowState.hideNextBtn ? 'justify-end' : ''} 
+                ${!flowState.hidePrevBtn && flowState.hideNextBtn ? 'justify-start' : ''} 
+                items-center w-full h-[60px] px-4
+             bg-moongray-950 shadow-[0_-2px_5px_-2px_rgba(0,0,0,0.3)] rounded-b-2xl`}>
+              {!flowState.hidePrevBtn ? (
+                <Button
+                  ariaLabel="Previous View"
+                  mode={ButtonType.TEXT}
+                  text="BACK"
+                  textSize="1.3rem"
+                  textColor={colors.moonpurplelight}
+                  leftIconName={IconName.ThinArrowLeft}
+                  iconSize={24}
+                  iconColor={colors.moonpurplelight}
+                  disabled={flowState.disablePrevBtn}
+                  onClick={handlePreviousIconClick}
+                />
+              ) : null}
+              {!flowState.hideNextBtn ? (
+                <Button
+                  ariaLabel="Next View"
+                  mode={ButtonType.TEXT}
+                  text="NEXT"
+                  textSize="1.3rem"
+                  textColor={colors.moonpurplelight}
+                  rightIconName={IconName.ThinArrowRight}
+                  iconSize={24}
+                  iconColor={colors.moonpurplelight}
+                  disabled={flowState.disableNextBtn}
+                  onClick={
+                    flowState.disableNextBtn ? undefined : handleNextIconClick
+                  }
+                />
+              ) : null}
             </div>
           </div>
         </MainSectionSurface>

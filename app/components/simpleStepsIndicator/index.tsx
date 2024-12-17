@@ -6,6 +6,7 @@ type SimpleStepsIndicator = {
   stepColor?: string;
   steps: string[];
   currentStepIndex: number;
+  className?: string;
 };
 
 function SimpleStepsIndicator({
@@ -13,9 +14,10 @@ function SimpleStepsIndicator({
   textColor = '#FFFFFF',
   currentStepIndex,
   stepColor = '#d5aaea',
+  className,
 }: SimpleStepsIndicator) {
   return (
-    <header className={styles.stepsIndicator}>
+    <header className={clsx(styles.stepsIndicator, className)}>
       {steps.map((step, index) => (
         <div
           key={step}
