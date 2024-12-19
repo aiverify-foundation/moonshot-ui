@@ -3,6 +3,7 @@ import { Button, ButtonType } from '@/app/components/button';
 import { Checkbox } from '@/app/components/checkbox';
 import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { colors } from '@/app/customColors';
+import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
 import config from '@/moonshot.config';
 
@@ -17,7 +18,9 @@ function CookbookAbout({ cookbook, checked, onSelectChange }: Props) {
     ids: cookbook.recipes,
     count: true,
   });
-  const requiredEndpoints = cookbook.endpoint_required;
+  const requiredEndpoints = getEndpointsFromRequiredConfig(
+    cookbook.required_config
+  );
 
   return (
     <section className="flex flex-nowrap gap-5 text-white p-6 bg-moongray-800 h-full rounded-xl">
