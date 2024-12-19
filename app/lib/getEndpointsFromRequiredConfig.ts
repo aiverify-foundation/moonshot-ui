@@ -17,3 +17,12 @@ export function getEndpointsFromRequiredConfig(
   }
   return endpoints;
 }
+
+export function getEmbeddingEndpointsFromRequiredConfig(
+  requiredConfig: RequiredConfig | null
+): string[] {
+  if (!requiredConfig?.configurations?.embeddings) {
+    return [];
+  }
+  return requiredConfig.configurations.embeddings;
+}

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useTransition } from 'react';
 import { PopupSurface } from '@/app/components/popupSurface';
 import { useModelsList } from '@/app/hooks/useLLMEndpointList';
 import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 import { ConfigureRequirementsItemCard } from './configureRequirementsItemCard';
 import { CookbookAbout } from './cookbookAbout';
+import { getAllEndpoints } from '@/actions/getAllEndpoints';
 
 type ConfigureAdditionalRequirementsProps = {
   cookbooks: Cookbook[];
@@ -24,7 +25,20 @@ function ConfigureAdditionalRequirements(
   const [cookbookDetails, setCookbookDetails] = useState<
     Cookbook | undefined
   >();
-  const { models, isLoading } = useModelsList();
+  const [isPending, startTransition] = useTransition();
+  const [endpoints, setEndpoints] = useState<LLMEndpoint[]>([]);
+
+  useEffect(() => {
+    async function callServerAction() {
+      startTransition(async () => {
+        const result = await getAllEndpoints();
+        if (result.status === 'success') {
+          setEndpoints(result.data);
+        }
+      });
+    }
+    callServerAction();
+  }, []);
 
   function handleCloseAbout() {
     setCookbookDetails(undefined);
@@ -37,7 +51,7 @@ function ConfigureAdditionalRequirements(
   }
 
   return (
-    <div className="flex flex-col pt-4 w-full h-full z-[100]">
+    <div className="flex flex-col w-full h-full z-[100] overflow-y-auto custom-scrollbar">
       {cookbookDetails ? (
         <PopupSurface
           height="100%"
@@ -51,25 +65,26 @@ function ConfigureAdditionalRequirements(
         </PopupSurface>
       ) : (
         <React.Fragment>
-          <section className="flex flex-col items-center justify-top gap-5 px-8 h-full">
+          <section className="flex flex-col items-center justify-top gap-5 px-8 mb-4">
             <h2 className="text-[1.6rem] leading-[2rem] tracking-wide text-white w-full text-center pt-4">
               Provide these additional requirements
             </h2>
-            {!isLoading
+            {!isPending
               ? cookbooks.map((cookbook) => {
                   const requiredEndpointIds = getEndpointsFromRequiredConfig(
                     cookbook.required_config
                   );
-                  const endpoints = models.filter((model) =>
+                  const requiredEndpoints = endpoints.filter((model) =>
                     requiredEndpointIds.includes(model.id)
                   );
                   return (
                     <ConfigureRequirementsItemCard
                       key={cookbook.id}
                       cookbook={cookbook}
-                      requiredEndpoints={endpoints}
+                      requiredEndpoints={requiredEndpoints}
                       onConfigureEndpointClick={onConfigureEndpointClick}
                       onAboutClick={handleAboutClick}
+                      onUploadDatasetClick={() => null}
                     />
                   );
                 })
