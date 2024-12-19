@@ -176,9 +176,13 @@ export function benchmarkNewSessionFlowReducer(
         disablePrevBtn: true,
       };
     case 'CLOSE_MODEL_FORM':
+      const targetView =
+        state.stepIndex === 0
+          ? BenchmarkNewSessionViews.ENDPOINTS_SELECTION
+          : BenchmarkNewSessionViews.CONFIGURE_ADDITIONAL_REQUIREMENTS;
       return {
         ...state,
-        view: BenchmarkNewSessionViews.ENDPOINTS_SELECTION,
+        view: targetView,
         modelToEdit: undefined,
         hideNextBtn: false,
         hidePrevBtn: false,

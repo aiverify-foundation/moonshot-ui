@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+import { PopupSurface } from '@/app/components/popupSurface';
+import { useModelsList } from '@/app/hooks/useLLMEndpointList';
+import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 import { ConfigureRequirementsItemCard } from './configureRequirementsItemCard';
 import { CookbookAbout } from './cookbookAbout';
-import { PopupSurface } from '@/app/components/popupSurface';
+
 type ConfigureAdditionalRequirementsProps = {
   cookbooks: Cookbook[];
+  onConfigureEndpointClick: (endpoint: LLMEndpoint) => void;
   onCookbookAboutClick: () => void;
   onCookbookAboutClose: () => void;
 };
@@ -11,10 +15,17 @@ type ConfigureAdditionalRequirementsProps = {
 function ConfigureAdditionalRequirements(
   props: ConfigureAdditionalRequirementsProps
 ) {
-  const { cookbooks, onCookbookAboutClick, onCookbookAboutClose } = props;
+  const {
+    cookbooks,
+    onConfigureEndpointClick,
+    onCookbookAboutClick,
+    onCookbookAboutClose,
+  } = props;
   const [cookbookDetails, setCookbookDetails] = useState<
     Cookbook | undefined
   >();
+  const { models, isLoading } = useModelsList();
+
   function handleCloseAbout() {
     setCookbookDetails(undefined);
     onCookbookAboutClose();
@@ -44,13 +55,25 @@ function ConfigureAdditionalRequirements(
             <h2 className="text-[1.6rem] leading-[2rem] tracking-wide text-white w-full text-center pt-4">
               Provide these additional requirements
             </h2>
-            {cookbooks.map((cookbook) => (
-              <ConfigureRequirementsItemCard
-                key={cookbook.id}
-                cookbook={cookbook}
-                onAboutClick={handleAboutClick}
-              />
-            ))}
+            {!isLoading
+              ? cookbooks.map((cookbook) => {
+                  const requiredEndpointIds = getEndpointsFromRequiredConfig(
+                    cookbook.required_config
+                  );
+                  const endpoints = models.filter((model) =>
+                    requiredEndpointIds.includes(model.id)
+                  );
+                  return (
+                    <ConfigureRequirementsItemCard
+                      key={cookbook.id}
+                      cookbook={cookbook}
+                      requiredEndpoints={endpoints}
+                      onConfigureEndpointClick={onConfigureEndpointClick}
+                      onAboutClick={handleAboutClick}
+                    />
+                  );
+                })
+              : null}
           </section>
         </React.Fragment>
       )}

@@ -56,6 +56,16 @@ function BenchmarkNewSessionFlow() {
   );
   const [showExitModal, setShowExitModal] = React.useState(false);
 
+  const cookbooksWithAdditionalRequirements = React.useMemo(
+    () =>
+      selectedCookbooks.filter((cookbook) => {
+        return (
+          getEndpointsFromRequiredConfig(cookbook.required_config).length > 0
+        );
+      }),
+    [selectedCookbooks.length]
+  );
+
   const hasAdditionalRequirements = React.useMemo(
     () =>
       selectedCookbooks.reduce((acc, cookbook) => {
@@ -108,6 +118,13 @@ function BenchmarkNewSessionFlow() {
         modelsLength: selectedModels.length + 1,
       });
     }
+  }
+
+  function handleConfigureEndpointClick(endpoint: LLMEndpoint) {
+    dispatch({
+      type: 'EDIT_MODEL_CLICK',
+      modelToEdit: endpoint,
+    });
   }
 
   function handleCookbookSelectedOrUnselected(selectedCookbooks: Cookbook[]) {
@@ -189,7 +206,8 @@ function BenchmarkNewSessionFlow() {
     case BenchmarkNewSessionViews.CONFIGURE_ADDITIONAL_REQUIREMENTS:
       view = (
         <ConfigureAdditionalRequirements
-          cookbooks={selectedCookbooks}
+          cookbooks={cookbooksWithAdditionalRequirements}
+          onConfigureEndpointClick={handleConfigureEndpointClick}
           onCookbookAboutClose={() =>
             dispatch({
               type: 'HIDE_SURFACE_OVERLAY',
