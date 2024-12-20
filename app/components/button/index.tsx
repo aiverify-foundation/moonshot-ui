@@ -24,6 +24,7 @@ type ButtonProps = {
   leftIconName?: IconName;
   rightIconName?: IconName;
   iconSize?: number;
+  iconColor?: string;
   disabled?: boolean;
   size?: 'sm' | 'md' | 'lg';
   width?: React.CSSProperties['width'];
@@ -43,6 +44,7 @@ function Button(props: ButtonProps) {
     leftIconName,
     rightIconName,
     iconSize,
+    iconColor,
     text,
     textSize,
     textWeight,
@@ -108,6 +110,7 @@ function Button(props: ButtonProps) {
         <Icon
           name={leftIconName || IconName.ArrowLeft}
           size={iconSize}
+          color={iconColor}
         />
       )}
       <span style={{ fontSize: textSize, fontWeight: textWeight }}>{text}</span>
@@ -115,6 +118,7 @@ function Button(props: ButtonProps) {
         <Icon
           name={rightIconName || IconName.ArrowRight}
           size={iconSize}
+          color={iconColor}
         />
       )}
     </button>

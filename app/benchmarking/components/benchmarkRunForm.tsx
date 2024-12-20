@@ -319,9 +319,10 @@ function BenchmarkRunForm({
               </div>
             </div>
 
-            <div className="flex grow gap-2 justify-center items-end mt-3">
-              <RunButton disabled={disableRunBtn} />
-            </div>
+            <RunButton
+              disabled={disableRunBtn}
+              className="absolute bottom-[20px] right-[18px]"
+            />
           </form>
         </div>
       </section>
