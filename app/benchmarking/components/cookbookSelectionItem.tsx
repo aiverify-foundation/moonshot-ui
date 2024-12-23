@@ -4,7 +4,6 @@ import { Button, ButtonType } from '@/app/components/button';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
 import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
-import config from '@/moonshot.config';
 
 type CookbookSelectionItemProps = {
   cookbook: Cookbook;
@@ -119,7 +118,7 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
         />
       </header>
       <div className="flex flex-wrap gap-2 my-2">
-        {config.cookbookTags[cookbook.id]?.map((tagName) => (
+        {cookbook.tags?.map((tagName) => (
           <Button
             key={tagName}
             mode={ButtonType.OUTLINE}
