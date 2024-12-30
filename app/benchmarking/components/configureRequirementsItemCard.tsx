@@ -2,17 +2,17 @@ import React, { useEffect, useState, useTransition } from 'react';
 import { getRecipesById } from '@/actions/getRecipesById';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
+import { SelectInput } from '@/app/components/selectInput';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
 import { getEmbeddingEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 import { ConfigureEndpointSmallCard } from './configureEndpointSmallCard';
-import { SelectInput } from '@/app/components/selectInput';
 
 type ConfigureRequirementsItemCardProps = {
   cookbook: Cookbook;
   requiredEndpoints: LLMEndpoint[];
   onConfigureEndpointClick: (endpoint: LLMEndpoint) => void;
-  onUploadDatasetClick: () => void;
+  onUploadDatasetClick: (cookbook: Cookbook) => void;
   onAboutClick: (cookbook: Cookbook) => void;
 };
 
@@ -49,7 +49,7 @@ function ConfigureRequirementsItemCard(
   );
 
   function handleUploadDatasetBtnClick() {
-    onUploadDatasetClick();
+    onUploadDatasetClick(cookbook);
   }
 
   const leftSection = (

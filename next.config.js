@@ -14,6 +14,14 @@ const nextConfig = {
       },
     ]
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/v1/datasets/upload',
+        destination: `${process.env.MOONSHOT_API_URL}/api/v1/datasets/csv`,
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig

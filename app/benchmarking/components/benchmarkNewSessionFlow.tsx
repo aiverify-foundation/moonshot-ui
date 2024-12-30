@@ -218,6 +218,16 @@ function BenchmarkNewSessionFlow() {
               type: 'SHOW_SURFACE_OVERLAY',
             })
           }
+          onUploadDatasetClick={() =>
+            dispatch({
+              type: 'SHOW_SURFACE_OVERLAY',
+            })
+          }
+          onUploadDatasetClose={() =>
+            dispatch({
+              type: 'HIDE_SURFACE_OVERLAY',
+            })
+          }
         />
       );
       break;

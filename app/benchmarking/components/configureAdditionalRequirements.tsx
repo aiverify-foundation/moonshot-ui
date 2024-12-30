@@ -1,16 +1,18 @@
 import React, { useEffect, useState, useTransition } from 'react';
+import { getAllEndpoints } from '@/actions/getAllEndpoints';
 import { PopupSurface } from '@/app/components/popupSurface';
-import { useModelsList } from '@/app/hooks/useLLMEndpointList';
 import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 import { ConfigureRequirementsItemCard } from './configureRequirementsItemCard';
 import { CookbookAbout } from './cookbookAbout';
-import { getAllEndpoints } from '@/actions/getAllEndpoints';
+import { DatasetUploader } from './datasetUploader';
 
 type ConfigureAdditionalRequirementsProps = {
   cookbooks: Cookbook[];
   onConfigureEndpointClick: (endpoint: LLMEndpoint) => void;
   onCookbookAboutClick: () => void;
   onCookbookAboutClose: () => void;
+  onUploadDatasetClick: () => void;
+  onUploadDatasetClose: () => void;
 };
 
 function ConfigureAdditionalRequirements(
@@ -21,8 +23,14 @@ function ConfigureAdditionalRequirements(
     onConfigureEndpointClick,
     onCookbookAboutClick,
     onCookbookAboutClose,
+    onUploadDatasetClick,
+    onUploadDatasetClose,
   } = props;
+  const [showUploader, setShowUploader] = useState(false);
   const [cookbookDetails, setCookbookDetails] = useState<
+    Cookbook | undefined
+  >();
+  const [cookbookToUploadDataset, setCookbookToUploadDataset] = useState<
     Cookbook | undefined
   >();
   const [isPending, startTransition] = useTransition();
@@ -50,9 +58,27 @@ function ConfigureAdditionalRequirements(
     onCookbookAboutClick();
   }
 
+  function handleDatasetUploaderClick(cookbook: Cookbook) {
+    setCookbookToUploadDataset(cookbook);
+    setShowUploader(true);
+    onUploadDatasetClick();
+  }
+
+  function handleDatasetUploaderClose() {
+    setShowUploader(false);
+    onUploadDatasetClose();
+  }
+
   return (
     <div className="flex flex-col w-full h-full z-[100] overflow-y-auto custom-scrollbar">
-      {cookbookDetails ? (
+      {showUploader ? (
+        <PopupSurface
+          height="100%"
+          padding="10px"
+          onCloseIconClick={handleDatasetUploaderClose}>
+          <DatasetUploader cookbook={cookbookToUploadDataset} />
+        </PopupSurface>
+      ) : cookbookDetails ? (
         <PopupSurface
           height="100%"
           padding="10px"
@@ -84,7 +110,7 @@ function ConfigureAdditionalRequirements(
                       requiredEndpoints={requiredEndpoints}
                       onConfigureEndpointClick={onConfigureEndpointClick}
                       onAboutClick={handleAboutClick}
-                      onUploadDatasetClick={() => null}
+                      onUploadDatasetClick={handleDatasetUploaderClick}
                     />
                   );
                 })
