@@ -1,0 +1,71 @@
+:root {
+  --color-primary-50: #f9f8fb;
+  --color-primary-100: #f4f1f6;
+  --color-primary-200: #e8e3eb;
+  --color-primary-300: #d5ccdb;
+  --color-primary-400: #bcadc5;
+  --color-primary-500: #9f8baa;
+  --color-primary-600: #826d8c;
+  --color-primary-700: #6a5873;
+  --color-primary-800: #594a60;
+  --color-primary-900: #4b3f50;
+  --color-primary-950: #2c2230;
+
+  --color-secondary-50: #f7f7f8;
+  --color-secondary-100: #efeef0;
+  --color-secondary-200: #dbdadd;
+  --color-secondary-300: #bcb9c0;
+  --color-secondary-400: #97939d;
+  --color-secondary-500: #7a7582;
+  --color-secondary-600: #645f6a;
+  --color-secondary-700: #524e56;
+  --color-secondary-800: #464349;
+  --color-secondary-900: #3d3a40;
+  --color-secondary-950: #2d2b2f;
+  --color-secondary-1000: #202020;
+
+  /* tried to use these colors in tailwind.config.ts but tailwind opacity syntax 
+  (e.g. bg-moonwine-800/80) is not supported when using these css variables */
+  /* --moonwine-50: #f9f8fb;
+  --moonwine-100: #f4f1f6;
+  --moonwine-200: #e8e3eb;
+  --moonwine-300: #d5ccdb;
+  --moonwine-400: #bcadc5;
+  --moonwine-500: #9f8baa;
+  --moonwine-600: #826d8c;
+  --moonwine-700: #6a5873;
+  --moonwine-800: #594a60;
+  --moonwine-900: #4b3f50;
+  --moonwine-950: #2c2230;
+
+  --moongray-50: #f7f7f8;
+  --moongray-100: #efeef0;
+  --moongray-200: #dbdadd;
+  --moongray-300: #bcb9c0;
+  --moongray-400: #97939d;
+  --moongray-500: #7a7582;
+  --moongray-600: #645f6a;
+  --moongray-700: #524e56;
+  --moongray-800: #464349;
+  --moongray-900: #3d3a40;
+  --moongray-950: #2d2b2f;
+  --moongray-1000: #202020;
+
+  --imdalight-50: #fdf4ff;
+  --imdalight-100: #fae8ff;
+  --imdalight-200: #f5d0fe;
+  --imdalight-300: #f0abfc;
+  --imdalight-400: #e879f9;
+  --imdalight-500: #d946ef;
+  --imdalight-600: #c026d3;
+  --imdalight-700: #a21caf;
+  --imdalight-800: #86198f;
+  --imdalight-900: #701a75;
+  --imdalight-950: #4a044e;
+  --imdalight-980: #702f8a;
+  --imdalight-1000: #4c2b5d;
+  
+  --color-black: #010209;
+  --color-white: #ffffff;
+  --color-danger: #f73939; */
+}
