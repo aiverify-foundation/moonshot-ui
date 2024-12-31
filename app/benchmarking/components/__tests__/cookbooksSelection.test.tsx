@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CookbooksSelection } from '@/app/benchmarking/components/cookbooksSelection';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
@@ -16,10 +16,6 @@ jest.mock('@/moonshot.config', () => ({
   default: {
     ...jest.requireActual('@/moonshot.config').default,
     cookbooksOrder: ['cb-id-2', 'cb-id-3'],
-    cookbookTags: {
-      'cb-id-1': ['tag1', 'tag2'],
-      'cb-id-2': ['tag3', 'tag4'],
-    },
   },
 }));
 
@@ -47,7 +43,13 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-1'],
     total_prompt_in_cookbook: 10,
     total_dataset_in_cookbook: 1,
-    endpoint_required: ['endpoint-1', 'endpoint-2'],
+    required_config: {
+      configurations: {
+        embeddings: ['embed-endpoint-1', 'endpoint-2'],
+      },
+      endpoints: ['endpoint-1', 'endpoint-2'],
+    },
+    tags: ['tag1', 'tag2'],
   },
   {
     id: 'cb-id-2',
@@ -56,7 +58,8 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-2'],
     total_prompt_in_cookbook: 20,
     total_dataset_in_cookbook: 2,
-    endpoint_required: null,
+    required_config: null,
+    tags: ['tag3', 'tag4'],
   },
   {
     id: 'cb-id-3',
@@ -65,7 +68,7 @@ const mockCookbooks: Cookbook[] = [
     recipes: ['rc-id-3'],
     total_prompt_in_cookbook: 30,
     total_dataset_in_cookbook: 30,
-    endpoint_required: null,
+    required_config: null,
   },
 ];
 
@@ -84,13 +87,10 @@ function renderWithProviders(
 describe('CookbooksSelection', () => {
   const mockDispatch = jest.fn();
   const mockOnClose = jest.fn();
+  const mockOnCookbookSelected = jest.fn();
+  const mockOnCookbookUnselected = jest.fn();
   const mockAddBenchmarkCookbooks = jest.fn();
   const mockUpdateBenchmarkCookbooks = jest.fn();
-
-  const mockCookbookTags = {
-    'cb-id-1': ['tag1', 'tag2'],
-    'cb-id-2': ['tag3', 'tag4'],
-  };
 
   beforeAll(() => {
     function useMockGetCookbooksQuery() {
@@ -123,8 +123,9 @@ describe('CookbooksSelection', () => {
     );
     renderWithProviders(
       <CookbooksSelection
-        isThreeStepsFlow={false}
         onClose={mockOnClose}
+        onCookbookSelected={mockOnCookbookSelected}
+        onCookbookUnselected={mockOnCookbookUnselected}
       />
     );
     const cookbookItems = screen.getAllByRole('cookbookcard');
@@ -132,7 +133,7 @@ describe('CookbooksSelection', () => {
     expect(cookbookItems[0]).toHaveTextContent(mockCookbooks[1].name);
     expect(cookbookItems[1]).toHaveTextContent(mockCookbooks[2].name);
     expect(cookbookItems[2]).toHaveTextContent(mockCookbooks[0].name);
-    const tagNames = Object.values(mockCookbookTags).flat();
+    const tagNames = mockCookbooks.flatMap((cookbook) => cookbook.tags ?? []);
     for (const tag of tagNames) {
       expect(screen.getByText(tag)).toBeInTheDocument();
     }
@@ -156,10 +157,17 @@ describe('CookbooksSelection', () => {
       updateBenchmarkCookbooks([mockCookbooks[0], mockCookbooks[2]])
     );
     mockCookbooks.forEach((cookbook) => {
-      if (cookbook.endpoint_required && cookbook.endpoint_required.length) {
-        cookbook.endpoint_required.forEach((endpoint) => {
+      if (cookbook.required_config?.endpoints?.length) {
+        cookbook.required_config.endpoints.forEach((endpoint) => {
           expect(screen.getByText(endpoint)).toBeInTheDocument();
         });
+      }
+      if (cookbook.required_config?.configurations?.embeddings?.length) {
+        cookbook.required_config.configurations.embeddings.forEach(
+          (endpoint) => {
+            expect(screen.getByText(endpoint)).toBeInTheDocument();
+          }
+        );
       }
     });
   });
@@ -169,10 +177,11 @@ describe('CookbooksSelection', () => {
     (useAppSelector as jest.Mock).mockImplementation(
       () => mockNoSelectedCookbooks
     );
-    renderWithProviders(
+    const { rerender } = renderWithProviders(
       <CookbooksSelection
-        isThreeStepsFlow={false}
         onClose={mockOnClose}
+        onCookbookSelected={mockOnCookbookSelected}
+        onCookbookUnselected={mockOnCookbookUnselected}
       />,
       {
         initialCookbooks: mockCookbooks,
@@ -188,32 +197,26 @@ describe('CookbooksSelection', () => {
     expect(mockDispatch).toHaveBeenCalledWith(
       addBenchmarkCookbooks([mockCookbooks[0]])
     );
+    expect(mockOnCookbookSelected).toHaveBeenCalledTimes(1);
     expect(cookbookOneCheckbox).toBeChecked();
 
+    await act(async () => {
+      (useAppSelector as jest.Mock).mockImplementation(
+        () => [mockCookbooks[0]] // simulate 1 cookbook selected
+      );
+      rerender(
+        <CookbooksSelection
+          onClose={mockOnClose}
+          onCookbookSelected={mockOnCookbookSelected}
+          onCookbookUnselected={mockOnCookbookUnselected}
+        />
+      );
+    });
     await userEvent.click(cookbookOneCheckbox);
     expect(mockDispatch).toHaveBeenCalledWith(
       removeBenchmarkCookbooks([mockCookbooks[0]])
     );
+    expect(mockOnCookbookUnselected).toHaveBeenCalledTimes(1);
     expect(cookbookOneCheckbox).not.toBeChecked();
-  });
-
-  it('should close the selection view', async () => {
-    const mockAlreadySelectedCookbooks = [mockCookbooks[0], mockCookbooks[2]];
-    (useAppSelector as jest.Mock).mockImplementation(
-      () => mockAlreadySelectedCookbooks
-    );
-    renderWithProviders(
-      <CookbooksSelection
-        isThreeStepsFlow={false}
-        onClose={mockOnClose}
-      />,
-      {
-        initialCookbooks: mockCookbooks,
-      }
-    );
-
-    const closeButton = screen.getByRole('button', { name: /ok/i });
-    await userEvent.click(closeButton);
-    expect(mockOnClose).toHaveBeenCalled();
   });
 });

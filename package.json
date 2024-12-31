@@ -25,11 +25,12 @@
     "clsx": "2.0.0",
     "formik": "2.4.5",
     "html3pdf": "^0.12.2",
-    "next": "14.2.3",
+    "next": "^14.2.20",
     "react": "18",
     "react-dom": "18",
     "react-redux": "9.0.4",
     "react-select": "5.8.0",
+    "tailwind-merge": "^2.5.4",
     "yup": "1.4.0",
     "zod": "^3.23.8"
   },

@@ -44,6 +44,8 @@ import { SpacesuitIcon } from './icons/spacesuit-icon';
 import { SquareIcon } from './icons/square-icon';
 import { TableIcon } from './icons/table-icon';
 import { TalkBubblesIcon } from './icons/talkbubbles-icon';
+import { ThinArrowLeftIcon } from './icons/thin-arrow-left';
+import { ThinArrowRightIcon } from './icons/thin-arrow-right';
 import { ToolsIcon } from './icons/tools-icon';
 import { WarningIcon } from './icons/warning-icon';
 import { WideArrowDownIcon } from './icons/wide-arrow-down';
@@ -98,6 +100,8 @@ enum IconName {
   Alert,
   WideArrowLeft,
   WideArrowRight,
+  ThinArrowRight,
+  ThinArrowLeft,
 }
 
 type IconProps = {
@@ -443,6 +447,24 @@ function Icon(props: IconProps) {
     case IconName.HistoryClock:
       iconToRender = (
         <HistoryClockIcon
+          fillColor={color}
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.ThinArrowLeft:
+      iconToRender = (
+        <ThinArrowLeftIcon
+          fillColor={color}
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.ThinArrowRight:
+      iconToRender = (
+        <ThinArrowRightIcon
           fillColor={color}
           width={size}
           height={size}

@@ -1,9 +1,9 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import LeftNav from '@/app/components/leftNav';
 import { MicroLayout } from '@/app/components/microLayout';
 import Notifications from '@/app/components/notifications';
+import { Logo } from '@/app/logo';
 
 export default async function BenchmarkingLayout({
   children,
@@ -17,13 +17,7 @@ export default async function BenchmarkingLayout({
       </nav>
       <header className="flex justify-between items-center px-4 mb-5">
         <Link href="/">
-          <Image
-            src="/aivmoonshot-logo.svg"
-            height={80}
-            width={310}
-            priority
-            alt="AIVerify Moonshot Logo"
-          />
+          <Logo />
         </Link>
         <Notifications />
       </header>

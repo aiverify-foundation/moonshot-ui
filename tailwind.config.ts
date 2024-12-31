@@ -21,6 +21,10 @@ const config: Config = {
         reportText: '#bcb9c0',
         ...colors,
       },
+      screens: {
+        ipad11Inch: { max: '1194px' },
+        ipadPro: { max: '1370px' },
+      },
     },
   },
   plugins: [],

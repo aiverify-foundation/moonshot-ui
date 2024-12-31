@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
-import config from '@/moonshot.config';
+import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 
 type CookbookSelectionItemProps = {
   cookbook: Cookbook;
@@ -15,7 +15,11 @@ type CookbookSelectionItemProps = {
 function CookbookSelectionItem(props: CookbookSelectionItemProps) {
   const { cookbook, selected, onSelect, onAboutClick } = props;
   const [isSelected, setIsSelected] = useState(selected);
-  const requiredEndpoints = cookbook.endpoint_required;
+  const requiredEndpoints = getEndpointsFromRequiredConfig(
+    cookbook.required_config
+  );
+  const [substringEndIndex, setSubstringEndIndex] = useState(40);
+
   function handleClick(
     e: React.MouseEvent | React.ChangeEvent<HTMLInputElement>
   ) {
@@ -23,6 +27,25 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
     setIsSelected(!isSelected);
     onSelect(cookbook);
   }
+
+  function handleResize() {
+    const viewportWidth = window.innerWidth;
+    if (viewportWidth <= 1760 && viewportWidth > 1680) {
+      setSubstringEndIndex(35);
+    } else if (viewportWidth <= 1680) {
+      setSubstringEndIndex(28);
+    } else {
+      setSubstringEndIndex(40);
+    }
+  }
+
+  useLayoutEffect(() => {
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <li
@@ -46,31 +69,36 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
             name={IconName.Book}
             style={{ marginTop: 2 }}
           />
-          {cookbook.name.length > 40 ? (
+          {cookbook.name.length > substringEndIndex ? (
             <Tooltip
               position={TooltipPosition.top}
               content={cookbook.name}
               offsetTop={-10}
               offsetLeft={-30}>
               <h3 className="font-bold ">
-                {`${cookbook.name.substring(0, 40)}...`}
+                {`${cookbook.name.substring(0, substringEndIndex)}...`}
               </h3>
             </Tooltip>
           ) : (
             <h3 className="font-bold ">{cookbook.name}</h3>
           )}
-          {requiredEndpoints && requiredEndpoints.length > 0 && (
+          {requiredEndpoints.length > 0 && (
             <Tooltip
               position={TooltipPosition.right}
               offsetLeft={10}
               content={
                 <div className="p-1 pt-0">
-                  <h3 className="text-black font-bold mb-2">Requires</h3>
-                  <ul className="text-gray-700">
+                  <h3 className="text-black font-bold mb-2">
+                    This benchmark requires the following:
+                  </h3>
+                  <ul className="text-moonpurple list-disc pl-4">
                     {requiredEndpoints.map((endpoint) => (
                       <li key={endpoint}>{endpoint}</li>
                     ))}
                   </ul>
+                  <p className="text-black mt-2">
+                    Please input the token for the endpoint(s) before running.
+                  </p>
                 </div>
               }>
               <Icon
@@ -90,7 +118,7 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
         />
       </header>
       <div className="flex flex-wrap gap-2 my-2">
-        {config.cookbookTags[cookbook.id]?.map((tagName) => (
+        {cookbook.tags?.map((tagName) => (
           <Button
             key={tagName}
             mode={ButtonType.OUTLINE}

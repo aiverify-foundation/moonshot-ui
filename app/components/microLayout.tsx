@@ -1,3 +1,5 @@
+import { MAX_LAYOUT_WIDTH, MIN_LAYOUT_WIDTH } from '@/app/constants';
+
 type MicroLayoutProps = {
   maxWidth?: number;
   minWidth?: number;
@@ -6,13 +8,13 @@ type MicroLayoutProps = {
 
 function MicroLayout({
   children,
-  maxWidth = 1440,
-  minWidth = 1024,
+  maxWidth = MAX_LAYOUT_WIDTH,
+  minWidth = MIN_LAYOUT_WIDTH,
 }: MicroLayoutProps) {
   return (
-    <div className="flex p-11 h-screen justify-center items-start">
+    <div className="flex p-11 h-full ipad11Inch:h-[95%] ipadPro:h-[95%] justify-center items-start">
       <div
-        className="flex flex-nowrap basis-[70%] max-w-[1440px] min-w-[1024px] h-full justify-between relative gap-[0.5%]"
+        className="flex flex-nowrap basis-[70%] h-full justify-between relative gap-[0.5%]"
         style={{ maxWidth, minWidth }}>
         <div
           id="navContainer"

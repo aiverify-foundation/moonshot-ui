@@ -13,27 +13,8 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  /*
-  These dimensions must match dimensions defined in active-chat-session component 
-  There are couple more assignments below based on media queries
-  */
-  --chatwindow-width: 420px;
-  --gap-width: 16px;
 }
 
-@media (min-width: 1180px) {
-  :root {
-    --chatwindow-width: 420px;
-    --gap-width: 50px;
-  }
-}
-
-@media (max-width: 992px) {
-  :root {
-    --chatwindow-width: 420px;
-    --gap-width: 15px;
-  }
-}
 
 @keyframes bounce {
   0%,
