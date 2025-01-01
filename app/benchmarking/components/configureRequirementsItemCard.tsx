@@ -2,7 +2,7 @@ import React, { useEffect, useState, useTransition } from 'react';
 import { getRecipesById } from '@/actions/getRecipesById';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
-import { SelectInput } from '@/app/components/selectInput';
+import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
 import { getEmbeddingEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
@@ -83,9 +83,16 @@ function ConfigureRequirementsItemCard(
   );
 
   const recipesDatasetsDropdowns =
-    !isPending && embeddingEndpoints.length > 0 ? (
-      <div className="flex flex-col gap-4">
-        {recipes.map((recipe) => {
+    !isPending && embeddingEndpoints.length > 0 && recipes.length > 0 ? (
+      <div className="flex flex-col gap-4 text-white">
+        <div className="flex flex-col gap-1">
+          <div className="flex gap-2">
+            <Icon name={IconName.File} />
+            <h4>{recipes[0].name}</h4>
+          </div>
+          <p>{recipes[0].datasets[0]}</p>
+        </div>
+        {/* {recipes.map((recipe) => {
           const options = recipe.datasets.map((dataset) => ({
             label: dataset,
             value: dataset,
@@ -107,7 +114,7 @@ function ConfigureRequirementsItemCard(
               />
             </div>
           );
-        })}
+        })} */}
       </div>
     ) : null;
 
@@ -127,7 +134,7 @@ function ConfigureRequirementsItemCard(
           </Tooltip>
         </div>
         <div className="flex gap-2 mt-2">
-          <p className="text-moongray-400">Select an existing dataset or</p>
+          <p className="text-moongray-400">Use existing dataset or</p>
           <Button
             mode={ButtonType.OUTLINE}
             hoverBtnColor={colors.moongray[700]}
@@ -171,7 +178,13 @@ function ConfigureRequirementsItemCard(
 
   const rightSection = (
     <section className="flex flex-col gap-2 flex-1 px-4">
-      {customTestingDataSection}
+      {isPending && embeddingEndpoints.length > 0 ? (
+        <div className="relative h-[80px]">
+          <LoadingAnimation />
+        </div>
+      ) : (
+        customTestingDataSection
+      )}
       {embeddingEndpoints.length > 0 ? (
         <div className="h-[1px] w-full mt-8 bg-moongray-800" />
       ) : null}

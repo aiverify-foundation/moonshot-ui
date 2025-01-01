@@ -69,14 +69,23 @@ function ConfigureAdditionalRequirements(
     onUploadDatasetClose();
   }
 
+  function handleUploadCompleted() {
+    setCookbookToUploadDataset(undefined);
+    setShowUploader(false);
+    onUploadDatasetClose();
+  }
+
   return (
     <div className="flex flex-col w-full h-full z-[100] overflow-y-auto custom-scrollbar">
-      {showUploader ? (
+      {showUploader && cookbookToUploadDataset ? (
         <PopupSurface
           height="100%"
           padding="10px"
           onCloseIconClick={handleDatasetUploaderClose}>
-          <DatasetUploader cookbook={cookbookToUploadDataset} />
+          <DatasetUploader
+            cookbook={cookbookToUploadDataset}
+            onUploadSuccess={handleUploadCompleted}
+          />
         </PopupSurface>
       ) : cookbookDetails ? (
         <PopupSurface

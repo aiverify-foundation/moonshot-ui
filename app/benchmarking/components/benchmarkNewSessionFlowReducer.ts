@@ -195,9 +195,9 @@ export function benchmarkNewSessionFlowReducer(
         view: targetView,
         modelToEdit: undefined,
         hideNextBtn: false,
-        hidePrevBtn: false,
+        hidePrevBtn: state.stepIndex === 0 ? true : false,
         disableNextBtn: action.modelsLength === 0,
-        disablePrevBtn: false,
+        disablePrevBtn: state.stepIndex === 0 ? true : false,
       };
     case 'CLOSE_REQUIRED_ENDPOINTS_MODAL':
       if (action.requiredEndpointsTokensFilled) {

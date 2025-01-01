@@ -1,12 +1,13 @@
 import { useState, useTransition } from 'react';
 import { updateRecipeDataset } from '@/actions/updateRecipeDatasets';
+import { Icon, IconName } from '@/app/components/IconSVG';
 import { FileSelect } from '@/app/components/fileSelect';
+import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import {
   ErrorWithMessage,
   isApiError,
   toErrorWithMessage,
 } from '@/app/lib/error-utils';
-import { LoadingAnimation } from '@/app/components/loadingAnimation';
 
 export type UploadStatus = 'idle' | 'uploading' | 'success' | 'error';
 
@@ -19,23 +20,25 @@ export type FileUpload = {
 
 type DatasetUploaderProps = {
   cookbook: Cookbook;
+  onUploadSuccess: () => void;
 };
 
 const uploadUrl = '/api/v1/datasets/upload'; // This path is defined here because it is the only path that leverages the rewrites in next.config.js
 
 function DatasetUploader(props: DatasetUploaderProps) {
-  const { cookbook } = props;
+  const { cookbook, onUploadSuccess } = props;
   const [fileUpload, setFileUpload] = useState<FileUpload | null>(null);
-  const [error, setError] = useState<ErrorWithMessage | null>(null);
+  const [error, setError] = useState<[string, ErrorWithMessage] | null>(null);
   const [_, startTransition] = useTransition();
   const [isPending, setIsPending] = useState(false);
 
   function handleFileChange(files: File[]) {
-    if (files.length === 0 || files.length > 1) return;
+    setError(null);
+    if (files.length === 0) return;
     setIsPending(true);
-    const filesToUpload = Array.from(files);
+    const droppedFiles = Array.from(files);
     const newUpload: FileUpload = {
-      file: filesToUpload[0],
+      file: droppedFiles[0],
       progress: 0,
       status: 'idle',
       id: Math.random().toString(36).substring(2, 9),
@@ -59,21 +62,32 @@ function DatasetUploader(props: DatasetUploaderProps) {
       status: response.status,
     };
     if (isApiError(result)) {
-      setError(toErrorWithMessage(result));
+      setError([fileUpload.file.name, toErrorWithMessage(result)]);
+      setFileUpload(null);
+      setIsPending(false);
+      return;
+    }
+    if (cookbook.recipes.length === 0) {
+      setError([
+        fileUpload.file.name,
+        toErrorWithMessage({ message: 'No recipe found' }),
+      ]);
       setFileUpload(null);
       setIsPending(false);
       return;
     }
     startTransition(() => {
       updateRecipeDataset({
-        recipeId: cookbook.id,
-        datasetIds: [result.data.id],
+        recipeId: cookbook.recipes[0],
+        datasetIds: [result.data],
       }).then((result) => {
         if (result.statusCode !== 200) {
-          setError(toErrorWithMessage(result));
+          setError([fileUpload.file.name, toErrorWithMessage(result)]);
           setFileUpload(null);
           setIsPending(false);
+          return;
         }
+        onUploadSuccess();
       });
     });
   }
@@ -95,8 +109,13 @@ function DatasetUploader(props: DatasetUploaderProps) {
               className="hover:bg-imdapurple hover:opacity-70 h-[200px]
               w-[500px] !rounded-[20px] px-10 flex items-center justify-center">
               {isPending ? (
-                <div className="relative">
-                  <LoadingAnimation />
+                <div className="flex flex-col items-center gap-2">
+                  <div className="relative h-[80px]">
+                    <LoadingAnimation />
+                  </div>
+                  <p className="text-white">
+                    Uploading {fileUpload?.file.name}
+                  </p>
                 </div>
               ) : (
                 <p className="text-white">Drag and drop CSV file here</p>
@@ -104,7 +123,23 @@ function DatasetUploader(props: DatasetUploaderProps) {
             </FileSelect.DropZone>
           </FileSelect>
         </div>
-        {error ? <p className="text-red-500">{error.message}</p> : null}
+        {error ? (
+          <div className="flex flex-col items-start gap-2">
+            <div className="flex items-start gap-2">
+              <Icon
+                name={IconName.Alert}
+                size={24}
+                color="red"
+              />
+              <div>
+                <h4 className="text-[1rem] leading-[1.5rem] tracking-wide text-moongray-400">
+                  {error[0]}
+                </h4>
+                <p className="text-red-500">{error[1].message}</p>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
     </section>
   );

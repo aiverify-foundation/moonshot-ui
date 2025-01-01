@@ -8,6 +8,9 @@ export const updateRecipeDataset = async ({
   recipeId: string;
   datasetIds: string[];
 }) => {
+  const payload = JSON.stringify({
+    datasets: datasetIds,
+  });
   const response = await fetch(
     `${config.webAPI.hostURL}${config.webAPI.basePathRecipes}/${recipeId}`,
     {
@@ -15,9 +18,7 @@ export const updateRecipeDataset = async ({
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        datasets: datasetIds,
-      }),
+      body: payload,
     }
   );
   const data = await response.json();
