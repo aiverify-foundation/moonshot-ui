@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useState, useTransition } from 'react';
 import { updateRecipeDataset } from '@/actions/updateRecipeDatasets';
 import { Icon, IconName } from '@/app/components/IconSVG';
@@ -8,6 +9,8 @@ import {
   isApiError,
   toErrorWithMessage,
 } from '@/app/lib/error-utils';
+import { Button, ButtonType } from '@/app/components/button';
+import { colors } from '@/app/customColors';
 
 export type UploadStatus = 'idle' | 'uploading' | 'success' | 'error';
 
@@ -97,7 +100,18 @@ function DatasetUploader(props: DatasetUploaderProps) {
         Upload a custom dataset
       </h3>
       <div className="flex flex-col items-center w-[80%] gap-6">
-        <div className="flex gap-2 justify-center">
+        <div className="flex flex-col gap-2 justify-center items-center">
+          <div className="mb-[40px]">
+            <Link href="/benchmarking/datasets/example">
+              <Button
+                mode={ButtonType.OUTLINE}
+                size="md" text='View Example'
+                hoverBtnColor={colors.moongray[700]}
+                pressedBtnColor={colors.moongray[900]}
+                onClick={() => { }}
+              />
+            </Link>
+          </div>
           <FileSelect
             onFilesSelected={handleFileChange}
             disabled={isPending}>
@@ -106,7 +120,7 @@ function DatasetUploader(props: DatasetUploaderProps) {
               multiple
             />
             <FileSelect.DropZone
-              className="hover:bg-imdapurple hover:opacity-70 h-[200px]
+              className="hover:bg-moongray-700 hover:opacity-70 h-[200px]
               w-[500px] !rounded-[20px] px-10 flex items-center justify-center">
               {isPending ? (
                 <div className="flex flex-col items-center gap-2">
