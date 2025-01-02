@@ -9,9 +9,51 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
+
+  /* Moonwine colors */
+  --color-moonwine-50: #f9f8fb;
+  --color-moonwine-100: #f4f1f6;
+  --color-moonwine-200: #e8e3eb;
+  --color-moonwine-300: #d5ccdb;
+  --color-moonwine-400: #bcadc5;
+  --color-moonwine-500: #9f8baa;
+  --color-moonwine-600: #826d8c;
+  --color-moonwine-700: #6a5873;
+  --color-moonwine-800: #594a60;
+  --color-moonwine-900: #4b3f50;
+  --color-moonwine-950: #2c2230;
+
+  /* Moongray colors */
+  --color-moongray-50: #f7f7f8;
+  --color-moongray-100: #efeef0;
+  --color-moongray-200: #dbdadd;
+  --color-moongray-300: #bcb9c0;
+  --color-moongray-400: #97939d;
+  --color-moongray-500: #7a7582;
+  --color-moongray-600: #645f6a;
+  --color-moongray-700: #524e56;
+  --color-moongray-800: #464349;
+  --color-moongray-900: #3d3a40;
+  --color-moongray-950: #2d2b2f;
+  --color-moongray-1000: #202020;
+
+  /* Imdalight colors */
+  --color-imdalight-50: #fdf4ff;
+  --color-imdalight-100: #fae8ff;
+  --color-imdalight-200: #f5d0fe;
+  --color-imdalight-300: #f0abfc;
+  --color-imdalight-400: #e879f9;
+  --color-imdalight-500: #d946ef;
+  --color-imdalight-600: #c026d3;
+  --color-imdalight-700: #a21caf;
+  --color-imdalight-800: #86198f;
+  --color-imdalight-900: #701a75;
+  --color-imdalight-950: #4a044e;
+  --color-imdalight-980: #702f8a;
+  --color-imdalight-1000: #4c2b5d;
 }
 
 
@@ -45,56 +87,6 @@
   }
   100% {
     opacity: 0.3;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-
-    /* Moonwine colors */
-    --color-moonwine-50: #f9f8fb;
-    --color-moonwine-100: #f4f1f6;
-    --color-moonwine-200: #e8e3eb;
-    --color-moonwine-300: #d5ccdb;
-    --color-moonwine-400: #bcadc5;
-    --color-moonwine-500: #9f8baa;
-    --color-moonwine-600: #826d8c;
-    --color-moonwine-700: #6a5873;
-    --color-moonwine-800: #594a60;
-    --color-moonwine-900: #4b3f50;
-    --color-moonwine-950: #2c2230;
-
-    /* Moongray colors */
-    --color-moongray-50: #f7f7f8;
-    --color-moongray-100: #efeef0;
-    --color-moongray-200: #dbdadd;
-    --color-moongray-300: #bcb9c0;
-    --color-moongray-400: #97939d;
-    --color-moongray-500: #7a7582;
-    --color-moongray-600: #645f6a;
-    --color-moongray-700: #524e56;
-    --color-moongray-800: #464349;
-    --color-moongray-900: #3d3a40;
-    --color-moongray-950: #2d2b2f;
-    --color-moongray-1000: #202020;
-
-    /* Imdalight colors */
-    --color-imdalight-50: #fdf4ff;
-    --color-imdalight-100: #fae8ff;
-    --color-imdalight-200: #f5d0fe;
-    --color-imdalight-300: #f0abfc;
-    --color-imdalight-400: #e879f9;
-    --color-imdalight-500: #d946ef;
-    --color-imdalight-600: #c026d3;
-    --color-imdalight-700: #a21caf;
-    --color-imdalight-800: #86198f;
-    --color-imdalight-900: #701a75;
-    --color-imdalight-950: #4a044e;
-    --color-imdalight-980: #702f8a;
-    --color-imdalight-1000: #4c2b5d;
   }
 }
 
