@@ -20,7 +20,6 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
   const requiredEndpoints = getEndpointsFromRequiredConfig(
     cookbook.required_config
   );
-  const [substringEndIndex, setSubstringEndIndex] = useState(40);
 
   function handleClick(
     e: React.MouseEvent | React.ChangeEvent<HTMLInputElement>
@@ -29,25 +28,6 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
     setIsSelected(!isSelected);
     onSelect(cookbook);
   }
-
-  function handleResize() {
-    const viewportWidth = window.innerWidth;
-    if (viewportWidth <= 1760 && viewportWidth > 1680) {
-      setSubstringEndIndex(35);
-    } else if (viewportWidth <= 1680) {
-      setSubstringEndIndex(28);
-    } else {
-      setSubstringEndIndex(40);
-    }
-  }
-
-  useLayoutEffect(() => {
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   return (
     <li
