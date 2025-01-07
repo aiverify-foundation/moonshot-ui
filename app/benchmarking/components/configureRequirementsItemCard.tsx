@@ -7,6 +7,7 @@ import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
 import { getEmbeddingEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 import { ConfigureEndpointSmallCard } from './configureEndpointSmallCard';
+import Link from 'next/link';
 
 type ConfigureRequirementsItemCardProps = {
   cookbook: Cookbook;
@@ -78,6 +79,40 @@ function ConfigureRequirementsItemCard(
             ))}
           </ul>
         </p>
+      ) : null}
+
+      {embeddingEndpoints.length > 0 ? (
+        <div className="flex flex-col gap-2 flex-1 pr-4 w-full justify-center mt-10">
+          <h3 className="text-[0.9rem] leading-snug tracking-wide font-bold text-moongray-400 ml-8">
+            Also requires a custom dataset.
+          </h3>
+          <div className="flex gap-4 flex-1 pr-4 w-full justify-center mt-6 ">
+            <Link
+              href="/rag-sample-dataset.json"
+              target="_blank">
+              <Button
+                mode={ButtonType.OUTLINE}
+                hoverBtnColor={colors.moongray[700]}
+                pressedBtnColor={colors.moongray[900]}
+                size="sm"
+                text="View JSON example"
+                leftIconName={IconName.Download}
+              />
+            </Link>
+            <Link
+              href="/rag-sample-dataset.csv"
+              target="_blank">
+              <Button
+                mode={ButtonType.OUTLINE}
+                hoverBtnColor={colors.moongray[700]}
+                pressedBtnColor={colors.moongray[900]}
+                size="sm"
+                text="View CSV example"
+                leftIconName={IconName.Download}
+              />
+            </Link>
+          </div>
+        </div>
       ) : null}
     </div>
   );

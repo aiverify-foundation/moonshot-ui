@@ -50,6 +50,7 @@ import { ToolsIcon } from './icons/tools-icon';
 import { WarningIcon } from './icons/warning-icon';
 import { WideArrowDownIcon } from './icons/wide-arrow-down';
 import { WideArrowUpIcon } from './icons/wide-arrow-up';
+import { DownloadIcon } from './icons/download-icon';
 
 enum IconName {
   Folder,
@@ -59,6 +60,7 @@ enum IconName {
   RunCookbook,
   BurgerMenu,
   DarkMoon,
+  Download,
   LightSun,
   Close,
   CircleArrowRight,
@@ -195,6 +197,15 @@ function Icon(props: IconProps) {
       iconToRender = (
         <DarkMoonIcon
           outlineColor={color}
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Download:
+      iconToRender = (
+        <DownloadIcon
+          fillColor={color}
           width={size}
           height={size}
         />
