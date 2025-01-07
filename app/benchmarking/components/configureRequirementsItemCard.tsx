@@ -82,39 +82,18 @@ function ConfigureRequirementsItemCard(
     </div>
   );
 
-  const recipesDatasetsDropdowns =
+  const recipeDataset =
     !isPending && embeddingEndpoints.length > 0 && recipes.length > 0 ? (
-      <div className="flex flex-col gap-4 text-white">
+      <div className="flex flex-col gap-4 text-white mt-6">
         <div className="flex flex-col gap-1">
           <div className="flex gap-2">
             <Icon name={IconName.File} />
             <h4>{recipes[0].name}</h4>
           </div>
-          <p>{recipes[0].datasets[0]}</p>
+          <p className="border-moongray-800 border rounded-lg px-4 py-2 mt-2">
+            {recipes[0].datasets[0]}
+          </p>
         </div>
-        {/* {recipes.map((recipe) => {
-          const options = recipe.datasets.map((dataset) => ({
-            label: dataset,
-            value: dataset,
-          }));
-          return (
-            <div
-              key={recipe.id}
-              className="flex flex-col gap-1">
-              <div className="flex gap-2">
-                <Icon name={IconName.File} />
-                <h4 className="text-white">{recipe.name}</h4>
-              </div>
-              <SelectInput
-                name="dataset"
-                options={options}
-                value={recipe.datasets[0]}
-                onChange={() => {}}
-                style={{ marginBottom: 0, width: 400 }}
-              />
-            </div>
-          );
-        })} */}
       </div>
     ) : null;
 
@@ -134,17 +113,17 @@ function ConfigureRequirementsItemCard(
           </Tooltip>
         </div>
         <div className="flex gap-2 mt-2">
-          <p className="text-moongray-400">Use existing dataset or</p>
           <Button
             mode={ButtonType.OUTLINE}
             hoverBtnColor={colors.moongray[700]}
             pressedBtnColor={colors.moongray[900]}
             size="sm"
-            text="Upload dataset"
+            text="Upload New Dataset"
             onClick={handleUploadDatasetBtnClick}
           />
+          <p className="text-moongray-400"> to replace the dataset(s) below.</p>
         </div>
-        {recipesDatasetsDropdowns}
+        {recipeDataset}
       </div>
     ) : null;
 
