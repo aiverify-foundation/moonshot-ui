@@ -183,10 +183,10 @@ function BenchmarkRunForm({
         </Modal>
       )}
       <section className="flex flex-col items-center justify-center min-h-[300px] gap-5">
-        <div className="flex flex-col w-[50%] ipad11Inch:w-[60%] ipadPro:w-[65%] gap-2">
+        <div className="flex flex-col w-[55%] ipad11Inch:w-[60%] ipadPro:w-[65%] gap-2">
           <form
             action={formAction}
-            className="ipad11Inch:h-[calc(300px)] ipadPro:h-[calc(300px)] overflow-y-auto custom-scrollbar ipad11Inch:p-2 ipadPro:p-2">
+            className="ipad11Inch:h-[calc(300px)] ipadPro:h-[calc(300px)] overflow-y-auto custom-scrollbar ipad11Inch:p-6 ipadPro:p-6 px-6">
             {selectedCookbooks.map((cookbook) => (
               <input
                 readOnly
@@ -280,26 +280,26 @@ function BenchmarkRunForm({
                   Select the percentage of prompts you want to run from the
                   cookbook(s) selected.
                 </p>
-                <Slider
-                  min={1}
-                  max={100}
-                  initialValue={isRunAll ? 100 : percentageOfPrompts}
-                  className="mt-[45px] mb-[10px]"
-                  valueSuffix="%"
-                  onChange={handleSliderValueChange}
-                  onMouseUp={handleSliderMouseUp}>
-                  <Slider.Track />
-                  <Slider.ProgressTrack />
-                  <Slider.Handle>
-                    <div className="absolute left-[50%] top-[-220%] transform -translate-x-1/2">
-                      <Slider.Value />
-                    </div>
-                  </Slider.Handle>
-                  <Slider.Input
-                    name="prompt_selection_percentage"
-                    style={{ display: 'none' }}
-                  />
-                </Slider>
+                  <Slider
+                    min={1}
+                    max={100}
+                    initialValue={isRunAll ? 100 : percentageOfPrompts}
+                    className="mt-[45px] mb-[10px]"
+                    valueSuffix="%"
+                    onChange={handleSliderValueChange}
+                    onMouseUp={handleSliderMouseUp}>
+                    <Slider.Track />
+                    <Slider.ProgressTrack />
+                    <Slider.Handle>
+                      <div className="absolute left-[50%] top-[-220%] transform -translate-x-1/2">
+                        <Slider.Value />
+                      </div>
+                    </Slider.Handle>
+                    <Slider.Input
+                      name="prompt_selection_percentage"
+                      style={{ display: 'none' }}
+                    />
+                  </Slider>
                 <p
                   className={`text-white text-[0.9rem] mb-[10px]
                   ${isRunAll ? 'opacity-50' : 'opacity-100'}`}>
