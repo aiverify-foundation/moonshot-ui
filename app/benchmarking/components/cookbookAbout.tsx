@@ -45,7 +45,7 @@ function CookbookAbout({ cookbook, checked, onSelectChange }: Props) {
           />
         </div>
         <div className="flex flex-wrap gap-2 mb-4 mt-2">
-          {config.cookbookTags[cookbook.id]?.map((tagName) => (
+          {cookbook.tags?.map((tagName) => (
             <Button
               key={tagName}
               mode={ButtonType.OUTLINE}
