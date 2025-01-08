@@ -5,12 +5,15 @@ import { getRecipesStatsById } from '@/actions/getRecipesStatsById';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { FormStateErrorList } from '@/app/components/formStateErrorList';
 import { Modal } from '@/app/components/modal';
+import { Slider } from '@/app/components/slider/Slider';
 import { TextArea } from '@/app/components/textArea';
 import { TextInput } from '@/app/components/textInput';
 import ToggleSwitch from '@/app/components/toggleSwitch';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
 import { RunButton } from './runButton';
+
+const MemoizedToggleSwitch = React.memo(ToggleSwitch);
 
 const initialFormValues: FormState<BenchmarkRunFormValues> = {
   formStatus: 'initial',
@@ -19,11 +22,10 @@ const initialFormValues: FormState<BenchmarkRunFormValues> = {
   description: '',
   inputs: [],
   endpoints: [],
-  num_of_prompts: '',
+  prompt_selection_percentage: '1',
   system_prompt: '',
   runner_processing_module: 'benchmarking',
   random_seed: '0',
-  run_all: 'false',
 };
 
 type BenchmarkRunFormProps = {
@@ -37,7 +39,7 @@ function BenchmarkRunForm({
 }: BenchmarkRunFormProps) {
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
-  const [numOfPromptsInput, setNumOfPromptsInput] = React.useState('');
+  const [percentageOfPrompts, setPercentageOfPrompts] = React.useState(1);
   const [showErrorModal, setShowErrorModal] = React.useState(false);
   const [isPending, startTransition] = React.useTransition();
   const [isRunAll, setIsRunAll] = React.useState(false);
@@ -47,38 +49,62 @@ function BenchmarkRunForm({
     FormData
   >(createRun, initialFormValues);
 
-  const coercedNumOfPromptsInput = Number(numOfPromptsInput);
-
+  const decimalFraction = percentageOfPrompts / 100;
+  const calcPercentageAtEachDataset = true; // if true, percentage is applied to each dataset instead of applying to total prompts from all datasets
   const [numOfPromptsGrandTotal, userInputNumOfPromptsGrandTotal] =
     React.useMemo(() => {
       return recipesStats.reduce(
         (acc, stats) => {
-          const totalBasePrompts = Object.values(
+          let percentageCalculatedTotalPrompts = 0;
+          const totalPromptsFromAllDatasets = Object.values(
             stats.num_of_datasets_prompts
-          ).reduce((sum, value) => sum + value, 0);
-          const userInputTotalBasePrompts =
-            !isNaN(coercedNumOfPromptsInput) &&
-            coercedNumOfPromptsInput > 0 &&
-            Number.isInteger(coercedNumOfPromptsInput) &&
-            !numOfPromptsInput.includes('.')
-              ? coercedNumOfPromptsInput * stats.num_of_datasets
-              : 0;
-          let grandTotalPrompts = totalBasePrompts;
-          let userInputGrandTotalPrompts = userInputTotalBasePrompts;
+          ).reduce((sum, value) => {
+            if (calcPercentageAtEachDataset) {
+              percentageCalculatedTotalPrompts += Math.floor(
+                value * decimalFraction
+              );
+            }
+            return sum + value;
+          }, 0);
+          const grandTotalPromptsToRun =
+            stats.num_of_prompt_templates > 0
+              ? totalPromptsFromAllDatasets * stats.num_of_prompt_templates
+              : totalPromptsFromAllDatasets;
+          let userInputTotalPromptsToRun = 0;
           if (stats.num_of_prompt_templates > 0) {
-            grandTotalPrompts =
-              grandTotalPrompts * stats.num_of_prompt_templates;
-            userInputGrandTotalPrompts =
-              userInputGrandTotalPrompts * stats.num_of_prompt_templates;
+            if (calcPercentageAtEachDataset) {
+              userInputTotalPromptsToRun =
+                percentageCalculatedTotalPrompts *
+                stats.num_of_prompt_templates;
+            } else {
+              userInputTotalPromptsToRun =
+                decimalFraction *
+                grandTotalPromptsToRun *
+                stats.num_of_prompt_templates;
+            }
+          } else {
+            if (calcPercentageAtEachDataset) {
+              userInputTotalPromptsToRun = percentageCalculatedTotalPrompts;
+            } else {
+              userInputTotalPromptsToRun =
+                decimalFraction * grandTotalPromptsToRun;
+            }
           }
           return [
-            acc[0] + grandTotalPrompts,
-            acc[1] + userInputGrandTotalPrompts,
+            acc[0] + grandTotalPromptsToRun,
+            acc[1] + userInputTotalPromptsToRun,
           ];
         },
         [0, 0] as [number, number]
       );
-    }, [recipesStats, numOfPromptsInput]);
+    }, [recipesStats, percentageOfPrompts]);
+
+  const roundedUserInputNumOfPromptsGrandTotal = Math.max(
+    1,
+    Math.floor(userInputNumOfPromptsGrandTotal)
+  );
+
+  const prevPercentageValue = React.useRef(percentageOfPrompts);
 
   React.useEffect(() => {
     if (formState.formStatus === 'error') {
@@ -105,44 +131,29 @@ function BenchmarkRunForm({
     });
   }, [selectedCookbooks]);
 
-  function handleNumOfPromptsChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setNumOfPromptsInput(e.target.value);
+  function handleSliderMouseUp(value: number) {
+    console.log(value);
+    if (value === 100) return;
+    prevPercentageValue.current = value;
   }
 
-  function handleRunAllChange(isChecked: boolean) {
-    setNumOfPromptsInput(isChecked ? '0' : '');
+  const handleSliderValueChange = (value: number) => {
+    setPercentageOfPrompts(value);
+    if (value === 100) {
+      setIsRunAll(true);
+    } else {
+      setIsRunAll(false);
+    }
+  };
+
+  const handleRunAllChange = React.useCallback((isChecked: boolean) => {
+    const prevValue =
+      prevPercentageValue.current !== 100 ? prevPercentageValue.current : 1;
+    setPercentageOfPrompts(isChecked ? 100 : prevValue);
     setIsRunAll(isChecked);
-  }
+  }, []);
 
-  const disableRunBtn =
-    !name ||
-    isNaN(coercedNumOfPromptsInput) ||
-    (!isRunAll &&
-      !isNaN(coercedNumOfPromptsInput) &&
-      coercedNumOfPromptsInput < 1) ||
-    !Number.isInteger(coercedNumOfPromptsInput) ||
-    numOfPromptsInput.includes('.');
-
-  let numOfPromptsError = formState.formErrors?.num_of_prompts?.[0];
-  if (
-    !isRunAll &&
-    numOfPromptsInput.trim() !== '' &&
-    coercedNumOfPromptsInput < 1
-  ) {
-    numOfPromptsError = 'Number of prompts per recipe must be greater than 0';
-  } else if (
-    !isRunAll &&
-    numOfPromptsInput.trim() !== '' &&
-    userInputNumOfPromptsGrandTotal > numOfPromptsGrandTotal
-  ) {
-    numOfPromptsError = `Total number of prompts that will be run should be smaller than actual total number of prompts which is ${numOfPromptsGrandTotal}`;
-  } else if (
-    !isRunAll &&
-    numOfPromptsInput.trim() !== '' &&
-    !Number.isInteger(coercedNumOfPromptsInput)
-  ) {
-    numOfPromptsError = 'Number of prompts per recipe must be an integer';
-  }
+  const disableRunBtn = !name;
 
   return (
     <>
@@ -172,10 +183,10 @@ function BenchmarkRunForm({
         </Modal>
       )}
       <section className="flex flex-col items-center justify-center min-h-[300px] gap-5">
-        <div className="flex flex-col w-[50%] ipad11Inch:w-[60%] ipadPro:w-[65%] gap-2">
+        <div className="flex flex-col w-[55%] ipad11Inch:w-[60%] ipadPro:w-[65%] gap-2">
           <form
             action={formAction}
-            className="ipad11Inch:h-[calc(300px)] ipadPro:h-[calc(300px)] overflow-y-auto custom-scrollbar ipad11Inch:p-2 ipadPro:p-2">
+            className="ipad11Inch:h-[calc(300px)] ipadPro:h-[calc(300px)] overflow-y-auto custom-scrollbar ipad11Inch:p-6 ipadPro:p-6 px-6">
             {selectedCookbooks.map((cookbook) => (
               <input
                 readOnly
@@ -243,66 +254,64 @@ function BenchmarkRunForm({
             />
 
             <div className="relative flex flex-col">
-              <div className="absolute top-[2px] left-[140px]">
-                <Tooltip
-                  position={TooltipPosition.right}
-                  offsetLeft={10}
-                  content={
-                    <div>
-                      <h4 className="font-bold">How is it calculated</h4>
-                      <p>
-                        Total Prompts = (Prompt indicated x Number of Datasets x
-                        Prompt Templates)
-                      </p>
-                    </div>
-                  }>
-                  <Icon
-                    name={IconName.Alert}
-                    color={colors.moonpurplelight}
-                  />
-                </Tooltip>
+              <div className="w-full flex flex-col">
+                <div className="absolute top-[2px] left-[140px]">
+                  <Tooltip
+                    position={TooltipPosition.right}
+                    offsetLeft={10}
+                    content={
+                      <div>
+                        <p>
+                          Before running the full set of prompts, you may want
+                          to run a smaller set as a sanity check.
+                        </p>
+                      </div>
+                    }>
+                    <Icon
+                      name={IconName.Alert}
+                      color={colors.moonpurplelight}
+                    />
+                  </Tooltip>
+                </div>
+                <Slider.Label className="!text-moonpurplelight">
+                  Run a smaller set
+                </Slider.Label>
+                <p className="text-moongray-400">
+                  Select the percentage of prompts you want to run from the
+                  cookbook(s) selected.
+                </p>
+                  <Slider
+                    min={1}
+                    max={100}
+                    initialValue={isRunAll ? 100 : percentageOfPrompts}
+                    className="mt-[45px] mb-[10px]"
+                    valueSuffix="%"
+                    onChange={handleSliderValueChange}
+                    onMouseUp={handleSliderMouseUp}>
+                    <Slider.Track />
+                    <Slider.ProgressTrack />
+                    <Slider.Handle>
+                      <div className="absolute left-[50%] top-[-220%] transform -translate-x-1/2">
+                        <Slider.Value />
+                      </div>
+                    </Slider.Handle>
+                    <Slider.Input
+                      name="prompt_selection_percentage"
+                      style={{ display: 'none' }}
+                    />
+                  </Slider>
+                <p
+                  className={`text-white text-[0.9rem] mb-[10px]
+                  ${isRunAll ? 'opacity-50' : 'opacity-100'}`}>
+                  Number of prompts that will be run:{' '}
+                  {isPending
+                    ? 'calculating...'
+                    : isRunAll
+                      ? numOfPromptsGrandTotal
+                      : roundedUserInputNumOfPromptsGrandTotal}
+                </p>
               </div>
-              <TextInput
-                disabled={isRunAll}
-                type="number"
-                min={1}
-                id="num_of_prompts"
-                name={isRunAll ? '' : 'num_of_prompts'}
-                label="Run a smaller set"
-                labelStyles={{
-                  fontSize: '1rem',
-                  color: colors.moonpurplelight,
-                }}
-                inputStyles={{ height: 38 }}
-                onChange={handleNumOfPromptsChange}
-                value={isRunAll ? '' : numOfPromptsInput}
-                error={numOfPromptsError}
-                placeholder="Number of prompts per recipe. E.g. 5"
-                description={
-                  <div className="flex flex-col gap-2">
-                    <p className="text-moongray-400">
-                      Before running the full recommended set, you may want to
-                      run a smaller number of prompts from each recipe to do a
-                      sanity check.
-                    </p>
-                    <p style={{ opacity: isRunAll ? 0.5 : 1 }}>
-                      Number of prompts that will be run:{' '}
-                      {isPending
-                        ? 'calculating...'
-                        : isRunAll
-                          ? numOfPromptsGrandTotal
-                          : userInputNumOfPromptsGrandTotal}
-                    </p>
-                  </div>
-                }
-                descriptionStyles={{
-                  fontSize: '0.9rem',
-                  color: colors.white,
-                  marginTop: '0.5rem',
-                  marginBottom: '0.5rem',
-                }}
-              />
-              <div className="flex justify-left gap-2">
+              <div className="flex justify-left gap-2 mb-8">
                 <p className="text-moonpurplelight">
                   Run All{' '}
                   <span
@@ -311,10 +320,11 @@ function BenchmarkRunForm({
                     prompts)
                   </span>
                 </p>
-                <ToggleSwitch
+                <MemoizedToggleSwitch
                   name="run_all"
                   onChange={handleRunAllChange}
                   value={isRunAll ? 'true' : undefined}
+                  defaultChecked={percentageOfPrompts === 100}
                 />
               </div>
             </div>
