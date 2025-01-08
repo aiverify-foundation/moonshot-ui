@@ -113,6 +113,8 @@ type Cookbook = {
   total_prompt_in_cookbook: number;
   total_dataset_in_cookbook: number;
   required_config: RequiredConfig | null;
+  tags?: string[];
+  categories?: string[];
 };
 
 type CookbookFormValues = {
@@ -175,13 +177,12 @@ type AttackModule = {
 type BenchmarkRunFormValues = {
   run_name: string;
   description: string;
-  num_of_prompts: string;
+  prompt_selection_percentage: string;
   system_prompt: string;
   runner_processing_module: 'benchmarking';
   inputs: string[];
   endpoints: string[];
   random_seed: string;
-  run_all: string;
 };
 
 type RedteamRunFormValues = {
@@ -319,15 +320,7 @@ type RunnerHeading = {
 
 type CookbooksRunnerArgs = {
   cookbooks: string[];
-  num_of_prompts: number;
-  random_seed: number;
-  system_prompt: string;
-  runner_processing_module: string;
-  result_processing_module: string;
-};
-type RecipesRunnerArgs = {
-  recipes: string[];
-  num_of_prompts: number;
+  prompt_selection_percentage: number;
   random_seed: number;
   system_prompt: string;
   runner_processing_module: string;
@@ -341,7 +334,7 @@ type Runner = {
   name: string;
   endpoints: string[];
   description: string;
-  runner_args?: CookbooksRunnerArgs | RecipesRunnerArgs;
+  runner_args?: CookbooksRunnerArgs;
   start_time?: number;
 };
 

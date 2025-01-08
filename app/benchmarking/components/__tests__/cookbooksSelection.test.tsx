@@ -21,10 +21,6 @@ jest.mock('@/moonshot.config', () => ({
   default: {
     ...jest.requireActual('@/moonshot.config').default,
     cookbooksOrder: ['cb-id-2', 'cb-id-3'],
-    cookbookTags: {
-      'cb-id-1': ['tag1', 'tag2'],
-      'cb-id-2': ['tag3', 'tag4'],
-    },
   },
 }));
 
@@ -58,6 +54,7 @@ const mockCookbooks: Cookbook[] = [
       },
       endpoints: ['endpoint-1', 'endpoint-2'],
     },
+    tags: ['tag1', 'tag2'],
   },
   {
     id: 'cb-id-2',
@@ -67,6 +64,7 @@ const mockCookbooks: Cookbook[] = [
     total_prompt_in_cookbook: 20,
     total_dataset_in_cookbook: 2,
     required_config: null,
+    tags: ['tag3', 'tag4'],
   },
   {
     id: 'cb-id-3',
@@ -99,11 +97,6 @@ describe('CookbooksSelection', () => {
   const mockOnCookbookAboutClose = jest.fn();
   const mockAddBenchmarkCookbooks = jest.fn();
   const mockUpdateBenchmarkCookbooks = jest.fn();
-
-  const mockCookbookTags = {
-    'cb-id-1': ['tag1', 'tag2'],
-    'cb-id-2': ['tag3', 'tag4'],
-  };
 
   beforeAll(() => {
     function useMockGetCookbooksQuery() {
@@ -147,7 +140,7 @@ describe('CookbooksSelection', () => {
     expect(cookbookItems[0]).toHaveTextContent(mockCookbooks[1].name);
     expect(cookbookItems[1]).toHaveTextContent(mockCookbooks[2].name);
     expect(cookbookItems[2]).toHaveTextContent(mockCookbooks[0].name);
-    const tagNames = Object.values(mockCookbookTags).flat();
+    const tagNames = mockCookbooks.flatMap((cookbook) => cookbook.tags ?? []);
     for (const tag of tagNames) {
       expect(screen.getByText(tag)).toBeInTheDocument();
     }
@@ -212,6 +205,7 @@ describe('CookbooksSelection', () => {
     expect(mockDispatch).toHaveBeenCalledWith(
       addBenchmarkCookbooks([mockCookbooks[0]])
     );
+    expect(mockOnCookbookSelected).toHaveBeenCalledTimes(1);
     expect(mockOnCookbookSelected).toHaveBeenCalledTimes(1);
     expect(mockOnCookbookSelected).toHaveBeenCalledTimes(1);
     expect(cookbookOneCheckbox).toBeChecked();

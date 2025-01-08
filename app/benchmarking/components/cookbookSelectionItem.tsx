@@ -1,11 +1,10 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState } from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { Button, ButtonType } from '@/app/components/button';
 import { Checkbox } from '@/app/components/checkbox';
 import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
 import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
-import config from '@/moonshot.config';
 
 type CookbookSelectionItemProps = {
   cookbook: Cookbook;
@@ -66,7 +65,7 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
             />
           </header>
           <div className="flex flex-wrap gap-2 mb-4 mt-6">
-            {config.cookbookTags[cookbook.id]?.map((tagName) => (
+            {cookbook.tags?.map((tagName) => (
               <Button
                 key={tagName}
                 mode={ButtonType.OUTLINE}
