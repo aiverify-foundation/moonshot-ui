@@ -327,7 +327,7 @@ function BenchmarkNewSessionFlow() {
           <div className="flex flex-col items-center h-full">
             <div
               className="flex flex-col gap-5 ipad11Inch:gap-2 ipadPro:gap-2 justify-center w-full"
-              style={{ height: 'calc(100% - 33px)' }}>
+              style={{ height: 'calc(100% - 60px)' }}>
               {view}
             </div>
             <div
