@@ -49,18 +49,30 @@ type RecipePromptData = {
   duration: number;
 };
 
-type Metric = {
-  accuracy?: number;
-  refusal_rate?: number;
-  safe?: number;
-  unsafe?: number;
-  unknown?: number;
-  grading_criteria: {
-    accuracy?: number;
-    attack_success_rate?: number;
-    toxicity_rate?: number;
-    refusal_rate?: number;
+type MetricPromptAndScore = {
+  prompt: string;
+  predicted_value: string;
+  target: string;
+};
+
+type IndividualScore = {
+  individual_scores: {
+    successful?: MetricPromptAndScore[];
+    unsuccessful?: MetricPromptAndScore[];
   };
+};
+
+type GradingCriteria = {
+  accuracy?: number;
+  attack_success_rate?: number;
+  toxicity_rate?: number;
+  refusal_rate?: number;
+};
+
+type Metric = {
+  grading_criteria: GradingCriteria;
+} & {
+  [key: string]: IndividualScore | number | GradingCriteria;
 };
 
 type RougeScore = {
@@ -111,4 +123,5 @@ export type {
   GradingScale,
   GradingColors,
   CookbookCategoryLabels,
+  IndividualScore,
 };
