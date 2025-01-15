@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { useEffect, useState, useTransition } from 'react';
 import { getRecipesById } from '@/actions/getRecipesById';
 import { Icon, IconName } from '@/app/components/IconSVG';
@@ -7,7 +8,6 @@ import { Tooltip, TooltipPosition } from '@/app/components/tooltip';
 import { colors } from '@/app/customColors';
 import { getEmbeddingEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 import { ConfigureEndpointSmallCard } from './configureEndpointSmallCard';
-import Link from 'next/link';
 
 type ConfigureRequirementsItemCardProps = {
   cookbook: Cookbook;
@@ -94,7 +94,7 @@ function ConfigureRequirementsItemCard(
                 mode={ButtonType.OUTLINE}
                 hoverBtnColor={colors.moongray[700]}
                 pressedBtnColor={colors.moongray[900]}
-                size="sm"
+                size="md"
                 text="View JSON example"
                 leftIconName={IconName.Download}
               />
@@ -106,7 +106,7 @@ function ConfigureRequirementsItemCard(
                 mode={ButtonType.OUTLINE}
                 hoverBtnColor={colors.moongray[700]}
                 pressedBtnColor={colors.moongray[900]}
-                size="sm"
+                size="md"
                 text="View CSV example"
                 leftIconName={IconName.Download}
               />

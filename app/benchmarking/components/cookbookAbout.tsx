@@ -5,7 +5,6 @@ import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { colors } from '@/app/customColors';
 import { getEndpointsFromRequiredConfig } from '@/app/lib/getEndpointsFromRequiredConfig';
 import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
-import config from '@/moonshot.config';
 
 type Props = {
   cookbook: Cookbook;

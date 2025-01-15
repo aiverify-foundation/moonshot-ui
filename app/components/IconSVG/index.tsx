@@ -20,6 +20,7 @@ import { CircleArrowRightIcon } from './icons/circle-arrow-right-icon';
 import { CloseIcon } from './icons/close-x-icon';
 import { DarkMoonIcon } from './icons/dark-moon-icon';
 import { DocumentIcon } from './icons/document-icon';
+import { DownloadIcon } from './icons/download-icon';
 import { FileIcon } from './icons/file-icon';
 import { FolderForChatSessionsIcon } from './icons/folder-chat-icon';
 import { FolderIcon } from './icons/folder-icon';
@@ -50,7 +51,6 @@ import { ToolsIcon } from './icons/tools-icon';
 import { WarningIcon } from './icons/warning-icon';
 import { WideArrowDownIcon } from './icons/wide-arrow-down';
 import { WideArrowUpIcon } from './icons/wide-arrow-up';
-import { DownloadIcon } from './icons/download-icon';
 
 enum IconName {
   Folder,
