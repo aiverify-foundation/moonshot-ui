@@ -26,7 +26,7 @@ type DatasetUploaderProps = {
   onUploadSuccess: () => void;
 };
 
-const uploadUrl = '/api/v1/datasets/upload'; // This path is defined here because it is the only path that leverages the rewrites in next.config.js
+const uploadUrl = '/api/v1/datasets/file'; // path is defined here because it is the only path that leverages the rewrites in next.config.js
 
 function DatasetUploader(props: DatasetUploaderProps) {
   const { cookbook, onUploadSuccess } = props;
