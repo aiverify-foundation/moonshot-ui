@@ -25,7 +25,21 @@ import {
   initialState,
 } from './benchmarkNewSessionFlowReducer';
 import BenchmarkRunForm from './benchmarkRunForm';
+import { ConfigureAdditionalRequirements } from './configureAdditionalRequirements';
 import { BenchmarkNewSessionViews } from './enums';
+
+function countRequiredEndpoints(selectedCookbooks: Cookbook[]) {
+  return selectedCookbooks.reduce((count, cookbook) => {
+    let accCount = count;
+    if (cookbook.required_config?.endpoints?.length) {
+      accCount += cookbook.required_config.endpoints.length;
+    }
+    if (cookbook.required_config?.configurations?.embeddings?.length) {
+      accCount += cookbook.required_config.configurations.embeddings.length;
+    }
+    return accCount;
+  }, 0);
+}
 
 function BenchmarkNewSessionFlow() {
   const router = useRouter();
@@ -42,27 +56,33 @@ function BenchmarkNewSessionFlow() {
   );
   const [showExitModal, setShowExitModal] = React.useState(false);
 
-  function handleNextIconClick() {
-    if (flowState.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
-      const requiredEndpoints = selectedCookbooks.reduce((acc, cookbook) => {
+  const cookbooksWithAdditionalRequirements = React.useMemo(
+    () =>
+      selectedCookbooks.filter((cookbook) => {
+        return (
+          getEndpointsFromRequiredConfig(cookbook.required_config).length > 0
+        );
+      }),
+    [selectedCookbooks.length]
+  );
+
+  const hasAdditionalRequirements = React.useMemo(
+    () =>
+      selectedCookbooks.reduce((acc, cookbook) => {
         return [
           ...acc,
           ...getEndpointsFromRequiredConfig(cookbook.required_config),
         ];
-      }, [] as string[]);
-      dispatch({
-        type: 'NEXT_BTN_CLICK',
-        cookbooksLength: selectedCookbooks.length,
-        modelsLength: selectedModels.length,
-        requiredEndpoints,
-      });
-      return;
-    }
+      }, [] as string[]).length > 0,
+    [selectedCookbooks.length]
+  );
 
+  function handleNextIconClick() {
     dispatch({
       type: 'NEXT_BTN_CLICK',
       cookbooksLength: selectedCookbooks.length,
       modelsLength: selectedModels.length,
+      hasAdditionalRequirements,
     });
   }
 
@@ -98,6 +118,23 @@ function BenchmarkNewSessionFlow() {
         modelsLength: selectedModels.length + 1,
       });
     }
+  }
+
+  function handleConfigureEndpointClick(endpoint: LLMEndpoint) {
+    dispatch({
+      type: 'EDIT_MODEL_CLICK',
+      modelToEdit: endpoint,
+    });
+  }
+
+  function handleCookbookSelectedOrUnselected(selectedCookbooks: Cookbook[]) {
+    const hasAdditionalRequirements =
+      countRequiredEndpoints(selectedCookbooks) > 0;
+    dispatch({
+      type: 'COOKBOOK_SELECTION_CLICK',
+      cookbooksLength: selectedCookbooks.length,
+      hasAdditionalRequirements,
+    });
   }
 
   function handleEditModelClick(model: LLMEndpoint) {
@@ -151,21 +188,44 @@ function BenchmarkNewSessionFlow() {
     case BenchmarkNewSessionViews.COOKBOOKS_SELECTION:
       view = (
         <CookbooksSelection
-          onClose={() =>
+          onCookbookAboutClose={() =>
             dispatch({
-              type: 'CLOSE_MORE_COOKBOOKS',
+              type: 'HIDE_SURFACE_OVERLAY',
             })
           }
-          onCookbookSelected={() =>
+          onCookbookAboutClick={() =>
             dispatch({
-              type: 'COOKBOOK_SELECTION_CLICK',
-              cookbooksLength: selectedCookbooks.length + 1,
+              type: 'SHOW_SURFACE_OVERLAY',
             })
           }
-          onCookbookUnselected={() =>
+          onCookbookSelected={handleCookbookSelectedOrUnselected}
+          onCookbookUnselected={handleCookbookSelectedOrUnselected}
+        />
+      );
+      break;
+    case BenchmarkNewSessionViews.CONFIGURE_ADDITIONAL_REQUIREMENTS:
+      view = (
+        <ConfigureAdditionalRequirements
+          cookbooks={cookbooksWithAdditionalRequirements}
+          onConfigureEndpointClick={handleConfigureEndpointClick}
+          onCookbookAboutClose={() =>
             dispatch({
-              type: 'COOKBOOK_SELECTION_CLICK',
-              cookbooksLength: selectedCookbooks.length - 1,
+              type: 'HIDE_SURFACE_OVERLAY',
+            })
+          }
+          onCookbookAboutClick={() =>
+            dispatch({
+              type: 'SHOW_SURFACE_OVERLAY',
+            })
+          }
+          onUploadDatasetClick={() =>
+            dispatch({
+              type: 'SHOW_SURFACE_OVERLAY',
+            })
+          }
+          onUploadDatasetClose={() =>
+            dispatch({
+              type: 'HIDE_SURFACE_OVERLAY',
             })
           }
         />
@@ -254,6 +314,7 @@ function BenchmarkNewSessionFlow() {
           bodyHeight="calc(100% - 80px)"
           showHeaderDivider
           bodyClassName="!p-0"
+          showSurfaceOverlay={flowState.showSurfaceOverlay}
           headerContent={
             <SimpleStepsIndicator
               textColor={colors.moongray[300]}
@@ -266,7 +327,7 @@ function BenchmarkNewSessionFlow() {
           <div className="flex flex-col items-center h-full">
             <div
               className="flex flex-col gap-5 ipad11Inch:gap-2 ipadPro:gap-2 justify-center w-full"
-              style={{ height: 'calc(100% - 33px)' }}>
+              style={{ height: 'calc(100% - 60px)' }}>
               {view}
             </div>
             <div

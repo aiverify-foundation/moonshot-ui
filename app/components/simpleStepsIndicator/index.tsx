@@ -21,6 +21,8 @@ function SimpleStepsIndicator({
       {steps.map((step, index) => (
         <div
           key={step}
+          role="step"
+          aria-label={`Step - ${step}`}
           className={clsx(
             styles.step,
             currentStepIndex === index ? styles.active : '',

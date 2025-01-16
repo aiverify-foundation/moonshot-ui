@@ -13,6 +13,7 @@ type TabsMenuProps = {
   textColor: string;
   tabHoverColor: string;
   selectedTabColor: string;
+  className?: string;
   onTabClick: (tab: TabItem<string[]>) => void;
 };
 
@@ -24,13 +25,14 @@ function TabsMenu(props: TabsMenuProps) {
     selectedTabColor,
     tabHoverColor,
     textColor,
+    className,
     onTabClick,
   } = props;
   const [hoveredTabId, setHoveredTabId] = useState<string | undefined>();
 
   return (
     <ul
-      className="flex items-center justify-center gap-5 py-1 px-6 rounded"
+      className={`flex items-center justify-center gap-5 py-1 px-6 h-[48px] rounded ${className}`}
       style={{
         backgroundColor: barColor,
       }}>

@@ -15,6 +15,7 @@ type MainSectionSurfaceProps = {
   closeLinkUrl?: string;
   className?: string;
   bodyClassName?: string;
+  showSurfaceOverlay?: boolean;
   onCloseIconClick?: () => void;
 };
 
@@ -32,6 +33,7 @@ function MainSectionSurface(props: MainSectionSurfaceProps) {
     className,
     bodyClassName,
     onCloseIconClick,
+    showSurfaceOverlay = false,
   } = props;
 
   const CloseIcon = closeLinkUrl ? (
@@ -54,7 +56,7 @@ function MainSectionSurface(props: MainSectionSurfaceProps) {
   return (
     <div
       className={clsx(
-        'flex flex-col w-full dark:bg-moongray-950 rounded-2xl',
+        'relative flex flex-col w-full dark:bg-moongray-950 rounded-2xl',
         className
       )}
       style={{ height, minHeight, backgroundColor: bgColor }}>
@@ -69,6 +71,9 @@ function MainSectionSurface(props: MainSectionSurfaceProps) {
         className={clsx('p-6', bodyClassName)}>
         {children}
       </section>
+      {showSurfaceOverlay && (
+        <div className="h-full w-full absolute rounded-2xl backdrop-blur-sm bg-white/10" />
+      )}
     </div>
   );
 }

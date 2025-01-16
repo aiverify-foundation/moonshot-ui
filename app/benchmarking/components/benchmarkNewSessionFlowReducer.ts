@@ -11,12 +11,14 @@ type Action = {
     | 'MORE_COOKBOOKS_LINK_CLICK'
     | 'CLOSE_MORE_COOKBOOKS'
     | 'MODEL_SELECTION_CLICK'
-    | 'CLOSE_REQUIRED_ENDPOINTS_MODAL';
+    | 'CLOSE_REQUIRED_ENDPOINTS_MODAL'
+    | 'SHOW_SURFACE_OVERLAY'
+    | 'HIDE_SURFACE_OVERLAY';
   cookbooksLength?: number;
   modelsLength?: number;
   modelToEdit?: LLMEndpoint;
-  requiredEndpoints?: string[];
   requiredEndpointsTokensFilled?: boolean;
+  hasAdditionalRequirements?: boolean;
 };
 
 type FlowState = {
@@ -29,20 +31,28 @@ type FlowState = {
   disablePrevBtn: boolean;
   modelToEdit: LLMEndpoint | undefined;
   requiredEndpoints?: string[];
+  showSurfaceOverlay?: boolean;
 };
 
-const flowSteps = ['Recommended Tests', 'Connect Endpoint', 'Run'];
+export const flowSteps = ['Connect Endpoint', 'Select Tests', 'Run'];
+export const flowStepsWithConfigRequirements = [
+  'Connect Endpoint',
+  'Select Tests',
+  'Configure Requirements',
+  'Run',
+];
 
 export const initialState: FlowState = {
   steps: flowSteps,
   stepIndex: 0,
-  view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
+  view: BenchmarkNewSessionViews.ENDPOINTS_SELECTION,
   hideNextBtn: false,
   hidePrevBtn: true,
   disableNextBtn: true,
   disablePrevBtn: true,
   modelToEdit: undefined,
   requiredEndpoints: undefined,
+  showSurfaceOverlay: false,
 };
 
 export function benchmarkNewSessionFlowReducer(
@@ -51,33 +61,48 @@ export function benchmarkNewSessionFlowReducer(
 ): FlowState {
   switch (action.type) {
     case 'NEXT_BTN_CLICK':
-      if (state.view === BenchmarkNewSessionViews.COOKBOOKS_SELECTION) {
+      if (state.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
         return {
           ...state,
           stepIndex: state.stepIndex + 1,
-          view: BenchmarkNewSessionViews.ENDPOINTS_SELECTION,
-          hidePrevBtn: false,
+          view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
+          requiredEndpoints: undefined,
           hideNextBtn: false,
+          disableNextBtn: action.cookbooksLength === 0,
+          hidePrevBtn: false,
           disablePrevBtn: false,
-          disableNextBtn: action.modelsLength === 0,
+          showSurfaceOverlay: false,
         };
       }
-      if (state.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
-        const hideNextBtn =
-          action.requiredEndpoints && action.requiredEndpoints.length > 0
-            ? false
-            : true;
+      if (state.view === BenchmarkNewSessionViews.COOKBOOKS_SELECTION) {
         return {
           ...state,
-          stepIndex: action.requiredEndpoints?.length
-            ? state.stepIndex
-            : state.stepIndex + 1,
-          view: action.requiredEndpoints?.length
-            ? BenchmarkNewSessionViews.ENDPOINTS_SELECTION
+          steps: action.hasAdditionalRequirements
+            ? flowStepsWithConfigRequirements
+            : flowSteps,
+          stepIndex: state.stepIndex + 1,
+          view: action.hasAdditionalRequirements
+            ? BenchmarkNewSessionViews.CONFIGURE_ADDITIONAL_REQUIREMENTS
             : BenchmarkNewSessionViews.BENCHMARK_RUN_FORM,
-          requiredEndpoints: action.requiredEndpoints,
-          hideNextBtn: hideNextBtn,
-          disableNextBtn: hideNextBtn,
+          hidePrevBtn: false,
+          hideNextBtn: action.hasAdditionalRequirements ? false : true,
+          disablePrevBtn: false,
+          disableNextBtn: action.hasAdditionalRequirements ? false : true,
+          showSurfaceOverlay: false,
+        };
+      }
+      if (
+        state.view ===
+        BenchmarkNewSessionViews.CONFIGURE_ADDITIONAL_REQUIREMENTS
+      ) {
+        return {
+          ...state,
+          stepIndex: state.stepIndex + 1,
+          view: BenchmarkNewSessionViews.BENCHMARK_RUN_FORM,
+          hidePrevBtn: false,
+          hideNextBtn: true,
+          disablePrevBtn: false,
+          disableNextBtn: true,
         };
       }
     case 'PREV_BTN_CLICK':
@@ -85,26 +110,46 @@ export function benchmarkNewSessionFlowReducer(
         return {
           ...state,
           stepIndex: state.stepIndex - 1,
-          view: BenchmarkNewSessionViews.ENDPOINTS_SELECTION,
+          view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
           hidePrevBtn: false,
           hideNextBtn: false,
-          disableNextBtn: action.modelsLength === 0,
+          disableNextBtn: false,
+          showSurfaceOverlay: false,
         };
       }
-      if (state.view === BenchmarkNewSessionViews.ENDPOINTS_SELECTION) {
+      if (state.view === BenchmarkNewSessionViews.COOKBOOKS_SELECTION) {
         return {
           ...state,
           stepIndex: state.stepIndex - 1,
-          view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
+          view: BenchmarkNewSessionViews.ENDPOINTS_SELECTION,
           hidePrevBtn: true,
           disablePrevBtn: true,
           hideNextBtn: false,
           disableNextBtn: false,
+          showSurfaceOverlay: false,
+        };
+      }
+      if (
+        state.view ===
+        BenchmarkNewSessionViews.CONFIGURE_ADDITIONAL_REQUIREMENTS
+      ) {
+        return {
+          ...state,
+          stepIndex: state.stepIndex - 1,
+          view: BenchmarkNewSessionViews.COOKBOOKS_SELECTION,
+          hideNextBtn: false,
+          hidePrevBtn: false,
+          disableNextBtn: false,
+          disablePrevBtn: false,
+          showSurfaceOverlay: false,
         };
       }
     case 'COOKBOOK_SELECTION_CLICK':
       return {
         ...state,
+        steps: action.hasAdditionalRequirements
+          ? flowStepsWithConfigRequirements
+          : flowSteps,
         disableNextBtn: action.cookbooksLength === 0,
       };
     case 'MORE_COOKBOOKS_LINK_CLICK':
@@ -141,14 +186,18 @@ export function benchmarkNewSessionFlowReducer(
         disablePrevBtn: true,
       };
     case 'CLOSE_MODEL_FORM':
+      const targetView =
+        state.stepIndex === 0
+          ? BenchmarkNewSessionViews.ENDPOINTS_SELECTION
+          : BenchmarkNewSessionViews.CONFIGURE_ADDITIONAL_REQUIREMENTS;
       return {
         ...state,
-        view: BenchmarkNewSessionViews.ENDPOINTS_SELECTION,
+        view: targetView,
         modelToEdit: undefined,
         hideNextBtn: false,
-        hidePrevBtn: false,
+        hidePrevBtn: state.stepIndex === 0 ? true : false,
         disableNextBtn: action.modelsLength === 0,
-        disablePrevBtn: false,
+        disablePrevBtn: state.stepIndex === 0 ? true : false,
       };
     case 'CLOSE_REQUIRED_ENDPOINTS_MODAL':
       if (action.requiredEndpointsTokensFilled) {
@@ -166,6 +215,16 @@ export function benchmarkNewSessionFlowReducer(
         requiredEndpoints: undefined,
         hideNextBtn: false,
         hidePrevBtn: false,
+      };
+    case 'SHOW_SURFACE_OVERLAY':
+      return {
+        ...state,
+        showSurfaceOverlay: true,
+      };
+    case 'HIDE_SURFACE_OVERLAY':
+      return {
+        ...state,
+        showSurfaceOverlay: false,
       };
     default:
       return state;

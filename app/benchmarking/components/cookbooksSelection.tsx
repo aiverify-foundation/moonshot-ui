@@ -43,13 +43,19 @@ const tabItems: TabItem<string[]>[] = config.cookbookCategoriesTabs.map(
 );
 
 type Props = {
-  onCookbookSelected: () => void;
-  onCookbookUnselected: () => void;
-  onClose: () => void;
+  onCookbookSelected: (selectedCookbooks: Cookbook[]) => void;
+  onCookbookUnselected: (selectedCookbooks: Cookbook[]) => void;
+  onCookbookAboutClick: () => void;
+  onCookbookAboutClose: () => void;
 };
 
 function CookbooksSelection(props: Props) {
-  const { onCookbookSelected, onCookbookUnselected } = props;
+  const {
+    onCookbookSelected,
+    onCookbookUnselected,
+    onCookbookAboutClick,
+    onCookbookAboutClose,
+  } = props;
   const dispatch = useAppDispatch();
   const selectedCookbooks = useAppSelector(
     (state) => state.benchmarkCookbooks.entities
@@ -134,15 +140,25 @@ function CookbooksSelection(props: Props) {
   function handleCookbookSelect(cb: Cookbook) {
     if (selectedCookbooks.some((t) => t.id === cb.id)) {
       dispatch(removeBenchmarkCookbooks([cb]));
-      onCookbookUnselected();
+      const updatedSelectedCookbooks = selectedCookbooks.filter(
+        (c) => c.id !== cb.id
+      );
+      onCookbookUnselected(updatedSelectedCookbooks);
     } else {
       dispatch(addBenchmarkCookbooks([cb]));
-      onCookbookSelected();
+      const updatedSelectedCookbooks = [...selectedCookbooks, cb];
+      onCookbookSelected(updatedSelectedCookbooks);
     }
   }
 
   function handleAboutClick(cb: Cookbook) {
     setCookbookDetails(cb);
+    onCookbookAboutClick();
+  }
+
+  function handleCloseAbout() {
+    setCookbookDetails(undefined);
+    onCookbookAboutClose();
   }
 
   const categoryDesc =
@@ -165,12 +181,12 @@ function CookbooksSelection(props: Props) {
   }, [cookbooks]);
 
   return (
-    <div className="flex flex-col pt-4 w-full h-full">
+    <div className="flex flex-col pt-4 w-full h-full z-[100]">
       {cookbookDetails ? (
         <PopupSurface
           height="100%"
           padding="10px"
-          onCloseIconClick={() => setCookbookDetails(undefined)}>
+          onCloseIconClick={handleCloseAbout}>
           <CookbookAbout
             cookbook={cookbookDetails}
             onSelectChange={handleCookbookSelect}
@@ -181,21 +197,29 @@ function CookbooksSelection(props: Props) {
         </PopupSurface>
       ) : (
         <React.Fragment>
-          <section className="flex items-center justify-center gap-5">
-            <TabsMenu
-              tabItems={tabItems}
-              barColor={colors.moongray['800']}
-              tabHoverColor={colors.moongray['700']}
-              selectedTabColor={colors.moonpurple}
-              textColor={colors.white}
-              activeTabId={activeTab.id}
-              onTabClick={handleTabClick}
-            />
+          <section className="flex flex-col items-center justify-center gap-5 px-8">
+            <h2 className="text-[1.6rem] leading-[2rem] tracking-wide text-white w-full text-center">
+              Select the cookbooks you want to run
+            </h2>
+            <div className="flex flex-row gap-5 w-full">
+              <TabsMenu
+                className="w-[445px]"
+                tabItems={tabItems}
+                barColor={colors.moongray['800']}
+                tabHoverColor={colors.moongray['700']}
+                selectedTabColor={colors.moonpurple}
+                textColor={colors.white}
+                activeTabId={activeTab.id}
+                onTabClick={handleTabClick}
+              />
+              <p className="flex-1 text-white px-8 text-[0.9rem] min-h-[65px]">
+                {categoryDesc}
+              </p>
+            </div>
           </section>
           <section
-            className="relative flex flex-col gap-7 pt-6 h-full"
-            style={{ height: 'calc(100% - 50px)' }}>
-            <p className="text-white px-8">{categoryDesc}</p>
+            className="relative flex flex-col gap-7 mt-8 h-full"
+            style={{ height: 'calc(100% - 155px)' }}>
             <ul className="flex flex-row flex-wrap grow gap-[2%] w-[100%] overflow-y-auto custom-scrollbar px-8">
               {isFetching ? (
                 <LoadingAnimation />

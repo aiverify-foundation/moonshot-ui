@@ -132,7 +132,6 @@ function BenchmarkRunForm({
   }, [selectedCookbooks]);
 
   function handleSliderMouseUp(value: number) {
-    console.log(value);
     if (value === 100) return;
     prevPercentageValue.current = value;
   }
@@ -280,26 +279,26 @@ function BenchmarkRunForm({
                   Select the percentage of prompts you want to run from the
                   cookbook(s) selected.
                 </p>
-                  <Slider
-                    min={1}
-                    max={100}
-                    initialValue={isRunAll ? 100 : percentageOfPrompts}
-                    className="mt-[45px] mb-[10px]"
-                    valueSuffix="%"
-                    onChange={handleSliderValueChange}
-                    onMouseUp={handleSliderMouseUp}>
-                    <Slider.Track />
-                    <Slider.ProgressTrack />
-                    <Slider.Handle>
-                      <div className="absolute left-[50%] top-[-220%] transform -translate-x-1/2">
-                        <Slider.Value />
-                      </div>
-                    </Slider.Handle>
-                    <Slider.Input
-                      name="prompt_selection_percentage"
-                      style={{ display: 'none' }}
-                    />
-                  </Slider>
+                <Slider
+                  min={1}
+                  max={100}
+                  initialValue={isRunAll ? 100 : percentageOfPrompts}
+                  className="mt-[45px] mb-[10px]"
+                  valueSuffix="%"
+                  onChange={handleSliderValueChange}
+                  onMouseUp={handleSliderMouseUp}>
+                  <Slider.Track />
+                  <Slider.ProgressTrack />
+                  <Slider.Handle>
+                    <div className="absolute left-[50%] top-[-220%] transform -translate-x-1/2">
+                      <Slider.Value />
+                    </div>
+                  </Slider.Handle>
+                  <Slider.Input
+                    name="prompt_selection_percentage"
+                    style={{ display: 'none' }}
+                  />
+                </Slider>
                 <p
                   className={`text-white text-[0.9rem] mb-[10px]
                   ${isRunAll ? 'opacity-50' : 'opacity-100'}`}>
@@ -331,7 +330,7 @@ function BenchmarkRunForm({
 
             <RunButton
               disabled={disableRunBtn}
-              className="absolute bottom-[20px] right-[18px]"
+              className="absolute bottom-[8px] right-[18px]"
             />
           </form>
         </div>
