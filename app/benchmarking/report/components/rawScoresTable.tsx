@@ -52,15 +52,46 @@ export function RawRecipeMetricsScoresTable({
           </thead>
           <tbody ref={tbodyRef}>
             {resultPromptData.map((promptData, idx) => {
-              let stringifiedMetrics = '';
-              try {
-                stringifiedMetrics = JSON.stringify(
-                  promptData.metrics,
-                  null,
-                  2
+              let stringifiedMetrics: string | React.ReactNode = '';
+              let tooLong = false;
+              for (const metric of promptData.metrics) {
+                if ('grading_criteria' in metric) {
+                  for (const [_, value] of Object.entries(metric)) {
+                    if (
+                      typeof value === 'object' &&
+                      'individual_scores' in value
+                    ) {
+                      if (
+                        (value.individual_scores.successful &&
+                          value.individual_scores.successful.length > 20) ||
+                        (value.individual_scores.unsuccessful &&
+                          value.individual_scores.unsuccessful.length > 20)
+                      ) {
+                        tooLong = true;
+                        break;
+                      }
+                    }
+                  }
+                }
+              }
+              if (tooLong) {
+                stringifiedMetrics = (
+                  <>
+                    Metric result is too long to display. <br />
+                    Click on &quot;Download Details Scoring JSON&quot; <br />
+                    below to view raw scores.
+                  </>
                 );
-              } catch (error) {
-                console.log(error);
+              } else {
+                try {
+                  stringifiedMetrics = JSON.stringify(
+                    promptData.metrics,
+                    null,
+                    2
+                  );
+                } catch (error) {
+                  console.log(error);
+                }
               }
               return (
                 <tr
@@ -69,22 +100,32 @@ export function RawRecipeMetricsScoresTable({
                     idx > 0 && idx % rowCount === 0 ? 'break-before-page' : ''
                   }>
                   <td className="py-3 px-6 border-r border-moongray-700 align-top">
-                    {promptData.dataset_id}
+                    <div className="break-all max-w-[100px]">
+                      {promptData.dataset_id}
+                    </div>
                   </td>
                   <td className="py-3 px-6 border-r border-moongray-700 align-top">
                     {promptData.prompt_template_id}
                   </td>
-                  <td className="py-3 px-6 border-r border-moongray-700 align-top">
+                  <td className="py-3 px-6 border-r border-moongray-700 align-top ">
                     {recipe.metrics.map((metricName, idx) => {
                       const name =
                         idx < promptData.metrics.length - 1
                           ? `${metricName}, `
                           : metricName;
-                      return <span key={metricName}>{name}</span>;
+                      return (
+                        <span
+                          key={metricName}
+                          className="break-all max-w-[100px]">
+                          {name}
+                        </span>
+                      );
                     })}
                   </td>
-                  <td className="py-3 px-6">
-                    <pre>{stringifiedMetrics}</pre>
+                  <td className="py-3 px-6 truncate max-w-[450px]">
+                    <pre className="whitespace-pre-wrap break-words">
+                      {stringifiedMetrics}
+                    </pre>
                   </td>
                 </tr>
               );
