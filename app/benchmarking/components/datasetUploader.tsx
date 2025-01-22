@@ -27,6 +27,7 @@ type DatasetUploaderProps = {
 };
 
 const uploadUrl = '/api/v1/datasets/file'; // path is defined here because it is the only path that leverages the rewrites in next.config.js
+const genericError = 'An error occurred while uploading the file. Please check your file and try again.';
 
 function DatasetUploader(props: DatasetUploaderProps) {
   const { cookbook, onUploadSuccess } = props;
@@ -40,6 +41,17 @@ function DatasetUploader(props: DatasetUploaderProps) {
     if (files.length === 0) return;
     setIsPending(true);
     const droppedFiles = Array.from(files);
+    const allowedExtensions = ['json', 'csv'];
+    const fileExtension = droppedFiles[0].name.split('.').pop()?.toLowerCase();
+    
+    if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+      setError([
+        droppedFiles[0].name,
+        toErrorWithMessage({ message: 'Only .json and .csv files are supported' })
+      ]);
+      setIsPending(false);
+      return;
+    }
     const newUpload: FileUpload = {
       file: droppedFiles[0],
       progress: 0,
@@ -65,7 +77,8 @@ function DatasetUploader(props: DatasetUploaderProps) {
       status: response.status,
     };
     if (isApiError(result)) {
-      setError([fileUpload.file.name, toErrorWithMessage(result)]);
+      console.log('error', toErrorWithMessage(result));
+      setError([fileUpload.file.name, new Error(genericError)]);
       setFileUpload(null);
       setIsPending(false);
       return;
@@ -85,7 +98,8 @@ function DatasetUploader(props: DatasetUploaderProps) {
         datasetIds: [result.data],
       }).then((result) => {
         if (result.statusCode !== 200) {
-          setError([fileUpload.file.name, toErrorWithMessage(result)]);
+          console.log('error', toErrorWithMessage(result));
+          setError([fileUpload.file.name, new Error(genericError)]);
           setFileUpload(null);
           setIsPending(false);
           return;
