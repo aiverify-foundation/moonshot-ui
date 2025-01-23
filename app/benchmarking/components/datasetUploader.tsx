@@ -27,7 +27,6 @@ type DatasetUploaderProps = {
 };
 
 const uploadUrl = '/api/v1/datasets/file'; // path is defined here because it is the only path that leverages the rewrites in next.config.js
-const genericError = 'An error occurred while uploading the file. Please check your file and try again.';
 
 function DatasetUploader(props: DatasetUploaderProps) {
   const { cookbook, onUploadSuccess } = props;
@@ -78,7 +77,7 @@ function DatasetUploader(props: DatasetUploaderProps) {
     };
     if (isApiError(result)) {
       console.log('error', toErrorWithMessage(result));
-      setError([fileUpload.file.name, new Error(genericError)]);
+      setError([fileUpload.file.name, toErrorWithMessage(result)]);
       setFileUpload(null);
       setIsPending(false);
       return;
@@ -98,8 +97,7 @@ function DatasetUploader(props: DatasetUploaderProps) {
         datasetIds: [result.data],
       }).then((result) => {
         if (result.statusCode !== 200) {
-          console.log('error', toErrorWithMessage(result));
-          setError([fileUpload.file.name, new Error(genericError)]);
+          setError([fileUpload.file.name, toErrorWithMessage(result)]);
           setFileUpload(null);
           setIsPending(false);
           return;
