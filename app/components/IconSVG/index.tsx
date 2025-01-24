@@ -20,6 +20,7 @@ import { CircleArrowRightIcon } from './icons/circle-arrow-right-icon';
 import { CloseIcon } from './icons/close-x-icon';
 import { DarkMoonIcon } from './icons/dark-moon-icon';
 import { DocumentIcon } from './icons/document-icon';
+import { DownloadIcon } from './icons/download-icon';
 import { FileIcon } from './icons/file-icon';
 import { FolderForChatSessionsIcon } from './icons/folder-chat-icon';
 import { FolderIcon } from './icons/folder-icon';
@@ -59,6 +60,7 @@ enum IconName {
   RunCookbook,
   BurgerMenu,
   DarkMoon,
+  Download,
   LightSun,
   Close,
   CircleArrowRight,
@@ -195,6 +197,15 @@ function Icon(props: IconProps) {
       iconToRender = (
         <DarkMoonIcon
           outlineColor={color}
+          width={size}
+          height={size}
+        />
+      );
+      break;
+    case IconName.Download:
+      iconToRender = (
+        <DownloadIcon
+          fillColor={color}
           width={size}
           height={size}
         />

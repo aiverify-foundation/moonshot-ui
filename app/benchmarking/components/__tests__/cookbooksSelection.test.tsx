@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { CookbooksSelection } from '@/app/benchmarking/components/cookbooksSelection';
 import { CookbooksProvider } from '@/app/benchmarking/contexts/cookbooksContext';
 import { useGetCookbooksQuery } from '@/app/services/cookbook-api-service';
+import { useGetAllRecipesQuery } from '@/app/services/recipe-api-service';
 import {
   addBenchmarkCookbooks,
   removeBenchmarkCookbooks,
@@ -10,6 +11,10 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '@/lib/redux';
+
+jest.mock('@/app/services/recipe-api-service', () => ({
+  useGetAllRecipesQuery: jest.fn(),
+}));
 
 jest.mock('@/moonshot.config', () => ({
   __esModule: true,
@@ -86,9 +91,10 @@ function renderWithProviders(
 
 describe('CookbooksSelection', () => {
   const mockDispatch = jest.fn();
-  const mockOnClose = jest.fn();
   const mockOnCookbookSelected = jest.fn();
   const mockOnCookbookUnselected = jest.fn();
+  const mockOnCookbookAboutClick = jest.fn();
+  const mockOnCookbookAboutClose = jest.fn();
   const mockAddBenchmarkCookbooks = jest.fn();
   const mockUpdateBenchmarkCookbooks = jest.fn();
 
@@ -123,9 +129,10 @@ describe('CookbooksSelection', () => {
     );
     renderWithProviders(
       <CookbooksSelection
-        onClose={mockOnClose}
         onCookbookSelected={mockOnCookbookSelected}
         onCookbookUnselected={mockOnCookbookUnselected}
+        onCookbookAboutClick={mockOnCookbookAboutClick}
+        onCookbookAboutClose={mockOnCookbookAboutClose}
       />
     );
     const cookbookItems = screen.getAllByRole('cookbookcard');
@@ -179,9 +186,10 @@ describe('CookbooksSelection', () => {
     );
     const { rerender } = renderWithProviders(
       <CookbooksSelection
-        onClose={mockOnClose}
         onCookbookSelected={mockOnCookbookSelected}
         onCookbookUnselected={mockOnCookbookUnselected}
+        onCookbookAboutClick={mockOnCookbookAboutClick}
+        onCookbookAboutClose={mockOnCookbookAboutClose}
       />,
       {
         initialCookbooks: mockCookbooks,
@@ -198,6 +206,8 @@ describe('CookbooksSelection', () => {
       addBenchmarkCookbooks([mockCookbooks[0]])
     );
     expect(mockOnCookbookSelected).toHaveBeenCalledTimes(1);
+    expect(mockOnCookbookSelected).toHaveBeenCalledTimes(1);
+    expect(mockOnCookbookSelected).toHaveBeenCalledTimes(1);
     expect(cookbookOneCheckbox).toBeChecked();
 
     await act(async () => {
@@ -206,9 +216,10 @@ describe('CookbooksSelection', () => {
       );
       rerender(
         <CookbooksSelection
-          onClose={mockOnClose}
           onCookbookSelected={mockOnCookbookSelected}
           onCookbookUnselected={mockOnCookbookUnselected}
+          onCookbookAboutClick={mockOnCookbookAboutClick}
+          onCookbookAboutClose={mockOnCookbookAboutClose}
         />
       );
     });
@@ -218,5 +229,31 @@ describe('CookbooksSelection', () => {
     );
     expect(mockOnCookbookUnselected).toHaveBeenCalledTimes(1);
     expect(cookbookOneCheckbox).not.toBeChecked();
+  });
+
+  it('should call about click handler', async () => {
+    const mockNoSelectedCookbooks: Cookbook[] = [];
+    (useAppSelector as jest.Mock).mockImplementation(
+      () => mockNoSelectedCookbooks
+    );
+    (useGetAllRecipesQuery as jest.Mock).mockReturnValue({
+      data: [],
+      isFetching: false,
+    });
+    renderWithProviders(
+      <CookbooksSelection
+        onCookbookSelected={mockOnCookbookSelected}
+        onCookbookUnselected={mockOnCookbookUnselected}
+        onCookbookAboutClick={mockOnCookbookAboutClick}
+        onCookbookAboutClose={mockOnCookbookAboutClose}
+      />,
+      {
+        initialCookbooks: mockCookbooks,
+      }
+    );
+
+    const aboutButtons = screen.getAllByText('About');
+    await userEvent.click(aboutButtons[0]);
+    expect(mockOnCookbookAboutClick).toHaveBeenCalledTimes(1);
   });
 });
