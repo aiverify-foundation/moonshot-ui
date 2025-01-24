@@ -61,15 +61,8 @@ export function RawRecipeMetricsScoresTable({
                       typeof value === 'object' &&
                       'individual_scores' in value
                     ) {
-                      if (
-                        (value.individual_scores.successful &&
-                          value.individual_scores.successful.length > 20) ||
-                        (value.individual_scores.unsuccessful &&
-                          value.individual_scores.unsuccessful.length > 20)
-                      ) {
                         tooLong = true;
                         break;
-                      }
                     }
                   }
                 }
