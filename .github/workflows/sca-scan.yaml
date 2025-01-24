@@ -54,14 +54,14 @@ jobs:
       if: github.event_name == 'pull_request'
       run: |
           npm install
-          bash <(curl -s -L https://detect.synopsys.com/detect9.sh) --blackduck.url=https://blackduck.aipo-imda.net/ --blackduck.api.token=${{ secrets.BLACKDUCK_TOKEN }} --detect.detector.search.depth=10 --detect.project.name=aiverify-moonshot-ui --detect.project.version.name=$BRANCH --detect.source.path=. --detect.code.location.name="aiverify-moonshot-ui_$BRANCH" --detect.excluded.directories=/tests --blackduck.trust.cert=true --detect.blackduck.scan.mode=RAPID
+          bash <(curl -s -L https://detect.synopsys.com/detect9.sh) --blackduck.url=https://blackduck.aipo-imda.net/ --blackduck.api.token=${{ secrets.BLACKDUCK_TOKEN }} --detect.detector.search.depth=10 --detect.project.name=aiverify-moonshot-ui --detect.project.version.name=$BRANCH --detect.source.path=. --detect.code.location.name="aiverify-moonshot-ui_$BRANCH" --detect.excluded.directories=venv,tests --blackduck.trust.cert=true --detect.blackduck.scan.mode=RAPID
           cd ../
 
     - name: Install & Scan MOONSHOT UI (Workflow_Dispatch)
       if: github.event_name == 'workflow_dispatch'
       run: |
           npm install
-          bash <(curl -s -L https://detect.synopsys.com/detect9.sh) --blackduck.url=https://blackduck.aipo-imda.net/ --blackduck.api.token=${{ secrets.BLACKDUCK_TOKEN }} --detect.detector.search.depth=10 --detect.project.name=aiverify-moonshot-ui --detect.project.version.name=$BRANCH --detect.source.path=. --detect.code.location.name="aiverify-moonshot-ui_$BRANCH" --detect.excluded.directories=/tests --blackduck.trust.cert=true --detect.excluded.detector.types=POETRY --detect.notices.report=true --detect.notices.report.path=.
+          bash <(curl -s -L https://detect.synopsys.com/detect9.sh) --blackduck.url=https://blackduck.aipo-imda.net/ --blackduck.api.token=${{ secrets.BLACKDUCK_TOKEN }} --detect.detector.search.depth=10 --detect.project.name=aiverify-moonshot-ui --detect.project.version.name=$BRANCH --detect.source.path=. --detect.code.location.name="aiverify-moonshot-ui_$BRANCH" --detect.excluded.directories=venv,tests --blackduck.trust.cert=true --detect.excluded.detector.types=POETRY --detect.notices.report=true --detect.notices.report.path=.
           mv aiverify_moonshot_ui_main_Black_Duck_Notices_Report.txt NOTICES.md
 
     - name: Configure GIT (Workflow_Dispatch)
