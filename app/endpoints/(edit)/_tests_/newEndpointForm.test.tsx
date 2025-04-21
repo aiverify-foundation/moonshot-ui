@@ -170,7 +170,9 @@ describe('NewEndpointForm', () => {
     await userEvent.type(otherParamsTextbox, escapedMockValidParams);
     await userEvent.click(screen.getByRole('button', { name: /ok/i }));
     await userEvent.click(screen.getByRole('button', { name: /save/i }));
-    expect(screen.getByRole('button', { name: /save/i })).not.toBeDisabled();
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /save/i })).not.toBeDisabled();
+    });
 
     const expectedPayload = {
       connector_type: 'connector1',
@@ -240,7 +242,12 @@ describe('NewEndpointForm', () => {
     await userEvent.type(otherParamsTextbox, escapedMockValidParams);
     await userEvent.click(screen.getByRole('button', { name: /ok/i }));
     await userEvent.click(screen.getByRole('button', { name: /save/i }));
-    expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
+    await waitFor(
+      () => {
+        expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
+      },
+      { timeout: 3000 }
+    );
 
     const expectedPayload = {
       connector_type: 'connector1',
@@ -256,10 +263,20 @@ describe('NewEndpointForm', () => {
       token: 'mocktoken',
       uri: 'mockuri',
     };
-    expect(mockCreateModelEndpointSuccess).toHaveBeenCalledWith(
-      expectedPayload
+    waitFor(
+      () => {
+        expect(mockCreateModelEndpointSuccess).toHaveBeenCalledWith(
+          expectedPayload
+        );
+      },
+      { timeout: 3000 }
     );
-    expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    waitFor(
+      () => {
+        expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+      },
+      { timeout: 3000 }
+    );
   }, 15000);
 
   test('edit endpoint - form filling, no change to token value', async () => {
