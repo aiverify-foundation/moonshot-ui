@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import fetch from 'cross-fetch';
 import { getHostAndPort } from './host';
 
 type inputParams = {
@@ -21,7 +22,7 @@ const [host, port] = getHostAndPort();
 const path = 'api/v1/recipes';
 const recipeApi = createApi({
   reducerPath: 'recipeApi',
-  baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}` }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${host}:${port}`, fetchFn: fetch }),
   endpoints: (builder) => ({
     getAllRecipes: builder.query<Recipe[], inputParams | undefined>({
       query: (params) => {

@@ -61,14 +61,14 @@ function CookbookAbout({ cookbook, checked, onSelectChange }: Props) {
         </p>
         <div>
           {requiredEndpoints ? (
-            <p className="text-moongray-200 mb-6">
+            <div className="text-moongray-200 mb-6">
               <h3 className="font-semibold">Requires</h3>
               <ul className="list-disc pl-5">
                 {requiredEndpoints.map((endpoint) => (
                   <li key={endpoint}>{endpoint}</li>
                 ))}
               </ul>
-            </p>
+            </div>
           ) : null}
           <p className="text-moongray-200">
             {cookbook.total_prompt_in_cookbook} prompts

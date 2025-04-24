@@ -142,7 +142,6 @@ it('should display form errors', async () => {
     (useFormState as jest.Mock).mockImplementation(mockUseFormState);
     rerender(<RedteamRunForm />);
   });
-  screen.debug(undefined, 100000);
   expect(screen.getAllByText('mock error 1')).toHaveLength(2);
   expect(screen.getAllByText('mock error 2')).toHaveLength(2);
   expect(screen.getAllByText('mock error 3')).toHaveLength(1);
