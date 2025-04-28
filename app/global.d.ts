@@ -383,7 +383,7 @@ type BookMark = {
   bookmark_time: string;
 };
 
-declare module 'html2pdf' {
+declare module 'html2pdf.js' {
   interface Html2PdfOptions {
     margin?: number;
     filename?: string;

@@ -1,5 +1,5 @@
 'use client';
-import html2pdf from 'html2pdf';
+import html2pdf from 'html2pdf.js';
 import React from 'react';
 import { flushSync } from 'react-dom';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
