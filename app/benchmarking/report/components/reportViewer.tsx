@@ -1,5 +1,5 @@
 'use client';
-import html3pdf from 'html3pdf';
+import html2pdf from 'html2pdf';
 import React from 'react';
 import { flushSync } from 'react-dom';
 import { CookbooksBenchmarkResult } from '@/app/benchmarking/report/types/benchmarkReportTypes';
@@ -38,7 +38,7 @@ function ReportViewer(props: ReportViewerProps) {
   async function printReport() {
     if (!reportRef.current) return;
     const report = reportRef.current;
-    await html3pdf()
+    await html2pdf()
       .set({
         margin: 0.2,
         filename: `report-${runnerNameAndDescription.name}-${selectedEndpointId}.pdf`,
