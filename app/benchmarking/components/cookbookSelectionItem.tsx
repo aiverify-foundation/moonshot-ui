@@ -61,7 +61,7 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
               size="s"
               ariaLabel={`Select ${cookbook.id}`}
               checked={isSelected}
-              onClick={handleClick}
+              onChange={() => handleClick}
             />
           </header>
           <div className="flex flex-wrap gap-2 mb-4 mt-6">
