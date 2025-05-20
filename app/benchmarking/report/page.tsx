@@ -24,6 +24,7 @@ export default async function BenchmarkingReportPage(props: {
     fetchCookbooks({ categories: ['Quality'], count: false }),
     fetchCookbooks({ categories: ['Capability'], count: false }),
     fetchCookbooks({ categories: ['Trust & Safety'], count: false }),
+    fetchCookbooks({ categories: ['IMDA Starter Kit'], count: false }),
     fetchRecipes({ count: true }),
     fetchEndpoints(),
   ];
