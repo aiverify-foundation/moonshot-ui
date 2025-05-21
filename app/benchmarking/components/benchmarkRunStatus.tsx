@@ -447,6 +447,23 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
                 {progressBox}
               </section>
 
+              <section className="w-full flex flex-col gap-2 items-center">
+                <div className="w-[90%] flex flex-col gap-3">
+                  <div className="col-span-3 grid grid-cols-3 gap-[1.7%] w-[90%]">
+                    <div className="flex flex-col gap-2 justify-center">
+                      <Button
+                        rightIconName={IconName.ArrowRight}
+                        mode={ButtonType.LINK}
+                        size="md"
+                        type="button"
+                        text="Back to home"
+                        onClick={() => router.push('/')}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </section>
+
               
             </>
           ) : (
