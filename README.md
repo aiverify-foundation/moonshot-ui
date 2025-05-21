@@ -6,29 +6,34 @@ This repository contains the UI integration for [Project Moonshot](https://githu
 
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 
+
 </div>
 
-<b>Motivation </b>
+## 🎯 Motivation
 
-Developed by the [AI Verify Foundation](https://aiverifyfoundation.sg/?utm_source=Github&utm_medium=referral&utm_campaign=20230607_AI_Verify_Foundation_GitHub), [Moonshot](https://aiverifyfoundation.sg/project-moonshot/?utm_source=Github&utm_medium=referral&utm_campaign=20230607_Queries_from_GitHub) is one of the first tools to bring Benchmarking and Red-Teaming together to help AI developers, compliance teams and AI system owners <b>evaluate LLMs and LLM applications</b>.
+Developed by the [AI Verify Foundation](https://aiverifyfoundation.sg/), [Moonshot](https://aiverifyfoundation.sg/project-moonshot/) is one of the first tools to bring Benchmarking and Red-Teaming together to help AI developers, compliance teams and AI system owners <b>evaluate LLMs and LLM-based AI systems</b>.
 
 Project Moonshot's UI is designed to provide a more intuitive user experience for benchmarking and red teaming processes via [Moonshot Library](https://pypi.org/project/aiverify-moonshot/).
 
 You can view the Project Moonshot Library Repository [here](https://github.com/aiverify-foundation/moonshot).
 
-Preview: 
+#### 🎥 Preview: 
 
 ![moonshot-ui](./misc/ui-homepage.png)
+
+</br>
 
 ## Getting Started
 
 ### ✅ Prerequisites
 
-1. [Git](https://github.com/git-guides/install-git)
+1. <b>Git Version Control:</b> [Git](https://github.com/git-guides/install-git) is essential for cloning the repository.
 
-2. [Node.js verion 20.11.1 LTS](https://nodejs.org/en/blog/release/v20.11.1) and above
+2. <b>Node.js:</b> [Node.js verion 20.11.1 LTS](https://nodejs.org/en/blog/release/v20.11.1) and above
 
-3. [Moonshot Python Library](https://pypi.org/project/aiverify-moonshot/)
+3. <b>Moonshot:</b> [Moonshot Python Library](https://pypi.org/project/aiverify-moonshot/)
+
+</br>
 
 ### ⬇️ Installation
 
@@ -43,7 +48,7 @@ Else, to install and build from source:
     git clone git@github.com:moonshot-admin/moonshot-ui.git
     ```
 2. Install Required Dependencies
-- Make sure that all necessary requirements are installed by executing the following command:
+- Make sure that all requirements are installed by executing the following command:
     ```
     npm install
     ```
@@ -51,6 +56,8 @@ Else, to install and build from source:
     ```
     npm run build
     ```
+
+</br>
 
 ### 🖼️ Serving Moonshot UI
 After the build is completed, serve the UI with this command:
@@ -68,8 +75,12 @@ npm start
 
 Check out our [Installation Guide](https://aiverify-foundation.github.io/moonshot/getting_started/quick_install/) for more details.
 
-If you are having installation issues, see the [Troubleshooting Guide](https://aiverify-foundation.github.io/moonshot/faq/).
+If you have installation issues, please take a look at the [Troubleshooting Guide](https://aiverify-foundation.github.io/moonshot/faq/).
 
-## User Guides
+</br>
+
+## 📚 User Guides
 
 [Getting Started with Moonshot Web UI](https://aiverify-foundation.github.io/moonshot/user_guide/web_ui/web_ui_guide/)
+
+</br>
