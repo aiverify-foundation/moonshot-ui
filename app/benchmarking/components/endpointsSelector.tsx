@@ -44,7 +44,7 @@ function EndpointSelector(props: EndpointSelectorProps) {
         </h2>
         <Button
           size="sm"
-          text="Create New Endpoint"
+          text="Create New Endpoint To Your Application Or Model"
           textSize="1.1rem"
           textWeight="500"
           textColor={colors.white}

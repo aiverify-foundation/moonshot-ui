@@ -55,8 +55,8 @@ function EntryBanners() {
             buttonTextColor={colors.white}
             bannerText={
               <span>
-                Focus on what&apos;s important, <br /> Run only the best and
-                most relevant tests.
+                Run benchmark tests recommended in IMDA&apos;s Starter Kit, <br />
+                for safety testing of LLM-based applications
               </span>
             }
             buttonText="Get Started"
