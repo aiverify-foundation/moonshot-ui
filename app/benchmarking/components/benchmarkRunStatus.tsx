@@ -176,10 +176,10 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
     );
   const cookbooks = cookbooksData && cookbooksData;
 
-  let headingText = 'Running Tests...';
+  let headingText = 'Running Tests... Please refresh your browser if you do not see progress moving.';
   if (statuses && runner_id !== null && statuses[runner_id]) {
     if (statuses[runner_id].current_status == TestStatusProgress.RUNNING) {
-      headingText = 'Running Tests...';
+      headingText = 'Running Tests... Please refresh your browser if you do not see progress moving.';
     }
     if (statuses[runner_id].current_status == TestStatusProgress.COMPLETED) {
       headingText = 'Tests Completed';
@@ -449,7 +449,48 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
 
               <section className="w-full flex flex-col gap-2 items-center">
                 <div className="w-[90%] flex flex-col gap-3">
+                  <p className="text-white text-[1.1rem]">
+                    While waiting for these to run, you can
+                  </p>
                   <div className="col-span-3 grid grid-cols-3 gap-[1.7%] w-[90%]">
+                    <Link href="/redteaming/sessions/new">
+                      <ActionCard
+                        variant="compact"
+                        className={`${
+                          screenSize === 'sm' || screenSize === 'md'
+                            ? '!h-[170px] !p-[16px]'
+                            : '!h-[240px] !p-[16px]'
+                        }`}
+                        iconSize={
+                          screenSize === 'sm' || screenSize === 'md' ? 28 : 35
+                        }
+                        cardColor={colors.moongray[800]}
+                        title="Discover"
+                        description="new vulnerabilities"
+                        descriptionColor={colors.moongray[300]}
+                        iconName={IconName.Spacesuit}
+                        actionText="Start Red Teaming"
+                      />
+                    </Link>
+                    <Link href="/benchmarking/cookbooks/new">
+                      <ActionCard
+                        variant="compact"
+                        className={`${
+                          screenSize === 'sm' || screenSize === 'md'
+                            ? '!h-[170px] !p-[16px]'
+                            : '!h-[240px] !p-[16px]'
+                        }`}
+                        iconSize={
+                          screenSize === 'sm' || screenSize === 'md' ? 28 : 35
+                        }
+                        title="Create"
+                        description="cookbooks"
+                        descriptionColor={colors.moongray[300]}
+                        cardColor={colors.moongray[800]}
+                        iconName={IconName.Book}
+                        actionText="Select Recipes"
+                      />
+                    </Link>
                     <div className="flex flex-col gap-2 justify-center">
                       <Button
                         rightIconName={IconName.ArrowRight}
@@ -463,8 +504,6 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
                   </div>
                 </div>
               </section>
-
-              
             </>
           ) : (
             <div className="relative h-full">
