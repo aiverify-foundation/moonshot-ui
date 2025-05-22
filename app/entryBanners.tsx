@@ -56,7 +56,7 @@ function EntryBanners() {
             bannerText={
               <span>
                 Run benchmark tests recommended in IMDA&apos;s Starter Kit, <br />
-                For safety testing of LLM-based applications.
+                for safety testing of LLM-based applications.
               </span>
             }
             buttonText="Get Started"
