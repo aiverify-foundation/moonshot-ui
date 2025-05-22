@@ -26,7 +26,7 @@ const descCapability =
 const descTrustAndSafety =
   'Trust & Safety addresses the reliability, ethical considerations, and inherent risks of the AI model. It also examines potential scenarios where the AI system could be used maliciously or unethically.';
 const descImdaStarterKit =
-  "Includes tests from IMDA's Starter Kit to assess model or application's capability to respond to key risks like hallucination, undesirable content, data disclosure and prompt attacks in a safe and trustworthy manner.";
+  "Includes tests from IMDA's Starter Kit to assess model or application's capability to respond to key risks like hallucination, undesirable content, data disclosure and Adversarial Prompts in a safe and trustworthy manner.";
 
 const CookbookAbout = dynamic(
   () => import('./cookbookAbout').then((mod) => mod.CookbookAbout),
