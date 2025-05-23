@@ -31,6 +31,7 @@ const config: MoonshotConfig = {
   ],
   cookbooksOrder: ['singapore-context', 'mlc-ai-safety'],
   cookbookCategoriesTabs: [
+    { id: 'imdaStarterKit', label: 'IMDA Starter Kit', categoryNames: ['IMDA Starter Kit'] },
     { id: 'capability', label: 'Capability', categoryNames: ['capability'] },
     {
       id: 'trustAndSafety',
@@ -40,7 +41,7 @@ const config: MoonshotConfig = {
     {
       id: 'others',
       label: 'Others',
-      categoryNames: ['exclude:capability', 'exclude:Trust & Safety'],
+      categoryNames: ['exclude:IMDA Starter Kit', 'exclude:capability', 'exclude:Trust & Safety'],
     },
   ],
   estimatedPromptResponseTime: 1, // seconds

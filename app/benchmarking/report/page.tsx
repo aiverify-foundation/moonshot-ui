@@ -24,6 +24,7 @@ export default async function BenchmarkingReportPage(props: {
     fetchCookbooks({ categories: ['Quality'], count: false }),
     fetchCookbooks({ categories: ['Capability'], count: false }),
     fetchCookbooks({ categories: ['Trust & Safety'], count: false }),
+    fetchCookbooks({ categories: ['IMDA Starter Kit'], count: false }),
     fetchRecipes({ count: true }),
     fetchEndpoints(),
   ];
@@ -33,6 +34,7 @@ export default async function BenchmarkingReportPage(props: {
     qualityCookbooksResponse,
     performanceCookbooksResponse,
     securityCookbooksResponse,
+    imdaStarterKitCookbooksResponse,
     recipesResponse,
     endpointsResponse,
   ] = await Promise.all(fetchPromises);
@@ -60,6 +62,10 @@ export default async function BenchmarkingReportPage(props: {
 
   if ('message' in securityCookbooksResponse) {
     throw new Error(securityCookbooksResponse.message);
+  }
+
+  if ('message' in imdaStarterKitCookbooksResponse) {
+    throw new Error(imdaStarterKitCookbooksResponse.message);
   }
 
   if ('message' in recipesResponse) {
@@ -93,9 +99,10 @@ export default async function BenchmarkingReportPage(props: {
   const cookbooksUnderCapability = (
     performanceCookbooksResponse as ApiResult<Cookbook[]>
   ).data;
-  const cookbooksUnderTrustSafety = (
-    securityCookbooksResponse as ApiResult<Cookbook[]>
-  ).data;
+  const cookbooksUnderTrustSafety = [
+    ...(securityCookbooksResponse as ApiResult<Cookbook[]>).data,
+    ...(imdaStarterKitCookbooksResponse as ApiResult<Cookbook[]>).data,
+  ];
   const recipes = (recipesResponse as ApiResult<Recipe[]>).data;
   const endpointsInReport = (
     endpointsResponse as ApiResult<LLMEndpoint[]>
