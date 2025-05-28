@@ -176,10 +176,10 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
     );
   const cookbooks = cookbooksData && cookbooksData;
 
-  let headingText = 'Running Tests...';
+  let headingText = 'Running Tests... Please refresh your browser if you do not see progress moving.';
   if (statuses && runner_id !== null && statuses[runner_id]) {
     if (statuses[runner_id].current_status == TestStatusProgress.RUNNING) {
-      headingText = 'Running Tests...';
+      headingText = 'Running Tests... Please refresh your browser if you do not see progress moving.';
     }
     if (statuses[runner_id].current_status == TestStatusProgress.COMPLETED) {
       headingText = 'Tests Completed';

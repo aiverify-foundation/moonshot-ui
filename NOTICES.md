@@ -5,728 +5,764 @@ Copyright 2025
 Phase: DEVELOPMENT
 Distribution: OPENSOURCE
 
+Notices Report Content
+ * License Data
+ * License Text
+
 Components: 
 
-@aashutoshrathi/word-wrap 1.2.6 : MIT License
-@adobe/css-tools 4.3.3 : MIT License
-@alloc/quick-lru 5.2.0 : MIT License
-@ampproject/remapping 2.3.0 : Apache License 2.0
-@babel/code-frame 7.24.6 : MIT License
-@babel/compat-data 7.24.6 : MIT License
-@babel/core 7.24.6 : MIT License
-@babel/generator 7.24.6 : MIT License
-@babel/helper-compilation-targets 7.24.6 : MIT License
-@babel/helper-environment-visitor 7.24.6 : MIT License
-@babel/helper-function-name 7.24.6 : MIT License
-@babel/helper-hoist-variables 7.24.6 : MIT License
-@babel/helper-module-imports 7.24.6 : MIT License
-@babel/helper-module-transforms 7.24.6 : MIT License
-@babel/helper-plugin-utils 7.24.6 : MIT License
-@babel/helper-simple-access 7.24.6 : MIT License
-@babel/helper-split-export-declaration 7.24.6 : MIT License
-@babel/helper-string-parser 7.24.6 : MIT License
-@babel/helper-validator-identifier 7.24.6 : MIT License
-@babel/helper-validator-option 7.24.6 : MIT License
-@babel/helpers 7.24.6 : MIT License
-@babel/highlight 7.24.6 : MIT License
-@babel/parser 7.24.6 : MIT License
+@aashutoshrathi/word-wrap 1.2.6: https://github.com/jonschlinkert/word-wrap : MIT License
+@adobe/css-tools 4.4.2: https://github.com/adobe/css-tools#readme : MIT License
+@alloc/quick-lru 5.2.0: https://github.com/sindresorhus/quick-lru#readme : MIT License
+@ampproject/remapping 2.3.0: https://github.com/ampproject/remapping#readme : Apache License 2.0
+@babel/code-frame 7.26.2: https://babeljs.io/ : MIT License
+@babel/compat-data 7.26.8: https://github.com/babel/babel#readme : MIT License
+@babel/core 7.26.10: https://babeljs.io/ : MIT License
+@babel/generator 7.27.0: https://babeljs.io/ : MIT License
+@babel/helper-compilation-targets 7.27.0: https://github.com/babel/babel#readme : MIT License
+@babel/helper-module-imports 7.25.9: https://babeljs.io/ : MIT License
+@babel/helper-module-transforms 7.26.0: https://babeljs.io/ : MIT License
+@babel/helper-plugin-utils 7.24.6: https://babeljs.io/ : MIT License
+@babel/helper-string-parser 7.25.9: https://babel.dev/docs/en/next/babel-helper-string-parser : MIT License
+@babel/helper-validator-identifier 7.25.9: https://github.com/babel/babel#readme : MIT License
+@babel/helper-validator-option 7.25.9: https://github.com/babel/babel.git : MIT License
+@babel/helpers 7.27.0: https://babeljs.io/ : MIT License
+@babel/parser 7.27.0: https://babeljs.io/ : MIT License
 @babel/plugin-syntax-async-generators 7.8.4 : MIT License
 @babel/plugin-syntax-bigint 7.8.3 : MIT License
-@babel/plugin-syntax-class-properties 7.12.13 : MIT License
-@babel/plugin-syntax-import-meta 7.10.4 : MIT License
+@babel/plugin-syntax-class-properties 7.12.13: https://github.com/babel/babel#readme : MIT License
+@babel/plugin-syntax-import-meta 7.10.4: https://github.com/babel/babel#readme : MIT License
 @babel/plugin-syntax-json-strings 7.8.3 : MIT License
-@babel/plugin-syntax-jsx 7.24.6 : MIT License
-@babel/plugin-syntax-logical-assignment-operators 7.10.4 : MIT License
+@babel/plugin-syntax-jsx 7.24.6: https://github.com/babel/babel#readme : MIT License
+@babel/plugin-syntax-logical-assignment-operators 7.10.4: https://github.com/babel/babel#readme : MIT License
 @babel/plugin-syntax-nullish-coalescing-operator 7.8.3 : MIT License
-@babel/plugin-syntax-numeric-separator 7.10.4 : MIT License
+@babel/plugin-syntax-numeric-separator 7.10.4: https://github.com/babel/babel#readme : MIT License
 @babel/plugin-syntax-object-rest-spread 7.8.3 : MIT License
 @babel/plugin-syntax-optional-catch-binding 7.8.3 : MIT License
 @babel/plugin-syntax-optional-chaining 7.8.3 : MIT License
-@babel/plugin-syntax-top-level-await 7.14.5 : MIT License
-@babel/plugin-syntax-typescript 7.24.6 : MIT License
-@babel/runtime 7.23.6 : MIT License
-@babel/template 7.24.6 : MIT License
-@babel/types 7.24.6 : MIT License
-@bcoe/v8-coverage 0.2.3 : MIT License
-@cspotcode/source-map-support 0.8.1 : MIT License
-@emotion/babel-plugin 11.11.0 : MIT License
-@emotion/cache 11.11.0 : MIT License
-@emotion/hash 0.9.1 : MIT License
-@emotion/memoize 0.8.1 : MIT License
-@emotion/react 11.11.3 : MIT License
-@emotion/serialize 1.1.3 : MIT License
-@emotion/sheet 1.2.2 : MIT License
-@emotion/unitless 0.8.1 : MIT License
-@emotion/use-insertion-effect-with-fallbacks 1.0.1 : MIT License
-@emotion/utils 1.2.1 : MIT License
-@emotion/weak-memoize 0.3.1 : MIT License
-@eslint-community/eslint-utils 4.4.0 : MIT License
-@eslint-community/regexpp 4.10.0 : MIT License
-@eslint/eslintrc 2.1.4 : MIT License
-@eslint/js 8.56.0 : MIT License
-@faker-js/faker 8.4.1 : MIT License
-@floating-ui/core 1.6.0 : MIT License
-@floating-ui/dom 1.6.1 : MIT License
-@floating-ui/utils 0.2.1 : MIT License
-@humanwhocodes/config-array 0.11.13 : Apache License 2.0
-@humanwhocodes/module-importer 1.0.1 : Apache License 2.0
-@humanwhocodes/object-schema 2.0.1 : BSD 3-clause "New" or "Revised" License
-@istanbuljs/load-nyc-config 1.1.0 : ISC License
-@istanbuljs/schema 0.1.3 : MIT License
-@jackfranklin/test-data-bot 2.1.0 : MIT License
-@jest/console 29.7.0 : MIT License
-@jest/core 29.7.0 : MIT License
-@jest/environment 29.7.0 : MIT License
-@jest/expect 29.7.0 : MIT License
-@jest/expect-utils 29.7.0 : MIT License
-@jest/fake-timers 29.7.0 : MIT License
-@jest/globals 29.7.0 : MIT License
-@jest/reporters 29.7.0 : MIT License
-@jest/schemas 29.6.3 : MIT License
-@jest/source-map 29.6.3 : MIT License
-@jest/test-result 29.7.0 : MIT License
-@jest/test-sequencer 29.7.0 : MIT License
-@jest/transform 29.7.0 : MIT License
-@jest/types 29.6.3 : MIT License
-@jridgewell/gen-mapping 0.3.5 : MIT License
-@jridgewell/resolve-uri 3.1.1 : MIT License
-@jridgewell/set-array 1.2.1 : MIT License
-@jridgewell/sourcemap-codec 1.4.15 : MIT License
-@jridgewell/trace-mapping 0.3.25 : MIT License
-@jridgewell/trace-mapping 0.3.9 : MIT License
-@next/env 14.2.20 : MIT License
-@next/eslint-plugin-next 14.0.4 : MIT License
-@next/swc-darwin-arm64 14.2.20 : MIT License
-@next/swc-darwin-x64 14.2.20 : MIT License
-@next/swc-linux-arm64-gnu 14.2.20 : MIT License
-@next/swc-linux-arm64-musl 14.2.20 : MIT License
-@next/swc-linux-x64-gnu 14.2.20 : MIT License
-@next/swc-linux-x64-musl 14.2.20 : MIT License
-@next/swc-win32-arm64-msvc 14.2.20 : MIT License
-@next/swc-win32-ia32-msvc 14.2.20 : MIT License
-@nodelib/fs.scandir 2.1.5 : MIT License
-@nodelib/fs.stat 2.0.5 : MIT License
-@nodelib/fs.walk 1.2.8 : MIT License
-@reduxjs/toolkit 2.0.1 : MIT License
-@rushstack/eslint-patch 1.6.1 : MIT License
-@sinclair/typebox 0.27.8 : MIT License
-@sinonjs/commons 3.0.1 : BSD 3-clause "New" or "Revised" License
-@sinonjs/fake-timers 10.3.0 : BSD 3-clause "New" or "Revised" License
-@swc/counter 0.1.3 : Apache License 2.0
-@swc/helpers 0.5.5 : Apache License 2.0
-@testing-library/dom 10.1.0 : MIT License
-@testing-library/jest-dom 6.4.5 : MIT License
-@testing-library/react 15.0.7 : MIT License
-@testing-library/user-event 14.5.2 : MIT License
-@tootallnate/once 2.0.0 : MIT License
-@tsconfig/node10 1.0.11 : MIT License
-@tsconfig/node12 1.0.11 : MIT License
-@tsconfig/node14 1.0.3 : MIT License
-@tsconfig/node16 1.0.4 : MIT License
-@types/aria-query 5.0.4 : MIT License
-@types/babel__core 7.20.5 : MIT License
-@types/babel__generator 7.6.8 : MIT License
-@types/babel__template 7.4.4 : MIT License
-@types/babel__traverse 7.20.6 : MIT License
-@types/graceful-fs 4.1.9 : MIT License
-@types/hoist-non-react-statics 3.3.5 : MIT License
-@types/istanbul-lib-coverage 2.0.6 : MIT License
-@types/istanbul-lib-report 3.0.3 : MIT License
-@types/istanbul-reports 3.0.4 : MIT License
-@types/jest 29.5.12 : MIT License
-@types/jsdom 20.0.1 : MIT License
-@types/json-schema 7.0.15 : MIT License
+@babel/plugin-syntax-top-level-await 7.14.5: https://github.com/babel/babel#readme : MIT License
+@babel/plugin-syntax-typescript 7.24.6: https://github.com/babel/babel#readme : MIT License
+@babel/runtime 7.27.0: https://babeljs.io/docs/en/next/babel-runtime : MIT License
+@babel/template 7.27.0: https://babeljs.io/ : MIT License
+@babel/types 7.27.0: https://babeljs.io/ : MIT License
+@bcoe/v8-coverage 0.2.3: https://www.npmjs.com/package/@bcoe/v8-coverage : MIT License
+@cspotcode/source-map-support 0.8.1: https://github.com/cspotcode/node-source-map-support#readme : MIT License
+@emotion/babel-plugin 11.11.0: https://emotion.sh : MIT License
+@emotion/cache 11.11.0: https://github.com/emotion-js/emotion/tree/main#readme : MIT License
+@emotion/hash 0.9.1: https://github.com/emotion-js/emotion/tree/main#readme : MIT License
+@emotion/memoize 0.8.1: https://github.com/emotion-js/emotion/tree/main#readme : MIT License
+@emotion/react 11.11.3: https://github.com/emotion-js/emotion/tree/main#readme : MIT License
+@emotion/serialize 1.1.3: https://github.com/emotion-js/emotion/tree/main#readme : MIT License
+@emotion/sheet 1.2.2: https://github.com/emotion-js/emotion/tree/main#readme : MIT License
+@emotion/unitless 0.8.1: https://github.com/emotion-js/emotion/tree/main#readme : MIT License
+@emotion/use-insertion-effect-with-fallbacks 1.0.1: https://github.com/emotion-js/emotion/tree/main#readme : MIT License
+@emotion/utils 1.2.1: https://github.com/emotion-js/emotion/tree/main#readme : MIT License
+@emotion/weak-memoize 0.3.1: https://github.com/emotion-js/emotion/tree/main#readme : MIT License
+@eslint-community/eslint-utils 4.4.0: https://github.com/eslint-community/eslint-utils#readme : MIT License
+@eslint-community/regexpp 4.10.0: https://github.com/eslint-community/regexpp#readme : MIT License
+@eslint/eslintrc 2.1.4: https://github.com/eslint/eslintrc#readme : MIT License
+@eslint/js 8.57.1: https://eslint.org : MIT License
+@faker-js/faker 8.4.1: https://github.com/Marak/Faker.js#readme : MIT License
+@floating-ui/core 1.6.0: https://floating-ui.com : MIT License
+@floating-ui/dom 1.6.1: https://floating-ui.com : MIT License
+@floating-ui/utils 0.2.1: https://floating-ui.com : MIT License
+@humanwhocodes/config-array 0.13.0: https://github.com/humanwhocodes/config-array#readme : Apache License 2.0
+@humanwhocodes/module-importer 1.0.1: https://github.com/humanwhocodes/module-importer#readme : Apache License 2.0
+@humanwhocodes/object-schema 2.0.3: https://github.com/humanwhocodes/object-schema#readme : BSD 3-clause "New" or "Revised" License
+@isaacs/cliui 8.0.2: https://github.com/yargs/cliui#readme : ISC License
+@istanbuljs/load-nyc-config 1.1.0: https://github.com/istanbuljs/load-nyc-config#readme : ISC License
+@istanbuljs/schema 0.1.3: https://github.com/istanbuljs/schema#readme : MIT License
+@jackfranklin/test-data-bot 2.1.0: https://github.com/jackfranklin/test-data-bot#readme : MIT License
+@jest/console 29.7.0: https://github.com/facebook/jest#readme : MIT License
+@jest/core 29.7.0: https://jestjs.io/ : MIT License
+@jest/environment 29.7.0: https://github.com/facebook/jest#readme : MIT License
+@jest/expect 29.7.0: https://github.com/facebook/jest#readme : MIT License
+@jest/expect-utils 29.7.0: https://github.com/facebook/jest#readme : MIT License
+@jest/fake-timers 29.7.0: https://github.com/facebook/jest#readme : MIT License
+@jest/globals 29.7.0: https://github.com/facebook/jest#readme : MIT License
+@jest/reporters 29.7.0: https://jestjs.io/ : MIT License
+@jest/schemas 29.6.3: https://github.com/facebook/jest#readme : MIT License
+@jest/source-map 29.6.3: https://github.com/facebook/jest#readme : MIT License
+@jest/test-result 29.7.0: https://github.com/facebook/jest#readme : MIT License
+@jest/test-sequencer 29.7.0: https://github.com/facebook/jest#readme : MIT License
+@jest/transform 29.7.0: https://github.com/facebook/jest#readme : MIT License
+@jest/types 29.6.3: https://github.com/facebook/jest#readme : MIT License
+@jridgewell/gen-mapping 0.3.5: https://github.com/jridgewell/gen-mapping#readme : MIT License
+@jridgewell/resolve-uri 3.1.1: https://github.com/jridgewell/resolve-uri#readme : MIT License
+@jridgewell/set-array 1.2.1: https://github.com/jridgewell/set-array#readme : MIT License
+@jridgewell/sourcemap-codec 1.4.15: https://github.com/jridgewell/sourcemap-codec#readme : MIT License
+@jridgewell/trace-mapping 0.3.25: https://github.com/jridgewell/trace-mapping#readme : MIT License
+@jridgewell/trace-mapping 0.3.9: https://github.com/jridgewell/trace-mapping#readme : MIT License
+@next/env 14.2.28: https://github.com/vercel/next.js#readme : MIT License
+@next/eslint-plugin-next 15.3.1: https://github.com/zeit/next.js#readme : MIT License
+@next/swc-darwin-arm64 14.2.28: https://github.com/vercel/next.js#readme : MIT License
+@next/swc-darwin-x64 14.2.28: https://github.com/vercel/next.js#readme : MIT License
+@next/swc-linux-arm64-gnu 14.2.28: https://github.com/vercel/next.js#readme : MIT License
+@next/swc-linux-arm64-musl 14.2.28: https://github.com/vercel/next.js#readme : MIT License
+@next/swc-linux-x64-gnu 14.2.28: https://github.com/vercel/next.js#readme : MIT License
+@next/swc-linux-x64-musl 14.2.28: https://github.com/vercel/next.js#readme : MIT License
+@next/swc-win32-arm64-msvc 14.2.28: https://github.com/vercel/next.js#readme : MIT License
+@next/swc-win32-ia32-msvc 14.2.28: https://github.com/vercel/next.js#readme : MIT License
+@next/swc-win32-x64-msvc 14.2.28: https://github.com/vercel/next.js#readme : MIT License
+@nodelib/fs.scandir 2.1.5: https://github.com/nodelib/nodelib/tree/master#readme : MIT License
+@nodelib/fs.stat 2.0.5: https://github.com/nodelib/nodelib/tree/master#readme : MIT License
+@nodelib/fs.walk 1.2.8: https://github.com/nodelib/nodelib/tree/master#readme : MIT License
+@pkgjs/parseargs 0.11.0: https://github.com/pkgjs/parseargs#readme : MIT License
+@reduxjs/toolkit 2.0.1: https://github.com/reduxjs/redux-toolkit#readme : MIT License
+@rtsao/scc 1.1.0: https://github.com/rtsao/scc#readme : MIT License
+@rushstack/eslint-patch 1.11.0: https://rushstack.io : MIT License
+@sinclair/typebox 0.27.8: https://github.com/sinclairzx81/typebox#readme : MIT License
+@sinonjs/commons 3.0.1: https://github.com/sinonjs/commons#readme : BSD 3-clause "New" or "Revised" License
+@sinonjs/fake-timers 10.3.0: http://github.com/sinonjs/fake-timers : BSD 3-clause "New" or "Revised" License
+@swc/counter 0.1.3: https://swc.rs : Apache License 2.0
+@swc/helpers 0.5.5: https://github.com/swc-project/helpers#readme : Apache License 2.0
+@testing-library/dom 10.1.0: https://github.com/testing-library/dom-testing-library#readme : MIT License
+@testing-library/jest-dom 6.6.3: https://github.com/testing-library/jest-dom#readme : MIT License
+@testing-library/react 16.3.0: https://github.com/testing-library/react-testing-library#readme : MIT License
+@testing-library/user-event 14.6.1: https://github.com/testing-library/user-event#readme : MIT License
+@tootallnate/once 2.0.0: https://github.com/TooTallNate/once#readme : MIT License
+@tsconfig/node10 1.0.11: https://github.com/tsconfig/bases#readme : MIT License
+@tsconfig/node12 1.0.11: https://github.com/tsconfig/bases#readme : MIT License
+@tsconfig/node14 1.0.3: https://github.com/tsconfig/bases#readme : MIT License
+@tsconfig/node16 1.0.4: https://github.com/tsconfig/bases#readme : MIT License
+@types/aria-query 5.0.4: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/aria-query : MIT License
+@types/babel__core 7.20.5: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/babel__core : MIT License
+@types/babel__generator 7.6.8: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/babel__generator : MIT License
+@types/babel__template 7.4.4: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/babel__template : MIT License
+@types/babel__traverse 7.20.6: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/babel__traverse : MIT License
+@types/graceful-fs 4.1.9: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/graceful-fs : MIT License
+@types/hoist-non-react-statics 3.3.5: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/hoist-non-react-statics : MIT License
+@types/istanbul-lib-coverage 2.0.6: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/istanbul-lib-coverage : MIT License
+@types/istanbul-lib-report 3.0.3: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/istanbul-lib-report : MIT License
+@types/istanbul-reports 3.0.4: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/istanbul-reports : MIT License
+@types/jest 29.5.14: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/jest : MIT License
+@types/jsdom 20.0.1: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/jsdom : MIT License
+@types/json-schema 7.0.15: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/json-schema : MIT License
 @types/json5 0.0.29 : MIT License
-@types/node 20.10.5 : MIT License
-@types/parse-json 4.0.2 : MIT License
-@types/prop-types 15.7.11 : MIT License
-@types/raf 3.4.3 : MIT License
-@types/react 18.2.45 : MIT License
-@types/react-dom 18.2.18 : MIT License
-@types/react-transition-group 4.4.10 : MIT License
-@types/redux-logger 3.0.12 : MIT License
-@types/scheduler 0.16.8 : MIT License
-@types/semver 7.5.6 : MIT License
-@types/stack-utils 2.0.3 : MIT License
-@types/tough-cookie 4.0.5 : MIT License
-@types/use-sync-external-store 0.0.3 : MIT License
-@types/yargs 17.0.32 : MIT License
-@types/yargs-parser 21.0.3 : MIT License
-@typescript-eslint/eslint-plugin 5.62.0 : MIT License
-@typescript-eslint/parser 5.62.0 : BSD 2-clause "Simplified" License
-@typescript-eslint/scope-manager 5.62.0 : MIT License
-@typescript-eslint/type-utils 5.62.0 : MIT License
-@typescript-eslint/types 5.62.0 : MIT License
-@typescript-eslint/typescript-estree 5.62.0 : BSD 2-clause "Simplified" License
-@typescript-eslint/utils 5.62.0 : MIT License
-@typescript-eslint/visitor-keys 5.62.0 : MIT License
-@ungap/structured-clone 1.2.0 : ISC License
-abab 2.0.6 : BSD 3-clause "New" or "Revised" License
-Acorn 8.11.2 : MIT License
-acorn-globals 7.0.1 : MIT License
-Acorn-JSX 5.3.2 : MIT License
-acorn-walk 8.3.2 : MIT License
+@types/node 20.17.30: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node : MIT License
+@types/parse-json 4.0.2: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/parse-json : MIT License
+@types/prop-types 15.7.11: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/prop-types : MIT License
+@types/raf 3.4.3: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/raf : MIT License
+@types/react 18.3.20: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react : MIT License
+@types/react-dom 18.3.6: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-dom : MIT License
+@types/react-transition-group 4.4.10: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-transition-group : MIT License
+@types/redux-logger 3.0.13: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/redux-logger : MIT License
+@types/semver 7.5.6: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/semver : MIT License
+@types/stack-utils 2.0.3: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/stack-utils : MIT License
+@types/tough-cookie 4.0.5: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/tough-cookie : MIT License
+@types/use-sync-external-store 0.0.3: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/use-sync-external-store : MIT License
+@types/yargs 17.0.32: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/yargs : MIT License
+@types/yargs-parser 21.0.3: https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/yargs-parser : MIT License
+@typescript-eslint/eslint-plugin 5.62.0: https://github.com/typescript-eslint/typescript-eslint#readme : MIT License
+@typescript-eslint/parser 5.62.0: https://github.com/typescript-eslint/typescript-eslint#readme : BSD 2-clause "Simplified" License
+@typescript-eslint/scope-manager 5.62.0: https://github.com/typescript-eslint/typescript-eslint#readme : MIT License
+@typescript-eslint/type-utils 5.62.0: https://github.com/typescript-eslint/typescript-eslint#readme : MIT License
+@typescript-eslint/types 5.62.0: https://github.com/typescript-eslint/typescript-eslint#readme : MIT License
+@typescript-eslint/typescript-estree 5.62.0: https://github.com/typescript-eslint/typescript-eslint#readme : BSD 2-clause "Simplified" License
+@typescript-eslint/utils 5.62.0: https://github.com/typescript-eslint/typescript-eslint#readme : MIT License
+@typescript-eslint/visitor-keys 5.62.0: https://github.com/typescript-eslint/typescript-eslint#readme : MIT License
+@ungap/structured-clone 1.2.0: https://github.com/ungap/structured-clone#readme : ISC License
+abab 2.0.6: https://github.com/jsdom/abab#readme : BSD 3-clause "New" or "Revised" License
+Acorn 8.11.2: https://github.com/acornjs/acorn : MIT License
+acorn-globals 7.0.1: https://github.com/ForbesLindesay/acorn-globals : MIT License
+Acorn-JSX 5.3.2: https://github.com/RReverser/Acorn-JSX : MIT License
+acorn-walk 8.3.2: https://github.com/acornjs/acorn : MIT License
 ademilter/zelzele 20240131-snapshot-d8e0b336 : Apache License 2.0
-agent-base 6.0.2 : MIT License
-ajv 6.12.6 : MIT License
-ansi-escapes 4.3.2 : MIT License
-ansi-regex 5.0.1 : MIT License
-ansi-styles 3.2.1 : MIT License
-ansi-styles 5.2.0 : MIT License
-ansi-styles v4.3.0 : MIT License
-any-promise 1.3.0 : MIT License
-anymatch 3.1.3 : ISC License
-ARG 4.1.3 : MIT License
-ARG 5.0.2 : MIT License
-aria-query 5.3.0 : Apache License 2.0
-array-buffer-byte-length 1.0.0 : MIT License
-array-includes 3.1.7 : MIT License
-array-union v2.1.0 : MIT License
-array.prototype.findlastindex 1.2.3 : MIT License
-array.prototype.flat 1.3.2 : MIT License
-array.prototype.flatmap 1.3.2 : MIT License
-array.prototype.tosorted 1.1.2 : MIT License
-arraybuffer.prototype.slice 1.0.2 : MIT License
-ast-types-flow 0.0.8 : MIT License
-asynciterator.prototype 1.0.0 : MIT License
-asynckit 0.4.0 : MIT License
-atob 2.1.2 : (MIT License OR Apache License 2.0)
-Autoprefixer 10.4.16 : MIT License
-available-typed-arrays 1.0.5 : MIT License
-axe-core 4.7.0 : Mozilla Public License 2.0
-axobject-query 3.2.1 : Apache License 2.0
-babel-plugin-istanbul 6.1.1 : BSD 3-clause "New" or "Revised" License
-babel-plugin-macros 3.1.0 : MIT License
-babel-preset-current-node-syntax 1.0.1 : MIT License
-babel-traverse 7.24.6 : MIT License
-balanced-match 1.0.2 : MIT License
-base64-arraybuffer 1.0.2 : MIT License
-binary-extensions v2.2.0 : MIT License
-brace-expansion 1.1.11 : MIT License
-braces 3.0.3 : MIT License
-browserify/resolve 1.22.8 : MIT License
-browserify/resolve 2.0.0-next.5 : MIT License
-browserslist 4.22.2 : MIT License
-btoa 1.2.1 : (MIT License OR Apache License 2.0)
-buffer-from 1.1.2 : MIT License
-busboy 1.6.0 : MIT License
-call-bind 1.0.5 : MIT License
-callsites 3.1.0 : MIT License
-camelcase 5.3.1 : MIT License
-camelcase 6.3.0 : MIT License
-camelcase-css 2.0.1 : MIT License
-caniuse-lite 1.0.30001621 : Creative Commons Attribution 4.0
-canvg 3.0.10 : MIT License
-Chalk 2.4.2 : MIT License
-Chalk 4.1.2 : MIT License
-Chalk v3.0.0 : MIT License
-char-regex 1.0.2 : MIT License
-chokidar 3.5.3 : MIT License
-chrisdickinson/raf 3.4.1 : MIT License
-ci-info 3.9.0 : MIT License
-cjs-module-lexer 1.3.1 : MIT License
-client-only 0.0.1 : MIT License
-cliui 8.0.1 : ISC License
-clsx 2.0.0 : MIT License
-co 4.6.0 : MIT License
-collect-v8-coverage 1.0.2 : MIT License
-color-name 1.1.3 : MIT License
-color-name 1.1.4 : MIT License
-combined-stream 1.0.8 : MIT License
-Commander.js 4.1.1 : MIT License
-convert-source-map 1.9.0 : MIT License
-convert-source-map 2.0.0 : MIT License
-core-js 3.38.1 : MIT License
-cosmiconfig 7.1.0 : MIT License
-create-require 1.1.1 : MIT License
-css-line-break 2.1.0 : MIT License
-css.escape 1.5.1 : MIT License
-cssesc 3.0.0 : MIT License
-cssom 0.3.8 : MIT License
-cssom 0.5.0 : MIT License
-cssstyle 2.3.0 : MIT License
-csstype 3.1.3 : MIT License
-damerau-levenshtein 1.0.8 : BSD 2-clause "Simplified" License
-data-urls 3.0.2 : MIT License
-debug-js/debug 3.2.7 : MIT License
-debug-js/debug 4.3.4 : MIT License
-decimal.js 10.4.3 : MIT License
-dedent 1.5.3 : MIT License
-deep-diff 0.3.8 : MIT License
-deep-is 0.1.4 : MIT License
-deepmerge 2.2.1 : MIT License
-deepmerge 4.3.1 : MIT License
-define-data-property 1.1.1 : MIT License
-define-properties 1.2.1 : MIT License
-delayed-stream 1.0.0 : MIT License
-dequal 2.0.3 : MIT License
-detect-newline v3.1.0 : MIT License
-didyoumean.js 1.2.2 : Apache License 2.0
-dir-glob 3.0.1 : MIT License
-dlv 1.1.3 : MIT License
-doctrine v2.1.0 : (BSD 2-clause "Simplified" License AND Apache License 2.0)
-doctrine v3.0.0 : Apache License 2.0
-dom-accessibility-api 0.5.16 : MIT License
-dom-accessibility-api 0.6.3 : MIT License
-dom-helpers 5.2.1 : MIT License
-domexception 4.0.0 : MIT License
-DOMPurify 2.5.6 : (Apache License 2.0 OR Mozilla Public License 2.0)
-einaros/ws 8.18.0 : MIT License
-electron-to-chromium 1.4.614 : ISC License
-emittery 0.13.1 : MIT License
-emoji-regex 9.2.2 : MIT License
-emoji-regex v8.0.0 : MIT License
-enhanced-resolve 5.15.0 : MIT License
-es-abstract 1.22.3 : MIT License
-es-iterator-helpers 1.0.15 : MIT License
-es-set-tostringtag 2.0.2 : MIT License
-es-shim-unscopables 1.0.2 : MIT License
-es-to-primitive 1.2.1 : MIT License
-escalade 3.1.1 : MIT License
-escape-string-regexp 1.0.5 : MIT License
-escape-string-regexp v2.0.0 : MIT License
-escape-string-regexp v4.0.0 : MIT License
-escodegen 2.1.0 : BSD 2-clause "Simplified" License
-ESLint 8.56.0 : MIT License
-eslint-config-prettier 8.10.0 : MIT License
-eslint-import-resolver-node 0.3.9 : MIT License
-eslint-import-resolver-typescript 3.6.1 : ISC License
-eslint-plugin-import 2.29.1 : MIT License
-eslint-plugin-import 2.8.0 : MIT License
-eslint-plugin-jsx-a11y 6.8.0 : MIT License
-eslint-plugin-react-hooks 4.6.0 : MIT License
-eslint-scope 7.2.2 : BSD 2-clause "Simplified" License
-eslint-scope v5.1.1 : BSD 2-clause "Simplified" License
-eslint-visitor-keys 3.4.3 : Apache License 2.0
-espree 9.6.1 : BSD 2-clause "Simplified" License
-Esprima 4.0.1 : BSD 2-clause "Simplified" License
-esquery 1.5.0 : BSD 3-clause "New" or "Revised" License
-esrecurse v4.3.0 : BSD 2-clause "Simplified" License
-estraverse 5.3.0 : BSD 2-clause "Simplified" License
-estraverse v4.3.0 : BSD 2-clause "Simplified" License
-esutils 2.0.3 : BSD 2-clause "Simplified" License
-execa 5.1.1 : MIT License
-expect 29.7.0 : MIT License
-fast-deep-equal v3.1.3 : MIT License
-fast-glob 3.3.2 : MIT License
-fast-json-stable-stringify 2.1.0 : MIT License
-fast-levenshtein 2.0.6 : MIT License
-fastq 1.15.0 : ISC License
-fflate 0.4.8 : MIT License
-file-entry-cache 6.0.1 : MIT License
-fill-range 7.1.1 : MIT License
-find-root 1.1.0 : MIT License
-find-up v4.1.0 : MIT License
-find-up v5.0.0 : MIT License
-flat-cache 3.2.0 : MIT License
-flatted 3.2.9 : ISC License
-form-data 4.0.0 : MIT License
-formik 2.4.5 : Apache License 2.0
-fraction.js 4.3.7 : MIT License
-fs.realpath 1.0.0 : ISC License
-fsevents 2.3.3 : MIT License
-function-bind 1.1.2 : MIT License
-function.prototype.name 1.1.6 : MIT License
-functions-have-names 1.2.3 : MIT License
-gensync 1.0.0-beta.2 : MIT License
-get-caller-file 2.0.5 : ISC License
-get-intrinsic 1.2.2 : MIT License
-get-package-type 0.1.0 : MIT License
-get-stream 6.0.1 : MIT License
-get-symbol-description 1.0.0 : MIT License
-get-tsconfig 4.7.2 : MIT License
-glob-parent 5.1.2 : ISC License
-glob-parent 6.0.2 : ISC License
-globalthis 1.0.3 : MIT License
-gopd 1.0.1 : MIT License
-graphemer 1.4.0 : MIT License
-has-bigints 1.0.2 : MIT License
-has-flag 3.0.0 : MIT License
-has-flag 4.0.0 : MIT License
-has-property-descriptors 1.0.1 : MIT License
-has-proto 1.0.1 : MIT License
-has-symbols 1.0.3 : MIT License
-has-tostringtag 1.0.0 : MIT License
-hasown 2.0.0 : MIT License
-hoist-non-react-statics v3.3.2 : BSD 3-clause "New" or "Revised" License
-hosted-git-info v2.8.9 : ISC License
-html-encoding-sniffer 3.0.0 : MIT License
-html2canvas 1.4.1 : ISC License
-html3pdf 0.12.2 : MIT License
-https-proxy-agent 5.0.1 : MIT License
-human-signals 2.1.0 : Apache License 2.0
-iconv-lite 0.6.3 : MIT License
-immer 10.0.3 : MIT License
-import-fresh 3.3.0 : MIT License
-import-local 3.1.0 : MIT License
-imurmurhash 0.1.4 : MIT License
-indent-string v4.0.0 : MIT License
-inflight 1.0.6 : ISC License
-inherits v2.0.4 : ISC License
-internal-slot 1.0.6 : MIT License
-is-array-buffer 3.0.2 : MIT License
-is-arrayish 0.2.1 : MIT License
-is-async-function 2.0.0 : MIT License
-is-bigint 1.0.4 : MIT License
-is-binary-path v2.1.0 : MIT License
-is-boolean-object 1.1.2 : MIT License
-is-callable 1.2.7 : MIT License
-is-core-module 2.13.1 : MIT License
-is-date-object 1.0.5 : MIT License
-is-extglob 2.1.1 : MIT License
-is-finalizationregistry 1.0.2 : MIT License
-is-fullwidth-code-point 3.0.0 : MIT License
-is-generator-fn 2.1.0 : MIT License
-is-generator-function 1.0.10 : MIT License
-is-glob 4.0.3 : MIT License
-is-map 2.0.2 : MIT License
-is-negative-zero 2.0.2 : MIT License
-is-number 7.0.0 : MIT License
-is-number-object 1.0.7 : MIT License
-is-path-inside 3.0.3 : MIT License
-is-potential-custom-element-name 1.0.1 : MIT License
-is-regex 1.1.4 : MIT License
-is-set 2.0.2 : MIT License
-is-shared-array-buffer 1.0.2 : MIT License
-is-string 1.0.7 : MIT License
-is-symbol 1.0.4 : MIT License
-is-typed-array 1.1.12 : MIT License
-is-weakmap 2.0.1 : MIT License
-is-weakref 1.0.2 : MIT License
-is-weakset 2.0.2 : MIT License
-isaacs/once 1.4.0 : ISC License
-isarray 2.0.5 : MIT License
-isexe 2.0.0 : ISC License
-istanbul-lib-coverage 3.2.2 : BSD 3-clause "New" or "Revised" License
-istanbul-lib-instrument 5.2.1 : BSD 3-clause "New" or "Revised" License
-istanbul-lib-instrument 6.0.2 : BSD 3-clause "New" or "Revised" License
-istanbul-lib-report 3.0.1 : BSD 3-clause "New" or "Revised" License
-istanbul-lib-source-maps 4.0.1 : BSD 3-clause "New" or "Revised" License
-istanbul-reports 3.1.7 : BSD 3-clause "New" or "Revised" License
-iterator.prototype 1.1.2 : MIT License
-JedWatson/react-select 5.8.0 : MIT License
-Jest from Facebook 29.6.3 : MIT License
-Jest from Facebook 29.7.0 : MIT License
-jest-changed-files 29.7.0 : MIT License
-jest-config 29.7.0 : MIT License
-jest-diff 29.7.0 : MIT License
-jest-each 29.7.0 : MIT License
-jest-environment-jsdom 29.7.0 : MIT License
-jest-environment-node 29.7.0 : MIT License
-jest-get-type 29.6.3 : MIT License
-jest-haste-map 29.7.0 : MIT License
-jest-html-reporter 3.10.2 : MIT License
-jest-json-reporter 1.2.2 : MIT License
-jest-leak-detector 29.7.0 : MIT License
-jest-matcher-utils 29.7.0 : MIT License
-jest-message-util 29.7.0 : MIT License
-jest-pnp-resolver 1.2.3 : MIT License
-jest-regex-util 29.6.3 : MIT License
-jest-resolve 29.7.0 : MIT License
-jest-resolve-dependencies 29.7.0 : MIT License
-jest-runner 29.7.0 : MIT License
-jest-runtime 29.7.0 : MIT License
-jest-snapshot 29.7.0 : MIT License
-jest-util 29.7.0 : MIT License
-jest-validate 29.7.0 : MIT License
-jest-worker 29.7.0 : MIT License
-jestjs/jest 29.7.0 : MIT License
-jiti 1.21.0 : MIT License
-js-tokens 4.0.0 : MIT License
-js-yaml 3.14.1 : MIT License
-js-yaml 4.1.0 : MIT License
-jsdiff 4.0.2 : BSD 3-clause "New" or "Revised" License
-jsdom 20.0.3 : MIT License
-jsesc v2.5.2 : MIT License
-jshttp/mime-types 2.1.35 : MIT License
-json-buffer 3.0.1 : MIT License
-json-parse-even-better-errors 2.3.1 : MIT License
-json-schema-traverse 0.4.1 : MIT License
-json5 1.0.2 : MIT License
-json5 2.2.3 : MIT License
-jsPDF 2.5.1 : MIT License
-jsx-ast-utils 3.3.5 : MIT License
-keyv 4.5.4 : MIT License
-kleur 3.0.3 : MIT License
-language-subtag-registry 0.3.22 : Creative Commons Zero v1.0 Universal
-language-tags 1.0.9 : MIT License
-leven 3.1.0 : MIT License
-levn 0.4.1 : MIT License
-lilconfig 2.1.0 : MIT License
-lilconfig 3.0.0 : MIT License
-lines-and-columns 1.2.4 : MIT License
-ljharb/object.assign 4.1.5 : MIT License
-load-json-file 2.0.0 : MIT License
-locate-path v5.0.0 : MIT License
-locate-path v6.0.0 : MIT License
-Lodash 4.17.21 : MIT License
-lodash-es 4.17.21 : MIT License
-lodash.merge 4.6.2 : MIT License
-loose-envify 1.4.0 : MIT License
-lz-string 1.5.0 : MIT License
-make-dir 4.0.0 : MIT License
-make-error 1.3.6 : ISC License
-makeerror 1.0.12 : BSD 3-clause "New" or "Revised" License
-memoize-one 6.0.0 : MIT License
-Merge-Stream 2.0.0 : MIT License
-merge2 1.4.1 : MIT License
-micromatch 4.0.8 : MIT License
-Microsofttslib 1.14.1 : BSD Zero Clause License
-Microsofttslib 2.6.2 : BSD Zero Clause License
-mime-db 1.52.0 : MIT License
-mimic-fn 2.1.0 : MIT License
-min-indent 1.0.1 : MIT License
-minimatch 3.1.2 : ISC License
-minimist 1.2.8 : MIT License
-moxystudio/node-cross-spawn 7.0.6 : MIT License
-ms.js 2.1.2 : MIT License
-mz 2.7.0 : MIT License
-nanoid 3.3.7 : MIT License
-natural-compare 1.4.0 : MIT License
-natural-compare-lite 1.4.0 : MIT License
-next.js 14.0.4 : MIT License
-node-concat-map 0.0.1 : MIT License
-node-dateformat 3.0.2 : MIT License
-node-entities 4.5.0 : BSD 2-clause "Simplified" License
-node-error-ex 1.3.2 : MIT License
-node-glob 7.1.7 : ISC License
-node-glob v7.1.6 : ISC License
-node-graceful-fs 4.2.11 : ISC License
-node-http-proxy-agent 5.0.0 : MIT License
-node-ignore 5.3.0 : MIT License
-node-int64 0.4.0 : MIT License
-node-lru-cache 5.1.1 : ISC License
-node-lru-cache 6.0.0 : ISC License
-node-mkdirp 1.0.4 : MIT License
-node-releases 2.0.14 : MIT License
-node-semver 5.7.2 : ISC License
-node-semver 6.3.1 : ISC License
-node-semver 7.5.4 : ISC License
-node-source-map-support 0.5.13 : MIT License
-nodeca-argparse 1.0.10 : MIT License
-nodeca-argparse 2.0.1 : Python Software Foundation License 2.0
-nodejs-exit 0.1.2 : MIT License
-nodejs-walker 1.0.8 : Apache License 2.0
-normalize-package-data 2.5.0 : BSD 2-clause "Simplified" License
-normalize-path 3.0.0 : MIT License
-normalize-range 0.1.2 : MIT License
-npm-run-path 4.0.1 : MIT License
-nwsapi 2.2.10 : MIT License
-object-assign 4.1.1 : MIT License
-object-hash 3.0.0 : MIT License
-object-inspect 1.13.1 : MIT License
-object-keys 1.1.1 : MIT License
-object.entries 1.1.7 : MIT License
-object.fromentries 2.0.7 : MIT License
-object.groupby 1.0.1 : MIT License
-object.hasown 1.1.3 : MIT License
-object.values 1.1.7 : MIT License
-optionator 0.9.3 : MIT License
-p-limit 2.3.0 : MIT License
-p-limit 3.1.0 : MIT License
-p-locate 4.1.0 : MIT License
-p-locate v5.0.0 : MIT License
-p-try 2.2.0 : MIT License
-parent-module 1.0.1 : MIT License
-parse-json 2.2.0 : MIT License
-parse-json v5.2.0 : MIT License
-parse5 7.1.2 : MIT License
-path-exists 4.0.0 : MIT License
-path-is-absolute 1.0.1 : MIT License
-path-key 3.1.1 : MIT License
-path-parse 1.0.7 : MIT License
-path-type 2.0.0 : MIT License
-path-type 4.0.0 : MIT License
-performance-now 2.1.0 : MIT License
-picocolors 1.0.0 : ISC License
-picomatch 2.3.1 : MIT License
-pify 2.3.0 : MIT License
-pirates 4.0.6 : MIT License
-pkg-dir 4.2.0 : MIT License
-PostCSS 8.4.31 : MIT License
-PostCSS 8.4.32 : MIT License
-postcss-import 15.1.0 : MIT License
-postcss-js 4.0.1 : MIT License
-postcss-load-config 4.0.2 : MIT License
-postcss-nested 6.0.1 : MIT License
-postcss-selector-parser 6.0.13 : MIT License
-postcss-value-parser 4.2.0 : MIT License
-prelude-ls 1.2.1 : MIT License
-prettier 3.2.4 : MIT License
-pretty-format 27.5.1 : MIT License
-pretty-format 29.7.0 : MIT License
-prompts 2.4.2 : MIT License
-prop-types 15.8.1 : MIT License
-property-expr 2.0.6 : MIT License
-psl 1.9.0 : MIT License
-Punycode.js 2.3.1 : MIT License
-pure-rand 6.1.0 : MIT License
-Qix-/color-convert 1.9.3 : MIT License
-Qix-/color-convert 2.0.1 : MIT License
-querystringify 2.2.0 : MIT License
-queue-microtask 1.2.3 : MIT License
-Raynos/for-each 0.3.3 : MIT License
-react 18.2.0 : MIT License
-react-dom 18.2.0 : MIT License
-react-fast-compare 2.0.4 : MIT License
-react-is 16.13.1 : MIT License
-react-is 17.0.2 : MIT License
-react-is 18.3.1 : MIT License
-react-transition-group 4.4.5 : BSD 3-clause "New" or "Revised" License
-reactredux 9.0.4 : MIT License
-read-cache 1.0.0 : MIT License
-read-pkg 2.0.0 : MIT License
-readdirp 3.6.0 : MIT License
-redent 3.0.0 : MIT License
-Redux JS 4.2.1 : MIT License
-Redux JS 5.0.1 : MIT License
-redux-logger 3.0.6 : MIT License
-redux-thunk 3.1.0 : MIT License
-reflect.getprototypeof 1.0.4 : MIT License
-regenerator-runtime 0.13.11 : MIT License
-regenerator-runtime 0.14.1 : MIT License
-regexp.prototype.flags 1.5.1 : MIT License
-require-directory 2.1.1 : MIT License
-requires-port 1.0.0 : MIT License
-reselect 5.1.0 : MIT License
-resolve-cwd 3.0.0 : MIT License
-resolve-from 4.0.0 : MIT License
-resolve-from 5.0.0 : MIT License
-resolve-pkg-maps 1.0.0 : MIT License
-resolve.exports 2.0.2 : MIT License
-reusify 1.0.4 : MIT License
-rgbcolor 1.0.1 : MIT License
-rimraf 3.0.2 : ISC License
-run-parallel 1.2.0 : MIT License
-safe-array-concat 1.0.1 : MIT License
-safe-regex-test 1.0.0 : MIT License
-safer-buffer 2.1.2 : MIT License
-saxes 6.0.0 : MIT License
-scheduler 0.23.0 : MIT License
-set-function-length 1.1.1 : MIT License
-set-function-name 2.0.1 : MIT License
-shebang-command 2.0.0 : MIT License
-shebang-regex 3.0.0 : MIT License
-side-channel 1.0.4 : MIT License
-sindresorhus/globals 11.12.0 : MIT License
-sindresorhus/globals 13.24.0 : MIT License
-sindresorhus/globby 11.1.0 : MIT License
-sindresorhus/is-stream 2.0.1 : MIT License
-sindresorhus/onetime v5.1.2 : MIT License
-sindresorhus/slash v3.0.0 : MIT License
-sindresorhus/supports-color 5.5.0 : MIT License
-sindresorhus/supports-color 8.1.1 : MIT License
-sindresorhus/supports-color v7.2.0 : MIT License
-sisteransi 1.0.5 : MIT License
-source-map 0.5.7 : BSD 3-clause "New" or "Revised" License
-source-map 0.6.1 : BSD 3-clause "New" or "Revised" License
-source-map-js 1.0.2 : BSD 3-clause "New" or "Revised" License
-spdx-correct.js 3.2.0 : Apache License 2.0
-spdx-exceptions 2.5.0 : Creative Commons Attribution 3.0
-spdx-expression-parse.js 3.0.1 : MIT License
-spdx-license-ids 3.0.20 : The Unlicense
-sprintf.js 1.0.3 : BSD 3-clause "New" or "Revised" License
-stable-stringify 1.0.1 : MIT License
-stack-utils 2.0.6 : MIT License
-stackblur-canvas 2.7.0 : MIT License
-streamsearch 1.1.0 : MIT License
-string-length 4.0.2 : MIT License
-string-width 4.2.3 : MIT License
-string.prototype.matchall 4.0.10 : MIT License
-string.prototype.trim 1.2.8 : MIT License
-string.prototype.trimend 1.0.7 : MIT License
-string.prototype.trimstart 1.0.7 : MIT License
-Strip ANSI 6.0.1 : MIT License
-strip-bom 3.0.0 : MIT License
-strip-bom 4.0.0 : MIT License
-strip-final-newline 2.0.0 : MIT License
-strip-indent v3.0.0 : MIT License
-strip-json-comments 3.1.1 : MIT License
-styled-jsx 5.1.1 : MIT License
-stylis 4.2.0 : MIT License
-sucrase 3.34.0 : MIT License
-supports-preserve-symlinks-flag 1.0.0 : MIT License
-svg-pathdata 6.0.3 : MIT License
-symbol-tree 3.2.4 : MIT License
-tailwind-merge 2.5.5 : MIT License
-tailwindcss 3.3.6 : MIT License
-tapable 2.2.1 : MIT License
-tapjs/signal-exit 3.0.7 : ISC License
-test-exclude 6.0.0 : ISC License
-text-segmentation 1.0.3 : MIT License
-text-table 0.2.0 : MIT License
-thenify 3.3.1 : MIT License
-thenify-all 1.6.0 : MIT License
-tiny-case 1.0.3 : MIT License
-tiny-warning 1.0.3 : MIT License
-tmpl 1.0.5 : BSD 3-clause "New" or "Revised" License
-to-fast-properties 2.0.0 : MIT License
-to-regex-range 5.0.1 : MIT License
-toposort 2.0.2 : MIT License
-tough-cookie 4.1.4 : BSD 3-clause "New" or "Revised" License
-tr46 3.0.0 : MIT License
-ts-interface-checker 0.1.13 : Apache License 2.0
-ts-node 10.9.2 : MIT License
-tsconfig-paths 3.15.0 : MIT License
-tsutils 3.21.0 : MIT License
-type-check 0.4.0 : MIT License
-type-detect 4.0.8 : MIT License
-type-fest 0.20.2 : (MIT License OR Creative Commons Zero v1.0 Universal)
-type-fest 0.21.3 : (MIT License OR Creative Commons Zero v1.0 Universal)
-type-fest 2.19.0 : (MIT License OR Creative Commons Zero v1.0 Universal)
-typed-array-buffer 1.0.0 : MIT License
-typed-array-byte-length 1.0.0 : MIT License
-typed-array-byte-offset 1.0.0 : MIT License
-typed-array-length 1.0.4 : MIT License
-TypeScript 5.3.3 : Apache License 2.0
-unbox-primitive 1.0.2 : MIT License
-undici-types 5.26.5 : MIT License
-universalify 0.2.0 : MIT License
-update-browserslist-db 1.0.13 : MIT License
-uri-js 4.4.1 : BSD 2-clause "Simplified" License
-url-parse 1.5.10 : MIT License
-use-isomorphic-layout-effect 1.1.2 : MIT License
-use-sync-external-store 1.2.0 : MIT License
-util-deprecate 1.0.2 : MIT License
-utrie 1.0.2 : MIT License
-v8-compile-cache-lib 3.0.1 : MIT License
-v8-to-istanbul 9.2.0 : ISC License
-validate-npm-package-license 3.0.4 : Apache License 2.0
-w3c-xmlserializer 4.0.0 : MIT License
-watchman 2.0.2 : Apache License 2.0
-watchman 2.1.1 : Apache License 2.0
-webidl-conversions 7.0.0 : BSD 2-clause "Simplified" License
-webreflection/html-escaper 2.0.2 : MIT License
-whatwg-encoding 2.0.0 : MIT License
-whatwg-mimetype 3.0.0 : MIT License
-whatwg-url 11.0.0 : MIT License
-which 2.0.2 : ISC License
-which-boxed-primitive 1.0.2 : MIT License
-which-builtin-type 1.1.3 : MIT License
-which-collection 1.0.1 : MIT License
-which-typed-array 1.1.13 : MIT License
-wrap-ansi v7.0.0 : MIT License
-wrappy 1.0.2 : ISC License
-write-file-atomic 4.0.2 : ISC License
-xml-name-validator 4.0.0 : Apache License 2.0
-xmlbuilder-js v15.0.0 : MIT License
-xmlchars 2.2.0 : MIT License
-y18n 5.0.8 : ISC License
-yallist 3.1.1 : ISC License
-yallist 4.0.0 : ISC License
-yaml 1.10.2 : ISC License
-yaml 2.3.4 : ISC License
-yannickcr/eslint-plugin-react 7.33.2 : MIT License
-yargs 17.7.2 : MIT License
-yargs-parser 21.1.1 : ISC License
-yn v3.1.1 : MIT License
-yocto-queue 0.1.0 : MIT License
-yup 1.4.0 : MIT License
-zod 3.23.8 : MIT License
+agent-base 6.0.2: https://github.com/TooTallNate/node-agent-base#readme : MIT License
+ajv 6.12.6: https://github.com/ajv-validator/ajv.git : MIT License
+ansi-escapes 4.3.2: https://github.com/sindresorhus/ansi-escapes : MIT License
+ansi-regex 5.0.1: https://github.com/sindresorhus/ansi-regex : MIT License
+ansi-regex 6.1.0: https://github.com/sindresorhus/ansi-regex : MIT License
+ansi-styles 5.2.0: https://github.com/sindresorhus/ansi-styles : MIT License
+ansi-styles 6.2.1: https://github.com/sindresorhus/ansi-styles : MIT License
+ansi-styles v4.3.0: https://github.com/sindresorhus/ansi-styles : MIT License
+any-promise 1.3.0: http://github.com/kevinbeaty/any-promise : MIT License
+anymatch 3.1.3: https://github.com/es128/anymatch : ISC License
+ARG 4.1.3: http://github.com/danielor/ARG : MIT License
+ARG 5.0.2: http://github.com/danielor/ARG : MIT License
+aria-query 5.3.0: https://github.com/A11yance/aria-query : Apache License 2.0
+aria-query 5.3.2: https://github.com/A11yance/aria-query : Apache License 2.0
+array-buffer-byte-length 1.0.2: https://github.com/inspect-js/array-buffer-byte-length#readme : MIT License
+array-includes 3.1.8: https://github.com/ljharb/array-includes : MIT License
+array-union v2.1.0: https://github.com/sindresorhus/array-union : MIT License
+array.prototype.findlast 1.2.5: https://github.com/es-shims/Array.prototype.findLast#readme : MIT License
+array.prototype.findlastindex 1.2.6: https://github.com/es-shims/Array.prototype.findLastIndex#readme : MIT License
+array.prototype.flat 1.3.2: https://github.com/es-shims/Array.prototype.flat#readme : MIT License
+array.prototype.flatmap 1.3.3: https://github.com/es-shims/Array.prototype.flatMap#readme : MIT License
+array.prototype.tosorted 1.1.4: https://github.com/es-shims/Array.prototype.toSorted#readme : MIT License
+arraybuffer.prototype.slice 1.0.4: https://github.com/es-shims/ArrayBuffer.prototype.slice#readme : MIT License
+ast-types-flow 0.0.8: https://github.com/kyldvs/ast-types-flow : MIT License
+async-function 1.0.0: https://github.com/EduardoRFS/async-function#readme : MIT License
+asynckit 0.4.0: https://github.com/alexindigo/asynckit : MIT License
+atob 2.1.2: https://github.com/node-browser-compat/atob : (MIT License OR Apache License 2.0)
+Autoprefixer 10.4.21: https://github.com/postcss/autoprefixer : MIT License
+available-typed-arrays 1.0.7: https://github.com/inspect-js/available-typed-arrays#readme : MIT License
+axe-core 4.10.3: https://github.com/dequelabs/axe-core : Mozilla Public License 2.0
+axobject-query 4.1.0: https://github.com/A11yance/axobject-query#readme : Apache License 2.0
+babel-plugin-istanbul 6.1.1: https://github.com/istanbuljs/babel-plugin-istanbul#readme : BSD 3-clause "New" or "Revised" License
+babel-plugin-macros 3.1.0: https://github.com/codemix/babel-plugin-macros : MIT License
+babel-preset-current-node-syntax 1.0.1: https://github.com/nicolo-ribaudo/babel-preset-current-node-syntax#readme : MIT License
+babel-traverse 7.27.0: https://babeljs.io/ : MIT License
+balanced-match 1.0.2: https://github.com/juliangruber/balanced-match : MIT License
+base64-arraybuffer 1.0.2: https://github.com/niklasvh/base64-arraybuffer : MIT License
+binary-extensions 2.3.0: https://github.com/sindresorhus/binary-extensions : MIT License
+brace-expansion 1.1.11: https://github.com/juliangruber/brace-expansion : MIT License
+brace-expansion 2.0.1: https://github.com/juliangruber/brace-expansion : MIT License
+browserify/resolve 1.22.8: https://github.com/browserify/resolve : MIT License
+browserify/resolve 2.0.0-next.5: https://github.com/browserify/resolve : MIT License
+browserslist 4.24.4: https://github.com/ai/browserslist : MIT License
+btoa 1.2.1: https://git.coolaj86.com/coolaj86/btoa.js.git : (MIT License OR Apache License 2.0)
+buffer-from 1.1.2: https://github.com/linusu/buffer-from#readme : MIT License
+busboy 1.6.0: https://github.com/mscdex/busboy : MIT License
+call-bind 1.0.8: https://github.com/ljharb/call-bind#readme : MIT License
+call-bind-apply-helpers 1.0.2: https://github.com/ljharb/call-bind-apply-helpers#readme : MIT License
+call-bound 1.0.4: https://github.com/hamzahamru/call-bound#readme : MIT License
+callsites 3.1.0: https://github.com/sindresorhus/callsites : MIT License
+camelcase 5.3.1: https://github.com/sindresorhus/camelcase : MIT License
+camelcase 6.3.0: https://github.com/sindresorhus/camelcase : MIT License
+camelcase-css 2.0.1: https://github.com/stevenvachon/camelcase-css : MIT License
+caniuse-lite 1.0.30001714: https://github.com/ben-eb/caniuse-lite : Creative Commons Attribution 4.0
+canvg 3.0.11: https://github.com/canvg/canvg : MIT License
+Chalk 4.1.2: https://github.com/sindresorhus/chalk : MIT License
+Chalk v3.0.0: https://github.com/sindresorhus/chalk : MIT License
+char-regex 1.0.2: https://github.com/Richienb/char-regex#readme : MIT License
+chokidar 3.6.0: https://github.com/paulmillr/chokidar : MIT License
+chrisdickinson/raf 3.4.1: https://github.com/chrisdickinson/raf : MIT License
+ci-info 3.9.0: https://github.com/watson/ci-info : MIT License
+cjs-module-lexer 1.3.1: https://github.com/guybedford/cjs-module-lexer#readme : MIT License
+client-only 0.0.1: https://reactjs.org/ : MIT License
+cliui 8.0.1: https://github.com/yargs/cliui : ISC License
+clsx 2.0.0: https://github.com/lukeed/clsx#readme : MIT License
+co 4.6.0: https://github.com/visionmedia/co : MIT License
+collect-v8-coverage 1.0.2: https://github.com/SimenB/collect-v8-coverage#readme : MIT License
+color-name 1.1.4: https://github.com/colorjs/color-name : MIT License
+combined-stream 1.0.8: https://github.com/felixge/node-combined-stream : MIT License
+Commander.js 4.1.1: https://github.com/visionmedia/Commander.js : MIT License
+convert-source-map 1.9.0: https://github.com/thlorenz/convert-source-map : MIT License
+convert-source-map 2.0.0: https://github.com/thlorenz/convert-source-map : MIT License
+core-js 3.38.1: https://github.com/zloirock/core-js : MIT License
+cosmiconfig 7.1.0: https://github.com/davidtheclark/cosmiconfig#readme : MIT License
+create-require 1.1.1: https://github.com/nuxt-contrib/create-require#readme : MIT License
+cross-fetch 4.1.0: https://github.com/lquixada/cross-fetch/issues : MIT License
+css-line-break 2.1.0: https://github.com/niklasvh/css-line-break#readme : MIT License
+css.escape 1.5.1: https://github.com/mathiasbynens/css.escape : MIT License
+cssesc 3.0.0: https://github.com/mathiasbynens/cssesc : MIT License
+cssom 0.3.8: https://www.npmjs.com/package/cssom : MIT License
+cssom 0.5.0: https://www.npmjs.com/package/cssom : MIT License
+cssstyle 2.3.0: https://www.npmjs.com/package/cssstyle : MIT License
+csstype 3.1.3: https://github.com/frenic/csstype#readme : MIT License
+damerau-levenshtein 1.0.8: https://github.com/lzrski/node-damerau-levenshtein#readme : BSD 2-clause "Simplified" License
+data-urls 3.0.2: https://github.com/jsdom/data-urls#readme : MIT License
+data-view-buffer 1.0.2: https://github.com/ljharb/data-view-buffer#readme : MIT License
+data-view-byte-length 1.0.2: https://github.com/ljharb/data-view-byte-length#readme : MIT License
+data-view-byte-offset 1.0.1: https://github.com/ljharb/data-view-byte-offset#readme : MIT License
+debug-js/debug 3.2.7: https://github.com/visionmedia/debug : MIT License
+debug-js/debug 4.3.4: https://github.com/visionmedia/debug : MIT License
+decimal.js 10.4.3: https://github.com/MikeMcl/decimal.js : MIT License
+dedent 1.5.3: https://github.com/dmnd/dedent : MIT License
+deep-diff 0.3.8: https://github.com/flitbit/diff : MIT License
+deep-is 0.1.4: https://github.com/thlorenz/deep-is : MIT License
+deepmerge 2.2.1: https://github.com/TehShrike/deepmerge : MIT License
+deepmerge 4.3.1: https://github.com/TehShrike/deepmerge : MIT License
+define-data-property 1.1.4: https://github.com/ljharb/define-data-property#readme : MIT License
+define-properties 1.2.1: https://github.com/ljharb/define-properties : MIT License
+delayed-stream 1.0.0: https://github.com/felixge/node-delayed-stream : MIT License
+dequal 2.0.3: https://github.com/lukeed/dequal#readme : MIT License
+detect-newline v3.1.0: https://github.com/sindresorhus/detect-newline : MIT License
+didyoumean.js 1.2.2: https://github.com/dcporter/didyoumean.js : Apache License 2.0
+dir-glob 3.0.1: https://github.com/kevva/dir-glob#readme : MIT License
+dlv 1.1.3: https://github.com/developit/dlv#readme : MIT License
+doctrine v2.1.0: https://github.com/Constellation/doctrine : (BSD 2-clause "Simplified" License AND Apache License 2.0)
+doctrine v3.0.0: https://github.com/Constellation/doctrine : Apache License 2.0
+dom-accessibility-api 0.5.16: https://github.com/eps1lon/dom-accessibility-api#readme : MIT License
+dom-accessibility-api 0.6.3: https://github.com/eps1lon/dom-accessibility-api#readme : MIT License
+dom-helpers 5.2.1: https://github.com/jquense/dom-helpers : MIT License
+domexception 4.0.0: https://github.com/jsdom/domexception#readme : MIT License
+DOMPurify 3.2.5: https://cure53.de/purify : (Apache License 2.0 OR Mozilla Public License 2.0)
+dunder-proto 1.0.1: https://github.com/es-shims/dunder-proto#readme : MIT License
+eastasianwidth 0.2.0: https://github.com/komagata/eastasianwidth#readme : MIT License
+einaros/ws 8.18.0: https://github.com/einaros/ws : MIT License
+electron-to-chromium 1.5.137: https://github.com/kilian/electron-to-chromium : ISC License
+emittery 0.13.1: https://github.com/sindresorhus/emittery : MIT License
+emoji-regex 9.2.2: https://github.com/mathiasbynens/emoji-regex : MIT License
+emoji-regex v8.0.0: https://github.com/mathiasbynens/emoji-regex : MIT License
+enhanced-resolve 5.15.0: http://github.com/webpack/enhanced-resolve : MIT License
+es-abstract 1.23.9: https://github.com/ljharb/es-abstract : MIT License
+es-define-property 1.0.1: https://github.com/ljharb/es-define-property#readme : MIT License
+es-errors 1.3.0: https://github.com/ljharb/es-errors#readme : MIT License
+es-iterator-helpers 1.2.1: https://github.com/es-shims/iterator-helpers#readme : MIT License
+es-object-atoms 1.1.1: https://github.com/ljharb/es-object-atoms#readme : MIT License
+es-set-tostringtag 2.1.0: https://github.com/es-shims/es-set-tostringtag#readme : MIT License
+es-shim-unscopables 1.1.0: https://github.com/ljharb/es-shim-unscopables#readme : MIT License
+es-to-primitive 1.3.0: https://github.com/ljharb/es-to-primitive : MIT License
+es6-promise v4.2.8: https://github.com/jakearchibald/es6-promise : MIT License
+escalade 3.2.0: https://github.com/lukeed/escalade#readme : MIT License
+escape-string-regexp v2.0.0: https://github.com/sindresorhus/escape-string-regexp : MIT License
+escape-string-regexp v4.0.0: https://github.com/sindresorhus/escape-string-regexp : MIT License
+escodegen 2.1.0: https://github.com/Constellation/escodegen : BSD 2-clause "Simplified" License
+ESLint 8.57.1: http://eslint.org/ : MIT License
+eslint-config-prettier 8.10.0: https://github.com/lydell/eslint-config-prettier#readme : MIT License
+eslint-import-resolver-node 0.3.9: https://github.com/benmosher/eslint-plugin-import : MIT License
+eslint-import-resolver-typescript 3.6.1: https://github.com/alexgorbatchev/eslint-import-resolver-typescript#readme : ISC License
+eslint-plugin-import 2.12.0: https://github.com/benmosher/eslint-plugin-import : MIT License
+eslint-plugin-import 2.31.0: https://github.com/benmosher/eslint-plugin-import : MIT License
+eslint-plugin-jsx-a11y 6.10.2: https://github.com/evcohen/eslint-plugin-jsx-a11y#readme : MIT License
+eslint-plugin-react-hooks 5.2.0: https://reactjs.org/ : MIT License
+eslint-scope 7.2.2: https://github.com/eslint/eslint-scope : BSD 2-clause "Simplified" License
+eslint-scope v5.1.1: https://github.com/eslint/eslint-scope : BSD 2-clause "Simplified" License
+eslint-visitor-keys 3.4.3: https://github.com/eslint/eslint-visitor-keys#readme : Apache License 2.0
+espree 9.6.1: https://github.com/eslint/espree : BSD 2-clause "Simplified" License
+Esprima 4.0.1: http://esprima.org : BSD 2-clause "Simplified" License
+esquery 1.5.0: https://github.com/jrfeenst/esquery : BSD 3-clause "New" or "Revised" License
+esrecurse v4.3.0: https://github.com/estools/esrecurse : BSD 2-clause "Simplified" License
+estraverse 5.3.0: https://github.com/Constellation/estraverse : BSD 2-clause "Simplified" License
+estraverse v4.3.0: https://github.com/Constellation/estraverse : BSD 2-clause "Simplified" License
+esutils 2.0.3: https://github.com/Constellation/esutils : BSD 2-clause "Simplified" License
+execa 5.1.1: https://github.com/sindresorhus/execa : MIT License
+expect 29.7.0: https://github.com/mjackson/expect : MIT License
+fast-deep-equal v3.1.3: https://github.com/epoberezkin/fast-deep-equal : MIT License
+fast-glob 3.3.1: https://github.com/mrmlnc/fast-glob#readme : MIT License
+fast-glob 3.3.2: https://github.com/mrmlnc/fast-glob#readme : MIT License
+fast-json-stable-stringify 2.1.0: https://github.com/epoberezkin/fast-json-stable-stringify : MIT License
+fast-levenshtein 2.0.6: https://github.com/hiddentao/fast-levenshtein : MIT License
+fastq 1.15.0: https://github.com/mcollina/fastqueue#readme : ISC License
+fflate 0.8.2: https://github.com/101arrowz/fflate#readme : MIT License
+file-entry-cache 6.0.1: https://github.com/royriojas/file-entry-cache : MIT License
+fill-range 7.1.1: https://github.com/jonschlinkert/fill-range : MIT License
+find-root 1.1.0: https://github.com/agilemd/find-root#readme : MIT License
+find-up v4.1.0: https://github.com/sindresorhus/find-up : MIT License
+find-up v5.0.0: https://github.com/sindresorhus/find-up : MIT License
+flat-cache 3.2.0: https://github.com/royriojas/flat-cache : MIT License
+flatted 3.2.9: https://github.com/WebReflection/flatted#readme : ISC License
+foreground-child 3.3.1: https://github.com/isaacs/foreground-child : ISC License
+form-data 4.0.0: https://github.com/felixge/node-form-data : MIT License
+formik 2.4.5: https://github.com/jaredpalmer/formik : Apache License 2.0
+fraction.js 4.3.7: https://github.com/infusion/fraction.js : MIT License
+fs.realpath 1.0.0: https://github.com/isaacs/fs.realpath#readme : ISC License
+fsevents 2.3.3: https://github.com/fsevents/fsevents : MIT License
+function-bind 1.1.2: https://github.com/Raynos/function-bind : MIT License
+function.prototype.name 1.1.8: https://github.com/ljharb/function.prototype.name#readme : MIT License
+functions-have-names 1.2.3: https://github.com/ljharb/functions-have-names#readme : MIT License
+gensync 1.0.0-beta.2: https://github.com/loganfsmyth/gensync : MIT License
+get-caller-file 2.0.5: https://github.com/stefanpenner/get-caller-file : ISC License
+get-intrinsic 1.3.0: https://github.com/ljharb/get-intrinsic#readme : MIT License
+get-package-type 0.1.0: https://github.com/cfware/get-package-type#readme : MIT License
+get-proto 1.0.1: https://github.com/ljharb/get-proto#readme : MIT License
+get-stream 6.0.1: https://github.com/sindresorhus/get-stream : MIT License
+get-symbol-description 1.1.0: https://github.com/inspect-js/get-symbol-description#readme : MIT License
+get-tsconfig 4.7.2: https://github.com/typeslick/get-tsconfig : MIT License
+glob-parent 5.1.2: https://github.com/es128/glob-parent : ISC License
+glob-parent 6.0.2: https://github.com/es128/glob-parent : ISC License
+globalthis 1.0.4: https://github.com/ljharb/System.global#readme : MIT License
+gopd 1.2.0: https://github.com/ljharb/gopd#readme : MIT License
+graphemer 1.4.0: https://github.com/flmnt/graphemer : MIT License
+has-bigints 1.1.0: https://github.com/ljharb/has-bigints#readme : MIT License
+has-flag 4.0.0: https://github.com/sindresorhus/has-flag#readme : MIT License
+has-property-descriptors 1.0.2: https://github.com/inspect-js/has-property-descriptors#readme : MIT License
+has-proto 1.2.0: https://github.com/inspect-js/can-set-proto#readme : MIT License
+has-symbols 1.1.0: https://github.com/ljharb/has-symbols#readme : MIT License
+has-tostringtag 1.0.2: https://github.com/inspect-js/has-tostringtag#readme : MIT License
+hasown 2.0.2: https://github.com/inspect-js/hasOwn#readme : MIT License
+hoist-non-react-statics v3.3.2: https://github.com/mridgway/hoist-non-react-statics : BSD 3-clause "New" or "Revised" License
+hosted-git-info v2.8.9: https://github.com/npm/hosted-git-info : ISC License
+html-encoding-sniffer 3.0.0: https://github.com/jsdom/html-encoding-sniffer#readme : MIT License
+html2canvas 1.4.1: http://html2canvas.hertzen.com/ : ISC License
+html2canvas-fixed 0.10.3: https://github.com/eKoopmans/html2pdf : MIT License
+https-proxy-agent 5.0.1: https://github.com/TooTallNate/node-https-proxy-agent : MIT License
+human-signals 2.1.0: https://git.io/JeluP : Apache License 2.0
+iconv-lite 0.6.3: https://github.com/ashtuchkin/iconv-lite : MIT License
+immer 10.0.3: https://immerjs.github.io/immer/ : MIT License
+import-fresh 3.3.0: https://github.com/sindresorhus/import-fresh : MIT License
+import-local 3.1.0: https://github.com/sindresorhus/import-local#readme : MIT License
+imurmurhash 0.1.4: https://github.com/jensyt/imurmurhash-js : MIT License
+indent-string v4.0.0: https://github.com/sindresorhus/indent-string : MIT License
+inflight 1.0.6: https://github.com/isaacs/inflight : ISC License
+inherits v2.0.4: https://github.com/isaacs/inherits : ISC License
+internal-slot 1.1.0: https://github.com/ljharb/internal-slot#readme : MIT License
+is-array-buffer 3.0.5: https://github.com/fengyuanchen/is-array-buffer#readme : MIT License
+is-arrayish 0.2.1: https://github.com/qix-/node-is-arrayish#readme : MIT License
+is-async-function 2.1.1: https://github.com/tunnckocore/is-async-function#readme : MIT License
+is-bigint 1.1.0: https://github.com/ljharb/is-bigint#readme : MIT License
+is-binary-path v2.1.0: https://github.com/sindresorhus/is-binary-path : MIT License
+is-boolean-object 1.2.2: https://github.com/ljharb/is-boolean-object#readme : MIT License
+is-callable 1.2.7: https://github.com/ljharb/is-callable : MIT License
+is-core-module 2.16.1: https://github.com/meandavejustice/is-core-module : MIT License
+is-data-view 1.0.2: https://github.com/inspect-js/is-data-view#readme : MIT License
+is-date-object 1.1.0: https://github.com/ljharb/is-date-object : MIT License
+is-extglob 2.1.1: https://github.com/jonschlinkert/is-extglob : MIT License
+is-finalizationregistry 1.1.1: https://github.com/inspect-js/is-finalizationregistry#readme : MIT License
+is-fullwidth-code-point 3.0.0: https://github.com/sindresorhus/is-fullwidth-code-point : MIT License
+is-generator-fn 2.1.0: https://github.com/sindresorhus/is-generator-fn : MIT License
+is-generator-function 1.1.0: https://github.com/ljharb/is-generator-function : MIT License
+is-glob 4.0.3: https://www.npmjs.com/package/is-glob : MIT License
+is-map 2.0.3: https://github.com/arthurvr/is-map : MIT License
+is-number 7.0.0: https://github.com/jonschlinkert/is-number : MIT License
+is-number-object 1.1.1: https://github.com/ljharb/is-number-object : MIT License
+is-path-inside 3.0.3: https://github.com/sindresorhus/is-path-inside : MIT License
+is-potential-custom-element-name 1.0.1: https://github.com/mathiasbynens/is-potential-custom-element-name : MIT License
+is-regex 1.2.1: https://github.com/ljharb/is-regex : MIT License
+is-set 2.0.3: https://github.com/arthurvr/is-set : MIT License
+is-shared-array-buffer 1.0.4: https://github.com/inspect-js/is-shared-array-buffer#readme : MIT License
+is-stream 2.0.1: https://github.com/sindresorhus/is-stream : MIT License
+is-string 1.1.1: https://github.com/ljharb/is-string : MIT License
+is-symbol 1.1.1: https://github.com/ljharb/is-symbol : MIT License
+is-typed-array 1.1.15: https://github.com/inspect-js/is-typed-array/ : MIT License
+is-weakmap 2.0.2: https://github.com/arthurvr/is-weakmap : MIT License
+is-weakref 1.1.1: https://github.com/inspect-js/is-weakref#readme : MIT License
+is-weakset 2.0.4: https://github.com/arthurvr/is-weakset : MIT License
+isaacs/jackspeak 3.4.3: https://github.com/isaacs/jackspeak#readme : Blue Oak Model License 1.0.0
+isaacs/once 1.4.0: https://github.com/isaacs/once : ISC License
+isarray 2.0.5: https://github.com/juliangruber/isarray : MIT License
+isexe 2.0.0: https://github.com/isaacs/isexe#readme : ISC License
+istanbul-lib-coverage 3.2.2: https://github.com/istanbuljs/istanbul-lib-coverage : BSD 3-clause "New" or "Revised" License
+istanbul-lib-instrument 5.2.1: https://github.com/istanbuljs/istanbul-lib-instrument : BSD 3-clause "New" or "Revised" License
+istanbul-lib-instrument 6.0.2: https://github.com/istanbuljs/istanbul-lib-instrument : BSD 3-clause "New" or "Revised" License
+istanbul-lib-report 3.0.1: https://github.com/istanbuljs/istanbul-lib-report : BSD 3-clause "New" or "Revised" License
+istanbul-lib-source-maps 4.0.1: https://github.com/istanbuljs/istanbul-lib-source-maps#readme : BSD 3-clause "New" or "Revised" License
+istanbul-reports 3.1.7: https://github.com/istanbuljs/istanbul-reports : BSD 3-clause "New" or "Revised" License
+iterator.prototype 1.1.5: https://github.com/ljharb/iterator.prototype#readme : MIT License
+JedWatson/react-select 5.8.0: https://github.com/JedWatson/react-select : MIT License
+Jest from Facebook 29.6.3: https://jestjs.io : MIT License
+Jest from Facebook 29.7.0: https://jestjs.io : MIT License
+jest-changed-files 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-config 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-diff 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-each 29.7.0: https://github.com/mattphillips/jest-each#readme : MIT License
+jest-environment-jsdom 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-environment-node 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-get-type 29.6.3: https://github.com/facebook/jest#readme : MIT License
+jest-haste-map 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-html-reporter 3.10.2: https://github.com/Hargne/jest-html-reporter#readme : MIT License
+jest-json-reporter 1.2.2: https://github.com/Vall3y/jest-json-reporter : MIT License
+jest-leak-detector 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-matcher-utils 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-message-util 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-pnp-resolver 1.2.3: https://github.com/arcanis/jest-pnp-resolver : MIT License
+jest-regex-util 29.6.3: https://github.com/facebook/jest#readme : MIT License
+jest-resolve 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-resolve-dependencies 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-runner 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-runtime 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-snapshot 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-util 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-validate 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jest-worker 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jestjs/jest 29.7.0: https://github.com/facebook/jest#readme : MIT License
+jiti 1.21.7: https://github.com/nuxt-contrib/jiti#readme : MIT License
+js-tokens 4.0.0: https://github.com/lydell/js-tokens : MIT License
+js-yaml 3.14.1: https://github.com/nodeca/js-yaml : MIT License
+js-yaml 4.1.0: https://github.com/nodeca/js-yaml : MIT License
+jsdiff 4.0.2: https://github.com/kpdecker/jsdiff : BSD 3-clause "New" or "Revised" License
+jsdom 20.0.3: https://github.com/jsdom/jsdom : MIT License
+jsesc 3.1.0: http://mths.be/jsesc : MIT License
+jshttp/mime-types 2.1.35: https://github.com/jshttp/mime-types : MIT License
+jsnext 14.2.28: https://nextjs.org : MIT License
+jsnext 15.3.1: https://nextjs.org : MIT License
+json-buffer 3.0.1: https://github.com/dominictarr/json-buffer : MIT License
+json-parse-even-better-errors 2.3.1: https://github.com/npm/json-parse-even-better-errors#readme : MIT License
+json-schema-traverse 0.4.1: https://github.com/epoberezkin/json-schema-traverse : MIT License
+json5 1.0.2: http://json5.org/ : MIT License
+json5 2.2.3: http://json5.org/ : MIT License
+jsPDF 3.0.1: http://github.com/MrRio/jsPDF : MIT License
+jsx-ast-utils 3.3.5: https://github.com/evcohen/jsx-ast-utils#readme : MIT License
+keyv 4.5.4: https://github.com/lukechilds/keyv : MIT License
+kleur 3.0.3: https://github.com/lukeed/kleur#readme : MIT License
+language-subtag-registry 0.3.23: https://github.com/mattcg/language-subtag-registry : Creative Commons Zero v1.0 Universal
+language-tags 1.0.9: https://github.com/mattcg/language-tags : MIT License
+leven 3.1.0: https://github.com/sindresorhus/leven : MIT License
+levn 0.4.1: https://github.com/gkz/levn : MIT License
+lilconfig 3.1.3: https://github.com/antonk52/lilconfig#readme : MIT License
+lines-and-columns 1.2.4: https://github.com/eventualbuddha/lines-and-columns#readme : MIT License
+ljharb/object.assign 4.1.7: https://github.com/ljharb/object.assign : MIT License
+load-json-file 2.0.0: https://github.com/sindresorhus/load-json-file : MIT License
+locate-path v5.0.0: https://github.com/sindresorhus/locate-path : MIT License
+locate-path v6.0.0: https://github.com/sindresorhus/locate-path : MIT License
+Lodash 4.17.21: https://lodash.com/ : MIT License
+lodash-es 4.17.21: https://lodash.com/custom-builds : MIT License
+lodash.merge 4.6.2: https://lodash.com/ : MIT License
+loose-envify 1.4.0: https://github.com/zertosh/loose-envify : MIT License
+lz-string 1.5.0: https://github.com/pieroxy/lz-string : MIT License
+make-dir 4.0.0: https://github.com/sindresorhus/make-dir#readme : MIT License
+make-error 1.3.6: https://github.com/julien-f/js-make-error : ISC License
+makeerror 1.0.12: https://github.com/daaku/nodejs-makeerror : BSD 3-clause "New" or "Revised" License
+math-intrinsics 1.1.0: https://github.com/es-shims/math-intrinsics#readme : MIT License
+memoize-one 6.0.0: https://github.com/alexreardon/memoize-one : MIT License
+Merge-Stream 2.0.0: https://github.com/grncdr/merge-stream : MIT License
+merge2 1.4.1: https://github.com/teambition/merge2 : MIT License
+micromatch 4.0.8: https://github.com/jonschlinkert/micromatch : MIT License
+micromatch/braces 3.0.3: https://github.com/micromatch/braces : MIT License
+Microsofttslib 1.14.1: http://github.com/Microsoft/tslib/ : BSD Zero Clause License
+Microsofttslib 2.6.2: http://github.com/Microsoft/tslib/ : BSD Zero Clause License
+mime-db 1.52.0: https://github.com/jshttp/mime-db : MIT License
+mimic-fn 2.1.0: https://github.com/sindresorhus/mimic-fn#readme : MIT License
+min-indent 1.0.1: https://github.com/thejameskyle/min-indent#readme : MIT License
+minimatch 3.1.2: https://github.com/isaacs/minimatch : ISC License
+minimatch 9.0.5: https://github.com/isaacs/minimatch : ISC License
+minimist 1.2.8: https://github.com/minimistjs/minimist : MIT License
+minipass 7.1.2: https://github.com/isaacs/minipass : ISC License
+moxystudio/node-cross-spawn 7.0.6: https://github.com/moxystudio/node-cross-spawn : MIT License
+ms.js 2.1.2: https://github.com/guille/ms.js : MIT License
+mz 2.7.0: https://github.com/normalize/mz : MIT License
+nanoid 3.3.11: https://github.com/ai/nanoid#readme : MIT License
+natural-compare 1.4.0: https://github.com/litejs/natural-compare : MIT License
+natural-compare-lite 1.4.0: https://github.com/litejs/natural-compare-lite : MIT License
+node-concat-map 0.0.1: https://github.com/substack/node-concat-map : MIT License
+node-dateformat 3.0.2: https://github.com/felixge/node-dateformat : MIT License
+node-entities 4.5.0: https://github.com/FB55/node-entities : BSD 2-clause "Simplified" License
+node-error-ex 1.3.2: https://github.com/qix-/node-error-ex#readme : MIT License
+node-fetch 2.7.0: https://github.com/bitinn/node-fetch : MIT License
+node-glob 10.4.5: http://github.com/isaacs/node-glob : ISC License
+node-glob 7.1.7: http://github.com/isaacs/node-glob : ISC License
+node-graceful-fs 4.2.11: https://github.com/isaacs/node-graceful-fs : ISC License
+node-http-proxy-agent 5.0.0: https://github.com/TooTallNate/node-http-proxy-agent : MIT License
+node-ignore 5.3.0: https://github.com/kaelzhang/node-ignore : MIT License
+node-int64 0.4.0: https://github.com/broofa/node-int64 : MIT License
+node-lru-cache 10.4.3: http://github.com/isaacs/node-lru-cache : ISC License
+node-lru-cache 5.1.1: http://github.com/isaacs/node-lru-cache : ISC License
+node-lru-cache 6.0.0: http://github.com/isaacs/node-lru-cache : ISC License
+node-mkdirp 1.0.4: https://github.com/substack/node-mkdirp : MIT License
+node-releases 2.0.19: https://github.com/chicoxyzzy/node-releases : MIT License
+node-semver 5.7.2: https://github.com/npm/node-semver : ISC License
+node-semver 6.3.1: https://github.com/npm/node-semver : ISC License
+node-semver 7.5.4: https://github.com/npm/node-semver : ISC License
+node-source-map-support 0.5.13: https://github.com/evanw/node-source-map-support : MIT License
+nodeca-argparse 1.0.10: https://github.com/nodeca/argparse : MIT License
+nodeca-argparse 2.0.1: https://github.com/nodeca/argparse : Python Software Foundation License 2.0
+nodejs-exit 0.1.2: https://github.com/cowboy/node-exit : MIT License
+nodejs-walker 1.0.8: http://github.com/nshah/nodejs-walker : Apache License 2.0
+normalize-package-data 2.5.0: https://github.com/npm/normalize-package-data : BSD 2-clause "Simplified" License
+normalize-path 3.0.0: https://github.com/jonschlinkert/normalize-path : MIT License
+normalize-range 0.1.2: https://github.com/jamestalmage/normalize-range#readme : MIT License
+npm-run-path 4.0.1: https://github.com/sindresorhus/npm-run-path : MIT License
+nwsapi 2.2.10: http://javascript.nwbox.com/nwsapi/ : MIT License
+object-assign 4.1.1: https://github.com/sindresorhus/object-assign : MIT License
+object-hash 3.0.0: https://github.com/puleos/object-hash : MIT License
+object-inspect 1.13.4: https://github.com/substack/object-inspect : MIT License
+object-keys 1.1.1: https://github.com/ljharb/object-keys : MIT License
+object.entries 1.1.9: https://github.com/es-shims/Object.entries#readme : MIT License
+object.fromentries 2.0.8: https://github.com/es-shims/Object.fromEntries#readme : MIT License
+object.groupby 1.0.3: https://github.com/es-shims/Object.groupBy#readme : MIT License
+object.values 1.2.1: https://github.com/es-shims/object.values : MIT License
+optionator 0.9.3: https://github.com/gkz/optionator : MIT License
+own-keys 1.0.1: https://github.com/ljharb/own-keys#readme : MIT License
+p-limit 2.3.0: https://github.com/sindresorhus/p-limit#readme : MIT License
+p-limit 3.1.0: https://github.com/sindresorhus/p-limit#readme : MIT License
+p-locate 4.1.0: https://github.com/sindresorhus/p-locate : MIT License
+p-locate v5.0.0: https://github.com/sindresorhus/p-locate : MIT License
+p-try 2.2.0: https://github.com/sindresorhus/p-try#readme : MIT License
+package-json-from-dist 1.0.1: https://github.com/isaacs/package-json-from-dist#readme : Blue Oak Model License 1.0.0
+parent-module 1.0.1: https://github.com/sindresorhus/parent-module : MIT License
+parse-json 2.2.0: https://github.com/sindresorhus/parse-json : MIT License
+parse-json v5.2.0: https://github.com/sindresorhus/parse-json : MIT License
+parse5 7.1.2: https://github.com/inikulin/parse5 : MIT License
+path-exists 4.0.0: https://github.com/sindresorhus/path-exists : MIT License
+path-is-absolute 1.0.1: https://github.com/sindresorhus/path-is-absolute : MIT License
+path-key 3.1.1: https://github.com/sindresorhus/path-key : MIT License
+path-parse 1.0.7: https://github.com/jbgutierrez/path-parse#readme : MIT License
+path-scurry 1.11.1: https://github.com/isaacs/path-walker#readme : Blue Oak Model License 1.0.0
+path-type 2.0.0: https://github.com/sindresorhus/path-type : MIT License
+path-type 4.0.0: https://github.com/sindresorhus/path-type : MIT License
+performance-now 2.1.0: https://github.com/meryn/performance-now : MIT License
+picocolors 1.1.1: https://github.com/alexeyraspopov/picocolors#readme : ISC License
+picomatch 2.3.1: https://github.com/micromatch/picomatch : MIT License
+pify 2.3.0: https://github.com/sindresorhus/pify : MIT License
+pirates 4.0.6: https://github.com/ariporad/pirates#readme : MIT License
+pkg-dir 4.2.0: https://github.com/sindresorhus/pkg-dir : MIT License
+possible-typed-array-names 1.1.0: https://github.com/ljharb/possible-typed-array-names#readme : MIT License
+PostCSS 8.4.31: http://postcss.org/ : MIT License
+PostCSS 8.5.3: http://postcss.org/ : MIT License
+postcss-import 15.1.0: https://github.com/postcss/postcss-import : MIT License
+postcss-js 4.0.1: https://github.com/postcss/postcss-js#readme : MIT License
+postcss-load-config 4.0.2: https://github.com/michael-ciniawsky/postcss-load-config#readme : MIT License
+postcss-nested 6.2.0: https://github.com/postcss/postcss-nested : MIT License
+postcss-selector-parser 6.1.2: https://github.com/postcss/postcss-selector-parser : MIT License
+postcss-value-parser 4.2.0: https://github.com/TrySound/postcss-value-parser : MIT License
+prelude-ls 1.2.1: https://github.com/gkz/prelude-ls : MIT License
+prettier 3.5.3: https://github.com/jlongster/prettier#readme : MIT License
+pretty-format 27.5.1: https://www.npmjs.org/package/pretty-format : MIT License
+pretty-format 29.7.0: https://www.npmjs.org/package/pretty-format : MIT License
+prompts 2.4.2: https://github.com/terkelg/prompts : MIT License
+prop-types 15.8.1: https://github.com/facebook/prop-types : MIT License
+property-expr 2.0.6: https://github.com/jquense/expr#readme : MIT License
+psl 1.9.0: https://github.com/wrangr/psl : MIT License
+Punycode.js 2.3.1: http://mths.be/punycode : MIT License
+pure-rand 6.1.0: https://github.com/dubzzz/pure-rand#readme : MIT License
+Qix-/color-convert 2.0.1: https://github.com/Qix-/color-convert : MIT License
+querystringify 2.2.0: https://github.com/unshiftio/querystringify : MIT License
+queue-microtask 1.2.3: https://github.com/feross/queue-microtask : MIT License
+Raynos/for-each 0.3.5: https://github.com/Raynos/for-each : MIT License
+React from Facebook 18.3.1: https://react.dev : MIT License
+react-dom 18.3.1: https://github.com/EtienneLem/react-dom : MIT License
+react-fast-compare 2.0.4: https://github.com/FormidableLabs/react-fast-compare : MIT License
+react-is 16.13.1: https://reactjs.org/ : MIT License
+react-is 17.0.2: https://reactjs.org/ : MIT License
+react-is 18.3.1: https://reactjs.org/ : MIT License
+react-transition-group 4.4.5: https://github.com/reactjs/react-transition-group#readme : BSD 3-clause "New" or "Revised" License
+reactredux 9.0.4: https://react-redux.js.org : MIT License
+read-cache 1.0.0: https://github.com/TrySound/read-cache#readme : MIT License
+read-pkg 2.0.0: https://github.com/sindresorhus/read-pkg : MIT License
+readdirp 3.6.0: https://github.com/thlorenz/readdirp : MIT License
+redent 3.0.0: https://github.com/sindresorhus/redent : MIT License
+Redux JS 5.0.1: http://redux.js.org : MIT License
+redux-logger 3.0.6: https://github.com/fcomb/redux-logger : MIT License
+redux-thunk 3.1.0: https://github.com/gaearon/redux-thunk : MIT License
+reflect.getprototypeof 1.0.10: https://github.com/es-shims/Reflect.getPrototypeOf : MIT License
+regenerator-runtime 0.13.11: https://github.com/hackwaly/regenerator-runtime : MIT License
+regenerator-runtime 0.14.1: https://github.com/hackwaly/regenerator-runtime : MIT License
+regexp.prototype.flags 1.5.4: https://github.com/es-shims/regexp.prototype.flags : MIT License
+require-directory 2.1.1: https://github.com/troygoode/node-require-directory/ : MIT License
+requires-port 1.0.0: https://github.com/unshiftio/requries-port : MIT License
+reselect 5.1.0: https://github.com/faassen/reselect#readme : MIT License
+resolve-cwd 3.0.0: https://github.com/sindresorhus/resolve-cwd : MIT License
+resolve-from 4.0.0: https://github.com/sindresorhus/resolve-from : MIT License
+resolve-from 5.0.0: https://github.com/sindresorhus/resolve-from : MIT License
+resolve-pkg-maps 1.0.0: https://github.com/privatenumber/resolve-pkg-maps#readme : MIT License
+resolve.exports 2.0.2: https://github.com/lukeed/resolve.exports#readme : MIT License
+reusify 1.0.4: https://github.com/mcollina/reusify#readme : MIT License
+rgbcolor 1.0.1: https://github.com/yetzt/node-rgbcolor : MIT License
+rimraf 3.0.2: https://github.com/isaacs/rimraf : ISC License
+run-parallel 1.2.0: https://github.com/feross/run-parallel : MIT License
+safe-array-concat 1.1.3: https://github.com/ljharb/safe-array-concat#readme : MIT License
+safe-push-apply 1.0.0: https://github.com/ljharb/safe-push-apply#readme : MIT License
+safe-regex-test 1.1.0: https://github.com/ljharb/safe-regex-test#readme : MIT License
+safer-buffer 2.1.2: https://github.com/ChALkeR/safer-buffer#readme : MIT License
+saxes 6.0.0: https://github.com/lddubeau/saxes : MIT License
+scheduler 0.23.2: https://reactjs.org/ : MIT License
+set-function-length 1.2.2: https://github.com/ljharb/set-function-length#readme : MIT License
+set-function-name 2.0.2: https://github.com/jfsiii/set-function-name#readme : MIT License
+set-proto 1.0.0: https://github.com/ljharb/set-proto#readme : MIT License
+shebang-command 2.0.0: https://github.com/kevva/shebang-command#readme : MIT License
+shebang-regex 3.0.0: https://github.com/sindresorhus/shebang-regex : MIT License
+side-channel 1.1.0: https://github.com/ljharb/side-channel#readme : MIT License
+side-channel-list 1.0.0: https://github.com/ljharb/side-channel-list#readme : MIT License
+side-channel-map 1.0.1: https://github.com/ljharb/side-channel-map#readme : MIT License
+side-channel-weakmap 1.0.2: https://github.com/ljharb/side-channel-weakmap#readme : MIT License
+sindresorhus/globals 11.12.0: https://github.com/sindresorhus/globals : MIT License
+sindresorhus/globals 13.24.0: https://github.com/sindresorhus/globals : MIT License
+sindresorhus/globby 11.1.0: https://github.com/sindresorhus/globby : MIT License
+sindresorhus/onetime v5.1.2: https://github.com/sindresorhus/onetime : MIT License
+sindresorhus/slash v3.0.0: https://github.com/sindresorhus/slash : MIT License
+sindresorhus/supports-color 8.1.1: https://github.com/sindresorhus/supports-color : MIT License
+sindresorhus/supports-color v7.2.0: https://github.com/sindresorhus/supports-color : MIT License
+sisteransi 1.0.5: https://github.com/terkelg/sisteransi : MIT License
+source-map 0.5.7: https://github.com/mozilla/source-map : BSD 3-clause "New" or "Revised" License
+source-map 0.6.1: https://github.com/mozilla/source-map : BSD 3-clause "New" or "Revised" License
+source-map-js 1.2.1: https://github.com/7rulnik/source-map : BSD 3-clause "New" or "Revised" License
+spdx-correct.js 3.2.0: https://github.com/jslicense/spdx-correct.js : Apache License 2.0
+spdx-exceptions 2.5.0: https://github.com/kemitchell/spdx-exceptions.js#readme : Creative Commons Attribution 3.0
+spdx-expression-parse.js 3.0.1: https://github.com/jslicense/spdx-expression-parse.js : MIT License
+spdx-license-ids 3.0.20: https://github.com/shinnn/spdx-license-ids#readme : The Unlicense
+sprintf.js 1.0.3: https://github.com/alexei/sprintf.js : BSD 3-clause "New" or "Revised" License
+stable-stringify 1.0.1: https://github.com/samn/json-stable-stringify : MIT License
+stack-utils 2.0.6: https://github.com/jamestalmage/stack-utils#readme : MIT License
+stackblur-canvas 2.7.0: https://github.com/flozz/StackBlur#readme : MIT License
+streamsearch 1.1.0: https://github.com/mscdex/streamsearch : MIT License
+string-length 4.0.2: https://github.com/sindresorhus/string-length : MIT License
+string-width 4.2.3: https://github.com/sindresorhus/string-width : MIT License
+string-width 5.1.2: https://github.com/sindresorhus/string-width : MIT License
+string.prototype.includes 2.0.1: https://github.com/mathiasbynens/string.prototype.includes : MIT License
+string.prototype.matchall 4.0.12: https://github.com/ljharb/String.prototype.matchAll#readme : MIT License
+string.prototype.repeat v1.0.0: https://github.com/mathiasbynens/string.prototype.repeat : MIT License
+string.prototype.trim 1.2.10: https://github.com/es-shims/String.prototype.trim#readme : MIT License
+string.prototype.trimend 1.0.9: https://github.com/KhaledElAnsari/String.prototype.trimEnd#readme : MIT License
+string.prototype.trimstart 1.0.8: https://github.com/KhaledElAnsari/String.prototype.trimStart#readme : MIT License
+Strip ANSI 6.0.1: https://github.com/sindresorhus/strip-ansi : MIT License
+Strip ANSI 7.1.0: https://github.com/sindresorhus/strip-ansi : MIT License
+strip-bom 3.0.0: https://github.com/sindresorhus/strip-bom : MIT License
+strip-bom 4.0.0: https://github.com/sindresorhus/strip-bom : MIT License
+strip-final-newline 2.0.0: https://github.com/sindresorhus/strip-final-newline#readme : MIT License
+strip-indent v3.0.0: https://github.com/sindresorhus/strip-indent : MIT License
+strip-json-comments 3.1.1: https://github.com/sindresorhus/strip-json-comments : MIT License
+styled-jsx 5.1.1: https://github.com/zeit/styled-jsx : MIT License
+stylis 4.2.0: https://github.com/thysultan/stylis.js : MIT License
+sucrase 3.35.0: https://github.com/decaffeinate/bulk-decaffeinate#readme : MIT License
+supports-preserve-symlinks-flag 1.0.0: https://github.com/inspect-js/node-supports-preserve-symlinks-flag#readme : MIT License
+svg-pathdata 6.0.3: https://github.com/nfroidure/SVGPathData : MIT License
+symbol-tree 3.2.4: https://github.com/Joris-van-der-Wel/js-symbol-tree#readme : MIT License
+tailwind-merge 2.6.0: https://github.com/dcastil/tailwind-merge : MIT License
+tailwindcss 3.4.17: https://github.com/tailwindcss/tailwindcss#readme : MIT License
+tapable 2.2.1: https://github.com/webpack/tapable : MIT License
+tapjs/signal-exit 3.0.7: https://github.com/tapjs/signal-exit : ISC License
+tapjs/signal-exit 4.1.0: https://github.com/tapjs/signal-exit : ISC License
+test-exclude 6.0.0: https://github.com/bcoe/test-exclude#readme : ISC License
+text-segmentation 1.0.3: https://github.com/niklasvh/text-segmentation : MIT License
+text-table 0.2.0: https://github.com/substack/text-table : MIT License
+thenify 3.3.1: https://github.com/thenables/thenify : MIT License
+thenify-all 1.6.0: https://github.com/thenables/thenify-all : MIT License
+tiny-case 1.0.3: https://github.com/jquense/tiny-case#readme : MIT License
+tiny-warning 1.0.3: https://github.com/alexreardon/tiny-warning#readme : MIT License
+tmpl 1.0.5: https://www.npmjs.com/package/tmpl : BSD 3-clause "New" or "Revised" License
+to-regex-range 5.0.1: https://github.com/jonschlinkert/to-regex-range : MIT License
+toposort 2.0.2: https://gitlab.com/ericvsmith/toposort/-/tree/1.10?ref_type=tags : MIT License
+tough-cookie 4.1.4: https://github.com/salesforce/tough-cookie : BSD 3-clause "New" or "Revised" License
+tr46 0.0.3: https://github.com/Sebmaster/tr46.js#readme : MIT License
+tr46 3.0.0: https://github.com/Sebmaster/tr46.js#readme : MIT License
+ts-interface-checker 0.1.13: https://github.com/gristlabs/ts-interface-checker#readme : Apache License 2.0
+ts-node 10.9.2: https://github.com/blakeembrey/ts-node : MIT License
+tsconfig-paths 3.15.0: https://github.com/jonaskello/tsconfig-paths : MIT License
+tsutils 3.21.0: https://github.com/ajafff/tsutils#readme : MIT License
+type-check 0.4.0: https://github.com/gkz/type-check : MIT License
+type-detect 4.0.8: https://github.com/chaijs/type-detect : MIT License
+type-fest 0.20.2: https://github.com/sindresorhus/type-fest#readme : (MIT License OR Creative Commons Zero v1.0 Universal)
+type-fest 0.21.3: https://github.com/sindresorhus/type-fest#readme : (MIT License OR Creative Commons Zero v1.0 Universal)
+type-fest 2.19.0: https://github.com/sindresorhus/type-fest#readme : (MIT License OR Creative Commons Zero v1.0 Universal)
+typed-array-buffer 1.0.3: https://github.com/ljharb/typed-array-buffer#readme : MIT License
+typed-array-byte-length 1.0.3: https://github.com/inspect-js/typed-array-byte-length#readme : MIT License
+typed-array-byte-offset 1.0.4: https://github.com/inspect-js/typed-array-byte-offset#readme : MIT License
+typed-array-length 1.0.7: https://github.com/inspect-js/typed-array-length#readme : MIT License
+TypeScript 5.8.3: http://www.typescriptlang.org/ : Apache License 2.0
+unbox-primitive 1.1.0: https://github.com/ljharb/unbox-primitive#readme : MIT License
+undici-types 6.19.8: https://undici.nodejs.org : MIT License
+universalify 0.2.0: https://github.com/RyanZim/universalify#readme : MIT License
+update-browserslist-db 1.1.3: https://github.com/browserslist/update-db#readme : MIT License
+uri-js 4.4.1: https://github.com/garycourt/uri-js : BSD 2-clause "Simplified" License
+url-parse 1.5.10: http://unshift.io : MIT License
+use-isomorphic-layout-effect 1.1.2: https://github.com/Andarist/use-isomorphic-layout-effect#readme : MIT License
+use-sync-external-store 1.2.0: https://github.com/facebook/react#readme : MIT License
+util-deprecate 1.0.2: https://github.com/TooTallNate/util-deprecate : MIT License
+utrie 1.0.2: https://github.com/niklasvh/utrie : MIT License
+v8-compile-cache-lib 3.0.1: https://github.com/cspotcode/v8-compile-cache-lib#readme : MIT License
+v8-to-istanbul 9.2.0: https://github.com/bcoe/v8-to-istanbul#readme : ISC License
+validate-npm-package-license 3.0.4: https://www.npmjs.com/package/validate-npm-package-license : Apache License 2.0
+w3c-xmlserializer 4.0.0: https://github.com/jsdom/w3c-xmlserializer#readme : MIT License
+watchman 2.0.2: https://github.com/facebook/watchman : Apache License 2.0
+watchman 2.1.1: https://github.com/facebook/watchman : Apache License 2.0
+webidl-conversions 3.0.1: https://github.com/domenic/webidl-conversions : BSD 2-clause "Simplified" License
+webidl-conversions 7.0.0: https://github.com/domenic/webidl-conversions : BSD 2-clause "Simplified" License
+webreflection/html-escaper 2.0.2: https://github.com/WebReflection/html-escaper : MIT License
+whatwg-encoding 2.0.0: https://github.com/jsdom/whatwg-encoding#readme : MIT License
+whatwg-mimetype 3.0.0: https://github.com/jsdom/whatwg-mimetype : MIT License
+whatwg-url 11.0.0: https://github.com/jsdom/whatwg-url : MIT License
+whatwg-url 5.0.0: https://github.com/jsdom/whatwg-url : MIT License
+which 2.0.2: https://github.com/isaacs/node-which : ISC License
+which-boxed-primitive 1.1.1: https://github.com/ljharb/which-boxed-primitive#readme : MIT License
+which-builtin-type 1.2.1: https://github.com/es-shims/which-builtin-type#readme : MIT License
+which-collection 1.0.2: https://github.com/inspect-js/which-collection#readme : MIT License
+which-typed-array 1.1.19: https://github.com/ljharb/which-typed-array#readme : MIT License
+wrap-ansi 8.1.0: https://github.com/chalk/wrap-ansi : MIT License
+wrap-ansi v7.0.0: https://github.com/chalk/wrap-ansi : MIT License
+wrappy 1.0.2: https://github.com/npm/wrappy : ISC License
+write-file-atomic 4.0.2: https://github.com/npm/write-file-atomic : ISC License
+xml-name-validator 4.0.0: https://github.com/jsdom/xml-name-validator : Apache License 2.0
+xmlbuilder-js v15.0.0: http://github.com/oozcitak/xmlbuilder-js : MIT License
+xmlchars 2.2.0: https://github.com/lddubeau/xmlchars#readme : MIT License
+y18n 5.0.8: https://github.com/yargs/y18n : ISC License
+yallist 3.1.1: https://github.com/isaacs/yallist#readme : ISC License
+yallist 4.0.0: https://github.com/isaacs/yallist#readme : ISC License
+yaml 1.10.2: https://github.com/tj/js-yaml : ISC License
+yaml 2.3.4: https://github.com/tj/js-yaml : ISC License
+yannickcr/eslint-plugin-react 7.37.5: https://github.com/yannickcr/eslint-plugin-react : MIT License
+yargs 17.7.2: https://github.com/yargs/yargs : MIT License
+yargs-parser 21.1.1: https://github.com/yargs/yargs-parser : ISC License
+yn v3.1.1: https://github.com/sindresorhus/yn : MIT License
+yocto-queue 0.1.0: https://github.com/sindresorhus/yocto-queue#readme : MIT License
+yup 1.4.0: https://github.com/theporchrat/yup : MIT License
+zod 3.24.3: https://github.com/vriad/zod#readme : MIT License
+
 Licenses: 
 
 Apache License 2.0
-(@ampproject/remapping 2.3.0, @humanwhocodes/config-array 0.11.13, @humanwhocodes/module-importer 1.0.1, @swc/counter 0.1.3, @swc/helpers 0.5.5, ademilter/zelzele 20240131-snapshot-d8e0b336, aria-query 5.3.0, atob 2.1.2, axobject-query 3.2.1, btoa 1.2.1, didyoumean.js 1.2.2, doctrine v2.1.0, doctrine v3.0.0, DOMPurify 2.5.6, eslint-visitor-keys 3.4.3, formik 2.4.5, human-signals 2.1.0, nodejs-walker 1.0.8, spdx-correct.js 3.2.0, ts-interface-checker 0.1.13, TypeScript 5.3.3, validate-npm-package-license 3.0.4, watchman 2.0.2, watchman 2.1.1, xml-name-validator 4.0.0)
+(@ampproject/remapping 2.3.0, @humanwhocodes/config-array 0.13.0, @humanwhocodes/module-importer 1.0.1, @swc/counter 0.1.3, @swc/helpers 0.5.5, ademilter/zelzele 20240131-snapshot-d8e0b336, aria-query 5.3.0, aria-query 5.3.2, atob 2.1.2, axobject-query 4.1.0, btoa 1.2.1, didyoumean.js 1.2.2, doctrine v2.1.0, doctrine v3.0.0, DOMPurify 3.2.5, eslint-visitor-keys 3.4.3, formik 2.4.5, human-signals 2.1.0, nodejs-walker 1.0.8, spdx-correct.js 3.2.0, ts-interface-checker 0.1.13, TypeScript 5.8.3, validate-npm-package-license 3.0.4, watchman 2.0.2, watchman 2.1.1, xml-name-validator 4.0.0)
 
 Apache License
 Version 2.0, January 2004
@@ -913,46 +949,6 @@ third-party archives.
 ---
 
 BSD 2-clause "Simplified" License
-(esrecurse v4.3.0)
-
-Upstream-Contact: https://github.com/estools/esrecurse/issues
-Source: https://github.com/estools/esrecurse
-
-Files: *
-Copyright: 2014 Yusuke Suzuki
-License: BSD-2-Clause
-
-Files: debian/*
-Copyright: 2017 Pirate Praveen <praveen@debian.org>
- 2020 Yadd <yadd@debian.org>
-License: BSD-2-Clause
-
-License: BSD-2-Clause
-
-Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
- 1. Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
- .
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE HOLDERS OR
- CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
-
----
-
-BSD 2-clause "Simplified" License
 (damerau-levenshtein 1.0.8)
 
 BSD 2-Clause License
@@ -980,33 +976,6 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
-
----
-
-BSD 2-clause "Simplified" License
-(Esprima 4.0.1)
-
-Copyright JS Foundation and other contributors, https://js.foundation/
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
-  * Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
 
 ---
 
@@ -1093,30 +1062,33 @@ Redistribution and use in source and binary forms, with or without
 BSD 2-clause "Simplified" License
 (normalize-package-data 2.5.0)
 
-License: BSD-2-clause
+Copyright (c) Meryn Stol ("Author")
+All rights reserved.
+
+The BSD License
 
 Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
- .
- 1. Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
- .
- 2. Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
- .
- THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
- ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS
- BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
- BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
- OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
- IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
+modification, are permitted provided that the following conditions
+are met:
+
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS
+BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
 
 ---
 
@@ -1178,7 +1150,83 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
 ---
 
 BSD 2-clause "Simplified" License
-(webidl-conversions 7.0.0)
+(Esprima 4.0.1)
+
+Files: *
+Copyright: 2011-2017 JS Foundation and other contributors
+License: BSD-2-Clause
+
+Files: debian/*
+Copyright: 2016-2017 Julien Puydt <jpuydt@debian.org>
+License: BSD-2-Clause
+
+License: BSD-2-clause
+
+Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE HOLDERS OR
+ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
+
+---
+
+BSD 2-clause "Simplified" License
+(esrecurse v4.3.0)
+
+Upstream-Contact: https://github.com/estools/esrecurse/issues
+Source: https://github.com/estools/esrecurse
+
+Files: *
+Copyright: 2014 Yusuke Suzuki
+License: BSD-2-Clause
+
+Files: debian/*
+Copyright: 2017 Pirate Praveen <praveen@debian.org>
+ 2020 Xavier Guimard <yadd@debian.org>
+License: BSD-2-Clause
+
+License: BSD-2-Clause
+
+Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE HOLDERS OR
+ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
+
+---
+
+BSD 2-clause "Simplified" License
+(webidl-conversions 3.0.1, webidl-conversions 7.0.0)
 
 # The BSD 2-Clause License
 
@@ -1330,7 +1378,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
 ---
 
 BSD 3-clause "New" or "Revised" License
-(@humanwhocodes/object-schema 2.0.1, @sinonjs/commons 3.0.1, @sinonjs/fake-timers 10.3.0, abab 2.0.6, esquery 1.5.0, hoist-non-react-statics v3.3.2, istanbul-lib-coverage 3.2.2, istanbul-lib-instrument 5.2.1, istanbul-lib-instrument 6.0.2, istanbul-lib-report 3.0.1, istanbul-reports 3.1.7, jsdiff 4.0.2, react-transition-group 4.4.5, source-map-js 1.0.2, tough-cookie 4.1.4)
+(@humanwhocodes/object-schema 2.0.3, @sinonjs/commons 3.0.1, @sinonjs/fake-timers 10.3.0, abab 2.0.6, esquery 1.5.0, hoist-non-react-statics v3.3.2, istanbul-lib-coverage 3.2.2, istanbul-lib-instrument 5.2.1, istanbul-lib-instrument 6.0.2, istanbul-lib-report 3.0.1, istanbul-reports 3.1.7, jsdiff 4.0.2, react-transition-group 4.4.5, source-map-js 1.2.1, tough-cookie 4.1.4)
 
 Copyright (c) <YEAR>, <OWNER>
 All rights reserved.
@@ -1411,6 +1459,76 @@ INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
 OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
 TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
 THIS SOFTWARE.
+
+---
+
+Blue Oak Model License 1.0.0
+(isaacs/jackspeak 3.4.3, package-json-from-dist 1.0.1, path-scurry 1.11.1)
+
+Blue Oak Model License
+======================
+
+Version 1.0.0
+
+
+Purpose
+-------
+
+This license gives everyone as much permission to work with this software as
+possible, while protecting contributors from liability.
+
+
+Acceptance
+----------
+
+In order to receive this license, you must agree to its rules. The rules of this
+license are both obligations under that agreement and conditions to your license.
+You must not do anything with this software that triggers a rule that you cannot
+or will not follow.
+
+
+Copyright
+---------
+
+Each contributor licenses you to do everything with this software that would
+otherwise infringe that contributor's copyright in it.
+
+
+Notices
+-------
+
+You must ensure that everyone who gets a copy of any part of this software from
+you, with or without changes, also gets the text of this license or a link to
+https://blueoakcouncil.org/license/1.0.0.
+
+
+Excuse
+------
+
+If anyone notifies you in writing that you have not complied with Notices, you
+can keep your license by taking all practical steps to comply within 30 days
+after the notice. If you do not do so, your license ends immediately.
+
+
+Patent
+------
+
+Each contributor licenses you to do everything with this software that would
+otherwise infringe any patent claims they can license or become able to license.
+
+
+Reliability
+-----------
+
+No contributor can revoke this license.
+
+
+No Liability
+------------
+
+As far as the law allows, this software comes as is, without any warranty or
+condition, and no contributor will be liable to anyone for any damages related to
+this software or this license, under any kind of legal claim.
 
 ---
 
@@ -1741,7 +1859,7 @@ POSSIBILITY OF SUCH DAMAGES.
 ---
 
 Creative Commons Attribution 4.0
-(caniuse-lite 1.0.30001621)
+(caniuse-lite 1.0.30001714)
 
 Creative Commons Attribution 4.0
 ================================
@@ -2073,7 +2191,7 @@ Creative Commons may be contacted at creativecommons.org.
 ---
 
 Creative Commons Zero v1.0 Universal
-(language-subtag-registry 0.3.22, type-fest 0.20.2, type-fest 0.21.3, type-fest 2.19.0)
+(language-subtag-registry 0.3.23, type-fest 0.20.2, type-fest 0.21.3, type-fest 2.19.0)
 
 Creative Commons CC0 1.0 Universal
 ==================================
@@ -2225,23 +2343,23 @@ case Affirmer hereby affirms that he or she will not
 ---
 
 ISC License
-(picocolors 1.0.0)
+(isaacs/once 1.4.0)
 
-ISC License
-
-Copyright (c) 2021 Alexey Raspopov, Kostiantyn Denysov, Anton Verinov
+License: ISC
+ The ISC License
+ .
 
 Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE
+ purpose with or without fee is hereby granted, provided that the above
+ copyright notice and this permission notice appear in all copies.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE
 
 ---
 
@@ -2298,10 +2416,17 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE
 ---
 
 ISC License
-(fs.realpath 1.0.0)
+(node-lru-cache 5.1.1)
+
+Upstream-Contact: https://github.com/isaacs/node-lru-cache/issues
+Source: https://github.com/isaacs/node-lru-cache
+
+Files: *
+Copyright: 2009, 2010, 2011 Isaac Z. Schlueter and Contributors
+License: ISC
 
 Files: debian/*
-Copyright: 2016 Sruthi Chandran <srud@disroot.org>
+Copyright: 2012, Jérémy Lal <kapouer@melix.org>
 License: ISC
 
 License: ISC
@@ -2315,8 +2440,8 @@ Permission to use, copy, modify, and/or distribute this software for any
  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE
+ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE
 
 ---
 
@@ -2333,17 +2458,38 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
 ---
 
 ISC License
-(yallist 4.0.0)
+(inherits v2.0.4)
 
-Upstream-Contact: https://github.com/isaacs/yallist/issues
-Source: https://github.com/isaacs/yallist
+The ISC License
+
+Copyright (c) Isaac Z. Schlueter
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE
+
+---
+
+ISC License
+(wrappy 1.0.2)
+
+Upstream-Contact: https://github.com/npm/wrappy/issues
+Source: https://github.com/npm/wrappy
 
 Files: *
-Copyright: 2016, Isaac Z. Schlueter <i@izs.me>
+Copyright: 2015 Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)
 License: ISC
 
 Files: debian/*
-Copyright: 2016, Pirate Praveen <praveen@debian.org>
+Copyright: 2015 Thorsten Alteholz <debian@alteholz.de>
 License: ISC
 
 License: ISC
@@ -2363,44 +2509,23 @@ Permission to use, copy, modify, and/or distribute this software for any
 ---
 
 ISC License
-(inherits v2.0.4)
+(inflight 1.0.6)
 
-Upstream-Contact: https://github.com/isaacs/inherits/issues
+The ISC License
 
-Files: *
-Copyright: 2012-2014 Isaac Z. Schlueter <i@izs.me>
-License: ISC
+Copyright (c) Isaac Z. Schlueter
 
 Permission to use, copy, modify, and/or distribute this software for any
- purpose with or without fee is hereby granted, provided that the above
- copyright notice and this permission notice appear in all copies.
- .
- THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
- REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
- FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
- INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
- LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
- OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
- PERFORMANCE OF THIS SOFTWARE
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
 
----
-
-ISC License
-(rimraf 3.0.2)
-
-License: ISC
-
-Permission to use, copy, modify, and/or distribute this software for any
- purpose with or without fee is hereby granted, provided that the above
- copyright notice and this permission notice appear in all copies.
- .
- THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
- IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE
 
 ---
 
@@ -2424,7 +2549,7 @@ THIS SOFTWARE
 ---
 
 ISC License
-(isaacs/once 1.4.0, isexe 2.0.0, minimatch 3.1.2, node-glob 7.1.7, node-glob v7.1.6, node-lru-cache 5.1.1, node-lru-cache 6.0.0, wrappy 1.0.2, yallist 3.1.1)
+(fs.realpath 1.0.0, isexe 2.0.0, minimatch 3.1.2, node-glob 7.1.7, node-lru-cache 6.0.0, rimraf 3.0.2, which 2.0.2, yallist 3.1.1, yallist 4.0.0)
 
 The ISC License
 
@@ -2445,37 +2570,7 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE
 ---
 
 ISC License
-(which 2.0.2)
-
-Upstream-Contact: https://github.com/isaacs/node-which/issues
-
-Files: *
-Copyright: Isaac Z. Schlueter and Contributors
-License: ISC
-
-Files: debian/*
-Copyright: 2012, Jérémy Lal <kapouer@melix.org>
- 2019, Xavier Guimard <yadd@debian.org>
-License: ISC
-
-License: ISC
-
-Permission to use, copy, modify, and/or distribute this software for any
- purpose with or without fee is hereby granted, provided that the above
- copyright notice and this permission notice appear in all copies.
- .
- THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
- IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE
-
----
-
-ISC License
-(@ungap/structured-clone 1.2.0, anymatch 3.1.3, cliui 8.0.1, electron-to-chromium 1.4.614, eslint-import-resolver-typescript 3.6.1, fastq 1.15.0, flatted 3.2.9, html2canvas 1.4.1, node-graceful-fs 4.2.11, node-semver 5.7.2, node-semver 6.3.1, node-semver 7.5.4, v8-to-istanbul 9.2.0, write-file-atomic 4.0.2, yaml 2.3.4, yargs-parser 21.1.1)
+(@isaacs/cliui 8.0.2, @ungap/structured-clone 1.2.0, anymatch 3.1.3, cliui 8.0.1, electron-to-chromium 1.5.137, eslint-import-resolver-typescript 3.6.1, fastq 1.15.0, flatted 3.2.9, foreground-child 3.3.1, html2canvas 1.4.1, minimatch 9.0.5, minipass 7.1.2, node-glob 10.4.5, node-graceful-fs 4.2.11, node-lru-cache 10.4.3, node-semver 5.7.2, node-semver 6.3.1, node-semver 7.5.4, picocolors 1.1.1, tapjs/signal-exit 4.1.0, v8-to-istanbul 9.2.0, write-file-atomic 4.0.2, yaml 2.3.4, yargs-parser 21.1.1)
 
 ISC License (ISCL)
 ==================
@@ -2534,36 +2629,6 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
 IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE
-
----
-
-ISC License
-(inflight 1.0.6)
-
-Upstream-Contact: https://github.com/isaacs/inflight/issues
-Source: https://github.com/isaacs/inflight
-
-Files: *
-Copyright: 2016 Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)
-License: ISC
-
-Files: debian/*
-Copyright: 2016 Pirate Praveen <praveen@debian.org>
-License: ISC
-
-License: ISC
-
-Permission to use, copy, modify, and/or distribute this software for any
- purpose with or without fee is hereby granted, provided that the above
- copyright notice and this permission notice appear in all copies.
- .
- THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE
 
 ---
 
@@ -2752,34 +2817,6 @@ OTHER DEALINGS IN THE SOFTWARE
 ---
 
 MIT License
-(spdx-expression-parse.js 3.0.1)
-
-The MIT License
-
-Copyright (c) 2015 Kyle E. Mitchell & other authors listed in AUTHORS
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
-
----
-
-MIT License
 (ARG 4.1.3)
 
 MIT License
@@ -2834,45 +2871,6 @@ THE SOFTWARE
 ---
 
 MIT License
-(strip-json-comments 3.1.1)
-
-Upstream-Contact: https://github.com/sindresorhus/strip-json-comments/issues
-Source: https://github.com/sindresorhus/strip-json-comments
-
-Files: *
-Copyright: Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
-License: Expat
-
-Files: debian/*
-Copyright: 2015-2018, Julien Puydt <jpuydt@debian.org>
- 2019, Xavier Guimard <yadd@debian.org>
-License: Expat
-
-License: Expat
-
-Permission is hereby granted, free of charge, to any person
- obtaining a copy of this software and associated documentation files
- (the "Software"), to deal in the Software without restriction,
- including without limitation the rights to use, copy, modify, merge,
- publish, distribute, sublicense, and/or sell copies of the Software,
- and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
- .
- The above copyright notice and this permission notice shall be
- included in all copies or substantial portions of the Software.
- .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE
-
----
-
-MIT License
 (performance-now 2.1.0)
 
 Copyright (c) 2013 Braveg1rl
@@ -2886,40 +2884,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ---
 
 MIT License
-(detect-newline v3.1.0)
+(whatwg-url 5.0.0)
 
-Upstream-Contact: https://github.com/sindresorhus/detect-newline/issues
-Source: https://github.com/sindresorhus/detect-newline#readme
+The MIT License (MIT)
 
-Files: *
-Copyright: 2016 Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
-License: Expat
+Copyright (c) 2015–2016 Sebastian Mayr
 
-Files: debian/*
-Copyright: 2016 Sruthi Chandran <srud@disroot.org>
-License: Expat
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-License: Expat
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-Permission is hereby granted, free of charge, to any person
- obtaining a copy of this software and associated documentation files
- (the "Software"), to deal in the Software without restriction,
- including without limitation the rights to use, copy, modify, merge,
- publish, distribute, sublicense, and/or sell copies of the Software,
- and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
- .
- The above copyright notice and this permission notice shall be
- included in all copies or substantial portions of the Software.
- .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE
 
 ---
 
@@ -2937,7 +2924,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ---
 
 MIT License
-(combined-stream 1.0.8)
+(combined-stream 1.0.8, delayed-stream 1.0.0)
 
 Copyright (c) 2011 Debuggable Limited <felix@debuggable.com>
 
@@ -2988,38 +2975,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 ---
 
 MIT License
-(Chalk 2.4.2)
-
-2016, Mathias Behrle <mbehrle@debian.org>
-           2017, Paolo Greppi <paolo.greppi@libpf.com>
-License: Expat
-
-License: Expat
-
-Permission is hereby granted, free of charge, to any person
- obtaining a copy of this software and associated documentation files
- (the "Software"), to deal in the Software without restriction,
- including without limitation the rights to use, copy, modify, merge,
- publish, distribute, sublicense, and/or sell copies of the Software,
- and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
- .
- The above copyright notice and this permission notice shall be
- included in all copies or substantial portions of the Software.
- .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE
-
----
-
-MIT License
-(balanced-match 1.0.2)
+(balanced-match 1.0.2, brace-expansion 1.1.11)
 
 Copyright (c) 2013 Julian Gruber &lt;julian@juliangruber.com&gt;
 
@@ -3098,33 +3054,6 @@ OTHER DEALINGS IN THE SOFTWARE
 ---
 
 MIT License
-(is-bigint 1.0.4)
-
-MIT License
-
-Copyright (c) 2018 Jordan Harband
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
-
----
-
-MIT License
 (picomatch 2.3.1)
 
 The MIT License (MIT)
@@ -3148,88 +3077,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
-
----
-
-MIT License
-(pkg-dir 4.2.0)
-
-Upstream-Contact: https://github.com/sindresorhus/pkg-dir/issues
-Source: https://github.com/sindresorhus/pkg-dir
-
-Files: *
-Copyright: Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
-License: Expat
-
-Files: debian/*
-Copyright: 2016, Pirate Praveen <praveen@debian.org>
- 2019, Xavier Guimard <yadd@debian.org>
-License: Expat
-
-Files: debian/tests/test_modules/*
-Copyright: Sindre Sorhus <sindresorhus@gmail.com>
-License: Expat
-
-License: Expat
-
-Permission is hereby granted, free of charge, to any person
- obtaining a copy of this software and associated documentation files
- (the "Software"), to deal in the Software without restriction,
- including without limitation the rights to use, copy, modify, merge,
- publish, distribute, sublicense, and/or sell copies of the Software,
- and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
- .
- The above copyright notice and this permission notice shall be
- included in all copies or substantial portions of the Software.
- .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE
-
----
-
-MIT License
-(sindresorhus/globals 11.12.0)
-
-Upstream-Contact: https://github.com/sindresorhus/globals/issues
-Source: https://github.com/sindresorhus/globals
-
-Files: *
-Copyright: Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
-License: Expat
-
-Files: debian/*
-Copyright: 2016 Pirate Praveen <praveen@debian.org>,
-           2019, Utkarsh Gupta <guptautkarsh2102@gmail.com>
-License: Expat
-
-License: Expat
-
-Permission is hereby granted, free of charge, to any person
- obtaining a copy of this software and associated documentation files
- (the "Software"), to deal in the Software without restriction,
- including without limitation the rights to use, copy, modify, merge,
- publish, distribute, sublicense, and/or sell copies of the Software,
- and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
- .
- The above copyright notice and this permission notice shall be
- included in all copies or substantial portions of the Software.
- .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE
 
 ---
 
@@ -3259,7 +3106,45 @@ THE SOFTWARE
 ---
 
 MIT License
-(color-name 1.1.3, color-name 1.1.4)
+(ansi-regex 5.0.1)
+
+Upstream-Contact: https://github.com/sindresorhus/ansi-regex/issues
+Source: https://github.com/sindresorhus/ansi-regex
+
+Files: *
+Copyright: 2016 Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+License: Expat
+
+Files: debian/*
+Copyright: 2016 Thorsten Alteholz <debian@alteholz.de>
+License: Expat
+
+License: Expat
+
+Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation files
+ (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge,
+ publish, distribute, sublicense, and/or sell copies of the Software,
+ and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE
+
+---
+
+MIT License
+(color-name 1.1.4)
 
 The MIT License (MIT)
 
@@ -3317,7 +3202,7 @@ Permission is hereby granted, free of charge, to any person
 ---
 
 MIT License
-(levn 0.4.1, prelude-ls 1.2.1, type-check 0.4.0)
+(levn 0.4.1, prelude-ls 1.2.1)
 
 Copyright (c) George Zahariev
 
@@ -3341,44 +3226,6 @@ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE
-
----
-
-MIT License
-(path-type 2.0.0)
-
-Upstream-Contact: https://github.com/sindresorhus/path-type/issues
-Source: https://github.com/sindresorhus/path-type#readme
-
-Files: *
-Copyright: 2016 Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
-License: Expat
-
-Files: debian/*
-Copyright: 2016 Pirate Praveen <praveen@debian.org>
-License: Expat
-
-License: Expat
-
-Permission is hereby granted, free of charge, to any person
- obtaining a copy of this software and associated documentation files
- (the "Software"), to deal in the Software without restriction,
- including without limitation the rights to use, copy, modify, merge,
- publish, distribute, sublicense, and/or sell copies of the Software,
- and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
- .
- The above copyright notice and this permission notice shall be
- included in all copies or substantial portions of the Software.
- .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE
 
 ---
 
@@ -3435,7 +3282,7 @@ OTHER DEALINGS IN THE SOFTWARE
 ---
 
 MIT License
-(brace-expansion 1.1.11)
+(isarray 2.0.5)
 
 MIT License
 
@@ -3543,47 +3390,7 @@ SOFTWARE
 ---
 
 MIT License
-(locate-path v6.0.0, loose-envify 1.4.0)
-
-License: Expat
-
-Permission is hereby granted, free of charge, to any person
- obtaining a copy of this software and associated documentation files
- (the "Software"), to deal in the Software without restriction,
- including without limitation the rights to use, copy, modify, merge,
- publish, distribute, sublicense, and/or sell copies of the Software,
- and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
- .
- The above copyright notice and this permission notice shall be
- included in all copies or substantial portions of the Software.
- .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE
-
----
-
-MIT License
-(agent-base 6.0.2)
-
-Upstream-Contact: https://github.com/TooTallNate/node-agent-base/issues
-Source: https://github.com/TooTallNate/node-agent-base
- https://registry.npmjs.org/async-listen
-
-Files: *
-Copyright: 2018, Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)
-License: Expat
-
-Files: debian/*
-Copyright: 2018, Per Andersson <avtobiff@debian.org>
- 2020, Andrius Merkys <merkys@debian.org>
-License: Expat
+(locate-path v5.0.0, locate-path v6.0.0)
 
 License: Expat
 
@@ -3637,7 +3444,7 @@ SOFTWARE
 ---
 
 MIT License
-(Qix-/color-convert 1.9.3, Qix-/color-convert 2.0.1)
+(Qix-/color-convert 2.0.1)
 
 Copyright (c) 2011-2016 Heather Arthur <fayearthur@gmail.com>
 
@@ -3663,61 +3470,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 ---
 
 MIT License
-(chokidar 3.5.3)
-
-The MIT License (MIT)
-
-Copyright (c) 2012-2019 Paul Miller (https://paulmillr.com), Elan Shanker
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the “Software”), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE
-
----
-
-MIT License
-(has-symbols 1.0.3)
-
-MIT License
-
-Copyright (c) 2016 Jordan Harband
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
-
----
-
-MIT License
-(querystringify 2.2.0, requires-port 1.0.0, url-parse 1.5.10)
+(requires-port 1.0.0, url-parse 1.5.10)
 
 The MIT License (MIT)
 
@@ -3740,35 +3493,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE
-
----
-
-MIT License
-(imurmurhash 0.1.4, jshttp/mime-types 2.1.35)
-
-MIT License
-
-    Copyright (c) Microsoft Corporation.
-
-   
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE
 
 ---
 
@@ -3802,29 +3526,80 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 ---
 
 MIT License
-(Raynos/for-each 0.3.3)
+(brace-expansion 2.0.1)
 
-The MIT License (MIT)
+Upstream-Contact: Julian Gruber <mail@juliangruber.com>
+Source: https://github.com/juliangruber/brace-expansion
 
-Copyright (c) 2012 Raynos.
+Files: *
+Copyright: 2013, Julian Gruber <mail@juliangruber.com>
+License: Expat
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Files: debian/*
+Copyright: 2015, Bas Couwenberg <sebastic@debian.org>
+ 2020, Yadd <yadd@debian.org>
+License: Expat
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+License: Expat
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
+Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation files
+ (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge,
+ publish, distribute, sublicense, and/or sell copies of the Software,
+ and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE
+
+---
+
+MIT License
+(path-type 4.0.0)
+
+Upstream-Contact: https://github.com/sindresorhus/path-type/issues
+Source: https://github.com/sindresorhus/path-type#readme
+
+Files: *
+Copyright: Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+License: Expat
+
+Files: debian/*
+Copyright: 2016, Pirate Praveen <praveen@debian.org>
+ 2019, Yadd <yadd@debian.org>
+License: Expat
+
+License: Expat
+
+Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation files
+ (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge,
+ publish, distribute, sublicense, and/or sell copies of the Software,
+ and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE
 
 ---
 
@@ -3971,41 +3746,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
-
----
-
-MIT License
-(camelcase 5.3.1)
-
-Source: https://github.com/sindresorhus/camelcase
-
-Files: *
-Copyright: 2016, Sindre Sorhus <sindresorhus@gmail.com>
-License: Expat
-
-Files: debian/*
-Copyright: 2016, Jonathan Ulrich Horn <debian@autoit4you.de>
-License: Expat
-
-License: Expat
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- .
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE
 
 ---
 
@@ -4277,6 +4017,33 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 ---
 
 MIT License
+(ajv 6.12.6)
+
+The MIT License (MIT)
+
+Copyright (c) 2015-2017 Evgeny Poberezkin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE
+
+---
+
+MIT License
 (whatwg-url 11.0.0)
 
 The MIT License (MIT)
@@ -4386,38 +4153,54 @@ THE SOFTWARE
 ---
 
 MIT License
+(p-locate v5.0.0)
+
+Upstream-Contact: https://github.com/sindresorhus/p-locate/issues
+Source: https://github.com/sindresorhus/p-locate#readme
+
+Files: *
+Copyright: Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+License: Expat
+
+Files: debian/*
+Copyright: 2017 Pirate Praveen <praveen@debian.org>
+ 2020 Xavier Guimard <yadd@debian.org>
+License: Expat
+
+Files: debian/tests/test_modules/*
+Copyright: Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+License: Expat
+
+License: Expat
+
+Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation files
+ (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge,
+ publish, distribute, sublicense, and/or sell copies of the Software,
+ and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE
+
+---
+
+MIT License
 (dom-helpers 5.2.1)
 
 The MIT License (MIT)
 
 Copyright (c) 2015 Jason Quense
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
-
----
-
-MIT License
-(side-channel 1.0.4, which-boxed-primitive 1.0.2)
-
-MIT License
-
-Copyright (c) 2019 Jordan Harband
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -4491,7 +4274,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ---
 
 MIT License
-(css.escape 1.5.1, cssesc 3.0.0, emoji-regex 9.2.2, emoji-regex v8.0.0, is-potential-custom-element-name 1.0.1, jsesc v2.5.2)
+(readdirp 3.6.0)
+
+MIT License
+
+Copyright (c) 2012-2019 Thorsten Lorenz, Paul Miller (https://paulmillr.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE
+
+---
+
+MIT License
+(css.escape 1.5.1, cssesc 3.0.0, emoji-regex 9.2.2, emoji-regex v8.0.0, is-potential-custom-element-name 1.0.1, string.prototype.repeat v1.0.0)
 
 Copyright Mathias Bynens <https://mathiasbynens.be/>
 
@@ -4653,6 +4463,44 @@ SOFTWARE
 ---
 
 MIT License
+(asynckit 0.4.0)
+
+Upstream-Contact: https://github.com/alexindigo/asynckit/issues
+Source: https://github.com/alexindigo/asynckit#readme
+
+Files: *
+Copyright: 2016 Alex Indigo <iam@alexindigo.com>
+License: Expat
+
+Files: debian/*
+Copyright: 2016 Aditya Neralkar <adityaneralkar@gmail.com>
+License: Expat
+
+License: Expat
+
+Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation files
+ (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge,
+ publish, distribute, sublicense, and/or sell copies of the Software,
+ and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE
+
+---
+
+MIT License
 (to-regex-range 5.0.1)
 
 The MIT License (MIT)
@@ -4680,29 +4528,36 @@ THE SOFTWARE
 ---
 
 MIT License
-(canvg 3.0.10)
+(querystringify 2.2.0)
 
-The MIT License (MIT)
+License: Expat
 
-Copyright (c) 2010 - present Gabe Lerner (gabelerner@gmail.com) - https://github.com/canvg/canvg
+Files: debian/*
+Copyright: 2015 Thorsten Alteholz <debian@alteholz.de>
+ 2020 Xavier Guimard <yadd@debian.org>
+License: Expat
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+License: Expat
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
+Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation files
+ (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge,
+ publish, distribute, sublicense, and/or sell copies of the Software,
+ and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE
 
 ---
 
@@ -4732,6 +4587,21 @@ THE SOFTWARE
 ---
 
 MIT License
+(co 4.6.0)
+
+The MIT License (MIT)
+
+Copyright © 2014-2016 Takuto Wada
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
+
+---
+
+MIT License
 (node-dateformat 3.0.2)
 
 (c) 2007-2009 Steven Levithan <stevenlevithan.com>
@@ -4754,6 +4624,45 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
+
+---
+
+MIT License
+(spdx-expression-parse.js 3.0.1)
+
+Upstream-Contact: https://github.com/kemitchell/spdx-expression-parse.js/issues
+Source: https://github.com/kemitchell/spdx-expression-parse.js#readme
+
+Files: *
+Copyright: 2016 Kyle E. Mitchell <kyle@kemitchell.com> (http://kemitchell.com)
+License: Expat and CC-BY-3.0
+
+Files: debian/*
+Copyright: 2016 Pirate Praveen <praveen@debian.org>
+ 2020 Xavier Guimard <yadd@debian.org>
+License: Expat and CC-BY-3.0
+
+License: Expat
+
+Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation files
+ (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge,
+ publish, distribute, sublicense, and/or sell copies of the Software,
+ and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE
 
 ---
 
@@ -4796,33 +4705,6 @@ Permission is hereby granted, free of charge, to any person
 ---
 
 MIT License
-(fflate 0.4.8)
-
-MIT License
-
-Copyright (c) 2020 Arjun Barrett
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
-
----
-
-MIT License
 (babel-preset-current-node-syntax 1.0.1)
 
 MIT License
@@ -4851,7 +4733,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 ---
 
 MIT License
-(eslint-plugin-import 2.8.0)
+(eslint-plugin-import 2.12.0)
 
 The MIT License (MIT)
 
@@ -4874,71 +4756,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE
-
----
-
-MIT License
-(sindresorhus/slash v3.0.0)
-
-Upstream-Contact: https://github.com/sindresorhus/slash/issues
-Source: https://github.com/sindresorhus/slash
-
-Files: *
-Copyright: Sindre Sorhus <sindresorhus@gmail.com>
-License: Expat
-
-Files: debian/*
-Copyright: 2016, Pirate Praveen <praveen@debian.org>
- 2020, Xavier Guimard <yadd@debian.org>
-License: Expat
-
-License: Expat
-
-Permission is hereby granted, free of charge, to any person
- obtaining a copy of this software and associated documentation files
- (the "Software"), to deal in the Software without restriction,
- including without limitation the rights to use, copy, modify, merge,
- publish, distribute, sublicense, and/or sell copies of the Software,
- and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
- .
- The above copyright notice and this permission notice shall be
- included in all copies or substantial portions of the Software.
- .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE
-
----
-
-MIT License
-(is-generator-function 1.0.10, is-negative-zero 2.0.2, is-regex 1.1.4)
-
-The MIT License (MIT)
-
-Copyright (c) 2014 Jordan Harband
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 
 ---
 
@@ -5026,18 +4843,16 @@ SOFTWARE
 ---
 
 MIT License
-(es-to-primitive 1.2.1, is-boolean-object 1.1.2, is-date-object 1.0.5, is-string 1.0.7, is-symbol 1.0.4)
+(es6-promise v4.2.8)
 
-The MIT License (MIT)
+Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors
 
-Copyright (c) 2015 Jordan Harband
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
@@ -5114,34 +4929,6 @@ LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE A
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
-
----
-
-MIT License
-(jsPDF 2.5.1)
-
-Copyright
-(c) 2010-2021 James Hall, https://github.com/MrRio/jsPDF
-(c) 2015-2021 yWorks GmbH, https://www.yworks.com/
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 
 ---
 
@@ -5349,29 +5136,40 @@ SOFTWARE
 ---
 
 MIT License
-(is-map 2.0.2, is-set 2.0.2, is-weakmap 2.0.1, is-weakset 2.0.2, which-collection 1.0.1)
+(Strip ANSI 6.0.1)
 
-MIT License
+Upstream-Contact: https://github.com/chalk/strip-ansi/issues
+Source: https://github.com/chalk/strip-ansi
 
-Copyright (c) 2019 Inspect JS
+Files: *
+Copyright: Sindre Sorhus <sindresorhus@gmail.com>
+License: Expat
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Files: debian/*
+Copyright: 2016, Thorsten Alteholz <debian@alteholz.de>
+License: Expat
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+License: Expat
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
+Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation files
+ (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge,
+ publish, distribute, sublicense, and/or sell copies of the Software,
+ and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE
 
 ---
 
@@ -5426,36 +5224,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE
-
----
-
-MIT License
-(fast-levenshtein 2.0.6)
-
-(MIT License)
-
-Copyright (c) 2013 [Ramesh Nair](http://www.hiddentao.com/)
-
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE
 
 ---
 
@@ -5544,49 +5312,6 @@ Permission is hereby granted, free of charge, to any person obtaining
 ---
 
 MIT License
-(co 4.6.0)
-
-(The MIT License)
-
-Copyright (c) 2014 TJ Holowaychuk &lt;tj@vision-media.ca&gt;
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
-
----
-
-MIT License
-(escalade 3.1.1)
-
-MIT License
-
-Copyright (c) Luke Edwards <luke.edwards05@gmail.com> (lukeed.com)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
-
----
-
-MIT License
 (read-cache 1.0.0)
 
 The MIT License (MIT)
@@ -5613,29 +5338,38 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 ---
 
 MIT License
-(get-symbol-description 1.0.0, has-tostringtag 1.0.0)
+(fast-levenshtein 2.0.6)
 
-MIT License
+Files: *
+Copyright: 2013 Ramesh Nair <ram@hiddentao.com> (http://www.hiddentao.com/)
+License: Expat
 
-Copyright (c) 2021 Inspect JS
+Files: debian/*
+Copyright: 2016 Pirate Praveen <praveen@debian.org>
+ 2020 Xavier Guimard <yadd@debian.org>
+License: Expat
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+License: Expat
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
+Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation files
+ (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge,
+ publish, distribute, sublicense, and/or sell copies of the Software,
+ and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE
 
 ---
 
@@ -5667,7 +5401,7 @@ SOFTWARE
 ---
 
 MIT License
-(binary-extensions v2.2.0, is-binary-path v2.1.0)
+(is-binary-path v2.1.0)
 
 MIT License
 
@@ -5707,7 +5441,7 @@ THE SOFTWARE
 ---
 
 MIT License
-(escape-string-regexp 1.0.5, load-json-file 2.0.0, object-assign 4.1.1, parse-json 2.2.0, path-is-absolute 1.0.1, pify 2.3.0, read-pkg 2.0.0, strip-bom 3.0.0)
+(load-json-file 2.0.0, object-assign 4.1.1, parse-json 2.2.0, path-is-absolute 1.0.1, path-type 2.0.0, pify 2.3.0, read-pkg 2.0.0, strip-bom 3.0.0)
 
 The MIT License (MIT)
 
@@ -5734,7 +5468,7 @@ THE SOFTWARE
 ---
 
 MIT License
-(@aashutoshrathi/word-wrap 1.2.6, @adobe/css-tools 4.3.3, @babel/code-frame 7.24.6, @babel/compat-data 7.24.6, @babel/core 7.24.6, @babel/generator 7.24.6, @babel/helper-compilation-targets 7.24.6, @babel/helper-environment-visitor 7.24.6, @babel/helper-function-name 7.24.6, @babel/helper-hoist-variables 7.24.6, @babel/helper-module-imports 7.24.6, @babel/helper-module-transforms 7.24.6, @babel/helper-plugin-utils 7.24.6, @babel/helper-simple-access 7.24.6, @babel/helper-split-export-declaration 7.24.6, @babel/helper-string-parser 7.24.6, @babel/helper-validator-identifier 7.24.6, @babel/helper-validator-option 7.24.6, @babel/helpers 7.24.6, @babel/highlight 7.24.6, @babel/parser 7.24.6, @babel/plugin-syntax-jsx 7.24.6, @babel/plugin-syntax-typescript 7.24.6, @babel/runtime 7.23.6, @babel/template 7.24.6, @babel/types 7.24.6, @cspotcode/source-map-support 0.8.1, @emotion/babel-plugin 11.11.0, @emotion/cache 11.11.0, @emotion/hash 0.9.1, @emotion/memoize 0.8.1, @emotion/react 11.11.3, @emotion/serialize 1.1.3, @emotion/sheet 1.2.2, @emotion/unitless 0.8.1, @emotion/use-insertion-effect-with-fallbacks 1.0.1, @emotion/utils 1.2.1, @emotion/weak-memoize 0.3.1, @eslint-community/eslint-utils 4.4.0, @eslint-community/regexpp 4.10.0, @eslint/eslintrc 2.1.4, @eslint/js 8.56.0, @faker-js/faker 8.4.1, @floating-ui/core 1.6.0, @floating-ui/dom 1.6.1, @floating-ui/utils 0.2.1, @jackfranklin/test-data-bot 2.1.0, @jest/console 29.7.0, @jest/core 29.7.0, @jest/environment 29.7.0, @jest/expect 29.7.0, @jest/expect-utils 29.7.0, @jest/fake-timers 29.7.0, @jest/globals 29.7.0, @jest/reporters 29.7.0, @jest/schemas 29.6.3, @jest/source-map 29.6.3, @jest/test-result 29.7.0, @jest/test-sequencer 29.7.0, @jest/transform 29.7.0, @jest/types 29.6.3, @jridgewell/gen-mapping 0.3.5, @jridgewell/resolve-uri 3.1.1, @jridgewell/set-array 1.2.1, @jridgewell/sourcemap-codec 1.4.15, @jridgewell/trace-mapping 0.3.25, @jridgewell/trace-mapping 0.3.9, @next/env 14.2.20, @next/eslint-plugin-next 14.0.4, @next/swc-darwin-arm64 14.2.20, @next/swc-darwin-x64 14.2.20, @next/swc-linux-arm64-gnu 14.2.20, @next/swc-linux-arm64-musl 14.2.20, @next/swc-linux-x64-gnu 14.2.20, @next/swc-linux-x64-musl 14.2.20, @next/swc-win32-arm64-msvc 14.2.20, @next/swc-win32-ia32-msvc 14.2.20, @reduxjs/toolkit 2.0.1, @rushstack/eslint-patch 1.6.1, @sinclair/typebox 0.27.8, @testing-library/dom 10.1.0, @testing-library/jest-dom 6.4.5, @testing-library/react 15.0.7, @testing-library/user-event 14.5.2, @tsconfig/node10 1.0.11, @tsconfig/node12 1.0.11, @tsconfig/node14 1.0.3, @tsconfig/node16 1.0.4, @types/aria-query 5.0.4, @types/babel__core 7.20.5, @types/babel__generator 7.6.8, @types/babel__template 7.4.4, @types/babel__traverse 7.20.6, @types/graceful-fs 4.1.9, @types/hoist-non-react-statics 3.3.5, @types/istanbul-lib-coverage 2.0.6, @types/istanbul-lib-report 3.0.3, @types/istanbul-reports 3.0.4, @types/jest 29.5.12, @types/jsdom 20.0.1, @types/json-schema 7.0.15, @types/json5 0.0.29, @types/node 20.10.5, @types/parse-json 4.0.2, @types/prop-types 15.7.11, @types/raf 3.4.3, @types/react 18.2.45, @types/react-dom 18.2.18, @types/react-transition-group 4.4.10, @types/redux-logger 3.0.12, @types/scheduler 0.16.8, @types/semver 7.5.6, @types/stack-utils 2.0.3, @types/tough-cookie 4.0.5, @types/use-sync-external-store 0.0.3, @types/yargs 17.0.32, @types/yargs-parser 21.0.3, @typescript-eslint/eslint-plugin 5.62.0, @typescript-eslint/scope-manager 5.62.0, @typescript-eslint/type-utils 5.62.0, @typescript-eslint/types 5.62.0, @typescript-eslint/utils 5.62.0, @typescript-eslint/visitor-keys 5.62.0, Acorn 8.11.2, acorn-globals 7.0.1, acorn-walk 8.3.2, ARG 5.0.2, array-buffer-byte-length 1.0.0, array-includes 3.1.7, array.prototype.findlastindex 1.2.3, array.prototype.flat 1.3.2, array.prototype.flatmap 1.3.2, array.prototype.tosorted 1.1.2, arraybuffer.prototype.slice 1.0.2, ast-types-flow 0.0.8, asynciterator.prototype 1.0.0, Autoprefixer 10.4.16, babel-traverse 7.24.6, braces 3.0.3, browserify/resolve 1.22.8, browserify/resolve 2.0.0-next.5, browserslist 4.22.2, btoa 1.2.1, busboy 1.6.0, call-bind 1.0.5, ci-info 3.9.0, cjs-module-lexer 1.3.1, client-only 0.0.1, clsx 2.0.0, collect-v8-coverage 1.0.2, convert-source-map 1.9.0, convert-source-map 2.0.0, core-js 3.38.1, cosmiconfig 7.1.0, csstype 3.1.3, data-urls 3.0.2, decimal.js 10.4.3, dedent 1.5.3, deepmerge 4.3.1, define-data-property 1.1.1, define-properties 1.2.1, dequal 2.0.3, dlv 1.1.3, dom-accessibility-api 0.5.16, dom-accessibility-api 0.6.3, einaros/ws 8.18.0, emittery 0.13.1, enhanced-resolve 5.15.0, es-abstract 1.22.3, es-iterator-helpers 1.0.15, es-set-tostringtag 2.0.2, es-shim-unscopables 1.0.2, ESLint 8.56.0, eslint-config-prettier 8.10.0, eslint-import-resolver-node 0.3.9, eslint-plugin-import 2.29.1, eslint-plugin-jsx-a11y 6.8.0, eslint-plugin-react-hooks 4.6.0, expect 29.7.0, fast-glob 3.3.2, fill-range 7.1.1, flat-cache 3.2.0, fraction.js 4.3.7, fsevents 2.3.3, function-bind 1.1.2, function.prototype.name 1.1.6, functions-have-names 1.2.3, get-intrinsic 1.2.2, get-tsconfig 4.7.2, globalthis 1.0.3, gopd 1.0.1, graphemer 1.4.0, has-bigints 1.0.2, has-property-descriptors 1.0.1, has-proto 1.0.1, hasown 2.0.0, html3pdf 0.12.2, https-proxy-agent 5.0.1, immer 10.0.3, internal-slot 1.0.6, is-array-buffer 3.0.2, is-async-function 2.0.0, is-callable 1.2.7, is-core-module 2.13.1, is-number-object 1.0.7, is-shared-array-buffer 1.0.2, is-typed-array 1.1.12, iterator.prototype 1.1.2, JedWatson/react-select 5.8.0, Jest from Facebook 29.6.3, Jest from Facebook 29.7.0, jest-changed-files 29.7.0, jest-config 29.7.0, jest-diff 29.7.0, jest-each 29.7.0, jest-environment-jsdom 29.7.0, jest-environment-node 29.7.0, jest-get-type 29.6.3, jest-haste-map 29.7.0, jest-html-reporter 3.10.2, jest-json-reporter 1.2.2, jest-leak-detector 29.7.0, jest-matcher-utils 29.7.0, jest-message-util 29.7.0, jest-pnp-resolver 1.2.3, jest-regex-util 29.6.3, jest-resolve 29.7.0, jest-resolve-dependencies 29.7.0, jest-runner 29.7.0, jest-runtime 29.7.0, jest-snapshot 29.7.0, jest-util 29.7.0, jest-validate 29.7.0, jest-worker 29.7.0, jestjs/jest 29.7.0, jiti 1.21.0, jsdom 20.0.3, json5 1.0.2, jsx-ast-utils 3.3.5, keyv 4.5.4, language-tags 1.0.9, lilconfig 2.1.0, lilconfig 3.0.0, ljharb/object.assign 4.1.5, lz-string 1.5.0, make-dir 4.0.0, micromatch 4.0.8, minimist 1.2.8, moxystudio/node-cross-spawn 7.0.6, nanoid 3.3.7, natural-compare 1.4.0, natural-compare-lite 1.4.0, next.js 14.0.4, node-ignore 5.3.0, node-releases 2.0.14, nwsapi 2.2.10, object-inspect 1.13.1, object.entries 1.1.7, object.fromentries 2.0.7, object.groupby 1.0.1, object.hasown 1.1.3, object.values 1.1.7, optionator 0.9.3, parse5 7.1.2, pirates 4.0.6, PostCSS 8.4.31, PostCSS 8.4.32, postcss-import 15.1.0, postcss-js 4.0.1, postcss-load-config 4.0.2, postcss-nested 6.0.1, postcss-selector-parser 6.0.13, prettier 3.2.4, pretty-format 29.7.0, property-expr 2.0.6, psl 1.9.0, Punycode.js 2.3.1, pure-rand 6.1.0, react 18.2.0, react-dom 18.2.0, react-is 18.3.1, reactredux 9.0.4, Redux JS 4.2.1, Redux JS 5.0.1, redux-thunk 3.1.0, reflect.getprototypeof 1.0.4, regenerator-runtime 0.13.11, regenerator-runtime 0.14.1, regexp.prototype.flags 1.5.1, reselect 5.1.0, resolve-pkg-maps 1.0.0, resolve.exports 2.0.2, safe-array-concat 1.0.1, safe-regex-test 1.0.0, scheduler 0.23.0, set-function-length 1.1.1, set-function-name 2.0.1, sindresorhus/globals 13.24.0, sindresorhus/globby 11.1.0, stack-utils 2.0.6, stackblur-canvas 2.7.0, string.prototype.matchall 4.0.10, string.prototype.trim 1.2.8, string.prototype.trimend 1.0.7, string.prototype.trimstart 1.0.7, styled-jsx 5.1.1, stylis 4.2.0, sucrase 3.34.0, tailwind-merge 2.5.5, tailwindcss 3.3.6, tiny-case 1.0.3, ts-node 10.9.2, tsconfig-paths 3.15.0, type-fest 2.19.0, typed-array-buffer 1.0.0, typed-array-byte-length 1.0.0, typed-array-byte-offset 1.0.0, typed-array-length 1.0.4, unbox-primitive 1.0.2, undici-types 5.26.5, update-browserslist-db 1.0.13, use-isomorphic-layout-effect 1.1.2, use-sync-external-store 1.2.0, v8-compile-cache-lib 3.0.1, w3c-xmlserializer 4.0.0, which-builtin-type 1.1.3, which-typed-array 1.1.13, yannickcr/eslint-plugin-react 7.33.2, yargs 17.7.2, yup 1.4.0, zod 3.23.8)
+(@aashutoshrathi/word-wrap 1.2.6, @adobe/css-tools 4.4.2, @babel/code-frame 7.26.2, @babel/compat-data 7.26.8, @babel/core 7.26.10, @babel/generator 7.27.0, @babel/helper-compilation-targets 7.27.0, @babel/helper-module-imports 7.25.9, @babel/helper-module-transforms 7.26.0, @babel/helper-plugin-utils 7.24.6, @babel/helper-string-parser 7.25.9, @babel/helper-validator-identifier 7.25.9, @babel/helper-validator-option 7.25.9, @babel/helpers 7.27.0, @babel/parser 7.27.0, @babel/plugin-syntax-jsx 7.24.6, @babel/plugin-syntax-typescript 7.24.6, @babel/runtime 7.27.0, @babel/template 7.27.0, @babel/types 7.27.0, @cspotcode/source-map-support 0.8.1, @emotion/babel-plugin 11.11.0, @emotion/cache 11.11.0, @emotion/hash 0.9.1, @emotion/memoize 0.8.1, @emotion/react 11.11.3, @emotion/serialize 1.1.3, @emotion/sheet 1.2.2, @emotion/unitless 0.8.1, @emotion/use-insertion-effect-with-fallbacks 1.0.1, @emotion/utils 1.2.1, @emotion/weak-memoize 0.3.1, @eslint-community/eslint-utils 4.4.0, @eslint-community/regexpp 4.10.0, @eslint/eslintrc 2.1.4, @eslint/js 8.57.1, @faker-js/faker 8.4.1, @floating-ui/core 1.6.0, @floating-ui/dom 1.6.1, @floating-ui/utils 0.2.1, @jackfranklin/test-data-bot 2.1.0, @jest/console 29.7.0, @jest/core 29.7.0, @jest/environment 29.7.0, @jest/expect 29.7.0, @jest/expect-utils 29.7.0, @jest/fake-timers 29.7.0, @jest/globals 29.7.0, @jest/reporters 29.7.0, @jest/schemas 29.6.3, @jest/source-map 29.6.3, @jest/test-result 29.7.0, @jest/test-sequencer 29.7.0, @jest/transform 29.7.0, @jest/types 29.6.3, @jridgewell/gen-mapping 0.3.5, @jridgewell/resolve-uri 3.1.1, @jridgewell/set-array 1.2.1, @jridgewell/sourcemap-codec 1.4.15, @jridgewell/trace-mapping 0.3.25, @jridgewell/trace-mapping 0.3.9, @next/env 14.2.28, @next/eslint-plugin-next 15.3.1, @next/swc-darwin-arm64 14.2.28, @next/swc-darwin-x64 14.2.28, @next/swc-linux-arm64-gnu 14.2.28, @next/swc-linux-arm64-musl 14.2.28, @next/swc-linux-x64-gnu 14.2.28, @next/swc-linux-x64-musl 14.2.28, @next/swc-win32-arm64-msvc 14.2.28, @next/swc-win32-ia32-msvc 14.2.28, @next/swc-win32-x64-msvc 14.2.28, @pkgjs/parseargs 0.11.0, @reduxjs/toolkit 2.0.1, @rtsao/scc 1.1.0, @rushstack/eslint-patch 1.11.0, @sinclair/typebox 0.27.8, @testing-library/dom 10.1.0, @testing-library/jest-dom 6.6.3, @testing-library/react 16.3.0, @testing-library/user-event 14.6.1, @tsconfig/node10 1.0.11, @tsconfig/node12 1.0.11, @tsconfig/node14 1.0.3, @tsconfig/node16 1.0.4, @types/aria-query 5.0.4, @types/babel__core 7.20.5, @types/babel__generator 7.6.8, @types/babel__template 7.4.4, @types/babel__traverse 7.20.6, @types/graceful-fs 4.1.9, @types/hoist-non-react-statics 3.3.5, @types/istanbul-lib-coverage 2.0.6, @types/istanbul-lib-report 3.0.3, @types/istanbul-reports 3.0.4, @types/jest 29.5.14, @types/jsdom 20.0.1, @types/json-schema 7.0.15, @types/json5 0.0.29, @types/node 20.17.30, @types/parse-json 4.0.2, @types/prop-types 15.7.11, @types/raf 3.4.3, @types/react 18.3.20, @types/react-dom 18.3.6, @types/react-transition-group 4.4.10, @types/redux-logger 3.0.13, @types/semver 7.5.6, @types/stack-utils 2.0.3, @types/tough-cookie 4.0.5, @types/use-sync-external-store 0.0.3, @types/yargs 17.0.32, @types/yargs-parser 21.0.3, @typescript-eslint/eslint-plugin 5.62.0, @typescript-eslint/scope-manager 5.62.0, @typescript-eslint/type-utils 5.62.0, @typescript-eslint/types 5.62.0, @typescript-eslint/utils 5.62.0, @typescript-eslint/visitor-keys 5.62.0, Acorn 8.11.2, acorn-globals 7.0.1, acorn-walk 8.3.2, ansi-regex 6.1.0, ansi-styles 6.2.1, ARG 5.0.2, array-buffer-byte-length 1.0.2, array-includes 3.1.8, array.prototype.findlast 1.2.5, array.prototype.findlastindex 1.2.6, array.prototype.flat 1.3.2, array.prototype.flatmap 1.3.3, array.prototype.tosorted 1.1.4, arraybuffer.prototype.slice 1.0.4, ast-types-flow 0.0.8, async-function 1.0.0, Autoprefixer 10.4.21, available-typed-arrays 1.0.7, babel-traverse 7.27.0, binary-extensions 2.3.0, browserify/resolve 1.22.8, browserify/resolve 2.0.0-next.5, browserslist 4.24.4, btoa 1.2.1, busboy 1.6.0, call-bind 1.0.8, call-bind-apply-helpers 1.0.2, call-bound 1.0.4, canvg 3.0.11, chokidar 3.6.0, ci-info 3.9.0, cjs-module-lexer 1.3.1, client-only 0.0.1, clsx 2.0.0, collect-v8-coverage 1.0.2, convert-source-map 1.9.0, convert-source-map 2.0.0, core-js 3.38.1, cosmiconfig 7.1.0, cross-fetch 4.1.0, csstype 3.1.3, data-urls 3.0.2, data-view-buffer 1.0.2, data-view-byte-length 1.0.2, data-view-byte-offset 1.0.1, decimal.js 10.4.3, dedent 1.5.3, deepmerge 4.3.1, define-data-property 1.1.4, define-properties 1.2.1, dequal 2.0.3, dlv 1.1.3, dom-accessibility-api 0.5.16, dom-accessibility-api 0.6.3, dunder-proto 1.0.1, eastasianwidth 0.2.0, einaros/ws 8.18.0, emittery 0.13.1, enhanced-resolve 5.15.0, es-abstract 1.23.9, es-define-property 1.0.1, es-errors 1.3.0, es-iterator-helpers 1.2.1, es-object-atoms 1.1.1, es-set-tostringtag 2.1.0, es-shim-unscopables 1.1.0, es-to-primitive 1.3.0, escalade 3.2.0, ESLint 8.57.1, eslint-config-prettier 8.10.0, eslint-import-resolver-node 0.3.9, eslint-plugin-import 2.31.0, eslint-plugin-jsx-a11y 6.10.2, eslint-plugin-react-hooks 5.2.0, expect 29.7.0, fast-glob 3.3.1, fast-glob 3.3.2, fflate 0.8.2, fill-range 7.1.1, flat-cache 3.2.0, fraction.js 4.3.7, fsevents 2.3.3, function-bind 1.1.2, function.prototype.name 1.1.8, functions-have-names 1.2.3, get-intrinsic 1.3.0, get-proto 1.0.1, get-symbol-description 1.1.0, get-tsconfig 4.7.2, globalthis 1.0.4, gopd 1.2.0, graphemer 1.4.0, has-bigints 1.1.0, has-property-descriptors 1.0.2, has-proto 1.2.0, has-symbols 1.1.0, has-tostringtag 1.0.2, hasown 2.0.2, html2canvas-fixed 0.10.3, https-proxy-agent 5.0.1, immer 10.0.3, internal-slot 1.1.0, is-array-buffer 3.0.5, is-async-function 2.1.1, is-bigint 1.1.0, is-boolean-object 1.2.2, is-callable 1.2.7, is-core-module 2.16.1, is-data-view 1.0.2, is-date-object 1.1.0, is-finalizationregistry 1.1.1, is-generator-function 1.1.0, is-map 2.0.3, is-number-object 1.1.1, is-regex 1.2.1, is-set 2.0.3, is-shared-array-buffer 1.0.4, is-string 1.1.1, is-symbol 1.1.1, is-typed-array 1.1.15, is-weakmap 2.0.2, is-weakref 1.1.1, is-weakset 2.0.4, iterator.prototype 1.1.5, JedWatson/react-select 5.8.0, Jest from Facebook 29.6.3, Jest from Facebook 29.7.0, jest-changed-files 29.7.0, jest-config 29.7.0, jest-diff 29.7.0, jest-each 29.7.0, jest-environment-jsdom 29.7.0, jest-environment-node 29.7.0, jest-get-type 29.6.3, jest-haste-map 29.7.0, jest-html-reporter 3.10.2, jest-json-reporter 1.2.2, jest-leak-detector 29.7.0, jest-matcher-utils 29.7.0, jest-message-util 29.7.0, jest-pnp-resolver 1.2.3, jest-regex-util 29.6.3, jest-resolve 29.7.0, jest-resolve-dependencies 29.7.0, jest-runner 29.7.0, jest-runtime 29.7.0, jest-snapshot 29.7.0, jest-util 29.7.0, jest-validate 29.7.0, jest-worker 29.7.0, jestjs/jest 29.7.0, jiti 1.21.7, jsdom 20.0.3, jsesc 3.1.0, jsnext 14.2.28, jsnext 15.3.1, json5 1.0.2, jsPDF 3.0.1, jsx-ast-utils 3.3.5, keyv 4.5.4, language-tags 1.0.9, lilconfig 3.1.3, ljharb/object.assign 4.1.7, lz-string 1.5.0, make-dir 4.0.0, math-intrinsics 1.1.0, micromatch 4.0.8, micromatch/braces 3.0.3, minimist 1.2.8, moxystudio/node-cross-spawn 7.0.6, nanoid 3.3.11, natural-compare 1.4.0, natural-compare-lite 1.4.0, node-ignore 5.3.0, node-releases 2.0.19, nwsapi 2.2.10, object-inspect 1.13.4, object.entries 1.1.9, object.fromentries 2.0.8, object.groupby 1.0.3, object.values 1.2.1, optionator 0.9.3, own-keys 1.0.1, parse5 7.1.2, pirates 4.0.6, possible-typed-array-names 1.1.0, PostCSS 8.4.31, PostCSS 8.5.3, postcss-import 15.1.0, postcss-js 4.0.1, postcss-load-config 4.0.2, postcss-nested 6.2.0, postcss-selector-parser 6.1.2, prettier 3.5.3, pretty-format 29.7.0, property-expr 2.0.6, psl 1.9.0, Punycode.js 2.3.1, pure-rand 6.1.0, Raynos/for-each 0.3.5, React from Facebook 18.3.1, react-dom 18.3.1, react-is 18.3.1, reactredux 9.0.4, Redux JS 5.0.1, redux-thunk 3.1.0, reflect.getprototypeof 1.0.10, regenerator-runtime 0.13.11, regenerator-runtime 0.14.1, regexp.prototype.flags 1.5.4, reselect 5.1.0, resolve-pkg-maps 1.0.0, resolve.exports 2.0.2, safe-array-concat 1.1.3, safe-push-apply 1.0.0, safe-regex-test 1.1.0, scheduler 0.23.2, set-function-length 1.2.2, set-function-name 2.0.2, set-proto 1.0.0, side-channel 1.1.0, side-channel-list 1.0.0, side-channel-map 1.0.1, side-channel-weakmap 1.0.2, sindresorhus/globals 13.24.0, sindresorhus/globby 11.1.0, stack-utils 2.0.6, stackblur-canvas 2.7.0, string-width 5.1.2, string.prototype.includes 2.0.1, string.prototype.matchall 4.0.12, string.prototype.trim 1.2.10, string.prototype.trimend 1.0.9, string.prototype.trimstart 1.0.8, Strip ANSI 7.1.0, styled-jsx 5.1.1, stylis 4.2.0, sucrase 3.35.0, tailwind-merge 2.6.0, tailwindcss 3.4.17, tiny-case 1.0.3, tr46 0.0.3, ts-node 10.9.2, tsconfig-paths 3.15.0, type-fest 2.19.0, typed-array-buffer 1.0.3, typed-array-byte-length 1.0.3, typed-array-byte-offset 1.0.4, typed-array-length 1.0.7, unbox-primitive 1.1.0, undici-types 6.19.8, update-browserslist-db 1.1.3, use-isomorphic-layout-effect 1.1.2, use-sync-external-store 1.2.0, v8-compile-cache-lib 3.0.1, w3c-xmlserializer 4.0.0, which-boxed-primitive 1.1.1, which-builtin-type 1.2.1, which-collection 1.0.2, which-typed-array 1.1.19, wrap-ansi 8.1.0, yannickcr/eslint-plugin-react 7.37.5, yargs 17.7.2, yup 1.4.0, zod 3.24.3)
 
 The MIT License
 ===============
@@ -5810,6 +5544,33 @@ THE SOFTWARE
 ---
 
 MIT License
+(loose-envify 1.4.0)
+
+The MIT License (MIT)
+
+Copyright (c) 2015 Andres Suarez <zertosh@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE
+
+---
+
+MIT License
 (svg-pathdata 6.0.3)
 
 The MIT License (MIT)
@@ -5862,6 +5623,35 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 ---
 
 MIT License
+(jshttp/mime-types 2.1.35)
+
+(The MIT License)
+
+Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
+Copyright (c) 2015 Douglas Christopher Wilson <doug@somethingdoug.com>
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
+
+---
+
+MIT License
 (Acorn-JSX 5.3.2)
 
 Copyright (C) 2012-2017 by Ingvar Stepanyan
@@ -5883,33 +5673,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
-
----
-
-MIT License
-(available-typed-arrays 1.0.5, is-finalizationregistry 1.0.2, is-weakref 1.0.2)
-
-MIT License
-
-Copyright (c) 2020 Inspect JS
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
 
 ---
 
@@ -6064,43 +5827,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 ---
 
 MIT License
-(delayed-stream 1.0.0)
-
-Upstream-Contact: https://github.com/felixge/node-delayed-stream/issues
-Source: https://github.com/felixge/node-delayed-stream
-
-Files: *
-Copyright: 2011, Debuggable Limited <felix@debuggable.com>
-License: Expat
-
-Files: debian/*
-Copyright: 2013, Jérémy Lal <kapouer@melix.org>
- 2020, Xavier Guimard <yadd@debian.org>
-License: Expat
-
-License: Expat
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- .
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE
-
----
-
-MIT License
 (is-extglob 2.1.1)
 
 The MIT License (MIT)
@@ -6124,66 +5850,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE
-
----
-
-MIT License
-(node-mkdirp 1.0.4)
-
-Files: *
-Copyright: 2010 James Halliday <mail@substack.net>
-License: Expat
-
-Files: debian/*
-Copyright: 2012 David Paleino <dapal@debian.org>
-License: Expat
-
-License: Expat
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- .
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE
-
----
-
-MIT License
-(asynckit 0.4.0)
-
-The MIT License (MIT)
-
-Copyright (c) 2016 Alex Indigo
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
 
 ---
 
@@ -6243,41 +5909,56 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 ---
 
 MIT License
-(normalize-path 3.0.0)
+(node-mkdirp 1.0.4)
 
-Upstream-Contact: https://github.com/jonschlinkert/normalize-path/issues
-Source: https://github.com/jonschlinkert/normalize-path
+Copyright James Halliday (mail@substack.net) and Isaac Z. Schlueter (i@izs.me)
 
-Files: *
-Copyright: 2014-2018, Jon Schlinkert (https://github.com/jonschlinkert)
-License: Expat
+This project is free software released under the MIT license:
 
-Files: debian/*
-Copyright: 2016, Sruthi Chandran <srud@disroot.org>
- 2019, Xavier Guimard <yadd@debian.org>
-License: Expat
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-License: Expat
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-Permission is hereby granted, free of charge, to any person
- obtaining a copy of this software and associated documentation files
- (the "Software"), to deal in the Software without restriction,
- including without limitation the rights to use, copy, modify, merge,
- publish, distribute, sublicense, and/or sell copies of the Software,
- and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
- .
- The above copyright notice and this permission notice shall be
- included in all copies or substantial portions of the Software.
- .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE
+
+---
+
+MIT License
+(node-fetch 2.7.0)
+
+The MIT License (MIT)
+
+Copyright (c) 2016 David Frank
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE
 
 ---
 
@@ -6308,7 +5989,7 @@ THE SOFTWARE
 ---
 
 MIT License
-(@alloc/quick-lru 5.2.0, ansi-regex 5.0.1, ansi-styles 3.2.1, ansi-styles 5.2.0, ansi-styles v4.3.0, array-union v2.1.0, callsites 3.1.0, Chalk 4.1.2, Chalk v3.0.0, escape-string-regexp v2.0.0, has-flag 3.0.0, has-flag 4.0.0, import-local 3.1.0, indent-string v4.0.0, is-fullwidth-code-point 3.0.0, is-generator-fn 2.1.0, is-path-inside 3.0.3, leven 3.1.0, locate-path v5.0.0, mimic-fn 2.1.0, npm-run-path 4.0.1, p-limit 2.3.0, p-locate 4.1.0, p-try 2.2.0, parent-module 1.0.1, path-exists 4.0.0, path-key 3.1.1, path-type 4.0.0, redent 3.0.0, resolve-cwd 3.0.0, resolve-from 4.0.0, resolve-from 5.0.0, shebang-regex 3.0.0, sindresorhus/supports-color 5.5.0, sindresorhus/supports-color v7.2.0, string-width 4.2.3, Strip ANSI 6.0.1, strip-bom 4.0.0, strip-final-newline 2.0.0, strip-indent v3.0.0, yn v3.1.1)
+(@alloc/quick-lru 5.2.0, ansi-styles 5.2.0, ansi-styles v4.3.0, array-union v2.1.0, callsites 3.1.0, camelcase 5.3.1, Chalk 4.1.2, Chalk v3.0.0, detect-newline v3.1.0, escape-string-regexp v2.0.0, has-flag 4.0.0, import-local 3.1.0, indent-string v4.0.0, is-fullwidth-code-point 3.0.0, is-generator-fn 2.1.0, is-path-inside 3.0.3, leven 3.1.0, mimic-fn 2.1.0, npm-run-path 4.0.1, p-limit 2.3.0, p-locate 4.1.0, p-try 2.2.0, parent-module 1.0.1, path-exists 4.0.0, path-key 3.1.1, pkg-dir 4.2.0, redent 3.0.0, resolve-cwd 3.0.0, resolve-from 4.0.0, resolve-from 5.0.0, shebang-regex 3.0.0, sindresorhus/globals 11.12.0, sindresorhus/slash v3.0.0, sindresorhus/supports-color v7.2.0, string-width 4.2.3, strip-bom 4.0.0, strip-final-newline 2.0.0, strip-indent v3.0.0, yn v3.1.1)
 
 MIT License
 
@@ -6323,7 +6004,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ---
 
 MIT License
-(ajv 6.12.6, fast-json-stable-stringify 2.1.0)
+(fast-json-stable-stringify 2.1.0)
 
 This software is released under the MIT license:
 
@@ -6350,8 +6031,17 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 ---
 
 MIT License
-(isarray 2.0.5, nodeca-argparse 1.0.10)
+(mz 2.7.0)
 
+Upstream-Contact: https://github.com/normalize/mz/issues
+Source: https://github.com/normalize/mz#readme
+
+Files: *
+Copyright: 2014-2016 Jonathan Ong <me@jongleberry.com> (http://jongleberry.com)
+License: Expat
+
+Files: debian/*
+Copyright: 2017 Preyass Chandran <preyassc@hotmail.com>
 License: Expat
 
 License: Expat
@@ -6379,17 +6069,8 @@ Permission is hereby granted, free of charge, to any person
 ---
 
 MIT License
-(mz 2.7.0)
+(nodeca-argparse 1.0.10)
 
-Upstream-Contact: https://github.com/normalize/mz/issues
-Source: https://github.com/normalize/mz#readme
-
-Files: *
-Copyright: 2014-2016 Jonathan Ong <me@jongleberry.com> (http://jongleberry.com)
-License: Expat
-
-Files: debian/*
-Copyright: 2017 Preyass Chandran <preyassc@hotmail.com>
 License: Expat
 
 License: Expat
@@ -6495,7 +6176,7 @@ DEALINGS IN THE SOFTWARE
 ---
 
 MIT License
-(ansi-escapes 4.3.2, camelcase 6.3.0, escape-string-regexp v4.0.0, execa 5.1.1, find-up v5.0.0, get-stream 6.0.1, import-fresh 3.3.0, p-limit 3.1.0, p-locate v5.0.0, parse-json v5.2.0, sindresorhus/is-stream 2.0.1, sindresorhus/onetime v5.1.2, sindresorhus/supports-color 8.1.1, string-length 4.0.2, wrap-ansi v7.0.0, yocto-queue 0.1.0)
+(ansi-escapes 4.3.2, camelcase 6.3.0, escape-string-regexp v4.0.0, execa 5.1.1, find-up v5.0.0, get-stream 6.0.1, import-fresh 3.3.0, is-stream 2.0.1, p-limit 3.1.0, parse-json v5.2.0, sindresorhus/onetime v5.1.2, sindresorhus/supports-color 8.1.1, string-length 4.0.2, strip-json-comments 3.1.1, wrap-ansi v7.0.0, yocto-queue 0.1.0)
 
 MIT License
 
@@ -6510,7 +6191,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ---
 
 MIT License
-(node-http-proxy-agent 5.0.0)
+(agent-base 6.0.2, node-http-proxy-agent 5.0.0)
 
 -------
 
@@ -6567,53 +6248,76 @@ SOFTWARE
 ---
 
 MIT License
-(to-fast-properties 2.0.0)
+(imurmurhash 0.1.4)
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Upstream-Contact: https://github.com/jensyt/imurmurhash-js/issues
+Source: https://github.com/jensyt/imurmurhash-js
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+Files: *
+Copyright: 2013 Gary Court, Jens Taylor <jensyt@gmail.com> (https://github.com/homebrewing)
+License: Expat
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
+Files: debian/*
+Copyright: 2017 Roshan Nalawade <dn.roshan2@gmail.com>
+License: Expat
+
+License: Expat
+
+Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation files
+ (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge,
+ publish, distribute, sublicense, and/or sell copies of the Software,
+ and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE
 
 ---
 
 MIT License
-(readdirp 3.6.0)
-
-Source: https://github.com/thlorenz/readdirp
+(type-check 0.4.0)
 
 Files: *
-Copyright: 2012-2019, Thorsten Lorenz <thlorenz@gmx.de>
+Copyright: George Zahariev <z@georgezahariev.com>
 License: Expat
 
 Files: debian/*
-Copyright: 2013, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
- 2020, Yadd <yadd@debian.org>
-License: Expat
-
-Files: debian/tests/test_modules/chai-subset/*
-Copyright: Andrii Shumada <eagleeyes91@gmail.com>
+Copyright: 2016 Pirate Praveen <praveen@debian.org>
+ 2020 Xavier Guimard <yadd@debian.org>
 License: Expat
 
 License: Expat
 
-Permission is hereby granted, free of charge, to any person obtaining a
- copy of this software and associated documentation files (the "Software"),
- to deal in the Software without restriction, including without limitation
- the rights to use, copy, modify, merge, publish, distribute, sublicense,
- and/or sell copies of the Software, and to permit persons to whom the
- Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation files
+ (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge,
+ publish, distribute, sublicense, and/or sell copies of the Software,
+ and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
  .
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
  .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- DEALINGS IN THE SOFTWARE
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE
 
 ---
 
@@ -6641,6 +6345,33 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE
+
+---
+
+MIT License
+(normalize-path 3.0.0)
+
+The MIT License (MIT)
+
+Copyright (c) 2014-2018, Jon Schlinkert.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE
 
 ---
 
@@ -6785,7 +6516,7 @@ SOFTWARE
 ---
 
 Mozilla Public License 2.0
-(axe-core 4.7.0, DOMPurify 2.5.6)
+(axe-core 4.10.3, DOMPurify 3.2.5)
 
 Mozilla Public License
 Version 2.0

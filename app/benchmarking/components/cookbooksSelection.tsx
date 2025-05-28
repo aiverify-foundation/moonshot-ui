@@ -25,6 +25,8 @@ const descCapability =
   "Capability assesses the AI model's ability to perform within the context of the unique requirements and challenges of a particular domain or task.";
 const descTrustAndSafety =
   'Trust & Safety addresses the reliability, ethical considerations, and inherent risks of the AI model. It also examines potential scenarios where the AI system could be used maliciously or unethically.';
+const descImdaStarterKit =
+  "Includes tests from IMDA's Starter Kit to assess model or application's capability to respond to key risks like hallucination, undesirable content, data disclosure and adversarial prompts in a safe and trustworthy manner.";
 
 const CookbookAbout = dynamic(
   () => import('./cookbookAbout').then((mod) => mod.CookbookAbout),
@@ -168,6 +170,8 @@ function CookbooksSelection(props: Props) {
         ? descCapability
         : activeTab.id === 'trustAndSafety'
           ? descTrustAndSafety
+          : activeTab.id === 'imdaStarterKit'
+            ? descImdaStarterKit
           : '';
 
   useEffect(() => {
@@ -181,7 +185,7 @@ function CookbooksSelection(props: Props) {
   }, [cookbooks]);
 
   return (
-    <div className="flex flex-col pt-4 w-full h-full z-[100]">
+    <div className="flex flex-col pt-4 w-full h-full z-[100] overflow-y-hidden">
       {cookbookDetails ? (
         <PopupSurface
           height="100%"
@@ -201,9 +205,8 @@ function CookbooksSelection(props: Props) {
             <h2 className="text-[1.6rem] leading-[2rem] tracking-wide text-white w-full text-center">
               Select the cookbooks you want to run
             </h2>
-            <div className="flex flex-row gap-5 w-full">
+            <div className="flex flex-col gap-5 w-full">
               <TabsMenu
-                className="w-[445px]"
                 tabItems={tabItems}
                 barColor={colors.moongray['800']}
                 tabHoverColor={colors.moongray['700']}
@@ -220,7 +223,7 @@ function CookbooksSelection(props: Props) {
           <section
             className="relative flex flex-col gap-7 mt-8 h-full"
             style={{ height: 'calc(100% - 155px)' }}>
-            <ul className="flex flex-row flex-wrap grow gap-[2%] w-[100%] overflow-y-auto custom-scrollbar px-8">
+            <ul className="flex flex-row flex-wrap grow gap-[2%] w-[100%] overflow-y-auto custom-scrollbar px-8 pb-[100px]">
               {isFetching ? (
                 <LoadingAnimation />
               ) : cookbooks.length === 0 ? (
