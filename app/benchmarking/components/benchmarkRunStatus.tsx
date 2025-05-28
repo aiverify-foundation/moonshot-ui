@@ -333,9 +333,10 @@ function BenchmarkRunStatus({ allStatuses }: { allStatuses: TestStatuses }) {
               color="red"
             />
             <ul>
-              {statuses[runner_id].current_error_messages.map((err, index) => (
+              There is an error. Please refer to the logs.
+              {/* {statuses[runner_id].current_error_messages.map((err, index) => (
                 <li key={index}>{err}</li>
-              ))}
+              ))} */}
             </ul>
           </div>
         </Modal>
