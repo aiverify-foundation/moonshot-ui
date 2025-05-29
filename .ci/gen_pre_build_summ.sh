@@ -9,6 +9,7 @@ codeCoverage() {
   echo $message
   export COVERAGE_SUMMARY="$message"
   if (( covPctRounded < 70 )); then
+    echo "Error: Coverage is below threshold of 70 pct"
     return 1
   else
     return 0
@@ -24,6 +25,7 @@ testResults() {
   echo $message
   export UNITTEST_SUMMARY="$message"
   if (( numFailedTests > 0 )); then
+    echo "Error: There are failed unit tests"
     return 1
   else
     return 0
@@ -39,6 +41,7 @@ checkLintErrors() {
   echo $message
   export LINT_SUMMARY="$message"
   if (( numErrors > 0 || numWarnings > 0 )); then
+    "Error: There are lint errors/warnings"
     return 1
   else
     return 0
@@ -57,6 +60,7 @@ checkDependencies() {
   echo $message
   export DEPENDENCY_SUMMARY="$message"
   if (( num > 0 )); then
+    echo "Error: Dependency vulnerabilities found"
     return 1
   else
     return 0
@@ -114,6 +118,7 @@ checkCopyleftLicenses() {
   export LICENSE_SUMMARY="$message"
 
   if (( numStrongCopyleft > 0 )); then
+    echo "Error: Strong copyleft licenses found"
     return 1
   else
     return 0
