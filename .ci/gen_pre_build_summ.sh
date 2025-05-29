@@ -65,8 +65,8 @@ checkDependencies() {
 
 # Function to check copyleft licenses
 checkCopyleftLicenses() {
-  local strongCopyleft=("GPL" "AGPL")
-  local weakCopyleft=("LGPL" "MPL" "EUPL" "CCDL" "EPL" "CC-BY-SA" "OSL" "CPL")
+  local strongCopyleft=("GPL" "AGPL" "EUPL" "OSL", "SSPL" "GFDL")
+  local weakCopyleft=("LGPL" "MPL" "CCDL" "EPL" "CC-BY-SA" "CPL")
   local text=$(cat ./license-report.txt)
   local foundStrong=()
   local foundWeak=()
