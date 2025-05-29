@@ -11,14 +11,13 @@ on:
   # Runs when a pull request to main is being assigned
   pull_request:
     types: [ assigned, synchronize ]
-    branches:
-      - 'dev_main'
+    branches: [ dev_main ]
 
   # Run this workflow manually from Actions tab
   workflow_dispatch:
     inputs:
       branch_to_test:
-        description: 'Branch or tag to run test'
+        description: 'Branch or tag to run checks on'
         required: true
         default: 'dev_main'
         type: string
@@ -39,17 +38,15 @@ jobs:
 
     steps:
 
-      - name: Set Branch Variable (pull_request)
-        if: github.event_name == 'pull_request'
+      - name: Set Branch Variable
         run: |
-          echo "BRANCH=${{ github.event.pull_request.head.ref }}" >> "$GITHUB_ENV"
-          echo "PR_NUM=#${{ github.event.pull_request.number }}" >> "$GITHUB_ENV"
-
-      - name: Set Branch Variable (workflow_dispatch)
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          echo "BRANCH=${{ inputs.branch_to_test }}" >> "$GITHUB_ENV"
-          echo "PR_NUM=#0" >> "$GITHUB_ENV"
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "BRANCH=${{ github.event.pull_request.head.ref }}" >> "$GITHUB_ENV"
+            echo "PR_NUM=#${{ github.event.pull_request.number }}" >> "$GITHUB_ENV"
+          else
+            echo "BRANCH=${{ inputs.branch_to_test }}" >> "$GITHUB_ENV"
+            echo "PR_NUM=#0" >> "$GITHUB_ENV"
+          fi
 
       - name: Checkout code
         uses: actions/checkout@v3
@@ -72,12 +69,6 @@ jobs:
           npm i -D eslint eslint-formatter-html @typescript-eslint/eslint-plugin @typescript-eslint/parser
           cp .env.local .env
           npm run build
-
-#      # Format check
-#      - name: Format Check
-#        if: ${{ ! cancelled() }}
-#        run: |
-#          npm run format-check
 
       # Unit Tests & Coverage
       - name: Unit tests with coverage
@@ -151,35 +142,3 @@ jobs:
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-
-#      ### Publish reports to ci dashboard ###
-#
-#      - name: Checkout dashboard
-#        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && always() }}
-#        uses: actions/checkout@v3
-#        with:
-#          repository: aiverify-foundation/ci-dashboard
-#          token: ${{ secrets.CHECKOUT_TOKEN }}
-#          ref: main
-#          path: check-results
-#
-#      - name: Push results to dashboard
-#        if: ${{ github.event.pull_request.head.repo.full_name == github.repository && always() }}
-#        working-directory: ${{ github.workspace }}/check-results
-#        run: |
-#          set +e
-#          find ../ -type f -name ".gitignore" -exec rm {} +
-#          [ -d "docs/pre-build/moonshot-ui" ] && rm -rf docs/pre-build/moonshot-ui
-#          mkdir -p docs/pre-build/moonshot-ui
-#          mv ../coverage docs/pre-build/moonshot-ui/
-#          mv ../*.svg docs/pre-build/moonshot-ui/
-#          mv ../*.html docs/pre-build/moonshot-ui/
-#          mv ../*.md docs/pre-build/moonshot-ui/
-#          mv ../*.txt docs/pre-build/moonshot-ui/
-#          git add docs/pre-build/moonshot-ui
-#          git config user.name "moonshot"
-#          git config user.email "moonshot@imda.gov.sg"
-#          git commit -m "feat(moonshot-ui) actions publish moonshot-ui reports to dashboard"
-#          git push
-#          set -e

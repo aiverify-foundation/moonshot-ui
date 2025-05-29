@@ -8,7 +8,8 @@ codeCoverage() {
   local message="Coverage percentage: ${covPctRounded}%"
   echo $message
   export COVERAGE_SUMMARY="$message"
-  if (( covPctRounded < 50 )); then
+  if (( covPctRounded < 70 )); then
+    echo -e "\033[31mError: Coverage is below threshold of 70 pct\033[0m"
     return 1
   else
     return 0
@@ -24,6 +25,7 @@ testResults() {
   echo $message
   export UNITTEST_SUMMARY="$message"
   if (( numFailedTests > 0 )); then
+    echo -e "\033[31mError: There are failed unit tests\033[0m"
     return 1
   else
     return 0
@@ -39,6 +41,7 @@ checkLintErrors() {
   echo $message
   export LINT_SUMMARY="$message"
   if (( numErrors > 0 || numWarnings > 0 )); then
+    echo -e "\033[31mError: There are lint errors/warnings\033[0m"
     return 1
   else
     return 0
@@ -57,6 +60,7 @@ checkDependencies() {
   echo $message
   export DEPENDENCY_SUMMARY="$message"
   if (( num > 0 )); then
+    echo -e "\033[31mError: Dependency vulnerabilities found\033[0m"
     return 1
   else
     return 0
@@ -65,19 +69,56 @@ checkDependencies() {
 
 # Function to check copyleft licenses
 checkCopyleftLicenses() {
-  local copyleftLic=("GPL" "LGPL" "MPL" "AGPL" "EUPL" "CCDL" "EPL" "CC-BY-SA" "OSL" "CPL")
+  local strongCopyleft=("GPL" "AGPL" "EUPL" "OSL" "SSPL" "GFDL")
+  local weakCopyleft=("LGPL" "MPL" "CCDL" "EPL" "CC-BY-SA" "CPL")
   local text=$(cat ./license-report.txt)
-  local foundLic=()
-  for lic in "${copyleftLic[@]}"; do
+  local foundStrong=()
+  local foundWeak=()
+
+  # Check for weak copyleft licenses first
+  for lic in "${weakCopyleft[@]}"; do
     if [[ $text =~ $lic ]]; then
-      foundLic+=($lic)
+      foundWeak+=($lic)
     fi
   done
-  local numCopyleftLic=${#foundLic[@]}
-  local message="Copyleft licenses found: ${numCopyleftLic}"
+
+  # Check for strong copyleft licenses, excluding any weak copyleft matches
+  local textWithoutWeak=$text
+  for lic in "${foundWeak[@]}"; do
+    textWithoutWeak=${textWithoutWeak//$lic/}
+  done
+
+  for lic in "${strongCopyleft[@]}"; do
+    if [[ $textWithoutWeak =~ $lic ]]; then
+      foundStrong+=($lic)
+    fi
+  done
+
+  local numStrongCopyleft=${#foundStrong[@]}
+  local numWeakCopyleft=${#foundWeak[@]}
+  local totalCopyleft=$((numStrongCopyleft + numWeakCopyleft))
+
+  # Display the found licenses
+  echo "Strong copyleft licenses found (${numStrongCopyleft}):"
+  if (( numStrongCopyleft > 0 )); then
+    printf "  - %s\n" "${foundStrong[@]}"
+  else
+    echo "  None"
+  fi
+
+  echo "Weak copyleft licenses found (${numWeakCopyleft}):"
+  if (( numWeakCopyleft > 0 )); then
+    printf "  - %s\n" "${foundWeak[@]}"
+  else
+    echo "  None"
+  fi
+
+  local message="Copyleft licenses found: ${totalCopyleft} (${numStrongCopyleft} strong, ${numWeakCopyleft} weak)"
   echo $message
   export LICENSE_SUMMARY="$message"
-  if (( numCopyleftLic > 0 )); then
+
+  if (( numStrongCopyleft > 0 )); then
+    echo -e "\033[31mError: Strong copyleft licenses found\033[0m"
     return 1
   else
     return 0
@@ -86,7 +127,7 @@ checkCopyleftLicenses() {
 
 # Main script
 if [ $# -lt 1 ]; then
-  echo "summaryToGen arg not provided"
+  echo -e "\033[31msummaryToGen arg not provided\033[0m"
   exit -1
 fi
 
