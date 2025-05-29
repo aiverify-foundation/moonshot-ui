@@ -65,7 +65,7 @@ checkDependencies() {
 
 # Function to check copyleft licenses
 checkCopyleftLicenses() {
-  local strongCopyleft=("GPL" "AGPL" "EUPL" "OSL", "SSPL" "GFDL")
+  local strongCopyleft=("GPL" "AGPL" "EUPL" "OSL" "SSPL" "GFDL")
   local weakCopyleft=("LGPL" "MPL" "CCDL" "EPL" "CC-BY-SA" "CPL")
   local text=$(cat ./license-report.txt)
   local foundStrong=()
@@ -93,6 +93,21 @@ checkCopyleftLicenses() {
   local numStrongCopyleft=${#foundStrong[@]}
   local numWeakCopyleft=${#foundWeak[@]}
   local totalCopyleft=$((numStrongCopyleft + numWeakCopyleft))
+
+  # Display the found licenses
+  echo "Strong copyleft licenses found (${numStrongCopyleft}):"
+  if (( numStrongCopyleft > 0 )); then
+    printf "  - %s\n" "${foundStrong[@]}"
+  else
+    echo "  None"
+  fi
+
+  echo "Weak copyleft licenses found (${numWeakCopyleft}):"
+  if (( numWeakCopyleft > 0 )); then
+    printf "  - %s\n" "${foundWeak[@]}"
+  else
+    echo "  None"
+  fi
 
   local message="Copyleft licenses found: ${totalCopyleft} (${numStrongCopyleft} strong, ${numWeakCopyleft} weak)"
   echo $message
