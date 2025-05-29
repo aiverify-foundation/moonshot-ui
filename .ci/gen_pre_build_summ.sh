@@ -9,7 +9,7 @@ codeCoverage() {
   echo $message
   export COVERAGE_SUMMARY="$message"
   if (( covPctRounded < 70 )); then
-    echo "Error: Coverage is below threshold of 70 pct"
+    echo -e "\033[31mError: Coverage is below threshold of 70 pct\033[0m"
     return 1
   else
     return 0
@@ -25,7 +25,7 @@ testResults() {
   echo $message
   export UNITTEST_SUMMARY="$message"
   if (( numFailedTests > 0 )); then
-    echo "Error: There are failed unit tests"
+    echo -e "\033[31mError: There are failed unit tests\033[0m"
     return 1
   else
     return 0
@@ -41,7 +41,7 @@ checkLintErrors() {
   echo $message
   export LINT_SUMMARY="$message"
   if (( numErrors > 0 || numWarnings > 0 )); then
-    "Error: There are lint errors/warnings"
+    echo -e "\033[31mError: There are lint errors/warnings\033[0m"
     return 1
   else
     return 0
@@ -60,7 +60,7 @@ checkDependencies() {
   echo $message
   export DEPENDENCY_SUMMARY="$message"
   if (( num > 0 )); then
-    echo "Error: Dependency vulnerabilities found"
+    echo -e "\033[31mError: Dependency vulnerabilities found\033[0m"
     return 1
   else
     return 0
@@ -118,7 +118,7 @@ checkCopyleftLicenses() {
   export LICENSE_SUMMARY="$message"
 
   if (( numStrongCopyleft > 0 )); then
-    echo "Error: Strong copyleft licenses found"
+    echo -e "\033[31mError: Strong copyleft licenses found\033[0m"
     return 1
   else
     return 0
@@ -127,7 +127,7 @@ checkCopyleftLicenses() {
 
 # Main script
 if [ $# -lt 1 ]; then
-  echo "summaryToGen arg not provided"
+  echo -e "\033[31msummaryToGen arg not provided\033[0m"
   exit -1
 fi
 
