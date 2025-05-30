@@ -39,10 +39,10 @@ export const createCookbook = async (
   );
   const result = await response.json();
   let errors = [];
-  if (result.error && result.error.length) {
-    errors = result.error.map((error: Record<string, string>) =>
-      JSON.stringify(error)
-    );
+  if (result.message) {
+    errors.push(result.message);
+  } else if (result.detail) {
+    errors.push(result.detail);
   }
   if (!response.ok) {
     return {
