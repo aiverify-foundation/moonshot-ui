@@ -167,7 +167,6 @@ Acorn 8.11.2: https://github.com/acornjs/acorn : MIT License
 acorn-globals 7.0.1: https://github.com/ForbesLindesay/acorn-globals : MIT License
 Acorn-JSX 5.3.2: https://github.com/RReverser/Acorn-JSX : MIT License
 acorn-walk 8.3.2: https://github.com/acornjs/acorn : MIT License
-ademilter/zelzele 20240131-snapshot-d8e0b336 : Apache License 2.0
 agent-base 6.0.2: https://github.com/TooTallNate/node-agent-base#readme : MIT License
 ajv 6.12.6: https://github.com/ajv-validator/ajv.git : MIT License
 ansi-escapes 4.3.2: https://github.com/sindresorhus/ansi-escapes : MIT License
@@ -237,7 +236,7 @@ co 4.6.0: https://github.com/visionmedia/co : MIT License
 collect-v8-coverage 1.0.2: https://github.com/SimenB/collect-v8-coverage#readme : MIT License
 color-name 1.1.4: https://github.com/colorjs/color-name : MIT License
 combined-stream 1.0.8: https://github.com/felixge/node-combined-stream : MIT License
-Commander.js 4.1.1: https://github.com/visionmedia/Commander.js : MIT License
+Commander.js 4.1.1: https://github.com/tj/commander.js : MIT License
 convert-source-map 1.9.0: https://github.com/thlorenz/convert-source-map : MIT License
 convert-source-map 2.0.0: https://github.com/thlorenz/convert-source-map : MIT License
 core-js 3.38.1: https://github.com/zloirock/core-js : MIT License
@@ -370,6 +369,7 @@ html2canvas 1.4.1: http://html2canvas.hertzen.com/ : ISC License
 html2canvas-fixed 0.10.3: https://github.com/eKoopmans/html2pdf : MIT License
 https-proxy-agent 5.0.1: https://github.com/TooTallNate/node-https-proxy-agent : MIT License
 human-signals 2.1.0: https://git.io/JeluP : Apache License 2.0
+iarna/write-file-atomic 4.0.2: https://github.com/npm/write-file-atomic : ISC License
 iconv-lite 0.6.3: https://github.com/ashtuchkin/iconv-lite : MIT License
 immer 10.0.3: https://immerjs.github.io/immer/ : MIT License
 import-fresh 3.3.0: https://github.com/sindresorhus/import-fresh : MIT License
@@ -490,7 +490,7 @@ memoize-one 6.0.0: https://github.com/alexreardon/memoize-one : MIT License
 Merge-Stream 2.0.0: https://github.com/grncdr/merge-stream : MIT License
 merge2 1.4.1: https://github.com/teambition/merge2 : MIT License
 micromatch 4.0.8: https://github.com/jonschlinkert/micromatch : MIT License
-micromatch/braces 3.0.3: https://github.com/micromatch/braces : MIT License
+micromatch/braces 3.0.3: https://github.com/jonschlinkert/braces : MIT License
 Microsofttslib 1.14.1: http://github.com/Microsoft/tslib/ : BSD Zero Clause License
 Microsofttslib 2.6.2: http://github.com/Microsoft/tslib/ : BSD Zero Clause License
 mime-db 1.52.0: https://github.com/jshttp/mime-db : MIT License
@@ -637,6 +637,8 @@ side-channel 1.1.0: https://github.com/ljharb/side-channel#readme : MIT License
 side-channel-list 1.0.0: https://github.com/ljharb/side-channel-list#readme : MIT License
 side-channel-map 1.0.1: https://github.com/ljharb/side-channel-map#readme : MIT License
 side-channel-weakmap 1.0.2: https://github.com/ljharb/side-channel-weakmap#readme : MIT License
+signal-exit 3.0.7: https://github.com/bcoe/signal-exit : ISC License
+signal-exit 4.1.0: https://github.com/bcoe/signal-exit : ISC License
 sindresorhus/globals 11.12.0: https://github.com/sindresorhus/globals : MIT License
 sindresorhus/globals 13.24.0: https://github.com/sindresorhus/globals : MIT License
 sindresorhus/globby 11.1.0: https://github.com/sindresorhus/globby : MIT License
@@ -682,8 +684,6 @@ symbol-tree 3.2.4: https://github.com/Joris-van-der-Wel/js-symbol-tree#readme : 
 tailwind-merge 2.6.0: https://github.com/dcastil/tailwind-merge : MIT License
 tailwindcss 3.4.17: https://github.com/tailwindcss/tailwindcss#readme : MIT License
 tapable 2.2.1: https://github.com/webpack/tapable : MIT License
-tapjs/signal-exit 3.0.7: https://github.com/tapjs/signal-exit : ISC License
-tapjs/signal-exit 4.1.0: https://github.com/tapjs/signal-exit : ISC License
 test-exclude 6.0.0: https://github.com/bcoe/test-exclude#readme : ISC License
 text-segmentation 1.0.3: https://github.com/niklasvh/text-segmentation : MIT License
 text-table 0.2.0: https://github.com/substack/text-table : MIT License
@@ -742,7 +742,6 @@ which-typed-array 1.1.19: https://github.com/ljharb/which-typed-array#readme : M
 wrap-ansi 8.1.0: https://github.com/chalk/wrap-ansi : MIT License
 wrap-ansi v7.0.0: https://github.com/chalk/wrap-ansi : MIT License
 wrappy 1.0.2: https://github.com/npm/wrappy : ISC License
-write-file-atomic 4.0.2: https://github.com/npm/write-file-atomic : ISC License
 xml-name-validator 4.0.0: https://github.com/jsdom/xml-name-validator : Apache License 2.0
 xmlbuilder-js v15.0.0: http://github.com/oozcitak/xmlbuilder-js : MIT License
 xmlchars 2.2.0: https://github.com/lddubeau/xmlchars#readme : MIT License
@@ -762,7 +761,7 @@ zod 3.24.3: https://github.com/vriad/zod#readme : MIT License
 Licenses: 
 
 Apache License 2.0
-(@ampproject/remapping 2.3.0, @humanwhocodes/config-array 0.13.0, @humanwhocodes/module-importer 1.0.1, @swc/counter 0.1.3, @swc/helpers 0.5.5, ademilter/zelzele 20240131-snapshot-d8e0b336, aria-query 5.3.0, aria-query 5.3.2, atob 2.1.2, axobject-query 4.1.0, btoa 1.2.1, didyoumean.js 1.2.2, doctrine v2.1.0, doctrine v3.0.0, DOMPurify 3.2.5, eslint-visitor-keys 3.4.3, formik 2.4.5, human-signals 2.1.0, nodejs-walker 1.0.8, spdx-correct.js 3.2.0, ts-interface-checker 0.1.13, TypeScript 5.8.3, validate-npm-package-license 3.0.4, watchman 2.0.2, watchman 2.1.1, xml-name-validator 4.0.0)
+(@ampproject/remapping 2.3.0, @humanwhocodes/config-array 0.13.0, @humanwhocodes/module-importer 1.0.1, @swc/counter 0.1.3, @swc/helpers 0.5.5, aria-query 5.3.0, aria-query 5.3.2, atob 2.1.2, axobject-query 4.1.0, btoa 1.2.1, didyoumean.js 1.2.2, doctrine v2.1.0, doctrine v3.0.0, DOMPurify 3.2.5, eslint-visitor-keys 3.4.3, formik 2.4.5, human-signals 2.1.0, nodejs-walker 1.0.8, spdx-correct.js 3.2.0, ts-interface-checker 0.1.13, TypeScript 5.8.3, validate-npm-package-license 3.0.4, watchman 2.0.2, watchman 2.1.1, xml-name-validator 4.0.0)
 
 Apache License
 Version 2.0, January 2004
@@ -2570,7 +2569,7 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE
 ---
 
 ISC License
-(@isaacs/cliui 8.0.2, @ungap/structured-clone 1.2.0, anymatch 3.1.3, cliui 8.0.1, electron-to-chromium 1.5.137, eslint-import-resolver-typescript 3.6.1, fastq 1.15.0, flatted 3.2.9, foreground-child 3.3.1, html2canvas 1.4.1, minimatch 9.0.5, minipass 7.1.2, node-glob 10.4.5, node-graceful-fs 4.2.11, node-lru-cache 10.4.3, node-semver 5.7.2, node-semver 6.3.1, node-semver 7.5.4, picocolors 1.1.1, tapjs/signal-exit 4.1.0, v8-to-istanbul 9.2.0, write-file-atomic 4.0.2, yaml 2.3.4, yargs-parser 21.1.1)
+(@isaacs/cliui 8.0.2, @ungap/structured-clone 1.2.0, anymatch 3.1.3, cliui 8.0.1, electron-to-chromium 1.5.137, eslint-import-resolver-typescript 3.6.1, fastq 1.15.0, flatted 3.2.9, foreground-child 3.3.1, html2canvas 1.4.1, iarna/write-file-atomic 4.0.2, minimatch 9.0.5, minipass 7.1.2, node-glob 10.4.5, node-graceful-fs 4.2.11, node-lru-cache 10.4.3, node-semver 5.7.2, node-semver 6.3.1, node-semver 7.5.4, picocolors 1.1.1, signal-exit 4.1.0, v8-to-istanbul 9.2.0, yaml 2.3.4, yargs-parser 21.1.1)
 
 ISC License (ISCL)
 ==================
@@ -2633,7 +2632,7 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE
 ---
 
 ISC License
-(tapjs/signal-exit 3.0.7)
+(signal-exit 3.0.7)
 
 The ISC License
 
