@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import { isValidId } from '@/app/api/v1/apiUtils';
 import config from '@/moonshot.config';
 
 export async function PUT(request: NextRequest) {
@@ -9,6 +10,12 @@ export async function PUT(request: NextRequest) {
     pathParts = request.nextUrl.pathname.split('/');
     session_id = pathParts[4];
     template_name = pathParts[6];
+    if (!isValidId(session_id)) {
+      throw new Error("Invalid session id")
+    }
+    if (!isValidId(template_name)) {
+      throw new Error("Invalid template name")
+    }
   } catch (error) {
     return new Response(
       'Unable to get template or session id name from url path',

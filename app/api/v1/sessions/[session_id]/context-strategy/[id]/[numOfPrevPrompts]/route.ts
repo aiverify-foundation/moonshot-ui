@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import { isValidId } from '@/app/api/v1/apiUtils';
 import config from '@/moonshot.config';
 export const dynamic = 'force-dynamic';
 
@@ -11,6 +12,15 @@ export async function PUT(request: NextRequest) {
     session_id = segments[4];
     strategy_id = segments[6];
     numOfPrevPrompts = segments[7];
+    if (!isValidId(session_id)) {
+      throw new Error("Invalid session id")
+    }
+    if (!isValidId(strategy_id)) {
+      throw new Error("Invalid strategy id")
+    }
+    if (!isValidId(numOfPrevPrompts)) {
+      throw new Error("Invalid num of prev prompts")
+    }
   } catch (error) {
     return new Response(
       'Unable to get session id, context strategy id, or numOfPrevPrompts',
