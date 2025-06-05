@@ -1,11 +1,7 @@
 import { NextRequest } from 'next/server';
+import { isValidId } from '@/app/api/v1/apiUtils';
 import config from '@/moonshot.config';
 export const dynamic = 'force-dynamic';
-
-const isValidId = (id: string) => {
-  const idRegex = /^[a-zA-Z0-9_-]+$/;
-  return idRegex.test(id);
-};
 
 export async function POST(request: NextRequest) {
   let runner_id: string;

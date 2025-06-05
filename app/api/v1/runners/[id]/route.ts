@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import { isValidId } from '@/app/api/v1/apiUtils';
 import config from '@/moonshot.config';
 
 export const dynamic = 'force-dynamic';
@@ -9,6 +10,9 @@ export async function GET(request: NextRequest) {
   const rundata = searchParams.get('rundata');
   try {
     id = request.nextUrl.pathname.split('/')[4];
+    if (!isValidId(id)) {
+      throw new Error("Invalid id")
+    }
   } catch (error) {
     return new Response('Unable to get runner id from url path', {
       status: 500,
