@@ -51,6 +51,12 @@ export async function DELETE(request: NextRequest) {
     const segments = request.nextUrl.pathname.split('/');
     session_id = segments[4];
     attack_id = segments[6];
+    if (!isValidId(session_id)) {
+      throw new Error("Invalid session id")
+    }
+    if (!isValidId(attack_id)) {
+      throw new Error("Invalid attack id")
+    }
   } catch (error) {
     return new Response('Unable to get session id from url path', {
       status: 500,
