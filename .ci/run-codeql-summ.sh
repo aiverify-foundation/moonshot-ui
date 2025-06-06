@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Default values
-REPO="${REPO:-${GITHUB_REPOSITORY}}"
+REPO="aiverify-foundation/moonshot-ui"
 OUTPUT_FILE=".codeql-alerts.json"
 
 # Set GH CLI auth token
