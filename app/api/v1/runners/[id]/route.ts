@@ -3,12 +3,20 @@ import config from '@/moonshot.config';
 
 export const dynamic = 'force-dynamic';
 
+const isValidId = (id: string) => {
+  const idRegex = /^[a-zA-Z0-9_-]+$/;
+  return idRegex.test(id);
+};
+
 export async function GET(request: NextRequest) {
   let id: string;
   const searchParams = request.nextUrl.searchParams;
   const rundata = searchParams.get('rundata');
   try {
     id = request.nextUrl.pathname.split('/')[4];
+    if (!isValidId(id)) {
+      throw new Error("Invalid id")
+    }
   } catch (error) {
     return new Response('Unable to get runner id from url path', {
       status: 500,
