@@ -3,7 +3,7 @@
 # Note: this script must be run using source
 
 # Default values
-REPO="aiverify-foundation/moonshot-ui"
+REPO="aiverify-foundation/moonshot"
 OUTPUT_FILE=".codeql-alerts.json"
 
 # Parse arguments
@@ -36,16 +36,16 @@ if [ $? -ne 0 ]; then
   return 1
 fi
 
-# Total alert count
-alerts_count=$(jq '. | length' "$OUTPUT_FILE")
-OUTPUT_MESSAGES+="Total CodeQL alerts: $alerts_count\n"
+# Filter only open alerts
+open_alerts=$(jq '[.[] | select(.state == "open")]' "$OUTPUT_FILE")
+open_alerts_count=$(echo "$open_alerts" | jq 'length')
+OUTPUT_MESSAGES+="Open CodeQL alerts: $open_alerts_count\n"
 
-# Display alerts by severity if there are any alerts
-if [ "$alerts_count" -gt 0 ]; then
-  OUTPUT_MESSAGES+="Alerts by severity:\n"
-  OUTPUT_MESSAGES+="$(jq -r '.[] | .rule.severity' "$OUTPUT_FILE" | sort | uniq -c)\n"
+# Display alerts by severity if there are any open alerts
+if [ "$open_alerts_count" -gt 0 ]; then
+  OUTPUT_MESSAGES+="Open alerts by severity:\n"
+  OUTPUT_MESSAGES+="$(echo "$open_alerts" | jq -r '.[] | .rule.severity' | sort | uniq -c)\n"
   rm "$OUTPUT_FILE"
-  #echo -e "$OUTPUT_MESSAGES"
   echo "There are CodeQL alerts, please check Security>Code Scanning tab in the repository for more details."
   export CODEQL_SUMMARY="$OUTPUT_MESSAGES"
   return 2
