@@ -1,10 +1,11 @@
 #!/bin/bash
 
-# Note: this script must be run using source
-
 # Default values
 REPO="aiverify-foundation/moonshot-ui"
 OUTPUT_FILE=".codeql-alerts.json"
+
+# Set GH CLI auth token
+export GH_TOKEN="${GH_TOKEN:-${GITHUB_TOKEN}}"
 
 # Parse arguments
 while [[ "$#" -gt 0 ]]; do

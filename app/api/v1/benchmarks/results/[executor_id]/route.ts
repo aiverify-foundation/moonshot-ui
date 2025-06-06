@@ -1,10 +1,18 @@
 import { NextRequest } from 'next/server';
 import config from '@/moonshot.config';
 
+const isValidId = (id: string) => {
+  const idRegex = /^[a-zA-Z0-9_-]+$/;
+  return idRegex.test(id);
+};
+
 export async function GET(request: NextRequest) {
   let result_id: string;
   try {
     result_id = request.nextUrl.pathname.split('/')[5];
+    if (!isValidId(result_id)) {
+      throw new Error("Invalid result id")
+    }
   } catch (error) {
     return new Response('Unable to get result id from url path', {
       status: 500,
