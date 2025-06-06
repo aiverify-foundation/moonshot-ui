@@ -1,6 +1,10 @@
 import { NextRequest } from 'next/server';
-import { isValidId } from '@/app/api/v1/apiUtils';
 import config from '@/moonshot.config';
+
+const isValidId = (id: string) => {
+  const idRegex = /^[a-zA-Z0-9_-]+$/;
+  return idRegex.test(id);
+};
 
 export async function GET(request: NextRequest) {
   let result_id: string;
