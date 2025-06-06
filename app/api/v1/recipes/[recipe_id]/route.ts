@@ -1,6 +1,10 @@
 import { NextRequest } from 'next/server';
 import { basePathRecipes, hostURL } from '@/app/api/constants';
-import { isValidId } from '@/app/api/v1/apiUtils';
+
+const isValidId = (id: string) => {
+  const idRegex = /^[a-zA-Z0-9_-]+$/;
+  return idRegex.test(id);
+};
 
 export async function DELETE(request: NextRequest) {
   let recipe_id: string;
