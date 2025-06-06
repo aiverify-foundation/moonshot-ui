@@ -59,12 +59,20 @@ export async function DELETE(request: NextRequest) {
   let session_id: string;
   let strategy_id: string;
   let numOfPrevPrompts: string;
-
   try {
     const segments = request.nextUrl.pathname.split('/');
     session_id = segments[4];
     strategy_id = segments[6];
     numOfPrevPrompts = segments[7];
+    if (!isValidId(session_id)) {
+      throw new Error("Invalid session id")
+    }
+    if (!isValidId(strategy_id)) {
+      throw new Error("Invalid strategy id")
+    }
+    if (!isValidId(numOfPrevPrompts)) {
+      throw new Error("Invalid num of prev prompts")
+    }
   } catch (error) {
     return new Response(
       'Unable to get session id or context strategy id or numOfPrevPrompts',
