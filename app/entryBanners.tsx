@@ -55,7 +55,16 @@ function EntryBanners() {
             buttonTextColor={colors.white}
             bannerText={
               <span>
-                Run benchmark tests recommended in IMDA&apos;s Starter Kit, <br />
+                Run benchmark tests recommended in IMDA&apos;s{' '}
+                <a
+                  href="https://aiverify-foundation.github.io/moonshot/detailed_guide/starter_kit_cookbooks/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#8ab4f8', textDecoration: 'underline' }}
+                >
+                  Starter Kit
+                </a>
+                ,<br />
                 for safety testing of LLM-based applications
               </span>
             }

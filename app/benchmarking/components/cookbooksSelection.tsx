@@ -25,9 +25,20 @@ const descCapability =
   "Capability assesses the AI model's ability to perform within the context of the unique requirements and challenges of a particular domain or task.";
 const descTrustAndSafety =
   'Trust & Safety addresses the reliability, ethical considerations, and inherent risks of the AI model. It also examines potential scenarios where the AI system could be used maliciously or unethically.';
-const descImdaStarterKit =
-  "Includes tests from IMDA's Starter Kit to assess model or application's capability to respond to key risks like hallucination, undesirable content, data disclosure and adversarial prompts in a safe and trustworthy manner.";
-
+const descImdaStarterKit =(
+  <>
+    Includes tests from IMDA's{' '}
+    <a
+      href="https://aiverify-foundation.github.io/moonshot/detailed_guide/starter_kit_cookbooks/"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ color: '#8ab4f8', textDecoration: 'underline' }}
+    >
+      Starter Kit
+    </a>{' '}
+    to assess model or application's capability to respond to key risks like hallucination, undesirable content, data disclosure and adversarial prompts in a safe and trustworthy manner.
+  </>
+);
 const CookbookAbout = dynamic(
   () => import('./cookbookAbout').then((mod) => mod.CookbookAbout),
   {
