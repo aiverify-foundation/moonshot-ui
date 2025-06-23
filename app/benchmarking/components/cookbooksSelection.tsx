@@ -4,6 +4,7 @@ import {
   updateAllCookbooks,
   useCookbooks,
 } from '@/app/benchmarking/contexts/cookbooksContext';
+import { ImdaStarterKitLink } from '@/app/components/link-constants';
 import { LoadingAnimation } from '@/app/components/loadingAnimation';
 import { PopupSurface } from '@/app/components/popupSurface';
 import { TabsMenu, TabItem } from '@/app/components/tabsMenu';
@@ -27,16 +28,7 @@ const descTrustAndSafety =
   'Trust & Safety addresses the reliability, ethical considerations, and inherent risks of the AI model. It also examines potential scenarios where the AI system could be used maliciously or unethically.';
 const descImdaStarterKit =(
   <>
-    Includes tests from IMDA&apos;s{' '}
-    <a
-      href="https://aiverify-foundation.github.io/moonshot/detailed_guide/starter_kit_cookbooks/"
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ color: '#8ab4f8', textDecoration: 'underline' }}
-    >
-      Starter Kit
-    </a>{' '}
-    to assess model or application&apos;s capability to respond to key risks like hallucination, undesirable content, data disclosure and adversarial prompts in a safe and trustworthy manner.
+        {"Includes tests from IMDA's "} <ImdaStarterKitLink />{" to assess model or application's capability to respond to key risks like hallucination, undesirable content, data disclosure and adversarial prompts in a safe and trustworthy manner."}
   </>
 );
 const CookbookAbout = dynamic(
