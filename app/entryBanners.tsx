@@ -4,6 +4,7 @@ import React from 'react';
 import { Icon, IconName } from '@/app/components/IconSVG';
 import { ActionCard } from '@/app/components/actionCard/actionCard';
 import { Banner } from '@/app/components/banner/banner';
+import { ImdaStarterKitLink } from '@/app/components/link-constants';
 import { Modal } from '@/app/components/modal';
 import { colors } from '@/app/customColors';
 import { useIsResponsiveBreakpoint } from '@/app/hooks/useIsResponsiveBreakpoint';
@@ -55,8 +56,8 @@ function EntryBanners() {
             buttonTextColor={colors.white}
             bannerText={
               <span>
-                Run benchmark tests recommended in IMDA&apos;s Starter Kit, <br />
-                for safety testing of LLM-based applications
+                {"Run benchmark tests recommended in IMDA's "}<ImdaStarterKitLink />{","}<br />
+                {"for safety testing of LLM-based applications"}
               </span>
             }
             buttonText="Get Started"
