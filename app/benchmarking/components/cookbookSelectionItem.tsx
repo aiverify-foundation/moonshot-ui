@@ -89,7 +89,7 @@ function CookbookSelectionItem(props: CookbookSelectionItemProps) {
                 offsetLeft={10}
                 content={
                   <div className="p-1 pt-0">
-                    <h3 className="text-black font-bold mb-2">Requires</h3>
+                    <h3 className="text-black font-bold mb-2">Requires connection to the following evaluator model(s) to help score the tests</h3>
                     <ul className="text-gray-700">
                       {requiredEndpoints.map((endpoint) => (
                         <li key={endpoint}>{endpoint}</li>
