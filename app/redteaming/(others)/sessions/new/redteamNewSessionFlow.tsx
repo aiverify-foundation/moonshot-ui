@@ -26,6 +26,12 @@ import {
 } from './redteamNewSessionFlowReducer';
 import { RedteamRunForm } from './redteamRunForm';
 
+const flowSteps = [
+  'Connect Endpoint',
+  'Set Optional Utilities',
+  'Start Red Teaming',
+];
+
 function RedteamNewSessionFlow() {
   const router = useRouter();
   const appDispatch = useAppDispatch();
@@ -222,7 +228,7 @@ function RedteamNewSessionFlow() {
             <SimpleStepsIndicator
               textColor={colors.moongray[300]}
               stepColor={colors.moonpurplelight}
-              steps={flowState.steps}
+              steps={flowSteps}
               currentStepIndex={flowState.stepIndex}
             />
           </div>
