@@ -67,83 +67,53 @@ const GRAND_TOTAL_PROMPTS = totalPromptsForStat0 + totalPromptForStat1;
 const USER_INPUT_PERCENTAGE_OF_PROMPTS = 5;
 const DECIMAL_FRACTION_OF_PROMPTS = USER_INPUT_PERCENTAGE_OF_PROMPTS / 100;
 const SMALLER_SET_TOTAL_PROMPTS =
-  Math.max(
-    1,
-    Math.floor(
-      DECIMAL_FRACTION_OF_PROMPTS *
-        mockRecipesStats[0].num_of_datasets_prompts.dataset1 //mockRecipesStats[0] has 0 prompt templates
-    )
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[0].num_of_datasets_prompts.dataset1 //mockRecipesStats[0] has 0 prompt templates
   ) +
-  Math.max(
-    1,
-    Math.floor(
-      DECIMAL_FRACTION_OF_PROMPTS *
-        mockRecipesStats[0].num_of_datasets_prompts.dataset2 //mockRecipesStats[0] has 0 prompt templates
-    )
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[0].num_of_datasets_prompts.dataset2 //mockRecipesStats[0] has 0 prompt templates
   ) +
-  Math.max(
-    1,
-    Math.floor(
-      DECIMAL_FRACTION_OF_PROMPTS *
-        mockRecipesStats[1].num_of_datasets_prompts.dataset1
-    )
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset1
   ) *
     mockRecipesStats[1].num_of_prompt_templates +
-  Math.max(
-    1,
-    Math.floor(
-      DECIMAL_FRACTION_OF_PROMPTS *
-        mockRecipesStats[1].num_of_datasets_prompts.dataset2
-    )
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset2
   ) *
     mockRecipesStats[1].num_of_prompt_templates +
-  Math.max(
-    1,
-    Math.floor(
-      DECIMAL_FRACTION_OF_PROMPTS *
-        mockRecipesStats[1].num_of_datasets_prompts.dataset3
-    )
+  Math.floor(
+    DECIMAL_FRACTION_OF_PROMPTS *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset3
   ) *
     mockRecipesStats[1].num_of_prompt_templates;
 
 const ONE_PERCENT_DECIMAL_FRACTION = 1 / 100;
 const ONE_PERCENT_TOTAL_PROMPTS =
-  Math.max(
-    1,
-    Math.floor(
-      ONE_PERCENT_DECIMAL_FRACTION *
-        mockRecipesStats[0].num_of_datasets_prompts.dataset1 //mockRecipesStats[0] has 0 prompt templates
-    )
+  Math.floor(
+    ONE_PERCENT_DECIMAL_FRACTION *
+      mockRecipesStats[0].num_of_datasets_prompts.dataset1 //mockRecipesStats[0] has 0 prompt templates
   ) +
-  Math.max(
-    1,
-    Math.floor(
-      ONE_PERCENT_DECIMAL_FRACTION *
-        mockRecipesStats[0].num_of_datasets_prompts.dataset2
-    )
+  Math.floor(
+    ONE_PERCENT_DECIMAL_FRACTION *
+      mockRecipesStats[0].num_of_datasets_prompts.dataset2
   ) +
-  Math.max(
-    1,
-    Math.floor(
-      ONE_PERCENT_DECIMAL_FRACTION *
-        mockRecipesStats[1].num_of_datasets_prompts.dataset1
-    )
+  Math.floor(
+    ONE_PERCENT_DECIMAL_FRACTION *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset1
   ) *
     mockRecipesStats[1].num_of_prompt_templates +
-  Math.max(
-    1,
-    Math.floor(
-      ONE_PERCENT_DECIMAL_FRACTION *
-        mockRecipesStats[1].num_of_datasets_prompts.dataset2
-    )
+  Math.floor(
+    ONE_PERCENT_DECIMAL_FRACTION *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset2
   ) *
     mockRecipesStats[1].num_of_prompt_templates +
-  Math.max(
-    1,
-    Math.floor(
-      ONE_PERCENT_DECIMAL_FRACTION *
-        mockRecipesStats[1].num_of_datasets_prompts.dataset3
-    )
+  Math.floor(
+    ONE_PERCENT_DECIMAL_FRACTION *
+      mockRecipesStats[1].num_of_datasets_prompts.dataset3
   ) *
     mockRecipesStats[1].num_of_prompt_templates;
 

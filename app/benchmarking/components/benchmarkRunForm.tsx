@@ -60,9 +60,9 @@ function BenchmarkRunForm({
             stats.num_of_datasets_prompts
           ).reduce((sum, value) => {
             if (calcPercentageAtEachDataset) {
-              percentageCalculatedTotalPrompts += Math.max(1, Math.floor(
+              percentageCalculatedTotalPrompts += Math.floor(
                 value * decimalFraction
-              ));
+              );
             }
             return sum + value;
           }, 0);

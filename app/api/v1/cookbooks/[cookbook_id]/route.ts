@@ -2,18 +2,10 @@ import { NextRequest } from 'next/server';
 import { basePathCookbooks, hostURL } from '@/app/api/constants';
 export const dynamic = 'force-dynamic';
 
-const isValidId = (id: string) => {
-  const idRegex = /^[a-zA-Z0-9_-]+$/;
-  return idRegex.test(id);
-};
-
 export async function PUT(request: NextRequest) {
   let cookbook_id: string;
   try {
     cookbook_id = request.nextUrl.pathname.split('/')[4];
-    if (!isValidId(cookbook_id)) {
-      throw new Error("Invalid cookbook id")
-    }
   } catch (error) {
     return new Response('Unable to get cookbook id from url path', {
       status: 500,
@@ -32,9 +24,6 @@ export async function GET(request: NextRequest) {
   let cookbook_id: string;
   try {
     cookbook_id = request.nextUrl.pathname.split('/')[4];
-    if (!isValidId(cookbook_id)) {
-      throw new Error("Invalid cookbook id")
-    }
   } catch (error) {
     return new Response('Unable to get cookbook id from url path', {
       status: 500,
