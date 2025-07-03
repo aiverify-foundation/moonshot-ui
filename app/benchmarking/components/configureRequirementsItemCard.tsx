@@ -71,8 +71,8 @@ function ConfigureRequirementsItemCard(
         />
       </div>
       {requiredEndpoints.length > 0 ? (
-        <p className="text-[0.9rem] leading-snug tracking-wide w-full ml-8 mt-8 text-moongray-400">
-          <h3 className="font-bold">Requires</h3>
+        <p className="text-[0.9rem]  mt-8 leading-snug tracking-wide text-moongray-400">
+          <h3 className="text-[0.9rem]  mb-2">This cookbook requires connection to the following evaluator model(s) to help score the tests. You will need to provide the API Access tokens or set up an alternative evaluator model.</h3>
           <ul className="list-disc list-inside">
             {requiredEndpoints.map((endpoint) => (
               <li key={endpoint.id}>{endpoint.name}</li>
