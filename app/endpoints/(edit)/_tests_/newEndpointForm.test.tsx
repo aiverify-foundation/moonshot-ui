@@ -98,8 +98,13 @@ describe('NewEndpointForm', () => {
     await userEvent.clear(otherParamsTextbox);
     await userEvent.type(otherParamsTextbox, escapedMockValidParams);
     await userEvent.click(screen.getByRole('button', { name: /ok/i }));
+    await waitFor(
+      () => {
+        expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
+      },
+      { timeout: 3000 }
+    );
     await userEvent.click(screen.getByRole('button', { name: /save/i }));
-    expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
 
     const expectedPayload = {
       connector_type: 'connector1',
