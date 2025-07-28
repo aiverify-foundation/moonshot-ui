@@ -222,50 +222,25 @@ function RedteamNewSessionFlow() {
       <MainSectionSurface
         onCloseIconClick={handleOnCloseIconClick}
         height="100%"
-        bgColor={surfaceColor}>
+        bgColor={surfaceColor}
+        headerHeight={80}
+        bodyHeight="calc(100% - 80px)"
+        showHeaderDivider
+        bodyClassName="!p-0"
+        headerContent={
+          <SimpleStepsIndicator
+            textColor={colors.moongray[300]}
+            stepColor={colors.moonpurplelight}
+            steps={flowSteps}
+            currentStepIndex={flowState.stepIndex}
+            className="!w-[80%]"
+          />
+        }>
         <div className="flex flex-col items-center h-full">
-          <div className="w-[700px] flex shrink-0 justify-center">
-            <SimpleStepsIndicator
-              textColor={colors.moongray[300]}
-              stepColor={colors.moonpurplelight}
-              steps={flowSteps}
-              currentStepIndex={flowState.stepIndex}
-            />
-          </div>
           <div
-            className="flex flex-col gap-5 ipad11Inch:gap-1 ipadPro:gap-1 justify-center w-full"
-            style={{ height: 'calc(100% - 33px)' }}>
-            {!flowState.hidePrevBtn && (
-              <div className="flex justify-center">
-                <div
-                  role="button"
-                  onClick={handlePreviousBtnClick}
-                  className="flex justify-center hover:opacity-70"
-                  aria-label="Previous View">
-                  <Icon
-                    name={IconName.WideArrowUp}
-                    size={28}
-                  />
-                </div>
-              </div>
-            )}
+            className="flex flex-col gap-5 ipad11Inch:gap-2 ipadPro:gap-2 justify-center w-full"
+            style={{ height: 'calc(100% - 60px)' }}>
             {view}
-            {!flowState.hideNextBtn && (
-              <div className="flex justify-center">
-                <div
-                  role="button"
-                  onClick={
-                    flowState.disableNextBtn ? undefined : handleNextIconClick
-                  }
-                  className={`flex justify-center ${flowState.disableNextBtn ? 'opacity-30' : ''} ${!flowState.disableNextBtn ? 'hover:opacity-60' : ''}`}
-                  aria-label="Next View">
-                  <Icon
-                    name={IconName.WideArrowDown}
-                    size={28}
-                  />
-                </div>
-              </div>
-            )}
             {flowState.showSkipBtn && (
               <div className="flex justify-center">
                 <Button
@@ -278,6 +253,44 @@ function RedteamNewSessionFlow() {
                 />
               </div>
             )}
+          </div>
+          <div
+            className={`flex 
+              ${!flowState.hidePrevBtn && !flowState.hideNextBtn ? 'justify-between' : ''} 
+              ${flowState.hidePrevBtn && !flowState.hideNextBtn ? 'justify-end' : ''} 
+              ${!flowState.hidePrevBtn && flowState.hideNextBtn ? 'justify-start' : ''} 
+              items-center w-full h-[60px] px-4
+           bg-moongray-950 shadow-[0_-2px_5px_-2px_rgba(0,0,0,0.3)] rounded-b-2xl`}>
+            {!flowState.hidePrevBtn ? (
+              <Button
+                ariaLabel="Previous View"
+                mode={ButtonType.TEXT}
+                text="BACK"
+                textSize="1.3rem"
+                textColor={colors.moonpurplelight}
+                leftIconName={IconName.ThinArrowLeft}
+                iconSize={24}
+                iconColor={colors.moonpurplelight}
+                disabled={flowState.disablePrevBtn}
+                onClick={handlePreviousBtnClick}
+              />
+            ) : null}
+            {!flowState.hideNextBtn ? (
+              <Button
+                ariaLabel="Next View"
+                mode={ButtonType.TEXT}
+                text="NEXT"
+                textSize="1.3rem"
+                textColor={colors.moonpurplelight}
+                rightIconName={IconName.ThinArrowRight}
+                iconSize={24}
+                iconColor={colors.moonpurplelight}
+                disabled={flowState.disableNextBtn}
+                onClick={
+                  flowState.disableNextBtn ? undefined : handleNextIconClick
+                }
+              />
+            ) : null}
           </div>
         </div>
       </MainSectionSurface>
