@@ -48,6 +48,7 @@ export function redteamNewSessionFlowReducer(
       if (state.view === RedteamingNewSessionViews.ENDPOINTS_SELECTION) {
         return {
           ...state,
+          stepIndex: state.stepIndex + 1,
           view: RedteamingNewSessionViews.ATTACK_SELECTION,
           hidePrevBtn: false,
           hideNextBtn: !action.attackSelected,
@@ -59,6 +60,7 @@ export function redteamNewSessionFlowReducer(
       if (state.view === RedteamingNewSessionViews.ATTACK_SELECTION) {
         return {
           ...state,
+          stepIndex: state.stepIndex + 1,
           view: RedteamingNewSessionViews.RUN_FORM,
           hidePrevBtn: false,
           hideNextBtn: true,
@@ -71,6 +73,7 @@ export function redteamNewSessionFlowReducer(
       if (state.view === RedteamingNewSessionViews.ATTACK_SELECTION) {
         return {
           ...state,
+          stepIndex: state.stepIndex - 1,
           view: RedteamingNewSessionViews.ENDPOINTS_SELECTION,
           hidePrevBtn: true,
           hideNextBtn: false,
@@ -82,6 +85,7 @@ export function redteamNewSessionFlowReducer(
       if (state.view === RedteamingNewSessionViews.RUN_FORM) {
         return {
           ...state,
+          stepIndex: state.stepIndex - 1,
           view: RedteamingNewSessionViews.ATTACK_SELECTION,
           hidePrevBtn: false,
           hideNextBtn: !action.attackSelected,
@@ -106,6 +110,7 @@ export function redteamNewSessionFlowReducer(
       if (state.view === RedteamingNewSessionViews.ATTACK_SELECTION) {
         return {
           ...state,
+          stepIndex: state.stepIndex + 1,
           view: RedteamingNewSessionViews.RUN_FORM,
           hidePrevBtn: false,
           hideNextBtn: true,
