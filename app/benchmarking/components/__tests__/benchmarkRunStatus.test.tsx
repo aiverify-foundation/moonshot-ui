@@ -401,6 +401,6 @@ it('should display the "errored" status', async () => {
   expect(screen.getByText(/tests completed/i)).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: /view errors/i }));
   expect(
-    screen.getByText(erroredTestData.current_error_messages[0])
+    screen.getByText(/There is an error. Please refer to the logs./i)
   ).toBeInTheDocument();
 });
