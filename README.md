@@ -50,7 +50,7 @@ Else, to install and build from source:
 2. Install Required Dependencies
 - Make sure that all requirements are installed by executing the following command:
     ```
-    npm install
+    npm install --omit=dev
     ```
 3. From the project root folder, execute the following command:
     ```

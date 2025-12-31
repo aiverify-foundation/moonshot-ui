@@ -7,3 +7,12 @@ Object.defineProperty(window, 'matchMedia', {
     matches: false,
   })),
 });
+
+// Mock html2pdf.js to avoid ES module import issues with jspdf
+jest.mock('html2pdf.js', () => {
+  return jest.fn(() => ({
+    set: jest.fn().mockReturnThis(),
+    from: jest.fn().mockReturnThis(),
+    save: jest.fn().mockResolvedValue(undefined),
+  }));
+});
