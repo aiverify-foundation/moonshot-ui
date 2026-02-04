@@ -47,6 +47,9 @@ const config: Config = {
     '^@/(.*)$': '<rootDir>/$1',
     '^@/app/components/(.*)$': '<rootDir>/app/components/$1',
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!(jspdf|html2pdf\\.js|@babel/runtime)/)',
+  ],
   watchPathIgnorePatterns: [
     '<rootDir>/test-report.html',
     '<rootDir>/test-results.json',
